@@ -19,7 +19,7 @@ src/main/resources/static/src/vendor
 src/main/resources/static/tmp
 build/dist
 
-#test
+# Tests
 client/test/screenshots/*
 client/test/unit-results/*
 
