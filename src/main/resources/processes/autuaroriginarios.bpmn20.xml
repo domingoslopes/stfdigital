@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="definitions" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" targetNamespace="Examples">
+
+	<signal id="peticaoInvalida" name="Petição Inválida"/>
+
+	<process id="autuarOriginarios">
+
+		<startEvent id="receberremessa"/>
+
+		<sequenceFlow id="preautuar" sourceRef="receberremessa" targetRef="preautuacao" />
+
+		<userTask id="preautuacao" name="Pré-Autuar Processo" />
+
+		<sequenceFlow id="analisar" sourceRef="preautuacao" targetRef="analise" />
+
+		<subProcess id="analise" name="Análise">
+		
+			<startEvent id="iniciaranalise" />
+			
+			<sequenceFlow id="autuar" sourceRef="iniciaranalise" targetRef="autuacao" />
+
+			<userTask id="autuacao" name="Autuar Processo"/>
+			
+			<sequenceFlow id="finalisaranalise" sourceRef="autuacao" targetRef="finalizaranalise" />
+			
+			<endEvent id="finalizaranalise" />
+			
+		</subProcess>
+
+		<boundaryEvent id="abortarAnalise" attachedToRef="analise" cancelActivity="true">
+			<signalEventDefinition signalRef="peticaoInvalida" />
+		</boundaryEvent>
+
+		<sequenceFlow id="devolver" sourceRef="abortarAnalise" targetRef="devolucao" />
+
+		<userTask id="devolucao" name="Devolver Processo" />
+
+		<sequenceFlow id="finalizardevolucao" sourceRef="devolucao" targetRef="devolvido" />
+
+		<endEvent id="devolvido" />
+
+		<sequenceFlow id="distribuir" sourceRef="analise" targetRef="distribuicao" />
+
+		<userTask id="distribuicao" name="Distribuir Processo"/>
+			
+		<sequenceFlow id="finalizardistribuicao" sourceRef="distribuicao" targetRef="distribuido" />
+		
+		<endEvent id="distribuido" />
+
+	</process>
+
+</definitions>
