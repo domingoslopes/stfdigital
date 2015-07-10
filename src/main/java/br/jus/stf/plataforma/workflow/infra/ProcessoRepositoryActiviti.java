@@ -21,8 +21,7 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 
 	@Override
 	public String criar(String id) {
-		ProcessInstance processInstance = runtimeService
-				.startProcessInstanceByKey(id);
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(id);
 
 		return processInstance.getId();
 	}

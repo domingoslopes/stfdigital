@@ -12,7 +12,7 @@
 	
 	describe('app', function() {
 		beforeEach(function() {
-			console.info('\nrunning:', jasmine.getEnv().currentSpec.description);
+			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
 		});
 
 		afterEach(function() {
