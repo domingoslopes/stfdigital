@@ -20,6 +20,6 @@ src/main/resources/static/tmp
 build/dist
 
 # Tests
-client/test/screenshots/*
-client/test/unit-results/*
+src/main/resources/static/application/test/screenshots/*
+src/main/resources/static/application/test/unit-results/*
 
