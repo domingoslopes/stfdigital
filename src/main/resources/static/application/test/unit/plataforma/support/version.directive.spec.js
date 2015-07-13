@@ -13,7 +13,7 @@
 		var compile;
 		var rootScope;
 
-		beforeEach(module('version'));
+		beforeEach(module('plataforma'));
 		
 		beforeEach(function() {
 			module(function($provide) {

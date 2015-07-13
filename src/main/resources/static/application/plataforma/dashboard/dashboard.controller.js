@@ -7,9 +7,10 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').controller('DashboardController', function (data, $scope) {
+	angular.module('plataforma').controller('DashboardController', function (data, $scope, $log) {
 		
 		$scope.tarefas = data.data;
+		
 	});
 	
 })();

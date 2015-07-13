@@ -4,10 +4,13 @@ Instale o **node.js**, **gulp** e **bower**, caso ainda não tenha.
 
     $ npm -g install gulp bower
 
-Depois disso, baixe a última versão do código e então instale as dependências do node e do bower. Após, rode a aplicação em modo de desenvolvimento.
+Depois disso, baixe a última versão do código, entre no diretório da aplicação e instale as dependências do node e do bower.
 
     $ npm install
     $ bower install
+    
+Após, rode a aplicação em modo de desenvolvimento.
+     
     $ gulp serve
 
 Se tudo correu bem, a aplicação estará disponível em **http://127.0.0.1:3000**.

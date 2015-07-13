@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	function versionDirective(version) {
+	angular.module('plataforma').directive('appVersion', function(version) {
 		return {
 			restrict : 'A',
 			/* jshint unused:false */
@@ -15,7 +15,6 @@
 				elm.text(version);
 			}
 		};
-	}
-
-	angular.module('version', []).directive('appVersion', versionDirective);
+	});
+	
 })();

@@ -17,6 +17,9 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.SinalizarCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDtoAssembler;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -24,6 +27,7 @@ import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDtoAssembler;
  * @since 23.06.2015
  */
 @RestController
+@Api(basePath = "/api/tarefas", value = "Tarefas", description = "Operações sobre Tarefas", produces = "application/json")
 public class TarefaRestService {
 	
 	TarefaDtoAssembler dtoAssembler = new TarefaDtoAssembler();
@@ -47,6 +51,7 @@ public class TarefaRestService {
         return tarefas.stream().map(tarefa -> dtoAssembler.toDto(tarefa)).collect(Collectors.toList()); 
 	}
 	
+    @ApiOperation(value = "Completa uma data Tarefa")
     @RequestMapping(value = "/api/tarefa", method = RequestMethod.POST)
 	public void completar(@RequestBody CompletarTarefaCommand command) {
         tarefaApplicationService.completar(command.getIdTarefa());

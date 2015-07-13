@@ -18,6 +18,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 public class LocalWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable();
 		http.authorizeRequests().anyRequest().anonymous();
 	}
 

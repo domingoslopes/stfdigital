@@ -8,7 +8,7 @@
 					<li>
 						<p>Dashboards</p>
 					</li>
-					<li><a href="#" class="active">Dashboard</a></li>
+					<li><a href="#" class="active">Dashboard Padrão</a></li>
 				</ul>
 				<!-- END BREADCRUMB -->
 			</div>
@@ -36,15 +36,11 @@
 						<table class="table table-condensed table-hover">
 							<tbody>
 								<tr ng-repeat="tarefa in tarefas">
-									<td class="font-montserrat all-caps fs-12 col-lg-6">{{tarefa.descricao}}</td>
-									<td class="text-right hidden-lg">
-										<span class="hint-text small">dewdrops</span>
+									<td class="font-montserrat fs-12 col-lg-12">
+									   <a ui-sref="root.{{tarefa.nome}}({idTarefa: tarefa.id})">{{tarefa.descricao}}</a>
 									</td>
-									<td class="text-right b-r b-dashed b-grey col-lg-3">
-										<span class="hint-text small">Qty 1</span>
-									</td>
-									<td class="col-lg-3">
-										<span class="font-montserrat fs-18">$27</span>
+									<td class="text-right b-l b-dashed b-grey col-lg-1">
+										<span class="hint-text small">#{{tarefa.id}}</span>
 									</td>
 								</tr>
 							</tbody>

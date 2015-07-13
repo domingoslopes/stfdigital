@@ -1,0 +1,23 @@
+<div class="content" ng-controller="RegistroPeticaoFisicaController as registro">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Petições Físicas</p>
+					</li>
+					<li><a href="#" class="active">Registrar Remessa</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<form ng-submit="registro.completar()">
+			<input type="text" ng-model="registro.tipoRecebimento" size="30"> 
+			
+			<p>
+    			<input class="btn btn-complete btn-cons m-t-10" type="submit" value="Registrar">
+			</p>
+		</form>
+	</div>
+</div>
