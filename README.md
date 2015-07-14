@@ -1,20 +1,20 @@
 ## Montagem do Ambiente
-1. Baixe e instale o **node.js** disponível no site:
+Baixe e instale o **node.js** disponível no site:
+
+    https://nodejs.org/
 	
-	https://nodejs.org/
-	
-2. Instale **gulp** e **bower** executando o comando abaixo no Prompt de Comando:
+Instale **gulp** e **bower** executando o comando abaixo no Prompt de Comando:
 
     $ npm -g install gulp bower
 
-3. Baixe a última versão do código, entre no diretório da aplicação e instale as dependências do node e do bower:
+Baixe a última versão do código, entre no diretório da aplicação e instale as dependências do node e do bower:
 
 	$ git clone https://github.com/supremotribunalfederal/stfdigital.git
 	$ cd stfdigital
     $ npm install
     $ bower install
     
-4. Agora, rode a aplicação em modo de desenvolvimento:
+Agora, rode a aplicação em modo de desenvolvimento:
 
     $ gulp serve
 
@@ -28,4 +28,5 @@ Existem algumas `tasks` disponíveis no arquivo `gulpfile.js`:
 * **gulp serve:tdd** - Semelhante à `gulp serve`, porém irá executar os testes unitários continuamente.
 * **gulp test:unit** - Apenas executa os testes unitários disponíveis em `src/main/resources/static/application/test/unit`.
 * **gulp test:e2e** - Executa os testes end-to-end disponíveis em `src/main/resources/static/application/test/e2e`.
+
 **Você vai precisar que a aplicação esteja rodando para executar os testes e2e. Você pode fazer isso usando uma outra instância de terminal.**
