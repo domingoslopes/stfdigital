@@ -1,5 +1,5 @@
 ## Montagem do Ambiente
-1. Baixe e instale o **node.js* disponível no site:
+1. Baixe e instale o **node.js** disponível no site:
 	
 	https://nodejs.org/
 	
