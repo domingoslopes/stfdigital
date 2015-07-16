@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.tests.integration;
+package br.jus.stf.autuacao.interfaces;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
