@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,28 +30,20 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @Api(basePath = "/api/tarefas", value = "Tarefas", description = "Operações sobre Tarefas", produces = "application/json")
 public class TarefaRestService {
 	
-	TarefaDtoAssembler dtoAssembler = new TarefaDtoAssembler();
+	private TarefaDtoAssembler dtoAssembler = new TarefaDtoAssembler();
 	
     @Autowired 
     private TarefaApplicationService tarefaApplicationService;
     
-    @RequestMapping(value = "/api/tarefas/{grupo}", method = RequestMethod.GET)
-	public List<TarefaDto> tarefas(@PathVariable String grupo) {
-    	
-    	List<Task> tarefas = tarefaApplicationService.tarefas();
-    	
-        return tarefas.stream().map(tarefa -> dtoAssembler.toDto(tarefa)).collect(Collectors.toList()); 
-	}
-
+    @ApiOperation(value = "Lista todas as tarefas associadas ao papel do usuário corrente")
 	@RequestMapping(value = "/api/tarefas", method = RequestMethod.GET)
-	public List<TarefaDto> tarefas() {
-    	
-    	List<Task> tarefas = tarefaApplicationService.tarefas();
+	public List<TarefaDto> tarefas(@RequestHeader(value="papel") String papel) {
+    	List<Task> tarefas = tarefaApplicationService.tarefas(papel);
     	
         return tarefas.stream().map(tarefa -> dtoAssembler.toDto(tarefa)).collect(Collectors.toList()); 
 	}
 	
-    @ApiOperation(value = "Completa uma data Tarefa")
+    @ApiOperation(value = "Completa uma dada tarefa")
     @RequestMapping(value = "/api/tarefa", method = RequestMethod.POST)
 	public void completar(@RequestBody CompletarTarefaCommand command) {
         tarefaApplicationService.completar(command.getIdTarefa());

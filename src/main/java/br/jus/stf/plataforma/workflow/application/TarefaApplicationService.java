@@ -20,8 +20,8 @@ public class TarefaApplicationService {
 	@Autowired
 	private TarefaRepository tarefaRepository;
 
-	public List<Task> tarefas() {
-		return tarefaRepository.listar();
+	public List<Task> tarefas(String papel) {
+		return tarefaRepository.listar(papel);
 	}
 
 	public void completar(String idTarefa) {

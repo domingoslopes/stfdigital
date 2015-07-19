@@ -9,7 +9,7 @@
 
 		<sequenceFlow id="preautuar" sourceRef="receberremessa" targetRef="preautuacao" />
 
-		<userTask id="preautuacao" name="Pré-Autuar Processo" />
+		<userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="recebedor" />
 
 		<sequenceFlow id="analisar" sourceRef="preautuacao" targetRef="analise" />
 
@@ -19,7 +19,7 @@
 			
 			<sequenceFlow id="autuar" sourceRef="iniciaranalise" targetRef="autuacao" />
 
-			<userTask id="autuacao" name="Autuar Processo"/>
+			<userTask id="autuacao" name="Autuar Processo" activiti:candidateGroups="autuador"/>
 			
 			<sequenceFlow id="finalisaranalise" sourceRef="autuacao" targetRef="finalizaranalise" />
 			
@@ -33,7 +33,7 @@
 
 		<sequenceFlow id="devolver" sourceRef="abortarAnalise" targetRef="devolucao" />
 
-		<userTask id="devolucao" name="Devolver Processo" />
+		<userTask id="devolucao" name="Devolver Processo" activiti:candidateGroups="devolvedor"/>
 
 		<sequenceFlow id="finalizardevolucao" sourceRef="devolucao" targetRef="devolvido" />
 
@@ -41,7 +41,7 @@
 
 		<sequenceFlow id="distribuir" sourceRef="analise" targetRef="distribuicao" />
 
-		<userTask id="distribuicao" name="Distribuir Processo"/>
+		<userTask id="distribuicao" name="Distribuir Processo" activiti:candidateGroups="distribuidor"/>
 			
 		<sequenceFlow id="finalizardistribuicao" sourceRef="distribuicao" targetRef="distribuido" />
 		

@@ -15,6 +15,8 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     
+    <link rel='shortcut icon' type='image/x-icon' href="/theme/custom/img/favicon.ico"/>
+    
     <!-- BEGIN Vendor CSS-->
     <link href="theme/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
     <link href="theme/assets/plugins/boostrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -28,9 +30,8 @@
     <link class="main-stylesheet" href="theme/assets/pages/css/pages.css" rel="stylesheet" type="text/css" />
     <link class="main-stylesheet" href="theme/assets/pages/css/themes/simple.css" rel="stylesheet" type="text/css" />
     
-    <!-- BEGIN Custom CSS
-    <link rel="stylesheet" type="text/css" href="tmp/custom.css" />
-    -->
+    <!-- BEGIN Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="tmp/style.css" />
   </head>
   <body class="fixed-header">
     <!-- BEGIN SIDEBAR -->
@@ -39,7 +40,7 @@
       </div>
       <!-- BEGIN SIDEBAR HEADER -->
       <div class="sidebar-header">
-        <img src="theme/assets/img/logo_white.png" alt="logo" class="brand" data-src="theme/assets/img/logo_white.png" data-src-retina="theme/assets/img/logo_white_2x.png" width="78" height="22">
+        <img src="theme/custom/img/logo_white.png" alt="logo" class="brand" data-src="theme/custom/img/logo_white.png" data-src-retina="theme/custom/img/logo_white_2x.png" width="78" height="22">
         <div class="sidebar-header-controls">
           <button data-pages-toggle="#appMenu" class="btn btn-xs sidebar-slide-toggle btn-link m-l-20" type="button"><i class="fa fa-angle-down fs-16"></i>
           </button>
@@ -101,15 +102,15 @@
         <div class=" pull-left sm-table">
           <div class="header-inner">
             <div class="brand inline">
-              <img src="theme/assets/img/logo.png" alt="logo" data-src="theme/assets/img/logo.png" data-src-retina="theme/assets/img/logo_2x.png" width="78" height="22">
+              <img src="theme/custom/img/logo.png" alt="logo" data-src="theme/custom/img/logo.png" data-src-retina="theme/custom/img/logo_2x.png" width="78" height="22">
             </div>
           </div>
         </div>
-        <div class=" pull-right">
+        <div class=" pull-right" ng-controller="SecurityController">
           <!-- START User Info-->
           <div class="visible-lg visible-md m-t-10">
             <div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
-              <span class="semi-bold">Recebedor</span>
+              <span class="semi-bold">{{papelAtivo.nome}}</span>
             </div>
             <div class="dropdown pull-right">
               <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -118,11 +119,20 @@
             </span>
               </button>
               <ul class="dropdown-menu profile-dropdown" role="menu">
-                <li><a href="#"><i class="pg-settings_small"></i> Autuador</a>
+                <li ng-repeat="papel in papeis">
+                    <a ng-click="ativar(papel)">
+                        <div ng-switch="papelAtivo == papel">
+                            <div ng-switch-when="true">
+		                        <i class="fa fa-check" ng-show="papelAtivo == papel"></i>
+		                        <span>{{papel.nome}}</span>
+	                        </div>
+	                        <div ng-switch-when="false">
+                                <span style="margin-left: 17px">{{papel.nome}}</span>
+	                        </div>
+                        </div>
+                    </a>
                 </li>
-                <li><a href="#"><i class="pg-outdent"></i> Distribuidor</a>
-                </li>
-                <li class="bg-master-lighter">
+                <li class="bg-master-lighter hide">
                   <a href="#" class="clearfix">
                     <span class="pull-left">Logout</span>
                     <span class="pull-right"><i class="pg-power"></i></span>
@@ -329,9 +339,11 @@
     <script type="text/javascript" src="application/plataforma/plataforma.module.js"></script>
     <script type="text/javascript" src="application/plataforma/dashboard/dashboard.controller.js"></script>
     <script type="text/javascript" src="application/plataforma/dashboard/tarefa.service.js"></script>
-    <script type="text/javascript" src="application/plataforma/support/version.directive.js"></script>
-    <script type="text/javascript" src="application/plataforma/support/error-handler.interceptor.js"></script>
-    <script type="text/javascript" src="application/plataforma/support/messages.util.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/version/version.directive.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/error-handling/error-handler.interceptor.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/messaging/messages.util.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/security/security.controller.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/security/security.service.js"></script>
 
     <script type="text/javascript" src="application/test/mocks.module.js"></script>
     

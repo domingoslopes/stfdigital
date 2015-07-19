@@ -17,5 +17,5 @@ public class ApplicationContextInitializer {
     public static void main(String[] args) {
         SpringApplication.run(ApplicationContextInitializer.class, args);
     }
-
+    
 }

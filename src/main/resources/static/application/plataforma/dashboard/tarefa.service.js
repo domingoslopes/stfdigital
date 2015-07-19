@@ -11,9 +11,15 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').factory('TarefaService', function($http) {
+	angular.module('plataforma').factory('TarefaService', function($http, $window) {
 		return {
 			listar : function() {
+				/**
+				var papel = JSON.parse($window.sessionStorage["papel"]).nome
+				return $http.get('/api/tarefas', {
+				    headers: {'papel': papel}
+				});
+				*/
 				return $http.get('/api/tarefas');
 			}
 		};

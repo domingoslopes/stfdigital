@@ -12,7 +12,7 @@
 		angular.bootstrap(document, ['app']);
 	});
 
-	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates', 'mocks'])
+	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates'])//, 'mocks'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider) {
 		$httpProvider.interceptors.push('error-handler');

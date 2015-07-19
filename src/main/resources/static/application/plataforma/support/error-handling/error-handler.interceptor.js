@@ -7,9 +7,10 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').factory('error-handler', function httpInterceptor($q, $log) {
+	angular.module('plataforma').factory('error-handler', function httpInterceptor($q, $log, $window) {
 		return {
 			request : function(config) {
+				config.headers['papel'] = JSON.parse($window.sessionStorage["papel"]).nome;
 				return config;
 			},
 			requestError : function(rejection) {

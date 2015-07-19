@@ -15,8 +15,8 @@ module.exports = {
 	dist : 'build/dist',
 	base : 'src/main/resources/static',
 	tpl : 'src/main/resources/static/application/**/*.tpl.html',
-	mainScss : 'src/main/resources/static/theme/custom/custom.scss',
-	scss : 'src/main/resources/static/theme/custom/**/*.scss',
+	mainScss : 'src/main/resources/static/theme/custom/css/style.scss',
+	scss : 'src/main/resources/static/theme/custom/css/**/*.scss',
 	js : [ 
 		'src/main/resources/static/application/**/*.js',
 		'!src/main/resources/static/application/test/unit-results/**/*.js'

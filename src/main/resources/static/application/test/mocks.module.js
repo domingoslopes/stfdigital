@@ -30,12 +30,6 @@
 		
 		$httpBackend.whenGET(/\/.*.tpl.html/).passThrough();
 		
-		$httpBackend.whenGET('/papeis').respond({papeis : [
-            {nome : 'Peticionador'}, 
-            {nome : 'Autuador'}, 
-            {nome : 'Distribuidor'} 
-        ]});
-		                                       		
 	});
 
 })();
