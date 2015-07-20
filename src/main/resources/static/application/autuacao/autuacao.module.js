@@ -8,8 +8,8 @@
 	'use strict';
 	
 	angular.module('autuacao', []).config(function config($stateProvider) {
-		$stateProvider.state('root.peticao-fisica', {
-			url: '/peticao-fisica',
+		$stateProvider.state('registro', {
+			url: '/peticao/fisica',
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/registro/registro.tpl.html',
@@ -17,8 +17,8 @@
 				}
 			}
 		});
-		$stateProvider.state('root.preautuacao', {
-			url: '/peticao/preautuacao/:idTarefa',
+		$stateProvider.state('preautuacao', {
+			url: '/peticao/:idTarefa/preautuacao',
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/preautuacao/preautuacao.tpl.html',
@@ -26,8 +26,8 @@
 				}
 			}
 		});
-		$stateProvider.state('root.autuacao', {
-			url: '/peticao/autuacao/:idTarefa',
+		$stateProvider.state('autuacao', {
+			url: '/peticao/:idTarefa/autuacao',
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html',
@@ -35,8 +35,8 @@
 				}
 			}
 		});
-		$stateProvider.state('root.distribuicao', {
-			url: '/peticao/distribuicao/:idTarefa',
+		$stateProvider.state('distribuicao', {
+			url: '/peticao/:idTarefa/distribuicao',
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/distribuicao/distribuicao.tpl.html',
@@ -44,8 +44,8 @@
 				}
 			}
 		});
-		$stateProvider.state('root.devolucao', {
-			url: '/peticao/devolucao/:idTarefa',
+		$stateProvider.state('devolucao', {
+			url: '/peticao/:idTarefa/devolucao',
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',

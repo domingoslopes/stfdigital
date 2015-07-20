@@ -8,18 +8,18 @@
 (function() {
 	'use strict';
 	
-	var HomePage = require('./home.page');
+	var DashboardPage = require('./dashboard.page');
 	
 	var utils = require('../utils');
 	
-	var homePage;
+	var dashboardPage;
 	
 	describe('app', function() {
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
 			
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
-			homePage = new HomePage();
+			dashboardPage = new DashboardPage();
 		});
 
 		afterEach(function() {
@@ -31,15 +31,15 @@
 
 		it('Deveria carregar o dashboard do usuário', function() {
 			// Verificando se a Home Page tem conteúdo...
-			expect(browser.isElementPresent(homePage.conteudo)).toBe(true);
+			expect(browser.isElementPresent(dashboardPage.conteudo)).toBe(true);
 		});
 
 		it('Deveria navegar para a página de registro de petições físicas', function() {
 			// Iniciando o Processo de Autuação...
-			homePage.iniciarProcesso();
+			dashboardPage.iniciarProcesso();
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao-fisica/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
 		});
 
 	});

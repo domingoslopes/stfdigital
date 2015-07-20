@@ -15,7 +15,7 @@
 		devolucao.finalizar = function() {
 			$http.post('/api/peticao/' + devolucao.idPeticao + '/devolucao').success(function(data, status, headers, config) {
 				$log.debug('Sucesso');
-				$state.go('root.home');
+				$state.go('dashboard');
 			}).error(function(data, status, headers, config) {
 				$log.debug('Erro');
 			});

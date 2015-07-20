@@ -14,7 +14,8 @@
 		$scope.ativar = function(papel) {
 			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
 			$scope.papelAtivo = papel;
-			$state.go('root.home', {}, {reload: true});
+			
+			$state.go('dashboard', {}, {reload: true});
 		}
 		
 		$scope.ativar($scope.papeis[1]);

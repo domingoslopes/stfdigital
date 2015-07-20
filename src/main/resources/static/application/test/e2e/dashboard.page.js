@@ -1,5 +1,5 @@
 /**
- * Representa a Home Page da aplicação. Implementa o pattern descrito em
+ * Representa a Dashboard da aplicação. Implementa o pattern descrito em
  * <code>https://github.com/angular/protractor/blob/master/docs/page-objects.md</code>
  * 
  * @author Rodrigo Barreiros
@@ -11,18 +11,18 @@
 (function() {
 	'use strict';
 
-	var HomePage = function () {
+	var DashboardPage = function () {
 		browser.get('/');
 		this.conteudo = element(by.css('body'));
 		
 		this.iniciarProcesso = function () {
 			browser.actions().mouseMove(element(by.id('novoItemIcon'))).perform();
 			// É necessário mover o mouse para cima do link, caso contrário o click não vai funcionar
-			browser.actions().mouseMove(element(by.css('a[ui-sref="root.peticao-fisica"]'))).perform();
-			element(by.css('a[ui-sref="root.peticao-fisica"]')).click();
+			browser.actions().mouseMove(element(by.css('a[ui-sref="registro"]'))).perform();
+			element(by.css('a[ui-sref="registro"]')).click();
 		}
 	};
 
-	module.exports = HomePage;
+	module.exports = DashboardPage;
 	
 })();

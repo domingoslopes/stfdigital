@@ -16,7 +16,7 @@
 					{nome : 'autuador'}, 
 					{nome : 'devolvedor'}, 
 					{nome : 'distribuidor'} 
-				]
+				];
 			}
 		};
 	});

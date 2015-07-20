@@ -8,20 +8,19 @@
 	'use strict';
 
 	angular.module('plataforma', ['ui.router']).config(function($stateProvider) {
-		$stateProvider.state('root.home', {
-			url : '/',
-			views : {
-				'@' : {
-					templateUrl : 'application/plataforma/dashboard/dashboard.tpl.html',
-					controller : 'DashboardController',
-					resolve : {
-						data : function(TarefaService) {
-							return TarefaService.listar();
-						}
-					}
+		$stateProvider.state('dashboard', {
+			url : '/dashboard',
+			templateUrl : 'application/plataforma/dashboard/dashboard.tpl.html',
+			controller : 'DashboardController',
+			resolve : {
+				data : function(TarefaService) {
+					return TarefaService.listar();
 				}
 			}
-		});
+		}).state('erro', {
+			url : '/erro',
+			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
+		})
 	});
 
 })();
