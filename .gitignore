@@ -5,6 +5,7 @@
 /.settings/
 /.classpath
 /.project
+src/main/resources/rebel.xml
 
 # Maven
 target/
