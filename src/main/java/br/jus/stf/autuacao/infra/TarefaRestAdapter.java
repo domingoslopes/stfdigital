@@ -27,7 +27,7 @@ public class TarefaRestAdapter implements TarefaAdapter {
 		command.setIdTarefa(id);
 
 		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
-		tarefaRestService.completar(command);
+		tarefaRestService.completar(id, command);
 	}
 
 	@Override

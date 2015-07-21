@@ -1,5 +1,7 @@
 package br.jus.stf.autuacao.interfaces.commands;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -8,6 +10,7 @@ package br.jus.stf.autuacao.interfaces.commands;
  */
 public class RegistrarPeticaoFisicaCommand {
 
+	@NotBlank
 	private String tipoRecebimento;
 
 	public RegistrarPeticaoFisicaCommand() {

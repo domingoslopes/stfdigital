@@ -22,6 +22,18 @@ class GlobalControllerExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     /**
+     * Captura as exceções lançadas para indicar parâmetros ilegais e retorna
+     * o código 400 na resposta ao cliente.
+     * 
+     * @param exception a exceção indicando parâmetros inválidos
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void handleInvalids(IllegalArgumentException exception) {
+    	logger.error(exception.getClass().getName(), exception);
+    }
+    
+    /**
      * Todas as exceções não tratadas nos serviços da API serão repassadas a 
      * esse método. Ele apenas extrairá algumas informações mais relevantes
      * para melhor visualização pelo usuário.

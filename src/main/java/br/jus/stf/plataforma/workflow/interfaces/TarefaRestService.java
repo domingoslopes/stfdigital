@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,6 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.SinalizarCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDtoAssembler;
 
-import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
@@ -27,7 +27,6 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @since 23.06.2015
  */
 @RestController
-@Api(basePath = "/api/tarefas", value = "Tarefas", description = "Operações sobre Tarefas", produces = "application/json")
 public class TarefaRestService {
 	
 	private TarefaDtoAssembler dtoAssembler = new TarefaDtoAssembler();
@@ -43,9 +42,7 @@ public class TarefaRestService {
         return tarefas.stream().map(tarefa -> dtoAssembler.toDto(tarefa)).collect(Collectors.toList()); 
 	}
 	
-    @ApiOperation(value = "Completa uma dada tarefa")
-    @RequestMapping(value = "/api/tarefa", method = RequestMethod.POST)
-	public void completar(@RequestBody CompletarTarefaCommand command) {
+	public void completar(@PathVariable String id, @RequestBody CompletarTarefaCommand command) {
         tarefaApplicationService.completar(command.getIdTarefa());
 	}
 
