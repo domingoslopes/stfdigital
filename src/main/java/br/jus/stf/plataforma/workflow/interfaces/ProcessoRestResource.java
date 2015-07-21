@@ -16,7 +16,7 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand
  * @since 23.06.2015
  */
 @Component
-public class ProcessoRestService {
+public class ProcessoRestResource {
 
 	@Autowired
 	private ProcessoApplicationService processoApplicationService;

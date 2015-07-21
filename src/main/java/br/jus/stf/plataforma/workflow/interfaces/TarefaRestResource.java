@@ -27,7 +27,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @since 23.06.2015
  */
 @RestController
-public class TarefaRestService {
+public class TarefaRestResource {
 	
 	private TarefaDtoAssembler dtoAssembler = new TarefaDtoAssembler();
 	

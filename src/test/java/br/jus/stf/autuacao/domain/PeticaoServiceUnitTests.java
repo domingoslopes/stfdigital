@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import br.jus.stf.autuacao.infra.ProcessoRestAdapter;
-import br.jus.stf.plataforma.workflow.interfaces.TarefaRestService;
+import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 
 /**
@@ -36,7 +36,7 @@ public class PeticaoServiceUnitTests {
     private ProcessoRestAdapter processoAdapter;
  
     @Mock
-    private TarefaRestService tarefaService;
+    private TarefaRestResource tarefaService;
  
     @Before
     public void initMocks(){

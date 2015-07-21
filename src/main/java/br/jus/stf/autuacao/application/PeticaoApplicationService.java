@@ -28,8 +28,8 @@ public class PeticaoApplicationService {
 		peticaoService.preautuar(idPeticao);
 	}
 
-	public void autuar(String idPeticao, String classificacao) {
-		peticaoService.autuar(idPeticao, classificacao);
+	public void autuar(String idPeticao, boolean peticaoValida) {
+		peticaoService.autuar(idPeticao, peticaoValida);
 	}
 
 	public void distribuir(String idPeticao) {

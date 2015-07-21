@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
-import br.jus.stf.plataforma.workflow.interfaces.ProcessoRestService;
+import br.jus.stf.plataforma.workflow.interfaces.ProcessoRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand;
 
 /**
@@ -17,7 +17,7 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand
 public class ProcessoRestAdapter implements ProcessoAdapter {
 
 	@Autowired
-	private ProcessoRestService processoRestService;
+	private ProcessoRestResource processoRestService;
 
 	@Override
 	public String iniciar(String idProcesso) {

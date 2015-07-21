@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
+import br.jus.stf.autuacao.interfaces.dto.MinistroDto;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -19,16 +20,16 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @since 20.07.2015
  */
 @RestController
-public class ClasseProcessualRestService {
+public class MinistroRestResource {
 
 	@Autowired
 	private PeticaoApplicationService peticaoApplicationService;
 
-    @ApiOperation(value = "Retorna todas as classes processuais ativas")
-	@RequestMapping(value = "/api/classesprocessuais", method = RequestMethod.GET)
-	public List<String> listar() {
+    @ApiOperation(value = "Retorna a lista com todos o Ministros ativos")
+	@RequestMapping(value = "/api/ministros", method = RequestMethod.GET)
+	public List<MinistroDto> listar() {
 		
-		return new LinkedList<String>();
+		return new LinkedList<MinistroDto>();
 	}
 
 }

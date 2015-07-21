@@ -26,11 +26,11 @@ public class PeticaoService {
 		tarefaAdapter.completar(idPeticao);
 	}
 
-	public void autuar(String idPeticao, String classificacao) {
-		if (classificacao.equals("-1")) {
-			tarefaAdapter.sinalizar("Petição Inválida");
-		} else {
+	public void autuar(String idPeticao, boolean peticaoValida) {
+		if (peticaoValida) {
 			tarefaAdapter.completar(idPeticao);
+		} else {
+			tarefaAdapter.sinalizar("Petição Inválida");
 		}
 	}
 

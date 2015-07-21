@@ -1,10 +1,7 @@
-package br.jus.stf.autuacao.interfaces.commands;
+package br.jus.stf.autuacao.interfaces.dto;
 
 import java.util.List;
 import java.util.Map;
-
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -15,19 +12,16 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @since 1.0.0
  * @since 20.07.2015
  */
-@ApiModel(value = "Contém as informações para registro de uma nova petição digital")
-public class RegistrarPeticaoCommand {
+@ApiModel(value = "Representa a petição enviada pelo peticionador")
+public class PeticaoDto {
 
-	@NotBlank
-	@ApiModelProperty(value = "Classe processual sugerida pelo peticionador", required=true)
+	@ApiModelProperty(value = "Classe processual sugerida pelo peticionador")
 	private String classe;
 	
-	@NotEmpty
-	@ApiModelProperty(value = "Duas listas: uma lista com partes do polo ativo e outra com partes do polo passivo", required=true)
+	@ApiModelProperty(value = "A lista de partes do polo ativo e a lista de partes do polo passivo")
 	private Map<String, List<String>> partes;
 	
-	@NotEmpty
-	@ApiModelProperty(value = "A lista de documentos que serão anexados pelo peticionador", required=true)
+	@ApiModelProperty(value = "A lista de documentos anexados pelo peticionador")
 	private List<String> documentos;
 
 	public void setClasse(String classe) {

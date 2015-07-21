@@ -60,13 +60,13 @@ public class AutuacaoOriginariosIntegrationTests {
 		mockMvc.perform(get("/api/tarefas").header("papel", "autuador")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id", is("13"))).andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
         
 		// Passo 05: Finalizando tarefa de autuação com a petição válida...
-        mockMvc.perform(post("/api/peticao/13/autuacao").contentType(MediaType.APPLICATION_JSON).content("{\"classificacao\":\"1\"}")).andExpect(status().isOk());
+        mockMvc.perform(post("/api/peticao/13/autuacao").contentType(MediaType.APPLICATION_JSON).content("{\"peticaoValida\":\"true\"}")).andExpect(status().isOk());
      
 		// Passo 06: Verificando se o processo de recebimento se encontra em "Distribuição"...
 		mockMvc.perform(get("/api/tarefas").header("papel", "distribuidor")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id", is("17"))).andExpect(jsonPath("$[0].descricao", is("Distribuir Processo")));
 
 		// Passo 07: Finalizando tarefa de distribuição...
-        mockMvc.perform(post("/api/peticao/17/distribuicao").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(post("/api/peticao/17/distribuicao").contentType(MediaType.APPLICATION_JSON).content("{\"relator\":\"Ministro\"}")).andExpect(status().isOk());
         
 		// Verificação Final: Após a conclusão do processo, a lista de tarefas deve ser vazia.
 		mockMvc.perform(get("/api/tarefas").header("papel", "recebedor")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.empty()));
@@ -87,7 +87,7 @@ public class AutuacaoOriginariosIntegrationTests {
 		mockMvc.perform(get("/api/tarefas").header("papel", "autuador")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id", is("29"))).andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
         
 		// Passo 05: Finalizando tarefa de autuação com a petição inválida...
-        mockMvc.perform(post("/api/peticao/29/autuacao").contentType(MediaType.APPLICATION_JSON).content("{\"classificacao\":\"-1\"}")).andExpect(status().isOk());
+        mockMvc.perform(post("/api/peticao/29/autuacao").contentType(MediaType.APPLICATION_JSON).content("{\"peticaoValida\":\"false\"}")).andExpect(status().isOk());
         
 		// Passo 06: Verificando se o processo de recebimento se encontra em "Devolução"...
 		mockMvc.perform(get("/api/tarefas").header("papel", "devolvedor")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id", is("33"))).andExpect(jsonPath("$[0].descricao", is("Devolver Processo")));

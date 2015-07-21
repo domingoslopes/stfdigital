@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.TarefaAdapter;
-import br.jus.stf.plataforma.workflow.interfaces.TarefaRestService;
+import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.plataforma.workflow.interfaces.commands.SinalizarCommand;
 
@@ -18,7 +18,7 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.SinalizarCommand;
 public class TarefaRestAdapter implements TarefaAdapter {
 
 	@Autowired
-	private TarefaRestService tarefaRestService;
+	private TarefaRestResource tarefaRestService;
 
 	@Override
 	public void completar(String id) {
