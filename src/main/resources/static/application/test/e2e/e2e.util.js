@@ -10,7 +10,7 @@
 
 	exports.takeScreenshot = function(browser, filename) {
 		browser.takeScreenshot().then(function(png) {
-			fs.writeFileSync('src/main/resources/static/application/test/test/screenshots/' + filename + '.png', png, 'base64');
+			fs.writeFileSync('src/main/resources/static/application/test/e2e/results/' + filename + '.png', png, 'base64');
 		});
 	};
 })();

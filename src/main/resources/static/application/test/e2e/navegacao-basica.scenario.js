@@ -10,7 +10,7 @@
 	
 	var DashboardPage = require('./dashboard.page');
 	
-	var utils = require('../utils');
+	var utils = require('./e2e.util');
 	
 	var dashboardPage;
 	

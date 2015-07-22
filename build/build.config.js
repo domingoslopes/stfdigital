@@ -19,7 +19,7 @@ module.exports = {
 	scss : 'src/main/resources/static/theme/custom/css/**/*.scss',
 	js : [ 
 		'src/main/resources/static/application/**/*.js',
-		'!src/main/resources/static/application/test/unit-results/**/*.js'
+		'!src/main/resources/static/application/test/unit/results/**/*.js'
 	],
 	index : 'src/main/resources/static/index.html',
 	assets : 'src/main/resources/static/theme/assets/**',

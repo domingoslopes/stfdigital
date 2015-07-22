@@ -12,6 +12,7 @@
 		angular.bootstrap(document, ['app']);
 	});
 
+	// Para fazer acesso real às services do backend, é necessário excluir o módulo "mocks". 
 	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates', 'mocks'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider) {

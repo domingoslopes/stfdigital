@@ -44,12 +44,12 @@ module.exports = {
 
 	coverageReporter : {
 		type : 'html',
-		dir : baseDir + '/application/test/unit-results/coverage',
+		dir : baseDir + '/application/test/unit/results/coverage',
 		file : 'coverage.html'
 	},
 
 	htmlReporter : {
-		outputDir : baseDir + '/application/test/unit-results/html'
+		outputDir : baseDir + '/application/test/unit/results/html'
 	},
 
 	logLevel : 'info',
