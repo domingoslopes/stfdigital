@@ -16,7 +16,7 @@
 			$scope.papelAtivo = papel;
 			
 			$state.go('dashboard', {}, {reload: true});
-		}
+		};
 		
 		$scope.ativar($scope.papeis[1]);
 		

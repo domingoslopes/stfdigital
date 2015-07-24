@@ -20,7 +20,7 @@
 			// É necessário mover o mouse para cima do link, caso contrário o click não vai funcionar
 			browser.actions().mouseMove(element(by.css('a[ui-sref="registro"]'))).perform();
 			element(by.css('a[ui-sref="registro"]')).click();
-		}
+		};
 	};
 
 	module.exports = DashboardPage;

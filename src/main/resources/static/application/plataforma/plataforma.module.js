@@ -20,7 +20,7 @@
 		}).state('erro', {
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
-		})
+		});
 	});
 
 })();

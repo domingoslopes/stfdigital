@@ -334,7 +334,12 @@
 	<!-- endbuild -->
 
 	<!-- build:js assets/js/main.js -->
-	<script type="text/javascript" src="application/app.js"></script>
+    <script type="text/javascript" src="application/app.js"></script>
+    
+    <!-- 
+      - Para rodar a aplicação sem acesso ao backend, é necessário incluir a linha abaixo
+	  - <script type="text/javascript" src="application/app.dev.js"></script>
+	  -->
 
     <script type="text/javascript" src="application/plataforma/plataforma.module.js"></script>
     <script type="text/javascript" src="application/plataforma/dashboard/dashboard.controller.js"></script>

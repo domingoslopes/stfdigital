@@ -14,9 +14,9 @@
 	<div class="container-fluid container-fixed-lg">
         <form ng-submit="autuacao.finalizar()">
 			<div class="radio radio-success">
-				<input type="radio" ng-model="autuacao.classificacao" value="1" name="optionyes" id="yes"> 
+				<input type="radio" ng-model="autuacao.peticaoValida" value="true" id="yes"> 
 				<label for="yes">Válida</label> 
-				<input type="radio" ng-model="autuacao.classificacao" value="-1" name="optionyes" id="no"> 
+				<input type="radio" ng-model="autuacao.peticaoValida" value="false" id="no"> 
 				<label for="no">Inválida</label>
 			</div>
 

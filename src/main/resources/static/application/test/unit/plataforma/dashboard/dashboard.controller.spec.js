@@ -13,11 +13,12 @@
 		var controller;
 		var scope;
 
-		beforeEach(module('plataforma'));
+		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, TarefaService) {
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, $window, properties, TarefaService) {
 			scope = $rootScope.$new();
-			$httpBackend.expectGET('/api/tarefas').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
+			$window.sessionStorage.papel = JSON.stringify('recebedor');
+			$httpBackend.expectGET(properties.apiUrl + '/tarefas').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
 
 			TarefaService.listar().success(function(result) {
 				fakeData = result;

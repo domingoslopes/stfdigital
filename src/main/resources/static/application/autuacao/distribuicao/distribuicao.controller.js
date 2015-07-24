@@ -7,13 +7,13 @@
 (function() {
 	'use strict';
 	
-	angular.module('autuacao').controller('DistribuicaoController', function ($log, $http, $state, $stateParams) {
+	angular.module('autuacao').controller('DistribuicaoController', function ($log, $http, $state, $stateParams, properties) {
 		var distribuicao = this;
 		
 		distribuicao.idPeticao = $stateParams.idTarefa;
 		
 		distribuicao.finalizar = function() {
-			$http.post('/api/peticao/' + distribuicao.idPeticao + '/distribuicao').success(function(data, status, headers, config) {
+			$http.post(properties.apiUrl + '/peticao/' + distribuicao.idPeticao + '/distribuicao', {relator:'Min. Ricardo Lewandowski'}).success(function(data, status, headers, config) {
 				$log.debug('Sucesso');
 				$state.go('dashboard');
 			}).error(function(data, status, headers, config) {

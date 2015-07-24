@@ -11,7 +11,7 @@
 		return {
 			request : function(config) {
 				$log.debug('Request: ', config);
-				config.headers['papel'] = JSON.parse($window.sessionStorage["papel"]).nome;
+				config.headers.papel = JSON.parse($window.sessionStorage.papel).nome;
 				return config;
 			},
 			requestError : function(rejection) {
@@ -26,6 +26,9 @@
 				$log.debug('Response Error: ', rejection);
 				if (rejection.status === 500) {
 					$injector.get('$state').go('erro');
+				}
+				if (rejection.status === 0) {
+					return;
 				}
 				return $q.reject(rejection);
 				
