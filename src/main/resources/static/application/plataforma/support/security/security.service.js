@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').factory('SecurityService', function() {
+	angular.plataforma.factory('SecurityService', function() {
 		return {
 			papeis : function() {
 				return [

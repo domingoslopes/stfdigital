@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.module('autuacao').controller('RegistroPeticaoFisicaController', function ($log, $http, $state, messages, properties) {
+	angular.autuacao.controller('RegistroPeticaoFisicaController', function ($log, $http, $state, messages, properties) {
 		var registro = this;
 		
 		registro.tipoRecebimento = '';

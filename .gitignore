@@ -12,6 +12,7 @@ target/
 
 # Node
 node_modules
+node
 
 # Bower
 src/main/resources/static/src/vendor

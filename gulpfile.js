@@ -13,6 +13,7 @@ var config = require('./build/build.config.js');
 var karmaConfig = require('./build/karma.config.js');
 var protractorConfig = require('./build/protractor.config.js');
 var gulp = require('gulp');
+var bower = require('gulp-bower');
 var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
@@ -95,10 +96,17 @@ gulp.task('build:dist', ['clean'], function(cb) {
 });
 
 /**
+ * Instala as dependências configuradas via Bower.
+ */
+gulp.task('bower', function() {
+	return bower();
+});
+
+/**
  * Executa as tasks necessárias para produzir a versão para desenvolvimento.
  */
 gulp.task('build', ['clean'], function(cb) {
-	runSequence(['sass', 'templates'], cb);
+	runSequence(['bower', 'sass', 'templates'], cb);
 });
 
 /**

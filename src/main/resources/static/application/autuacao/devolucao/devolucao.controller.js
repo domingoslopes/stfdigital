@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.module('autuacao').controller('DevolucaoController', function ($log, $http, $state, $stateParams, properties) {
+	angular.autuacao.controller('DevolucaoController', function ($log, $http, $state, $stateParams, properties) {
 		var devolucao = this;
 		
 		devolucao.idPeticao = $stateParams.idTarefa;

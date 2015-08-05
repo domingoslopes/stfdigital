@@ -8,7 +8,6 @@
 (function() {
 	'use strict';
 
-	// Para fazer acesso real às services do backend, é necessário excluir o módulo "mocks". 
 	angular.module('appDev', ['app', 'mocks']);
 	
 })();

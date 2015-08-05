@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').factory('error-handler', function httpInterceptor($q, $log, $window, $injector) {
+	angular.plataforma.factory('error-handler', function httpInterceptor($q, $log, $window, $injector) {
 		return {
 			request : function(config) {
 				$log.debug('Request: ', config);
