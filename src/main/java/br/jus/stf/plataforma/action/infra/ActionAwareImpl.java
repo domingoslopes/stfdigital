@@ -1,7 +1,6 @@
 package br.jus.stf.plataforma.action.infra;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,8 +13,8 @@ import br.jus.stf.plataforma.action.domain.Action;
 import br.jus.stf.plataforma.action.domain.ActionAuthority;
 import br.jus.stf.plataforma.action.domain.ActionAware;
 import br.jus.stf.plataforma.action.domain.ActionRepository;
+import br.jus.stf.plataforma.action.domain.SearchSpecification;
 import br.jus.stf.plataforma.action.domain.exception.ActionUnavailableException;
-import br.jus.stf.plataforma.action.domain.specification.ActionSpecification;
 import br.jus.stf.plataforma.component.action.service.ActionModuleService;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -34,26 +33,14 @@ public class ActionAwareImpl implements ActionAware {
 	@Autowired
 	private ActionModuleService actionModuleService;
 	
-	/* (non-Javadoc)
-	 * @see br.jus.stf.plataforma.action.domain.ActionAware#search(br.jus.stf.plataforma.action.domain.specification.ActionSpecification)
-	 */
 	@Override
-	public Set<Action> search(ActionSpecification spec) throws Exception {
+	public Set<Action> search(SearchSpecification spec) throws Exception {
 		Set<Action> actions = new TreeSet<Action>((a1, a2) -> a1.description().compareTo(a2.description()));
 		Set<ActionAuthority> actionAuths = getUserActionAuthorities();
 		
-		List<Action> actionsFinded = null;
-		
-		//TODO: Lucas.Rodrigues: Alterar para jpaspecification e retirar if
-		if (spec.context() == null) {
-			actionsFinded = actionRepository.findByResourcesInfo_Type(spec.resourcesType());
-		} else {
-			actionsFinded = actionRepository.findByContextAndResourcesInfo_Type(spec.context(), spec.resourcesType());
-		}
-		
-		actionsFinded.stream()
-			.filter(action -> action.hasNeededResources(spec.resources()) &&
-					action.hasGrantedAccess(actionAuths))
+		actionRepository.findAll(spec)
+			.stream()
+			.filter(action -> action.hasGrantedAccess(actionAuths))
 			.forEach(action -> actions.add(action));
 		
 		removeActionsNotAllowed(spec, actions);
@@ -61,9 +48,6 @@ public class ActionAwareImpl implements ActionAware {
 		return actions;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.jus.stf.plataforma.action.domain.ActionAware#execute(br.jus.stf.plataforma.action.domain.Action, java.util.Collection)
-	 */
 	@Override
 	public void execute(Action action, ArrayNode resources) throws ActionUnavailableException {
 		try {
@@ -99,7 +83,7 @@ public class ActionAwareImpl implements ActionAware {
 	 * @param actions
 	 * @throws Exception
 	 */
-	private void removeActionsNotAllowed(ActionSpecification spec, Set<Action> actions) throws Exception {
+	private void removeActionsNotAllowed(SearchSpecification spec, Set<Action> actions) throws Exception {
 		Set<String> actionsNotAllowed = new HashSet<String>(0);
 		actions.stream()
 			.filter(action -> action.hasConditionHandlers())

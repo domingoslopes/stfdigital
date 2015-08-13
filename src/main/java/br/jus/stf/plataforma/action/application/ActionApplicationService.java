@@ -12,8 +12,9 @@ import br.jus.stf.plataforma.action.domain.Action;
 import br.jus.stf.plataforma.action.domain.ActionAware;
 import br.jus.stf.plataforma.action.domain.ActionId;
 import br.jus.stf.plataforma.action.domain.ActionRepository;
+import br.jus.stf.plataforma.action.domain.SearchSpecification;
 import br.jus.stf.plataforma.action.domain.exception.ActionUnavailableException;
-import br.jus.stf.plataforma.action.domain.specification.ActionSpecification;
+import br.jus.stf.plataforma.action.infra.SearchSpecificationImpl;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -56,7 +57,7 @@ public class ActionApplicationService {
 	}
 	
 	public Collection<Action> listActions(String context, String resourcesType, ArrayNode resources) throws Exception {
-		ActionSpecification spec = new ActionSpecification(context, resourcesType, resources);
+		SearchSpecification spec = new SearchSpecificationImpl(context, resourcesType, resources);
 		return actionAware.search(spec);
 	}
 
