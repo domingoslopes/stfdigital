@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.component.action.annotation;
+package br.jus.stf.plataforma.infra.action.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

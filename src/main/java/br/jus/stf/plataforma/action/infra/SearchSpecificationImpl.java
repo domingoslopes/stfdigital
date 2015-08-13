@@ -15,8 +15,6 @@ import br.jus.stf.plataforma.action.domain.ResourcesInfo;
 import br.jus.stf.plataforma.action.domain.ResourcesInfo.ResourcesMode;
 import br.jus.stf.plataforma.action.domain.SearchSpecification;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
 /**
  * Implementação da especificação de critérios para a pesquisa de ações
  * 
@@ -27,9 +25,9 @@ public class SearchSpecificationImpl implements SearchSpecification {
 	
 	private String context;
 	private String resourcesType;
-	private ArrayNode resources;
+	private Collection<?> resources;
 	
-	public SearchSpecificationImpl(String context, String resourcesType, ArrayNode resources) {
+	public SearchSpecificationImpl(String context, String resourcesType, Collection<?> resources) {
 		this.context = context;
 		this.resourcesType = resourcesType;
 		this.resources = resources;
@@ -46,7 +44,7 @@ public class SearchSpecificationImpl implements SearchSpecification {
 	}
 	
 	@Override
-	public ArrayNode resources() {
+	public Collection<?> resources() {
 		return resources;
 	}
 	

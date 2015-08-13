@@ -1,10 +1,10 @@
-package br.jus.stf.plataforma.component.action.support;
+package br.jus.stf.plataforma.infra.action.support;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.jus.stf.plataforma.component.action.annotation.ActionMapping;
-import br.jus.stf.plataforma.component.action.annotation.ActionMapping.ResourcesMode;
+import br.jus.stf.plataforma.infra.action.annotation.ActionMapping;
+import br.jus.stf.plataforma.infra.action.annotation.ActionMapping.ResourcesMode;
 
 /**
  * Armazena as metainformações definidas na anotação {@link ActionMapping}.

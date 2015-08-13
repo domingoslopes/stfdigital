@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.junit.Assert;
 
-import br.jus.stf.plataforma.component.action.annotation.ActionController;
-import br.jus.stf.plataforma.component.action.annotation.ActionMapping;
-import br.jus.stf.plataforma.component.action.annotation.ActionMapping.ResourcesMode;
+import br.jus.stf.plataforma.infra.action.annotation.ActionController;
+import br.jus.stf.plataforma.infra.action.annotation.ActionMapping;
+import br.jus.stf.plataforma.infra.action.annotation.ActionMapping.ResourcesMode;
 
 /**
  * @author Lucas.Rodrigues
@@ -17,6 +17,7 @@ public class DummyActionController {
 	
 	
 	@ActionMapping(id = "DO_NOTHING", name = "Do Nothing", resourcesMode = ResourcesMode.None)
+	
 	public void doNothing(List<String> resources) {
 		Assert.assertTrue(resources.size() > 0);
 	}

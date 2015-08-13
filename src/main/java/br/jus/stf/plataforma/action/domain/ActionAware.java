@@ -1,10 +1,9 @@
 package br.jus.stf.plataforma.action.domain;
 
+import java.util.Collection;
 import java.util.Set;
 
 import br.jus.stf.plataforma.action.domain.exception.ActionUnavailableException;
-
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 /**
  * Pesquisa e executa ações que estão definidas em algum módulo
@@ -30,5 +29,5 @@ public interface ActionAware {
 	 * @param resources
 	 * @throws ActionUnavailableException
 	 */
-	public void execute(Action action, ArrayNode resources) throws ActionUnavailableException;	
+	public void execute(Action action, Collection<?> resources) throws ActionUnavailableException;	
 }
