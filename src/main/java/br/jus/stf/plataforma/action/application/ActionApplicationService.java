@@ -16,8 +16,6 @@ import br.jus.stf.plataforma.action.domain.SearchSpecification;
 import br.jus.stf.plataforma.action.domain.exception.ActionUnavailableException;
 import br.jus.stf.plataforma.action.infra.SearchSpecificationImpl;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
 /**
  * @author Lucas.Rodrigues
  *
@@ -56,12 +54,12 @@ public class ActionApplicationService {
 		//fazer exclusão lógica, etc
 	}
 	
-	public Collection<Action> listActions(String context, String resourcesType, ArrayNode resources) throws Exception {
+	public Collection<Action> listActions(String context, String resourcesType, Collection<?> resources) throws Exception {
 		SearchSpecification spec = new SearchSpecificationImpl(context, resourcesType, resources);
 		return actionAware.search(spec);
 	}
 
-	public void executeAction(String actionId, ArrayNode resources) throws ActionUnavailableException {
+	public void executeAction(String actionId, Collection<?> resources) throws ActionUnavailableException {
 		Action action = actionRepository.findOne(new ActionId(actionId));
 		actionAware.execute(action, resources);
 	}

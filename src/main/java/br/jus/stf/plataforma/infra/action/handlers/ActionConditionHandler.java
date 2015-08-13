@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.component.action.handlers;
+package br.jus.stf.plataforma.infra.action.handlers;
 
 import java.util.Collection;
 
