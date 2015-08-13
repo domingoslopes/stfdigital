@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,9 +33,6 @@ public class ActionRestResource {
 	
 	@Autowired
 	private ActionDTOAssembler actionDTOAssembler;
-	
-	@Autowired
-	private HttpMessageConverters converters;
 
     @ApiOperation(value = "Lista as ações de um determinado contexto.")
 	@RequestMapping(value = "/listar", method = RequestMethod.POST)

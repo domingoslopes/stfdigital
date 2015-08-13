@@ -1,6 +1,10 @@
 package br.jus.stf.plataforma.action.interfaces.converters;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minidev.json.JSONObject;
 
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -12,9 +16,8 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import br.jus.stf.plataforma.action.interfaces.commands.ExecuteActionCommand;
 import br.jus.stf.plataforma.action.interfaces.commands.ListActionCommand;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.jayway.jsonpath.ReadContext;
+import com.jayway.jsonpath.internal.JsonReader;
 
 /**
  * @author Lucas.Rodrigues
@@ -37,11 +40,14 @@ public class ExecuteActionCommandConverter extends AbstractHttpMessageConverter<
 			HttpInputMessage inputMessage) throws IOException,
 			HttpMessageNotReadableException {
 		
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode node = mapper.readTree(inputMessage.getBody());
+		ReadContext reader = new JsonReader().parse(inputMessage.getBody());
 		
-        String actionId = node.findValue("actionId").asText();
-        ArrayNode resources = (ArrayNode) node.findValue("resources");
+		String actionId = reader.read("actionId");
+		ArrayList<JSONObject> resourcesJson = reader.read("resources");
+		List<String> resources = new ArrayList<String>();
+		
+		resourcesJson.stream()
+			.forEach(resource -> resources.add(resource.toJSONString()));
         
         ExecuteActionCommand executeActionCommand = new ExecuteActionCommand();
         executeActionCommand.setActionId(actionId);

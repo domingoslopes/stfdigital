@@ -1,11 +1,11 @@
 /**
  * 
  */
-package br.jus.stf.plataforma.component.action.support;
+package br.jus.stf.plataforma.infra.action.support;
 
 import java.lang.annotation.Annotation;
 
-import br.jus.stf.plataforma.component.action.handlers.ActionConditionHandler;
+import br.jus.stf.plataforma.infra.action.handlers.ActionConditionHandler;
 
 /**
  * Classe que armazena as informações de um handler da ação.

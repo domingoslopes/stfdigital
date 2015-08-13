@@ -1,8 +1,8 @@
 package br.jus.stf.plataforma.action.domain;
 
-import org.springframework.data.jpa.domain.Specification;
+import java.util.Collection;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Abstração da especificação de critérios para a pesquisa de ações
@@ -25,6 +25,6 @@ public interface SearchSpecification extends Specification<Action> {
 	/**
 	 * @return the resources
 	 */
-	public abstract ArrayNode resources();
+	public abstract Collection<?> resources();
 
 }

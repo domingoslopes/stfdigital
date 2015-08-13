@@ -11,8 +11,6 @@ import javax.persistence.Enumerated;
 
 import org.apache.commons.lang3.Validate;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
 /**
  * @author Lucas.Rodrigues
  *
@@ -62,7 +60,7 @@ public class ResourcesInfo implements Serializable {
 	 * @param resources
 	 * @return uma coleção de modos possíveis
 	 */
-	public static Collection<ResourcesMode> possibleModeFrom(ArrayNode resources) {
+	public static Collection<ResourcesMode> possibleModeFrom(Collection<?> resources) {
 		Collection<ResourcesMode> modes = new ArrayList<ResourcesMode>(2);
 		
 		if (resources.size() == 0) {

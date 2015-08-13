@@ -1,8 +1,8 @@
-package br.jus.stf.plataforma.component.action.support;
+package br.jus.stf.plataforma.infra.action.support;
 
 /**
  * Armazena as informações de um controlador com a anotação
- * {@link br.jus.stf.plataforma.component.action.annotation.ActionController#member ActionController}
+ * {@link br.jus.stf.plataforma.infra.action.annotation.ActionController#member ActionController}
  * 
  * @author Lucas.Rodrigues
  *

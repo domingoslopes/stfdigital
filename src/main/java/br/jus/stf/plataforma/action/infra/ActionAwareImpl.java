@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.action.infra;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,9 +16,7 @@ import br.jus.stf.plataforma.action.domain.ActionAware;
 import br.jus.stf.plataforma.action.domain.ActionRepository;
 import br.jus.stf.plataforma.action.domain.SearchSpecification;
 import br.jus.stf.plataforma.action.domain.exception.ActionUnavailableException;
-import br.jus.stf.plataforma.component.action.service.ActionModuleService;
-
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import br.jus.stf.plataforma.infra.action.service.ActionModuleService;
 
 
 /**
@@ -49,7 +48,7 @@ public class ActionAwareImpl implements ActionAware {
 	}
 
 	@Override
-	public void execute(Action action, ArrayNode resources) throws ActionUnavailableException {
+	public void execute(Action action, Collection<?> resources) throws ActionUnavailableException {
 		try {
 			actionModuleService.executeAction(action.id().toString(), resources);
 		} catch (Exception e) {

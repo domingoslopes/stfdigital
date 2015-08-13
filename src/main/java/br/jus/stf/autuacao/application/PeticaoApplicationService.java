@@ -3,7 +3,7 @@ package br.jus.stf.autuacao.application;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import br.jus.stf.autuacao.domain.PeticaoService;
 
@@ -13,7 +13,7 @@ import br.jus.stf.autuacao.domain.PeticaoService;
  * @since 1.0.0
  * @since 22.06.2015
  */
-@Component
+@Service
 @Transactional
 public class PeticaoApplicationService {
 
