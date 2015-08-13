@@ -1,6 +1,10 @@
 package br.jus.stf.plataforma.action.interfaces.converters;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minidev.json.JSONObject;
 
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -11,9 +15,8 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import br.jus.stf.plataforma.action.interfaces.commands.ListActionCommand;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.jayway.jsonpath.ReadContext;
+import com.jayway.jsonpath.internal.JsonReader;
 
 /**
  * @author Lucas.Rodrigues
@@ -36,16 +39,19 @@ public class ListActionCommandConverter extends AbstractHttpMessageConverter<Lis
 			HttpInputMessage inputMessage) throws IOException,
 			HttpMessageNotReadableException {
 		
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode node = mapper.readTree(inputMessage.getBody());
+		ReadContext reader = new JsonReader().parse(inputMessage.getBody());
 		
-		JsonNode context = node.findValue("context");
-		JsonNode resourcesType = node.findValue("resourcesType");
-        ArrayNode resources = (ArrayNode) node.findValue("resources");
-        
+		String context = reader.read("context");
+		String resourcesType = reader.read("resourcesType");
+		ArrayList<JSONObject> resourcesJson = reader.read("resources");
+		List<String> resources = new ArrayList<String>();
+		
+		resourcesJson.stream()
+			.forEach(resource -> resources.add(resource.toJSONString()));
+		
         ListActionCommand listActionCommand = new ListActionCommand();
-        listActionCommand.setContext((context == null) ? null : context.asText());
-        listActionCommand.setResourcesType(resourcesType.asText());
+        listActionCommand.setContext(context);
+        listActionCommand.setResourcesType(resourcesType);
         listActionCommand.setResources(resources);
         
         return listActionCommand;

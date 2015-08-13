@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.component.action.service;
+package br.jus.stf.plataforma.infra.action.service;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -14,16 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.component.action.handlers.ActionConditionHandler;
-import br.jus.stf.plataforma.component.action.support.ActionConditionHandlerInfo;
-import br.jus.stf.plataforma.component.action.support.ActionMappingInfo;
-import br.jus.stf.plataforma.component.action.support.ActionMappingRegistry;
+import br.jus.stf.plataforma.infra.action.handlers.ActionConditionHandler;
+import br.jus.stf.plataforma.infra.action.support.ActionConditionHandlerInfo;
+import br.jus.stf.plataforma.infra.action.support.ActionMappingInfo;
+import br.jus.stf.plataforma.infra.action.support.ActionMappingRegistry;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 
@@ -58,7 +58,7 @@ public class ActionModuleService {
 	 * @throws JsonMappingException 
 	 * @throws JsonParseException 
 	 */
-	public Collection<String> verifyActionsAllowed(Collection<String> ids, String resourcesType, ArrayNode resources) throws Exception {
+	public Collection<String> verifyActionsAllowed(Collection<String> ids, String resourcesType, Collection<?> resources) throws Exception {
 		long start = System.currentTimeMillis();
 		Set<String> actionsAllowed = new HashSet<String>();
 		
@@ -88,7 +88,7 @@ public class ActionModuleService {
 	 * @param resources
 	 * @throws Exception
 	 */
-	public void executeAction(String actionId, ArrayNode resources) throws Exception {
+	public String executeAction(String actionId, Collection<?> resources) throws Exception {
 		
 		ActionMappingInfo actionInfo = mappingRegistry.getRegisteredActions().get(actionId);
 		if (actionInfo == null) {
@@ -96,17 +96,16 @@ public class ActionModuleService {
 		}
 		
 		List<?> converted = convertResources(resources, actionInfo.getResourceClass());
+		Object ret = null;
 		
 		if (isAllowed(actionInfo, converted)) {
 			Object controller = actionInfo.getController();
 			Method method = BeanUtils.findDeclaredMethodWithMinimalParameters(
 					controller.getClass(), actionInfo.getMethodName());
-			try {
-				method.invoke(controller, converted);
-			} catch (Exception e) {
-				throw e;
-			}
+			
+			ret = method.invoke(controller, converted);
 		}
+		return convertReturn(ret);
 	}
 
 	/**
@@ -138,21 +137,32 @@ public class ActionModuleService {
 	}
 
 	/**
-	 * Converte o ArrayNode dos recursos para um tipo informado
+	 * Converte a coleção de recursos para um tipo informado
 	 * @param resources
 	 * @param resourceClass
 	 */
-	private List<?> convertResources(ArrayNode resources, Class<?> resourceClass) {
+	private List<?> convertResources(Collection<?> resources, Class<?> resourceClass) {
 	
 		ObjectMapper mapper = new ObjectMapper();
 		JavaType type = TypeFactory.defaultInstance()
-				.constructParametricType(List.class, resourceClass);
+				.constructParametricType(Collection.class, resourceClass); 
 
 		try {
 			return mapper.convertValue(resources, type);
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao converter recursos!", e);
 		}
+	}
+	
+	/**
+	 * Converte o retorno em string
+	 * @param ret
+	 * @return o objeto em string
+	 * @throws JsonProcessingException
+	 */
+	private String convertReturn(Object ret) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(ret);
 	}
 
 	/**

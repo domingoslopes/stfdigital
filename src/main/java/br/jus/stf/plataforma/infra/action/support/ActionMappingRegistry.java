@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.component.action.support;
+package br.jus.stf.plataforma.infra.action.support;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.component.action.annotation.ActionController;
-import br.jus.stf.plataforma.component.action.annotation.ActionMapping;
-import br.jus.stf.plataforma.component.action.handlers.ActionConditionHandler;
+import br.jus.stf.plataforma.infra.action.annotation.ActionController;
+import br.jus.stf.plataforma.infra.action.annotation.ActionMapping;
+import br.jus.stf.plataforma.infra.action.handlers.ActionConditionHandler;
 
 /**
  * Registro que fornece as ações definidas. O registro é realizado na inicialização do bean

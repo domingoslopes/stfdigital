@@ -75,7 +75,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     	
     	mockMvc.perform(post("/api/acoes/executar")
     			.contentType(MediaType.APPLICATION_JSON)
-    			.content("{\"actionId\":\"DO_NOTHING_REQUIRES\", \"resources\": [{\"attr\":\"teste1\"}]}"))
+    			.content("{\"actionId\":\"DO_NOTHING_INTEGER\", \"resources\": [1, 2]}"))
     		.andExpect(status().isOk())
     		.andDo(print());    	
     }

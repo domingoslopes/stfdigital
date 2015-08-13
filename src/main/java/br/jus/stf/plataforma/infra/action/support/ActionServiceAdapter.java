@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.component.action.support;
+package br.jus.stf.plataforma.infra.action.support;
 
 import java.util.ArrayList;
 import java.util.List;

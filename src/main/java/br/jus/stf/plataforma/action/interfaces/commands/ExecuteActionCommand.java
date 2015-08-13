@@ -1,13 +1,11 @@
-/**
- * 
- */
 package br.jus.stf.plataforma.action.interfaces.commands;
+
+import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
@@ -22,7 +20,7 @@ public class ExecuteActionCommand {
 	
 	@NotNull
 	@ApiModelProperty(value = "Recursos que sofreram a ação.", required=true)
-	private ArrayNode resources;
+	private Collection<?> resources;
 
 	/**
 	 * @return the actionId
@@ -41,14 +39,14 @@ public class ExecuteActionCommand {
 	/**
 	 * @return the resources
 	 */
-	public ArrayNode getResources() {
+	public Collection<?> getResources() {
 		return resources;
 	}
 
 	/**
 	 * @param resources the resources to set
 	 */
-	public void setResources(ArrayNode resources) {
+	public void setResources(Collection<?> resources) {
 		this.resources = resources;
 	}
 	
