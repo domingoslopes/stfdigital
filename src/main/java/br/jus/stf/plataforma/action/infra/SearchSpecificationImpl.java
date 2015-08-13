@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.action.infra;
 
+import java.util.Collection;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -9,6 +11,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.util.StringUtils;
 
 import br.jus.stf.plataforma.action.domain.Action;
+import br.jus.stf.plataforma.action.domain.ResourcesInfo;
 import br.jus.stf.plataforma.action.domain.ResourcesInfo.ResourcesMode;
 import br.jus.stf.plataforma.action.domain.SearchSpecification;
 
@@ -77,16 +80,9 @@ public class SearchSpecificationImpl implements SearchSpecification {
 	 * @return a restrição do modo de recursos
 	 */
 	private Predicate getResourcesModeRestriction(Root<Action> root, CriteriaBuilder cb) {
-		Path<ResourcesMode> pathMode = root.<ResourcesMode>get("resourcesInfo.mode");
-		
-		if (resources.size() == 0) {
-			return cb.equal(pathMode, ResourcesMode.None);
-		} else if (resources.size() > 1){
-			return cb.equal(pathMode, ResourcesMode.Many);
-		}
-		Predicate equalModeOne = cb.equal(pathMode, ResourcesMode.One);
-		Predicate equalModeMany = cb.equal(pathMode, ResourcesMode.Many);
-		return cb.or(equalModeOne, equalModeMany);
+		Path<ResourcesMode> pathMode = root.<ResourcesInfo>get("resourcesInfo").get("mode");
+		Collection<ResourcesMode> modes = ResourcesInfo.possibleModeFrom(resources);
+		return cb.and(pathMode.in(modes));
 	}
 
 	/**
@@ -95,7 +91,7 @@ public class SearchSpecificationImpl implements SearchSpecification {
 	 * @return a restrição do tipo de recurso
 	 */
 	private Predicate getResourcesTypeRestriction(Root<Action> root, CriteriaBuilder cb) {
-		Path<String> pathType = root.<String>get("resourcesInfo.type");
+		Path<String> pathType = root.<ResourcesInfo>get("resourcesInfo").get("type");
 		return cb.equal(pathType, resourcesType);
 	}
 
