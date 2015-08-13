@@ -19,8 +19,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.BeanUtils;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
-
 
 
 /**
@@ -163,20 +161,6 @@ public class Action implements Serializable {
 			return true;
 		}
 		return authorities.containsAll(grantedAuthorities);
-	}
-	
-	/**
-	 * Verifica se possui a quantidade de recursos necessárias para a ação
-	 * 
-	 * @param resources
-	 * @return o modo
-	 */
-	public boolean hasNeededResources(ArrayNode resources) {
-		switch(resourcesInfo.mode()) {
-			case None : return resources.size() == 0;
-			case One : return resources.size() == 1;
-			default: return resources.size() > 0;
-		}
 	}
 	
 	/**

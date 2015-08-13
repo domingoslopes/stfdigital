@@ -3,7 +3,6 @@ package br.jus.stf.plataforma.action.domain;
 import java.util.Set;
 
 import br.jus.stf.plataforma.action.domain.exception.ActionUnavailableException;
-import br.jus.stf.plataforma.action.domain.specification.ActionSpecification;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -22,7 +21,7 @@ public interface ActionAware {
 	 * @param spec
 	 * @return as ações permitidas
 	 */
-	public Set<Action> search(ActionSpecification spec) throws Exception;
+	public Set<Action> search(SearchSpecification spec) throws Exception;
 	
 	/**
 	 * Executa uma ação no módulo de origem
