@@ -1,6 +1,8 @@
 package br.jus.stf.plataforma.action.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -8,6 +10,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import org.apache.commons.lang3.Validate;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 /**
  * @author Lucas.Rodrigues
@@ -50,6 +54,26 @@ public class ResourcesInfo implements Serializable {
 	 */
 	public ResourcesMode mode() {
 		return mode;
+	}
+	
+	/**
+	 * Verifica a possibilidade de um modo de acordo com os recursos 
+	 * 
+	 * @param resources
+	 * @return uma coleção de modos possíveis
+	 */
+	public static Collection<ResourcesMode> possibleModeFrom(ArrayNode resources) {
+		Collection<ResourcesMode> modes = new ArrayList<ResourcesMode>(2);
+		
+		if (resources.size() == 0) {
+			modes.add(ResourcesMode.None);
+		} else if (resources.size() > 0) {
+			modes.add(ResourcesMode.Many);
+			if (resources.size() == 1) {
+				modes.add(ResourcesMode.One);
+			}
+		}
+		return modes;
 	}
 
 	@Override
