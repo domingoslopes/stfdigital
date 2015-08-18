@@ -8,6 +8,7 @@
  */
 'use strict';
 
+var HtmlReporter = require('protractor-html-screenshot-reporter');
 var baseDir = 'src/main/resources/static';
 var port = 3000;
 
@@ -27,5 +28,12 @@ exports.config = {
 	    '-browserTimeout=60' 
 	],
 	
-	baseUrl : 'http://127.0.0.1:' + port
+	baseUrl : 'http://127.0.0.1:' + port,
+	
+	onPrepare: function() {
+		jasmine.getEnv().addReporter(new HtmlReporter({
+			baseDirectory : 'src/main/resources//static/application/test/e2e/results',
+			takeScreenShotsOnlyForFailedSpecs: true
+		}));
+	}
 };

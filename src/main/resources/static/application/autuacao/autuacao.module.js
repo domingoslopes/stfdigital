@@ -7,7 +7,9 @@
 (function() {
 	'use strict';
 	
-	angular.module('autuacao', []).config(function config($stateProvider) {
+	angular.autuacao = angular.module('autuacao', []);
+	
+	angular.autuacao.config(function config($stateProvider) {
 		$stateProvider.state('registro', {
 			url: '/peticao/fisica',
 			views: {
@@ -16,8 +18,7 @@
 					controller: 'RegistroPeticaoFisicaController'
 				}
 			}
-		});
-		$stateProvider.state('preautuacao', {
+		}).state('preautuacao', {
 			url: '/peticao/:idTarefa/preautuacao',
 			views: {
 				'@': {
@@ -25,8 +26,7 @@
 					controller: 'PreautuacaoController'
 				}
 			}
-		});
-		$stateProvider.state('autuacao', {
+		}).state('autuacao', {
 			url: '/peticao/:idTarefa/autuacao',
 			views: {
 				'@': {
@@ -34,8 +34,7 @@
 					controller: 'AutuacaoController'
 				}
 			}
-		});
-		$stateProvider.state('distribuicao', {
+		}).state('distribuicao', {
 			url: '/peticao/:idTarefa/distribuicao',
 			views: {
 				'@': {
@@ -43,8 +42,7 @@
 					controller: 'DistribuicaoController'
 				}
 			}
-		});
-		$stateProvider.state('devolucao', {
+		}).state('devolucao', {
 			url: '/peticao/:idTarefa/devolucao',
 			views: {
 				'@': {

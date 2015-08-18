@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').controller('DashboardController', function (data, $scope, $log) {
+	angular.plataforma.controller('DashboardController', function (data, $scope, $log) {
 		
 		$scope.tarefas = data.data;
 		

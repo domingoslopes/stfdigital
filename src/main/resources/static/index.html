@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <base href="/">
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta charset="utf-8" />
     <title>STF Digital</title>
@@ -35,7 +36,7 @@
   </head>
   <body class="fixed-header">
     <!-- BEGIN SIDEBAR -->
-    <div class="page-sidebar" data-pages="sidebar">
+    <div id="page-sidebar" class="page-sidebar" data-pages="sidebar">
       <div id="appMenu" class="sidebar-overlay-slide from-top">
       </div>
       <!-- BEGIN SIDEBAR HEADER -->
@@ -106,21 +107,21 @@
             </div>
           </div>
         </div>
-        <div class=" pull-right" ng-controller="SecurityController">
+        <div id="papeis" class=" pull-right" ng-controller="SecurityController">
           <!-- START User Info-->
           <div class="visible-lg visible-md m-t-10">
             <div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
               <span class="semi-bold">{{papelAtivo.nome}}</span>
             </div>
             <div class="dropdown pull-right">
-              <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button id="papeisButton" class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="thumbnail-wrapper d32 circular inline m-t-5">
                 <img src="theme/assets/img/profiles/avatar.jpg" alt="" data-src="theme/assets/img/profiles/avatar.jpg" data-src-retina="theme/assets/img/profiles/avatar_small2x.jpg" width="32" height="32">
             </span>
               </button>
               <ul class="dropdown-menu profile-dropdown" role="menu">
                 <li ng-repeat="papel in papeis">
-                    <a ng-click="ativar(papel)">
+                    <a id="{{papel.nome}}" ng-click="ativar(papel)">
                         <div ng-switch="papelAtivo == papel">
                             <div ng-switch-when="true">
 		                        <i class="fa fa-check" ng-show="papelAtivo == papel"></i>
@@ -334,7 +335,7 @@
 	<!-- endbuild -->
 
 	<!-- build:js assets/js/main.js -->
-	<script type="text/javascript" src="application/app.js"></script>
+    <script type="text/javascript" src="application/app.js"></script>
 
     <script type="text/javascript" src="application/plataforma/plataforma.module.js"></script>
     <script type="text/javascript" src="application/plataforma/dashboard/dashboard.controller.js"></script>
@@ -355,6 +356,9 @@
     <script type="text/javascript" src="application/autuacao/devolucao/devolucao.controller.js"></script>
 
 	<script type="text/javascript" src="tmp/templates.js"></script>
+    <script type="text/javascript" src="tmp/properties.js"></script>
+	
+    <script type="text/javascript" src="application/plataforma/support/accessibility/compatibilidade.util.js"></script>
 	<!-- endbuild -->
 </body>
 </html>

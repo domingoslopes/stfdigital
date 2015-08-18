@@ -18,8 +18,10 @@ module.exports = {
 		baseDir + '/vendor/angular-mocks/angular-mocks.js',
 		baseDir + '/vendor/angular-ui-router/release/angular-ui-router.js',
 		baseDir + '/application/app.js', 
+		baseDir + '/application/app.dev.js', 
 		baseDir + '/application/plataforma/**/*.module.js', 
 		baseDir + '/application/plataforma/**/*.js', 
+		baseDir + '/application/test/mocks.module.js', 
 		baseDir + '/application/autuacao/**/*.js', 
 		baseDir + '/tmp/*.js',
 		baseDir + '/application/test/unit/**/*.spec.js' 
@@ -44,12 +46,12 @@ module.exports = {
 
 	coverageReporter : {
 		type : 'html',
-		dir : baseDir + '/application/test/unit-results/coverage',
+		dir : baseDir + '/application/test/unit/results/coverage',
 		file : 'coverage.html'
 	},
 
 	htmlReporter : {
-		outputDir : baseDir + '/application/test/unit-results/html'
+		outputDir : baseDir + '/application/test/unit/results/html'
 	},
 
 	logLevel : 'info',

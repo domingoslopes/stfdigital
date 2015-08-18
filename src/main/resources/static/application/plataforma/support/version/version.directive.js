@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').directive('appVersion', function(version) {
+	angular.plataforma.directive('appVersion', function(version) {
 		return {
 			restrict : 'A',
 			/* jshint unused:false */
