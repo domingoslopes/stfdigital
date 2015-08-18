@@ -12,6 +12,14 @@ public class RegistrarPeticaoFisicaCommand {
 
 	@NotBlank
 	private String tipoRecebimento;
+	@NotBlank
+	private String siglaClasse;
+	@NotBlank
+	private String[] partesPoloAtivo;
+	@NotBlank
+	private String[] partesPoloPassivo;
+	@NotBlank
+	private String[] documentos;
 
 	public RegistrarPeticaoFisicaCommand() {
 	}
@@ -26,6 +34,38 @@ public class RegistrarPeticaoFisicaCommand {
 
 	public String getTipoRecebimento() {
 		return tipoRecebimento;
+	}
+
+	public String getSiglaClasse() {
+		return siglaClasse;
+	}
+
+	public void setSiglaClasse(String siglaClasse) {
+		this.siglaClasse = siglaClasse;
+	}
+
+	public String[] getPartesPoloAtivo() {
+		return partesPoloAtivo;
+	}
+
+	public void setPartesPoloAtivo(String[] partesPoloAtivo) {
+		this.partesPoloAtivo = partesPoloAtivo;
+	}
+
+	public String[] getPartesPoloPassivo() {
+		return partesPoloPassivo;
+	}
+
+	public void setPartesPoloPassivo(String[] partesPoloPassivo) {
+		this.partesPoloPassivo = partesPoloPassivo;
+	}
+
+	public String[] getDocumentos() {
+		return documentos;
+	}
+
+	public void setDocumentos(String[] documentos) {
+		this.documentos = documentos;
 	}
 
 }

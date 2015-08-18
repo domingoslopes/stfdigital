@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.workflow.domain;
 
+import br.jus.stf.autuacao.domain.entity.Peticao;
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -8,6 +10,8 @@ package br.jus.stf.plataforma.workflow.domain;
  */
 public interface ProcessoRepository {
 
-	String criar(String id);
+	String criar(String id, Peticao peticao);
+	
+	void alterar(String id, String peticao);
 
 }
