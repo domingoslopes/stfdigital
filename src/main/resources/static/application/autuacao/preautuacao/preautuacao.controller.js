@@ -7,13 +7,13 @@
 (function() {
 	'use strict';
 	
-	angular.module('autuacao').controller('PreautuacaoController', function ($log, $http, $state, $stateParams) {
+	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, properties) {
 		var preautuacao = this;
 		
 		preautuacao.idPeticao = $stateParams.idTarefa;
 		
 		preautuacao.finalizar = function() {
-			$http.post('/api/peticao/' + preautuacao.idPeticao + '/preautuacao').success(function(data, status, headers, config) {
+			$http.post(properties.apiUrl + '/peticao/' + preautuacao.idPeticao + '/preautuacao').success(function(data, status, headers, config) {
 				$log.debug('Sucesso');
 				$state.go('dashboard');
 			}).error(function(data, status, headers, config) {

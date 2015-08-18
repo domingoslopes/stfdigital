@@ -12,6 +12,7 @@ target/
 
 # Node
 node_modules
+node
 
 # Bower
 src/main/resources/static/src/vendor
@@ -21,6 +22,6 @@ src/main/resources/static/tmp
 build/dist
 
 # Tests
-src/main/resources/static/application/test/screenshots/*
-src/main/resources/static/application/test/unit-results/*
+src/main/resources/static/application/test/e2e/results/*
+src/main/resources/static/application/test/unit/results/*
 

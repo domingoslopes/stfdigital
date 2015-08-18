@@ -6,17 +6,17 @@
 					<li>
 						<p>Petições Físicas</p>
 					</li>
-					<li><a href="#" class="active">Registrar Remessa</a></li>
+					<li><a href="#" id="subtitulo" class="active">Registrar Remessa</a></li>
 				</ul>
 			</div>
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
 		<form ng-submit="registro.completar()">
-			<input type="text" ng-model="registro.tipoRecebimento" size="30"> 
+			<input id="classe" type="text" ng-model="registro.tipoRecebimento" size="30"> 
 			
 			<p>
-    			<input class="btn btn-complete btn-cons m-t-10" type="submit" value="Registrar">
+    			<input id="botaoRegistrar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Registrar">
  			</p>
 		</form>
 	</div>

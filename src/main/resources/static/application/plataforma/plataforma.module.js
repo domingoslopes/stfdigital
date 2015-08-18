@@ -6,8 +6,10 @@
  */ 
 (function() {
 	'use strict';
+	
+	angular.plataforma = angular.module('plataforma', ['ui.router']);
 
-	angular.module('plataforma', ['ui.router']).config(function($stateProvider) {
+	angular.plataforma.config(function($stateProvider) {
 		$stateProvider.state('dashboard', {
 			url : '/dashboard',
 			templateUrl : 'application/plataforma/dashboard/dashboard.tpl.html',
@@ -20,7 +22,7 @@
 		}).state('erro', {
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
-		})
+		});
 	});
 
 })();

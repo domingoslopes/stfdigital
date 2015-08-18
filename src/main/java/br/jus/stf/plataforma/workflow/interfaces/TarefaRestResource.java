@@ -39,7 +39,7 @@ public class TarefaRestResource {
 	public List<TarefaDto> tarefas(@RequestHeader(value="papel") String papel) {
     	List<Task> tarefas = tarefaApplicationService.tarefas(papel);
     	
-        return tarefas.stream().map(tarefa -> dtoAssembler.toDto(tarefa)).collect(Collectors.toList()); 
+        return tarefas.stream().map(tarefa -> dtoAssembler.toDto(tarefa)).collect(Collectors.toList());
 	}
 	
 	public void completar(@PathVariable String id, @RequestBody CompletarTarefaCommand command) {

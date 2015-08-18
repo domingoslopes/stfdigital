@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').factory('messages', function(version) {
+	angular.plataforma.factory('messages', function(version) {
 		return {
 			success : function(message) {
 				$('body').pgNotification({

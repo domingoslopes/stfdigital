@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.module('plataforma').controller('SecurityController', function ($state, $scope, $log, $window, SecurityService) {
+	angular.plataforma.controller('SecurityController', function ($state, $scope, $log, $window, SecurityService) {
 		
 		$scope.papeis = SecurityService.papeis();
 		
@@ -16,7 +16,7 @@
 			$scope.papelAtivo = papel;
 			
 			$state.go('dashboard', {}, {reload: true});
-		}
+		};
 		
 		$scope.ativar($scope.papeis[1]);
 		

@@ -7,13 +7,13 @@
 (function() {
 	'use strict';
 	
-	angular.module('autuacao').controller('RegistroPeticaoFisicaController', function ($log, $http, $state, messages) {
+	angular.autuacao.controller('RegistroPeticaoFisicaController', function ($log, $http, $state, messages, properties) {
 		var registro = this;
 		
 		registro.tipoRecebimento = '';
 		
 		registro.completar = function() {
-			$http.post('/api/peticao/fisica', {tipoRecebimento:'1'}).success(function(data) {
+			$http.post(properties.apiUrl + '/peticao/fisica', {tipoRecebimento:registro.tipoRecebimento}).success(function(data) {
 				$state.go('dashboard');
 				messages.success('Petição Física <b>#0001</b> registrada com sucesso.');
 			}).error(function(data, status) {
