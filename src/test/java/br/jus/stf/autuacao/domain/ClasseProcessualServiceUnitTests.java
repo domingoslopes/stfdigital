@@ -1,42 +1,42 @@
-package br.jus.stf.autuacao.interfaces;
+package br.jus.stf.autuacao.domain;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import br.jus.stf.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.autuacao.domain.ClasseProcessualRepository;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import br.jus.stf.autuacao.domain.ClasseProcessualService;
 import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.interfaces.dto.ClasseProcessualDtoAssembler;
-
-import com.wordnik.swagger.annotations.ApiOperation;
+import br.jus.stf.plataforma.ApplicationContextInitializer;
 
 /**
- * @author Rodrigo Barreiros
+ * Teste de operações relacionadas à classe processual.
+ * 
+ * @author anderson.araujo
  * 
  * @since 1.0.0
- * @since 20.07.2015
+ * @since 21.07.2015
  */
-@RestController
-public class ClasseRestResource {
-
-	@Autowired
-	private PeticaoApplicationService peticaoApplicationService;
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
+@WebAppConfiguration
+public class ClasseProcessualServiceUnitTests {
+	
 	@Autowired
 	private ClasseProcessualService classeProcessualService;
 	private ClasseProcessualDtoAssembler assembler = new ClasseProcessualDtoAssembler();
-
-    @ApiOperation(value = "Retorna todas as classes processuais ativas")
-	@RequestMapping(value = "/api/classes", method = RequestMethod.GET)
-	public List<ClasseDto> listar() {
-    	
-    	List<ClasseDto> classes = null;
+	
+	@Test
+	public void listarClassesProcessuaisRepositoryTest(){
+		
+		List<ClasseDto> classes = null;
     	List<ClasseProcessual> classesRep = this.classeProcessualService.listar();
     	
     	if (classesRep != null){
@@ -46,7 +46,7 @@ public class ClasseRestResource {
         		classes.add(this.assembler.toDto(classe));
         	}
     	}
-    	
-		return classes;
+		
+		Assert.assertEquals(149, classes.size());
 	}
 }

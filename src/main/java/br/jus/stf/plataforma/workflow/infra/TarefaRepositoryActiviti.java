@@ -1,7 +1,6 @@
 package br.jus.stf.plataforma.workflow.infra;
 
 import java.util.List;
-
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -31,7 +30,8 @@ public class TarefaRepositoryActiviti implements TarefaRepository {
 
 	@Override
 	public List<Task> listar(String papel) {
-		return taskService.createTaskQuery().taskCandidateGroup(papel).list();
+		List<Task> tarefas = taskService.createTaskQuery().taskCandidateGroup(papel).list(); 
+		return tarefas;
 	}
 
 	@Override
