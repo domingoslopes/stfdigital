@@ -10,11 +10,19 @@
 
 	var DistribuicaoPage = function () {
 		
+		this.selecionar = function(ministro) {
+			element(by.cssContainingText('option', 'MIN. DIAS TOFFOLI')).click();
+		};
+		
+		this.relator = function() {
+			return element(by.model('relator')).$('option:checked').getText();
+		};
+		
 		this.finalizar = function() {
 			element(by.id('finalizar')).click();
 			
 		    browser.waitForAngular();
-		}
+		};
 		
 	};
 

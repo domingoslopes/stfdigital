@@ -14,7 +14,7 @@
 			element(by.id('finalizar')).click();
 			
 		    browser.waitForAngular();
-		}
+		};
 		
 	};
 

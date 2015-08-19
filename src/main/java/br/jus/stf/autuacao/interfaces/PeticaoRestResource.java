@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.autuacao.domain.entity.Documento;
@@ -35,7 +34,6 @@ import com.wordnik.swagger.annotations.ApiResponses;
  * @since 1.0.0
  * @since 22.06.2015
  */
-@RestController
 public class PeticaoRestResource {
 
 	@Autowired

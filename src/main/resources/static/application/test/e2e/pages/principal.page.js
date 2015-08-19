@@ -27,7 +27,7 @@
 
 		this.executarTarefa = function() {
 			element(by.repeater('tarefa in tarefas').row(0)).element(by.css('a')).click();
-		}
+		};
 		
 		this.tarefas = function () {
 			return element.all(by.repeater('tarefa in tarefas'));

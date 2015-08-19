@@ -16,9 +16,13 @@ public class DistribuirPeticaoCommand {
 	
 	@NotBlank
 	@ApiModelProperty(value = "O ministro sorteado para relatar o processo resultado da petição recebida", required=true)
-	private String relator;
-	
-	public String getRelator() {
+	private Long relator;
+
+	public DistribuirPeticaoCommand(Long relator) {
+		this.relator = relator;
+	}
+
+	public Long getRelator() {
 		return relator;
 	}
 
