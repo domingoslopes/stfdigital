@@ -99,6 +99,10 @@
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
+			distribuicaoPage.selecionar('MIN. DIAS TOFFOLI');
+			
+			expect(distribuicaoPage.relator()).toEqual('MIN. DIAS TOFFOLI');
+			
 			distribuicaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
