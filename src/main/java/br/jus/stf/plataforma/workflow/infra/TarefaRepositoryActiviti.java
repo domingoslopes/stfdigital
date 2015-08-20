@@ -44,4 +44,8 @@ public class TarefaRepositoryActiviti implements TarefaRepository {
 		runtimeService.signalEventReceived(sinal);
 	}
 
+	@Override
+	public Task consultar(String id) {
+		return this.taskService.createTaskQuery().taskId(id).singleResult();
+	}
 }

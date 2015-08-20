@@ -45,8 +45,6 @@ public class PeticaoRestResource {
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Petição Inválida")})
 	@RequestMapping(value = "/api/peticao", method = RequestMethod.POST)
 	public String peticionar(@RequestBody @Valid RegistrarPeticaoCommand command, BindingResult binding) {
-		
-    			
 		return "";
 	}
 
@@ -78,7 +76,7 @@ public class PeticaoRestResource {
     @ApiOperation(value = "Recupera as informações de uma determinada petição")
 	@RequestMapping(value = "/api/peticao/{id}", method = RequestMethod.GET)
 	public PeticaoDto consultar(@PathVariable String id) {
-		return null;
+		return peticaoApplicationService.consultar(id);
 	}
 
     @ApiOperation(value = "Conclui a pré-autuação de uma determinada petição física", hidden = true)
@@ -104,10 +102,8 @@ public class PeticaoRestResource {
 
     @ApiOperation(value = "Conclui a distribuição de uma determinada petição")
 	@RequestMapping(value = "/api/peticao/{id}/distribuicao", method = RequestMethod.POST)
-	public String distribuir(@PathVariable String id, @RequestBody DistribuirPeticaoCommand command) {
+	public void distribuir(@PathVariable String id, @RequestBody DistribuirPeticaoCommand command) {
 		peticaoApplicationService.distribuir(id);
-		
-		return null;
 	}
 
 }

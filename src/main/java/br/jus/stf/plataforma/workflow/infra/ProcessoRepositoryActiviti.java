@@ -45,7 +45,6 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 		
 		Map<String, Object> atributos = new HashMap<String, Object>();
 		atributos.put("classeSugerida", peticao.getClasseSugerida().getSigla());
-		atributos.put("teste", partesPoloAtivo);
 		atributos.put("partesPoloAtivo", partesPoloAtivo);
 		atributos.put("partesPoloPassivo", partesPoloPassivo);
 		atributos.put("documentos", documentos);
@@ -62,5 +61,9 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 	public void alterar(String id, String classe){
 		this.runtimeService.setVariable(id, "classe", classe);
 	}
-
+	
+	public ProcessInstance consultar(String id){
+		ProcessInstance processo = runtimeService.createProcessInstanceQuery().processDefinitionId(id).singleResult();
+		return processo;
+	}
 }

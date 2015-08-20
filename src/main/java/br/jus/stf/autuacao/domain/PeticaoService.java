@@ -28,12 +28,10 @@ public class PeticaoService {
 		tarefaAdapter.completar(idPeticao);
 	}
 
-	public void autuar(String idPeticao, String classe, boolean peticaoValida) {
+	public void autuar(String idPeticao, boolean peticaoValida) {
 		if (peticaoValida) {
 			tarefaAdapter.completar(idPeticao);
 			
-			//Atualiza a classe da petição.
-			processoAdapter.alterar(idPeticao, classe);
 		} else {
 			tarefaAdapter.sinalizar("Petição Inválida");
 		}
@@ -51,4 +49,12 @@ public class PeticaoService {
 		tarefaAdapter.completar(idPeticao);
 	}
 
+	/**
+	 * Recupera uma petição de acordo com o id informado.
+	 * @param id - Identificador da petição.
+	 * @return Dados da petição.
+	 */
+	public Peticao consultar(String id){
+		return this.processoAdapter.consultar(id);
+	}
 }

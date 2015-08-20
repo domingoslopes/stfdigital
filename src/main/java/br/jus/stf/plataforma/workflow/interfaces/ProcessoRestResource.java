@@ -15,6 +15,8 @@ import br.jus.stf.autuacao.domain.entity.Parte;
 import br.jus.stf.autuacao.domain.entity.Polo;
 import br.jus.stf.plataforma.workflow.application.ProcessoApplicationService;
 import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand;
+import br.jus.stf.plataforma.workflow.interfaces.dto.ProcessoDto;
+import br.jus.stf.plataforma.workflow.interfaces.dto.ProcessoDtoAssembler;
 
 /**
  * @author Rodrigo Barreiros
@@ -27,6 +29,8 @@ public class ProcessoRestResource {
 
 	@Autowired
 	private ProcessoApplicationService processoApplicationService;
+	
+	private ProcessoDtoAssembler assembler = new ProcessoDtoAssembler(); 
 
 	@RequestMapping(value = "/api/processo", method = RequestMethod.POST)
 	public String iniciar(@RequestBody IniciarProcessoCommand command) {
@@ -58,5 +62,9 @@ public class ProcessoRestResource {
 
 	public void alterar(String idPeticao, String classe){
 		this.processoApplicationService.alterar(idPeticao, classe);
+	}
+	
+	public ProcessoDto consultar(String id){ 
+		return this.assembler.toDto(this.processoApplicationService.consultar(id));
 	}
 }

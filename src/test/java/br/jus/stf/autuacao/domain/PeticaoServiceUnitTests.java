@@ -32,7 +32,7 @@ import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
  */
 public class PeticaoServiceUnitTests {
 	
-	private static final TarefaDto PREAUTUAR = new TarefaDto("", "", "");
+	private static final TarefaDto PREAUTUAR = new TarefaDto("", "", "", "");
 	private static final String RECEBEDORES = "recebedores";
  
     @InjectMocks

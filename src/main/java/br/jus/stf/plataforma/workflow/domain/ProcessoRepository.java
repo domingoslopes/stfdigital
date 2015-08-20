@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.workflow.domain;
 
+import org.activiti.engine.runtime.ProcessInstance;
+
 import br.jus.stf.autuacao.domain.entity.Peticao;
 
 /**
@@ -14,4 +16,5 @@ public interface ProcessoRepository {
 	
 	void alterar(String id, String peticao);
 
+	ProcessInstance consultar(String id);
 }

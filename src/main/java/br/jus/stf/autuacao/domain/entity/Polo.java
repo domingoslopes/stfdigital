@@ -20,4 +20,12 @@ public class Polo {
 	public void setPartes(List<Parte> partes) {
 		this.partes = partes;
 	}
+	
+	public Polo(){
+		
+	}
+	
+	public Polo(List<Parte> partes){
+		this.partes = partes;
+	}
 }

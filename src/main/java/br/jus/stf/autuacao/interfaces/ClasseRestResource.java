@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.autuacao.domain.ClasseProcessualRepository;
 import br.jus.stf.autuacao.domain.ClasseProcessualService;
 import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDto;

@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.workflow.application;
 
 import java.util.List;
 
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,5 +33,9 @@ public class ProcessoApplicationService {
 
 	public void alterar(String idPeticao, String classe){
 		this.processoRepository.alterar(idPeticao, classe);
+	}
+	
+	public ProcessInstance consultar(String id){
+		return this.processoRepository.consultar(id);
 	}
 }

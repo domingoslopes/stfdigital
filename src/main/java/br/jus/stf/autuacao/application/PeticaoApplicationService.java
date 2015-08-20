@@ -8,10 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.PeticaoService;
+import br.jus.stf.autuacao.domain.ProcessoAdapter;
+import br.jus.stf.autuacao.domain.TarefaAdapter;
 import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
 import br.jus.stf.autuacao.domain.entity.Documento;
 import br.jus.stf.autuacao.domain.entity.Peticao;
 import br.jus.stf.autuacao.domain.entity.Polo;
+import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
+import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
+import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 
 /**
  * @author Rodrigo Barreiros
@@ -25,6 +30,14 @@ public class PeticaoApplicationService {
 
 	@Autowired
 	private PeticaoService peticaoService;
+	
+	@Autowired
+	private ProcessoAdapter processoAdapter;
+	
+	@Autowired
+	private TarefaAdapter tarefaAdapter;
+	
+	private PeticaoDtoAssembler assemblerPeticao = new PeticaoDtoAssembler();
 
 	/**
 	 * Registra uma nova petilçao.
@@ -69,7 +82,13 @@ public class PeticaoApplicationService {
 		if (idPeticao == null || idPeticao.isEmpty())
 			throw new RuntimeException("O identificador da petição não foi informado.");
 		
-		peticaoService.autuar(idPeticao, classe, peticaoValida);
+		TarefaDto tarefa = this.tarefaAdapter.consultar(idPeticao);  
+		
+		//Realiza a atuação
+		peticaoService.autuar(tarefa.getId(), peticaoValida);
+		
+		//Atualiza a classe da petição.
+		processoAdapter.alterar(tarefa.getIdProcesso(), classe);
 	}
 
 	public void distribuir(String idPeticao) {
@@ -78,5 +97,9 @@ public class PeticaoApplicationService {
 
 	public void devolver(String idPeticao) {
 		peticaoService.devolver(idPeticao);
+	}
+	
+	public PeticaoDto consultar(String id){
+		return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
 	}
 }
