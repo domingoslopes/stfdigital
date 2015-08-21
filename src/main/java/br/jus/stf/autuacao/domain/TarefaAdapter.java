@@ -2,6 +2,8 @@ package br.jus.stf.autuacao.domain;
 
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -14,5 +16,7 @@ public interface TarefaAdapter {
 	public void completar(String id);
 
 	public void sinalizar(String sinal);
+	
+	public TarefaDto consultar(String id);
 
 }
