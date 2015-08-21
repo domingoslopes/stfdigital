@@ -13,7 +13,7 @@
 		angular.bootstrap(document, ['app']);
 	});
 
-	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates'])
+	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates', 'properties'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
@@ -23,14 +23,6 @@
 		$stateProvider.state('root', {
 		});
 	})
-	
-	.constant('properties', (function(){
-		var baseUrl = 'http://localhost:8080'
-		return {
-			baseUrl : baseUrl,
-			apiUrl : baseUrl + '/api'
-		}
-	})())
 	
 	.value('version', '0.1.0');
 	
