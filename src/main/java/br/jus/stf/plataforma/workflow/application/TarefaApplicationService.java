@@ -32,4 +32,7 @@ public class TarefaApplicationService {
 		tarefaRepository.sinalizar(sinal);
 	}
 
+	public Task consultar(String id){
+		return tarefaRepository.consultar(id);
+	}
 }

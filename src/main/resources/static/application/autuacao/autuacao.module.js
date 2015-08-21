@@ -39,7 +39,12 @@
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/distribuicao/distribuicao.tpl.html',
-					controller: 'DistribuicaoController'
+					controller: 'DistribuicaoController',
+					resolve : {
+						data : function(MinistroService) {
+							return MinistroService.listar();
+						}
+					}
 				}
 			}
 		}).state('devolucao', {
