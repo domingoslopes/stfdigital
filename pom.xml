@@ -58,6 +58,7 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -65,13 +66,48 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+			<groupId>org.codehaus.sonar-plugins.java</groupId>
+			<artifactId>sonar-jacoco-listeners</artifactId>
+			<version>2.1</version>
+			<scope>test</scope>        
+        </dependency>
+        <dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.2</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
         	<groupId>org.springframework.ws</groupId>
         	<artifactId>spring-ws-test</artifactId>
         </dependency>
     </dependencies>
 
 	<build>
-		<plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+		    	    <groupId>org.codehaus.mojo</groupId>
+		        	<artifactId>sonar-maven-plugin</artifactId>
+		        	<version>2.3</version>
+    		  	</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<argLine>${argLine} -Xms256m -Xmx512m -XX:MaxPermSize=512m
+							-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+						<properties>
+							<property>
+								<name>listener</name>
+								<value>org.sonar.java.jacoco.JUnitListener</value>
+							</property>
+						</properties>
+					</configuration>
+				</plugin>    		  	
+			</plugins>
+		</pluginManagement>
+		<plugins>		
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -104,7 +140,27 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.1.201405082137</version>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>	
 	</build>
 
 </project>
