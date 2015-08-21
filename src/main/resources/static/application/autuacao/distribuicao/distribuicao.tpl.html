@@ -1,4 +1,4 @@
-<div class="content" ng-controller="DistribuicaoController as distribuicao">
+<div class="content">
 	<div class="jumbotron" data-pages="parallax">
 		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
 			<div class="inner">
@@ -12,9 +12,15 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-        <form ng-submit="distribuicao.finalizar()">
+        <form name="taskForm" ng-submit="finalizar()">
+            <select name="relator" ng-options="ministro.nome for ministro in ministros track by ministro.id" ng-model="relator" required>
+                <option value="">Selecione o Ministro Relator</option>
+            </select>
+			<div role="alert">
+                <span class="error" ng-show="taskForm.relator.$error.required">Required!</span>
+			</div>
             <p>
-                <input class="btn btn-complete btn-cons m-t-10" type="submit" value="Finalizar">
+                <input id="finalizar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Finalizar">
             </p>
         </form>
 	</div>

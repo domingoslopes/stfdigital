@@ -17,5 +17,7 @@ public interface TarefaRepository {
 	List<Task> listar(String papel);
 
 	void sinalizar(String sinal);
+	
+	Task consultar(String id);
 
 }

@@ -11,7 +11,7 @@
 (function() {
 	'use strict';
 
-	var DashboardPage = function () {
+	var PrincipalPage = function () {
 		browser.get('/');
 		this.conteudo = element(by.css('body'));
 		
@@ -20,9 +20,29 @@
 			// É necessário mover o mouse para cima do link, caso contrário o click não vai funcionar
 			browser.actions().mouseMove(element(by.css('a[ui-sref="registro"]'))).perform();
 			element(by.css('a[ui-sref="registro"]')).click();
+			
+			// Força a saída do mouse da barra de menus para que essa barra recue à esquerda
+			browser.actions().mouseMove(element(by.id('papeis'))).perform();
 		};
+
+		this.executarTarefa = function() {
+			element(by.repeater('tarefa in tarefas').row(0)).element(by.css('a')).click();
+		};
+		
+		this.tarefas = function () {
+			return element.all(by.repeater('tarefa in tarefas'));
+		};
+		
+		this.login = function (papel) {
+		    element(by.id('papeisButton')).click();
+		    
+		    element(by.id(papel)).click();
+		    
+		    browser.waitForAngular();
+		};
+		
 	};
 
-	module.exports = DashboardPage;
+	module.exports = PrincipalPage;
 	
 })();

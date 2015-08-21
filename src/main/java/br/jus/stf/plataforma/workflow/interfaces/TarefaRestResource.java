@@ -49,5 +49,9 @@ public class TarefaRestResource {
 	public void sinalizar(SinalizarCommand command) {
         tarefaApplicationService.sinalizar(command.getSinal());
 	}
+	
+	public TarefaDto consultar(@PathVariable String id){
+		return dtoAssembler.toDto(tarefaApplicationService.consultar(id));
+	}
 
 }
