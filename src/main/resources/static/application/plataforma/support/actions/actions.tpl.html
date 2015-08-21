@@ -1,0 +1,14 @@
+<div class="btn-group">
+	<button type="button" class="btn btn-default dropdown-toggle"
+		data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		A&ccedil;&otilde;es <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu">
+		<li ng-repeat="action in actions">
+			<a href="" ng-click="go(action)">action.description</a>
+		</li>
+		<li ng-if="actions.length == 0">
+			<a href="">...</a>
+		</li>
+	</ul>
+</div>

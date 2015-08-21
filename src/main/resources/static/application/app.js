@@ -24,9 +24,13 @@
 		});
 	})
 	
-	.constant('properties', {
-		apiUrl: 'http://localhost:8080/api'
-	})
+	.constant('properties', (function(){
+		var baseUrl = 'http://localhost:8080'
+		return {
+			baseUrl : baseUrl,
+			apiUrl : baseUrl + '/api'
+		}
+	})())
 	
 	.value('version', '0.1.0');
 	
