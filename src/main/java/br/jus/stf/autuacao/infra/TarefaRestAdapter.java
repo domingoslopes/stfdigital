@@ -7,6 +7,7 @@ import br.jus.stf.autuacao.domain.TarefaAdapter;
 import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.plataforma.workflow.interfaces.commands.SinalizarCommand;
+import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 
 /**
  * @author Rodrigo Barreiros
@@ -38,6 +39,11 @@ public class TarefaRestAdapter implements TarefaAdapter {
 
 		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
 		tarefaRestService.sinalizar(command);
+	}
+	
+	@Override
+	public TarefaDto consultar(String id){
+		return this.tarefaRestService.consultar(id);
 	}
 
 }

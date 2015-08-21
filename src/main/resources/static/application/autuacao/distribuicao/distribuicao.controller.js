@@ -6,21 +6,25 @@
  */ 
 (function() {
 	'use strict';
-	
-	angular.autuacao.controller('DistribuicaoController', function ($log, $http, $state, $stateParams, properties) {
-		var distribuicao = this;
+
+	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, $http, messages, properties, $state) {
 		
-		distribuicao.idPeticao = $stateParams.idTarefa;
+		$scope.idPeticao = $stateParams.idTarefa;
 		
-		distribuicao.finalizar = function() {
-			$http.post(properties.apiUrl + '/peticao/' + distribuicao.idPeticao + '/distribuicao', {relator:'Min. Ricardo Lewandowski'}).success(function(data, status, headers, config) {
-				$log.debug('Sucesso');
+		$scope.ministros = data.data;
+		
+		$scope.relator = {};
+		
+		$scope.finalizar = function() {
+			$http.post(properties.apiUrl + '/peticao/' + $scope.idPeticao + '/distribuicao', $scope.relator.id).success(function(data) {
 				$state.go('dashboard');
-			}).error(function(data, status, headers, config) {
-				$log.debug('Erro');
+				messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
+			}).error(function(data, status) {
+				if (status === 400) {
+					messages.error('A Petição <b>não pode ser registrada</b> porque ela não está válida.');
+				}
 			});
 		};
 	});
-
+	
 })();
-

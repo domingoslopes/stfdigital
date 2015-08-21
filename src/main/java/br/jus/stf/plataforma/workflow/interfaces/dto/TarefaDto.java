@@ -11,14 +11,16 @@ public class TarefaDto {
 	private String id;
 	private String nome;
 	private String descricao;
+	private String idProcesso;
 
 	public TarefaDto() {
 	}
 
-	public TarefaDto(String id, String nome, String descricao) {
+	public TarefaDto(String id, String nome, String descricao, String idProcesso) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
+		this.idProcesso = idProcesso;
 	}
 
 	public String getId() {
@@ -31,6 +33,14 @@ public class TarefaDto {
 	
 	public String getDescricao() {
 		return descricao;
+	}
+	
+	public void setIdProcesso(String idProcesso){
+		this.idProcesso = idProcesso;
+	}
+	
+	public String getIdProcesso(){
+		return this.idProcesso;
 	}
 
 }

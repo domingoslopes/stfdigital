@@ -11,7 +11,7 @@ import org.activiti.engine.task.Task;
 public class TarefaDtoAssembler {
 
 	public TarefaDto toDto(Task task) {
-		return new TarefaDto(task.getId(), task.getTaskDefinitionKey(), task.getName());
+		return new TarefaDto(task.getId(), task.getTaskDefinitionKey(), task.getName(), task.getProcessInstanceId());
 	}
 
 }

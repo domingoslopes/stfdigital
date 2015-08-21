@@ -9,7 +9,11 @@ package br.jus.stf.plataforma.workflow.interfaces.commands;
 public class IniciarProcessoCommand {
 
 	private String idProcesso;
-
+	private String classe;
+	private String[] partesPoloAtivo;
+	private String[] partesPoloPassivo;
+	private String[] documentos;
+	
 	public void setIdProcesso(String idProcesso) {
 		this.idProcesso = idProcesso;
 	}
@@ -17,5 +21,36 @@ public class IniciarProcessoCommand {
 	public String getIdProcesso() {
 		return idProcesso;
 	}
-
+	
+	public String getClasse() {
+		return classe;
+	}
+	
+	public void setClasse(String classe) {
+		this.classe = classe;
+	}
+	
+	public String[] getPartesPoloAtivo() {
+		return this.partesPoloAtivo;
+	}
+	
+	public void setPartesPoloAtivo(String[] partesPoloAtivo) {
+		this.partesPoloAtivo = partesPoloAtivo;
+	}
+	
+	public String[] getPartesPoloPassivo() {
+		return this.partesPoloPassivo;
+	}
+	
+	public void setPartesPoloPassivo(String[] partesPoloPassivo) {
+		this.partesPoloPassivo = partesPoloPassivo;
+	}
+	
+	public String[] getDocumentos() {
+		return documentos;
+	}
+	
+	public void setDocumentos(String[] documentos) {
+		this.documentos = documentos;
+	}
 }
