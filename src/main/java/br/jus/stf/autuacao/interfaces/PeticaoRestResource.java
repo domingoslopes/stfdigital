@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.interfaces;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.autuacao.domain.entity.Documento;
@@ -104,4 +107,13 @@ public class PeticaoRestResource {
 		peticaoApplicationService.distribuir(id);
 	}
 
+    @ApiOperation(value = "Envia um documento de uma petição.")
+	@RequestMapping(value = "/api/documento/envio", method = RequestMethod.POST)
+    public String enviarDocumento(@RequestParam(value="file", required=true) MultipartFile arquivo) throws IOException{
+    	String idRegistroDocumento = "";
+    	    	
+    	idRegistroDocumento = this.peticaoApplicationService.receberDocumentoPeticao(arquivo);
+    	
+    	return idRegistroDocumento;
+    }
 }

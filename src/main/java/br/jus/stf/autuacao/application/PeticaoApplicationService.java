@@ -1,11 +1,16 @@
 package br.jus.stf.autuacao.application;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.autuacao.domain.PeticaoService;
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
@@ -101,5 +106,9 @@ public class PeticaoApplicationService {
 	
 	public PeticaoDto consultar(String id){
 		return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
+	}
+	
+	public String receberDocumentoPeticao(MultipartFile arquivo) throws IOException{
+		return this.peticaoService.gravarArquivo(arquivo);
 	}
 }
