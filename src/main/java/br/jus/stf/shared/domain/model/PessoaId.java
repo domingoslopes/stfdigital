@@ -1,5 +1,8 @@
 package br.jus.stf.shared.domain.model;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
 import br.jus.stf.shared.domain.stereotype.ValueObject;
 
 /**
@@ -7,43 +10,40 @@ import br.jus.stf.shared.domain.stereotype.ValueObject;
  * @version 1.0
  * @created 14-ago-2015 18:33:46
  */
+@Embeddable
 public class PessoaId implements ValueObject<PessoaId> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Column(name = "SEQ_PESSOA", nullable = false)
 	private Long id;
 
 	public PessoaId(final Long id){
 		this.id = id;
 	}
 
-	public Long id(){
+	public Long toLong(){
 		return id;
 	}
+	
+	@Override
+	public int hashCode(){
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
-	/**
-	 * 
-	 * @param o
-	 */
+	@Override
 	public boolean equals(final Object o){
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 	
 		PessoaId other = (PessoaId) o;
-	
 		return sameValueAs(other);
 	}
 
-	public int hashCode(){
-		return id.hashCode();
-	}
-
-	/**
-	 * 
-	 * @param other
-	 */
+	@Override
 	public boolean sameValueAs(final PessoaId other){
 		return other != null && this.id.equals(other.id);
 	}
@@ -51,5 +51,11 @@ public class PessoaId implements ValueObject<PessoaId> {
 	public String toString(){
 		return id.toString();
 	}
+	
+	//Hibernate
 
+	PessoaId() {
+		
+	}
+	
 }

@@ -13,7 +13,7 @@
 		angular.bootstrap(document, ['app']);
 	});
 
-	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates', 'properties'])
+	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates', 'properties', 'mocks'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
@@ -23,7 +23,9 @@
 		$stateProvider.state('root', {
 		});
 	})
-	
+	.run(function(ActionService) {
+		ActionService.load("autuacao");
+	})
 	.value('version', '0.1.0');
 	
 })();

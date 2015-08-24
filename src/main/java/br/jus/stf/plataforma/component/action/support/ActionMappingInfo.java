@@ -11,6 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import br.jus.stf.plataforma.component.action.annotation.ActionMapping;
 import br.jus.stf.plataforma.component.action.annotation.ActionMapping.ResourcesMode;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonView;
+
 /**
  * Armazena as metainformações definidas na anotação {@link ActionMapping}.
  * 
@@ -19,13 +22,22 @@ import br.jus.stf.plataforma.component.action.annotation.ActionMapping.Resources
  */
 public class ActionMappingInfo {
 
+	@JsonView(ActionView.class)
 	private String id;
+	
+	@JsonView(ActionView.class)
 	private String description;
+	
 	private Class<?> controllerClass;
 	private String methodName;
 	private Class<?> resourcesClass;
+	
+	@JsonView(ActionView.class)
 	private ResourcesMode resourcesMode;
+	
+	@JsonView(ActionView.class)
 	private List<String> neededAuthorities = new ArrayList<String>();
+	
 	private List<ActionConditionHandlerInfo> actionHandlersInfo = new ArrayList<ActionConditionHandlerInfo>(0);
 	
 	/**
@@ -124,6 +136,18 @@ public class ActionMappingInfo {
 	 */
 	public List<ActionConditionHandlerInfo> getActionHandlersInfo() {
 		return actionHandlersInfo;
+	}
+	
+	@JsonView(ActionView.class)
+	@JsonGetter("resourcesType")
+	public String getResourcesType() {
+		return resourcesClass.getSimpleName();
+	}
+	
+	@JsonView(ActionView.class)
+	@JsonGetter("hasConditionHandlers")
+	public boolean hasConditionHandlers() {
+		return actionHandlersInfo.size() > 0;
 	}
 		
 	/**

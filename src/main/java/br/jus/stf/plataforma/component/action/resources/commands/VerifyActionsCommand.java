@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
+ * Comando de verificação de várias ações sobre os recursos.
+ * 
  * @author Lucas.Rodrigues
  *
  */

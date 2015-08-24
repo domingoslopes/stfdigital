@@ -33,7 +33,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     @Test
     public void verificaAcoes() throws Exception {
     	
-    	mockMvc.perform(post("/api/actions/verify")
+    	mockMvc.perform(post("/api/actions/isallowed")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"ids\":[\"dummy_action\"], \"resources\": [{\"attr\":\"TESTE1\"}]}"))
     		.andExpect(status().isOk())
@@ -44,7 +44,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     @Test
     public void verificaAcao() throws Exception {
     	
-    	mockMvc.perform(post("/api/actions/dummy_action/verify")
+    	mockMvc.perform(post("/api/actions/dummy_action/isallowed")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [{\"attr\":\"TESTE1\"}]}"))
     		.andExpect(status().isOk())
