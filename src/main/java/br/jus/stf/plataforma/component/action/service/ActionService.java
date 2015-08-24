@@ -37,7 +37,7 @@ public class ActionService {
 	private ActionMappingRegistry mappingRegistry;
 
 	/**
-	 * Retorna a lista de ações.
+	 * Retorna a lista de ações de ações registradas.
 	 * 
 	 * @return a lista de ações
 	 */

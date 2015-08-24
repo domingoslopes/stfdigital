@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
+ * Comando que informa os recursos
+ * 
  * @author Lucas.Rodrigues
  *
  */
