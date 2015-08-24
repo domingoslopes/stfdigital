@@ -13,10 +13,15 @@
 		
 		$scope.ministros = data.data;
 		
-		$scope.relator = {};
+		$scope.relator = '';
 		
 		$scope.finalizar = function() {
-			$http.post(properties.apiUrl + '/peticao/' + $scope.idPeticao + '/distribuicao', $scope.relator.id).success(function(data) {
+			if ($scope.relator.length === 0) {
+				messages.error('Você precisa selecionar um <b>ministro relator</b> para o processo.');
+				return;
+			}
+			
+			$http.post(properties.apiUrl + '/peticao/' + $scope.idPeticao + '/distribuicao', JSON.stringify($scope.relator)).success(function(data) {
 				$state.go('dashboard');
 				messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
 			}).error(function(data, status) {

@@ -13,12 +13,12 @@
 		angular.bootstrap(document, ['app']);
 	});
 
-	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates', 'properties'])
+	angular.module('app', ['ui.router', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
 		$urlRouterProvider.otherwise('/dashboard');
-		$locationProvider.html5Mode(true);
+		//$locationProvider.html5Mode(true);
 		$logProvider.debugEnabled(true);
 		$stateProvider.state('root', {
 		});

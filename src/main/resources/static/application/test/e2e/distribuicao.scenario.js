@@ -10,9 +10,7 @@
 	
 	var PrincipalPage = require('./pages/principal.page');
 	
-	var RegistroPage = require('./pages/registro.page');
-	
-	var PreautuacaoPage = require('./pages/preautuacao.page');
+	var RegistroPage = require('./pages/peticionamento.page');
 	
 	var AutuacaoPage = require('./pages/autuacao.page');
 	
@@ -26,7 +24,7 @@
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
 		});
 
-		it('Deveria navegar para a página de registro de petições físicas', function() {
+		it('Deveria navegar para a página de envio de petições digitais', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
 			
@@ -37,48 +35,35 @@
 			principalPage.iniciarProcesso();
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao/);
 		});
 
-		it('Deveria registrar uma nova petição física', function() {
+		it('Deveria enviar uma nova petição digital', function() {
 			var registroPage = new RegistroPage();
 			
 			registroPage.classificar('AP');
 			
+			registroPage.partePoloAtivo('João da Silva');
+		    
+			registroPage.partePoloPassivo('Maria da Silva');
+		    
 			registroPage.registrar();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #7');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #18');
 		});
 
-		it('Deveria pré-atuar a petição registrada', function() {
+		it('Deveria atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/preautuacao/);
-		    
-			var preautuacaoPage = new PreautuacaoPage();
-			
-			preautuacaoPage.finalizar();
-		    
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
-			principalPage.login('autuador');
-			
-		    expect(principalPage.tarefas().count()).toEqual(1);
-		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #13');
-		    
-		});
-
-		it('Deveria atuar a petição pré-autuada', function() {
-		    principalPage.executarTarefa();
-
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/13\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/18\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
+			
+			autuacaoPage.classificar('AP');
 			
 			autuacaoPage.finalizar();
 		    
@@ -88,20 +73,18 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #17');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #22');
 		    
 		});
 
-		it('Deveria distribuir a petição autuada como válida', function() {
+		it('Deveria distribuir a petição autuada', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/17\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/22\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
-			distribuicaoPage.selecionar('MIN. DIAS TOFFOLI');
-			
-			expect(distribuicaoPage.relator()).toEqual('MIN. DIAS TOFFOLI');
+			distribuicaoPage.selecionar('Min. Roberto Barroso');
 			
 			distribuicaoPage.finalizar();
 		    

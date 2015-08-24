@@ -60,10 +60,17 @@
             </a>
             <span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
           </li>
-          <li>
+          <li ng-if="false">
             <a ui-sref="registro" class="detailed">
               <span class="title">Novo Item</span>
-              <span class="details">Registro de Demandas</span>
+              <span class="details">Petições Físicas</span>
+            </a>
+            <span class="icon-thumbnail bg-success"><i id="novaPFIcon" class="fa fa-plus"></i></span>
+          </li>
+          <li>
+            <a ui-sref="peticionamento" class="detailed">
+              <span class="title">Novo Item</span>
+              <span class="details">Petições Digitais</span>
             </a>
             <span class="icon-thumbnail bg-success"><i id="novoItemIcon" class="fa fa-plus"></i></span>
           </li>
@@ -332,6 +339,10 @@
 	<script type="text/javascript" src="vendor/angular/angular.js"></script>
 	<script type="text/javascript" src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
 	<script type="text/javascript" src="vendor/angular-mocks/angular-mocks.js"></script>
+    <script type="text/javascript" src="vendor/select2/select2.js"></script>
+    <script type="text/javascript" src="vendor/angular-ui-select2/src/select2.js"></script>
+    <script type="text/javascript" src="vendor/angular-sanitize/angular-sanitize.js"></script>
+	
 	<!-- endbuild -->
 
 	<!-- build:js assets/js/main.js -->
@@ -349,6 +360,8 @@
     <script type="text/javascript" src="application/test/mocks.module.js"></script>
     
     <script type="text/javascript" src="application/autuacao/autuacao.module.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/peticionamento.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/classe.service.js"></script>
 	<script type="text/javascript" src="application/autuacao/registro/registro.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/preautuacao/preautuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/autuacao/autuacao.controller.js"></script>

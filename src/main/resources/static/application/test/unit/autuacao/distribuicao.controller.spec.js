@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Distribuicao Controller', function() {
+	describe('Distribuição Controller', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
@@ -19,7 +19,7 @@
 		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, $window, properties, MinistroService) {
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('distribuidor');
-			$httpBackend.expectGET(properties.apiUrl + '/ministros').respond([{id : 42, nome: 'MIN. CÁRMEN LÚCIA'}, {id : 44, nome: 'MIN. DIAS TOFFOLI'}]);
+			$httpBackend.expectGET(properties.apiUrl + '/ministros').respond([{id : 42, nome: 'Min. Cármen Lúcia'}, {id : 44, nome: 'Min. Dias Toffoli'}]);
 
 			MinistroService.listar().success(function(result) {
 				fakeData = result;
@@ -37,14 +37,14 @@
 			});
 		}));
 
-		it('Deveria carregar a lista de Ministros no escopo do controlador', function() {
-			expect(scope.ministros[0].nome).toEqual('MIN. CÁRMEN LÚCIA');
-			expect(scope.ministros[1].nome).toEqual('MIN. DIAS TOFFOLI');
-			expect(scope.ministros.length).toEqual(2);
+		it('Deveria carregar o identificador da petição no escopo do controlador', function() {
+			expect(scope.idPeticao).toEqual(1);
 		});
 		
-		it('Deveria carregar ID da Petição no escopo do controlador', function() {
-			expect(scope.idPeticao).toEqual(1);
+		it('Deveria carregar a lista de ministros no escopo do controlador', function() {
+			expect(scope.ministros[0].nome).toEqual('Min. Cármen Lúcia');
+			expect(scope.ministros[1].nome).toEqual('Min. Dias Toffoli');
+			expect(scope.ministros.length).toEqual(2);
 		});
 		
 	});

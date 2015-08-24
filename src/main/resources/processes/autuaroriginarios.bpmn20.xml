@@ -1,52 +1,59 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<definitions id="definitions" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" targetNamespace="Examples">
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions id="definitions" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" targetNamespace="autuacao">
 
-	<signal id="peticaoInvalida" name="Petição Inválida"/>
-
-	<process id="autuarOriginarios">
-
-		<startEvent id="receberremessa"/>
-
-		<sequenceFlow id="preautuar" sourceRef="receberremessa" targetRef="preautuacao" />
-
-		<userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="recebedor" />
-
-		<sequenceFlow id="analisar" sourceRef="preautuacao" targetRef="analise" />
-
+    <signal id="peticaoInvalida" name="Petição Inválida"/>
+	
+	<message id="remessaFisica" name="Remessa de Petições Físicas" />
+	
+	<process id="autuarOriginarios" isExecutable="true">
+	
+		<userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="recebedor"/>
+		
 		<subProcess id="analise" name="Análise">
 		
 			<startEvent id="iniciaranalise" />
 			
-			<sequenceFlow id="autuar" sourceRef="iniciaranalise" targetRef="autuacao" />
-
 			<userTask id="autuacao" name="Autuar Processo" activiti:candidateGroups="autuador"/>
+
+			<endEvent id="finalizaranalise" />
+			
+			<sequenceFlow id="autuar" sourceRef="iniciaranalise" targetRef="autuacao" />
 			
 			<sequenceFlow id="finalisaranalise" sourceRef="autuacao" targetRef="finalizaranalise" />
 			
-			<endEvent id="finalizaranalise" />
-			
 		</subProcess>
-
-		<boundaryEvent id="abortarAnalise" attachedToRef="analise" cancelActivity="true">
-			<signalEventDefinition signalRef="peticaoInvalida" />
-		</boundaryEvent>
-
-		<sequenceFlow id="devolver" sourceRef="abortarAnalise" targetRef="devolucao" />
-
+		
 		<userTask id="devolucao" name="Devolver Processo" activiti:candidateGroups="devolvedor"/>
-
+		
 		<sequenceFlow id="finalizardevolucao" sourceRef="devolucao" targetRef="devolvido" />
-
-		<endEvent id="devolvido" />
-
+		
+		<endEvent id="devolvido" name="Devolvido" />
+		
 		<sequenceFlow id="distribuir" sourceRef="analise" targetRef="distribuicao" />
-
+		
 		<userTask id="distribuicao" name="Distribuir Processo" activiti:candidateGroups="distribuidor"/>
-			
+		
 		<sequenceFlow id="finalizardistribuicao" sourceRef="distribuicao" targetRef="distribuido" />
 		
-		<endEvent id="distribuido" />
-
+		<endEvent id="distribuido" name="Distribuído" />
+		
+        <sequenceFlow id="devolver" sourceRef="abortarAnalise" targetRef="devolvido" />
+			
+        <boundaryEvent id="abortarAnalise" attachedToRef="analise" cancelActivity="true">
+            <signalEventDefinition signalRef="peticaoInvalida" />
+        </boundaryEvent>
+		
+		<sequenceFlow id="preautuar" sourceRef="receberremessa" targetRef="preautuacao" />
+			
+		<sequenceFlow id="peticionar" sourceRef="peticionamento" targetRef="analise" />
+			
+		<startEvent id="peticionamento" name="Peticionar" />
+			
+		<sequenceFlow id="analisar" sourceRef="preautuacao" targetRef="analise" />
+			
+		<startEvent id="receberremessa" name="Registrar Petição Física">
+			<messageEventDefinition messageRef="remessaFisica" />
+		</startEvent>
+		
 	</process>
-
 </definitions>
