@@ -11,7 +11,6 @@
 
 	angular.plataforma.service('ActionService', ['$q', '$http', '$templateCache', '$window', 'properties', 
 	                             function($q, $http, $templateCache, $window, properties) {
-		
 		//attributes
 		var actions = {};
 		
@@ -29,7 +28,7 @@
 		 */
 		this.load =	function(context) {
 			return $q(function(resolve, reject) {
-				$http.get(properties.baseUrl + /*'/' + context + */'/actions', $templateCache)
+				$http.get(properties.apiUrl + /*'/' + context + */'/actions', $templateCache)
 					.then(function(result) {
 						angular.forEach(result.data, function(action) {
 							action.context = context;
@@ -51,8 +50,11 @@
 				var idsByContext = {};
 				var context = '';
 				
+				//carrega as ações permitidas localmente e carrega em outro array
+				//as ações para serem verificados no servidor
 				angular.forEach(actions, function(action, id) {
 					if (action.resourcesType === type && isAllowed(action, resources, contextFilter)) {
+						// se possuir handlers devem ser verificadas
 						if (action.hasConditionHandlers) {
 							if (context === action.context) {
 								idsByContext[context].push(id);
@@ -63,20 +65,24 @@
 								}
 							}
 						} else {
+							// carrega as já permitidas
 							allowedActions.push(action);
 						}
 					}
 				});
-				
+				// se não existir ações para serem verificadas, retorna as carregadas
 				if (idsByContext.length === 0) {
 					resolve(allowedActions);
 				} else {
 					var posts = [];
+					// carrega todos as requisições que devem ser realizadas para
+					// verificar as ações que ainda não foram permitidas
 					angular.forEach(idsByContext, function(ids, context) {
 						var data = { 'ids' : ids, 'resources' : resources };
-						var post = $http.post(properties.baseUrl + /*'/' + context + */'/actions/verify', data);
+						var post = $http.post(properties.apiUrl + /*'/' + context + */'/actions/isallowed', data);
 						posts.push(post);
 					});
+					// espera todas as requisições terminarem para retornar as ações
 					$q.all(posts)
 						.then(function(results) {
 							angular.forEach(results, function(result) {
@@ -93,23 +99,27 @@
 		};
 		
 		/**
-		 * Verifica se a ação pode ser executada com os recursos informados 
+		 * Verifica se uma ação específica pode ser executada com os recursos informados 
 		 */
-		this.verify = function(id, resources) {
+		this.isAllowed = function(id, resources) {
 			return $q(function(resolve, reject) {
 				var action = actions[id];
-
-				if (angular.isObject(action) && isAllowed(action, resources)) {
+				
+				// verifica primeiro as permissões localmente
+				if (angular.isObject(action) && isAllowed(action, resources, action.context)) {
+					// se não possui handlers permite
 					if (!action.hasConditionHandlers) {
 						resolve(true);
+					} else {
+						// verifica os handlers no servidor 
+						var data = { 'resources' : resources };
+						$http.post(properties.apiUrl + /*'/' + action.context + */'/actions/' + id + '/isallowed', data)
+							.then(function(result) {
+								resolve(result.data);
+							}, function(err) {
+								reject(err);
+							});
 					}
-					var data = { 'resources' : resources };
-					$http.post(properties.baseUrl + /*'/' + action.context + */'/actions/' + id + '/verify', data)
-						.then(function(result) {
-							resolve(result.data.length > 0);
-						}, function(err) {
-							reject(err);
-						});
 				} else {
 					resolve(false);
 				}
@@ -122,7 +132,7 @@
 		this.execute = function(id, resources) {
 			var context = actions[id].context;
 			var data = { 'resources' : resources };
-			return $http.post(properties.baseUrl + /*'/' + context +*/ '/actions/' + id + '/execute', data);
+			return $http.post(properties.apiUrl + /*'/' + context +*/ '/actions/' + id + '/execute', data);
 		};
 		
 		//private methods
@@ -149,7 +159,7 @@
 			if (action.neededAuthorities.length === 0) {
 				return true;
 			}
-			var role = $window.sessionStorage.getItem('papel');
+			var role = JSON.parse($window.sessionStorage.getItem('papel'));
 			return action.neededAuthorities.indexOf(role.nome) != -1;
 		};
 		
@@ -171,12 +181,5 @@
 			}
 			return true;
 		};
-	}]).config(['$stateProvider', function($stateProvider) {
-		
-		$stateProvider.state('actions', {
-			abstract : true,
-			url : '/actions'
-		});
-		
 	}]);
 })();

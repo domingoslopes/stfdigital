@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.plataforma.component.action.resources.commands.ResourcesCommand;
 import br.jus.stf.plataforma.component.action.resources.commands.VerifyActionsCommand;
-import br.jus.stf.plataforma.component.action.resources.dto.ActionDTO;
-import br.jus.stf.plataforma.component.action.resources.dto.ActionDTOAssembler;
 import br.jus.stf.plataforma.component.action.service.ActionService;
+import br.jus.stf.plataforma.component.action.support.ActionMappingInfo;
+import br.jus.stf.plataforma.component.action.support.ActionView;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
+ * Controlador rest que expõem os serviços de listagem, verificação e execução de ações
  * @author Lucas.Rodrigues
  *
  */
@@ -32,29 +34,44 @@ public class ActionRestResource {
 	@Autowired
 	private ActionService actionService;
 	
-	@Autowired
-	private ActionDTOAssembler actionDTOAssembler;
-	
+    /**
+     * Lista todas as ações registradas pelo módulo
+     * @return as ações
+     */
     @ApiOperation(value = "Lista as ações de um determinado contexto.")
+    @JsonView(ActionView.class)
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Collection<ActionDTO> list() {
+	public Collection<ActionMappingInfo> list() {
 
     	return actionService.listActions()
     			.stream()
-				.map(action -> actionDTOAssembler.toDTO(action))
 				.sorted((a1, a2) -> a1.getDescription().compareTo(a2.getDescription()))
 				.collect(Collectors.toList());
 	}
     
-    @ApiOperation(value = "Verifica se uma ação pode ser executada.")
-	@RequestMapping(value = "/{actionId}/verify", method = RequestMethod.POST)
-	public boolean verify(@PathVariable("actionId") String actionId, @RequestBody ResourcesCommand command) {
+    /**
+     * Verifica se uma ação pode ser executada ou listada.
+     * 
+     * @param actionId
+     * @param command
+     * @return true se permitido, caso contrário false
+     */
+    @ApiOperation(value = "Verifica se uma ação pode ser executada ou listada.")
+	@RequestMapping(value = "/{actionId}/isallowed", method = RequestMethod.POST)
+	public boolean isAllowed(@PathVariable("actionId") String actionId, @RequestBody ResourcesCommand command) {
     	return actionService.isAllowed(actionId, command.getResources());
 	}
     
-    @ApiOperation(value = "Verifica se as ações podem ser executadas.")
-	@RequestMapping(value = "/verify", method = RequestMethod.POST)
-	public Collection<String> verify(@RequestBody @Valid VerifyActionsCommand command, BindingResult result) {
+    /**
+     * Verifica se várias ações podem ser executadas ou listadas.
+     * 
+     * @param command
+     * @param result
+     * @return os ids das ações permitidas
+     */
+    @ApiOperation(value = "Verifica se as ações podem ser executadas ou listadas.")
+	@RequestMapping(value = "/isallowed", method = RequestMethod.POST)
+	public Collection<String> verifyAllowed(@RequestBody @Valid VerifyActionsCommand command, BindingResult result) {
     	
     	if (result.hasErrors()) {
     		throw new IllegalArgumentException("Verificação inválida: " + result.getAllErrors());
@@ -65,6 +82,13 @@ public class ActionRestResource {
     		.collect(Collectors.toList());
 	}
     
+    /**
+     * Executa a ação
+     * 
+     * @param actionId
+     * @param command
+     * @return o resultado da execução
+     */
     @ApiOperation(value = "Executa a ação de um determinado contexto.")
 	@RequestMapping("/{actionId}/execute")
 	public Object execute(@PathVariable("actionId") String actionId, @RequestBody ResourcesCommand command) {
