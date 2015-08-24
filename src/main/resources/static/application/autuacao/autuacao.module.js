@@ -12,6 +12,8 @@
 	angular.autuacao.config(function config($stateProvider) {
 		$stateProvider.state('registro', {
 			url: '/peticao/fisica',
+			sticky : true,
+			deepStateRedirect : true,
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/registro/registro.tpl.html',
@@ -53,6 +55,15 @@
 				'@': {
 					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
 					controller: 'DevolucaoController'
+				}
+			}
+		}).state('actions.autuacao', {
+			abstract : true,
+		}).state('actions.autuacao.dummy_action', {
+			views: {
+				'body@actions' : {
+					templateUrl: 'application/autuacao/registro/dummy_action.tpl.html',
+					controller: 'DummyActionController'
 				}
 			}
 		});
