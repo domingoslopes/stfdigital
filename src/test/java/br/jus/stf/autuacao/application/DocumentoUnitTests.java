@@ -1,7 +1,7 @@
 package br.jus.stf.autuacao.application;
 
 import java.io.IOException;
-//import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,7 @@ public class DocumentoUnitTests {
 		
 		idDocumento = teste;
 		
-		byte[] arquivo=  null;//IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
+		byte[] arquivo=  IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
 
 	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
 		idDocumento = this.peticaoService.gravarArquivo(mockArquivo);
