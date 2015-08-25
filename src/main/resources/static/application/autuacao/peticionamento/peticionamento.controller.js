@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $http, $state, messages, properties, $log) {
+	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $state, messages, properties, $log, PeticaoService) {
 		$scope.classes = data.data;
 		
 		$scope.classe = '';
@@ -56,7 +56,7 @@
 				return;
 			}
 			
-			$http.post(properties.apiUrl + '/peticao', new PeticaoDto($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo)).success(function(data) {
+			PeticaoService.peticionar(new PeticionarCommand($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo)).success(function(data) {
 				$state.go('dashboard');
 				messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
 			}).error(function(data, status) {
@@ -98,7 +98,7 @@
 		}
 
 
-    	function PeticaoDto(classe, partesPoloAtivo, partesPoloPassivo){
+    	function PeticionarCommand(classe, partesPoloAtivo, partesPoloPassivo){
     		var dto = {};
     		
     		dto.classe = classe;

@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, $http, messages, properties, $state) {
+	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, messages, properties, $state, PeticaoService) {
 		
 		$scope.idPeticao = $stateParams.idTarefa;
 		
@@ -21,7 +21,7 @@
 				return;
 			}
 			
-			$http.post(properties.apiUrl + '/peticao/' + $scope.idPeticao + '/distribuicao', JSON.stringify($scope.relator)).success(function(data) {
+			PeticaoService.distribuir($scope.idPeticao, $scope.relator).success(function(data) {
 				$state.go('dashboard');
 				messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
 			}).error(function(data, status) {

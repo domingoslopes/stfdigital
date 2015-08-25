@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.workflow.infra;
 
 import java.util.List;
+
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -40,8 +41,10 @@ public class TarefaRepositoryActiviti implements TarefaRepository {
 	}
 
 	@Override
-	public void sinalizar(String sinal) {
-		runtimeService.signalEventReceived(sinal);
+	public void sinalizar(String sinal, String id) {
+		Task task = taskService.createTaskQuery().taskId(id).singleResult();
+		
+		runtimeService.signalEventReceived(sinal, task.getExecutionId());
 	}
 
 	@Override

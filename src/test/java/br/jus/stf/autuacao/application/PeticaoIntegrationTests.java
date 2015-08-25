@@ -73,16 +73,7 @@ public class PeticaoIntegrationTests {
 		//Registra uma nova petição.
 		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
         
-        Assert.assertEquals("31", idPeticao);
-        
-        //Retorna a lista de tarefas do recebedor.
-        List<Task> tarefasRecebedor = this.tarefaApplicationService.tarefas("recebedor");
-        Assert.assertEquals(1, tarefasRecebedor.size());
-        
-        idTarefa = tarefasRecebedor.get(0).getId().toString();
-        
-        //Pré atutuação.
-        this.peticaoApplicationService.preautuar(idTarefa);
+        Assert.assertEquals("27", idPeticao);
         
         //Retorna a lista de tarefas do autuador.
         List<Task> tarefasAutuador = this.tarefaApplicationService.tarefas("autuador");
@@ -94,7 +85,7 @@ public class PeticaoIntegrationTests {
         boolean peticaoValida = true;
         
         //Autuação.
-        this.peticaoApplicationService.autuar(idTarefa, classe, peticaoValida);
+        this.peticaoApplicationService.autuar(idTarefa, classe, peticaoValida, "");
         
         //Retorna a lista de tarefas do autuador.
         List<Task> tarefasDistribuidor = this.tarefaApplicationService.tarefas("distribuidor");
@@ -103,7 +94,7 @@ public class PeticaoIntegrationTests {
         idTarefa = tarefasDistribuidor.get(0).getId().toString();
         
         //Distribui o processo.
-        this.peticaoApplicationService.distribuir(idTarefa);
+        this.peticaoApplicationService.distribuir(idTarefa, "Min. Cármen Lúcia");
         
       //Retorna a lista de tarefas do distribuidor para saber se ela está vazia.
         List<Task> tarefasDistribuidorNova = this.tarefaApplicationService.tarefas("distribuidor");
@@ -119,16 +110,7 @@ public class PeticaoIntegrationTests {
 		//Registra uma nova petição.
 		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
         
-        Assert.assertEquals("4", idPeticao);
-        
-        //Retorna a lista de tarefas do recebedor.
-        List<Task> tarefasRecebedor = this.tarefaApplicationService.tarefas("recebedor");
-        Assert.assertEquals(1, tarefasRecebedor.size());
-        
-        idTarefa = tarefasRecebedor.get(0).getId().toString();
-        
-        //Pré atutuação.
-        this.peticaoApplicationService.preautuar(idTarefa);
+        Assert.assertEquals("5", idPeticao);
         
         //Retorna a lista de tarefas do autuador.
         List<Task> tarefasAutuador = this.tarefaApplicationService.tarefas("autuador");
@@ -140,19 +122,10 @@ public class PeticaoIntegrationTests {
         boolean peticaoValida = false;
         
         //Autuação.
-        this.peticaoApplicationService.autuar(idTarefa, classe, peticaoValida);
+        this.peticaoApplicationService.autuar(idTarefa, classe, peticaoValida, "");
         
-        //Retorna a lista de tarefas do autuador.
-        List<Task> tarefasDevolvedor = this.tarefaApplicationService.tarefas("devolvedor");
-        Assert.assertEquals(1, tarefasDevolvedor.size());
-        
-        idTarefa = tarefasDevolvedor.get(0).getId().toString();
-        
-        //Distribui o processo.
-        this.peticaoApplicationService.devolver(idTarefa);
-        
-        //Retorna a lista de tarefas do distribuidor para saber se ela está vazia.
-        List<Task> tarefasDevolvedorNova = this.tarefaApplicationService.tarefas("devolvedor");
-        Assert.assertEquals(0, tarefasDevolvedorNova.size());
+        //Retorna a lista de tarefas do distribuidor.
+        List<Task> tarefasDistribuidor = this.tarefaApplicationService.tarefas("distribuidor");
+        Assert.assertEquals(0, tarefasDistribuidor.size());
 	}
 }

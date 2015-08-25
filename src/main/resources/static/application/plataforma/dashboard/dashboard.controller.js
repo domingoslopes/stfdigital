@@ -7,12 +7,12 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DashboardController', function (data, $scope, $http, properties) {
+	angular.plataforma.controller('DashboardController', function (data, $scope, $http, properties, PeticaoService) {
 		
 		$scope.tarefas = data.data;
 		
-		$http.get(properties.apiUrl + '/peticoes').success(function(peticoes) {
-			$scope.peticoes = peticoes
+		PeticaoService.listar().success(function(peticoes) {
+			$scope.peticoes = peticoes;
 		});
 		
 	});

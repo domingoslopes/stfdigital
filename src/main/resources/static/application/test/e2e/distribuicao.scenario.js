@@ -53,13 +53,13 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #18');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #21');
 		});
 
 		it('Deveria atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/18\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/21\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -73,14 +73,14 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #22');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #26');
 		    
 		});
 
 		it('Deveria distribuir a petição autuada', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/22\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/26\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			

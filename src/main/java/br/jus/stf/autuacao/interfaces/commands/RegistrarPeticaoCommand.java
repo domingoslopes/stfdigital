@@ -30,7 +30,6 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
 	private List<String> partesPoloPassivo;
 	
-	@NotEmpty
 	@ApiModelProperty(value = "A lista de identificadores dos documentos que serão anexados pelo peticionador", required=true)
 	private List<String> documentos;
 

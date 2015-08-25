@@ -48,7 +48,7 @@ public class AutuacaoOriginariosIntegrationTests {
     @Test
     public void distribuir() throws Exception {
     	// Passo 01: Solicitando o Registro da Petição Física...
-		mockMvc.perform(post("/api/peticao/fisica").contentType(MediaType.APPLICATION_JSON).content("{\"tipoRecebimento\":\"1\"}")).andExpect(status().isOk()).andExpect(content().string("4"));
+		mockMvc.perform(post("/api/peticao").contentType(MediaType.APPLICATION_JSON).content("{\"tipoRecebimento\":\"1\"}")).andExpect(status().isOk()).andExpect(content().string("4"));
 		
 		// Passo 02: Verificando se o processo de recebimento se encontra em "Pré-Autuação"...
 		mockMvc.perform(get("/api/tarefas").header("papel", "recebedor")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id", is("7"))).andExpect(jsonPath("$[0].descricao", is("Pré-Autuar Processo")));

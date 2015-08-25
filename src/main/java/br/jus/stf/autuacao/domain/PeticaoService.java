@@ -1,11 +1,12 @@
 package br.jus.stf.autuacao.domain;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,17 +40,26 @@ public class PeticaoService {
 		tarefaAdapter.completar(idPeticao);
 	}
 
-	public void autuar(String idPeticao, boolean peticaoValida) {
+	public void autuar(String idPeticao, boolean peticaoValida, String motivo) {
 		if (peticaoValida) {
 			tarefaAdapter.completar(idPeticao);
-			
 		} else {
-			tarefaAdapter.sinalizar("Petição Inválida");
+	    	processoAdapter.alterar(idPeticao, "motivo", motivo);
+			
+			tarefaAdapter.sinalizar("Petição Inválida", idPeticao);
 		}
 	}
 
-	public String distribuir(String idPeticao) {
+	@Autowired
+	private RuntimeService runtimeService;
+	
+	@Autowired
+	private TaskService taskService;
+	
+	public String distribuir(String idPeticao, String relator) {
 		String idProcesso = "";
+		
+    	processoAdapter.alterar(idPeticao, "relator", relator);
 		
 		tarefaAdapter.completar(idPeticao);
 		

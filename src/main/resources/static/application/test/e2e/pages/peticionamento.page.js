@@ -26,13 +26,13 @@
 		    element(by.id('partePoloAtivo')).sendKeys(nome);
 		    
 			element(by.id('botaoAdicionarPartePoloAtivo')).click();
-		}
+		};
 		
 		this.partePoloPassivo = function(nome) {
 		    element(by.id('partePoloPassivo')).sendKeys(nome);
 		    
 			element(by.id('botaoAdicionarPartePoloPassivo')).click();
-		}
+		};
 		
 		this.registrar = function () {
 			element(by.id('botaoPeticionar')).click();
