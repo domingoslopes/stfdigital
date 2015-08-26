@@ -32,10 +32,11 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	}
 
 	@Override
-	public void sinalizar(String sinal) {
+	public void sinalizar(String sinal, String executionId) {
 		SinalizarCommand command = new SinalizarCommand();
 
 		command.setSinal(sinal);
+		command.setExecutionId(executionId);
 
 		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
 		tarefaRestService.sinalizar(command);

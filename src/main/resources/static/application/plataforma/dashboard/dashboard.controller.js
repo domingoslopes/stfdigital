@@ -7,9 +7,13 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DashboardController', function (data, $scope, $log) {
+	angular.plataforma.controller('DashboardController', function (data, $scope, $http, properties, PeticaoService) {
 		
 		$scope.tarefas = data.data;
+		
+		PeticaoService.listar().success(function(peticoes) {
+			$scope.peticoes = peticoes;
+		});
 		
 	});
 	
