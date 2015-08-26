@@ -65,7 +65,6 @@
 						$scope.actions = actions;
 					});
 				};
-				//listActions();
 				
 				//as ações devem ser recarregadas sempre que os recursos mudarem
 				$scope.$watchCollection('resources', listActions);

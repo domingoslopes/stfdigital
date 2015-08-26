@@ -2,14 +2,9 @@ package br.jus.stf.autuacao.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 
 import br.jus.stf.shared.domain.model.PessoaId;
 import br.jus.stf.shared.domain.stereotype.ValueObject;
@@ -19,19 +14,15 @@ import br.jus.stf.shared.domain.stereotype.ValueObject;
  * @version 1.0
  * @created 14-ago-2015 18:33:25
  */
-@Entity
-@Table(name = "PARTE")
-@SequenceGenerator(name = "PARTEID", sequenceName = "SEQ_PARTE", allocationSize = '1')
-public class Parte implements ValueObject<Parte>{
+@MappedSuperclass
+public abstract class Parte implements ValueObject<Parte>{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Embedded
 	private PessoaId pessoaId;
 	
+	@Column(name = "TIP_POLO")
 	@Enumerated(EnumType.STRING)
 	private TipoPolo polo;
 
@@ -66,20 +57,11 @@ public class Parte implements ValueObject<Parte>{
 	    return sameValueAs(other);
 	}
 
-	/**
-	 * 
-	 * @param other
-	 */
+	@Override
 	public boolean sameValueAs(final Parte other){
 		return other != null && this.pessoaId.sameValueAs(other.pessoaId) && this.polo.sameValueAs(other.polo);
 	}
 	
-	//Hibernate
-	@Id
-	@GeneratedValue(generator = "PARTEID", strategy=GenerationType.SEQUENCE)
-	@Column(name = "SEQ_PARTE")
-	private Long id;
-
 	Parte() {
 		
 	}
