@@ -24,6 +24,7 @@ module.exports = {
 	index : 'src/main/resources/static/index.html',
 	assets : 'src/main/resources/static/theme/assets/**',
 	images : 'src/main/resources/static/theme/assets/images/**/*',
+	rewritePattern : ['!\.html|\.js|\.css|\.png|\.jpg|\.svg|\.ttf|\.woff|\.woff2$ / [L]'],
 	banner : [
 		'/**', ' * <%= pkg.name %> - <%= pkg.description %>',
 		' * @version v<%= pkg.version %>', 
