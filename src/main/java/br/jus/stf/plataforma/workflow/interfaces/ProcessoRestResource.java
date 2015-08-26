@@ -60,8 +60,8 @@ public class ProcessoRestResource {
 		return processoApplicationService.iniciar(command.getIdProcesso(), classeSugerida, poloAtivo, poloPassivo, documentos);
 	}
 
-	public void alterar(String idPeticao, String classe){
-		this.processoApplicationService.alterar(idPeticao, classe);
+	public void alterar(String id, String nome, String valor){
+		this.processoApplicationService.alterar(id, nome, valor);
 	}
 	
 	public ProcessoDto consultar(String id){ 

@@ -17,17 +17,17 @@ public class MinistroRepositoryMemory implements MinistroRepository {
 
 	public List<Ministro> listar() {
 		List<Ministro> ministros = new LinkedList<Ministro>();
-		ministros.add(new Ministro(42, "MIN. CÁRMEN LÚCIA"));
-		ministros.add(new Ministro(28, "MIN. CELSO DE MELLO"));
-		ministros.add(new Ministro(44, "MIN. DIAS TOFFOLI"));
-		ministros.add(new Ministro(49, "MIN. EDSON FACHIN"));
-		ministros.add(new Ministro(36, "MIN. GILMAR MENDES"));
-		ministros.add(new Ministro(45, "MIN. LUIZ FUX"));
-		ministros.add(new Ministro(30, "MIN. MARCO AURÉLIO"));
-		ministros.add(new Ministro(48, "MIN. ROBERTO BARROSO"));
-		ministros.add(new Ministro(46, "MIN. ROSA WEBER"));
-		ministros.add(new Ministro(47, "MIN. TEORI ZAVASCKI"));
-		ministros.add(new Ministro(1, "MINISTRO PRESIDENTE"));
+		ministros.add(new Ministro(42, "Min. Cármen Lúcia"));
+		ministros.add(new Ministro(28, "Min. Celso de Mello"));
+		ministros.add(new Ministro(44, "Min. Dias Toffoli"));
+		ministros.add(new Ministro(49, "Min. Edson Fachin"));
+		ministros.add(new Ministro(36, "Min. Gilmar Mendes"));
+		ministros.add(new Ministro(45, "Min. Luiz Fux"));
+		ministros.add(new Ministro(30, "Min. Marco Aurélio"));
+		ministros.add(new Ministro(48, "Min. Roberto Barroso"));
+		ministros.add(new Ministro(46, "Min. Rosa Weber"));
+		ministros.add(new Ministro(47, "Min. Teori Zavascki"));
+		ministros.add(new Ministro(1, "Ministro Presidente"));
 
 		return ministros;
 	}

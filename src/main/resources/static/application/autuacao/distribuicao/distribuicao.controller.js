@@ -7,16 +7,21 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, $http, messages, properties, $state) {
+	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, messages, properties, $state, PeticaoService) {
 		
 		$scope.idPeticao = $stateParams.idTarefa;
 		
 		$scope.ministros = data.data;
 		
-		$scope.relator = {};
+		$scope.relator = '';
 		
 		$scope.finalizar = function() {
-			$http.post(properties.apiUrl + '/peticao/' + $scope.idPeticao + '/distribuicao', $scope.relator.id).success(function(data) {
+			if ($scope.relator.length === 0) {
+				messages.error('Você precisa selecionar um <b>ministro relator</b> para o processo.');
+				return;
+			}
+			
+			PeticaoService.distribuir($scope.idPeticao, $scope.relator).success(function(data) {
 				$state.go('dashboard');
 				messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
 			}).error(function(data, status) {

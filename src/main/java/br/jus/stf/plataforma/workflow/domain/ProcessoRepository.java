@@ -14,7 +14,7 @@ public interface ProcessoRepository {
 
 	String criar(String id, Peticao peticao);
 	
-	void alterar(String id, String peticao);
+	void alterar(String id, String nome, String valor);
 
 	ProcessInstance consultar(String id);
 }

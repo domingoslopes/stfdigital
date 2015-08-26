@@ -15,7 +15,7 @@ public interface TarefaAdapter {
 
 	public void completar(String id);
 
-	public void sinalizar(String sinal);
+	public void sinalizar(String sinal, String executionId);
 	
 	public TarefaDto consultar(String id);
 

@@ -19,7 +19,7 @@ module.exports = {
 		baseDir + '/vendor/angular-ui-router/release/angular-ui-router.js',
 		baseDir + '/vendor/ui-router-extras/release/ct-ui-router-extras.js',
 		baseDir + '/vendor/angular-ui-select2/src/select2.js',
-		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',				
+		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
 		baseDir + '/application/app.js', 
 		baseDir + '/application/plataforma/**/*.module.js', 
 		baseDir + '/application/plataforma/**/*.js', 

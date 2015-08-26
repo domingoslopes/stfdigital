@@ -125,7 +125,6 @@ public class PeticaoApplicationServiceUnitTests {
 	@Test(expected=RuntimeException.class)
 	public void capturarExcecaoSePoloAtivoNaoInformado(){
 		
-		String idPeticao = "";
 		String tipoRecebimento = "autuarOriginarios";
 		String classeProcessual = "HC";
 		
@@ -142,13 +141,12 @@ public class PeticaoApplicationServiceUnitTests {
         documentos.add(new Documento("Doc1"));
         documentos.add(new Documento("Doc2"));
         
-        idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
+        this.peticaoApplicationService.registrar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
 	}
 	
 	@Test(expected=RuntimeException.class)
 	public void capturarExcecaoSePoloPassivoNaoInformado(){
 		
-		String idPeticao = "";
 		String tipoRecebimento = "autuarOriginarios";
 		String classeProcessual = "HC";
 		
@@ -163,7 +161,7 @@ public class PeticaoApplicationServiceUnitTests {
         documentos.add(new Documento("Doc1"));
         documentos.add(new Documento("Doc2"));
                 
-        idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
+        this.peticaoApplicationService.registrar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
 	}
 	
 	@Test
@@ -174,7 +172,7 @@ public class PeticaoApplicationServiceUnitTests {
 				
 		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
         
-        Assert.assertEquals("22", idPeticao);
+        Assert.assertEquals("23", idPeticao);
 	}
 	
 	@Test
@@ -182,9 +180,9 @@ public class PeticaoApplicationServiceUnitTests {
 	
 		String tipoRecebimento = "autuarOriginarios";
 	
-		String idPeticao =  this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasse().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
+		this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasse().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
 		
-		List<Task> tarefas = this.tarefaApllicationService.tarefas("recebedor");
+		List<Task> tarefas = this.tarefaApllicationService.tarefas("autuador");
 		
 		Assert.assertEquals(1, tarefas.size());
 	}
@@ -195,7 +193,7 @@ public class PeticaoApplicationServiceUnitTests {
 		String classe = "";
 		boolean peticaoValida = true;
 		
-		this.peticaoApplicationService.autuar(idPeticao, classe, peticaoValida);
+		this.peticaoApplicationService.autuar(idPeticao, classe, peticaoValida, "");
 	}
 	
 	@Test
@@ -203,7 +201,7 @@ public class PeticaoApplicationServiceUnitTests {
 		String idPeticao = "4";
 		boolean peticaoValida = true;
 		
-		this.peticaoApplicationService.autuar(idPeticao, this.peticao.getClasse().getSigla(), peticaoValida);
+		this.peticaoApplicationService.autuar(idPeticao, this.peticao.getClasse().getSigla(), peticaoValida, "");
 		
 		List<Task> tarefas = this.tarefaApllicationService.tarefas("distribuidor");
 		

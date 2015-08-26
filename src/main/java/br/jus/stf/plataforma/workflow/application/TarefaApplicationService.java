@@ -28,8 +28,8 @@ public class TarefaApplicationService {
 		tarefaRepository.completar(idTarefa);
 	}
 
-	public void sinalizar(String sinal) {
-		tarefaRepository.sinalizar(sinal);
+	public void sinalizar(String sinal, String id) {
+		tarefaRepository.sinalizar(sinal, id);
 	}
 
 	public Task consultar(String id){

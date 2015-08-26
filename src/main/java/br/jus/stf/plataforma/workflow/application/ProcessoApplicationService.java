@@ -31,8 +31,8 @@ public class ProcessoApplicationService {
 		return processoRepository.criar(tipoRecebimento, peticao);
 	}
 
-	public void alterar(String idPeticao, String classe){
-		this.processoRepository.alterar(idPeticao, classe);
+	public void alterar(String id, String nome, String valor){
+		this.processoRepository.alterar(id, nome, valor);
 	}
 	
 	public ProcessInstance consultar(String id){

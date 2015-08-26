@@ -20,7 +20,6 @@ import br.jus.stf.autuacao.domain.entity.Peticao;
 import br.jus.stf.autuacao.domain.entity.Polo;
 import br.jus.stf.plataforma.ApplicationContextInitializer;
 import br.jus.stf.plataforma.workflow.application.TarefaApplicationService;
-import br.jus.stf.plataforma.workflow.domain.TarefaRepository;
 
 /**
  * Teste de integração do processo de peticionamento.
@@ -66,7 +65,7 @@ public class PeticaoIntegrationTests {
 	}
 	
 	@Test
-	public void iniciarProcessoPeticionamento(){
+	public void iniciarRegistroPeticaoValida(){
 		String idPeticao = "";
 		String idTarefa = "";
 		String tipoRecebimento = "autuarOriginarios";
@@ -74,16 +73,7 @@ public class PeticaoIntegrationTests {
 		//Registra uma nova petição.
 		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
         
-        Assert.assertEquals("4", idPeticao);
-        
-        //Retorna a lista de tarefas do recebedor.
-        List<Task> tarefasRecebedor = this.tarefaApplicationService.tarefas("recebedor");
-        Assert.assertEquals(1, tarefasRecebedor.size());
-        
-        idTarefa = tarefasRecebedor.get(0).getId().toString();
-        
-        //Pré atutuação.
-        this.peticaoApplicationService.preautuar(idTarefa);
+        Assert.assertEquals("27", idPeticao);
         
         //Retorna a lista de tarefas do autuador.
         List<Task> tarefasAutuador = this.tarefaApplicationService.tarefas("autuador");
@@ -95,7 +85,7 @@ public class PeticaoIntegrationTests {
         boolean peticaoValida = true;
         
         //Autuação.
-        this.peticaoApplicationService.autuar(idTarefa, classe, peticaoValida);
+        this.peticaoApplicationService.autuar(idTarefa, classe, peticaoValida, "");
         
         //Retorna a lista de tarefas do autuador.
         List<Task> tarefasDistribuidor = this.tarefaApplicationService.tarefas("distribuidor");
@@ -104,10 +94,38 @@ public class PeticaoIntegrationTests {
         idTarefa = tarefasDistribuidor.get(0).getId().toString();
         
         //Distribui o processo.
-        this.peticaoApplicationService.distribuir(idTarefa);
+        this.peticaoApplicationService.distribuir(idTarefa, "Min. Cármen Lúcia");
         
       //Retorna a lista de tarefas do distribuidor para saber se ela está vazia.
         List<Task> tarefasDistribuidorNova = this.tarefaApplicationService.tarefas("distribuidor");
         Assert.assertEquals(0, tarefasDistribuidorNova.size());
+	}
+	
+	@Test
+	public void iniciarRegistroPeticaoInvalida(){
+		String idPeticao = "";
+		String idTarefa = "";
+		String tipoRecebimento = "autuarOriginarios";
+		
+		//Registra uma nova petição.
+		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
+        
+        Assert.assertEquals("5", idPeticao);
+        
+        //Retorna a lista de tarefas do autuador.
+        List<Task> tarefasAutuador = this.tarefaApplicationService.tarefas("autuador");
+        Assert.assertEquals(1, tarefasAutuador.size());
+        
+        idTarefa = tarefasAutuador.get(0).getId().toString();
+        
+        String classe = "HC";
+        boolean peticaoValida = false;
+        
+        //Autuação.
+        this.peticaoApplicationService.autuar(idTarefa, classe, peticaoValida, "");
+        
+        //Retorna a lista de tarefas do distribuidor.
+        List<Task> tarefasDistribuidor = this.tarefaApplicationService.tarefas("distribuidor");
+        Assert.assertEquals(0, tarefasDistribuidor.size());
 	}
 }
