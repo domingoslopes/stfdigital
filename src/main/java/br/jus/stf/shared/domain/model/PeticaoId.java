@@ -1,7 +1,9 @@
-package br.jus.stf.autuacao.domain.model;
+package br.jus.stf.shared.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+
+import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.domain.stereotype.ValueObject;
 
@@ -14,32 +16,29 @@ import br.jus.stf.shared.domain.stereotype.ValueObject;
 public class PeticaoId implements ValueObject<PeticaoId> {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Column(name = "SEQ_PETICAO", nullable = false)
+	private Long id;
+
+	public PeticaoId(final Long id){
+		Validate.notNull(id);
 		
-	@Column(name = "NUM_PETICAO", insertable = true, updatable = false, nullable = false)
-	private Long numero;
-	
-	@Column(name = "NUM_ANO_PETICAO", insertable = true, updatable = false, nullable = false)
-	private Short ano;
-
-	public PeticaoId(final Long numero, final Short ano){
-		this.numero = numero;
-		this.ano = ano;
-	}
-
-	public Long numero(){
-		return numero;
+		this.id = id;
 	}
 	
-	public Short ano() {
-		return ano;
+	PeticaoId() {
+		
+	}
+
+	public Long toLong(){
+		return id;
 	}
 
 	@Override
 	public int hashCode(){
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		result = prime * result + ((ano == null) ? 0 : ano.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 	
@@ -57,12 +56,11 @@ public class PeticaoId implements ValueObject<PeticaoId> {
 	 * @param other
 	 */
 	public boolean sameValueAs(final PeticaoId other){
-		return other != null && this.numero.equals(other.numero) 
-				&& this.ano.equals(other.ano);
+		return other != null && this.id.equals(other.id);
 	}
 
 	public String toString(){
-		return numero.toString();
+		return id.toString();
 	}
 
 }

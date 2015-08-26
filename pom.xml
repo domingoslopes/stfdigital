@@ -56,6 +56,16 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+        	<groupId>org.scala-lang</groupId>
+        	<artifactId>scala-library</artifactId>
+        	<version>2.10.4</version>
+        </dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.4</version>
+		</dependency>        
+        <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
@@ -80,6 +90,7 @@
         <dependency>
         	<groupId>org.springframework.ws</groupId>
         	<artifactId>spring-ws-test</artifactId>
+        	<scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -89,7 +100,6 @@
 				<plugin>
 		    	    <groupId>org.codehaus.mojo</groupId>
 		        	<artifactId>sonar-maven-plugin</artifactId>
-		        	<version>2.3</version>
     		  	</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -113,9 +123,13 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+			</plugin>			
+			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>0.0.23</version>
+				<version>0.0.25</version>
 				<executions>
 					<execution>
 						<id>install node and npm</id>
@@ -143,7 +157,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.1.201405082137</version>
+				<version>0.7.5.201505241946</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -163,4 +177,9 @@
 		</plugins>	
 	</build>
 
+	<scm>
+		<url>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</url>
+		<connection>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</connection>
+		<developerConnection>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</developerConnection>
+	</scm>
 </project>

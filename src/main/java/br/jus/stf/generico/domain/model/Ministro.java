@@ -21,7 +21,6 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "MINISTRO")
-@SequenceGenerator(name = "MINISTROID", sequenceName = "SEQ_MINISTRO", allocationSize = 1, initialValue = 1)
 public class Ministro implements Entity<Ministro> {
 
 	@Embedded
@@ -73,6 +72,7 @@ public class Ministro implements Entity<Ministro> {
 	
 	@Id
 	@Column(name = "SEQ_MINISTRO")
+	@SequenceGenerator(name = "MINISTROID", sequenceName = "SEQ_MINISTRO", allocationSize = 1, initialValue = 1)	
 	@GeneratedValue(generator = "MINISTROID", strategy = GenerationType.SEQUENCE)
 	private Long id;
 	

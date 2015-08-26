@@ -22,7 +22,6 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "DOCUMENTO")
-@SequenceGenerator(name = "DOCUMENTOID", sequenceName = "SEQ_DOCUMENTO", allocationSize = 1)
 public class Documento implements Entity<Documento> {
 
 	@Embedded
@@ -42,7 +41,7 @@ public class Documento implements Entity<Documento> {
 		this.conteudo = conteudo;
 	}
 
-	public DocumentoId id(){
+	public DocumentoId id() {
 		return documentoId;
 	}
 
@@ -76,6 +75,7 @@ public class Documento implements Entity<Documento> {
 	
 	@Id
 	@Column(name = "SEQ_DOCUMENTO")
+	@SequenceGenerator(name = "DOCUMENTOID", sequenceName = "SEQ_DOCUMENTO", allocationSize = 1)
 	@GeneratedValue(generator = "DOCUMENTOID", strategy = GenerationType.SEQUENCE)
 	private Long id;
 	

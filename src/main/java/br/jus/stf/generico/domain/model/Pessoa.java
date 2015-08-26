@@ -19,7 +19,6 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "PESSOA")
-@SequenceGenerator(name = "PESSOAID", sequenceName = "SEQ_PESSOA", allocationSize = 1)
 public class Pessoa implements Entity<Pessoa> {
 
 	@Embedded
@@ -69,6 +68,7 @@ public class Pessoa implements Entity<Pessoa> {
 	
 	@Id
 	@Column(name = "SEQ_PESSOA")
+	@SequenceGenerator(name = "PESSOAID", sequenceName = "SEQ_PESSOA", allocationSize = 1)
 	@GeneratedValue(generator = "PESSOAID", strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
