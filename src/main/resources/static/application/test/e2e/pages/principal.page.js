@@ -18,8 +18,8 @@
 		this.iniciarProcesso = function () {
 			browser.actions().mouseMove(element(by.id('novoItemIcon'))).perform();
 			// É necessário mover o mouse para cima do link, caso contrário o click não vai funcionar
-			browser.actions().mouseMove(element(by.css('a[ui-sref="registro"]'))).perform();
-			element(by.css('a[ui-sref="registro"]')).click();
+			browser.actions().mouseMove(element(by.css('a[ui-sref="peticionamento"]'))).perform();
+			element(by.css('a[ui-sref="peticionamento"]')).click();
 			
 			// Força a saída do mouse da barra de menus para que essa barra recue à esquerda
 			browser.actions().mouseMove(element(by.id('papeis'))).perform();

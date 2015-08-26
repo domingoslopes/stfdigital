@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +25,9 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 	@Autowired
 	private RuntimeService runtimeService;
 
+	@Autowired
+	private TaskService taskService;
+	
 	@Override
 	public String criar(String id, Peticao peticao) {
 		
@@ -53,17 +58,20 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 		
 		idPeticao = processInstance.getId();
 		
-		System.out.println("Peticao: " + idPeticao);
-		
 		return idPeticao;
 	}
 	
-	public void alterar(String id, String classe){
-		this.runtimeService.setVariable(id, "classe", classe);
+	public void alterar(String id, String nome, String valor){
+		Task task = taskService.createTaskQuery().taskId(id).singleResult();
+		if (task != null) {
+			id = task.getProcessInstanceId();
+		}
+		this.runtimeService.setVariable(id, nome, valor);
 	}
 	
 	public ProcessInstance consultar(String id){
-		ProcessInstance processo = runtimeService.createProcessInstanceQuery().processDefinitionId(id).singleResult();
-		return processo;
+    	String processInstanceId = taskService.createTaskQuery().taskId(id).singleResult().getProcessInstanceId();
+    	
+    	return runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).includeProcessVariables().singleResult();
 	}
 }

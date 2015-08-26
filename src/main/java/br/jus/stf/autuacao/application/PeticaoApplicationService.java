@@ -1,11 +1,13 @@
 package br.jus.stf.autuacao.application;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.autuacao.domain.PeticaoService;
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
@@ -77,22 +79,23 @@ public class PeticaoApplicationService {
 		peticaoService.preautuar(idPeticao);
 	}
 
-	public void autuar(String idPeticao, String classe, boolean peticaoValida) {
+	public void autuar(String idPeticao, String classe, boolean peticaoValida, String motivo) {
 		
 		if (idPeticao == null || idPeticao.isEmpty())
 			throw new RuntimeException("O identificador da petição não foi informado.");
 		
 		TarefaDto tarefa = this.tarefaAdapter.consultar(idPeticao);  
 		
-		//Realiza a atuação
-		peticaoService.autuar(tarefa.getId(), peticaoValida);
-		
 		//Atualiza a classe da petição.
-		processoAdapter.alterar(tarefa.getIdProcesso(), classe);
+		processoAdapter.alterar(tarefa.getIdProcesso(), "classe", classe);
+
+		//Realiza a atuação
+		peticaoService.autuar(tarefa.getId(), peticaoValida, motivo);
+		
 	}
 
-	public void distribuir(String idPeticao) {
-		peticaoService.distribuir(idPeticao);
+	public void distribuir(String idPeticao, String relator) {
+		peticaoService.distribuir(idPeticao, relator);
 	}
 
 	public void devolver(String idPeticao) {
@@ -101,5 +104,9 @@ public class PeticaoApplicationService {
 	
 	public PeticaoDto consultar(String id){
 		return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
+	}
+	
+	public String receberDocumentoPeticao(MultipartFile arquivo) throws IOException{
+		return this.peticaoService.gravarArquivo(arquivo);
 	}
 }

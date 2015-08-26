@@ -23,25 +23,18 @@ public class PeticaoDto {
 	
 	@ApiModelProperty(value = "A lista de documentos anexados pelo peticionador")
 	private List<String> documentos;
-
-	public void setClasse(String classe) {
-		this.classe = classe;
-	}
 	
+	public PeticaoDto(String classe, Map<String, List<String>> partes) {
+		this.classe = classe;
+		this.partes = partes;
+	}
+
 	public String getClasse() {
 		return classe;
 	}
 	
-	public void setPartes(Map<String, List<String>> partes) {
-		this.partes = partes;
-	}
-	
 	public Map<String, List<String>> getPartes() {
 		return partes;
-	}
-	
-	public void setDocumentos(List<String> documentos) {
-		this.documentos = documentos;
 	}
 	
 	public List<String> getDocumentos() {

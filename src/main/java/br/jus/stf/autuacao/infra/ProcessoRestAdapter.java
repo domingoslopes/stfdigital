@@ -60,8 +60,8 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 	/**
 	 * Altera a classe de uma petição.
 	 */
-	public void alterar(String idPeticao, String classe){
-		this.processoRestService.alterar(idPeticao, classe);
+	public void alterar(String id, String nome, String valor){
+		this.processoRestService.alterar(id, nome, valor);
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 		peticao.setPoloAtivo(new Polo(partesPoloAtivo));
 		peticao.setPoloPassivo(new Polo(partesPoloPassivo));
 		peticao.setDocumentos(documentos);
-		peticao.setClasse(new ClasseProcessual(processo.getVariaveis().get("classe").toString()));		
+		peticao.setClasse(new ClasseProcessual(processo.getVariaveis().get("classeSugerida").toString()));		
 		
 		return peticao;
 	}

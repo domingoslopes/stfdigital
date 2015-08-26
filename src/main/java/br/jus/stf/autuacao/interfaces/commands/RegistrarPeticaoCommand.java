@@ -1,8 +1,8 @@
 package br.jus.stf.autuacao.interfaces.commands;
 
 import java.util.List;
-import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,31 +19,42 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 public class RegistrarPeticaoCommand {
 
 	@NotBlank
-	@ApiModelProperty(value = "Classe processual sugerida pelo peticionador", required=true)
+	@ApiModelProperty(value = "Identificador da classe processual sugerida pelo peticionador", required=true)
 	private String classe;
 	
 	@NotEmpty
-	@ApiModelProperty(value = "Duas listas: uma lista com partes do polo ativo e outra com partes do polo passivo", required=true)
-	private Map<String, List<String>> partes;
+	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
+	private List<String> partesPoloAtivo;
 	
 	@NotEmpty
-	@ApiModelProperty(value = "A lista de documentos que serão anexados pelo peticionador", required=true)
+	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
+	private List<String> partesPoloPassivo;
+	
+	@ApiModelProperty(value = "A lista de identificadores dos documentos que serão anexados pelo peticionador", required=true)
 	private List<String> documentos;
 
 	public void setClasse(String classe) {
 		this.classe = classe;
 	}
-	
+
 	public String getClasse() {
 		return classe;
 	}
 	
-	public void setPartes(Map<String, List<String>> partes) {
-		this.partes = partes;
+	public void setPartesPoloAtivo(List<String> partesPoloAtivo) {
+		this.partesPoloAtivo = partesPoloAtivo;
 	}
 	
-	public Map<String, List<String>> getPartes() {
-		return partes;
+	public List<String> getPartesPoloAtivo() {
+		return partesPoloAtivo;
+	}
+	
+	public void setPartesPoloPassivo(List<String> partesPoloPassivo) {
+		this.partesPoloPassivo = partesPoloPassivo;
+	}
+	
+	public List<String> getPartesPoloPassivo() {
+		return partesPoloPassivo;
 	}
 	
 	public void setDocumentos(List<String> documentos) {
@@ -52,6 +63,11 @@ public class RegistrarPeticaoCommand {
 	
 	public List<String> getDocumentos() {
 		return documentos;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this); 
 	}
 	
 }
