@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Dashboard', function() {
+	describe('Dashboard Controller', function() {
 		var fakeData = [];
 		var controller;
 		var scope;
@@ -19,12 +19,11 @@
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('recebedor');
 			$httpBackend.expectGET(properties.apiUrl + '/tarefas').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
+			$httpBackend.expectGET(properties.apiUrl + '/peticoes').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
 
 			TarefaService.listar().success(function(result) {
 				fakeData = result;
 			});
-			
-			$httpBackend.flush();
 			
 			controller = $controller('DashboardController', {
 				$scope : scope,
@@ -32,17 +31,26 @@
 					data : fakeData
 				}
 			});
+			
+			$httpBackend.flush();
 		}));
 
-		it('Não deveria ser "null"', function() {
+		it('Deveria instanciar o controlador do dashboard', function() {
 			expect(controller).not.toEqual(null);
 		});
 
-		it('Deveria ter "dados" dentro de seu escopo ($scope)', function() {
+		it('Deveria carregar a lista de tarefas no escopo do controlador', function() {
 			scope.$apply();
 			expect(scope.tarefas[0].descricao).toEqual('Petição #00001');
 			expect(scope.tarefas[1].descricao).toEqual('Petição #00002');
 			expect(scope.tarefas.length).toEqual(2);
+		});
+
+		it('Deveria carregar a lista de petições no escopo do controlador', function() {
+			scope.$apply();
+			expect(scope.peticoes[0].descricao).toEqual('Petição #00001');
+			expect(scope.peticoes[1].descricao).toEqual('Petição #00002');
+			expect(scope.peticoes.length).toEqual(2);
 		});
 	});
 })();
