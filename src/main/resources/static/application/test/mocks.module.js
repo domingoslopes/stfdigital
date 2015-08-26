@@ -23,7 +23,7 @@
 		    resourcesType: "DummyObj",
 		    hasConditionHandlers: true,
 		    resourcesMode: "Many",
-		    neededAuthorities: [],
+		    neededAuthorities: ["peticionador"],
 		    context: "autuacao"
 		}, {
 		    id: "do_nothing",

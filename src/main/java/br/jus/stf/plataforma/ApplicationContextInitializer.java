@@ -1,10 +1,13 @@
 package br.jus.stf.plataforma;
 
+import javax.sql.DataSource;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 /**
@@ -27,5 +30,15 @@ public class ApplicationContextInitializer {
     public LocalValidatorFactoryBean validator() {
     	return new LocalValidatorFactoryBean();
     }
+    
+	/*@Bean(name = "dataSource")
+	public DataSource memoryDataSourceServidor() throws Exception {
+		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		dataSource.setDriver(new org.h2.Driver());
+		dataSource.setUrl("jdbc:h2:~/stfdigital;AUTO_SERVER=TRUE");
+		dataSource.setUsername("sa");
+		dataSource.setPassword("");
+		return dataSource;
+	}*/
     
 }

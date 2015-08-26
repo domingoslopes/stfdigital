@@ -19,12 +19,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
+import br.jus.stf.shared.domain.model.PeticaoId;
 import br.jus.stf.shared.domain.model.ProcessInstanceId;
 import br.jus.stf.shared.domain.stereotype.Entity;
 
@@ -34,21 +36,29 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
-@Table(name = "PETICAO")
-@SequenceGenerator(name = "PETICAOID", sequenceName = "SEQ_PETICAO", allocationSize = '1')
+@Table(name = "PETICAO", schema = "AUTUACAO",
+	uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
 public class Peticao implements Entity<Peticao> {
 
 	@Embedded
-	private PeticaoId numeroPeticao;
+	@AttributeOverride(name = "id",
+		column = @Column(name = "SEQ_PETICAO", insertable = false, updatable = false))
+	private PeticaoId peticaoId;
+	
+	@Column(name = "NUM_PETICAO", nullable = false)
+	private Long numero;
+	
+	@Column(name = "NUM_ANO_PETICAO", nullable = false)
+	private Short ano;
 	
 	@Embedded
-	@AttributeOverride(column = @Column(name = "SIG_CLASSE_SUGERIDA"),
-						name = "sigla")
+	@AttributeOverride(name = "sigla",
+		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
 	private ClasseId classeSugerida;
 	
 	@ElementCollection
 	@CollectionTable(name = "PARTE_PETICAO",
-						joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<Parte> partes = new HashSet<Parte>(0);
 	
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -76,20 +86,22 @@ public class Peticao implements Entity<Peticao> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Peticao(PeticaoId numeroPeticao, ClasseId classeSugerida, Set<Parte> partes, Set<DocumentoId> documentos){
-		Validate.notNull(numeroPeticao, "peticao.numeroPeticao.required");
+	public Peticao(Long numero, Short ano, ClasseId classeSugerida, Set<Parte> partes, Set<DocumentoId> documentos){
+		Validate.notNull(numero, "peticao.numero.required");
+		Validate.notNull(ano, "peticao.ano.required");
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		Validate.notEmpty(partes, "peticao.partes.notEmpty");
 		Validate.notEmpty(documentos, "peticao.documentos.notEmpty");
 	
-		this.numeroPeticao = numeroPeticao;
+		this.numero = numero;
+		this.ano = ano;
 		this.classeSugerida = classeSugerida;
 		this.partes = partes;
 		this.documentos = documentos;
 	}
 
 	public PeticaoId id(){
-		return this.numeroPeticao;
+		return this.peticaoId;
 	}
 
 	public ClasseId classeSugerida(){
@@ -215,8 +227,8 @@ public class Peticao implements Entity<Peticao> {
 			
 		this.status = PeticaoStatus.DISTRIBUIDA;
 		
-		ProcessoId processoId = processoRepository.nextProcessoId(this.classeProcessual);
-		return new Processo(processoId, ministroRelator, this);
+		Long numero = processoRepository.nextNumero(classeProcessual);
+		return new Processo(classeProcessual, numero, ministroRelator, peticaoId, partes, documentos);
 	}
 
 	public PeticaoStatus status(){
@@ -241,7 +253,7 @@ public class Peticao implements Entity<Peticao> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((numeroPeticao == null) ? 0 : numeroPeticao.hashCode());
+		result = prime * result + ((peticaoId == null) ? 0 : peticaoId.hashCode());
 		return result;
 	}
 
@@ -254,18 +266,16 @@ public class Peticao implements Entity<Peticao> {
 		return sameIdentityAs(other);
 	}
 
-	/**
-	 * 
-	 * @param other
-	 */
+	@Override
 	public boolean sameIdentityAs(Peticao other){
-		return other != null && this.numeroPeticao.sameValueAs(other.numeroPeticao);
+		return other != null && this.peticaoId.sameValueAs(other.peticaoId);
 	}
 
 	// Hibernate
 	@Id
-	@GeneratedValue(generator = "PETICAOID", strategy=GenerationType.SEQUENCE)
 	@Column(name = "SEQ_PETICAO")
+	@SequenceGenerator(name = "PETICAOID", sequenceName = "SEQ_PETICAO", allocationSize = 1)
+	@GeneratedValue(generator = "PETICAOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
 	Peticao(){

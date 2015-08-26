@@ -19,6 +19,7 @@ var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+var modRewrite = require('connect-modrewrite');
 var pkg = require('./package');
 var karma = require('karma').server;
 var del = require('del');
@@ -247,10 +248,13 @@ gulp.task('serve', ['build'], function() {
 	browserSync({
 		notify: false,
 		logPrefix: pkg.name,
-		server: ['build', 'src/main/resources/static']
+		server: {
+			baseDir : 'src/main/resources/static',
+			middleware: [modRewrite(config.rewritePattern)]
+		}
 	});
 	
-	gulp.watch(config.html, reload);
+	gulp.watch(config.index, reload);
 	gulp.watch(config.scss, ['sass', reload]);
 	gulp.watch(config.js, ['jshint']);
 	gulp.watch(config.tpl, ['templates', reload]);
@@ -263,6 +267,9 @@ gulp.task('serve', ['build'], function() {
 gulp.task('serve:dist', ['build:dist'], function() {
 	browserSync({
 		notify: false,
-		server: [config.dist]
+		server: {
+			baseDir : config.dist,
+			middleware: [modRewrite(config.rewritePattern)]
+		}
 	});
 });

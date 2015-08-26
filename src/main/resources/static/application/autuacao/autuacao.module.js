@@ -10,7 +10,20 @@
 	angular.autuacao = angular.module('autuacao', []);
 	
 	angular.autuacao.config(function config($stateProvider) {
-		$stateProvider.state('registro', {
+		$stateProvider.state('peticionamento', {
+			url: '/peticao',
+			views: {
+				'@': {
+					templateUrl: 'application/autuacao/peticionamento/peticionamento.tpl.html',
+					controller: 'PeticionamentoController',
+					resolve : {
+						data : function(ClasseService) {
+							return ClasseService.listar();
+						}
+					}
+				}
+			}
+		}).state('registro', {
 			url: '/peticao/fisica',
 			sticky : true,
 			deepStateRedirect : true,

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -14,15 +15,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
+import br.jus.stf.shared.domain.model.PeticaoId;
+import br.jus.stf.shared.domain.model.ProcessoId;
 import br.jus.stf.shared.domain.stereotype.Entity;
 
 /**
@@ -31,19 +34,26 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
-@Table(name = "PROCESSO")
-@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO", allocationSize = 1)
+@Table(name = "PROCESSO", schema = "AUTUACAO",
+	uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_CLASSE", "NUM_PROCESSO"}))
 public class Processo implements Entity<Processo> {
 
 	@Embedded
+	@AttributeOverride(name = "id",
+		column = @Column(name = "SEQ_PPROCESSO", insertable = false, updatable = false))
 	private ProcessoId processoId;
+	
+	@Embedded
+	private ClasseId classe;
+	
+	@Column(name = "NUM_PROCESSO", nullable = false)
+	private Long numero;
 	
 	@Embedded
 	private MinistroId ministroRelator;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
-	private Peticao peticao;
+	@Embedded
+	private PeticaoId peticaoId;
 	
 	@ElementCollection
 	@CollectionTable(name = "PARTE_PROCESSO",
@@ -63,20 +73,19 @@ public class Processo implements Entity<Processo> {
 	 * @param partes
 	 * @param pecas
 	 */
-	public Processo(final ProcessoId processoId, final MinistroId ministroRelator, final Peticao peticao){
-		Validate.notNull(processoId, "processo.numeroProcesso.required");
+	public Processo(final ClasseId classe, final Long numero, final MinistroId ministroRelator,
+			final PeticaoId peticaoId, final Set<Parte> partes, final Set<DocumentoId> documentos) {
+		Validate.notNull(classe, "processo.classe.required");
+		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(ministroRelator, "processo.ministroRelator.required");
-		Validate.notNull(peticao, "processo.peticao.required");
-		Validate.notEmpty(peticao.partesPoloAtivo(), "processo.partes.notEmpty");
-		Validate.notEmpty(peticao.partesPoloPassivo(), "processo.partes.notEmpty");
-		Validate.notEmpty(peticao.documentos(), "processo.pecas.notEmpty");
+		Validate.notNull(peticaoId, "processo.peticao.required");
+		Validate.notEmpty(partes, "processo.partes.notEmpty");
+		Validate.notEmpty(documentos, "processo.pecas.notEmpty");
 		
-		this.processoId = processoId;
 		this.ministroRelator = ministroRelator;
-		this.peticao = peticao;
-		this.partes.addAll(peticao.partesPoloAtivo());
-		this.partes.addAll(peticao.partesPoloPassivo());
-		this.pecas.addAll(peticao.documentos());
+		this.peticaoId = peticaoId;
+		this.partes.addAll(partes);
+		this.pecas.addAll(documentos);
 	}
 
 	public ProcessoId id(){
@@ -87,8 +96,8 @@ public class Processo implements Entity<Processo> {
 		return this.ministroRelator;
 	}
 
-	public Peticao peticao(){
-		return this.peticao;
+	public PeticaoId peticaoId(){
+		return this.peticaoId;
 	}
 
 	public Set<Parte> partesPoloAtivo(){
@@ -133,9 +142,11 @@ public class Processo implements Entity<Processo> {
 	}
 	
 	// Hibernate
+	
 	@Id
-	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	@Column(name = "SEQ_PROCESSO")
+	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO", allocationSize = 1)
+	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
 	Processo(){
