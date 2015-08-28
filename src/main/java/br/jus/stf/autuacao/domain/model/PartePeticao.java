@@ -19,12 +19,13 @@ public class PartePeticao extends Parte {
 	private static final long serialVersionUID = 4186066720961522553L;
 	
 	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || getClass() != obj.getClass()) return false;
-	    
-	    final PartePeticao other = (PartePeticao) obj;
-	    return sameValueAs(other);
+		return super.equals(obj);
 	}
 	
 	//Hibernate

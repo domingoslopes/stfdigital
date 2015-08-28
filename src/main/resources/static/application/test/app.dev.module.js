@@ -7,13 +7,12 @@
  */ 
 (function() {
 	'use strict';
-
+	
 	angular.element(document).ready(function() {
-		// Para rodar a aplicação sem acesso ao backend, altere o valor abaixo de 'app' para 'appDev'
-		angular.bootstrap(document, ['app']);
+		angular.bootstrap(document, ['appDev']);
 	});
 
-	angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize'])
+	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'mocks'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
@@ -22,9 +21,6 @@
 		$logProvider.debugEnabled(true);
 		$stateProvider.state('root', {
 		});
-	})
-	.run(function(ActionService) {
-		ActionService.load("autuacao");
 	})
 	.value('version', '0.1.0');
 	

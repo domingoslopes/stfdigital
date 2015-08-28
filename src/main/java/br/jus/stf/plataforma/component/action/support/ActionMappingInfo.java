@@ -177,7 +177,7 @@ public class ActionMappingInfo {
 			return true;
 		}
 		Optional<Authentication> authentication = Optional
-											.of(SecurityContextHolder.getContext().getAuthentication());
+											.ofNullable(SecurityContextHolder.getContext().getAuthentication());
 		List<String> userAuths = new ArrayList<String>();
 		authentication.ifPresent(
 			auth -> auth.getAuthorities().stream()
