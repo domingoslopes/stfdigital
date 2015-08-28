@@ -42,11 +42,24 @@
 		    neededAuthorities: ["peticionador"],
 		    context: "autuacao"
 		}];
+		
+		var classes = [{ sigla : "ADI", nome : "Ação Direta de Inconstitucionalidade" },
+		               { sigla : "HC", nome : "Habeas Corpus" }];
 		  
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao/fisica').respond(function(method, url, data, headers){
-			console.log('Recebendo dados:', method, url, data, headers);
+		$httpBackend.whenPOST(properties.apiUrl + '/peticao').respond(function(method, url, data, headers){
+			console.log('Enviando peticao:', method, url, data, headers);
 			tarefas.push(angular.fromJson({id: '04', nome : 'preautuacao', descricao : 'Pré-autuar Processo'}));
 			return [200, {}, {}];
+		});
+		
+		$httpBackend.whenGET(properties.apiUrl + '/peticoes').respond(function(method, url, data, headers){
+			console.log('Recebendo peticoes:', method, url, data, headers);
+			return [200, [], {}];
+		});
+		
+		$httpBackend.whenGET(properties.apiUrl + '/classes').respond(function(method, url, data, headers){
+			console.log('Recebendo classes:', method, url, data, headers);
+			return [200, classes, {}];
 		});
 		  
 		$httpBackend.whenGET(properties.apiUrl + '/tarefas').respond(function(method,url,data) {

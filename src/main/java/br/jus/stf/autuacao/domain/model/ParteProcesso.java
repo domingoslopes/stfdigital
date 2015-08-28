@@ -19,12 +19,13 @@ public class ParteProcesso extends Parte {
 	private static final long serialVersionUID = -729211641099556612L;
 	
 	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	
+	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || getClass() != obj.getClass()) return false;
-	    
-	    final ParteProcesso other = (ParteProcesso) obj;
-	    return sameValueAs(other);
+		return super.equals(obj);
 	}
 	
 	//Hibernate

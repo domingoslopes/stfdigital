@@ -15,7 +15,7 @@ import br.jus.stf.shared.domain.stereotype.ValueObject;
  * @created 14-ago-2015 18:33:25
  */
 @MappedSuperclass
-public abstract class Parte implements ValueObject<Parte>{
+public abstract class Parte implements ValueObject<Parte> {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -51,7 +51,7 @@ public abstract class Parte implements ValueObject<Parte>{
 	@Override
 	public boolean equals(Object obj) {
 	    if (this == obj) return true;
-	    if (obj == null || getClass() != obj.getClass()) return false;
+	    if (obj == null || !(obj instanceof Parte)) return false;
 	    
 	    final Parte other = (Parte) obj;
 	    return sameValueAs(other);
