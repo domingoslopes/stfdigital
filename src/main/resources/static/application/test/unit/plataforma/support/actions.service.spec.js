@@ -10,14 +10,11 @@
 	describe('Service: ActionService', function() {
 		var rootScope, actionService, httpBackend;
 
-		beforeEach(module('app'));
+		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $httpBackend, $window, ActionService, properties) {
+		beforeEach(inject(function($rootScope, $window, ActionService) {
 			rootScope = $rootScope;
 			actionService = ActionService;
-			httpBackend = $httpBackend;
-			httpBackend.expectGET(properties.apiUrl + '/actions');
-			httpBackend.expectPOST(properties.apiUrl + '/actions/isallowed');
 			$window.sessionStorage.setItem('papel', JSON.stringify({nome : "peticionador"}));
 		}));
 		

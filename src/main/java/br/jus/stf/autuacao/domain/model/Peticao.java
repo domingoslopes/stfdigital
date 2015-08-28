@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -17,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -56,9 +58,9 @@ public class Peticao implements Entity<Peticao> {
 		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
 	private ClasseId classeSugerida;
 	
-	@ElementCollection
-	@CollectionTable(name = "PARTE_PETICAO",
-			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+			targetEntity = PartePeticao.class)
+	@JoinColumn(name = "SEQ_PETICAO")
 	private Set<Parte> partes = new HashSet<Parte>(0);
 	
 	@ElementCollection(fetch = FetchType.EAGER)

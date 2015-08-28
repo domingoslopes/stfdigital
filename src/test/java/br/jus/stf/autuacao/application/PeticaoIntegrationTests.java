@@ -7,18 +7,15 @@ import org.activiti.engine.task.Task;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.util.StringUtils;
 
+import br.jus.stf.AbstractIntegrationTests;
 import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
 import br.jus.stf.autuacao.domain.entity.Documento;
 import br.jus.stf.autuacao.domain.entity.Parte;
 import br.jus.stf.autuacao.domain.entity.Peticao;
 import br.jus.stf.autuacao.domain.entity.Polo;
-import br.jus.stf.plataforma.ApplicationContextInitializer;
 import br.jus.stf.plataforma.workflow.application.TarefaApplicationService;
 
 /**
@@ -29,10 +26,7 @@ import br.jus.stf.plataforma.workflow.application.TarefaApplicationService;
  * @since 1.0.0
  * @since 19.08.2015
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
-@WebAppConfiguration
-public class PeticaoIntegrationTests {
+public class PeticaoIntegrationTests extends AbstractIntegrationTests {
 	@Autowired
 	private PeticaoApplicationService peticaoApplicationService;
 	@Autowired
@@ -72,12 +66,12 @@ public class PeticaoIntegrationTests {
 		
 		//Registra uma nova petição.
 		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
-        
-        Assert.assertEquals("27", idPeticao);
+		
+        Assert.assertTrue(!StringUtils.isEmpty(idPeticao));
         
         //Retorna a lista de tarefas do autuador.
         List<Task> tarefasAutuador = this.tarefaApplicationService.tarefas("autuador");
-        Assert.assertEquals(1, tarefasAutuador.size());
+        Assert.assertTrue(tarefasAutuador.size() > 0);
         
         idTarefa = tarefasAutuador.get(0).getId().toString();
         
@@ -110,11 +104,11 @@ public class PeticaoIntegrationTests {
 		//Registra uma nova petição.
 		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
         
-        Assert.assertEquals("5", idPeticao);
+		Assert.assertTrue(!StringUtils.isEmpty(idPeticao));
         
         //Retorna a lista de tarefas do autuador.
         List<Task> tarefasAutuador = this.tarefaApplicationService.tarefas("autuador");
-        Assert.assertEquals(1, tarefasAutuador.size());
+        Assert.assertTrue(tarefasAutuador.size() > 0);
         
         idTarefa = tarefasAutuador.get(0).getId().toString();
         
