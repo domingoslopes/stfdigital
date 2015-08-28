@@ -31,14 +31,14 @@ public class ApplicationContextInitializer {
     	return new LocalValidatorFactoryBean();
     }
     
-	/*@Bean(name = "dataSource")
+	@Bean(name = "dataSource")
 	public DataSource memoryDataSourceServidor() throws Exception {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-		dataSource.setDriver(new org.h2.Driver());
+		dataSource.setDriverClass(org.h2.Driver.class);
 		dataSource.setUrl("jdbc:h2:~/stfdigital;AUTO_SERVER=TRUE");
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
 		return dataSource;
-	}*/
+	}
     
 }

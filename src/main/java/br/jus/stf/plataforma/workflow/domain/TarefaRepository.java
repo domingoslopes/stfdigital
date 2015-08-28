@@ -19,5 +19,4 @@ public interface TarefaRepository {
 	void sinalizar(String sinal, String id);
 	
 	Task consultar(String id);
-
 }

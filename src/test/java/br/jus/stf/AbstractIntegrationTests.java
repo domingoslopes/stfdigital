@@ -17,7 +17,7 @@ import br.jus.stf.plataforma.ApplicationContextInitializer;
 @SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
 @WebAppConfiguration
 @IntegrationTest
-public class AbstractIntegrationTests {
+public abstract class AbstractIntegrationTests {
 
 	@Autowired
 	private WebApplicationContext wac;

@@ -10,8 +10,6 @@
 	angular.autuacao.controller('RegistroPeticaoFisicaController', function ($log, $http, $state, $timeout, messages, properties) {
 		var registro = this;
 		
-		registro.registros = [{attr: 'teste'}];
-		
 		registro.tipoRecebimento = '';
 		
 		registro.completar = function() {

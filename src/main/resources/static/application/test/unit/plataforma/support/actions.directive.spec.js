@@ -12,7 +12,7 @@
 		var scope;
 		var resources = [{attr : "TESTE"}];
 
-		beforeEach(module('app'));
+		beforeEach(module('appDev'));
 		
 		inject(function($compile, $rootScope, $httpBackend, properties, $window) {
 			compile = $compile;

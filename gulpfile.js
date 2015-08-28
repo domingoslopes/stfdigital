@@ -220,10 +220,10 @@ gulp.task('test:unit', ['build'], function(cb) {
 });
 
 /**
- * Executa os teste e2e usado Protractor. É necessário a task 'serve' tenha sido
- * executada e esteja rodando em outro terminal.
+ * Executa os teste e2e usado Protractor.
  */
-gulp.task('test:e2e', ['webdriver:update'], function() {
+gulp.task('test:e2e', ['serve', 'webdriver:update'], function() {
+	
 	return gulp.src(protractorConfig.config.specs)
 		.pipe($.protractor.protractor({
 			configFile: 'build/protractor.config.js'
