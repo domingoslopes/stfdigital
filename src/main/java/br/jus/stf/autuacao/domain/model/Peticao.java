@@ -3,6 +3,7 @@ package br.jus.stf.autuacao.domain.model;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
@@ -38,7 +39,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
-@Table(name = "PETICAO", schema = "AUTUACAO",
+@Table(name = "PETICAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
 public class Peticao implements Entity<Peticao> {
 
@@ -66,7 +67,8 @@ public class Peticao implements Entity<Peticao> {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "DOCUMENTO_PETICAO",
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
-	private Set<DocumentoId> documentos = new HashSet<DocumentoId>(0);
+	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
+			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
 	
 	@Embedded
 	private ClasseId classeProcessual;
@@ -78,8 +80,11 @@ public class Peticao implements Entity<Peticao> {
 	@Enumerated(EnumType.STRING)
 	private PeticaoStatus status;
 	
-	@Embedded
-	private ProcessInstanceId processInstanceId;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROCESS_INSTANCE_PETICAO",
+			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+	private Set<ProcessInstanceId> processInstances = new TreeSet<ProcessInstanceId>(
+			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 
 	/**
 	 * 
@@ -88,7 +93,7 @@ public class Peticao implements Entity<Peticao> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Peticao(Long numero, Short ano, ClasseId classeSugerida, Set<Parte> partes, Set<DocumentoId> documentos){
+	public Peticao(Long numero, Short ano, ClasseId classeSugerida, Set<Parte> partes, Set<DocumentoId> documentos) {
 		Validate.notNull(numero, "peticao.numero.required");
 		Validate.notNull(ano, "peticao.ano.required");
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
@@ -98,25 +103,25 @@ public class Peticao implements Entity<Peticao> {
 		this.numero = numero;
 		this.ano = ano;
 		this.classeSugerida = classeSugerida;
-		this.partes = partes;
-		this.documentos = documentos;
+		this.partes.addAll(partes);
+		this.documentos.addAll(documentos);
 	}
 
-	public PeticaoId id(){
+	public PeticaoId id() {
 		return this.peticaoId;
 	}
 
-	public ClasseId classeSugerida(){
+	public ClasseId classeSugerida() {
 		return this.classeSugerida;
 	}
 
-	public Set<Parte> partesPoloAtivo(){
+	public Set<Parte> partesPoloAtivo() {
 		return Collections.unmodifiableSet(partes.stream()
 		  .filter(p -> p.polo() == TipoPolo.POLO_ATIVO)
 		  .collect(Collectors.toSet()));
 	}
 
-	public Set<Parte> partesPoloPassivo(){
+	public Set<Parte> partesPoloPassivo() {
 		return Collections.unmodifiableSet(partes.stream()
 		  .filter(p -> p.polo() == TipoPolo.POLO_PASSIVO)
 		  .collect(Collectors.toSet()));
@@ -126,7 +131,7 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param parte
 	 */
-	public boolean adicionarParte(final Parte parte){
+	public boolean adicionarParte(final Parte parte) {
 		Validate.notNull(parte, "peticao.parte.notNull");
 		
 		return this.partes.add(parte);
@@ -136,7 +141,7 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param parte
 	 */
-	public boolean removerParte(final Parte parte){
+	public boolean removerParte(final Parte parte) {
 		Validate.notNull(parte, "peticao.parte.notNull");
 		
 		return this.partes.remove(parte);
@@ -150,7 +155,7 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param documento
 	 */
-	public boolean adicionarDocumento(final DocumentoId documento){
+	public boolean adicionarDocumento(final DocumentoId documento) {
 		Validate.notNull(documento, "peticao.documento.notNull");
 	
 		return this.documentos.add(documento);
@@ -160,21 +165,21 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param documento
 	 */
-	public boolean removerDocumento(final DocumentoId documento){
+	public boolean removerDocumento(final DocumentoId documento) {
 		Validate.notNull(documento, "peticao.documento.notNull");
 	
 		return this.documentos.remove(documento);
 	}
 
-	public ClasseId classeProcessual(){
+	public ClasseId classeProcessual() {
 		return this.classeProcessual;
 	}
 	
-	public String motivoRecusa(){
+	public String motivoRecusa() {
 		return this.motivoRecusa;
 	}
 
-	public void registrar(){
+	public void registrar() {
 		if (this.status != null) {
 			throw new IllegalStateException("peticao.registrar.exception " + this.status);
 		}
@@ -194,7 +199,7 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param classeProcessual
 	 */
-	public void aceitar(final ClasseId classeProcessual){
+	public void aceitar(final ClasseId classeProcessual) {
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
 	
 		if (this.status != PeticaoStatus.EM_AUTUACAO) {
@@ -209,7 +214,7 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param motivoRecusa
 	 */
-	public void recusar(final String motivoRecusa){
+	public void recusar(final String motivoRecusa) {
 		Validate.notNull(motivoRecusa, "peticao.motivoRecusa.required");
 	
 		if (this.status != PeticaoStatus.EM_AUTUACAO) {
@@ -237,18 +242,18 @@ public class Peticao implements Entity<Peticao> {
 		return this.status;
 	}
 
-	public ProcessInstanceId processInstanceId(){
-		return processInstanceId;
+	public Set<ProcessInstanceId> processInstances(){
+		return Collections.unmodifiableSet(processInstances);
 	}
 
 	/**
 	 * 
-	 * @param processInstanceId
+	 * @param processInstances
 	 */
-	public void setProcessInstanceId(final ProcessInstanceId processInstanceId){
+	public void associarProcessInstance(final ProcessInstanceId processInstanceId) {
 		Validate.notNull(processInstanceId, "peticao.processInstanceId.required");
 	
-		this.processInstanceId = processInstanceId;
+		this.processInstances.add(processInstanceId);
 	}
 
 	@Override
