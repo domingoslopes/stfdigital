@@ -19,6 +19,18 @@
 			element(by.id('botaoRegistrar')).click();
 		};
 		
+		this.qtdVolume = function(qtd) {
+		    element(by.id('qtdVolumes')).sendKeys(qtd);
+		};
+		
+		this.qtdApensos = function(qtd) {
+		    element(by.id('qtdApensos')).sendKeys(qtd);
+		};
+		
+		this.registrar = function () {
+			element(by.id('botaoReceber')).click();
+		};
+		
 	};
 
 	module.exports = RegistroPage;
