@@ -14,7 +14,7 @@
 		var controller;
 		var scope;
 
-		beforeEach(module('app'));
+		beforeEach(module('appDev'));
 		
 		beforeEach(inject(function($controller, $httpBackend, $window, $log, properties) {
 			$window.sessionStorage.papel = JSON.stringify('distribuidor');

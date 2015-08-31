@@ -21,6 +21,8 @@
         <java.version>1.8</java.version>
         <activiti.version>5.17.0</activiti.version>
         <swagger.version>1.0.2</swagger.version>
+		<sonar.host.url>http://digital.stf.jus.br:9000</sonar.host.url>
+		<sonar.jdbc.url>jdbc:h2:tcp://digital.stf.jus.br:9092/sonar</sonar.jdbc.url>
     </properties>
 
     <dependencies>
@@ -53,8 +55,12 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.4</version>
+		</dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
@@ -66,31 +72,60 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>org.springframework.ws</groupId>
-        	<artifactId>spring-ws-test</artifactId>
+			<groupId>org.codehaus.sonar-plugins.java</groupId>
+			<artifactId>sonar-jacoco-listeners</artifactId>
+			<version>2.1</version>
+			<scope>test</scope>        
         </dependency>
         <dependency>
-        	<groupId>org.scala-lang</groupId>
-        	<artifactId>scala-library</artifactId>
-        	<version>2.10.4</version>
-        </dependency>
-		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.4</version>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.2</version>
+			<scope>test</scope>
 		</dependency>
+        <dependency>
+        	<groupId>org.springframework.ws</groupId>
+        	<artifactId>spring-ws-test</artifactId>
+        	<scope>test</scope>
+        </dependency>
     </dependencies>
 
 	<build>
-		<plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+		    	    <groupId>org.codehaus.mojo</groupId>
+		        	<artifactId>sonar-maven-plugin</artifactId>
+    		  	</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<argLine>${argLine} -Xms256m -Xmx512m -XX:MaxPermSize=512m
+							-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+						<properties>
+							<property>
+								<name>listener</name>
+								<value>org.sonar.java.jacoco.JUnitListener</value>
+							</property>
+						</properties>
+					</configuration>
+				</plugin>    		  	
+			</plugins>
+		</pluginManagement>
+		<plugins>		
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+			</plugin>			
+			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>0.0.23</version>
+				<version>0.0.25</version>
 				<executions>
 					<execution>
 						<id>install node and npm</id>
@@ -113,9 +148,44 @@
 							<arguments>install</arguments>
 						</configuration>
 					</execution>
+					<execution>
+						<id>npm prune</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>generate-resources</phase>
+						<configuration>
+							<arguments>prune</arguments>
+						</configuration>
+					</execution>					
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.5.201505241946</version>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<phase>package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
 
+	<scm>
+		<url>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</url>
+		<connection>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</connection>
+		<developerConnection>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</developerConnection>
+	</scm>
 </project>

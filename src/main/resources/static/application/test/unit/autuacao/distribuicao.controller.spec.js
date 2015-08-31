@@ -14,7 +14,7 @@
 		var controller;
 		var scope;
 
-		beforeEach(module('app'));
+		beforeEach(module('appDev'));
 		
 		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, $window, properties, MinistroService) {
 			scope = $rootScope.$new();

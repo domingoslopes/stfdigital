@@ -4,8 +4,9 @@
         "normalize-css": "~3.0.3",
         "angular": "~1.4.4",
         "angular-ui-router": "~0.2.15",
+        "ui-router-extras" : "~0.0.14",
         "pure": "~0.5.0",
-        "angular-mocks": "~1.4.3",
+        "angular-mocks": "~1.4.4",
         "select2": "~3.4",
         "angular-ui-select2": "~0.0.5",
         "angular-sanitize": "~1.4.4"

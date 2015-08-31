@@ -19,6 +19,7 @@ var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+var modRewrite = require('connect-modrewrite');
 var pkg = require('./package');
 var karma = require('karma').server;
 var del = require('del');
@@ -219,10 +220,10 @@ gulp.task('test:unit', ['build'], function(cb) {
 });
 
 /**
- * Executa os teste e2e usado Protractor. É necessário a task 'serve' tenha sido
- * executada e esteja rodando em outro terminal.
+ * Executa os teste e2e usado Protractor.
  */
-gulp.task('test:e2e', ['webdriver:update'], function() {
+gulp.task('test:e2e', ['serve', 'webdriver:update'], function() {
+	
 	return gulp.src(protractorConfig.config.specs)
 		.pipe($.protractor.protractor({
 			configFile: 'build/protractor.config.js'
@@ -247,10 +248,13 @@ gulp.task('serve', ['build'], function() {
 	browserSync({
 		notify: false,
 		logPrefix: pkg.name,
-		server: ['build', 'src/main/resources/static']
+		server: {
+			baseDir : 'src/main/resources/static',
+			middleware: [modRewrite(config.rewritePattern)]
+		}
 	});
 	
-	gulp.watch(config.html, reload);
+	gulp.watch(config.index, reload);
 	gulp.watch(config.scss, ['sass', reload]);
 	gulp.watch(config.js, ['jshint']);
 	gulp.watch(config.tpl, ['templates', reload]);
@@ -263,6 +267,9 @@ gulp.task('serve', ['build'], function() {
 gulp.task('serve:dist', ['build:dist'], function() {
 	browserSync({
 		notify: false,
-		server: [config.dist]
+		server: {
+			baseDir : config.dist,
+			middleware: [modRewrite(config.rewritePattern)]
+		}
 	});
 });

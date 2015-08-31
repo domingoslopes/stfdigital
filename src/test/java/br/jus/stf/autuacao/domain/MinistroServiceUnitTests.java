@@ -2,17 +2,19 @@ package br.jus.stf.autuacao.domain;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.mockito.Answers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import br.jus.stf.autuacao.domain.entity.Ministro;
+import br.jus.stf.autuacao.infra.MinistroRepositoryMemory;
 import br.jus.stf.autuacao.interfaces.dto.MinistroDto;
 import br.jus.stf.autuacao.interfaces.dto.MinistroDtoAssembler;
-import br.jus.stf.plataforma.ApplicationContextInitializer;
 
 /**
  * Teste de operações relacionada a Ministros.
@@ -22,14 +24,20 @@ import br.jus.stf.plataforma.ApplicationContextInitializer;
  * @since 1.0.0
  * @since 23.07.2015
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
-@WebAppConfiguration
 public class MinistroServiceUnitTests {
 	
-	@Autowired
+	@Mock(answer = Answers.CALLS_REAL_METHODS)
+	private MinistroRepositoryMemory ministroRepository;
+	
+	@InjectMocks
 	private MinistroService ministroService;
+	
 	private MinistroDtoAssembler assembler = new MinistroDtoAssembler();
+	
+	@Before
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
+	}
 	
 	@Test
 	public void listarMinistrosRepositoryTest(){
