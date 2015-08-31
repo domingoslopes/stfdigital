@@ -2,6 +2,8 @@ package br.jus.stf.autuacao.domain.model;
 
 import java.util.List;
 
+import br.jus.stf.shared.domain.model.PeticaoId;
+
 /**
  * @author Rafael.Alencar
  * @version 1.0
@@ -27,6 +29,6 @@ public interface PeticaoRepository {
 	 */
 	public void store(Peticao peticao);
 
-	public PeticaoId nextPeticaoId();
+	public Long nextNumero();
 
 }

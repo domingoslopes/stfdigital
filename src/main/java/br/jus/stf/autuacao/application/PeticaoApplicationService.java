@@ -84,7 +84,7 @@ public class PeticaoApplicationService {
 		if (idPeticao == null || idPeticao.isEmpty())
 			throw new RuntimeException("O identificador da petição não foi informado.");
 		
-		TarefaDto tarefa = this.tarefaAdapter.consultar(idPeticao);  
+		TarefaDto tarefa = this.tarefaAdapter.consultar(idPeticao);
 		
 		//Atualiza a classe da petição.
 		processoAdapter.alterar(tarefa.getIdProcesso(), "classe", classe);

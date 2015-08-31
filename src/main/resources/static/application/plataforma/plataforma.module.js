@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma = angular.module('plataforma', ['ui.router']);
+	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous']);
 
 	angular.plataforma.config(function($stateProvider) {
 		$stateProvider.state('dashboard', {

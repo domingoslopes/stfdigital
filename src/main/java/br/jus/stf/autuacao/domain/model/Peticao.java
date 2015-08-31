@@ -1,14 +1,35 @@
 package br.jus.stf.autuacao.domain.model;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
+import br.jus.stf.shared.domain.model.PeticaoId;
 import br.jus.stf.shared.domain.model.ProcessInstanceId;
 import br.jus.stf.shared.domain.stereotype.Entity;
 
@@ -17,22 +38,53 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @version 1.0
  * @created 14-ago-2015 18:33:25
  */
+@javax.persistence.Entity
+@Table(name = "PETICAO",
+	uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
 public class Peticao implements Entity<Peticao> {
 
-	private PeticaoId numeroPeticao;
+	@Embedded
+	@AttributeOverride(name = "id",
+		column = @Column(name = "SEQ_PETICAO", insertable = false, updatable = false))
+	private PeticaoId peticaoId;
+	
+	@Column(name = "NUM_PETICAO", nullable = false)
+	private Long numero;
+	
+	@Column(name = "NUM_ANO_PETICAO", nullable = false)
+	private Short ano;
+	
+	@Embedded
+	@AttributeOverride(name = "sigla",
+		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
 	private ClasseId classeSugerida;
-	private List<Parte> partes;
-	private List<DocumentoId> documentos;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+			targetEntity = PartePeticao.class)
+	@JoinColumn(name = "SEQ_PETICAO")
+	private Set<Parte> partes = new HashSet<Parte>(0);
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "DOCUMENTO_PETICAO",
+			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
+			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
+	
+	@Embedded
 	private ClasseId classeProcessual;
+	
+	@Column(name = "TXT_MOTIVO_RECUSA")
 	private String motivoRecusa;
+	
+	@Column(name = "TIP_STATUS_PETICAO")
+	@Enumerated(EnumType.STRING)
 	private PeticaoStatus status;
-	private ProcessInstanceId processInstanceId;
-	private ProcessoRepository processoRepository;
-
-	// Hibernate
-	Peticao(){
-
-	}
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROCESS_INSTANCE_PETICAO",
+			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+	private Set<ProcessInstanceId> processInstances = new TreeSet<ProcessInstanceId>(
+			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 
 	/**
 	 * 
@@ -41,75 +93,93 @@ public class Peticao implements Entity<Peticao> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Peticao(PeticaoId numeroPeticao, ClasseId classeSugerida, List<Parte> partes, List<DocumentoId> documentos){
-		Validate.notNull(numeroPeticao, "peticao.numeroPeticao.required");
+	public Peticao(Long numero, Short ano, ClasseId classeSugerida, Set<Parte> partes, Set<DocumentoId> documentos) {
+		Validate.notNull(numero, "peticao.numero.required");
+		Validate.notNull(ano, "peticao.ano.required");
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		Validate.notEmpty(partes, "peticao.partes.notEmpty");
-		Validate.noNullElements(partes, "peticao.partes.noNullElements");
 		Validate.notEmpty(documentos, "peticao.documentos.notEmpty");
-		Validate.noNullElements(documentos, "peticao.documentos.noNullElements");
 	
-		this.numeroPeticao = numeroPeticao;
+		this.numero = numero;
+		this.ano = ano;
 		this.classeSugerida = classeSugerida;
-		this.partes = partes;
-		this.documentos = documentos;
+		this.partes.addAll(partes);
+		this.documentos.addAll(documentos);
 	}
 
-	public PeticaoId numeroPeticao(){
-		return this.numeroPeticao;
+	public PeticaoId id() {
+		return this.peticaoId;
 	}
 
-	public ClasseId classeSugerida(){
+	public ClasseId classeSugerida() {
 		return this.classeSugerida;
 	}
 
-	public List<Parte> partesPoloAtivo(){
-		return Collections.unmodifiableList(partes.stream()
+	public Set<Parte> partesPoloAtivo() {
+		return Collections.unmodifiableSet(partes.stream()
 		  .filter(p -> p.polo() == TipoPolo.POLO_ATIVO)
-		  .collect(Collectors.toList()));
+		  .collect(Collectors.toSet()));
 	}
 
-	public List<Parte> partesPoloPassivo(){
-		return Collections.unmodifiableList(partes.stream()
+	public Set<Parte> partesPoloPassivo() {
+		return Collections.unmodifiableSet(partes.stream()
 		  .filter(p -> p.polo() == TipoPolo.POLO_PASSIVO)
-		  .collect(Collectors.toList()));
+		  .collect(Collectors.toSet()));
 	}
 
 	/**
 	 * 
-	 * @param partes
+	 * @param parte
 	 */
-	public void setPartes(final List<Parte> partes){
-		Validate.notEmpty(partes, "peticao.partes.notEmpty");
-		Validate.noNullElements(partes, "peticao.partes.noNullElements");
+	public boolean adicionarParte(final Parte parte) {
+		Validate.notNull(parte, "peticao.parte.notNull");
+		
+		return this.partes.add(parte);
+	}
 	
-		this.partes = partes;
+	/**
+	 * 
+	 * @param parte
+	 */
+	public boolean removerParte(final Parte parte) {
+		Validate.notNull(parte, "peticao.parte.notNull");
+		
+		return this.partes.remove(parte);
 	}
 
-	public List<DocumentoId> documentos(){
-		return Collections.unmodifiableList(this.documentos);
+	public Set<DocumentoId> documentos(){
+		return Collections.unmodifiableSet(this.documentos);
 	}
 
 	/**
 	 * 
-	 * @param documentos
+	 * @param documento
 	 */
-	public void setDocumentos(final List<DocumentoId> documentos){
-		Validate.notEmpty(documentos, "peticao.documentos.notEmpty");
-		Validate.noNullElements(documentos, "peticao.documentos.noNullElements");
+	public boolean adicionarDocumento(final DocumentoId documento) {
+		Validate.notNull(documento, "peticao.documento.notNull");
 	
-		this.documentos = documentos;
+		return this.documentos.add(documento);
+	}
+	
+	/**
+	 * 
+	 * @param documento
+	 */
+	public boolean removerDocumento(final DocumentoId documento) {
+		Validate.notNull(documento, "peticao.documento.notNull");
+	
+		return this.documentos.remove(documento);
 	}
 
-	public ClasseId classeProcessual(){
+	public ClasseId classeProcessual() {
 		return this.classeProcessual;
 	}
 	
-	public String motivoRecusa(){
+	public String motivoRecusa() {
 		return this.motivoRecusa;
 	}
 
-	public void registrar(){
+	public void registrar() {
 		if (this.status != null) {
 			throw new IllegalStateException("peticao.registrar.exception " + this.status);
 		}
@@ -129,7 +199,7 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param classeProcessual
 	 */
-	public void aceitar(final ClasseId classeProcessual){
+	public void aceitar(final ClasseId classeProcessual) {
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
 	
 		if (this.status != PeticaoStatus.EM_AUTUACAO) {
@@ -144,7 +214,7 @@ public class Peticao implements Entity<Peticao> {
 	 * 
 	 * @param motivoRecusa
 	 */
-	public void recusar(final String motivoRecusa){
+	public void recusar(final String motivoRecusa) {
 		Validate.notNull(motivoRecusa, "peticao.motivoRecusa.required");
 	
 		if (this.status != PeticaoStatus.EM_AUTUACAO) {
@@ -155,7 +225,7 @@ public class Peticao implements Entity<Peticao> {
 		this.status = PeticaoStatus.RECUSADA;
 	}
 
-	public Processo distribuir(final MinistroId ministroRelator){
+	public Processo distribuir(final MinistroId ministroRelator, ProcessoRepository processoRepository){
 		Validate.notNull(ministroRelator, "peticao.ministroRelator.required");
 
 		if (this.status != PeticaoStatus.ACEITA) {
@@ -163,33 +233,60 @@ public class Peticao implements Entity<Peticao> {
 		}
 			
 		this.status = PeticaoStatus.DISTRIBUIDA;
-		return new Processo(this.classeProcessual, processoRepository.nextProcessoId(), ministroRelator, this.numeroPeticao, this.partes, this.documentos);
+		
+		Long numero = processoRepository.nextNumero(classeProcessual);
+		return new Processo(classeProcessual, numero, ministroRelator, peticaoId, partes, documentos);
 	}
 
 	public PeticaoStatus status(){
 		return this.status;
 	}
 
-	public ProcessInstanceId processInstanceId(){
-		return processInstanceId;
+	public Set<ProcessInstanceId> processInstances(){
+		return Collections.unmodifiableSet(processInstances);
 	}
 
 	/**
 	 * 
-	 * @param processInstanceId
+	 * @param processInstances
 	 */
-	public void setProcessInstanceId(final ProcessInstanceId processInstanceId){
+	public void associarProcessInstance(final ProcessInstanceId processInstanceId) {
 		Validate.notNull(processInstanceId, "peticao.processInstanceId.required");
 	
-		this.processInstanceId = processInstanceId;
+		this.processInstances.add(processInstanceId);
 	}
 
-	/**
-	 * 
-	 * @param other
-	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((peticaoId == null) ? 0 : peticaoId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		Peticao other = (Peticao) obj;
+		return sameIdentityAs(other);
+	}
+
+	@Override
 	public boolean sameIdentityAs(Peticao other){
-		return other != null && this.classeSugerida.sameValueAs(other.classeSugerida) && this.numeroPeticao.sameValueAs(other.numeroPeticao);
+		return other != null && this.peticaoId.sameValueAs(other.peticaoId);
 	}
 
+	// Hibernate
+	@Id
+	@Column(name = "SEQ_PETICAO")
+	@SequenceGenerator(name = "PETICAOID", sequenceName = "SEQ_PETICAO", allocationSize = 1)
+	@GeneratedValue(generator = "PETICAOID", strategy=GenerationType.SEQUENCE)
+	private Long id;
+	
+	Peticao(){
+
+	}
+	
 }
