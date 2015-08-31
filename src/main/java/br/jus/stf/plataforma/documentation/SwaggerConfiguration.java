@@ -1,7 +1,6 @@
 package br.jus.stf.plataforma.documentation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +17,7 @@ import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
  */
 @Configuration
 @EnableSwagger
-@EnableAutoConfiguration
+//@EnableAutoConfiguration
 public class SwaggerConfiguration {
 
 	@Autowired

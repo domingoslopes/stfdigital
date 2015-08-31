@@ -8,20 +8,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.hamcrest.Matchers;
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import br.jus.stf.plataforma.ApplicationContextInitializer;
+import br.jus.stf.AbstractIntegrationTests;
 
 /**
  * @author Rodrigo Barreiros
@@ -29,26 +20,13 @@ import br.jus.stf.plataforma.ApplicationContextInitializer;
  * @since 1.0.0
  * @since 17.06.2015
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
-@WebAppConfiguration
-@IntegrationTest
-public class AutuacaoOriginariosIntegrationTests {
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    private MockMvc mockMvc;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+@Ignore
+public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
     @Test
     public void distribuir() throws Exception {
     	// Passo 01: Solicitando o Registro da Petição Física...
-		mockMvc.perform(post("/api/peticao").contentType(MediaType.APPLICATION_JSON).content("{\"tipoRecebimento\":\"1\"}")).andExpect(status().isOk()).andExpect(content().string("4"));
+		mockMvc.perform(post("/api/peticao/fisica").contentType(MediaType.APPLICATION_JSON).content("{\"tipoRecebimento\":\"1\"}")).andExpect(status().isOk()).andExpect(content().string("4"));
 		
 		// Passo 02: Verificando se o processo de recebimento se encontra em "Pré-Autuação"...
 		mockMvc.perform(get("/api/tarefas").header("papel", "recebedor")).andExpect(status().isOk()).andExpect(jsonPath("$[0].id", is("7"))).andExpect(jsonPath("$[0].descricao", is("Pré-Autuar Processo")));

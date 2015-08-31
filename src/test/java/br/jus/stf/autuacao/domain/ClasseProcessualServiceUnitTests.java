@@ -4,17 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import br.jus.stf.autuacao.domain.ClasseProcessualService;
+import org.mockito.Answers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
+import br.jus.stf.autuacao.infra.ClasseProcessualRepositoryMemory;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.interfaces.dto.ClasseProcessualDtoAssembler;
-import br.jus.stf.plataforma.ApplicationContextInitializer;
 
 /**
  * Teste de operações relacionadas à classe processual.
@@ -24,14 +24,19 @@ import br.jus.stf.plataforma.ApplicationContextInitializer;
  * @since 1.0.0
  * @since 21.07.2015
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
-@WebAppConfiguration
 public class ClasseProcessualServiceUnitTests {
 	
-	@Autowired
+	@Mock(answer = Answers.CALLS_REAL_METHODS)
+	private ClasseProcessualRepositoryMemory classeProcessualRepository;
+	
+	@InjectMocks
 	private ClasseProcessualService classeProcessualService;
 	private ClasseProcessualDtoAssembler assembler = new ClasseProcessualDtoAssembler();
+	
+	@Before
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
+	}
 	
 	@Test
 	public void listarClassesProcessuaisRepositoryTest(){
@@ -47,6 +52,6 @@ public class ClasseProcessualServiceUnitTests {
         	}
     	}
 		
-		Assert.assertEquals(149, classes.size());
+		Assert.assertEquals(42, classes.size());
 	}
 }
