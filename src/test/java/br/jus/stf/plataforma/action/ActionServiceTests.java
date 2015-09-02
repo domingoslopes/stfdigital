@@ -13,9 +13,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.springframework.context.ApplicationContext;
 
 import br.jus.stf.plataforma.action.dummy.DummyActionController;
@@ -25,7 +22,6 @@ import br.jus.stf.plataforma.component.action.support.ActionMappingInfo;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-@PrepareForTest(ActionService.class)
 public class ActionServiceTests {
 	
 	@Mock

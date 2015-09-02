@@ -89,4 +89,15 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
 		authentication.setAuthenticated(true);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
+	
+    @Test
+    public void executaAcaoPeticao() throws Exception {
+    	setAuthenticationAuthorities("peticionador");
+    	mockMvc.perform(post("/api/actions/registrar_peticao/execute")
+    			.contentType(MediaType.APPLICATION_JSON)
+    			.content("{\"resources\": [{\"classe\":\"HC\",\"partesPoloAtivo\":[\"Fulano\"],\"partesPoloPassivo\":[\"Cicrano\"],\"documentos\":[\"id01\",\"id02\"]}]}"))
+    		.andExpect(status().isOk());
+    		//.andDo(print());
+    	setAuthenticationAuthorities(new String[] {});
+    }
 }
