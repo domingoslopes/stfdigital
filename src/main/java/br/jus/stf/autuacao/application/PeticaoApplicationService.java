@@ -44,14 +44,14 @@ public class PeticaoApplicationService {
 	/**
 	 * Registra uma nova petilçao.
 	 * 
-	 * @param tipoRecebimento
-	 * @param classe
-	 * @param poloAtivo
-	 * @param poloPassivo
-	 * @param documentos
-	 * @return
+	 * @param tipoRecebimento Tipo de recebimento da petição eletrônica.
+	 * @param classe Sugestão de classe processual da petição eletrônica.
+	 * @param poloAtivo Polo ativo da petição eletrônica;
+	 * @param poloPassivo Polo passivo da petição eletrônica.
+	 * @param documentos Documentos da petição eletrônica.
+	 * @return Id da petição eletrônica registrada.
 	 */
-	public String registrar(String tipoRecebimento, String classeSugerida, Polo poloAtivo, Polo poloPassivo, List<Documento> documentos) {
+	public String peticionar(String tipoRecebimento, String classeSugerida, Polo poloAtivo, Polo poloPassivo, List<Documento> documentos) {
 		Peticao peticao = null;
 		
 		if (tipoRecebimento == null || tipoRecebimento.isEmpty())
@@ -71,6 +71,47 @@ public class PeticaoApplicationService {
 		peticao.setPoloAtivo(poloAtivo);
 		peticao.setPoloPassivo(poloPassivo);
 		peticao.setDocumentos(documentos);
+		
+		return peticaoService.registrar(tipoRecebimento, peticao);
+	}
+	
+	/**
+	 * 
+	 * @param tipoRecebimento Tipo de recebimento da petição física.
+	 * @param quantidadeVolumes Quantidade de volumes da petição física.
+	 * @param quantidadeApensos Quantidade de apensos da petição física.
+	 * @param formaRecebimento Forma de recebimento da petição física.
+	 * @param numeroSedex Nº do sedex da petição física.
+	 * @return Id da petição física registrada.
+	 */
+	public String registrar(String tipoRecebimento, int quantidadeVolumes, int quantidadeApensos, String formaRecebimento, String numeroSedex){
+		Peticao peticao = null;
+		
+		if (tipoRecebimento == null || tipoRecebimento.isEmpty()){
+			throw new RuntimeException("O tipo de recebimento não foi informado.");
+		}
+		
+		if (quantidadeVolumes <= 0){
+			throw new RuntimeException("A quantidade de volumes não foi informada.");
+		}
+		
+		if (quantidadeApensos < 0){
+			throw new RuntimeException("A quantidade de apensos não pode ser negativo.");
+		}
+		
+		if (formaRecebimento == null || formaRecebimento.isEmpty()){
+			throw new RuntimeException("A forma de recebimento não foi informada.");
+		}
+		
+		if (formaRecebimento.toUpperCase() == "SEDEX" && (numeroSedex == null || numeroSedex.isEmpty())){
+			throw new RuntimeException("O número do SEDEX deve ser informado quando a forma de recebimento for SEDEX.");
+		}
+		
+		peticao = new Peticao();
+		peticao.setQuantidadeVolumes(quantidadeVolumes);
+		peticao.setQuantidadeVolumes(quantidadeVolumes);
+		peticao.setFormaRecebimento(formaRecebimento);
+		peticao.setNumeroSedex(numeroSedex);
 		
 		return peticaoService.registrar(tipoRecebimento, peticao);
 	}
