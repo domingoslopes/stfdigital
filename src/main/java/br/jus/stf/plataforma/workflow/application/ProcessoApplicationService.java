@@ -14,6 +14,7 @@ import br.jus.stf.plataforma.workflow.domain.ProcessoRepository;
 
 /**
  * @author Rodrigo Barreiros
+ * @author anderson.araujo
  * 
  * @since 1.0.0
  * @since 26.06.2015
@@ -24,11 +25,13 @@ public class ProcessoApplicationService {
 	@Autowired
 	private ProcessoRepository processoRepository;
 
-	public String iniciar(String tipoRecebimento, ClasseProcessual classeSugerida, Polo poloAtivo, Polo poloPassivo, List<Documento> documentos) {
-		
-		Peticao peticao = new Peticao(classeSugerida, null, poloAtivo, poloPassivo, documentos);
-		
-		return processoRepository.criar(tipoRecebimento, peticao);
+	/**
+	 * Inicia uma nova inãncia do processo de autuação de originários.
+	 * @param tipoRecebimento Identificador da forma de ingresso de uma petição (física ou eletrônica).
+	 * @return Identificador da instãncia do processo de autuação criado.
+	 */
+	public String iniciar(String tipoRecebimento) {
+		return processoRepository.criar(tipoRecebimento);
 	}
 
 	public void alterar(String id, String nome, String valor){
