@@ -21,7 +21,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:34:02
  */
 @javax.persistence.Entity
-@Table(name = "DOCUMENTO")
+@Table(name = "DOCUMENTO", schema = "CORPORATIVO")
 public class Documento implements Entity<Documento> {
 
 	@Embedded
@@ -30,12 +30,12 @@ public class Documento implements Entity<Documento> {
 	private DocumentoId documentoId;
 	
 	@Lob
-	@Column(name = "LOB_CONTEUDO")	
+	@Column(name = "BIN_CONTEUDO")	
 	private byte[] conteudo;
 
 	public Documento(final DocumentoId documentoId, final byte[] conteudo){
-		Validate.notNull(documentoId);
-		Validate.notNull(conteudo);
+		Validate.notNull(documentoId, "documento.documentoId.required");
+		Validate.notNull(conteudo, "documento.conteudo.required");
 		
 		this.documentoId = documentoId;
 		this.conteudo = conteudo;
@@ -75,7 +75,7 @@ public class Documento implements Entity<Documento> {
 	
 	@Id
 	@Column(name = "SEQ_DOCUMENTO")
-	@SequenceGenerator(name = "DOCUMENTOID", sequenceName = "SEQ_DOCUMENTO", allocationSize = 1)
+	@SequenceGenerator(name = "DOCUMENTOID", sequenceName = "CORPORATIVO.SEQ_DOCUMENTO", allocationSize = 1)
 	@GeneratedValue(generator = "DOCUMENTOID", strategy = GenerationType.SEQUENCE)
 	private Long id;
 	

@@ -20,7 +20,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:34:02
  */
 @javax.persistence.Entity
-@Table(name = "MINISTRO")
+@Table(name = "MINISTRO", schema = "AUTUACAO")
 public class Ministro implements Entity<Ministro> {
 
 	@Embedded
@@ -32,8 +32,8 @@ public class Ministro implements Entity<Ministro> {
 	private String nome;
 
 	public Ministro(final MinistroId codigo, final String nome){
-		Validate.notNull(codigo);
-		Validate.notBlank(nome);
+		Validate.notNull(codigo, "ministro.codigo.required");
+		Validate.notBlank(nome, "ministro.nome.required");
 		
 		this.codigo = codigo;
 		this.nome = nome;
@@ -72,7 +72,7 @@ public class Ministro implements Entity<Ministro> {
 	
 	@Id
 	@Column(name = "SEQ_MINISTRO")
-	@SequenceGenerator(name = "MINISTROID", sequenceName = "SEQ_MINISTRO", allocationSize = 1, initialValue = 1)	
+	@SequenceGenerator(name = "MINISTROID", sequenceName = "AUTUACAO.SEQ_MINISTRO", allocationSize = 1, initialValue = 1)	
 	@GeneratedValue(generator = "MINISTROID", strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
