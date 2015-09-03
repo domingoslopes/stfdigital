@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.domain.model;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +11,7 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EnumType;
@@ -18,6 +20,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -39,36 +43,16 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TIP_MEIO_PETICAO")
 @Table(name = "PETICAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
-public class Peticao implements Entity<Peticao> {
+public abstract class Peticao implements Entity<Peticao> {
 
 	@Embedded
 	@AttributeOverride(name = "id",
 		column = @Column(name = "SEQ_PETICAO", insertable = false, updatable = false))
 	private PeticaoId peticaoId;
-	
-	@Column(name = "NUM_PETICAO", nullable = false)
-	private Long numero;
-	
-	@Column(name = "NUM_ANO_PETICAO", nullable = false)
-	private Short ano;
-	
-	@Embedded
-	@AttributeOverride(name = "sigla",
-		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
-	private ClasseId classeSugerida;
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-			targetEntity = PartePeticao.class)
-	@JoinColumn(name = "SEQ_PETICAO")
-	private Set<Parte> partes = new HashSet<Parte>(0);
-	
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "DOCUMENTO_PETICAO",
-			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
-	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
-			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
 	
 	@Embedded
 	private ClasseId classeProcessual;
@@ -85,30 +69,41 @@ public class Peticao implements Entity<Peticao> {
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<ProcessInstanceId> processInstances = new TreeSet<ProcessInstanceId>(
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
-
-	/**
-	 * 
-	 * @param numeroPeticao
-	 * @param classeSugerida
-	 * @param partes
-	 * @param documentos
-	 */
-	public Peticao(Long numero, Short ano, ClasseId classeSugerida, Set<Parte> partes, Set<DocumentoId> documentos) {
-		Validate.notNull(numero, "peticao.numero.required");
-		Validate.notNull(ano, "peticao.ano.required");
-		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
-		Validate.notEmpty(partes, "peticao.partes.notEmpty");
-		Validate.notEmpty(documentos, "peticao.documentos.notEmpty");
 	
-		this.numero = numero;
-		this.ano = ano;
-		this.classeSugerida = classeSugerida;
-		this.partes.addAll(partes);
-		this.documentos.addAll(documentos);
-	}
+	@Column(name = "NUM_PETICAO", nullable = false)
+	protected Long numero;
+	
+	@Column(name = "NUM_ANO_PETICAO", nullable = false)
+	protected Integer ano = Calendar.getInstance().get(Calendar.YEAR);
+	
+	@Embedded
+	@AttributeOverride(name = "sigla",
+		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
+	protected ClasseId classeSugerida;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+			targetEntity = PartePeticao.class)
+	@JoinColumn(name = "SEQ_PETICAO")
+	protected Set<Parte> partes = new HashSet<Parte>(0);
 
 	public PeticaoId id() {
 		return this.peticaoId;
+	}
+	
+	public Long numero() {
+		return numero;
+	}
+	
+	public Integer ano() {
+		return ano;
+	}
+	
+	public String identificacao() {
+		return new StringBuilder()
+				.append(numero)
+				.append("/")
+				.append(ano)
+				.toString();
 	}
 
 	public ClasseId classeSugerida() {
@@ -145,30 +140,6 @@ public class Peticao implements Entity<Peticao> {
 		Validate.notNull(parte, "peticao.parte.notNull");
 		
 		return this.partes.remove(parte);
-	}
-
-	public Set<DocumentoId> documentos(){
-		return Collections.unmodifiableSet(this.documentos);
-	}
-
-	/**
-	 * 
-	 * @param documento
-	 */
-	public boolean adicionarDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.notNull");
-	
-		return this.documentos.add(documento);
-	}
-	
-	/**
-	 * 
-	 * @param documento
-	 */
-	public boolean removerDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.notNull");
-	
-		return this.documentos.remove(documento);
 	}
 
 	public ClasseId classeProcessual() {
@@ -225,24 +196,32 @@ public class Peticao implements Entity<Peticao> {
 		this.status = PeticaoStatus.RECUSADA;
 	}
 
-	public Processo distribuir(final MinistroId ministroRelator, ProcessoRepository processoRepository){
-		Validate.notNull(ministroRelator, "peticao.ministroRelator.required");
+	/**
+	 * @param ministroRelator
+	 * @param processoRepository
+	 * @return o Processo
+	 */
+	public Processo distribuir(final MinistroId relator) {
+		Validate.notNull(relator, "peticao.ministroRelator.required");
+		Validate.notNull(relator, "peticao.ministroRelator.required");
 
 		if (this.status != PeticaoStatus.ACEITA) {
-			throw new IllegalStateException("peticao.distribuir.exception " + this.status);
+			throw new IllegalStateException("peticao.distribuir.illegalstate");
 		}
-			
 		this.status = PeticaoStatus.DISTRIBUIDA;
+		Set<DocumentoId> documentos = Collections.emptySet();
 		
-		Long numero = processoRepository.nextNumero(classeProcessual);
-		return new Processo(classeProcessual, numero, ministroRelator, peticaoId, partes, documentos);
+		if (getClass().equals(PeticaoEletronica.class)) {
+			documentos = ((PeticaoEletronica) this).documentos();
+		}
+		return ProcessoFactory.criarProcesso(classeProcessual, relator, peticaoId, partes, documentos);
 	}
 
-	public PeticaoStatus status(){
+	public PeticaoStatus status() {
 		return this.status;
 	}
 
-	public Set<ProcessInstanceId> processInstances(){
+	public Set<ProcessInstanceId> processInstances() {
 		return Collections.unmodifiableSet(processInstances);
 	}
 
@@ -267,7 +246,7 @@ public class Peticao implements Entity<Peticao> {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (obj == null || !(obj instanceof Peticao)) return false;
 		
 		Peticao other = (Peticao) obj;
 		return sameIdentityAs(other);
@@ -285,8 +264,8 @@ public class Peticao implements Entity<Peticao> {
 	@GeneratedValue(generator = "PETICAOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
-	Peticao(){
-
+	Peticao() {
+		
 	}
 	
 }

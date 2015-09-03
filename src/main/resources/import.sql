@@ -1,0 +1,13 @@
+drop table if exists NUMERO_PETICAO;
+create table NUMERO_PETICAO (
+	NUM_PETICAO bigint,
+	ANO_PETICAO int,
+	CONSTRAINT NUMERO_PETICAO_PK primary key(NUM_PETICAO, ANO_PETICAO)
+);
+
+drop table if exists NUMERO_PROCESSO;
+create table NUMERO_PROCESSO (
+	SIG_CLASSE varchar(10),
+	NUM_PROCESSO bigint,
+	CONSTRAINT NUMERO_PETICAO_PK primary key(SIG_CLASSE, NUM_PROCESSO)
+);
