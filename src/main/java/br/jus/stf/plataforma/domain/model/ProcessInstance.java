@@ -6,6 +6,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.shared.domain.model.ProcessInstanceId;
 import br.jus.stf.shared.domain.stereotype.Entity;
 
@@ -15,7 +17,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:34:14
  */
 @javax.persistence.Entity
-@Table(name = "PROCESS_INSTANCE")
+@Table(name = "PROCESS_INSTANCE", schema = "AUTUACAO")
 public class ProcessInstance implements Entity<ProcessInstance> {
 
 	@EmbeddedId
@@ -30,6 +32,9 @@ public class ProcessInstance implements Entity<ProcessInstance> {
 	}
 
 	public ProcessInstance(final ProcessInstanceId id, final ProcessInstanceStatus status){
+		Validate.notNull(id, "processInstance.id.required");
+		Validate.notNull(status, "processInstance.status.required");
+		
 		this.id = id;
 		this.status = status;
 	}

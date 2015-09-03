@@ -23,7 +23,7 @@ import br.jus.stf.shared.domain.model.DocumentoId;
 public class PeticaoEletronica extends Peticao {
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "DOCUMENTO_PETICAO",
+	@CollectionTable(name = "DOCUMENTO_PETICAO", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
 			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
