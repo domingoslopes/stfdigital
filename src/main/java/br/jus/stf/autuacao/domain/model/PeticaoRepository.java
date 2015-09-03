@@ -2,6 +2,8 @@ package br.jus.stf.autuacao.domain.model;
 
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import br.jus.stf.shared.domain.model.PeticaoId;
 
 /**
@@ -14,14 +16,22 @@ public interface PeticaoRepository {
 	/**
 	 * 
 	 * @param numeroPeticao
+	 * @return peticao
 	 */
 	public Peticao find(PeticaoId numeroPeticao);
 
 	/**
 	 * 
 	 * @param status
+	 * @return lista de peticoes
 	 */
 	public List<Peticao> findStatus(final PeticaoStatus status);
+	
+	/**
+	 * @param specification
+	 * @return lista de peticoes
+	 */
+	public List<Peticao> find(Specification<Peticao> specification);
 
 	/**
 	 * 
@@ -29,6 +39,9 @@ public interface PeticaoRepository {
 	 */
 	public void store(Peticao peticao);
 
-	public Long nextNumero();
+	/**
+	 * @return o proximo numero de peticao
+	 */
+	public Long proximoNumero();
 
 }
