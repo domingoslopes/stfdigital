@@ -151,7 +151,7 @@ public class PeticaoRestResource {
 		}
 		poloPassivo.setPartes(partesPoloPassivo);
 		
-		return peticaoApplicationService.registrar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
+		return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
 	}
 
     @ApiOperation(value = "Registra uma nova petição física", hidden = true)

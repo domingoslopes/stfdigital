@@ -6,13 +6,18 @@ import br.jus.stf.autuacao.domain.entity.Peticao;
 
 /**
  * @author Rodrigo Barreiros
+ * @author anderson.araujo
  * 
  * @since 1.0.0
  * @since 26.06.2015
  */
 public interface ProcessoRepository {
-
-	String criar(String id, Peticao peticao);
+	/**
+	 * Cria uma instãncia do processo de autuação de originários.
+	 * @param mensagem Nome da mensagem que iniciaráo evento de criação do processo.
+	 * @return Identificador da instância do processo de autuação criado.
+	 */
+	String criar(String mensagem);
 	
 	void alterar(String id, String nome, String valor);
 

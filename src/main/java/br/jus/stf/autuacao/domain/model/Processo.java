@@ -3,6 +3,7 @@ package br.jus.stf.autuacao.domain.model;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
@@ -36,7 +37,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
-@Table(name = "PROCESSO", schema = "AUTUACAO",
+@Table(name = "PROCESSO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_CLASSE", "NUM_PROCESSO"}))
 public class Processo implements Entity<Processo> {
 
@@ -67,7 +68,8 @@ public class Processo implements Entity<Processo> {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PROCESSO_DOCUMENTO", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PROCESSO"))
-	private Set<DocumentoId> pecas = new HashSet<DocumentoId>(0);
+	private Set<DocumentoId> pecas = new TreeSet<DocumentoId>(
+			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 
 	/**
 	 * 
