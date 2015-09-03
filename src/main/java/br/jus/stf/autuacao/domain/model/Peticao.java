@@ -64,14 +64,14 @@ public class Peticao implements Entity<Peticao> {
 	private Set<Parte> partes = new HashSet<Parte>(0);
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "DOCUMENTO_PETICAO",
+	@CollectionTable(name = "PETICAO_DOCUMENTO", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<DocumentoId> documentos = new HashSet<DocumentoId>(0);
 	
 	@Embedded
 	private ClasseId classeProcessual;
 	
-	@Column(name = "TXT_MOTIVO_RECUSA")
+	@Column(name = "DSC_MOTIVO_RECUSA")
 	private String motivoRecusa;
 	
 	@Column(name = "TIP_STATUS_PETICAO")
@@ -88,7 +88,8 @@ public class Peticao implements Entity<Peticao> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Peticao(Long numero, Short ano, ClasseId classeSugerida, Set<Parte> partes, Set<DocumentoId> documentos){
+	public Peticao(final Long numero, final Short ano, final ClasseId classeSugerida,
+			final Set<Parte> partes, final Set<DocumentoId> documentos){
 		Validate.notNull(numero, "peticao.numero.required");
 		Validate.notNull(ano, "peticao.ano.required");
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
@@ -98,8 +99,8 @@ public class Peticao implements Entity<Peticao> {
 		this.numero = numero;
 		this.ano = ano;
 		this.classeSugerida = classeSugerida;
-		this.partes = partes;
-		this.documentos = documentos;
+		this.partes.addAll(partes);
+		this.documentos.addAll(documentos);
 	}
 
 	public PeticaoId id(){
@@ -127,7 +128,7 @@ public class Peticao implements Entity<Peticao> {
 	 * @param parte
 	 */
 	public boolean adicionarParte(final Parte parte){
-		Validate.notNull(parte, "peticao.parte.notNull");
+		Validate.notNull(parte, "peticao.parte.required");
 		
 		return this.partes.add(parte);
 	}
@@ -137,7 +138,7 @@ public class Peticao implements Entity<Peticao> {
 	 * @param parte
 	 */
 	public boolean removerParte(final Parte parte){
-		Validate.notNull(parte, "peticao.parte.notNull");
+		Validate.notNull(parte, "peticao.parte.required");
 		
 		return this.partes.remove(parte);
 	}
@@ -151,7 +152,7 @@ public class Peticao implements Entity<Peticao> {
 	 * @param documento
 	 */
 	public boolean adicionarDocumento(final DocumentoId documento){
-		Validate.notNull(documento, "peticao.documento.notNull");
+		Validate.notNull(documento, "peticao.documento.required");
 	
 		return this.documentos.add(documento);
 	}
@@ -161,7 +162,7 @@ public class Peticao implements Entity<Peticao> {
 	 * @param documento
 	 */
 	public boolean removerDocumento(final DocumentoId documento){
-		Validate.notNull(documento, "peticao.documento.notNull");
+		Validate.notNull(documento, "peticao.documento.required");
 	
 		return this.documentos.remove(documento);
 	}
@@ -276,7 +277,7 @@ public class Peticao implements Entity<Peticao> {
 	// Hibernate
 	@Id
 	@Column(name = "SEQ_PETICAO")
-	@SequenceGenerator(name = "PETICAOID", sequenceName = "SEQ_PETICAO", allocationSize = 1)
+	@SequenceGenerator(name = "PETICAOID", sequenceName = "AUTUACAO.SEQ_PETICAO", allocationSize = 1)
 	@GeneratedValue(generator = "PETICAOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	

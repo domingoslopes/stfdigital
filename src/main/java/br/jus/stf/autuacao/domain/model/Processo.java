@@ -52,6 +52,8 @@ public class Processo implements Entity<Processo> {
 	private Long numero;
 	
 	@Embedded
+	@AttributeOverride(name = "id",
+			column = @Column(name = "SEQ_MINISTRO_RELATOR"))
 	private MinistroId ministroRelator;
 	
 	@Embedded
@@ -63,7 +65,7 @@ public class Processo implements Entity<Processo> {
 	private Set<Parte> partes = new HashSet<Parte>(0);
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "DOCUMENTO_PROCESSO",
+	@CollectionTable(name = "PROCESSO_DOCUMENTO", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PROCESSO"))
 	private Set<DocumentoId> pecas = new HashSet<DocumentoId>(0);
 
@@ -113,6 +115,50 @@ public class Processo implements Entity<Processo> {
 		  .filter(p -> p.polo() == TipoPolo.POLO_PASSIVO)
 		  .collect(Collectors.toSet()));
 	}
+	
+	/**
+	 * 
+	 * @param parte
+	 */
+	public boolean adicionarParte(final Parte parte){
+		Validate.notNull(parte, "peticao.parte.required");
+		
+		return this.partes.add(parte);
+	}
+	
+	/**
+	 * 
+	 * @param parte
+	 */
+	public boolean removerParte(final Parte parte){
+		Validate.notNull(parte, "peticao.parte.required");
+		
+		return this.partes.remove(parte);
+	}
+
+	public Set<DocumentoId> documentos(){
+		return Collections.unmodifiableSet(this.pecas);
+	}
+
+	/**
+	 * 
+	 * @param peca
+	 */
+	public boolean adicionarDocumento(final DocumentoId peca){
+		Validate.notNull(peca, "peticao.peca.required");
+	
+		return this.pecas.add(peca);
+	}
+	
+	/**
+	 * 
+	 * @param peca
+	 */
+	public boolean removerDocumento(final DocumentoId peca){
+		Validate.notNull(peca, "peticao.peca.required");
+	
+		return this.pecas.remove(peca);
+	}
 
 	public Set<DocumentoId> pecas(){
 		return Collections.unmodifiableSet(pecas);
@@ -147,7 +193,7 @@ public class Processo implements Entity<Processo> {
 	
 	@Id
 	@Column(name = "SEQ_PROCESSO")
-	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO", allocationSize = 1)
+	@SequenceGenerator(name = "PROCESSOID", sequenceName = "AUTUACAO.SEQ_PROCESSO", allocationSize = 1)
 	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
