@@ -21,7 +21,7 @@ public class PeticaoId implements ValueObject<PeticaoId> {
 	private Long id;
 
 	public PeticaoId(final Long id){
-		Validate.notNull(id);
+		Validate.notNull(id, "peticaoId.id.required");
 		
 		this.id = id;
 	}

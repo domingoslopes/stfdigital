@@ -13,7 +13,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "PARTE_PROCESSO")
+@Table(name = "PROCESSO_PARTE", schema = "AUTUACAO")
 public class ParteProcesso extends Parte {
 
 	private static final long serialVersionUID = -729211641099556612L;
@@ -30,9 +30,9 @@ public class ParteProcesso extends Parte {
 	
 	//Hibernate
 	@Id
-	@Column(name = "SEQ_PARTE_PROCESSO")
-	@SequenceGenerator(name = "PARTEPROCESSOID", sequenceName = "SEQ_PARTE_PROCESSO", allocationSize = 1)
-	@GeneratedValue(generator = "PARTEPROCESSOID", strategy=GenerationType.SEQUENCE)
+	@Column(name = "SEQ_PROCESSO_PARTE")
+	@SequenceGenerator(name = "PROCESSOPARTEID", sequenceName = "AUTUACAO.SEQ_PROCESSO_PARTE", allocationSize = 1)
+	@GeneratedValue(generator = "PROCESSOPARTEID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
 	ParteProcesso() {

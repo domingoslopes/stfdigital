@@ -71,7 +71,7 @@ public class PeticaoServiceUnitTests {
         Peticao peticao = new Peticao(new ClasseProcessual("HC"), null, poloAtivo, poloPassivo, documentos);
         
         Mockito.when(tarefaService.tarefas(RECEBEDORES)).thenReturn(Arrays.asList(PREAUTUAR));
-        Mockito.doReturn("1").when(processoAdapter).iniciar("autuarOriginarios", peticao);
+        //Mockito.doReturn("1").when(processoAdapter).iniciar("autuarOriginarios", peticao);
         
         String idPeticao = peticaoService.registrar("autuarOriginarios", peticao);
         
