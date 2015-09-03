@@ -138,8 +138,8 @@
 	 * Botão de uma ação específica
 	 * Ex. de uso: 
 	 * <action id="excluir_recurso" resources="recursos"
-	 * 	btn-class="btn-success"	icon-class="fa fa-hand-peace-o"
-	 * 	show-description="false" show-not-allowed="false" /> 
+	 * 	btn-class="btn-success"	icon-class="fa fa-hand-peace-o" description="Finalizar"
+	 * 	show-description="true" show-not-allowed="false" /> 
 	 */
 	angular.plataforma.directive('actionExecutor', ['$state', 'ActionService', function ($state, ActionService) {
 		return {
@@ -148,15 +148,16 @@
 				id : '@', //obrigatório, identificador da ação
 				resources : '=', //obrigatório, recursos que sofrerão a ação
 				result : '=', //opcional, resultado da execução da ação
-				callback : '&', //opcional, uma função para ser executada após finalizar que recebe o resultado
+				callback : '&', //opcional, uma função para ser executada após receber o resultado
 				btnClass : '@', //opcional, classes do botão, default= 'btn btn-default'
 				iconClass : '@', //opcional, classes do ícone
+				description : '@', //opcional, descrição do botão
 				showDescription : '=', //opcional, indica se deve aparecer a descrição, default= true
 			},
 			templateUrl : 'application/plataforma/support/actions/executor.tpl.html',
 			controller : function($scope) {
 				var action = ActionService.get($scope.id);
-				$scope.description = action.description;
+				$scope.description = angular.isString($scope.description) $scope.description : action.description;
 				$scope.showIcon = angular.isString($scope.iconClass);
 				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn-default";
 				$scope.icon = $scope.showIcon ? $scope.iconClass : "";

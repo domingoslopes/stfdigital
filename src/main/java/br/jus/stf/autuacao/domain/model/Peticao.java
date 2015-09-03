@@ -45,7 +45,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
 @javax.persistence.Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TIP_MEIO_PETICAO")
-@Table(name = "PETICAO",
+@Table(name = "PETICAO", schema = "AUTUACAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
 public abstract class Peticao implements Entity<Peticao> {
 
@@ -57,7 +57,7 @@ public abstract class Peticao implements Entity<Peticao> {
 	@Embedded
 	private ClasseId classeProcessual;
 	
-	@Column(name = "TXT_MOTIVO_RECUSA")
+	@Column(name = "DSC_MOTIVO_RECUSA")
 	private String motivoRecusa;
 	
 	@Column(name = "TIP_STATUS_PETICAO")
@@ -65,7 +65,7 @@ public abstract class Peticao implements Entity<Peticao> {
 	private PeticaoStatus status;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PROCESS_INSTANCE_PETICAO",
+	@CollectionTable(name = "PROCESS_INSTANCE_PETICAO", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<ProcessInstanceId> processInstances = new TreeSet<ProcessInstanceId>(
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
@@ -127,7 +127,7 @@ public abstract class Peticao implements Entity<Peticao> {
 	 * @param parte
 	 */
 	public boolean adicionarParte(final Parte parte) {
-		Validate.notNull(parte, "peticao.parte.notNull");
+		Validate.notNull(parte, "peticao.parte.required");
 		
 		return this.partes.add(parte);
 	}
@@ -137,7 +137,7 @@ public abstract class Peticao implements Entity<Peticao> {
 	 * @param parte
 	 */
 	public boolean removerParte(final Parte parte) {
-		Validate.notNull(parte, "peticao.parte.notNull");
+		Validate.notNull(parte, "peticao.parte.required");
 		
 		return this.partes.remove(parte);
 	}
@@ -203,7 +203,6 @@ public abstract class Peticao implements Entity<Peticao> {
 	 */
 	public Processo distribuir(final MinistroId relator) {
 		Validate.notNull(relator, "peticao.ministroRelator.required");
-		Validate.notNull(relator, "peticao.ministroRelator.required");
 
 		if (this.status != PeticaoStatus.ACEITA) {
 			throw new IllegalStateException("peticao.distribuir.illegalstate");
@@ -260,7 +259,8 @@ public abstract class Peticao implements Entity<Peticao> {
 	// Hibernate
 	@Id
 	@Column(name = "SEQ_PETICAO")
-	@SequenceGenerator(name = "PETICAOID", sequenceName = "SEQ_PETICAO", allocationSize = 1)
+	@SequenceGenerator(name = "PETICAOID", sequenceName = "SEQ_PETICAO",
+		schema = "AUTUACAO", allocationSize = 1)
 	@GeneratedValue(generator = "PETICAOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
