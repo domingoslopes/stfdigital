@@ -13,7 +13,7 @@ public interface MinistroRepository {
 
 	/**
 	 * 
-	 * @param codigo
+	 * @param ministroId
 	 */
 	public Ministro find(MinistroId codigo);
 	
