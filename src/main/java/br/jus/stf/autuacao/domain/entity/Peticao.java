@@ -17,6 +17,10 @@ public class Peticao {
 	private Polo poloPassivo;
 	private List<Documento> documentos;
 	private Ministro ministroRelator;
+	private String formaRecebimento;
+	private int quantidadeVolumes;
+	private int quantidadeApensos;
+	private String numeroSedex;
 	
 	public Peticao(){
 		
@@ -84,5 +88,37 @@ public class Peticao {
 
 	public void setMinistroRelator(Ministro ministroRelator) {
 		this.ministroRelator = ministroRelator;
+	}
+
+	public String getFormaRecebimento() {
+		return formaRecebimento;
+	}
+
+	public void setFormaRecebimento(String formaRecebimento) {
+		this.formaRecebimento = formaRecebimento;
+	}
+
+	public int getQuantidadeVolumes() {
+		return quantidadeVolumes;
+	}
+
+	public void setQuantidadeVolumes(int quantidadeVolumes) {
+		this.quantidadeVolumes = quantidadeVolumes;
+	}
+
+	public int getQuantidadeApensos() {
+		return quantidadeApensos;
+	}
+
+	public void setQuantidadeApensos(int quantidadeApensos) {
+		this.quantidadeApensos = quantidadeApensos;
+	}
+
+	public String getNumeroSedex() {
+		return numeroSedex;
+	}
+
+	public void setNumeroSedex(String numeroSedex) {
+		this.numeroSedex = numeroSedex;
 	}
 }

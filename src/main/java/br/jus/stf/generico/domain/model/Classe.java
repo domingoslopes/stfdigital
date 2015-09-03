@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.stereotype.Entity;
 
@@ -13,16 +15,19 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:34:02
  */
 @javax.persistence.Entity
-@Table(name = "CLASSE")
+@Table(name = "CLASSE", schema = "AUTUACAO")
 public class Classe implements Entity<Classe> {
 	
 	@EmbeddedId
 	private ClasseId sigla;
 	
-	@Column(name = "DSC_NOME")
+	@Column(name = "NOM_CLASSE")
 	private String nome;
 
 	public Classe(final ClasseId sigla, final String nome){
+		Validate.notNull(sigla, "classe.sigla.required");
+		Validate.notBlank(nome, "classe.nome.required");
+		
 		this.sigla = sigla;
 		this.nome = nome;
 	}
