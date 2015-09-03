@@ -13,7 +13,7 @@ import br.jus.stf.shared.domain.stereotype.ValueObject;
  * @created 14-ago-2015 18:33:46
  */
 @Embeddable
-public class ProcessInstanceId implements ValueObject<ProcessInstanceId>{
+public class ProcessInstanceId implements ValueObject<ProcessInstanceId> {
 
 	private static final long serialVersionUID = 1L;
 	

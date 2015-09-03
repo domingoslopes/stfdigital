@@ -32,8 +32,17 @@ public class PeticaoService {
 	@Autowired
 	private TarefaAdapter tarefaAdapter;
 
+	/**
+	 * Registra o recebimento de uma nova petição que ingressou no Tribunal.
+	 * @param tipoRecebimento Forma de ingresso da petição no Tribunal (físico ou eletrônico).
+	 * @param peticao Dados da petição.
+	 * @return Identificador da petição registrada.
+	 */
 	public String registrar(String tipoRecebimento, Peticao peticao) {
-		return processoAdapter.iniciar(tipoRecebimento, peticao);
+		String idPeticao = "";
+		
+		idPeticao = processoAdapter.iniciar(tipoRecebimento); 
+		return idPeticao;
 	}
 
 	public void preautuar(String idPeticao) {
