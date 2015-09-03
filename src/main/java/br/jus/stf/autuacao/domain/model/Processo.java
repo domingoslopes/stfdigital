@@ -37,13 +37,13 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
-@Table(name = "PROCESSO",
+@Table(name = "PROCESSO", schema = "AUTUACAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_CLASSE", "NUM_PROCESSO"}))
 public class Processo implements Entity<Processo> {
 
 	@Embedded
 	@AttributeOverride(name = "id",
-		column = @Column(name = "SEQ_PPROCESSO", insertable = false, updatable = false))
+		column = @Column(name = "SEQ_PROCESSO", insertable = false, updatable = false))
 	private ProcessoId processoId;
 	
 	@Embedded
@@ -80,18 +80,18 @@ public class Processo implements Entity<Processo> {
 	 * @param pecas
 	 */
 	public Processo(final ClasseId classe, final Long numero, final MinistroId ministroRelator,
-			final PeticaoId peticaoId, final Set<Parte> partes, final Set<DocumentoId> documentos) {
+			final PeticaoId peticaoId, final Set<Parte> partes, final Set<DocumentoId> pecas) {
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(ministroRelator, "processo.ministroRelator.required");
 		Validate.notNull(peticaoId, "processo.peticao.required");
 		Validate.notEmpty(partes, "processo.partes.notEmpty");
-		Validate.notEmpty(documentos, "processo.pecas.notEmpty");
+		Validate.notEmpty(pecas, "processo.pecas.notEmpty");
 		
 		this.ministroRelator = ministroRelator;
 		this.peticaoId = peticaoId;
 		this.partes.addAll(partes);
-		this.pecas.addAll(documentos);
+		this.pecas.addAll(pecas);
 	}
 
 	public ProcessoId id(){
@@ -138,15 +138,11 @@ public class Processo implements Entity<Processo> {
 		return this.partes.remove(parte);
 	}
 
-	public Set<DocumentoId> documentos(){
-		return Collections.unmodifiableSet(this.pecas);
-	}
-
 	/**
 	 * 
 	 * @param peca
 	 */
-	public boolean adicionarDocumento(final DocumentoId peca){
+	public boolean adicionarPeca(final DocumentoId peca){
 		Validate.notNull(peca, "peticao.peca.required");
 	
 		return this.pecas.add(peca);
@@ -156,7 +152,7 @@ public class Processo implements Entity<Processo> {
 	 * 
 	 * @param peca
 	 */
-	public boolean removerDocumento(final DocumentoId peca){
+	public boolean removerPeca(final DocumentoId peca){
 		Validate.notNull(peca, "peticao.peca.required");
 	
 		return this.pecas.remove(peca);
