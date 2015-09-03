@@ -37,13 +37,13 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
-@Table(name = "PROCESSO",
+@Table(name = "PROCESSO", schema = "AUTUACAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_CLASSE", "NUM_PROCESSO"}))
 public class Processo implements Entity<Processo> {
 
 	@Embedded
 	@AttributeOverride(name = "id",
-		column = @Column(name = "SEQ_PPROCESSO", insertable = false, updatable = false))
+		column = @Column(name = "SEQ_PROCESSO", insertable = false, updatable = false))
 	private ProcessoId processoId;
 	
 	@Embedded
@@ -53,6 +53,8 @@ public class Processo implements Entity<Processo> {
 	private Long numero;
 	
 	@Embedded
+	@AttributeOverride(name = "id",
+		column = @Column(name = "SEQ_MINISTRO_RELATOR"))
 	private MinistroId relator;
 	
 	@Embedded
@@ -81,10 +83,10 @@ public class Processo implements Entity<Processo> {
 		
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
-		Validate.notNull(relator, "processo.ministroRelator.required");
+		Validate.notNull(relator, "processo.relator.required");
 		Validate.notNull(peticao, "processo.peticao.required");
 		Validate.notEmpty(partes, "processo.partes.notEmpty");
-		Validate.notNull(documentos, "processo.pecas.notNull");
+		Validate.notNull(documentos, "processo.pecas.required");
 		
 		this.classe = classe;
 		this.numero = numero;
@@ -147,10 +149,7 @@ public class Processo implements Entity<Processo> {
 		return sameIdentityAs(other);
 	}
 
-	/**
-	 * 
-	 * @param other
-	 */
+	@Override
 	public boolean sameIdentityAs(Processo other) {
 		return other != null && this.processoId.sameValueAs(other.processoId);
 	}
@@ -159,7 +158,8 @@ public class Processo implements Entity<Processo> {
 	
 	@Id
 	@Column(name = "SEQ_PROCESSO")
-	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO", allocationSize = 1)
+	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO",
+		schema = "AUTUACAO", allocationSize = 1)
 	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	

@@ -142,15 +142,19 @@
 		 */
 		var isValidResourcesMode = function(action, resources) {
 			var mode = action.resourcesMode;
-			if (resources === null || resources === undefined ||
-					angular.isArray(resources) && resources.length === 0) {
+			if (resources === null || resources === undefined) {
 				return mode === "None";
-			} else if (!angular.isArray(resources) ||
-					(angular.isArray(resources) && resources.length === 1 )) {
-				return mode === "One";
-			} else {
-				return mode === "Many";
+			} else if (angular.isArray(resources)){
+				if (resources.length === 0) {
+					return mode === "None";
+				} else if (resources.length === 1) {
+					return mode === "One" || mode === "Many";
+				} else {
+					return mode === "Many";
+				}
 			}
+			throw "Os recursos devem estar em um array!";
+
 		};
 		
 		/**
