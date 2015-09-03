@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.shared.domain.model.PessoaId;
 import br.jus.stf.shared.domain.stereotype.Entity;
 
@@ -18,7 +20,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:34:02
  */
 @javax.persistence.Entity
-@Table(name = "PESSOA")
+@Table(name = "PESSOA", schema = "CORPORATIVO")
 public class Pessoa implements Entity<Pessoa> {
 
 	@Embedded
@@ -30,6 +32,9 @@ public class Pessoa implements Entity<Pessoa> {
 	private String nome;
 
 	public Pessoa(final PessoaId pessoaId, final String nome){
+		Validate.notNull(pessoaId, "pessoa.pessoaId.required");
+		Validate.notBlank(nome, "pessoa.nome.required");
+		
 		this.pessoaId = pessoaId;
 		this.nome = nome;
 	}
@@ -68,7 +73,7 @@ public class Pessoa implements Entity<Pessoa> {
 	
 	@Id
 	@Column(name = "SEQ_PESSOA")
-	@SequenceGenerator(name = "PESSOAID", sequenceName = "SEQ_PESSOA", allocationSize = 1)
+	@SequenceGenerator(name = "PESSOAID", sequenceName = "CORPORATIVO.SEQ_PESSOA", allocationSize = 1)
 	@GeneratedValue(generator = "PESSOAID", strategy = GenerationType.SEQUENCE)
 	private Long id;
 	

@@ -20,6 +20,10 @@ Agora, rode a aplicação em modo de desenvolvimento:
 
 Se tudo correu bem, a aplicação estará rodando no endereço: **http://127.0.0.1:3000**.
 
+Caso não funcione, tente executar o comando abaixo e rodar novamente os comandos `npm install` e `bower install`.
+
+	$ npm cache clean –f
+
 ### <a name="thebuildsystem">O Sistema de Build</a>
 
 Existem algumas `tasks` disponíveis no arquivo `gulpfile.js`:

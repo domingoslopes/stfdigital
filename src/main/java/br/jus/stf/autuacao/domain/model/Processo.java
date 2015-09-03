@@ -54,8 +54,13 @@ public class Processo implements Entity<Processo> {
 	
 	@Embedded
 	@AttributeOverride(name = "id",
+<<<<<<< HEAD
 		column = @Column(name = "SEQ_MINISTRO_RELATOR"))
 	private MinistroId relator;
+=======
+			column = @Column(name = "SEQ_MINISTRO_RELATOR"))
+	private MinistroId ministroRelator;
+>>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 	
 	@Embedded
 	private PeticaoId peticao;
@@ -66,7 +71,7 @@ public class Processo implements Entity<Processo> {
 	private Set<Parte> partes = new HashSet<Parte>(0);
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "DOCUMENTO_PROCESSO",
+	@CollectionTable(name = "PROCESSO_DOCUMENTO", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PROCESSO"))
 	private Set<DocumentoId> pecas = new TreeSet<DocumentoId>(
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
@@ -78,22 +83,31 @@ public class Processo implements Entity<Processo> {
 	 * @param peticao
 	 * @param partes
 	 */
+<<<<<<< HEAD
 	public Processo(final ClasseId classe, final Long numero, final MinistroId relator,
 			final PeticaoId peticao, final Set<Parte> partes, final Set<DocumentoId> documentos) {
 		
+=======
+	public Processo(final ClasseId classe, final Long numero, final MinistroId ministroRelator,
+			final PeticaoId peticaoId, final Set<Parte> partes, final Set<DocumentoId> pecas) {
+>>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(relator, "processo.relator.required");
 		Validate.notNull(peticao, "processo.peticao.required");
 		Validate.notEmpty(partes, "processo.partes.notEmpty");
+<<<<<<< HEAD
 		Validate.notNull(documentos, "processo.pecas.required");
+=======
+		Validate.notEmpty(pecas, "processo.pecas.notEmpty");
+>>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 		
 		this.classe = classe;
 		this.numero = numero;
 		this.relator = relator;
 		this.peticao = peticao;
 		this.partes.addAll(partes);
-		this.pecas.addAll(documentos);
+		this.pecas.addAll(pecas);
 	}
 
 	public ProcessoId id() {
@@ -118,6 +132,46 @@ public class Processo implements Entity<Processo> {
 		return Collections.unmodifiableSet(partes.stream()
 		  .filter(p -> p.polo() == TipoPolo.POLO_PASSIVO)
 		  .collect(Collectors.toSet()));
+	}
+	
+	/**
+	 * 
+	 * @param parte
+	 */
+	public boolean adicionarParte(final Parte parte){
+		Validate.notNull(parte, "peticao.parte.required");
+		
+		return this.partes.add(parte);
+	}
+	
+	/**
+	 * 
+	 * @param parte
+	 */
+	public boolean removerParte(final Parte parte){
+		Validate.notNull(parte, "peticao.parte.required");
+		
+		return this.partes.remove(parte);
+	}
+
+	/**
+	 * 
+	 * @param peca
+	 */
+	public boolean adicionarPeca(final DocumentoId peca){
+		Validate.notNull(peca, "peticao.peca.required");
+	
+		return this.pecas.add(peca);
+	}
+	
+	/**
+	 * 
+	 * @param peca
+	 */
+	public boolean removerPeca(final DocumentoId peca){
+		Validate.notNull(peca, "peticao.peca.required");
+	
+		return this.pecas.remove(peca);
 	}
 
 	public Set<DocumentoId> pecas() {
@@ -158,8 +212,12 @@ public class Processo implements Entity<Processo> {
 	
 	@Id
 	@Column(name = "SEQ_PROCESSO")
+<<<<<<< HEAD
 	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO",
 		schema = "AUTUACAO", allocationSize = 1)
+=======
+	@SequenceGenerator(name = "PROCESSOID", sequenceName = "AUTUACAO.SEQ_PROCESSO", allocationSize = 1)
+>>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
