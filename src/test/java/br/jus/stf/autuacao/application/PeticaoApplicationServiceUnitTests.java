@@ -85,7 +85,7 @@ public class PeticaoApplicationServiceUnitTests extends AbstractIntegrationTests
         documentos.add(new Documento("Doc1"));
         documentos.add(new Documento("Doc2"));
         
-        idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
+        idPeticao = this.peticaoApplicationService.peticionar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
        
         Assert.assertEquals("4", idPeticao);
 	}
@@ -112,7 +112,7 @@ public class PeticaoApplicationServiceUnitTests extends AbstractIntegrationTests
         documentos.add(new Documento("Doc1"));
         documentos.add(new Documento("Doc2"));
         
-        idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, null, poloAtivo, poloPassivo, documentos);
+        idPeticao = this.peticaoApplicationService.peticionar(tipoRecebimento, null, poloAtivo, poloPassivo, documentos);
        
         Assert.assertEquals("4", idPeticao);
 	}
@@ -136,7 +136,7 @@ public class PeticaoApplicationServiceUnitTests extends AbstractIntegrationTests
         documentos.add(new Documento("Doc1"));
         documentos.add(new Documento("Doc2"));
         
-        this.peticaoApplicationService.registrar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
+        this.peticaoApplicationService.peticionar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
 	}
 	
 	@Test(expected=RuntimeException.class)
@@ -156,7 +156,7 @@ public class PeticaoApplicationServiceUnitTests extends AbstractIntegrationTests
         documentos.add(new Documento("Doc1"));
         documentos.add(new Documento("Doc2"));
                 
-        this.peticaoApplicationService.registrar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
+        this.peticaoApplicationService.peticionar(tipoRecebimento, classeProcessual, poloAtivo, poloPassivo, documentos);
 	}
 	
 	@Test
@@ -165,7 +165,7 @@ public class PeticaoApplicationServiceUnitTests extends AbstractIntegrationTests
 		String idPeticao = "";
 		String tipoRecebimento = "autuarOriginarios";
 				
-		idPeticao = this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
+		idPeticao = this.peticaoApplicationService.peticionar(tipoRecebimento, this.peticao.getClasseSugerida().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
         
 		Assert.assertTrue(!StringUtils.isEmpty(idPeticao));
 	}
@@ -175,7 +175,7 @@ public class PeticaoApplicationServiceUnitTests extends AbstractIntegrationTests
 		
 		String tipoRecebimento = "autuarOriginarios";
 		
-		this.peticaoApplicationService.registrar(tipoRecebimento, this.peticao.getClasse().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
+		this.peticaoApplicationService.peticionar(tipoRecebimento, this.peticao.getClasse().getSigla(), this.peticao.getPoloAtivo(), this.peticao.getPoloPassivo(), this.peticao.getDocumentos());
 		
 		List<Task> tarefas = this.tarefaApllicationService.tarefas("autuador");
 		
