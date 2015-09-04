@@ -39,11 +39,11 @@ public class ProcessInstanceId implements ValueObject<ProcessInstanceId> {
 	}
 	
 	@Override
-	public boolean equals(final Object o){
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+	public boolean equals(final Object obj){
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
 	
-		ProcessInstanceId other = (ProcessInstanceId) o;
+		ProcessInstanceId other = (ProcessInstanceId) obj;
 		return sameValueAs(other);
 	}
 
