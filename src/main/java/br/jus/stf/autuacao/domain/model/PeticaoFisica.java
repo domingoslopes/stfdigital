@@ -2,6 +2,7 @@ package br.jus.stf.autuacao.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
@@ -13,6 +14,7 @@ import br.jus.stf.shared.domain.model.ClasseId;
  * @author Lucas.Rodrigues
  *
  */
+@Entity
 @DiscriminatorValue("F")
 public class PeticaoFisica extends Peticao {
 
