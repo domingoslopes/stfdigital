@@ -10,7 +10,7 @@ import br.jus.stf.autuacao.application.PeticaoIntegrationTests;
 import br.jus.stf.autuacao.domain.ClasseProcessualServiceUnitTests;
 import br.jus.stf.autuacao.domain.MinistroServiceUnitTests;
 import br.jus.stf.autuacao.interfaces.AutuacaoOriginariosIntegrationTests;
-import br.jus.stf.plataforma.action.AcoesIntegrationTests;
+import br.jus.stf.shared.infra.action.AcoesIntegrationTests;
 
 @RunWith(Suite.class)
 @SuiteClasses({ AutuacaoOriginariosIntegrationTests.class, AcoesIntegrationTests.class,

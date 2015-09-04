@@ -85,7 +85,7 @@
 		
 		$httpBackend.whenPOST(properties.apiUrl + '/actions/dummy_action/execute').respond(function(method,url,data) {
 			console.log("Executando uma ação");
-			return [200, null, {}];
+			return [200, "Ação executada!", {}];
 		});
 		
 		$httpBackend.whenGET(/\/.*.tpl.html/).passThrough();
