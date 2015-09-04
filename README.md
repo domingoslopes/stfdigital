@@ -34,3 +34,20 @@ Existem algumas `tasks` disponíveis no arquivo `gulpfile.js`:
 * **gulp test:e2e** - Executa os testes end-to-end disponíveis em `src/main/resources/static/application/test/e2e`.
 
 **Você vai precisar que a aplicação esteja rodando para executar os testes e2e. Você pode fazer isso usando uma outra instância de terminal.**
+
+### Styleguide
+
+O Guia de estilos do STFDigital está em HTML com seus assets no diretório `styleguide`
+
+Para visualizar, entre no diretório `styleguide` e instale as dependências do node e do bower:
+
+    $ npm install
+    $ bower install
+    
+Agora, rode a aplicação em modo de desenvolvimento:
+
+    $ gulp
+
+O comando default do gulp minificará o SASS, e rodará sua aplicação no endereço: **http://localhost:3000/stfdigital/styleguide/tpl/**.
+
+
