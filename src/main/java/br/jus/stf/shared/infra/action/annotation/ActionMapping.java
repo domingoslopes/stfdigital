@@ -33,12 +33,6 @@ public @interface ActionMapping {
      */
     String name();
     
-    /**
-     * A classe dos recursos
-     * @return a classe
-     */
-    Class<?> resourceClass() default Long.class;
-    
 	/**
 	 * Os identificadores dos perfis de acesso para validação de segurança 
 	 * 

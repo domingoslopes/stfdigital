@@ -2,6 +2,7 @@ package br.jus.stf.shared.infra.action.service;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -122,6 +123,9 @@ public class ActionService {
 	 * @return os recursos covertidos para tipo infomado
 	 */
 	private List<?> convertResources(ArrayNode resources, ActionMappingInfo actionInfo) {
+		if (ResourcesMode.None.equals(actionInfo.getResourcesMode())) {
+			return Collections.emptyList();
+		}
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			JavaType type = TypeFactory.defaultInstance()

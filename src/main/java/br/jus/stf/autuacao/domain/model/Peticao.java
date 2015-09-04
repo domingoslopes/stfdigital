@@ -43,11 +43,8 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:33:25
  */
 @javax.persistence.Entity
-<<<<<<< HEAD
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TIP_MEIO_PETICAO")
-=======
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 @Table(name = "PETICAO", schema = "AUTUACAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
 public abstract class Peticao implements Entity<Peticao> {
@@ -57,31 +54,6 @@ public abstract class Peticao implements Entity<Peticao> {
 		column = @Column(name = "SEQ_PETICAO", insertable = false, updatable = false))
 	private PeticaoId peticaoId;
 	
-<<<<<<< HEAD
-=======
-	@Column(name = "NUM_PETICAO", nullable = false)
-	private Long numero;
-	
-	@Column(name = "NUM_ANO_PETICAO", nullable = false)
-	private Short ano;
-	
-	@Embedded
-	@AttributeOverride(name = "sigla",
-		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
-	private ClasseId classeSugerida;
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-			targetEntity = PartePeticao.class)
-	@JoinColumn(name = "SEQ_PETICAO")
-	private Set<Parte> partes = new HashSet<Parte>(0);
-	
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PETICAO_DOCUMENTO", schema = "AUTUACAO",
-			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
-	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
-			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
-	
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 	@Embedded
 	private ClasseId classeProcessual;
 	
@@ -97,24 +69,6 @@ public abstract class Peticao implements Entity<Peticao> {
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<ProcessInstanceId> processInstances = new TreeSet<ProcessInstanceId>(
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
-<<<<<<< HEAD
-=======
-
-	/**
-	 * 
-	 * @param numeroPeticao
-	 * @param classeSugerida
-	 * @param partes
-	 * @param documentos
-	 */
-	public Peticao(final Long numero, final Short ano, final ClasseId classeSugerida,
-			final Set<Parte> partes, final Set<DocumentoId> documentos){
-		Validate.notNull(numero, "peticao.numero.required");
-		Validate.notNull(ano, "peticao.ano.required");
-		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
-		Validate.notEmpty(partes, "peticao.partes.notEmpty");
-		Validate.notEmpty(documentos, "peticao.documentos.notEmpty");
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 	
 	@Column(name = "NUM_PETICAO", nullable = false)
 	protected Long numero;
@@ -186,33 +140,6 @@ public abstract class Peticao implements Entity<Peticao> {
 		Validate.notNull(parte, "peticao.parte.required");
 		
 		return this.partes.remove(parte);
-<<<<<<< HEAD
-=======
-	}
-
-	public Set<DocumentoId> documentos(){
-		return Collections.unmodifiableSet(this.documentos);
-	}
-
-	/**
-	 * 
-	 * @param documento
-	 */
-	public boolean adicionarDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.required");
-	
-		return this.documentos.add(documento);
-	}
-	
-	/**
-	 * 
-	 * @param documento
-	 */
-	public boolean removerDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.required");
-	
-		return this.documentos.remove(documento);
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 	}
 
 	public ClasseId classeProcessual() {
@@ -332,12 +259,8 @@ public abstract class Peticao implements Entity<Peticao> {
 	// Hibernate
 	@Id
 	@Column(name = "SEQ_PETICAO")
-<<<<<<< HEAD
 	@SequenceGenerator(name = "PETICAOID", sequenceName = "SEQ_PETICAO",
 		schema = "AUTUACAO", allocationSize = 1)
-=======
-	@SequenceGenerator(name = "PETICAOID", sequenceName = "AUTUACAO.SEQ_PETICAO", allocationSize = 1)
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 	@GeneratedValue(generator = "PETICAOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	

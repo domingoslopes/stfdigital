@@ -54,13 +54,9 @@ public class Processo implements Entity<Processo> {
 	
 	@Embedded
 	@AttributeOverride(name = "id",
-<<<<<<< HEAD
 		column = @Column(name = "SEQ_MINISTRO_RELATOR"))
 	private MinistroId relator;
-=======
-			column = @Column(name = "SEQ_MINISTRO_RELATOR"))
-	private MinistroId ministroRelator;
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
+
 	
 	@Embedded
 	private PeticaoId peticao;
@@ -77,30 +73,21 @@ public class Processo implements Entity<Processo> {
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 
 	/**
-	 * 
+	 * @param classe
 	 * @param numero
 	 * @param relator
 	 * @param peticao
 	 * @param partes
+	 * @param documentos
 	 */
-<<<<<<< HEAD
 	public Processo(final ClasseId classe, final Long numero, final MinistroId relator,
-			final PeticaoId peticao, final Set<Parte> partes, final Set<DocumentoId> documentos) {
-		
-=======
-	public Processo(final ClasseId classe, final Long numero, final MinistroId ministroRelator,
-			final PeticaoId peticaoId, final Set<Parte> partes, final Set<DocumentoId> pecas) {
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
+			final PeticaoId peticao, final Set<Parte> partes, final Set<DocumentoId> pecas) {
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(relator, "processo.relator.required");
 		Validate.notNull(peticao, "processo.peticao.required");
 		Validate.notEmpty(partes, "processo.partes.notEmpty");
-<<<<<<< HEAD
-		Validate.notNull(documentos, "processo.pecas.required");
-=======
-		Validate.notEmpty(pecas, "processo.pecas.notEmpty");
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
+		Validate.notNull(pecas, "processo.pecas.required");
 		
 		this.classe = classe;
 		this.numero = numero;
@@ -212,12 +199,8 @@ public class Processo implements Entity<Processo> {
 	
 	@Id
 	@Column(name = "SEQ_PROCESSO")
-<<<<<<< HEAD
 	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO",
 		schema = "AUTUACAO", allocationSize = 1)
-=======
-	@SequenceGenerator(name = "PROCESSOID", sequenceName = "AUTUACAO.SEQ_PROCESSO", allocationSize = 1)
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
 	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	

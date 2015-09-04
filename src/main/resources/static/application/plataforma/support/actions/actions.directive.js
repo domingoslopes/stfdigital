@@ -139,45 +139,74 @@
 	 * Ex. de uso: 
 	 * <action id="excluir_recurso" resources="recursos"
 	 * 	btn-class="btn-success"	icon-class="fa fa-hand-peace-o" description="Finalizar"
-	 * 	show-description="true" show-not-allowed="false" /> 
+	 * 	show-description="true" verify-if-allowed="true" show-not-allowed="false" /> 
 	 */
-	angular.plataforma.directive('actionExecutor', ['$state', 'ActionService', function ($state, ActionService) {
+	angular.plataforma.directive('actionExecutor', ['ActionService', 'messages', function (ActionService, messages) {
 		return {
 			restrict : 'E',
 			scope : {
 				id : '@', //obrigatório, identificador da ação
-				resources : '=', //obrigatório, recursos que sofrerão a ação
+				resources : '=', //opcional, recursos que sofrerão a ação devem ser informados se a ação exigir
 				result : '=', //opcional, resultado da execução da ação
-				callback : '&', //opcional, uma função para ser executada após receber o resultado
+				callback : '&', //opcional, uma função para ser executada após receber o resultado, o resultado é passado como parâmetro
 				btnClass : '@', //opcional, classes do botão, default= 'btn btn-default'
 				iconClass : '@', //opcional, classes do ícone
-				description : '@', //opcional, descrição do botão
+				description : '@', //opcional, descrição do botão, se não informado usará a descrição da ação
 				showDescription : '=', //opcional, indica se deve aparecer a descrição, default= true
+				verifyIfAllowed: '=', //opcional, indica se deve verificar se a ação é permitida, default= true
+				showNotAllowed : '=', //opcional, indica se deve aparecer o botão mesmo não permitido, default= true
 			},
 			templateUrl : 'application/plataforma/support/actions/executor.tpl.html',
 			controller : function($scope) {
 				var action = ActionService.get($scope.id);
-				$scope.description = angular.isString($scope.description) $scope.description : action.description;
-				$scope.showIcon = angular.isString($scope.iconClass);
-				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn-default";
-				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
-				
-				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
-					$scope.showDescription = true;
-				}
-				
-				// Executa a ação
-				$scope.execute = function() {
-					ActionService.execute($scope.id, $scope.resources)
-						.then(function(result) {
-							if (angular.isDefined($scope.result)) {
-								$scope.result = result.data;
-							}
-							// verifica se o callback é uma função e executa
-							if (angular.isFunction($scope.callback())) {
-								$scope.callback()(result.data);
-							}
-						});
+				if (angular.isObject(action) &&
+						ActionService.isValidResources(action, $scope.resources)) {
+					$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
+					$scope.disabled = true;
+					$scope.showAction = true;
+					$scope.showIcon = angular.isString($scope.iconClass);
+					$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn-default";
+					$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+					
+					if (angular.isUndefined($scope.verifyIfAllowed)) {
+						$scope.verifyIfAllowed = true;	
+					}
+					
+					if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
+						$scope.showDescription = true;
+					}
+					
+					//Verifica se a ação é permitida, caso seja pedido para verificar
+					if ($scope.verifyIfAllowed) {
+						ActionService.isAllowed($scope.id, $scope.resources)
+							.then(function(isAllowed) {
+								$scope.disabled = !isAllowed;
+	
+								if ($scope.disabled && angular.isDefined($scope.showNotAllowed)) {
+									$scope.showAction = $scope.showNotAllowed;
+								}
+							});
+					} else {
+						$scope.disabled = false;
+					}
+					
+					// Executa a ação
+					$scope.execute = function() {
+						ActionService.execute($scope.id, $scope.resources)
+							.then(function(result) {
+								if (angular.isDefined($scope.result)) {
+									$scope.result = result.data;
+								}
+								// verifica se o callback é uma função e executa
+								if (angular.isFunction($scope.callback())) {
+									$scope.callback()(result.data);
+								}
+							}, function(err) {
+								messages.error(err);
+							});
+					};
+				} else {
+					messages.error("A ação e os recursos para a ação devem ser válidos!");
 				}
 			}
 		}

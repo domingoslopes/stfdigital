@@ -35,6 +35,7 @@ import java.util.List;
  * @since 24.05.2010
  * 
  * @param <A> o tipo da anotação vinculada ao handler
+ * @param <T> o tipo dos recursos
  */
 public interface ActionConditionHandler<A, T> {
     

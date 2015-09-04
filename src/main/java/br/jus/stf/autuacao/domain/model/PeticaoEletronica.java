@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import javax.persistence.CollectionTable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 
@@ -19,11 +20,12 @@ import br.jus.stf.shared.domain.model.DocumentoId;
  * @author Lucas.Rodrigues
  *
  */
+@Entity
 @DiscriminatorValue("E")
 public class PeticaoEletronica extends Peticao {
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "DOCUMENTO_PETICAO", schema = "AUTUACAO",
+	@CollectionTable(name = "PETICAO_DOCUMENTO", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
 			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
@@ -50,7 +52,7 @@ public class PeticaoEletronica extends Peticao {
 	 * @param documento
 	 */
 	public boolean adicionarDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.notNull");
+		Validate.notNull(documento, "peticao.documento.required");
 	
 		return this.documentos.add(documento);
 	}
@@ -60,7 +62,7 @@ public class PeticaoEletronica extends Peticao {
 	 * @param documento
 	 */
 	public boolean removerDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.notNull");
+		Validate.notNull(documento, "peticao.documento.required");
 	
 		return this.documentos.remove(documento);
 	}
