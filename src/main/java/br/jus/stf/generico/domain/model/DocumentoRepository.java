@@ -1,7 +1,5 @@
 package br.jus.stf.generico.domain.model;
 
-import java.util.List;
-
 import br.jus.stf.shared.domain.model.DocumentoId;
 
 /**
@@ -15,10 +13,8 @@ public interface DocumentoRepository {
 	 * 
 	 * @param documentoId
 	 */
-	public DocumentoId find(DocumentoId documentoId);
-
-	public List<Documento> findAll();
-
+	public Documento find(DocumentoId documentoId);
+	
 	/**
 	 * 
 	 * @param documento

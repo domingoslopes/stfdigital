@@ -2,6 +2,8 @@ package br.jus.stf.autuacao.domain.model;
 
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.ProcessoId;
 
@@ -14,9 +16,11 @@ public interface ProcessoRepository {
 
 	/**
 	 * 
-	 * @param numeroProcesso
+	 * @param processoId
 	 */
-	public Processo find(ProcessoId numeroProcesso);
+	public Processo find(ProcessoId processoId);
+	
+	public List<Processo> find(Specification<Processo> specification);
 
 	public List<Processo> findAll();
 
@@ -26,6 +30,6 @@ public interface ProcessoRepository {
 	 */
 	public void store(Processo processo);
 
-	public Long nextNumero(final ClasseId classe);
+	public Long proximoNumero(final ClasseId classe);
 
 }
