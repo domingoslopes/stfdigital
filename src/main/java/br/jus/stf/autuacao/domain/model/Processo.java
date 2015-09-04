@@ -54,11 +54,12 @@ public class Processo implements Entity<Processo> {
 	
 	@Embedded
 	@AttributeOverride(name = "id",
-			column = @Column(name = "SEQ_MINISTRO_RELATOR"))
-	private MinistroId ministroRelator;
+		column = @Column(name = "SEQ_MINISTRO_RELATOR"))
+	private MinistroId relator;
+
 	
 	@Embedded
-	private PeticaoId peticaoId;
+	private PeticaoId peticao;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
 			targetEntity = ParteProcesso.class)
@@ -72,47 +73,49 @@ public class Processo implements Entity<Processo> {
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 
 	/**
-	 * 
+	 * @param classe
 	 * @param numero
-	 * @param ministroRelator
+	 * @param relator
 	 * @param peticao
 	 * @param partes
-	 * @param pecas
+	 * @param documentos
 	 */
-	public Processo(final ClasseId classe, final Long numero, final MinistroId ministroRelator,
-			final PeticaoId peticaoId, final Set<Parte> partes, final Set<DocumentoId> pecas) {
+	public Processo(final ClasseId classe, final Long numero, final MinistroId relator,
+			final PeticaoId peticao, final Set<Parte> partes, final Set<DocumentoId> pecas) {
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
-		Validate.notNull(ministroRelator, "processo.ministroRelator.required");
-		Validate.notNull(peticaoId, "processo.peticao.required");
+		Validate.notNull(relator, "processo.relator.required");
+		Validate.notNull(peticao, "processo.peticao.required");
 		Validate.notEmpty(partes, "processo.partes.notEmpty");
-		Validate.notEmpty(pecas, "processo.pecas.notEmpty");
+		Validate.notNull(pecas, "processo.pecas.required");
 		
-		this.ministroRelator = ministroRelator;
-		this.peticaoId = peticaoId;
+		this.classe = classe;
+		this.numero = numero;
+		this.relator = relator;
+		this.peticao = peticao;
 		this.partes.addAll(partes);
 		this.pecas.addAll(pecas);
 	}
 
-	public ProcessoId id(){
+	public ProcessoId id() {
 		return this.processoId;
 	}
 
-	public MinistroId ministroRelator(){
-		return this.ministroRelator;
+	public MinistroId relator() {
+		return this.relator;
 	}
 
-	public PeticaoId peticaoId(){
-		return this.peticaoId;
+	public PeticaoId peticao() {
+		return this.peticao;
 	}
 
-	public Set<Parte> partesPoloAtivo(){
+	public Set<Parte> partesPoloAtivo() {
 		return Collections.unmodifiableSet(partes.stream()
 		  .filter(p -> p.polo() == TipoPolo.POLO_ATIVO)
 		  .collect(Collectors.toSet()));
 	}
 
-	public Set<Parte> partesPoloPassivo(){
+	public Set<Parte> partesPoloPassivo() {
 		return Collections.unmodifiableSet(partes.stream()
 		  .filter(p -> p.polo() == TipoPolo.POLO_PASSIVO)
 		  .collect(Collectors.toSet()));
@@ -158,8 +161,16 @@ public class Processo implements Entity<Processo> {
 		return this.pecas.remove(peca);
 	}
 
-	public Set<DocumentoId> pecas(){
+	public Set<DocumentoId> pecas() {
 		return Collections.unmodifiableSet(pecas);
+	}
+	
+	public String identificacao() {
+		return new StringBuilder()
+				.append(classe.toString())
+				.append(" ")
+				.append(numero)
+				.toString();
 	}
 	
 	@Override
@@ -179,11 +190,8 @@ public class Processo implements Entity<Processo> {
 		return sameIdentityAs(other);
 	}
 
-	/**
-	 * 
-	 * @param other
-	 */
-	public boolean sameIdentityAs(Processo other){
+	@Override
+	public boolean sameIdentityAs(Processo other) {
 		return other != null && this.processoId.sameValueAs(other.processoId);
 	}
 	
@@ -191,11 +199,12 @@ public class Processo implements Entity<Processo> {
 	
 	@Id
 	@Column(name = "SEQ_PROCESSO")
-	@SequenceGenerator(name = "PROCESSOID", sequenceName = "AUTUACAO.SEQ_PROCESSO", allocationSize = 1)
+	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO",
+		schema = "AUTUACAO", allocationSize = 1)
 	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
-	Processo(){
+	Processo() {
 
 	}
 
