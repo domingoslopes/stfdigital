@@ -49,6 +49,10 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     		.andExpect(status().isOk())
     		.andExpect(jsonPath("$", is(true)));
     		//.andDo(print());
+    	
+    	mockMvc.perform(get("/api/actions/do_nothing/isallowed"))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$", is(true)));
     }
     
     @Test
@@ -78,9 +82,12 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     	
     	mockMvc.perform(post("/api/actions/do_nothing/execute")
     			.contentType(MediaType.APPLICATION_JSON)
-    			.content("{}"))
+    			.content("{\"resources\": [1]}"))
     		.andExpect(status().isOk());
-    		//.andDo(print());    	
+    		//.andDo(print());
+    	
+    	mockMvc.perform(get("/api/actions/do_nothing/execute"))
+    		.andExpect(status().isOk());
     }
     
 	private void setAuthenticationAuthorities(String... authorities) {

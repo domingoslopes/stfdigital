@@ -11,6 +11,9 @@
 
 	angular.plataforma.service('ActionService', ['$q', '$http', '$templateCache', '$window', 'properties', 
 	                             function($q, $http, $templateCache, $window, properties) {
+
+		var ARRAY_EXCEPTION = "Os recursos devem estar em um array!";
+		
 		//attributes
 		var actions = {};
 		
@@ -74,16 +77,16 @@
 				if (idsByContext.length === 0) {
 					resolve(allowedActions);
 				} else {
-					var posts = [];
+					var requests = [];
 					// carrega todos as requisições que devem ser realizadas para
 					// verificar as ações que ainda não foram permitidas
 					angular.forEach(idsByContext, function(ids, context) {
 						var data = { 'ids' : ids, 'resources' : resources };
-						var post = $http.post(properties.apiUrl + /*'/' + context + */'/actions/isallowed', data);
-						posts.push(post);
+						var request = $http.post(properties.apiUrl + /*'/' + context + */'/actions/isallowed', data);
+						requests.push(request);
 					});
 					// espera todas as requisições terminarem para retornar as ações
-					$q.all(posts)
+					$q.all(requests)
 						.then(function(results) {
 							angular.forEach(results, function(result) {
 								angular.forEach(result.data, function(id) {
@@ -111,14 +114,22 @@
 					if (!action.hasConditionHandlers) {
 						resolve(true);
 					} else {
+						var success = function(result) {
+							resolve(result.data);
+						};
+						var error = function(err) {
+							reject(err);
+						}
 						// verifica os handlers no servidor 
-						var data = { 'resources' : resources };
-						$http.post(properties.apiUrl + /*'/' + action.context + */'/actions/' + id + '/isallowed', data)
-							.then(function(result) {
-								resolve(result.data);
-							}, function(err) {
-								reject(err);
-							});
+						var request = null;
+						if (angular.isArray(resources) && resources.length > 0) {
+							var data = { 'resources' : resources };
+							$http.post(properties.apiUrl + /*'/' + action.context + */'/actions/' + id + '/isallowed', data)
+								.then(success, error);
+						} else {
+							$http.get(properties.apiUrl + /*'/' + context +*/ '/actions/' + id + '/isallowed')
+								.then(success, error);
+						}
 					}
 				} else {
 					resolve(false);
@@ -130,19 +141,23 @@
 		 * Executa uma ação sobre os recursos informados
 		 */
 		this.execute = function(id, resources) {
+			
 			var context = actions[id].context;
-			var data = { 'resources' : resources };
-			return $http.post(properties.apiUrl + /*'/' + context +*/ '/actions/' + id + '/execute', data);
+			if (angular.isArray(resources)) {
+				var data = { 'resources' : resources };
+				return $http.post(properties.apiUrl + /*'/' + context +*/ '/actions/' + id + '/execute', data);
+			} else if (isResourcesNullOrUndefined(resources)){
+				return $http.get(properties.apiUrl + /*'/' + context +*/ '/actions/' + id + '/execute');
+			}
+			return $q.defer().reject(ARRAY_EXCEPTION);
 		};
-		
-		//private methods
 		
 		/**
 		 * Valida se o modo corresponde à quantidade de recursos
 		 */
-		var isValidResourcesMode = function(action, resources) {
+		this.isValidResources = function(action, resources) {
 			var mode = action.resourcesMode;
-			if (resources === null || resources === undefined) {
+			if (isResourcesNullOrUndefined(resources)) {
 				return mode === "None";
 			} else if (angular.isArray(resources)){
 				if (resources.length === 0) {
@@ -153,9 +168,22 @@
 					return mode === "Many";
 				}
 			}
-			throw "Os recursos devem estar em um array!";
-
+			return false;
 		};
+		
+		//private methods
+		
+		var isValidResources = this.isValidResources;
+		
+		/**
+		 * Verifica se os recursos são nulos ou indefinidos  
+		 */
+		var isResourcesNullOrUndefined = function(resources) {
+			if (resources == null || angular.isUndefined(resources)) {
+				return true;
+			}
+			return false;
+		}
 		
 		/**
 		 * Valida se o usuário possui as permissões necessárias para listar uma ação
@@ -181,7 +209,7 @@
 		 */
 		var isAllowed = function(action, resources, context) {
 			if (!isActionContext(action, context) ||
-					!isValidResourcesMode(action, resources) ||
+					!isValidResources(action, resources) ||
 					!hasNeededAuthorities(action)) {
 				return false;
 			}

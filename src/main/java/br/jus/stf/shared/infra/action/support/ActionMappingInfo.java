@@ -140,6 +140,9 @@ public class ActionMappingInfo {
 	@JsonView(ActionView.class)
 	@JsonGetter("resourcesType")
 	public String getResourcesType() {
+		if (resourcesClass == null) {
+			return "";
+		}
 		return resourcesClass.getSimpleName();
 	}
 	

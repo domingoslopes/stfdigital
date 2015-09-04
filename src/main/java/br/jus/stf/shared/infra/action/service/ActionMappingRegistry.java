@@ -2,6 +2,7 @@ package br.jus.stf.shared.infra.action.service;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,10 +17,10 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.shared.infra.action.annotation.ActionController;
 import br.jus.stf.shared.infra.action.annotation.ActionMapping;
-import br.jus.stf.shared.infra.action.support.ResourcesMode;
 import br.jus.stf.shared.infra.action.handler.ActionConditionHandler;
 import br.jus.stf.shared.infra.action.support.ActionConditionHandlerInfo;
 import br.jus.stf.shared.infra.action.support.ActionMappingInfo;
+import br.jus.stf.shared.infra.action.support.ResourcesMode;
 
 /**
  * Registro que fornece as ações definidas. O registro é realizado na inicialização do bean
@@ -109,7 +110,7 @@ public class ActionMappingRegistry implements InitializingBean {
 				info.setDescription(actionMapping.name());
 				info.setControllerClass(controllerClass);
 				info.setMethodName(method.getName());
-				info.setResourcesClass(actionMapping.resourceClass());
+				info.setResourcesClass(getResourcesClass(method));
 				info.setResourcesMode(getResourcesMode(method));
 				info.getNeededAuthorities().addAll(
 						Arrays.asList(actionMapping.neededAuthorities()));
@@ -138,6 +139,25 @@ public class ActionMappingRegistry implements InitializingBean {
 					ResourcesMode.Many : ResourcesMode.One;
 		}
 		throw new IllegalArgumentException("O mecanismo permite no máximo 1 parâmetro");
+	}
+	
+	/**
+	 * Retorna o tipo dos recursos a partir do método
+	 * 
+	 * @param method
+	 * @return a classe dos recursos
+	 */
+	private Class<?> getResourcesClass(Method method) {
+		if (method.getParameterCount() == 0) {
+			return null;
+		}
+		Class<?> clazz = method.getParameterTypes()[0];
+		if (Collection.class.isAssignableFrom(clazz)) {
+			ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[0];
+			return (Class<?>) type.getActualTypeArguments()[0];
+		} else {
+			return clazz;
+		}
 	}
 	
 }
