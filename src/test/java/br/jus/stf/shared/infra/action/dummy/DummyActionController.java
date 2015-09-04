@@ -24,7 +24,7 @@ public class DummyActionController {
 
 	}
 	
-	@ActionMapping(id = "DUMMY_ACTION", name = "Do Nothing", resourceClass = DummyObj.class)
+	@ActionMapping(id = "DUMMY_ACTION", name = "Do Nothing")
 	@DummyAnnotation
 	public List<DummyObj> doNothingDummy(List<DummyObj> resources) {
 		List<DummyObj> dummies = new ArrayList<DummyObj>();

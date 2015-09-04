@@ -22,7 +22,7 @@ public class ActionIntegrationTests extends AbstractIntegrationTests {
     @Test
     public void executaAcaoPeticao() throws Exception {
     	setAuthenticationAuthorities("peticionador");
-    	mockMvc.perform(post("/api/actions/registrar_peticao/execute")
+    	mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [{\"classe\":\"HC\",\"partesPoloAtivo\":[\"Fulano\"],\"partesPoloPassivo\":[\"Cicrano\"],\"documentos\":[\"id01\",\"id02\"]}]}"))
     		.andExpect(status().isOk());

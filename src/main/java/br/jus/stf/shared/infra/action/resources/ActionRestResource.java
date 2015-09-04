@@ -20,6 +20,7 @@ import br.jus.stf.shared.infra.action.support.ActionMappingInfo;
 import br.jus.stf.shared.infra.action.support.ActionView;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
@@ -48,6 +49,18 @@ public class ActionRestResource {
 				.sorted((a1, a2) -> a1.getDescription().compareTo(a2.getDescription()))
 				.collect(Collectors.toList());
 	}
+
+    /**
+     * Verifica se uma ação pode ser executada ou listada.
+     * 
+     * @param actionId
+     * @return true se permitido, caso contrário false
+     */
+    @ApiOperation(value = "Verifica se uma ação sem recursos é permitida.")
+	@RequestMapping(value = "/{actionId}/isallowed", method = RequestMethod.GET)
+	public boolean isAllowed(@PathVariable("actionId") String actionId) {
+    	return actionService.isAllowed(actionId, new ArrayNode(null));
+	}    
     
     /**
      * Verifica se uma ação pode ser executada ou listada.
@@ -56,7 +69,7 @@ public class ActionRestResource {
      * @param command
      * @return true se permitido, caso contrário false
      */
-    @ApiOperation(value = "Verifica se uma ação pode ser executada ou listada.")
+    @ApiOperation(value = "Verifica se uma ação é permitida.")
 	@RequestMapping(value = "/{actionId}/isallowed", method = RequestMethod.POST)
 	public boolean isAllowed(@PathVariable("actionId") String actionId, @RequestBody ResourcesCommand command) {
     	return actionService.isAllowed(actionId, command.getResources());
@@ -83,14 +96,26 @@ public class ActionRestResource {
 	}
     
     /**
+     * Executa uma ação sem recursos
+     * 
+     * @param actionId
+     * @return o resultado da execução
+     */
+    @ApiOperation(value = "Executa uma ação sem recursos informados.")
+	@RequestMapping(value = "/{actionId}/execute", method = RequestMethod.GET)
+	public Object execute(@PathVariable("actionId") String actionId) {
+    	return actionService.executeAction(actionId, new ArrayNode(null));
+	}
+    
+    /**
      * Executa a ação
      * 
      * @param actionId
      * @param command
      * @return o resultado da execução
      */
-    @ApiOperation(value = "Executa a ação de um determinado contexto.")
-	@RequestMapping("/{actionId}/execute")
+    @ApiOperation(value = "Executa uma ação sobre os recursos informados.")
+	@RequestMapping(value = "/{actionId}/execute", method = RequestMethod.POST)
 	public Object execute(@PathVariable("actionId") String actionId, @RequestBody ResourcesCommand command) {
     	return actionService.executeAction(actionId, command.getResources());
 	}
