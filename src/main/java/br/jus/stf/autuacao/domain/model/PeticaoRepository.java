@@ -3,6 +3,7 @@ package br.jus.stf.autuacao.domain.model;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.Repository;
 
 import br.jus.stf.shared.domain.model.PeticaoId;
 
@@ -11,37 +12,33 @@ import br.jus.stf.shared.domain.model.PeticaoId;
  * @version 1.0
  * @created 14-ago-2015 18:33:25
  */
-public interface PeticaoRepository {
+public interface PeticaoRepository extends Repository<Peticao, PeticaoId> {
 
 	/**
 	 * 
 	 * @param numeroPeticao
 	 * @return peticao
 	 */
-	public Peticao find(PeticaoId numeroPeticao);
+	public Peticao findOne(PeticaoId numeroPeticao);
 
 	/**
 	 * 
 	 * @param status
 	 * @return lista de peticoes
 	 */
-	public List<Peticao> findStatus(final PeticaoStatus status);
+	public List<Peticao> findByStatus(PeticaoStatus status);
 	
 	/**
 	 * @param specification
 	 * @return lista de peticoes
 	 */
-	public List<Peticao> find(Specification<Peticao> specification);
+	public List<Peticao> findAll(Specification<Peticao> specification);
 
 	/**
 	 * 
 	 * @param peticao
+	 * @return o id da peticao
 	 */
-	public void store(Peticao peticao);
-
-	/**
-	 * @return o proximo numero de peticao
-	 */
-	public Long proximoNumero();
+	public PeticaoId save(Peticao peticao);
 
 }

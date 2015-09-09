@@ -31,15 +31,13 @@ public class Pessoa implements Entity<Pessoa> {
 	@Column(name = "NOM_PESSOA", nullable = false)
 	private String nome;
 
-	public Pessoa(final PessoaId pessoaId, final String nome){
-		Validate.notNull(pessoaId, "pessoa.pessoaId.required");
+	public Pessoa(final String nome){
 		Validate.notBlank(nome, "pessoa.nome.required");
 		
-		this.pessoaId = pessoaId;
 		this.nome = nome;
 	}
 
-	public PessoaId pessoaId(){
+	public PessoaId id(){
 		return pessoaId;
 	}
 

@@ -16,7 +16,7 @@ import br.jus.stf.autuacao.domain.entity.Documento;
 import br.jus.stf.autuacao.domain.entity.Parte;
 import br.jus.stf.autuacao.domain.entity.Peticao;
 import br.jus.stf.autuacao.domain.entity.Polo;
-import br.jus.stf.plataforma.workflow.application.TarefaApplicationService;
+import br.jus.stf.workflow.application.TarefaApplicationService;
 
 /**
  * Teste de integração do processo de peticionamento.
