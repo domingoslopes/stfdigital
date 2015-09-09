@@ -2,7 +2,7 @@ package br.jus.stf.plataforma.workflow.domain;
 
 import org.activiti.engine.runtime.ProcessInstance;
 
-import br.jus.stf.autuacao.domain.entity.Peticao;
+
 
 /**
  * @author Rodrigo Barreiros

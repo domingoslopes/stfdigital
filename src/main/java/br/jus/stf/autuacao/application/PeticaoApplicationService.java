@@ -1,7 +1,6 @@
 package br.jus.stf.autuacao.application;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -12,10 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import br.jus.stf.autuacao.domain.PeticaoService;
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
 import br.jus.stf.autuacao.domain.TarefaAdapter;
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Peticao;
-import br.jus.stf.autuacao.domain.entity.Polo;
+import br.jus.stf.autuacao.domain.model.Peticao;
+import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
+import br.jus.stf.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
@@ -34,6 +33,9 @@ public class PeticaoApplicationService {
 	private PeticaoService peticaoService;
 	
 	@Autowired
+	private PeticaoRepository peticaoRepository;
+	
+	@Autowired
 	private ProcessoAdapter processoAdapter;
 	
 	@Autowired
@@ -44,79 +46,30 @@ public class PeticaoApplicationService {
 	/**
 	 * Registra uma nova petilçao.
 	 * 
-	 * @param tipoRecebimento Tipo de recebimento da petição eletrônica.
-	 * @param classe Sugestão de classe processual da petição eletrônica.
-	 * @param poloAtivo Polo ativo da petição eletrônica;
-	 * @param poloPassivo Polo passivo da petição eletrônica.
-	 * @param documentos Documentos da petição eletrônica.
+	 * @param peticaoEletronica Petição eletrônica recebida.
+	 * 
 	 * @return Id da petição eletrônica registrada.
 	 */
-	public String peticionar(String tipoRecebimento, String classeSugerida, Polo poloAtivo, Polo poloPassivo, List<Documento> documentos) {
-		Peticao peticao = null;
+	public String peticionar(PeticaoEletronica peticaoEletronica) {
+		peticaoRepository.store(peticaoEletronica);
 		
-		if (tipoRecebimento == null || tipoRecebimento.isEmpty())
-			throw new RuntimeException("O tipo de recebimento não foi informado.");
-		
-		if (classeSugerida == null || classeSugerida.isEmpty())
-			throw new RuntimeException("A classe processual não foi informada.");
-		
-		if (poloAtivo == null || poloAtivo.getPartes() == null || poloAtivo.getPartes().size() == 0)
-			throw new RuntimeException("O polo ativo não foi informado.");
-		
-		if (poloPassivo == null || poloPassivo.getPartes() == null || poloPassivo.getPartes().size() == 0)
-			throw new RuntimeException("O polo passivo não foi informado.");
-		
-		peticao = new Peticao();
-		peticao.setClasseSugerida(new ClasseProcessual(classeSugerida));
-		peticao.setPoloAtivo(poloAtivo);
-		peticao.setPoloPassivo(poloPassivo);
-		peticao.setDocumentos(documentos);
-		
-		return peticaoService.registrar(tipoRecebimento, peticao);
+//		return peticaoService.registrar(tipoRecebimento, peticao);
+		return "";
 	}
 	
 	/**
+	 * Registra o recebimento de uma petição física.
 	 * 
-	 * @param tipoRecebimento Tipo de recebimento da petição física.
-	 * @param quantidadeVolumes Quantidade de volumes da petição física.
-	 * @param quantidadeApensos Quantidade de apensos da petição física.
-	 * @param formaRecebimento Forma de recebimento da petição física.
-	 * @param numeroSedex Nº do sedex da petição física.
+	 * @param volumes Quantidade de volumes da petição física.
+	 * 
 	 * @return Id da petição física registrada.
 	 */
-	public String registrar(String tipoRecebimento, int quantidadeVolumes, int quantidadeApensos, String formaRecebimento, String numeroSedex){
-		Peticao peticao = null;
+	public String registrar(PeticaoFisica peticaoFisica){
 		
-		if (tipoRecebimento == null || tipoRecebimento.isEmpty()){
-			throw new RuntimeException("O tipo de recebimento não foi informado.");
-		}
-		
-		if (quantidadeVolumes <= 0){
-			throw new RuntimeException("A quantidade de volumes não foi informada.");
-		}
-		
-		if (quantidadeApensos < 0){
-			throw new RuntimeException("A quantidade de apensos não pode ser negativo.");
-		}
-		
-		if (formaRecebimento == null || formaRecebimento.isEmpty()){
-			throw new RuntimeException("A forma de recebimento não foi informada.");
-		}
-		
-		if (formaRecebimento.toUpperCase() == "SEDEX" && (numeroSedex == null || numeroSedex.isEmpty())){
-			throw new RuntimeException("O número do SEDEX deve ser informado quando a forma de recebimento for SEDEX.");
-		}
-		
-		peticao = new Peticao();
-		peticao.setQuantidadeVolumes(quantidadeVolumes);
-		peticao.setQuantidadeVolumes(quantidadeVolumes);
-		peticao.setFormaRecebimento(formaRecebimento);
-		peticao.setNumeroSedex(numeroSedex);
-		
-		return peticaoService.registrar(tipoRecebimento, peticao);
+		return "";
 	}
 
-	public void preautuar(String idPeticao) {
+	public void preautuar(String idPeticao, String classeSugerida) {
 		peticaoService.preautuar(idPeticao);
 	}
 
@@ -144,7 +97,8 @@ public class PeticaoApplicationService {
 	}
 	
 	public PeticaoDto consultar(String id){
-		return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
+		//return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
+		return null;
 	}
 	
 	public String receberDocumentoPeticao(MultipartFile arquivo) throws IOException{

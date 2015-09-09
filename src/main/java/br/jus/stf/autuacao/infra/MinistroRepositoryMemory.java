@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import br.jus.stf.autuacao.domain.MinistroRepository;
-import br.jus.stf.autuacao.domain.entity.Ministro;
+
 
 /**
   * @author anderson.araujo
@@ -15,6 +15,7 @@ import br.jus.stf.autuacao.domain.entity.Ministro;
 @Repository
 public class MinistroRepositoryMemory implements MinistroRepository {
 
+	/*
 	public List<Ministro> listar() {
 		List<Ministro> ministros = new LinkedList<Ministro>();
 		ministros.add(new Ministro(42, "Min. Cármen Lúcia"));
@@ -30,6 +31,6 @@ public class MinistroRepositoryMemory implements MinistroRepository {
 		ministros.add(new Ministro(1, "Ministro Presidente"));
 
 		return ministros;
-	}
+	}*/
 	
 }

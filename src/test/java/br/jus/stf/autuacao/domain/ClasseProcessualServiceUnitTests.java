@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
 import br.jus.stf.autuacao.infra.ClasseProcessualRepositoryMemory;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.interfaces.dto.ClasseProcessualDtoAssembler;
@@ -42,7 +41,8 @@ public class ClasseProcessualServiceUnitTests {
 	public void listarClassesProcessuaisRepositoryTest(){
 		
 		List<ClasseDto> classes = null;
-    	List<ClasseProcessual> classesRep = this.classeProcessualService.listar();
+    	/*
+		List<ClasseProcessual> classesRep = this.classeProcessualService.listar();
     	
     	if (classesRep != null){
     		classes = new LinkedList<ClasseDto>();
@@ -51,7 +51,7 @@ public class ClasseProcessualServiceUnitTests {
         		classes.add(this.assembler.toDto(classe));
         	}
     	}
-		
+		*/
 		Assert.assertEquals(42, classes.size());
 	}
 }

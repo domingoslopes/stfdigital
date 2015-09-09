@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Parte;
-import br.jus.stf.autuacao.domain.entity.Polo;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoFisicaCommand;
 import br.jus.stf.shared.infra.action.annotation.ActionController;
@@ -24,6 +21,7 @@ public class PeticaoActionsResource {
 	@ActionMapping(id = "REGISTRAR_PETICAO_ELETRONICA", name = "RegistrarPeticaoEletronica", neededAuthorities = {"peticionador"})
 	public String peticionar(RegistrarPeticaoCommand command) {
 		
+		/*
 		List<Parte> partesPoloAtivo = new LinkedList<Parte>();
 		List<Parte> partesPoloPassivo = new LinkedList<Parte>();
 		List<Documento> documentos = new LinkedList<Documento>();
@@ -43,17 +41,19 @@ public class PeticaoActionsResource {
 		for(int i = 0; i < command.getDocumentos().size(); i++){
 			documentos.add(new Documento(command.getDocumentos().get(i)));
 		}
-		
-		return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
+		*/
+		//return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
+		return "";
 	}
 	
 	@ActionMapping(id = "REGISTRAR_PETICAO_FISICA", name = "RegistrarPeticaoFisica", neededAuthorities = {"recebedor"})
 	public String registrar(RegistrarPeticaoFisicaCommand command) {
-		return peticaoApplicationService.registrar("autuarOriginarios", command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex());
+		//return peticaoApplicationService.registrar("autuarOriginarios", command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex());
+		return "";
 	}
 	
 	@ActionMapping(id = "PREAUTUAR_PETICAO_FISICA", name = "PreauturarPeticaoFisica", neededAuthorities = {"recebedor"})
 	public void preautuar(@PathVariable String id) {
-		peticaoApplicationService.preautuar(id);
+		//peticaoApplicationService.preautuar(id);
 	}
 }

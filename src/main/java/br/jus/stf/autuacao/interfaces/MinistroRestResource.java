@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.domain.MinistroRepository;
-import br.jus.stf.autuacao.domain.entity.Ministro;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -24,10 +23,12 @@ public class MinistroRestResource {
 	@Autowired
 	private MinistroRepository ministroRepository;
 
+	/*
     @ApiOperation(value = "Retorna a lista com todos o Ministros ativos")
 	@RequestMapping(value = "/api/ministros", method = RequestMethod.GET)
 	public List<Ministro> listar() {
 		return ministroRepository.listar();
+    	
 	}
-
+*/
 }

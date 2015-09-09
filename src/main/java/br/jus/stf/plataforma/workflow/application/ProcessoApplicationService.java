@@ -6,10 +6,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Peticao;
-import br.jus.stf.autuacao.domain.entity.Polo;
+
 import br.jus.stf.plataforma.workflow.domain.ProcessoRepository;
 
 /**

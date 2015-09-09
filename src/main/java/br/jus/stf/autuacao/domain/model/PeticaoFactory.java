@@ -23,7 +23,7 @@ public class PeticaoFactory {
 	}
 	
 	public static PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, 
-			Set<Parte> partes, Set<DocumentoId> documentos) {
+			Set<PartePeticao> partes, Set<DocumentoId> documentos) {
 		Long numero = peticaoRepository.proximoNumero();
 		return new PeticaoEletronica(numero, classeSugerida, partes, documentos);
 	}

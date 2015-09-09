@@ -1,7 +1,6 @@
 package br.jus.stf.autuacao.domain;
 
 import java.util.List;
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
 
 /**
  * @author Anderson.Araujo
@@ -11,6 +10,6 @@ import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
  */
 public interface ClasseProcessualRepository {
 	
-	List<ClasseProcessual> listar();
+	//List<ClasseProcessual> listar();
 	
 }
