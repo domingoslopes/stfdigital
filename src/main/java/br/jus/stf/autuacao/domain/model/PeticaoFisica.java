@@ -15,16 +15,16 @@ import br.jus.stf.shared.domain.model.ClasseId;
  *
  */
 @Entity
-@DiscriminatorValue("F")
+@DiscriminatorValue("FISICA")
 public class PeticaoFisica extends Peticao {
 
-	@Column(name = "QTD_VOLUMES")
+	@Column(name = "QTD_VOLUME")
 	private Integer volumes;
 	
-	@Column(name = "QTD_APENSOS")
+	@Column(name = "QTD_APENSO")
 	private Integer apensos;
 	
-	@Column(name = "TIP_FORMA_RECEBI")
+	@Column(name = "TIP_FORMA_RECEBIMENTO")
 	@Enumerated(EnumType.STRING)
 	private FormaRecebimento formaRecebimento;
 	
