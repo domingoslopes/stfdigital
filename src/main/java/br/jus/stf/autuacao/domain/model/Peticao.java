@@ -56,8 +56,8 @@ public abstract class Peticao implements Entity<Peticao> {
 	@Embedded
 	private ClasseId classeProcessual;
 	
-	@Column(name = "DSC_MOTIVO_RECUSA")
-	private String motivoRecusa;
+	@Column(name = "DSC_MOTIVO_REJEICAO")
+	private String motivoRejeicao;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO",
@@ -145,8 +145,8 @@ public abstract class Peticao implements Entity<Peticao> {
 		return this.classeProcessual;
 	}
 	
-	public String motivoRecusa() {
-		return this.motivoRecusa;
+	public String motivoRejeicao() {
+		return this.motivoRejeicao;
 	}
 
 	/**
@@ -161,12 +161,12 @@ public abstract class Peticao implements Entity<Peticao> {
 
 	/**
 	 * 
-	 * @param motivoRecusa
+	 * @param motivoRejeicao
 	 */
-	public void recusar(final String motivoRecusa) {
-		Validate.notNull(motivoRecusa, "peticao.motivoRecusa.required");
+	public void rejeitar(final String motivoRejeicao) {
+		Validate.notNull(motivoRejeicao, "peticao.motivoRejeicao.required");
 	
-		this.motivoRecusa = motivoRecusa;
+		this.motivoRejeicao = motivoRejeicao;
 	}
 
 	/**
