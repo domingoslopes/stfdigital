@@ -19,25 +19,26 @@ public class PeticaoDto {
 	private String classe;
 	
 	@ApiModelProperty(value = "A lista de partes do polo ativo e a lista de partes do polo passivo")
-	private Map<String, List<String>> partes;
+	private Map<String, List<Long>> partes;
 	
 	@ApiModelProperty(value = "A lista de documentos anexados pelo peticionador")
-	private List<String> documentos;
+	private List<Long> documentos;
 	
-	public PeticaoDto(String classe, Map<String, List<String>> partes) {
+	public PeticaoDto(String classe, Map<String, List<Long>> partes, List<Long> documentos) {
 		this.classe = classe;
 		this.partes = partes;
+		this.documentos = documentos;
 	}
 
 	public String getClasse() {
 		return classe;
 	}
 	
-	public Map<String, List<String>> getPartes() {
+	public Map<String, List<Long>> getPartes() {
 		return partes;
 	}
 	
-	public List<String> getDocumentos() {
+	public List<Long> getDocumentos() {
 		return documentos;
 	}
 	

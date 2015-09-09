@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import br.jus.stf.shared.domain.model.PessoaId;
+
 /**
  * @author Lucas.Rodrigues
  *
@@ -17,6 +19,10 @@ import javax.persistence.Table;
 public class ParteProcesso extends Parte {
 
 	private static final long serialVersionUID = -729211641099556612L;
+	
+	public ParteProcesso(PessoaId pessoaId, TipoPolo tipoPolo) {
+		super(pessoaId, tipoPolo);
+	}
 	
 	@Override
 	public int hashCode() {

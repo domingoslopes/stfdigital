@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.jus.stf.autuacao.domain.entity.Peticao;
+import br.jus.stf.autuacao.domain.model.Peticao;
 
 /**
  * @author Rodrigo Barreiros

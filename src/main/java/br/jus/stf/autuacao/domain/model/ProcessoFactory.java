@@ -28,10 +28,9 @@ public class ProcessoFactory {
 	}
 	
 	public static Processo criarProcesso(ClasseId classe, MinistroId relator, PeticaoId peticao,
-			Set<Parte> partes, Set<DocumentoId> documentos) {
+			Set<ParteProcesso> partes, Set<DocumentoId> documentos) {
 		
-		Long numero = processoRepository.proximoNumero(classe);
-		return new Processo(classe, numero, relator, peticao, partes, documentos);
+		return new Processo(classe, relator, peticao, partes, documentos);
 	}
 	
 }

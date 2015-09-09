@@ -2,7 +2,7 @@ package br.jus.stf.autuacao.domain;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.autuacao.domain.entity.Peticao;
+import br.jus.stf.autuacao.domain.model.Peticao;
 
 /**
  * @author Rodrigo Barreiros

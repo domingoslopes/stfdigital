@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.TarefaAdapter;
-import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
-import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
-import br.jus.stf.plataforma.workflow.interfaces.commands.SinalizarCommand;
-import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
+import br.jus.stf.workflow.interfaces.TarefaRestResource;
+import br.jus.stf.workflow.interfaces.commands.CompletarTarefaCommand;
+import br.jus.stf.workflow.interfaces.commands.SinalizarCommand;
+import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 
 /**
  * @author Rodrigo Barreiros
