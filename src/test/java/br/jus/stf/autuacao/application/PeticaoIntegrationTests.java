@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 
 import br.jus.stf.AbstractIntegrationTests;
 
-import br.jus.stf.plataforma.workflow.application.TarefaApplicationService;
+import br.jus.stf.workflow.application.TarefaApplicationService;
 
 /**
  * Teste de integração do processo de peticionamento.

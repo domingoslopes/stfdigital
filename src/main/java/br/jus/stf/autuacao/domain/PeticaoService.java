@@ -86,8 +86,6 @@ public class PeticaoService {
 	 * @return Dados da petição.
 	 */
 	public Peticao consultar(String id){
-		//return this.processoAdapter.consultar(id);
-		return null;
 	}
 	
 	/**

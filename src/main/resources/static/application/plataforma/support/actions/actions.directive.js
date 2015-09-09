@@ -56,7 +56,7 @@
 			templateUrl : 'application/plataforma/support/actions/actions.tpl.html',
 			controller : function($scope) {
 				$scope.actions = [];
-				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn-default";
+				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
 				
 				var listActions = function() {
 					//serviço que lista as ações
@@ -106,7 +106,7 @@
 				$scope.disabled = true;
 				$scope.showAction = true;
 				$scope.showIcon = angular.isString($scope.iconClass);
-				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn-default";
+				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
 				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
 				
 				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
@@ -165,7 +165,7 @@
 					$scope.disabled = true;
 					$scope.showAction = true;
 					$scope.showIcon = angular.isString($scope.iconClass);
-					$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn-default";
+					$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
 					$scope.icon = $scope.showIcon ? $scope.iconClass : "";
 					
 					if (angular.isUndefined($scope.verifyIfAllowed)) {
