@@ -1,20 +1,12 @@
 package br.jus.stf.autuacao.infra;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Parte;
-import br.jus.stf.autuacao.domain.entity.Peticao;
-import br.jus.stf.autuacao.domain.entity.Polo;
-import br.jus.stf.plataforma.workflow.interfaces.ProcessoRestResource;
-import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand;
-import br.jus.stf.plataforma.workflow.interfaces.dto.ProcessoDto;
+import br.jus.stf.autuacao.domain.model.Peticao;
+import br.jus.stf.workflow.interfaces.ProcessoRestResource;
+import br.jus.stf.workflow.interfaces.commands.IniciarProcessoCommand;
 
 /**
  * @author Rodrigo Barreiros
@@ -32,7 +24,7 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 	public String iniciar(String tipoRecebimento) {
 		
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
-		command.setTipoRecebimento(tipoRecebimento);
+		command.setMensagem(tipoRecebimento);
 		
 		return processoRestService.iniciar(command);
 	}
@@ -49,7 +41,7 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 	 */
 	public Peticao consultar(String id){
 		
-		List<Parte> partesPoloAtivo = new LinkedList<Parte>();
+		/*List<Parte> partesPoloAtivo = new LinkedList<Parte>();
 		List<Parte> partesPoloPassivo = new LinkedList<Parte>();
 		List<Documento> documentos = new LinkedList<Documento>();
 		ProcessoDto processo = this.processoRestService.consultar(id);
@@ -81,6 +73,7 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 		peticao.setDocumentos(documentos);
 		peticao.setClasse(new ClasseProcessual(processo.getVariaveis().get("classeSugerida").toString()));		
 		
-		return peticao;
+		return peticao;*/
+		return null;
 	}
 }

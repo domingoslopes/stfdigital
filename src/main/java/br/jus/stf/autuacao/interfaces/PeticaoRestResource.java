@@ -30,9 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Parte;
-import br.jus.stf.autuacao.domain.entity.Polo;
 import br.jus.stf.autuacao.interfaces.commands.AutuarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoCommand;
@@ -135,7 +132,7 @@ public class PeticaoRestResource {
 			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
 		}
 		
-		List<Parte> partesPoloAtivo = new LinkedList<Parte>();
+		/*List<Parte> partesPoloAtivo = new LinkedList<Parte>();
 		List<Parte> partesPoloPassivo = new LinkedList<Parte>();
 		List<Documento> documentos = new LinkedList<Documento>();
 		Polo poloAtivo = new Polo();
@@ -151,7 +148,8 @@ public class PeticaoRestResource {
 		}
 		poloPassivo.setPartes(partesPoloPassivo);
 		
-		return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
+		return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);*/
+		return null;
 	}
 
     @ApiOperation(value = "Registra uma nova petição física", hidden = true)

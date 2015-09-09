@@ -1,5 +1,7 @@
 package br.jus.stf.generico.domain.model;
 
+import java.sql.Blob;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -31,13 +33,11 @@ public class Documento implements Entity<Documento> {
 	
 	@Lob
 	@Column(name = "BIN_CONTEUDO")	
-	private byte[] conteudo;
+	private Blob conteudo;
 
-	public Documento(final DocumentoId documentoId, final byte[] conteudo){
-		Validate.notNull(documentoId, "documento.documentoId.required");
-		Validate.notNull(conteudo, "documento.conteudo.required");
+	public Documento(final Blob conteudo) {
+		Validate.notNull(conteudo);
 		
-		this.documentoId = documentoId;
 		this.conteudo = conteudo;
 	}
 
@@ -45,7 +45,7 @@ public class Documento implements Entity<Documento> {
 		return documentoId;
 	}
 
-	public byte[] conteudo(){
+	public Blob conteudo(){
 		return conteudo;
 	}
 	
@@ -78,9 +78,5 @@ public class Documento implements Entity<Documento> {
 	@SequenceGenerator(name = "DOCUMENTOID", sequenceName = "CORPORATIVO.SEQ_DOCUMENTO", allocationSize = 1)
 	@GeneratedValue(generator = "DOCUMENTOID", strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
-	Documento() {
-		
-	}
 	
 }
