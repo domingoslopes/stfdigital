@@ -39,7 +39,6 @@ public class PeticaoEletronica extends Peticao {
 		this.classeSugerida = classeSugerida;
 		this.partes.addAll(partes);
 		this.documentos.addAll(documentos);
-		this.status = PeticaoStatus.A_AUTUAR;
 	}
 	
 	public Set<DocumentoId> documentos(){
