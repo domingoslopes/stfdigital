@@ -22,13 +22,6 @@ public interface PeticaoRepository extends Repository<Peticao, PeticaoId> {
 	public Peticao findOne(PeticaoId numeroPeticao);
 
 	/**
-	 * 
-	 * @param status
-	 * @return lista de peticoes
-	 */
-	public List<Peticao> findByStatus(PeticaoStatus status);
-	
-	/**
 	 * @param specification
 	 * @return lista de peticoes
 	 */
