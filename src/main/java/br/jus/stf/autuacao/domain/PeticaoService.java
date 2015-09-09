@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.jus.stf.autuacao.domain.entity.Peticao;
+import br.jus.stf.autuacao.domain.model.Peticao;
+
 
 /**
  * @author Rodrigo Barreiros
@@ -85,7 +86,8 @@ public class PeticaoService {
 	 * @return Dados da petição.
 	 */
 	public Peticao consultar(String id){
-		return this.processoAdapter.consultar(id);
+		//return this.processoAdapter.consultar(id);
+		return null;
 	}
 	
 	/**

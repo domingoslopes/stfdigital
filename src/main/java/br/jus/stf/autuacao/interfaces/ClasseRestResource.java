@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.autuacao.domain.ClasseProcessualService;
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.interfaces.dto.ClasseProcessualDtoAssembler;
 
@@ -35,6 +34,7 @@ public class ClasseRestResource {
 	@RequestMapping(value = "/api/classes", method = RequestMethod.GET)
 	public List<ClasseDto> listar() {
     	
+    	/*
     	List<ClasseDto> classes = null;
     	List<ClasseProcessual> classesRep = this.classeProcessualService.listar();
     	
@@ -46,6 +46,8 @@ public class ClasseRestResource {
         	}
     	}
     	
-		return classes;
+		return classes; */
+    	
+    	return null;
 	}
 }

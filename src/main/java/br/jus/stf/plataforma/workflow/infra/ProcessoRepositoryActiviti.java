@@ -25,8 +25,8 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 	private TaskService taskService;
 	
 	/**
-	 * Cria uma instãncia do processo de autuação de originários.
-	 * @param mensagem Nome da mensagem que iniciaráo evento de criação do processo.
+	 * Cria uma instância do processo de autuação de originários.
+	 * @param mensagem Nome da mensagem que iniciará o evento de criação do processo.
 	 * @return Identificador da instância do processo de autuação criado.
 	 */
 	@Override

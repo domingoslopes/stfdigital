@@ -7,11 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Parte;
-import br.jus.stf.autuacao.domain.entity.Peticao;
-import br.jus.stf.autuacao.domain.entity.Polo;
+import br.jus.stf.autuacao.domain.model.Peticao;
 import br.jus.stf.plataforma.workflow.interfaces.ProcessoRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.ProcessoDto;
@@ -48,7 +44,7 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 	 * Consulta uma instância de um processo (Plataforma) de acordo com o id informado..
 	 */
 	public Peticao consultar(String id){
-		
+		/*
 		List<Parte> partesPoloAtivo = new LinkedList<Parte>();
 		List<Parte> partesPoloPassivo = new LinkedList<Parte>();
 		List<Documento> documentos = new LinkedList<Documento>();
@@ -81,6 +77,7 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 		peticao.setDocumentos(documentos);
 		peticao.setClasse(new ClasseProcessual(processo.getVariaveis().get("classeSugerida").toString()));		
 		
-		return peticao;
+		return peticao;*/
+		return null;
 	}
 }

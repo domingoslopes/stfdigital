@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 import br.jus.stf.autuacao.domain.ClasseProcessualRepository;
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
+
 
 /**
  * @author Anderson.Araujo
@@ -16,6 +16,7 @@ public class ClasseProcessualRepositoryMemory implements ClasseProcessualReposit
 	/**
 	 * Retorna todas as classes processuais ativas.
 	 */
+	/*
 	public List<ClasseProcessual> listar() {
 		List<ClasseProcessual> classesProcessuais = new LinkedList<ClasseProcessual>();
 		classesProcessuais.add(new ClasseProcessual("RE",   "Recurso Extraordinário"));
@@ -64,5 +65,5 @@ public class ClasseProcessualRepositoryMemory implements ClasseProcessualReposit
 		classesProcessuais.sort((c1, c2) -> c1.getNome().compareTo(c2.getNome()));
 	
 		return classesProcessuais;
-	}
+	}*/
 }

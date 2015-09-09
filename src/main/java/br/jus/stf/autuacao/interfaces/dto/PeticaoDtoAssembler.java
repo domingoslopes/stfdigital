@@ -5,12 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Parte;
-import br.jus.stf.autuacao.domain.entity.Peticao;
-
 public class PeticaoDtoAssembler {
-	
+	/*
 	public PeticaoDto toDto(Peticao peticao){
 		Map<String, List<String>> partes = new HashMap<String, List<String>>();
 		List<String> documentos = new LinkedList<String>();
@@ -41,4 +37,5 @@ public class PeticaoDtoAssembler {
 		
 		return dto;
 	}
+	*/
 }
