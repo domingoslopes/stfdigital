@@ -30,15 +30,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Parte;
-import br.jus.stf.autuacao.domain.entity.Polo;
+import br.jus.stf.autuacao.domain.model.FormaRecebimento;
 import br.jus.stf.autuacao.interfaces.commands.AutuarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoFisicaCommand;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
+import br.jus.stf.autuacao.interfaces.facade.PeticaoServiceFacade;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponse;
@@ -53,6 +52,9 @@ import com.wordnik.swagger.annotations.ApiResponses;
 @RestController
 public class PeticaoRestResource {
 
+	@Autowired
+	private PeticaoServiceFacade peticaoSerivceFacade;
+	
 	@Autowired
 	private PeticaoApplicationService peticaoApplicationService;
 
@@ -127,37 +129,63 @@ public class PeticaoRestResource {
 		return peticoesAtivas;
 	}
 
-	@ApiOperation(value = "Registra uma nova petição digital")
+	@ApiOperation(value = "Registra uma nova petição eletrônica")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Petição Inválida")})
 	@RequestMapping(value = "/api/peticao", method = RequestMethod.POST)
 	public String peticionar(@RequestBody @Valid RegistrarPeticaoCommand command, BindingResult binding) {
+		
 		if (binding.hasErrors()) {
 			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
 		}
 		
-		List<Parte> partesPoloAtivo = new LinkedList<Parte>();
-		List<Parte> partesPoloPassivo = new LinkedList<Parte>();
-		List<Documento> documentos = new LinkedList<Documento>();
-		Polo poloAtivo = new Polo();
-		Polo poloPassivo = new Polo();
-		
+		String classeSugerida = command.getClasse();
+		List<String> poloAtivo = new LinkedList<String>();
+		List<String> poloPassivo = new LinkedList<String>();
+		List<String> documentos = new LinkedList<String>();
+				
 		for(int i = 0; i < command.getPartesPoloAtivo().size(); i++) {
-			partesPoloAtivo.add(new Parte(command.getPartesPoloAtivo().get(i)));
+			poloAtivo.add(command.getPartesPoloAtivo().get(i));
 		}
-		poloAtivo.setPartes(partesPoloAtivo);
-		
+				
 		for(int i = 0; i < command.getPartesPoloPassivo().size(); i++){
-			partesPoloPassivo.add(new Parte(command.getPartesPoloPassivo().get(i)));
+			poloPassivo.add(command.getPartesPoloPassivo().get(i));
 		}
-		poloPassivo.setPartes(partesPoloPassivo);
-		
-		return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
+				
+		return this.peticaoSerivceFacade.peticionar(classeSugerida, poloAtivo, poloPassivo, documentos);
 	}
 
     @ApiOperation(value = "Registra uma nova petição física", hidden = true)
 	@RequestMapping(value = "/api/peticao/fisica", method = RequestMethod.POST)
 	public String registrar(@Valid @RequestBody RegistrarPeticaoFisicaCommand command, BindingResult binding) {
-		return "";
+    	
+    	if (binding.hasErrors()) {
+			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
+		}
+    	
+    	Integer volumes = command.getQuantidadeVolumes();
+    	Integer apensos = command.getQuantidadeApensos();
+    	String numeroSedex = command.getNumeroSedex();
+    	FormaRecebimento formaRecebimento = null;
+    	
+    	switch(command.getFormaRecebimento()){
+    	case "1": //Balcão.
+    		formaRecebimento = FormaRecebimento.BALCAO;
+    		break;
+    	case "2": //Sedex
+    		formaRecebimento = FormaRecebimento.SEDEX;
+    		break;
+    	case "3": //Malote
+    		formaRecebimento = FormaRecebimento.MALOTE;
+    		break;
+    	case "4": //Fax
+    		formaRecebimento = FormaRecebimento.FAX;
+    		break;
+    	case "5": //Email
+    		formaRecebimento = FormaRecebimento.EMAIL;
+    		break;
+    	}
+    	
+    	return this.peticaoSerivceFacade.registrar(volumes, apensos, formaRecebimento, numeroSedex);
 	}
 
     @ApiOperation(value = "Recupera as informações de uma determinada petição")
@@ -170,7 +198,7 @@ public class PeticaoRestResource {
 	@RequestMapping(value = "/api/peticao/{id}/preautuacao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void preautuar(@PathVariable String id) {
-		peticaoApplicationService.preautuar(id);
+		//peticaoApplicationService.preautuar(id);
 	}
 
     @ApiOperation(value = "Conclui a autuação de uma determinada petição")

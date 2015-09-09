@@ -11,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.jus.stf.autuacao.domain.entity.Ministro;
+
 import br.jus.stf.autuacao.infra.MinistroRepositoryMemory;
 import br.jus.stf.autuacao.interfaces.dto.MinistroDto;
 import br.jus.stf.autuacao.interfaces.dto.MinistroDtoAssembler;
@@ -43,6 +43,7 @@ public class MinistroServiceUnitTests {
 	public void listarMinistrosRepositoryTest(){
 		
 		List<MinistroDto> ministros = null;
+		/*
     	List<Ministro> ministrosRet = this.ministroService.listar();
     	
     	if (ministrosRet != null){
@@ -52,7 +53,7 @@ public class MinistroServiceUnitTests {
         		ministros.add(this.assembler.toDto(ministro));
         	}
     	}
-		
+		*/
 		Assert.assertEquals(11, ministros.size());
 	}
 }
