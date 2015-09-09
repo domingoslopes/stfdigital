@@ -17,7 +17,7 @@ public class MinistroId implements ValueObject<MinistroId>{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "SEQ_MINISTRO", nullable = false)
+	@Column(name = "COD_MINISTRO", nullable = false)
 	private Long id;
 
 	public MinistroId(final Long id){

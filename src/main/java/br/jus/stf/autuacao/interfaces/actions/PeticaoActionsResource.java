@@ -1,8 +1,5 @@
 package br.jus.stf.autuacao.interfaces.actions;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -44,6 +41,8 @@ public class PeticaoActionsResource {
 		*/
 		//return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
 		return "";
+		*/
+		return null;
 	}
 	
 	@ActionMapping(id = "REGISTRAR_PETICAO_FISICA", name = "RegistrarPeticaoFisica", neededAuthorities = {"recebedor"})

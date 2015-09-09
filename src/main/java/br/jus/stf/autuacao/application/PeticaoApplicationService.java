@@ -14,10 +14,9 @@ import br.jus.stf.autuacao.domain.TarefaAdapter;
 import br.jus.stf.autuacao.domain.model.Peticao;
 import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.autuacao.domain.model.PeticaoFisica;
-import br.jus.stf.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
-import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
+import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 
 /**
  * @author Rodrigo Barreiros
@@ -50,11 +49,13 @@ public class PeticaoApplicationService {
 	 * 
 	 * @return Id da petição eletrônica registrada.
 	 */
-	public String peticionar(PeticaoEletronica peticaoEletronica) {
-		peticaoRepository.store(peticaoEletronica);
+	public String peticionar(PeticaoEletronica peticao) {
+		/*Peticao peticao = null;
 		
 //		return peticaoService.registrar(tipoRecebimento, peticao);
 		return "";
+		*/
+		return null;
 	}
 	
 	/**
@@ -64,9 +65,37 @@ public class PeticaoApplicationService {
 	 * 
 	 * @return Id da petição física registrada.
 	 */
-	public String registrar(PeticaoFisica peticaoFisica){
+	public String registrar(PeticaoFisica peticao){
+		/*Peticao peticao = null;
 		
-		return "";
+		if (tipoRecebimento == null || tipoRecebimento.isEmpty()){
+			throw new RuntimeException("O tipo de recebimento não foi informado.");
+		}
+		
+		if (quantidadeVolumes <= 0){
+			throw new RuntimeException("A quantidade de volumes não foi informada.");
+		}
+		
+		if (quantidadeApensos < 0){
+			throw new RuntimeException("A quantidade de apensos não pode ser negativo.");
+		}
+		
+		if (formaRecebimento == null || formaRecebimento.isEmpty()){
+			throw new RuntimeException("A forma de recebimento não foi informada.");
+		}
+		
+		if (formaRecebimento.toUpperCase() == "SEDEX" && (numeroSedex == null || numeroSedex.isEmpty())){
+			throw new RuntimeException("O número do SEDEX deve ser informado quando a forma de recebimento for SEDEX.");
+		}
+		
+		peticao = new Peticao();
+		peticao.setQuantidadeVolumes(quantidadeVolumes);
+		peticao.setQuantidadeVolumes(quantidadeVolumes);
+		peticao.setFormaRecebimento(formaRecebimento);
+		peticao.setNumeroSedex(numeroSedex);
+		
+		return peticaoService.registrar(tipoRecebimento, peticao);*/
+		return null;
 	}
 
 	public void preautuar(String idPeticao, String classeSugerida) {
@@ -97,8 +126,7 @@ public class PeticaoApplicationService {
 	}
 	
 	public PeticaoDto consultar(String id){
-		//return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
-		return null;
+		return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
 	}
 	
 	public String receberDocumentoPeticao(MultipartFile arquivo) throws IOException{

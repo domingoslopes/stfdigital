@@ -24,6 +24,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.autuacao.infra.persistence.GerarNumeroProcesso;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
@@ -49,6 +50,7 @@ public class Processo implements Entity<Processo> {
 	@Embedded
 	private ClasseId classe;
 	
+	@GerarNumeroProcesso
 	@Column(name = "NUM_PROCESSO", nullable = false)
 	private Long numero;
 	
@@ -61,7 +63,7 @@ public class Processo implements Entity<Processo> {
 	@Embedded
 	private PeticaoId peticao;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, 
 			targetEntity = ParteProcesso.class)
 	@JoinColumn(name = "SEQ_PROCESSO")
 	private Set<Parte> partes = new HashSet<Parte>(0);
@@ -80,17 +82,15 @@ public class Processo implements Entity<Processo> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Processo(final ClasseId classe, final Long numero, final MinistroId relator,
-			final PeticaoId peticao, final Set<Parte> partes, final Set<DocumentoId> pecas) {
+	public Processo(final ClasseId classe, final MinistroId relator,
+			final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<DocumentoId> pecas) {
 		Validate.notNull(classe, "processo.classe.required");
-		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(relator, "processo.relator.required");
 		Validate.notNull(peticao, "processo.peticao.required");
 		Validate.notEmpty(partes, "processo.partes.notEmpty");
 		Validate.notNull(pecas, "processo.pecas.required");
 		
 		this.classe = classe;
-		this.numero = numero;
 		this.relator = relator;
 		this.peticao = peticao;
 		this.partes.addAll(partes);
@@ -99,6 +99,14 @@ public class Processo implements Entity<Processo> {
 
 	public ProcessoId id() {
 		return this.processoId;
+	}
+	
+	public ClasseId classe() {
+		return classe;
+	}
+	
+	public Long numero() {
+		return numero;
 	}
 
 	public MinistroId relator() {
@@ -199,8 +207,7 @@ public class Processo implements Entity<Processo> {
 	
 	@Id
 	@Column(name = "SEQ_PROCESSO")
-	@SequenceGenerator(name = "PROCESSOID", sequenceName = "SEQ_PROCESSO",
-		schema = "AUTUACAO", allocationSize = 1)
+	@SequenceGenerator(name = "PROCESSOID", sequenceName = "AUTUACAO.SEQ_PROCESSO", allocationSize = 1)
 	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
