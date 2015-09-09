@@ -62,7 +62,7 @@ public abstract class Peticao implements Entity<Peticao> {
 	private String motivoRecusa;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PROCESSO_WORKFLOW_PETICAO", schema = "AUTUACAO",
+	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO",
 			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
 	private Set<ProcessoWorkflowId> processosWorkflow = new TreeSet<ProcessoWorkflowId>(
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
