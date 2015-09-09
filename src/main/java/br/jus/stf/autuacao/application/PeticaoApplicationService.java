@@ -14,8 +14,10 @@ import br.jus.stf.autuacao.domain.TarefaAdapter;
 import br.jus.stf.autuacao.domain.model.Peticao;
 import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
-import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
+import br.jus.stf.shared.domain.model.PeticaoId;
+import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
 import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 
 /**
@@ -39,8 +41,6 @@ public class PeticaoApplicationService {
 	
 	@Autowired
 	private TarefaAdapter tarefaAdapter;
-	
-	private PeticaoDtoAssembler assemblerPeticao = new PeticaoDtoAssembler();
 
 	/**
 	 * Registra uma nova petilçao.
@@ -50,12 +50,14 @@ public class PeticaoApplicationService {
 	 * @return Id da petição eletrônica registrada.
 	 */
 	public String peticionar(PeticaoEletronica peticao) {
-		/*Peticao peticao = null;
+		String tipoRecebimento = "peticaoEletronica";
+		String idProcesso = "";
 		
-//		return peticaoService.registrar(tipoRecebimento, peticao);
-		return "";
-		*/
-		return null;
+		idProcesso = processoAdapter.iniciar(tipoRecebimento);
+		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
+		PeticaoId peticaoId = this.peticaoRepository.save(peticao);
+	
+		return peticaoId.toString();
 	}
 	
 	/**
@@ -66,40 +68,20 @@ public class PeticaoApplicationService {
 	 * @return Id da petição física registrada.
 	 */
 	public String registrar(PeticaoFisica peticao){
-		/*Peticao peticao = null;
+		String tipoRecebimento = "peticaoFisica";
+		String idProcesso = "";
 		
-		if (tipoRecebimento == null || tipoRecebimento.isEmpty()){
-			throw new RuntimeException("O tipo de recebimento não foi informado.");
-		}
-		
-		if (quantidadeVolumes <= 0){
-			throw new RuntimeException("A quantidade de volumes não foi informada.");
-		}
-		
-		if (quantidadeApensos < 0){
-			throw new RuntimeException("A quantidade de apensos não pode ser negativo.");
-		}
-		
-		if (formaRecebimento == null || formaRecebimento.isEmpty()){
-			throw new RuntimeException("A forma de recebimento não foi informada.");
-		}
-		
-		if (formaRecebimento.toUpperCase() == "SEDEX" && (numeroSedex == null || numeroSedex.isEmpty())){
-			throw new RuntimeException("O número do SEDEX deve ser informado quando a forma de recebimento for SEDEX.");
-		}
-		
-		peticao = new Peticao();
-		peticao.setQuantidadeVolumes(quantidadeVolumes);
-		peticao.setQuantidadeVolumes(quantidadeVolumes);
-		peticao.setFormaRecebimento(formaRecebimento);
-		peticao.setNumeroSedex(numeroSedex);
-		
-		return peticaoService.registrar(tipoRecebimento, peticao);*/
-		return null;
+		idProcesso = processoAdapter.iniciar(tipoRecebimento);
+		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
+		PeticaoId peticaoId = this.peticaoRepository.save(peticao);
+	
+		return peticaoId.toString();
 	}
 
-	public void preautuar(String idPeticao, String classeSugerida) {
-		peticaoService.preautuar(idPeticao);
+	public void preautuar(Long idPeticao, String classeSugerida) {
+		PeticaoFisica peticao = (PeticaoFisica) this.peticaoRepository.findOne(new PeticaoId(idPeticao));
+		//peticao.preautuar();
+		//peticaoService.preautuar(idPeticao);
 	}
 
 	public void autuar(String idPeticao, String classe, boolean peticaoValida, String motivo) {
@@ -126,7 +108,8 @@ public class PeticaoApplicationService {
 	}
 	
 	public PeticaoDto consultar(String id){
-		return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
+		return null;
+		//return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
 	}
 	
 	public String receberDocumentoPeticao(MultipartFile arquivo) throws IOException{

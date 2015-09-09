@@ -14,7 +14,6 @@ import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.autuacao.domain.model.TipoPolo;
-import br.jus.stf.generico.domain.model.PessoaRepository;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.PessoaId;
@@ -30,8 +29,19 @@ import br.jus.stf.shared.domain.model.PessoaId;
 public class PeticaoServiceFacade {
 
 	@Autowired
-	private PeticaoApplicationService peticaoApplicationService;	
-		
+	private PeticaoApplicationService peticaoApplicationService;
+	
+	@Autowired
+	private PeticaoFactory peticaoFactory;
+	
+	/**
+	 * Inicia o processo de peticionamento de uma petição eletônica.
+	 * @param classeSugerida Sugestão de classe processual.
+	 * @param poloAtivo Lista contendo os ids das partes do polo ativo.
+	 * @param poloPassivo Lista contendo os ids das partes do polo passivo.
+	 * @param documentos Lista contendo os ids dos documentos da petição eletrônica.
+	 * @return Id da petição gerado automaticamente.
+	 */
 	public String peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
 		
 		Set<PartePeticao> partes = new HashSet<PartePeticao>();
@@ -41,22 +51,26 @@ public class PeticaoServiceFacade {
 		this.adicionarPartes(poloAtivo, partes, TipoPolo.POLO_ATIVO);
 		this.adicionarPartes(poloPassivo, partes, TipoPolo.POLO_PASSIVO);
 		
-		PeticaoEletronica peticao = PeticaoFactory.criarPeticaoEletronica(classe, partes, idsDocumentos);
-		
+		PeticaoEletronica peticao = this.peticaoFactory.criarPeticaoEletronica(classe, poloAtivo, poloPassivo, idsDocumentos);
+				
 		return peticaoApplicationService.peticionar(peticao);
 	}
 	
+	/**
+	 * Inicia o processo de peticionamento de uma petição física.
+	 * @param volumes Quantidade de volumes recebidos.
+	 * @param apensos Quantidades de apensos recebidos.
+	 * @param formaRecebimento Forma de recebimento da petição física.
+	 * @param numeroSedex Nº do Sedex, caso a forma de recebimento seja Sedex.
+	 * @return Id da petição gerado automaticamente.
+	 */
 	public String registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex) {
 		
-		PeticaoFisica peticaoFisica = PeticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
+		PeticaoFisica peticaoFisica = this.peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
 		
 		return peticaoApplicationService.registrar(peticaoFisica);
 	}
 	
-	public void preAutuar(Long idPeticao, String classeSugerida){
-		//this.peticaoApplicationService.preautuar(idPeticao, classeSugerida);
-	}
-
 	private void adicionarPartes(List<String> polo, Set<PartePeticao> partes, TipoPolo tipoPolo) {
 		for(String p : polo){
 			PessoaId id = new PessoaId(Long.parseLong(p));

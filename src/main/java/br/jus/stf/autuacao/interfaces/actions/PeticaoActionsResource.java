@@ -41,8 +41,6 @@ public class PeticaoActionsResource {
 		*/
 		//return peticaoApplicationService.peticionar("autuarOriginarios", command.getClasse(), poloAtivo, poloPassivo, documentos);
 		return "";
-		*/
-		return null;
 	}
 	
 	@ActionMapping(id = "REGISTRAR_PETICAO_FISICA", name = "RegistrarPeticaoFisica", neededAuthorities = {"recebedor"})
