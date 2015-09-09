@@ -8,6 +8,8 @@ import br.jus.stf.shared.domain.stereotype.ValueObject;
  * @created 14-ago-2015 18:56:20
  */
 public enum PeticaoStatus implements ValueObject<PeticaoStatus> {
+	A_PREAUTUAR,
+	EM_PREAUTUACAO,
 	A_AUTUAR,
 	EM_AUTUACAO,
 	ACEITA,

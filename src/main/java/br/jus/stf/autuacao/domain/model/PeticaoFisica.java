@@ -31,26 +31,36 @@ public class PeticaoFisica extends Peticao {
 	@Column(name = "NUM_SEDEX")
 	private String numeroSedex;
 	
-	PeticaoFisica(final Long numero, final Integer volumes, final Integer apensos, 
+	PeticaoFisica(final Integer volumes, final Integer apensos, 
 			final FormaRecebimento formaRecebimento, final String numeroSedex) {
 		
-		Validate.notNull(numero, "peticao.numero.required");
 		Validate.isTrue(volumes != null && volumes > 0);
 		Validate.notNull(apensos);
 		Validate.notNull(formaRecebimento);
 		Validate.isTrue(formaRecebimento != FormaRecebimento.SEDEX ||
 				!Validate.notBlank(numeroSedex).isEmpty());
 		
-		this.numero = numero;
 		this.volumes = volumes;
 		this.apensos = apensos;
 		this.formaRecebimento = formaRecebimento;
 		this.numeroSedex = numeroSedex;
+		this.status = PeticaoStatus.A_PREAUTUAR;
 	}
 	
-	public void sugerirClasse(final ClasseId classeSugerida) {
+	public void preautuar() {
+		if (!PeticaoStatus.A_PREAUTUAR.equals(status)) {
+			throw new IllegalStateException("peticao.preautuar.exception");
+		}
+		this.status = PeticaoStatus.EM_PREAUTUACAO;
+	}
+	
+	public void sugerirClassificacao(final ClasseId classeSugerida) {
+		if (!PeticaoStatus.EM_PREAUTUACAO.equals(status)) {
+			throw new IllegalStateException("peticao.preautuacao.exception");
+		}
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		
+		this.status = PeticaoStatus.A_AUTUAR;
 		this.classeSugerida = classeSugerida;
 	}
 	

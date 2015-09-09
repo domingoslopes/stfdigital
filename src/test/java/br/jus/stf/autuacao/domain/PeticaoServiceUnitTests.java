@@ -19,8 +19,8 @@ import br.jus.stf.autuacao.domain.entity.Parte;
 import br.jus.stf.autuacao.domain.entity.Peticao;
 import br.jus.stf.autuacao.domain.entity.Polo;
 import br.jus.stf.autuacao.infra.ProcessoRestAdapter;
-import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
-import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
+import br.jus.stf.workflow.interfaces.TarefaRestResource;
+import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 
 /**
  * Apenas um exemplo de como usar os frameworks de teste.

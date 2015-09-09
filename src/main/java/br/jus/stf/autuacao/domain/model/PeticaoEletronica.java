@@ -30,17 +30,16 @@ public class PeticaoEletronica extends Peticao {
 	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
 			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
 	
-	PeticaoEletronica(final Long numero, final ClasseId classeSugerida, final Set<Parte> partes, final Set<DocumentoId> documentos) {
+	PeticaoEletronica(final ClasseId classeSugerida, final Set<PartePeticao> partes, final Set<DocumentoId> documentos) {
 		
-		Validate.notNull(numero, "peticao.numero.required");
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		Validate.notEmpty(partes, "peticao.partes.notEmpty");
 		Validate.notEmpty(documentos, "peticao.documentos.notEmpty");
 	
-		this.numero = numero;
 		this.classeSugerida = classeSugerida;
 		this.partes.addAll(partes);
 		this.documentos.addAll(documentos);
+		this.status = PeticaoStatus.A_AUTUAR;
 	}
 	
 	public Set<DocumentoId> documentos(){
