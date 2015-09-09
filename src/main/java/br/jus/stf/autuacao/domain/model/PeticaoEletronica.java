@@ -21,7 +21,7 @@ import br.jus.stf.shared.domain.model.DocumentoId;
  *
  */
 @Entity
-@DiscriminatorValue("E")
+@DiscriminatorValue("ELETRONICA")
 public class PeticaoEletronica extends Peticao {
 
 	@ElementCollection(fetch = FetchType.EAGER)
