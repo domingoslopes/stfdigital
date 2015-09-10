@@ -1,5 +1,7 @@
 package br.jus.stf.workflow.interfaces.commands;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -8,8 +10,8 @@ package br.jus.stf.workflow.interfaces.commands;
  */
 public class SinalizarCommand {
 
+	@NotBlank
 	private String sinal;
-	private String executionId;
 
 	public void setSinal(String sinal) {
 		this.sinal = sinal;
@@ -17,14 +19,6 @@ public class SinalizarCommand {
 
 	public String getSinal() {
 		return sinal;
-	}
-	
-	public void setExecutionId(String executionId) {
-		this.executionId = executionId;
-	}
-	
-	public String getExecutionId() {
-		return executionId;
 	}
 
 }
