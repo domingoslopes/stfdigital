@@ -15,16 +15,16 @@ import br.jus.stf.shared.domain.model.ClasseId;
  *
  */
 @Entity
-@DiscriminatorValue("F")
+@DiscriminatorValue("FISICA")
 public class PeticaoFisica extends Peticao {
 
-	@Column(name = "QTD_VOLUMES")
+	@Column(name = "QTD_VOLUME")
 	private Integer volumes;
 	
-	@Column(name = "QTD_APENSOS")
+	@Column(name = "QTD_APENSO")
 	private Integer apensos;
 	
-	@Column(name = "TIP_FORMA_RECEBI")
+	@Column(name = "TIP_FORMA_RECEBIMENTO")
 	@Enumerated(EnumType.STRING)
 	private FormaRecebimento formaRecebimento;
 	
@@ -44,23 +44,11 @@ public class PeticaoFisica extends Peticao {
 		this.apensos = apensos;
 		this.formaRecebimento = formaRecebimento;
 		this.numeroSedex = numeroSedex;
-		this.status = PeticaoStatus.A_PREAUTUAR;
 	}
 	
-	public void preautuar() {
-		if (!PeticaoStatus.A_PREAUTUAR.equals(status)) {
-			throw new IllegalStateException("peticao.preautuar.exception");
-		}
-		this.status = PeticaoStatus.EM_PREAUTUACAO;
-	}
-	
-	public void sugerirClassificacao(final ClasseId classeSugerida) {
-		if (!PeticaoStatus.EM_PREAUTUACAO.equals(status)) {
-			throw new IllegalStateException("peticao.preautuacao.exception");
-		}
+	public void preautuar(final ClasseId classeSugerida) {
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		
-		this.status = PeticaoStatus.A_AUTUAR;
 		this.classeSugerida = classeSugerida;
 	}
 	
