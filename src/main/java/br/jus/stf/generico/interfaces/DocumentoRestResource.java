@@ -64,8 +64,7 @@ public class DocumentoRestResource {
 	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(@RequestParam("file") MultipartFile file) {
-		
-		return null;
+		return genericoServiceFacade.salvarDocumentoTemporario(file);
 	}
 
 	/**
