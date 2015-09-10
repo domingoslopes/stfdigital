@@ -18,7 +18,7 @@
 			$state.go('dashboard', {}, {reload: true});
 		};
 		
-		$scope.ativar($scope.papeis[1]);
+		$scope.ativar($scope.papeis[0]);
 		
 	});
 	

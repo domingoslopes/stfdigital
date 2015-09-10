@@ -65,12 +65,13 @@
                     <div class="auto-overflow widget-11-2-table">
                         <table class="table table-condensed table-hover">
                             <tbody>
-                                <tr ng-repeat="tarefa in peticoes">
+                                <tr ng-repeat="peticao in peticoes">
                                     <td class="font-montserrat fs-12 col-lg-12">
-										<address class="margin-bottom-20 margin-top-10">
+                                    	<a ui-sref="detalhe{{peticao.id}}({idPeticao: peticao.id})">{{peticao.id}} pet</a>
+										<!-- <address class="margin-bottom-20 margin-top-10">
 											{{tarefa.id}} 
 											<br>{{tarefa.detalhes}}
-										</address>
+										</address> -->
 									</td>
                                 </tr>
                             </tbody>

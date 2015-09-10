@@ -9,17 +9,21 @@
 	'use strict';
 
 	var RegistroPage = function () {
-		this.classe = element(by.model('registro.tipoRecebimento'));
 		
-		this.classificar = function (classe) {
-			this.classe.sendKeys(classe);
+		this.classificarTipoRecebimento = function (sigla) {
+			var tipoRecebimento =  element(by.css('#s2id_tipoRecebimento a'));
+		    
+			tipoRecebimento.click();
+		    
+			tipoRecebimento.sendKeys(sigla);
+		    
+		    var tipoRecebimentos = element.all(by.css('.select2-results-dept-0'));
+		    
+		    tipoRecebimentos.first().click();
 		};
 		
-		this.registrar = function () {
-			element(by.id('botaoRegistrar')).click();
-		};
 		
-		this.qtdVolume = function(qtd) {
+		this.qtdVolumes = function(qtd) {
 		    element(by.id('qtdVolumes')).sendKeys(qtd);
 		};
 		
@@ -27,10 +31,13 @@
 		    element(by.id('qtdApensos')).sendKeys(qtd);
 		};
 		
-		this.registrar = function () {
-			element(by.id('botaoReceber')).click();
+		this.numSedex = function(qtd){
+			element(by.id('numSedex')).sendKeys(qtd);
 		};
 		
+		this.registrar = function () {
+			element(by.id('botaoRegistrar')).click();
+		};
 	};
 
 	module.exports = RegistroPage;

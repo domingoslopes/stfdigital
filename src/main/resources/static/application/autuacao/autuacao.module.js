@@ -70,11 +70,18 @@
 					controller: 'DevolucaoController'
 				}
 			}
-		}).state('actions.autuacao', {
-			abstract : true,
+		}).state('actions.autuacao', { // estado abstrato para agrupar as ações do contexto
+			abstract : true
 		}).state('actions.autuacao.dummy_action', {
 			views: {
-				'body@actions' : {
+				/*
+				'modal@' : {}, //faz com que não mostre no modal
+				'@' : { // faz com que apareça na view principal
+					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
+					controller: 'DevolucaoController'
+				},
+				*/
+				'@actions' : {
 					templateUrl: 'application/autuacao/registro/dummy_action.tpl.html',
 					controller: 'DummyActionController'
 				}
