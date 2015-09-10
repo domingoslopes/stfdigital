@@ -3,9 +3,11 @@ package br.jus.stf.generico.domain.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
 
 import org.apache.commons.lang3.Validate;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.shared.domain.stereotype.ValueObject;
 
@@ -19,25 +21,32 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 
 	private static final long serialVersionUID = -3725370010702512231L;
 	
-	private String tempId;
-	private FileInputStream stream;
 	private Long tamanho;
+	private File arquivo;
+	private String extension;
 	
-	public DocumentoTemporario(String tempId) {
-		Validate.notBlank(tempId);
+	public DocumentoTemporario(MultipartFile file, String extension) {
+		Validate.notNull(file);
+		Validate.notBlank(extension);
 		
-		this.tempId = tempId;
-		File arquivo = new File(tempId);
+		this.extension = extension;
+		arquivo = createTempFile(file);
+		tamanho = arquivo.length();
+	}
+	
+	private File createTempFile(MultipartFile file) {
+		File tempFile = null;
 		try {
-			this.stream = new FileInputStream(arquivo);
-		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException(e);
+			File.createTempFile(null, extension);
+			file.transferTo(tempFile);
+		} catch (IllegalStateException | IOException e) {
+			throw new RuntimeException(e);
 		}
-		this.tamanho = arquivo.length();
+		return tempFile;
 	}
 	
 	public String tempId() {
-		return tempId;
+		return arquivo.getName();
 	}
 	
 	public Long tamanho() {
@@ -45,14 +54,22 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 	}
 	
 	public FileInputStream stream() {
-		return stream;
+		try {
+			return new FileInputStream(arquivo);
+		} catch (FileNotFoundException e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+	
+	public void delete() {
+		arquivo.delete();
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((tempId == null) ? 0 : tempId.hashCode());
+		result = prime * result + ((arquivo.getAbsolutePath() == null) ? 0 : arquivo.getAbsolutePath().hashCode());
 		return result;
 	}
 
@@ -67,7 +84,7 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 	
 	@Override
 	public boolean sameValueAs(DocumentoTemporario other) {
-		return other != null && Objects.equals(this.tempId, other.tempId);
+		return other != null && Objects.equals(this.arquivo.getAbsolutePath(), other.arquivo.getAbsolutePath());
 	}
 
 }
