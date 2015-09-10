@@ -38,12 +38,11 @@ public class PeticaoService {
 		tarefaAdapter.completar(idPeticao);
 	}
 
+	@Deprecated
 	public void autuar(String idPeticao, boolean peticaoValida, String motivo) {
 		if (peticaoValida) {
 			tarefaAdapter.completar(idPeticao);
 		} else {
-	    	//processoAdapter.alterar(idPeticao, "motivo", motivo);
-			
 			tarefaAdapter.sinalizar("Petição Inválida", idPeticao);
 		}
 	}
@@ -54,16 +53,16 @@ public class PeticaoService {
 	@Autowired
 	private TaskService taskService;
 	
+	@Deprecated
 	public String distribuir(String idPeticao, String relator) {
 		String idProcesso = "";
-		
-    	//processoAdapter.alterar(idPeticao, "relator", relator);
 		
 		tarefaAdapter.completar(idPeticao);
 		
 		return idProcesso;
 	}
 
+	@Deprecated
 	public void devolver(String idPeticao) {
 		tarefaAdapter.completar(idPeticao);
 	}
