@@ -21,7 +21,7 @@ import br.jus.stf.shared.domain.model.DocumentoId;
  *
  */
 @Entity
-@DiscriminatorValue("E")
+@DiscriminatorValue("ELETRONICA")
 public class PeticaoEletronica extends Peticao {
 
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -39,7 +39,6 @@ public class PeticaoEletronica extends Peticao {
 		this.classeSugerida = classeSugerida;
 		this.partes.addAll(partes);
 		this.documentos.addAll(documentos);
-		this.status = PeticaoStatus.A_AUTUAR;
 	}
 	
 	public Set<DocumentoId> documentos(){
