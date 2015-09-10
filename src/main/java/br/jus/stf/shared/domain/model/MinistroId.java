@@ -3,6 +3,8 @@ package br.jus.stf.shared.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.shared.domain.stereotype.ValueObject;
 
 /**
@@ -15,10 +17,12 @@ public class MinistroId implements ValueObject<MinistroId>{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "SEQ_MINISTRO", nullable = false)
+	@Column(name = "COD_MINISTRO", nullable = false)
 	private Long id;
 
 	public MinistroId(final Long id){
+		Validate.notNull(id, "ministroId.id.required");
+		
 		this.id = id;
 	}
 

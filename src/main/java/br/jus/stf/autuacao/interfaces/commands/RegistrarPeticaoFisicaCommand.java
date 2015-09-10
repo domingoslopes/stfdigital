@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author Rodrigo Barreiros
+ * @author Anderson.Araujo
  * 
  * @since 1.0.0
  * @since 22.06.2015
@@ -11,61 +12,46 @@ import org.hibernate.validator.constraints.NotBlank;
 public class RegistrarPeticaoFisicaCommand {
 
 	@NotBlank
-	private String tipoRecebimento;
+	private String formaRecebimento;
 	@NotBlank
-	private String siglaClasse;
+	private int quantidadeVolumes;
 	@NotBlank
-	private String[] partesPoloAtivo;
+	private int quantidadeApensos;
 	@NotBlank
-	private String[] partesPoloPassivo;
-	@NotBlank
-	private String[] documentos;
-
+	private String numeroSedex;
+	
 	public RegistrarPeticaoFisicaCommand() {
 	}
 
-	public RegistrarPeticaoFisicaCommand(String tipoRecebimento) {
-		this.tipoRecebimento = tipoRecebimento;
+	public String getFormaRecebimento() {
+		return formaRecebimento;
 	}
 
-	public void setTipoRecebimento(String tipoRecebimento) {
-		this.tipoRecebimento = tipoRecebimento;
+	public void setFormaRecebimento(String formaRecebimento) {
+		this.formaRecebimento = formaRecebimento;
 	}
 
-	public String getTipoRecebimento() {
-		return tipoRecebimento;
+	public int getQuantidadeVolumes() {
+		return quantidadeVolumes;
 	}
 
-	public String getSiglaClasse() {
-		return siglaClasse;
+	public void setQuantidadeVolumes(int quantidadeVolumes) {
+		this.quantidadeVolumes = quantidadeVolumes;
 	}
 
-	public void setSiglaClasse(String siglaClasse) {
-		this.siglaClasse = siglaClasse;
+	public int getQuantidadeApensos() {
+		return quantidadeApensos;
 	}
 
-	public String[] getPartesPoloAtivo() {
-		return partesPoloAtivo;
+	public void setQuantidadeApensos(int quantidadeApensos) {
+		this.quantidadeApensos = quantidadeApensos;
 	}
 
-	public void setPartesPoloAtivo(String[] partesPoloAtivo) {
-		this.partesPoloAtivo = partesPoloAtivo;
+	public String getNumeroSedex() {
+		return numeroSedex;
 	}
 
-	public String[] getPartesPoloPassivo() {
-		return partesPoloPassivo;
+	public void setNumeroSedex(String numeroSedex) {
+		this.numeroSedex = numeroSedex;
 	}
-
-	public void setPartesPoloPassivo(String[] partesPoloPassivo) {
-		this.partesPoloPassivo = partesPoloPassivo;
-	}
-
-	public String[] getDocumentos() {
-		return documentos;
-	}
-
-	public void setDocumentos(String[] documentos) {
-		this.documentos = documentos;
-	}
-
 }

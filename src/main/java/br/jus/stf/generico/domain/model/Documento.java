@@ -1,5 +1,7 @@
 package br.jus.stf.generico.domain.model;
 
+import java.sql.Blob;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -21,7 +23,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:34:02
  */
 @javax.persistence.Entity
-@Table(name = "DOCUMENTO")
+@Table(name = "DOCUMENTO", schema = "CORPORATIVO")
 public class Documento implements Entity<Documento> {
 
 	@Embedded
@@ -30,14 +32,12 @@ public class Documento implements Entity<Documento> {
 	private DocumentoId documentoId;
 	
 	@Lob
-	@Column(name = "LOB_CONTEUDO")	
-	private byte[] conteudo;
+	@Column(name = "BIN_CONTEUDO")	
+	private Blob conteudo;
 
-	public Documento(final DocumentoId documentoId, final byte[] conteudo){
-		Validate.notNull(documentoId);
+	public Documento(final Blob conteudo) {
 		Validate.notNull(conteudo);
 		
-		this.documentoId = documentoId;
 		this.conteudo = conteudo;
 	}
 
@@ -45,7 +45,7 @@ public class Documento implements Entity<Documento> {
 		return documentoId;
 	}
 
-	public byte[] conteudo(){
+	public Blob conteudo(){
 		return conteudo;
 	}
 	
@@ -75,12 +75,8 @@ public class Documento implements Entity<Documento> {
 	
 	@Id
 	@Column(name = "SEQ_DOCUMENTO")
-	@SequenceGenerator(name = "DOCUMENTOID", sequenceName = "SEQ_DOCUMENTO", allocationSize = 1)
+	@SequenceGenerator(name = "DOCUMENTOID", sequenceName = "CORPORATIVO.SEQ_DOCUMENTO", allocationSize = 1)
 	@GeneratedValue(generator = "DOCUMENTOID", strategy = GenerationType.SEQUENCE)
 	private Long id;
-	
-	Documento() {
-		
-	}
 	
 }

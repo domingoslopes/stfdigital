@@ -3,6 +3,8 @@ package br.jus.stf.shared.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.shared.domain.stereotype.ValueObject;
 
 /**
@@ -19,6 +21,8 @@ public class ClasseId implements ValueObject<ClasseId> {
 	private String sigla;
 
 	public ClasseId(final String sigla){
+		Validate.notBlank(sigla, "classeId.sigla.required");
+		
 		this.sigla = sigla;
 	}
 

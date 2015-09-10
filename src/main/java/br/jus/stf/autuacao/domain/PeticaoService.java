@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.jus.stf.autuacao.domain.entity.Peticao;
+import br.jus.stf.autuacao.domain.model.Peticao;
+
 
 /**
  * @author Rodrigo Barreiros
@@ -32,20 +33,16 @@ public class PeticaoService {
 	@Autowired
 	private TarefaAdapter tarefaAdapter;
 
-	public String registrar(String tipoRecebimento, Peticao peticao) {
-		return processoAdapter.iniciar(tipoRecebimento, peticao);
-	}
-
+	@Deprecated
 	public void preautuar(String idPeticao) {
 		tarefaAdapter.completar(idPeticao);
 	}
 
+	@Deprecated
 	public void autuar(String idPeticao, boolean peticaoValida, String motivo) {
 		if (peticaoValida) {
 			tarefaAdapter.completar(idPeticao);
 		} else {
-	    	processoAdapter.alterar(idPeticao, "motivo", motivo);
-			
 			tarefaAdapter.sinalizar("Petição Inválida", idPeticao);
 		}
 	}
@@ -56,16 +53,16 @@ public class PeticaoService {
 	@Autowired
 	private TaskService taskService;
 	
+	@Deprecated
 	public String distribuir(String idPeticao, String relator) {
 		String idProcesso = "";
-		
-    	processoAdapter.alterar(idPeticao, "relator", relator);
 		
 		tarefaAdapter.completar(idPeticao);
 		
 		return idProcesso;
 	}
 
+	@Deprecated
 	public void devolver(String idPeticao) {
 		tarefaAdapter.completar(idPeticao);
 	}
@@ -76,7 +73,7 @@ public class PeticaoService {
 	 * @return Dados da petição.
 	 */
 	public Peticao consultar(String id){
-		return this.processoAdapter.consultar(id);
+		return null;
 	}
 	
 	/**

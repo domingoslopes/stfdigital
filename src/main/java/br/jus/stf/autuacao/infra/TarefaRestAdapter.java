@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.TarefaAdapter;
-import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
-import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
-import br.jus.stf.plataforma.workflow.interfaces.commands.SinalizarCommand;
-import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
+import br.jus.stf.workflow.interfaces.TarefaRestResource;
+import br.jus.stf.workflow.interfaces.commands.SinalizarCommand;
+import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 
 /**
  * @author Rodrigo Barreiros
@@ -23,23 +22,21 @@ public class TarefaRestAdapter implements TarefaAdapter {
 
 	@Override
 	public void completar(String id) {
-		CompletarTarefaCommand command = new CompletarTarefaCommand();
+		//CompletarTarefaCommand command = new CompletarTarefaCommand();
 
-		command.setIdTarefa(id);
+		///command.setIdTarefa(id);
 
 		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
-		tarefaRestService.completar(id, command);
+		tarefaRestService.completar(id);
 	}
 
 	@Override
-	public void sinalizar(String sinal, String executionId) {
+	public void sinalizar(String sinal, String taskId) {
 		SinalizarCommand command = new SinalizarCommand();
-
 		command.setSinal(sinal);
-		command.setExecutionId(executionId);
 
 		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
-		tarefaRestService.sinalizar(command);
+		tarefaRestService.sinalizar(taskId, command);
 	}
 	
 	@Override

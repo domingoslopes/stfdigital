@@ -3,6 +3,8 @@ package br.jus.stf.shared.domain.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.shared.domain.stereotype.ValueObject;
 
 /**
@@ -19,6 +21,8 @@ public class PessoaId implements ValueObject<PessoaId> {
 	private Long id;
 
 	public PessoaId(final Long id){
+		Validate.notNull(id, "pessoaId.id.required");
+		
 		this.id = id;
 	}
 

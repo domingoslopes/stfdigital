@@ -1,12 +1,7 @@
 package br.jus.stf.generico.domain.model;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
@@ -20,20 +15,18 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  * @created 14-ago-2015 18:34:02
  */
 @javax.persistence.Entity
-@Table(name = "MINISTRO")
+@Table(name = "MINISTRO", schema = "AUTUACAO")
 public class Ministro implements Entity<Ministro> {
 
-	@Embedded
-	@AttributeOverride(name = "id",
-			column = @Column(name = "SEQ_MINISTRO", insertable = false, updatable = false))
+	@EmbeddedId
 	private MinistroId codigo;
 	
 	@Column(name = "NOM_MINISTRO", nullable = false)
 	private String nome;
 
 	public Ministro(final MinistroId codigo, final String nome){
-		Validate.notNull(codigo);
-		Validate.notBlank(nome);
+		Validate.notNull(codigo, "ministro.codigo.required");
+		Validate.notBlank(nome, "ministro.nome.required");
 		
 		this.codigo = codigo;
 		this.nome = nome;
@@ -69,12 +62,6 @@ public class Ministro implements Entity<Ministro> {
 	}
 
 	//Hibernate
-	
-	@Id
-	@Column(name = "SEQ_MINISTRO")
-	@SequenceGenerator(name = "MINISTROID", sequenceName = "SEQ_MINISTRO", allocationSize = 1, initialValue = 1)	
-	@GeneratedValue(generator = "MINISTROID", strategy = GenerationType.SEQUENCE)
-	private Long id;
 	
 	Ministro() {
 		

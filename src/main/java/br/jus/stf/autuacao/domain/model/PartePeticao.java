@@ -8,15 +8,21 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import br.jus.stf.shared.domain.model.PessoaId;
+
 /**
  * @author Lucas.Rodrigues
  *
  */
 @Entity
-@Table(name = "PARTE_PETICAO")
+@Table(name = "PETICAO_PARTE", schema = "AUTUACAO")
 public class PartePeticao extends Parte {
 
 	private static final long serialVersionUID = 4186066720961522553L;
+	
+	public PartePeticao(PessoaId pessoaId, TipoPolo tipoPolo) {
+		super(pessoaId, tipoPolo);
+	}
 	
 	@Override
 	public int hashCode() {
@@ -30,9 +36,9 @@ public class PartePeticao extends Parte {
 	
 	//Hibernate
 	@Id
-	@Column(name = "SEQ_PARTE_PETICAO")
-	@SequenceGenerator(name = "PARTEPETICAOID", sequenceName = "SEQ_PARTE_PETICAO", allocationSize = 1)
-	@GeneratedValue(generator = "PARTEPETICAOID", strategy=GenerationType.SEQUENCE)
+	@Column(name = "SEQ_PETICAO_PARTE")
+	@SequenceGenerator(name = "PETICAOPARTEID", sequenceName = "AUTUACAO.SEQ_PETICAO_PARTE", allocationSize = 1)
+	@GeneratedValue(generator = "PETICAOPARTEID", strategy=GenerationType.SEQUENCE)
 	private Long id;
 	
 	PartePeticao() {
