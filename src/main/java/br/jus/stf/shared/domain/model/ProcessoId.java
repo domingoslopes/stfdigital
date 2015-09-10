@@ -21,7 +21,7 @@ public class ProcessoId implements ValueObject<ProcessoId> {
 	private Long id;
 
 	public ProcessoId(final Long id){
-		Validate.notNull(id);
+		Validate.notNull(id, "processoId.id.required");
 		
 		this.id = id;
 	}

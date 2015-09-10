@@ -11,11 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.jus.stf.autuacao.domain.entity.Ministro;
-import br.jus.stf.autuacao.infra.MinistroRepositoryMemory;
-import br.jus.stf.autuacao.interfaces.dto.MinistroDto;
-import br.jus.stf.autuacao.interfaces.dto.MinistroDtoAssembler;
-
 /**
  * Teste de operações relacionada a Ministros.
  * 
@@ -25,34 +20,5 @@ import br.jus.stf.autuacao.interfaces.dto.MinistroDtoAssembler;
  * @since 23.07.2015
  */
 public class MinistroServiceUnitTests {
-	
-	@Mock(answer = Answers.CALLS_REAL_METHODS)
-	private MinistroRepositoryMemory ministroRepository;
-	
-	@InjectMocks
-	private MinistroService ministroService;
-	
-	private MinistroDtoAssembler assembler = new MinistroDtoAssembler();
-	
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-	}
-	
-	@Test
-	public void listarMinistrosRepositoryTest(){
-		
-		List<MinistroDto> ministros = null;
-    	List<Ministro> ministrosRet = this.ministroService.listar();
-    	
-    	if (ministrosRet != null){
-    		ministros = new LinkedList<MinistroDto>();
-    		
-    		for(Ministro ministro : ministrosRet){
-        		ministros.add(this.assembler.toDto(ministro));
-        	}
-    	}
-		
-		Assert.assertEquals(11, ministros.size());
-	}
+
 }

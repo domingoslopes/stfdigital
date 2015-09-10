@@ -23,7 +23,7 @@
 		$stateProvider.state('root', {
 		});
 	})
-	.run(function(ActionService) {
+	.run(function(ActionService, $state) {
 		ActionService.load("autuacao");
 	})
 	.value('version', '0.1.0');

@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.interfaces.dto;
 
+
 /**
  * @author Rodrigo Barreiros
  * 
