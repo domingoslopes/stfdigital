@@ -132,7 +132,7 @@ public class PeticaoRestResource {
 	@ApiOperation(value = "Registra uma nova petição eletrônica")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Petição Inválida")})
 	@RequestMapping(value = "/api/peticao", method = RequestMethod.POST)
-	public String peticionar(@RequestBody @Valid RegistrarPeticaoCommand command, BindingResult binding) {
+	public Long peticionar(@RequestBody @Valid RegistrarPeticaoCommand command, BindingResult binding) {
 		
 		if (binding.hasErrors()) {
 			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
@@ -156,7 +156,7 @@ public class PeticaoRestResource {
 
     @ApiOperation(value = "Registra uma nova petição física", hidden = true)
 	@RequestMapping(value = "/api/peticao/fisica", method = RequestMethod.POST)
-	public String registrar(@Valid @RequestBody RegistrarPeticaoFisicaCommand command, BindingResult binding) {
+	public Long registrar(@Valid @RequestBody RegistrarPeticaoFisicaCommand command, BindingResult binding) {
     	
     	if (binding.hasErrors()) {
 			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
@@ -190,41 +190,36 @@ public class PeticaoRestResource {
 
     @ApiOperation(value = "Recupera as informações de uma determinada petição")
 	@RequestMapping(value = "/api/peticao/{id}", method = RequestMethod.GET)
-	public PeticaoDto consultar(@PathVariable String id) {
-		return peticaoApplicationService.consultar(id);
+	public PeticaoDto consultar(@PathVariable Long id) {
+		return this.peticaoSerivceFacade.consultar(id);
 	}
 
     @ApiOperation(value = "Conclui a pré-autuação de uma determinada petição física", hidden = true)
 	@RequestMapping(value = "/api/peticao/{id}/preautuacao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void preautuar(@PathVariable String id) {
+	public void preautuar(@PathVariable Long id) {
 		//peticaoApplicationService.preautuar(id);
 	}
 
     @ApiOperation(value = "Conclui a autuação de uma determinada petição")
 	@RequestMapping(value = "/api/peticao/{id}/autuacao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void autuar(@PathVariable String id, @RequestBody AutuarPeticaoCommand command) {
-		peticaoApplicationService.autuar(id, command.getClasse(), command.isValida(), command.getMotivo());
+	public void autuar(@PathVariable Long id, @RequestBody AutuarPeticaoCommand command) {
+		this.peticaoSerivceFacade.autuar(id, command.getClasse(), command.isValida(), command.getMotivo());
 	}
 
     @ApiOperation(value = "Conclui a devolução de uma determinada petição recebida incorretamente", hidden = true)
 	@RequestMapping(value = "/api/peticao/{id}/devolucao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void devolver(@PathVariable String id) {
-		peticaoApplicationService.devolver(id);
+	public void devolver(@PathVariable Long id) {
+		this.peticaoSerivceFacade.devolver(id);
 	}
 
     @ApiOperation(value = "Conclui a distribuição de uma determinada petição")
 	@RequestMapping(value = "/api/peticao/{id}/distribuicao", method = RequestMethod.POST)
-	public ProcessoDistribuidoDto distribuir(@PathVariable String id, @RequestBody DistribuirPeticaoCommand command) {
-    	Task task = taskService.createTaskQuery().taskId(id).includeProcessVariables().singleResult();
+	public ProcessoDistribuidoDto distribuir(@PathVariable Long id, @RequestBody DistribuirPeticaoCommand command) {
     	
-		String classe = task.getProcessVariables().get("classe").toString();
-
-		peticaoApplicationService.distribuir(id, command.getRelator());
-
-		return new ProcessoDistribuidoDto(classe, "0001", command.getRelator());
+    	return this.peticaoSerivceFacade.distribuir(id, command.getIdRelator());
     }
 
     @ApiOperation(value = "Envia um documento de uma petição.")
