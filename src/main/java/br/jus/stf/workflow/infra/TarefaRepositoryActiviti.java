@@ -2,7 +2,6 @@ package br.jus.stf.workflow.infra;
 
 import java.util.List;
 
-import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
@@ -25,30 +24,24 @@ public class TarefaRepositoryActiviti implements TarefaRepository {
 
 	@Autowired
 	private RuntimeService runtimeService;
-	
-	@Autowired
-	private IdentityService identityService;
 
 	@Override
 	public List<Task> listar(String papel) {
-		List<Task> tarefas = taskService.createTaskQuery().taskCandidateGroup(papel).list(); 
-		return tarefas;
+		return taskService.createTaskQuery().taskCandidateGroup(papel).list(); 
 	}
 
 	@Override
-	public void completar(String id) {
-		taskService.complete(id);
+	public void completar(String taskId) {
+		taskService.complete(taskId);
+	}
+	
+	@Override
+	public void sinalizar(String sinal, String executionId) {
+		runtimeService.signalEventReceived(sinal, executionId);
 	}
 
 	@Override
-	public void sinalizar(String sinal, String id) {
-		Task task = taskService.createTaskQuery().taskId(id).singleResult();
-		
-		runtimeService.signalEventReceived(sinal, task.getExecutionId());
-	}
-
-	@Override
-	public Task consultar(String id) {
-		return this.taskService.createTaskQuery().taskId(id).singleResult();
+	public Task consultar(String taskId) {
+		return taskService.createTaskQuery().taskId(taskId).singleResult();
 	}
 }

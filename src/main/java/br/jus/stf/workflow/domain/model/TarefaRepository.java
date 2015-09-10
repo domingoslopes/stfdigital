@@ -12,11 +12,11 @@ import org.activiti.engine.task.Task;
  */
 public interface TarefaRepository {
 
-	void completar(String id);
+	void completar(String taskId);
 
 	List<Task> listar(String papel);
-
-	void sinalizar(String sinal, String id);
 	
-	Task consultar(String id);
+	void sinalizar(String sinal, String executionId);
+	
+	Task consultar(String taskId);
 }

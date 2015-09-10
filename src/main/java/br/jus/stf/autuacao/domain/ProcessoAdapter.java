@@ -21,7 +21,7 @@ public interface ProcessoAdapter {
 	 */
 	public String iniciar(String tipoRecebimento);
 	
-	public void alterar(String id, String nome, String valor);
+	//public void alterar(String id, String nome, String valor);
 	
 	public Peticao consultar(String id);
 }
