@@ -1,7 +1,6 @@
 package br.jus.stf.autuacao.application;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -12,13 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 import br.jus.stf.autuacao.domain.PeticaoService;
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
 import br.jus.stf.autuacao.domain.TarefaAdapter;
-import br.jus.stf.autuacao.domain.entity.ClasseProcessual;
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Peticao;
-import br.jus.stf.autuacao.domain.entity.Polo;
+import br.jus.stf.autuacao.domain.model.Peticao;
+import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
+import br.jus.stf.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
-import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
-import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
+import br.jus.stf.generico.domain.model.Ministro;
+import br.jus.stf.shared.domain.model.PeticaoId;
+import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
 
 /**
  * @author Rodrigo Barreiros
@@ -34,77 +34,97 @@ public class PeticaoApplicationService {
 	private PeticaoService peticaoService;
 	
 	@Autowired
+	private PeticaoRepository peticaoRepository;
+	
+	@Autowired
 	private ProcessoAdapter processoAdapter;
 	
 	@Autowired
 	private TarefaAdapter tarefaAdapter;
-	
-	private PeticaoDtoAssembler assemblerPeticao = new PeticaoDtoAssembler();
 
 	/**
 	 * Registra uma nova petilçao.
 	 * 
-	 * @param tipoRecebimento
-	 * @param classe
-	 * @param poloAtivo
-	 * @param poloPassivo
-	 * @param documentos
-	 * @return
+	 * @param peticaoEletronica Petição eletrônica recebida.
+	 * 
+	 * @return Id da petição eletrônica registrada.
 	 */
-	public String registrar(String tipoRecebimento, String classeSugerida, Polo poloAtivo, Polo poloPassivo, List<Documento> documentos) {
-		Peticao peticao = null;
+	public Long peticionar(PeticaoEletronica peticao) {
+		String tipoRecebimento = "peticaoEletronica";
+		String idProcesso = "";
 		
-		if (tipoRecebimento == null || tipoRecebimento.isEmpty())
-			throw new RuntimeException("O tipo de recebimento não foi informado.");
-		
-		if (classeSugerida == null || classeSugerida.isEmpty())
-			throw new RuntimeException("A classe processual não foi informada.");
-		
-		if (poloAtivo == null || poloAtivo.getPartes() == null || poloAtivo.getPartes().size() == 0)
-			throw new RuntimeException("O polo ativo não foi informado.");
-		
-		if (poloPassivo == null || poloPassivo.getPartes() == null || poloPassivo.getPartes().size() == 0)
-			throw new RuntimeException("O polo passivo não foi informado.");
-		
-		peticao = new Peticao();
-		peticao.setClasseSugerida(new ClasseProcessual(classeSugerida));
-		peticao.setPoloAtivo(poloAtivo);
-		peticao.setPoloPassivo(poloPassivo);
-		peticao.setDocumentos(documentos);
-		
-		return peticaoService.registrar(tipoRecebimento, peticao);
-	}
-
-	public void preautuar(String idPeticao) {
-		peticaoService.preautuar(idPeticao);
-	}
-
-	public void autuar(String idPeticao, String classe, boolean peticaoValida, String motivo) {
-		
-		if (idPeticao == null || idPeticao.isEmpty())
-			throw new RuntimeException("O identificador da petição não foi informado.");
-		
-		TarefaDto tarefa = this.tarefaAdapter.consultar(idPeticao);
-		
-		//Atualiza a classe da petição.
-		processoAdapter.alterar(tarefa.getIdProcesso(), "classe", classe);
-
-		//Realiza a atuação
-		peticaoService.autuar(tarefa.getId(), peticaoValida, motivo);
-		
-	}
-
-	public void distribuir(String idPeticao, String relator) {
-		peticaoService.distribuir(idPeticao, relator);
-	}
-
-	public void devolver(String idPeticao) {
-		peticaoService.devolver(idPeticao);
+		idProcesso = processoAdapter.iniciar(tipoRecebimento);
+		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
+		PeticaoId peticaoId = this.peticaoRepository.save(peticao);
+	
+		return peticaoId.toLong();
 	}
 	
-	public PeticaoDto consultar(String id){
-		return this.assemblerPeticao.toDto(this.peticaoService.consultar(id));
+	/**
+	 * Registra o recebimento de uma petição física.
+	 * 
+	 * @param volumes Quantidade de volumes da petição física.
+	 * 
+	 * @return Id da petição física registrada.
+	 */
+	public Long registrar(PeticaoFisica peticao){
+		String tipoRecebimento = "peticaoFisica";
+		String idProcesso = "";
+		
+		idProcesso = processoAdapter.iniciar(tipoRecebimento);
+		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
+		PeticaoId peticaoId = this.peticaoRepository.save(peticao);
+	
+		return peticaoId.toLong();
 	}
+
+	/**
+	 * Realiza a preautuação de uma petição física.
+	 * @param peticaoFisica Dados da petição física.
+	 */
+	public void preautuar(PeticaoFisica peticaoFisica) {
+		this.peticaoRepository.save(peticaoFisica);
+		this.tarefaAdapter.completar(peticaoFisica.processosWorkflow().iterator().next().toString());
+	}
+
+	/**
+	 * Realiza a atuação de uma petição.
+	 * @param peticao Dados da petição.
+	 * @param peticaoValida Indica se uma petição foi considerada válida.
+	 */
+	public void autuar(Peticao peticao, boolean peticaoValida) {
+		
+		String idPeticao = peticao.id().toString();
+		
+		this.peticaoRepository.save(peticao);
+		
+		if (peticaoValida) {
+			this.tarefaAdapter.completar(idPeticao);
+		} else {
+			this.tarefaAdapter.sinalizar("Petição Inválida", idPeticao);
+		}
+	}
+
+	/**
+	 * Distribui um processo para um Ministro Relator.
+	 * @param peticao Dados da petição.
+	 * @param ministroRelator Dados do Ministro Relator do processo.
+	 */
+	public void distribuir(Peticao peticao, Ministro ministroRelator) {
+		
+		this.peticaoRepository.save(peticao);
+		this.tarefaAdapter.completar(peticao.id().toString());
+	}
+
+	/**
+	 * Devolve uma petição.
+	 * @param peticao Dados da petição.
+	 */
+	public void devolver(Peticao peticao) {
+		this.tarefaAdapter.completar(peticao.id().toString());
+	}
+	
+	
 	
 	public String receberDocumentoPeticao(MultipartFile arquivo) throws IOException{
 		return this.peticaoService.gravarArquivo(arquivo);

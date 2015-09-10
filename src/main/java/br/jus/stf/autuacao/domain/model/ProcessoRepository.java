@@ -2,7 +2,9 @@ package br.jus.stf.autuacao.domain.model;
 
 import java.util.List;
 
-import br.jus.stf.shared.domain.model.ClasseId;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.Repository;
+
 import br.jus.stf.shared.domain.model.ProcessoId;
 
 /**
@@ -10,22 +12,24 @@ import br.jus.stf.shared.domain.model.ProcessoId;
  * @version 1.0
  * @created 14-ago-2015 18:33:25
  */
-public interface ProcessoRepository {
+public interface ProcessoRepository extends Repository<Processo, ProcessoId> {
 
 	/**
 	 * 
-	 * @param numeroProcesso
+	 * @param processoId
 	 */
-	public Processo find(ProcessoId numeroProcesso);
-
-	public List<Processo> findAll();
+	public Processo findOne(ProcessoId processoId);
+	
+	/**
+	 * @param specification
+	 * @return a lista de processos
+	 */
+	public List<Processo> findAll(Specification<Processo> specification);
 
 	/**
 	 * 
 	 * @param processo
 	 */
-	public void store(Processo processo);
-
-	public Long nextNumero(final ClasseId classe);
+	public ProcessoId save(Processo processo);
 
 }

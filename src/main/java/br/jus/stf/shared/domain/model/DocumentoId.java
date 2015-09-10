@@ -21,7 +21,7 @@ public class DocumentoId implements ValueObject<DocumentoId> {
 	private Long id;
 
 	public DocumentoId(final Long id){
-		Validate.notNull(id);
+		Validate.notNull(id, "documentoId.id.required");
 		
 		this.id = id;
 	}

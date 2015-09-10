@@ -6,6 +6,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.shared.domain.model.PessoaId;
 import br.jus.stf.shared.domain.stereotype.ValueObject;
 
@@ -26,7 +28,10 @@ public abstract class Parte implements ValueObject<Parte> {
 	@Enumerated(EnumType.STRING)
 	private TipoPolo polo;
 
-	public Parte(final PessoaId pessoaId, final TipoPolo polo){
+	protected Parte(final PessoaId pessoaId, final TipoPolo polo){
+		Validate.notNull(pessoaId, "parte.pessoaId.required");
+		Validate.notNull(polo, "parte.polo.required");
+		
 		this.pessoaId = pessoaId;
 		this.polo = polo;
 	}

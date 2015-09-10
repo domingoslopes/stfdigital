@@ -1,0 +1,99 @@
+package br.jus.stf.generico.interfaces;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import br.jus.stf.generico.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.generico.interfaces.facade.GenericoServiceFacade;
+import br.jus.stf.shared.domain.model.DocumentoId;
+
+import com.wordnik.swagger.annotations.ApiOperation;
+
+/**
+ * Api REST para salvar e recuperar documentos
+ * 
+ * @author Lucas.Rodrigues
+ *
+ */
+@RestController
+@RequestMapping("/api/documentos")
+public class DocumentoRestResource {
+	
+	@Autowired
+	private GenericoServiceFacade genericoServiceFacade;
+	
+	@Autowired
+	private Validator validator;
+
+	@ApiOperation("Salva os documentos temporários")
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	//TODO: Substituir a validação pelo @valid e BindingResult
+	public Set<DocumentoId> salvar(@RequestBody SalvarDocumentosCommand command) {
+		
+		Set<ConstraintViolation<SalvarDocumentosCommand>> result = validator.validate(command);
+		if (!result.isEmpty()) {
+			throw new IllegalArgumentException(result.toString());
+		}
+		return genericoServiceFacade.salvarDocumentos(command.getDocumentos());
+	}	
+	
+	@ApiOperation("Recupera um documento do repositório")
+	@RequestMapping(value = "/{documentoId}", method = RequestMethod.GET)
+	public void recuperar(@PathVariable("documentoId") Long documentoId, HttpServletResponse response) throws IOException {
+		InputStream is = genericoServiceFacade.pesquisaDocumento(documentoId);
+		IOUtils.copy(is, response.getOutputStream());
+	    setPdfReponseHeaders(documentoId, response);
+	}
+	
+	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public String upload(@RequestParam("file") MultipartFile file) {
+		return genericoServiceFacade.salvarDocumentoTemporario(file);
+	}
+
+	/**
+	 * Define os headers para o pdf 
+	 * 
+	 * @param documentoId
+	 * @param response
+	 */
+	private void setPdfReponseHeaders(Long documentoId, HttpServletResponse response) {
+		String filename = documentoId + ".pdf";
+	    response.addHeader(HttpHeaders.CONTENT_TYPE, "application/pdf");
+	    response.addHeader(HttpHeaders.CONTENT_DISPOSITION, createPDFContentDisposition(filename));
+	    response.addHeader(HttpHeaders.CACHE_CONTROL, "must-revalidate, post-check=0, pre-check=0");
+	}
+
+	/**
+	 * Cria o header do Content-Disposition para definir o nome do arquivo
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	private String createPDFContentDisposition(String filename) {
+		StringBuilder contentDisposition = new StringBuilder("form-data; name=\"");
+		contentDisposition.append(filename).append('\"');
+		contentDisposition.append("; filename=\"");
+		contentDisposition.append(filename).append('\"');
+		return contentDisposition.toString();
+	}
+	
+	
+	
+}

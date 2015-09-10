@@ -5,40 +5,32 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import br.jus.stf.autuacao.domain.entity.Documento;
-import br.jus.stf.autuacao.domain.entity.Parte;
-import br.jus.stf.autuacao.domain.entity.Peticao;
+import org.springframework.stereotype.Component;
 
+import br.jus.stf.autuacao.domain.model.Peticao;
+
+@Component
 public class PeticaoDtoAssembler {
 	
 	public PeticaoDto toDto(Peticao peticao){
-		Map<String, List<String>> partes = new HashMap<String, List<String>>();
-		List<String> documentos = new LinkedList<String>();
 		
-		// Recupera as partes do polo ativo.
-		List<String> partesPoloAtivo = new LinkedList<String>();
-		for(Parte parte : peticao.getPoloAtivo().getPartes()) {
-			partesPoloAtivo.add(parte.getNome());
-		}
-	
-		// Recupera as partes do polo passivo.
-		List<String> partesPoloPassivo = new LinkedList<String>();
-		for(Parte parte : peticao.getPoloPassivo().getPartes()) {
-			partesPoloPassivo.add(parte.getNome());
-		}
+		List<Long> partesPoloAtivo = new LinkedList<Long>();
+		List<Long> partesPoloPassivo = new LinkedList<Long>();
+		List<Long> documentos = new LinkedList<Long>();
+		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
 		
-		partes.put("poloAtivo", partesPoloAtivo);
-		partes.put("poloPassivo", partesPoloPassivo);
+		peticao.partesPoloAtivo()
+			.forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
 		
-		// Documentos da petição.
-		for(Documento documento : peticao.getDocumentos()){
-			documentos.add(documento.getDescricao());
-		}
+		peticao.partesPoloPassivo()
+			.forEach(parte -> partesPoloPassivo.add(parte.pessoaId().toLong()));
 		
-		// Monta o DTO.
-		// [TODO] Incluir lista de documentos
-		PeticaoDto dto = new PeticaoDto(peticao.getClasse().getSigla(), partes);
+		partes.put("Polo Ativo", partesPoloAtivo);
+		partes.put("Polo Passivo", partesPoloPassivo);
 		
-		return dto;
+		peticao.documentos()
+			.forEach(documento -> documentos.add(documento.toLong()));
+				
+		return new PeticaoDto(peticao.classeProcessual().toString(), partes, documentos);
 	}
 }

@@ -1,4 +1,4 @@
-<button type="button" class="btn {{btn}}" ng-click="execute()">
+<a class="{{btn}}" ng-click="execute()" ng-disabled="disabled" ng-if="showAction">
 	<i ng-if="showIcon" class="{{icon}}" aria-hidden="true" arial-label="{{description}}"></i>
 	<span ng-if="showDescription">{{description}}</span>
-</button>
+</a>
