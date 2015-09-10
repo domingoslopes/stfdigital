@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import br.jus.stf.autuacao.domain.PeticaoService;
 import br.jus.stf.autuacao.domain.ProcessoAdapter;
 import br.jus.stf.autuacao.domain.TarefaAdapter;
-import br.jus.stf.autuacao.domain.model.Peticao;
 import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
@@ -129,7 +128,7 @@ public class PeticaoApplicationService {
 		TarefaDto tarefa = this.tarefaAdapter.consultar(idPeticao);
 		
 		//Atualiza a classe da petição.
-		processoAdapter.alterar(tarefa.getIdProcesso(), "classe", classe);
+		//processoAdapter.alterar(tarefa.getIdProcesso(), "classe", classe);
 
 		//Realiza a atuação
 		peticaoService.autuar(tarefa.getId(), peticaoValida, motivo);

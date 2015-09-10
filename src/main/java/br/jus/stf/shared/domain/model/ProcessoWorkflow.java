@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
 
-//github.com/supremotribunalfederal/stfdigital.git
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.domain.stereotype.Entity;
@@ -26,7 +25,6 @@ public class ProcessoWorkflow implements Entity<ProcessoWorkflow> {
 	
 	public ProcessoWorkflow(final ProcessoWorkflowId id, final String status){
 		Validate.notNull(id, "processoWorkflow.id.required");
-		//Validate.notNull(status, "processoWorkflow.status.required");
 		
 		this.id = id;
 		this.status = status;
