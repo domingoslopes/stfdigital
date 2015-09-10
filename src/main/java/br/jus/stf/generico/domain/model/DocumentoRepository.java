@@ -14,7 +14,7 @@ import br.jus.stf.shared.domain.model.DocumentoId;
  */
 @NoRepositoryBean
 public interface DocumentoRepository extends Repository<Documento, DocumentoId> {
-
+	
 	/**
 	 * Pesquisa um documento
 	 * 
@@ -35,6 +35,14 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 * 
 	 * @param documento
 	 */
-	public DocumentoId save(DocumentoTemporario documentoTemporario);
+	public DocumentoId save(String documentoTemporario);
+
+	/**
+	 * Salva um documento temporário
+	 * 
+	 * @param documentoTemporario
+	 * @return identificacao do temporário
+	 */
+	public String storeTemp(DocumentoTemporario documentoTemporario);
 
 }
