@@ -32,9 +32,9 @@ public class ProcessoRestAdapter implements ProcessoAdapter {
 	/**
 	 * Altera a classe de uma petição.
 	 */
-	public void alterar(String id, String nome, String valor){
+	/*public void alterar(String id, String nome, String valor){
 		this.processoRestService.alterar(id, nome, valor);
-	}
+	}*/
 	
 	/**
 	 * Consulta uma instância de um processo (Plataforma) de acordo com o id informado..
