@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.generico.application.GenericoApplicationService;
 import br.jus.stf.generico.domain.model.ClasseRepository;
@@ -79,10 +80,13 @@ public class GenericoServiceFacade {
 		return pessoaDtoAssembler.toDto(pessoaRepository.findOne(id));
 	}	
 	
-	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios) {
-		List<DocumentoTemporario> documentos = new ArrayList<DocumentoTemporario>();
-		documentosTemporarios.forEach(tempId -> documentos.add(new DocumentoTemporario(tempId))); 
-		return genericoApplicationService.salvarDocumentos(documentos);
+	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios) { 
+		return genericoApplicationService.salvarDocumentos(documentosTemporarios);
+	}
+	
+	public String salvarDocumentoTemporario(MultipartFile file) {
+		DocumentoTemporario documentoTemporario = new DocumentoTemporario(file, ".pdf");
+		return genericoApplicationService.salvarDocumentoTemporario(documentoTemporario);
 	}
 	
 	public InputStream pesquisaDocumento(Long documentoId) {

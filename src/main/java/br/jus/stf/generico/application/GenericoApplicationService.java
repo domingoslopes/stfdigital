@@ -50,10 +50,18 @@ public class GenericoApplicationService {
 	 * @param documentosTemporarios
 	 * @return
 	 */
-	public Set<DocumentoId> salvarDocumentos(List<DocumentoTemporario> documentosTemporarios) {
+	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios) {
 		Set<DocumentoId> documentosSalvos = new LinkedHashSet<DocumentoId>();
 		documentosTemporarios.forEach(docTemp -> documentosSalvos.add(documentoRepository.save(docTemp)));
 		return documentosSalvos;
+	}
+	
+	/**
+	 * @param documentoTemporario
+	 * @return
+	 */
+	public String salvarDocumentoTemporario(DocumentoTemporario documentoTemporario) {
+		return documentoRepository.storeTemp(documentoTemporario);
 	}
 	
 }
