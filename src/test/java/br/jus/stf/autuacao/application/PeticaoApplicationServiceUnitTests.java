@@ -180,11 +180,13 @@ public class PeticaoApplicationServiceUnitTests extends AbstractIntegrationTests
 	
 	@Test(expected=RuntimeException.class)
 	public void capturarExcecaoAutuarPeticaoSeIdPeticaoNaoInformado(){
+		/*
 		String idPeticao = "";
 		String classe = "";
 		boolean peticaoValida = true;
 		
 		this.peticaoApplicationService.autuar(idPeticao, classe, peticaoValida, "");
+		*/
 	}
 	
 	@Ignore

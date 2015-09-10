@@ -82,6 +82,12 @@ public abstract class Peticao implements Entity<Peticao> {
 	@JoinColumn(name = "SEQ_PETICAO")
 	protected Set<Parte> partes = new HashSet<Parte>(0);
 	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PETICAO_DOCUMENTO", schema = "AUTUACAO",
+			joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+	protected Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
+			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
+	
 
 	public PeticaoId id() {
 		return this.peticaoId;
@@ -139,6 +145,30 @@ public abstract class Peticao implements Entity<Peticao> {
 		Validate.notNull(parte, "peticao.parte.required");
 		
 		return this.partes.remove(parte);
+	}
+	
+	public Set<DocumentoId> documentos(){
+		return Collections.unmodifiableSet(this.documentos);
+	}
+
+	/**
+	 * 
+	 * @param documento
+	 */
+	public boolean adicionarDocumento(final DocumentoId documento) {
+		Validate.notNull(documento, "peticao.documento.required");
+	
+		return this.documentos.add(documento);
+	}
+	
+	/**
+	 * 
+	 * @param documento
+	 */
+	public boolean removerDocumento(final DocumentoId documento) {
+		Validate.notNull(documento, "peticao.documento.required");
+	
+		return this.documentos.remove(documento);
 	}
 
 	public ClasseId classeProcessual() {
