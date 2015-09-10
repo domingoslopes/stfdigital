@@ -53,7 +53,7 @@ public class PeticaoService {
 		if (peticaoValida) {
 			tarefaAdapter.completar(idPeticao);
 		} else {
-	    	processoAdapter.alterar(idPeticao, "motivo", motivo);
+	    	//processoAdapter.alterar(idPeticao, "motivo", motivo);
 			
 			tarefaAdapter.sinalizar("Petição Inválida", idPeticao);
 		}
@@ -68,7 +68,7 @@ public class PeticaoService {
 	public String distribuir(String idPeticao, String relator) {
 		String idProcesso = "";
 		
-    	processoAdapter.alterar(idPeticao, "relator", relator);
+    	//processoAdapter.alterar(idPeticao, "relator", relator);
 		
 		tarefaAdapter.completar(idPeticao);
 		
