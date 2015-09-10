@@ -5,8 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import br.jus.stf.autuacao.domain.model.Peticao;
 
+@Component
 public class PeticaoDtoAssembler {
 	
 	public PeticaoDto toDto(Peticao peticao){
