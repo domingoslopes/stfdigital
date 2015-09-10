@@ -33,6 +33,7 @@ public class PeticaoService {
 	@Autowired
 	private TarefaAdapter tarefaAdapter;
 
+	@Deprecated
 	public void preautuar(String idPeticao) {
 		tarefaAdapter.completar(idPeticao);
 	}

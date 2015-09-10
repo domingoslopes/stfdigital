@@ -16,6 +16,7 @@ import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
+import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.PeticaoId;
 import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
 import br.jus.stf.workflow.interfaces.dto.TarefaDto;
@@ -80,8 +81,9 @@ public class PeticaoApplicationService {
 
 	public void preautuar(Long idPeticao, String classeSugerida) {
 		PeticaoFisica peticao = (PeticaoFisica) this.peticaoRepository.findOne(new PeticaoId(idPeticao));
-		//peticao.preautuar();
-		//peticaoService.preautuar(idPeticao);
+		peticao.preautuar(new ClasseId(classeSugerida));
+		
+		this.tarefaAdapter.completar(peticao.processosWorkflow().iterator().next().toString());
 	}
 
 	public void autuar(String idPeticao, String classe, boolean peticaoValida, String motivo) {
