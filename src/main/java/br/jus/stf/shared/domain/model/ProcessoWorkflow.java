@@ -20,7 +20,7 @@ public class ProcessoWorkflow implements Entity<ProcessoWorkflow> {
 	@EmbeddedId
 	private ProcessoWorkflowId id;
 	
-	@Column(name = "DSC_STATUS_INSTANCE")
+	@Column(name = "DSC_STATUS_PROCESS_INSTANCE")
 	private String status;
 	
 	public ProcessoWorkflow(final ProcessoWorkflowId id, final String status){
