@@ -17,7 +17,7 @@
 		beforeEach(module('appDev'));
 		
 		beforeEach(inject(function($controller, $httpBackend, $window, $log, properties) {
-			$window.sessionStorage.papel = JSON.stringify('distribuidor');
+			$window.sessionStorage.papel = JSON.stringify('autuador');
 			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
 			$httpBackend.expectGET(properties.apiUrl + '/peticao/1').respond({classe : 'AP'});
 			$httpBackend.expectGET(properties.apiUrl + '/tarefas').respond([{}]);
