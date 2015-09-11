@@ -2,6 +2,7 @@ package br.jus.stf.generico.interfaces.facade;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,8 +66,12 @@ public class GenericoServiceFacade {
 	 */
 	public Set<PessoaId> cadastrarPessoas(List<String> pessoasNovas) {
 		List<Pessoa> pessoas = new ArrayList<Pessoa>();
-		pessoasNovas.forEach(nome -> pessoas.add(new Pessoa(nome))); 
-		return genericoApplicationService.cadastrarPessoas(pessoas);
+		pessoasNovas.forEach(nome -> pessoas.add(new Pessoa(nome)));
+		genericoApplicationService.cadastrarPessoas(pessoas);
+		
+		Set<PessoaId> idsCadastrados = new LinkedHashSet<PessoaId>();
+		pessoas.forEach(pessoa -> idsCadastrados.add(pessoa.id()));
+		return idsCadastrados;
 	}
 	
 	/**

@@ -21,6 +21,6 @@ public interface PessoaRepository extends Repository<Pessoa, PessoaId> {
 	 * 
 	 * @param pessoa
 	 */
-	public PessoaId save(Pessoa pessoa);
+	public Pessoa save(Pessoa pessoa);
 
 }
