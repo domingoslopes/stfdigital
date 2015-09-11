@@ -15,7 +15,7 @@ import br.jus.stf.shared.domain.model.DocumentoId;
  *
  */
 @Entity
-@DiscriminatorValue("ELETRONICA")
+@DiscriminatorValue("ELETRONICO")
 public class PeticaoEletronica extends Peticao {
 	
 	PeticaoEletronica(final ClasseId classeSugerida, final Set<PartePeticao> partes, final Set<DocumentoId> documentos) {
