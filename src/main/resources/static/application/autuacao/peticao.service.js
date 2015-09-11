@@ -17,8 +17,12 @@
 				return $http.post(properties.apiUrl + '/peticao', peticionarCommand);
 			},
 			
-			consultar : function(id) {
+			consultarPeticaoEletronica : function(id) {
 				return $http.get(properties.apiUrl + '/peticao/' + id);
+			},
+			
+			consultarPeticaoFisica: function(id) {
+				return $http.get(properties.apiUrl + '/peticao/fisica/' + id);
 			},
 			
 			autuar : function(id, autuarCommand) {
@@ -27,6 +31,14 @@
 			
 			distribuir : function(id, relator) {
 				return $http.post(properties.apiUrl + '/peticao/' + id + '/distribuicao', JSON.stringify(relator));
+			},
+			
+			registrar : function(registrarCommand){
+				return $http.post(properties.apiUrl + '/peticao/fisica', registrarCommand);
+			},
+			
+			preautuar : function(id, preuatuarCommand){
+				return $http.post(properties.apiUrl + '/peticao/' + id + '/preautucao', preautuarCommand);
 			}
 			
 		};
