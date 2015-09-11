@@ -6,6 +6,7 @@ import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PostPersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -43,6 +44,11 @@ public class Pessoa implements Entity<Pessoa> {
 
 	public String nome(){
 		return nome;
+	}
+	
+	@PostPersist
+	private void postPersist() {
+		pessoaId = new PessoaId(id);
 	}
 	
 	@Override
