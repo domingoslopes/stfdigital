@@ -15,7 +15,7 @@ import br.jus.stf.shared.domain.model.ClasseId;
  *
  */
 @Entity
-@DiscriminatorValue("FISICA")
+@DiscriminatorValue("FISICO")
 public class PeticaoFisica extends Peticao {
 
 	@Column(name = "QTD_VOLUME")
