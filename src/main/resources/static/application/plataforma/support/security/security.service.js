@@ -13,7 +13,9 @@
 				return [
 					{nome : 'peticionador'}, 
 					{nome : 'autuador'}, 
-					{nome : 'distribuidor'} 
+					{nome : 'distribuidor'},
+					{nome : 'recebedor'},
+					{nome : 'preautuador'}
 				];
 			}
 		};
