@@ -150,6 +150,10 @@ public class PeticaoRestResource {
 		for(int i = 0; i < command.getPartesPoloPassivo().size(); i++){
 			poloPassivo.add(command.getPartesPoloPassivo().get(i));
 		}
+		
+		for(int i = 0; i < command.getDocumentos().size(); i++){
+			documentos.add(command.getDocumentos().get(i));
+		}
 				
 		return this.peticaoSerivceFacade.peticionar(classeSugerida, poloAtivo, poloPassivo, documentos);
 	}

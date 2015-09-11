@@ -11,6 +11,7 @@ import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
 
 import br.jus.stf.AbstractIntegrationTests;
 
@@ -20,9 +21,10 @@ import br.jus.stf.AbstractIntegrationTests;
  * @since 1.0.0
  * @since 17.06.2015
  */
-@Ignore
+
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
+	
     @Test
     public void distribuir() throws Exception {
     	// Passo 01: Solicitando o Registro da Petição Física...
@@ -76,5 +78,4 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		// Verificação Final: Após a conclusão do processo, a lista de tarefas deve ser vazia.
 		mockMvc.perform(get("/api/tarefas").header("papel", "recebedor")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.empty()));
     }
-
 }
