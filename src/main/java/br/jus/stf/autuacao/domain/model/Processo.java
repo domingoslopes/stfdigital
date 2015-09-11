@@ -56,7 +56,7 @@ public class Processo implements Entity<Processo> {
 	
 	@Embedded
 	@AttributeOverride(name = "id",
-		column = @Column(name = "SEQ_MINISTRO_RELATOR"))
+		column = @Column(name = "COD_MINISTRO_RELATOR"))
 	private MinistroId relator;
 
 	
