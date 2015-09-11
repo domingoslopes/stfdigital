@@ -9,6 +9,18 @@
 	'use strict';
 
 	var PreautuacaoPage = function () {
+	
+		this.classificar = function(sigla){
+			var classe =  element(by.css('#s2id_classe a'));
+			
+			classe.click();
+			
+			classe.sendKeys(sigla);
+			
+			var classes = element.all(by.css('.select2-results-dept-0'));
+			    
+			classes.first().click();
+		}
 		
 		this.finalizar = function() {
 			element(by.id('finalizar')).click();
@@ -17,6 +29,8 @@
 		};
 		
 	};
+	
+	
 
 	module.exports = PreautuacaoPage;
 	

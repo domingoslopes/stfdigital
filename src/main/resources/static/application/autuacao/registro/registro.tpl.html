@@ -13,7 +13,66 @@
 	</div>
 	<div class="container-fluid container-fixed-lg">
 		<form ng-submit="registro.completar()">
-			<input id="classe" type="text" ng-model="registro.tipoRecebimento" size="30"> 
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title=""
+							data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Quantidade de volumes</h5>
+							<h6>Quantidade de volumes ou peças do processo</h6>
+						</div>
+						<div class="card-description">
+                        	<input type="text" id="qtdVolumes" name="quantidadeVolume" ng-model="registro.qtdVolumes" size="30" placeholder="Quantidade de Volumes" autofocus> 
+						</div>
+					</div>
+				</div>
+                <div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title=""
+                            data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Quantidade de Apensos</h5>
+                            <h6>Quatidade de apensos do Processo</h6>
+                        </div>
+                        <div class="card-description">
+                                <input type="text" id="qtdApensos" name="quantidadeApensos" ng-model="registro.qtdApensos" size="30" placeholder="Quantidade de apensos" autofocus> 
+                        </div>
+                    </div>
+                </div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix ">
+							<h5>Forma de Envio</h5>
+							<h6>Forma de envio da petição física</h6>
+						</div>
+						<div class="card-description">
+							<select ui-select2 id="tipoRecebimento" ng-model="registro.tipoRecebimento" data-placeholder="Selecione a forma de envio" style="width: 450px;" autofocus>
+								<option value=""></option>
+								<option ng-repeat="tipoRecebimento in registro.tipoRecebimentos" value="{{tipoRecebimento.sigla}}">{{tipoRecebimento.nome}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+                <div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title=""
+                            data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Número do Sedex</h5>
+                            <h6>Número de envio do Sedex dos Correios</h6>
+                        </div>
+                        <div class="card-description">
+                                <input type="text" id="numSedex" name="numeroSedex" ng-model="registro.numSedex" size="30" placeholder="Número do Sedex" autofocus> 
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<br />
 			
 			<p>
     			<!--input id="botaoRegistrar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Registrar"-->
