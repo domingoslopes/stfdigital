@@ -249,8 +249,9 @@ gulp.task('serve', ['build'], function() {
 		notify: false,
 		logPrefix: pkg.name,
 		server: {
-			baseDir : 'src/main/resources/static',
-			middleware: [modRewrite(config.rewritePattern)]
+			baseDir : config.base,
+			middleware: [modRewrite(config.rewritePattern)],
+			port : 3000
 		}
 	});
 	
