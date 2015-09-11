@@ -32,6 +32,6 @@ public interface PeticaoRepository extends Repository<Peticao, PeticaoId> {
 	 * @param peticao
 	 * @return o id da peticao
 	 */
-	public PeticaoId save(Peticao peticao);
+	public Peticao save(Peticao peticao);
 
 }

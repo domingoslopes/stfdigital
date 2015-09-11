@@ -62,12 +62,8 @@ public class PeticaoServiceFacade {
 	 */
 	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
 		
-		Set<PartePeticao> partes = new HashSet<PartePeticao>();
 		Set<DocumentoId> idsDocumentos = this.adicionarDocumentos(documentos);
 		ClasseId classe = new ClasseId(classeSugerida);
-		
-		this.adicionarPartes(poloAtivo, partes, TipoPolo.POLO_ATIVO);
-		this.adicionarPartes(poloPassivo, partes, TipoPolo.POLO_PASSIVO);
 		
 		PeticaoEletronica peticao = this.peticaoFactory.criarPeticaoEletronica(classe, poloAtivo, poloPassivo, idsDocumentos);
 				
@@ -177,14 +173,6 @@ public class PeticaoServiceFacade {
 		}
 		
 		return this.assemblerPeticao.toDto(peticao);
-	}
-	
-	private void adicionarPartes(List<String> polo, Set<PartePeticao> partes, TipoPolo tipoPolo) {
-		for(String p : polo){
-			PessoaId id = new PessoaId(Long.parseLong(p));
-			PartePeticao partePeticao = new PartePeticao(id, tipoPolo);
-			partes.add(partePeticao);
-		}
 	}
 	
 	private Set<DocumentoId> adicionarDocumentos(List<String> documentos){

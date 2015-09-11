@@ -14,7 +14,6 @@ import br.jus.stf.generico.domain.model.DocumentoTemporario;
 import br.jus.stf.generico.domain.model.Pessoa;
 import br.jus.stf.generico.domain.model.PessoaRepository;
 import br.jus.stf.shared.domain.model.DocumentoId;
-import br.jus.stf.shared.domain.model.PessoaId;
 
 /**
  * Aplicação genérica que deverá ser desmembrada
@@ -38,10 +37,8 @@ public class GenericoApplicationService {
 	 * @param pessoas
 	 * @return
 	 */
-	public Set<PessoaId> cadastrarPessoas(List<Pessoa> pessoas) {
-		Set<PessoaId> pessoasCadastradas = new LinkedHashSet<PessoaId>();
-		pessoas.stream().forEach(pessoa -> pessoasCadastradas.add(pessoaRepository.save(pessoa)));
-		return pessoasCadastradas;
+	public void cadastrarPessoas(List<Pessoa> pessoas) {
+		pessoas.stream().forEach(pessoa -> (pessoaRepository.save(pessoa)));
 	}
 	
 	/**

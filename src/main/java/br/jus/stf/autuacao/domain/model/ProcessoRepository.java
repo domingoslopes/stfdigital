@@ -30,6 +30,6 @@ public interface ProcessoRepository extends Repository<Processo, ProcessoId> {
 	 * 
 	 * @param processo
 	 */
-	public ProcessoId save(Processo processo);
+	public Processo save(Processo processo);
 
 }
