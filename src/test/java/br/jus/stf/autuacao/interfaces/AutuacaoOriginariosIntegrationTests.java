@@ -24,7 +24,26 @@ import br.jus.stf.AbstractIntegrationTests;
 
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
+	@Test
+	public void enviarPeticaoEletronica() throws Exception {
+		
+		StringBuilder peticaoEletronica =  new StringBuilder();
+		peticaoEletronica.append("{\"classe\":\"HC\",");
+		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
+		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
+		peticaoEletronica.append("\"documentos\":[5, 6, 7]}");
+		
+		MvcResult resultado = this.mockMvc.perform(
+			post("/api/peticao/")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(peticaoEletronica.toString()))
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		String s = resultado.toString();
+	}
 	
+	/*
     @Test
     public void distribuir() throws Exception {
     	// Passo 01: Solicitando o Registro da Petição Física...
@@ -78,4 +97,5 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		// Verificação Final: Após a conclusão do processo, a lista de tarefas deve ser vazia.
 		mockMvc.perform(get("/api/tarefas").header("papel", "recebedor")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.empty()));
     }
+*/
 }

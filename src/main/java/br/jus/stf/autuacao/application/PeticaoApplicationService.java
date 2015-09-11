@@ -55,7 +55,7 @@ public class PeticaoApplicationService {
 		
 		idProcesso = processoAdapter.iniciar(tipoRecebimento);
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
-		PeticaoId peticaoId = this.peticaoRepository.save(peticao);
+		PeticaoId peticaoId = this.peticaoRepository.save(peticao).id();
 	
 		return peticaoId.toLong();
 	}
@@ -73,7 +73,7 @@ public class PeticaoApplicationService {
 		
 		idProcesso = processoAdapter.iniciar(tipoRecebimento);
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
-		PeticaoId peticaoId = this.peticaoRepository.save(peticao);
+		PeticaoId peticaoId = this.peticaoRepository.save(peticao).id();
 	
 		return peticaoId.toLong();
 	}
