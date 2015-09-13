@@ -9,22 +9,16 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.autuacao.domain.model.PartePeticao;
 import br.jus.stf.autuacao.domain.model.Peticao;
-import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
-import br.jus.stf.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.autuacao.domain.model.PeticaoRepository;
-import br.jus.stf.autuacao.domain.model.TipoPolo;
+import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
-import br.jus.stf.generico.domain.model.Ministro;
-import br.jus.stf.generico.domain.model.MinistroRepository;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
-import br.jus.stf.shared.domain.model.PessoaId;
 import br.jus.stf.shared.domain.model.PeticaoId;
 
 
@@ -39,18 +33,12 @@ public class PeticaoServiceFacade {
 
 	@Autowired
 	private PeticaoApplicationService peticaoApplicationService;
-	
-	@Autowired
-	private PeticaoFactory peticaoFactory;
 
 	@Autowired
 	private PeticaoRepository peticaoRepository;
 	
 	@Autowired
-	private MinistroRepository ministroRepository;
-	
-	@Autowired
-	private PeticaoDtoAssembler assemblerPeticao;
+	private PeticaoDtoAssembler peticaoDtoAssembler;
 	
 	/**
 	 * Inicia o processo de peticionamento de uma petição eletônica.
@@ -64,10 +52,9 @@ public class PeticaoServiceFacade {
 		
 		Set<DocumentoId> idsDocumentos = this.adicionarDocumentos(documentos);
 		ClasseId classe = new ClasseId(classeSugerida);
-		
-		PeticaoEletronica peticao = this.peticaoFactory.criarPeticaoEletronica(classe, poloAtivo, poloPassivo, idsDocumentos);
 				
-		return peticaoApplicationService.peticionar(peticao);
+		Peticao peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, idsDocumentos);
+		return peticao.id().toLong();
 	}
 	
 	/**
@@ -80,9 +67,8 @@ public class PeticaoServiceFacade {
 	 */
 	public Long registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex) {
 		
-		PeticaoFisica peticaoFisica = this.peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
-		
-		return peticaoApplicationService.registrar(peticaoFisica);
+		Peticao peticao = peticaoApplicationService.registrar(volumes, apensos, formaRecebimento, numeroSedex);
+		return peticao.id().toLong();
 	}
 	
 	/**
@@ -142,26 +128,14 @@ public class PeticaoServiceFacade {
 	 */
 	public ProcessoDistribuidoDto distribuir(Long idPeticao, Long idMinistroRelator) {
 		
-		Peticao peticao = null;
-		Ministro ministroRelator =  null;
-		
-		peticao = this.peticaoRepository.findOne(new PeticaoId(idPeticao));
+		Peticao peticao = peticaoRepository.findOne(new PeticaoId(idPeticao));
 		
 		if (peticao == null){
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
+		Processo processo = peticaoApplicationService.distribuir(peticao, new MinistroId(idMinistroRelator));
 		
-		ministroRelator = this.ministroRepository.findOne(new MinistroId(idMinistroRelator));
-		
-		if (ministroRelator == null){
-			throw new IllegalArgumentException("Ministro não encontrada.");
-		}
-		
-		peticao.distribuir(ministroRelator.codigo());
-		
-		this.peticaoApplicationService.distribuir(peticao, ministroRelator);
-		
-		return new ProcessoDistribuidoDto(peticao.classeProcessual().toString(), peticao.id().toString(), ministroRelator.nome());
+		return new ProcessoDistribuidoDto(processo.classe().toString(), processo.numero(), idMinistroRelator);
 	}
 	
 	public PeticaoDto consultar(Long idPeticao){
@@ -172,7 +146,7 @@ public class PeticaoServiceFacade {
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
 		
-		return this.assemblerPeticao.toDto(peticao);
+		return this.peticaoDtoAssembler.toDto(peticao);
 	}
 	
 	private Set<DocumentoId> adicionarDocumentos(List<String> documentos){
@@ -184,4 +158,5 @@ public class PeticaoServiceFacade {
 		
 		return idsDocumentos;
 	}
+	
 }

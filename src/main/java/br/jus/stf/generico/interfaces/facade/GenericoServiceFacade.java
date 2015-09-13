@@ -1,10 +1,7 @@
 package br.jus.stf.generico.interfaces.facade;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +13,18 @@ import br.jus.stf.generico.domain.model.ClasseRepository;
 import br.jus.stf.generico.domain.model.DocumentoRepository;
 import br.jus.stf.generico.domain.model.DocumentoTemporario;
 import br.jus.stf.generico.domain.model.MinistroRepository;
-import br.jus.stf.generico.domain.model.Pessoa;
 import br.jus.stf.generico.domain.model.PessoaRepository;
 import br.jus.stf.generico.interfaces.dto.ClasseDto;
 import br.jus.stf.generico.interfaces.dto.ClasseDtoAssembler;
+import br.jus.stf.generico.interfaces.dto.DocumentoDto;
+import br.jus.stf.generico.interfaces.dto.DocumentoDtoAssembler;
 import br.jus.stf.generico.interfaces.dto.MinistroDto;
 import br.jus.stf.generico.interfaces.dto.MinistroDtoAssembler;
 import br.jus.stf.generico.interfaces.dto.PessoaDto;
 import br.jus.stf.generico.interfaces.dto.PessoaDtoAssembler;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.PessoaId;
+
 
 /**
  * @author Lucas.Rodrigues
@@ -58,20 +57,19 @@ public class GenericoServiceFacade {
 	@Autowired
 	private PessoaDtoAssembler pessoaDtoAssembler;
 	
+	@Autowired
+	private DocumentoDtoAssembler documentoDtoAssembler;
+	
 	/**
 	 * Cadastra uma lista de pessoas
 	 * 
 	 * @param pessoasNovas
 	 * @return lista de identificadores de pessoas cadastradas
 	 */
-	public Set<PessoaId> cadastrarPessoas(List<String> pessoasNovas) {
-		List<Pessoa> pessoas = new ArrayList<Pessoa>();
-		pessoasNovas.forEach(nome -> pessoas.add(new Pessoa(nome)));
-		genericoApplicationService.cadastrarPessoas(pessoas);
-		
-		Set<PessoaId> idsCadastrados = new LinkedHashSet<PessoaId>();
-		pessoas.forEach(pessoa -> idsCadastrados.add(pessoa.id()));
-		return idsCadastrados;
+	public List<PessoaDto> cadastrarPessoas(List<String> pessoas) {
+		return genericoApplicationService.cadastrarPessoas(pessoas).stream()
+				.map(pessoa -> pessoaDtoAssembler.toDto(pessoa))
+				.collect(Collectors.toList());
 	}
 	
 	/**
@@ -85,12 +83,14 @@ public class GenericoServiceFacade {
 		return pessoaDtoAssembler.toDto(pessoaRepository.findOne(id));
 	}	
 	
-	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios) { 
-		return genericoApplicationService.salvarDocumentos(documentosTemporarios);
+	public List<DocumentoDto> salvarDocumentos(List<String> documentosTemporarios) {
+		return genericoApplicationService.salvarDocumentos(documentosTemporarios).entrySet().stream()
+				.map(entry -> documentoDtoAssembler.toDto(entry.getKey(), entry.getValue()))
+				.collect(Collectors.toList());
 	}
 	
 	public String salvarDocumentoTemporario(MultipartFile file) {
-		DocumentoTemporario documentoTemporario = new DocumentoTemporario(file, ".pdf");
+		DocumentoTemporario documentoTemporario = new DocumentoTemporario(file);
 		return genericoApplicationService.salvarDocumentoTemporario(documentoTemporario);
 	}
 	

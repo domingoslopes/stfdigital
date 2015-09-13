@@ -11,8 +11,11 @@ import br.jus.stf.autuacao.domain.GenericoAdapter;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.PessoaId;
+import br.jus.stf.shared.domain.model.PeticaoId;
 
 /**
+ * Fábrica de petições
+ * 
  * @author Lucas.Rodrigues
  *
  */
@@ -21,6 +24,9 @@ public class PeticaoFactory {
 	
 	@Autowired
 	private GenericoAdapter genericoAdapter;
+	
+	@Autowired
+	private PeticaoRepository peticaoRepository;
 	
 	/**
 	 * Cria uma petição eletrônica
@@ -38,7 +44,10 @@ public class PeticaoFactory {
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
 		adicionarPartes(partes, poloPassivo, TipoPolo.POLO_PASSIVO);
 		
-		return new PeticaoEletronica(classeSugerida, partes, documentos);
+		PeticaoId id = peticaoRepository.nextId();
+		Long numero = peticaoRepository.nextNumero();
+		
+		return new PeticaoEletronica(id, numero, classeSugerida, partes, documentos);
 	}
 
 	/**
@@ -52,7 +61,10 @@ public class PeticaoFactory {
 	 */
 	public PeticaoFisica criarPeticaoFisica(Integer volumes, Integer apensos, 
 			FormaRecebimento formaRecebimento, String numeroSedex) {
-		return new PeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
+		PeticaoId id = peticaoRepository.nextId();
+		Long numero = peticaoRepository.nextNumero();
+		
+		return new PeticaoFisica(id, numero, volumes, apensos, formaRecebimento, numeroSedex);
 	}
 	
 	/**
