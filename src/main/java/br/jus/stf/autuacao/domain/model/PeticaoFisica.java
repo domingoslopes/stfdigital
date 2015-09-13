@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.domain.model.ClasseId;
+import br.jus.stf.shared.domain.model.PeticaoId;
 
 /**
  * @author Lucas.Rodrigues
@@ -31,8 +32,9 @@ public class PeticaoFisica extends Peticao {
 	@Column(name = "NUM_SEDEX")
 	private String numeroSedex;
 	
-	PeticaoFisica(final Integer volumes, final Integer apensos, 
-			final FormaRecebimento formaRecebimento, final String numeroSedex) {
+	public PeticaoFisica(final PeticaoId id, final Long numero, final Integer volumes, 
+			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex) {
+		super(id, numero);
 		
 		Validate.isTrue(volumes != null && volumes > 0);
 		Validate.notNull(apensos);

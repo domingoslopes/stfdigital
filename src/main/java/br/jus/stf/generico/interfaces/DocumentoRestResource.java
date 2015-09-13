@@ -2,6 +2,7 @@ package br.jus.stf.generico.interfaces;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,17 +12,19 @@ import javax.validation.Validator;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.generico.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.generico.interfaces.dto.DocumentoDto;
 import br.jus.stf.generico.interfaces.facade.GenericoServiceFacade;
-import br.jus.stf.shared.domain.model.DocumentoId;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -43,8 +46,9 @@ public class DocumentoRestResource {
 
 	@ApiOperation("Salva os documentos temporários")
 	@RequestMapping(value = "", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
 	//TODO: Substituir a validação pelo @valid e BindingResult
-	public Set<DocumentoId> salvar(@RequestBody SalvarDocumentosCommand command) {
+	public List<DocumentoDto> salvar(@RequestBody SalvarDocumentosCommand command) {
 		
 		Set<ConstraintViolation<SalvarDocumentosCommand>> result = validator.validate(command);
 		if (!result.isEmpty()) {
@@ -58,11 +62,13 @@ public class DocumentoRestResource {
 	public void recuperar(@PathVariable("documentoId") Long documentoId, HttpServletResponse response) throws IOException {
 		InputStream is = genericoServiceFacade.pesquisaDocumento(documentoId);
 		IOUtils.copy(is, response.getOutputStream());
+		IOUtils.closeQuietly(is);
 	    setPdfReponseHeaders(documentoId, response);
 	}
 	
 	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
 	public String upload(@RequestParam("file") MultipartFile file) {
 		return genericoServiceFacade.salvarDocumentoTemporario(file);
 	}

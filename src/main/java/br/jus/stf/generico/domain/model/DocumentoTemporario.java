@@ -20,16 +20,14 @@ import br.jus.stf.shared.domain.stereotype.ValueObject;
 public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 
 	private static final long serialVersionUID = -3725370010702512231L;
+	private static String FILE_NAME_PREFFIX = "_DocTemp_";
 	
 	private Long tamanho;
 	private File arquivo;
-	private String extension;
 	
-	public DocumentoTemporario(MultipartFile file, String extension) {
+	public DocumentoTemporario(MultipartFile file) {
 		Validate.notNull(file);
-		Validate.notBlank(extension);
 		
-		this.extension = extension;
 		arquivo = createTempFile(file);
 		tamanho = arquivo.length();
 	}
@@ -37,7 +35,7 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 	private File createTempFile(MultipartFile file) {
 		File tempFile = null;
 		try {
-			File.createTempFile(null, extension);
+			tempFile = File.createTempFile(FILE_NAME_PREFFIX, extractExtension(file.getOriginalFilename()));
 			file.transferTo(tempFile);
 		} catch (IllegalStateException | IOException e) {
 			throw new RuntimeException(e);
@@ -63,6 +61,10 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 	
 	public void delete() {
 		arquivo.delete();
+	}
+	
+	private String extractExtension(String name) {
+		return name.substring(name.lastIndexOf("."));
 	}
 
 	@Override

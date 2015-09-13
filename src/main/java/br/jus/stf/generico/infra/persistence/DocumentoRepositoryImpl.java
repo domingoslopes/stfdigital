@@ -1,14 +1,16 @@
 package br.jus.stf.generico.infra.persistence;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
+import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -54,9 +56,12 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 		InputStream stream = docTemp.stream();
 		long tamanho = docTemp.tamanho();
 		
+		DocumentoId id = nextDocumentoId();
 		Blob conteudo = session.getLobHelper().createBlob(stream, tamanho);
 				
-		Documento documento = super.save(new Documento(conteudo));
+		Documento documento = super.save(new Documento(id, conteudo));
+		entityManager.flush();
+		IOUtils.closeQuietly(stream);
 		TEMP_FILES.remove(documentoTemporario);
 		docTemp.delete();
 		return documento.id();
@@ -66,6 +71,13 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	public String storeTemp(DocumentoTemporario documentoTemporario) {
 		TEMP_FILES.put(documentoTemporario.tempId(), documentoTemporario);
 		return documentoTemporario.tempId();
+	}
+
+	@Override
+	public DocumentoId nextDocumentoId() {
+		Query query = entityManager.createNativeQuery("SELECT CORPORATIVO.SEQ_DOCUMENTO.NEXTVAL FROM DUAL");
+		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		return new DocumentoId(sequencial);
 	}
 
 }
