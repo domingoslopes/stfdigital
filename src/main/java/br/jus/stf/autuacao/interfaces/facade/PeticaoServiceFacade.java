@@ -49,11 +49,9 @@ public class PeticaoServiceFacade {
 	 * @return Id da petição gerado automaticamente.
 	 */
 	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
-		
-		Set<DocumentoId> idsDocumentos = this.adicionarDocumentos(documentos);
 		ClasseId classe = new ClasseId(classeSugerida);
 				
-		Peticao peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, idsDocumentos);
+		Peticao peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, documentos);
 		return peticao.id().toLong();
 	}
 	
@@ -147,16 +145,6 @@ public class PeticaoServiceFacade {
 		}
 		
 		return this.peticaoDtoAssembler.toDto(peticao);
-	}
-	
-	private Set<DocumentoId> adicionarDocumentos(List<String> documentos){
-		Set<DocumentoId> idsDocumentos = new HashSet<DocumentoId>(); 
-		
-		for(String doc : documentos){
-			idsDocumentos.add(new DocumentoId(Long.parseLong(doc)));
-		}
-		
-		return idsDocumentos;
 	}
 	
 }

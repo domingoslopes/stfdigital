@@ -38,11 +38,13 @@ public class PeticaoFactory {
 	 * @return a petição
 	 */
 	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, 
-			List<String> poloAtivo, List<String> poloPassivo, Set<DocumentoId> documentos) {
+			List<String> poloAtivo, List<String> poloPassivo, List<String> documentosTemporarios) {
 		
 		Set<PartePeticao> partes = new HashSet<PartePeticao>();
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
 		adicionarPartes(partes, poloPassivo, TipoPolo.POLO_PASSIVO);
+		
+		Set<DocumentoId> documentos = adicionarDocumentos(documentosTemporarios);
 		
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
@@ -68,7 +70,7 @@ public class PeticaoFactory {
 	}
 	
 	/**
-	 * Adiciona as partes da petiçao
+	 * Salva as pessoa, recupera os ids e adiciona as partes da petiçao
 	 * 
 	 * @param partes
 	 * @param polo
@@ -77,6 +79,16 @@ public class PeticaoFactory {
 	private void adicionarPartes(Set<PartePeticao> partes, List<String> polo, TipoPolo tipo) {
 		Set<PessoaId> pessoas = genericoAdapter.cadastrarPessoas(polo);
 		pessoas.forEach(pessoa -> partes.add(new PartePeticao(pessoa, tipo)));
+	}
+	
+	/**
+	 * Salva os documentos temporários e recupera os ids
+	 * 
+	 * @param documentos
+	 * @return
+	 */
+	private Set<DocumentoId> adicionarDocumentos(List<String> documentos){
+		return genericoAdapter.salvarDocumentos(documentos);
 	}
 	
 }
