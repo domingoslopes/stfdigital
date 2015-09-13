@@ -83,7 +83,7 @@ public abstract class Peticao implements Entity<Peticao> {
 	protected Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
 			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
 	
-	public Peticao(PeticaoId id, Long numero) {
+	public Peticao(final PeticaoId id, final Long numero) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
 		
