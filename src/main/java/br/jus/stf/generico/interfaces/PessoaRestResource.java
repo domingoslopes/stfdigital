@@ -1,5 +1,6 @@
 package br.jus.stf.generico.interfaces;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.jus.stf.generico.interfaces.commands.CadastrarPessoasCommand;
 import br.jus.stf.generico.interfaces.dto.PessoaDto;
 import br.jus.stf.generico.interfaces.facade.GenericoServiceFacade;
-import br.jus.stf.shared.domain.model.PessoaId;
 
 /**
  * Api rest de consulta e cadastro de pessoa
@@ -41,7 +41,7 @@ public class PessoaRestResource {
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	//TODO: Substituir a validação pelo @Valid e BindingResult
-	public Set<PessoaId> cadastrar(@RequestBody CadastrarPessoasCommand command) {
+	public List<PessoaDto> cadastrar(@RequestBody CadastrarPessoasCommand command) {
 		Set<ConstraintViolation<CadastrarPessoasCommand>> result = validator.validate(command);
 		if (!result.isEmpty()) {
 			throw new IllegalArgumentException(result.toString());

@@ -14,8 +14,20 @@ import br.jus.stf.shared.domain.model.PessoaId;
  */
 public interface GenericoAdapter {
 
+	/**
+	 * Salva os documentos e recupera os ids na ordem de envio
+	 * 
+	 * @param documentosTemporarios
+	 * @return a lista de ids dos documentos
+	 */
 	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios);
 	
+	/**
+	 * Cadastra as pessoas e recupera os ids na ordem de envio
+	 * 
+	 * @param pessoas
+	 * @return a lista de ids de pessoas
+	 */
 	public Set<PessoaId> cadastrarPessoas(List<String> pessoas);
 	
 }

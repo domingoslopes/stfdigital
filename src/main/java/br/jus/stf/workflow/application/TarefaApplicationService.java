@@ -9,6 +9,7 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
 import br.jus.stf.workflow.domain.model.ProcessoRepository;
 import br.jus.stf.workflow.domain.model.ProcessoWorkflowRepository;
 import br.jus.stf.workflow.domain.model.TarefaRepository;
@@ -41,8 +42,9 @@ public class TarefaApplicationService {
 		Task task = consultar(taskId);
 		ProcessInstance processInstance = processoRepository.consultar(task.getProcessInstanceId());
 		String status = (String) processInstance.getProcessVariables().get("status");
+		ProcessoWorkflowId id = new ProcessoWorkflowId(processInstance.getId());
 		
-		processoWorkflowRepository.updateStatus(processInstance.getId(), status);
+		processoWorkflowRepository.updateStatus(id, status);
 	}
 	
 	public void sinalizar(String sinal, String taskId){

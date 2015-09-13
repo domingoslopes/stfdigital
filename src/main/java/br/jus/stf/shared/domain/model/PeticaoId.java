@@ -20,7 +20,7 @@ public class PeticaoId implements ValueObject<PeticaoId> {
 	@Column(name = "SEQ_PETICAO", nullable = false)
 	private Long id;
 
-	public PeticaoId(final Long id){
+	public PeticaoId(final Long id) {
 		Validate.notNull(id, "peticaoId.id.required");
 		
 		this.id = id;
@@ -51,16 +51,9 @@ public class PeticaoId implements ValueObject<PeticaoId> {
 		return sameValueAs(other);
 	}
 
-	/**
-	 * 
-	 * @param other
-	 */
+	@Override
 	public boolean sameValueAs(final PeticaoId other){
 		return other != null && this.id.equals(other.id);
-	}
-
-	public String toString(){
-		return id.toString();
 	}
 
 }
