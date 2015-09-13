@@ -1,7 +1,6 @@
 package br.jus.stf.autuacao.application;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -19,7 +18,6 @@ import br.jus.stf.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.shared.domain.model.ClasseId;
-import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
 import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
 
@@ -55,7 +53,7 @@ public class PeticaoApplicationService {
 	 * 
 	 * @return Id da petição eletrônica registrada.
 	 */
-	public Peticao peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, Set<DocumentoId> documentos) {
+	public Peticao peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
 		String tipoRecebimento = "peticaoEletronica";
 		String idProcesso = "";
 		
