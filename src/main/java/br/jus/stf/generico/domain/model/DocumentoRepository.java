@@ -44,5 +44,7 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 * @return identificacao do temporário
 	 */
 	public String storeTemp(DocumentoTemporario documentoTemporario);
+	
+	public DocumentoId nextDocumentoId();
 
 }
