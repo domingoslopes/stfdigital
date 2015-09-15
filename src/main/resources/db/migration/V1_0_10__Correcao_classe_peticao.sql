@@ -1,0 +1,1 @@
+ALTER TABLE autuacao.peticao ALTER COLUMN sig_classe_sugerida SET NULL;

@@ -1,106 +1,41 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="autuacao" xmlns:modeler="http://activiti.com/modeler" modeler:version="1.0ev" modeler:exportDateTime="20150901232801" modeler:modelId="956101" modeler:modelVersion="1" modeler:modelLastUpdated="1441146467766">
-  <signal id="peticaoInvalida" name="Petição Inválida" activiti:scope="global"/>
-  <message id="remessaFisica" name="remessaFisica"/>
-  <message id="remessaEletronica" name="remessaEletronica"/>
+<definitions 
+	id="definitions"
+	xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+	xmlns:activiti="http://activiti.org/bpmn" 
+	targetNamespace="autuacao"
+	xmlns:tns="autuacao">
+  <signal id="peticaoInvalida" name="peticaoInvalida" />
+  <message id="remessaFisica" name="remessaFisica" />
+  <message id="remessaEletronica" name="remmessaEletronica" />
   <process id="autuarOriginarios" isExecutable="true">
-    <userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="pre-autuador">
-      <extensionElements>
-        <modeler:allow-send-email>true</modeler:allow-send-email>
-      </extensionElements>
-    </userTask>
+    <startEvent id="receberremessa">
+      <messageEventDefinition messageRef="tns:remessaFisica" />
+    </startEvent>
+    <startEvent id="peticionareletronico">
+      <messageEventDefinition messageRef="tns:remessaEletronica" />
+    </startEvent>
+    <userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="pre-autuador" />
     <subProcess id="analise" name="Análise">
       <startEvent id="iniciaranalise"/>
-      <userTask id="autuacao" name="Autuar Processo" activiti:candidateGroups="autuador">
-        <extensionElements>
-          <modeler:allow-send-email>true</modeler:allow-send-email>
-        </extensionElements>
-      </userTask>
+      <userTask id="autuacao" name="Autuar Processo" activiti:candidateGroups="autuador" />
       <endEvent id="finalizaranalise"/>
       <sequenceFlow id="autuar" sourceRef="iniciaranalise" targetRef="autuacao"/>
       <sequenceFlow id="finalisaranalise" sourceRef="autuacao" targetRef="finalizaranalise"/>
     </subProcess>
+	<userTask id="devolucao" name="Devolver Processo" activiti:candidateGroups="devolvedor"/>
+	<sequenceFlow id="finalizardevolucao" sourceRef="devolucao" targetRef="devolvido" />    
+    <endEvent id="devolvido" name="Devolvido" />
     <sequenceFlow id="distribuir" sourceRef="analise" targetRef="distribuicao"/>
-    <userTask id="distribuicao" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
-      <extensionElements>
-        <modeler:allow-send-email>true</modeler:allow-send-email>
-      </extensionElements>
-    </userTask>
+    <userTask id="distribuicao" name="Distribuir Processo" activiti:candidateGroups="distribuidor" />
     <sequenceFlow id="finalizardistribuicao" sourceRef="distribuicao" targetRef="distribuido"/>
     <endEvent id="distribuido" name="Distribuído"/>
+    <sequenceFlow id="devolver" sourceRef="abortarAnalise" targetRef="devolvido" />
+	<boundaryEvent id="abortarAnalise" attachedToRef="analise" cancelActivity="true">
+      <signalEventDefinition signalRef="peticaoInvalida" />
+    </boundaryEvent>
     <sequenceFlow id="preautuar" sourceRef="receberremessa" targetRef="preautuacao"/>
     <sequenceFlow id="analisar" sourceRef="preautuacao" targetRef="analise"/>
-    <startEvent id="receberremessa" name="Registrar Recebimento de Remessa Física">
-      <messageEventDefinition messageRef="remessaFisica"/>
-    </startEvent>
-    <startEvent id="peticionareletronico" name="Registrar Recebimento de Remessa Eletrônica">
-      <messageEventDefinition messageRef="remessaEletronica"/>
-    </startEvent>
     <sequenceFlow id="peticionar" sourceRef="peticionareletronico" targetRef="analise"/>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_autuarOriginarios">
-    <bpmndi:BPMNPlane bpmnElement="autuarOriginarios" id="BPMNPlane_autuarOriginarios">
-      <bpmndi:BPMNShape bpmnElement="preautuacao" id="BPMNShape_preautuacao">
-        <omgdc:Bounds height="60.0" width="100.0" x="285.0" y="205.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="analise" id="BPMNShape_analise">
-        <omgdc:Bounds height="100.0" width="300.0" x="471.0" y="114.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="iniciaranalise" id="BPMNShape_iniciaranalise">
-        <omgdc:Bounds height="30.0" width="30.0" x="480.0" y="148.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="autuacao" id="BPMNShape_autuacao">
-        <omgdc:Bounds height="60.0" width="100.0" x="571.0" y="134.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="finalizaranalise" id="BPMNShape_finalizaranalise">
-        <omgdc:Bounds height="28.0" width="28.0" x="721.0" y="149.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="distribuicao" id="BPMNShape_distribuicao">
-        <omgdc:Bounds height="60.0" width="100.0" x="825.0" y="134.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="distribuido" id="BPMNShape_distribuido">
-        <omgdc:Bounds height="28.0" width="28.0" x="975.0" y="150.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="receberremessa" id="BPMNShape_receberremessa">
-        <omgdc:Bounds height="30.0" width="30.5" x="120.0" y="220.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="peticionareletronico" id="BPMNShape_peticionareletronico">
-        <omgdc:Bounds height="30.0" width="30.5" x="120.0" y="90.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="preautuar" id="BPMNEdge_preautuar">
-        <omgdi:waypoint x="150.5" y="235.0"/>
-        <omgdi:waypoint x="285.0" y="235.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="distribuir" id="BPMNEdge_distribuir">
-        <omgdi:waypoint x="771.0" y="164.0"/>
-        <omgdi:waypoint x="825.0" y="164.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="finalizardistribuicao" id="BPMNEdge_finalizardistribuicao">
-        <omgdi:waypoint x="925.0" y="164.0"/>
-        <omgdi:waypoint x="975.0" y="164.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="peticionar" id="BPMNEdge_peticionar">
-        <omgdi:waypoint x="151.0" y="105.0"/>
-        <omgdi:waypoint x="433.0" y="105.0"/>
-        <omgdi:waypoint x="433.0" y="164.00000000000003"/>
-        <omgdi:waypoint x="471.0" y="164.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="finalisaranalise" id="BPMNEdge_finalisaranalise">
-        <omgdi:waypoint x="671.0" y="164.0"/>
-        <omgdi:waypoint x="683.0" y="164.0"/>
-        <omgdi:waypoint x="683.0" y="164.0"/>
-        <omgdi:waypoint x="721.0025880395822" y="163.26918099923878"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="autuar" id="BPMNEdge_autuar">
-        <omgdi:waypoint x="509.99952761112934" y="163.11904386992958"/>
-        <omgdi:waypoint x="571.0" y="163.6031746031746"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="analisar" id="BPMNEdge_analisar">
-        <omgdi:waypoint x="385.0" y="235.0"/>
-        <omgdi:waypoint x="433.0" y="235.0"/>
-        <omgdi:waypoint x="433.0" y="164.00000000000003"/>
-        <omgdi:waypoint x="471.0" y="164.0"/>
-      </bpmndi:BPMNEdge>
-    </bpmndi:BPMNPlane>
-  </bpmndi:BPMNDiagram>
 </definitions>

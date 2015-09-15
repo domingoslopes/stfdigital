@@ -54,14 +54,14 @@ public class PeticaoApplicationService {
 	 * @return Id da petição eletrônica registrada.
 	 */
 	public Peticao peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
-		String tipoRecebimento = "peticaoEletronica";
+		String tipoRecebimento = "remessaEletronica";
 		String idProcesso = "";
 		
 		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, documentos);
 		
 		idProcesso = processoAdapter.iniciar(tipoRecebimento);
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
-	
+		
 		return peticaoRepository.save(peticao);
 	}
 	
@@ -73,14 +73,14 @@ public class PeticaoApplicationService {
 	 * @return Id da petição física registrada.
 	 */
 	public Peticao registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
-		String tipoRecebimento = "peticaoFisica";
+		String tipoRecebimento = "remessaFisica";
 		String idProcesso = "";
 
 		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
 		
 		idProcesso = processoAdapter.iniciar(tipoRecebimento);
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
-	
+		
 		return peticaoRepository.save(peticao);
 	}
 
@@ -90,7 +90,7 @@ public class PeticaoApplicationService {
 	 */
 	public void preautuar(PeticaoFisica peticaoFisica) {
 		this.peticaoRepository.save(peticaoFisica);
-		this.tarefaAdapter.completar(peticaoFisica.processosWorkflow().iterator().next().toString());
+		//this.tarefaAdapter.completar(peticaoFisica.processosWorkflow().iterator().next().toString());
 	}
 
 	/**
