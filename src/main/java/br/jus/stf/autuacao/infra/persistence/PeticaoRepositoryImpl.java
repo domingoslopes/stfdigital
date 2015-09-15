@@ -2,8 +2,6 @@ package br.jus.stf.autuacao.infra.persistence;
 
 import java.math.BigInteger;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -23,8 +21,6 @@ import br.jus.stf.shared.domain.model.PeticaoId;
 @Repository
 public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoId> implements PeticaoRepository {
 
-	private Map<Integer, Long> numerosPeticao = new HashMap<Integer, Long>();
-	
 	private EntityManager entityManager;
 	
 	@Autowired
@@ -35,7 +31,7 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 
 	@Override
 	public PeticaoId nextId() {
-		Query query = entityManager.createNativeQuery("SELECT AUTUACAO.SEQ_PETICAO.NEXTVAL FROM DUAL");
+		Query query = entityManager.createNativeQuery("SELECT autuacao.seq_peticao.NEXTVAL FROM DUAL");
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new PeticaoId(sequencial);
 	}
@@ -50,14 +46,11 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	public Long nextNumero() {
 		synchronized (this) {
 			Integer key = Calendar.getInstance().get(Calendar.YEAR);
-			if (numerosPeticao.containsKey(key)) {
-				Long num = numerosPeticao.get(key) + 1;
-				numerosPeticao.put(key, num);
-				return num;
-			} else {
-				numerosPeticao.put(key, 1L);
-				return 1L;
-			}
+			Query query = entityManager.createNativeQuery("SELECT NVL(MAX(num_peticao), 0) FROM autuacao.peticao WHERE num_ano_peticao = :anoPeticao");
+			Long ultimoNumero = ((BigInteger) query.setParameter("anoPeticao", key).getSingleResult()).longValue();
+			Long proximoNumero = ultimoNumero + 1;
+			
+			return proximoNumero;
 		}
 	}
 	
