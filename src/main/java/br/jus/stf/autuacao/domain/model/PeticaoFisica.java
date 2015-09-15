@@ -54,4 +54,8 @@ public class PeticaoFisica extends Peticao {
 		this.classeSugerida = classeSugerida;
 	}
 	
+	PeticaoFisica() {
+		
+	}
+	
 }
