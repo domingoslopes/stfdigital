@@ -1,8 +1,6 @@
 package br.jus.stf.autuacao.infra.persistence;
 
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -23,8 +21,6 @@ import br.jus.stf.shared.domain.model.ProcessoId;
 @Repository
 public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, ProcessoId> implements ProcessoRepository {
 
-	private static Map<String, Long> numerosProcesso = new HashMap<String, Long>();
-	
 	private EntityManager entityManager;
 	
 	@Autowired
@@ -35,7 +31,7 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 
 	@Override
 	public ProcessoId nextId() {
-		Query query = entityManager.createNativeQuery("SELECT AUTUACAO.SEQ_PROCESSO.NEXTVAL FROM DUAL");
+		Query query = entityManager.createNativeQuery("SELECT autuacao.seq_processo.NEXTVAL FROM DUAL");
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new ProcessoId(sequencial);
 	}
@@ -47,17 +43,14 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 	}
 	
 	@Override
-	public Long proximoNumero(ClasseId classe) {
+	public Long nextNumero(ClasseId classe) {
 		synchronized (classe) {
 			String key = classe.toString();
-			if (numerosProcesso.containsKey(key)) {
-				Long num = numerosProcesso.get(key) + 1;
-				numerosProcesso.put(key, num);
-				return num;
-			} else {
-				numerosProcesso.put(key, 1L);
-				return 1L;
-			}	
+			Query query = entityManager.createNativeQuery("SELECT NVL(MAX(num_processo), 0) FROM autuacao.processo WHERE sig_classe = :classe");
+			Long ultimoNumero = ((BigInteger) query.setParameter("classe", key).getSingleResult()).longValue();
+			Long proximoNumero = ultimoNumero + 1;
+			
+			return proximoNumero;	
 		}
 	}
 	
