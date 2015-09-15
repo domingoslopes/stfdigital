@@ -19,7 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <activiti.version>5.17.0</activiti.version>
+        <activiti.version>5.18.0</activiti.version>
         <swagger.version>1.0.2</swagger.version>
 		<sonar.host.url>http://digital.stf.jus.br:9000</sonar.host.url>
 		<sonar.jdbc.url>jdbc:h2:tcp://digital.stf.jus.br:9092/sonar</sonar.jdbc.url>

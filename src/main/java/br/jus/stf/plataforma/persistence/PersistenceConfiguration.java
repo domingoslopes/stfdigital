@@ -38,6 +38,7 @@ public class PersistenceConfiguration {
 	 * @throws Exception
 	 */
 	@Bean(name = "flyway", initMethod="migrate")
+	@DependsOn("dataSource")
 	public Flyway flyway(DataSource dataSource) throws Exception {
 		Flyway flyway = new Flyway();
 		
