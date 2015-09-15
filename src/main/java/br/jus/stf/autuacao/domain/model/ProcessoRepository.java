@@ -40,11 +40,11 @@ public interface ProcessoRepository {
 	public ProcessoId nextId();
 	
 	/**
-	 * Recupera próximo número em memória
+	 * Recupera o próximo número de processo de acordo com a classe
 	 * 
 	 * @param classe
 	 * @return o número
 	 */
-	public Long proximoNumero(ClasseId classe);
+	public Long nextNumero(ClasseId classe);
 
 }
