@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -29,15 +30,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class ActivitiConfiguration {
 	
 	@Autowired
-	private DataSource dataSource;
-	
-	@Autowired
 	private PlatformTransactionManager transactionManager;
 	
 	@Bean
-	public SpringProcessEngineConfiguration processEngineConfiguration() throws IOException {
+	public SpringProcessEngineConfiguration processEngineConfiguration() throws Exception {	
 		SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
-		configuration.setDataSource(dataSource);
+		configuration.setDataSource(dataSourceActiviti());
 		configuration.setTransactionManager(transactionManager);
 		configuration.setDatabaseSchemaUpdate("true");
 		configuration.setJobExecutorActivate(false);
@@ -45,14 +43,14 @@ public class ActivitiConfiguration {
 		configuration.setDeploymentMode("single-resource");
 		return configuration;
 	}
-	
-	private Resource[] getResources(String resource) throws IOException {
-		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		return resolver.getResources(resource);
+
+	private Resource[] getResources(String locationPattern) throws IOException {
+		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();;
+		return resolver.getResources(locationPattern);
 	}
-	
+
 	@Bean
-	public ProcessEngineFactoryBean processEngine() throws IOException {
+	public ProcessEngineFactoryBean processEngine() throws Exception {
 		ProcessEngineFactoryBean factoryBean = new ProcessEngineFactoryBean();
 		factoryBean.setProcessEngineConfiguration(processEngineConfiguration());
 		return factoryBean;
@@ -86,6 +84,15 @@ public class ActivitiConfiguration {
 	@Bean
 	public IdentityService identityService() throws Exception {
 		return processEngine().getObject().getIdentityService();
-	}	
+	}
+	
+	private DataSource dataSourceActiviti() {
+		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		dataSource.setDriverClass(org.h2.Driver.class);
+		dataSource.setUrl("jdbc:h2:~/stfdigitalactiviti;AUTO_SERVER=TRUE;");
+		dataSource.setUsername("sa");
+		dataSource.setPassword("");
+		return dataSource;
+	}
 
 }
