@@ -8,10 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Assert;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
+import org.hibernate.validator.constraints.NotBlank;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.neo4j.cypher.internal.compiler.v2_1.ast.rewriters.isolateAggregation;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -28,6 +31,7 @@ import br.jus.stf.AbstractIntegrationTests;
 
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
+	/*
 	@Test
 	public void enviarPeticaoEletronica() throws Exception {
 		
@@ -60,7 +64,27 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(status().isOk())
 			.andReturn();
 		
-		String s = resultado.toString();
+		Assert.assertEquals(true, !resultado.toString().isEmpty());
+	}
+	*/
+	
+	@Test
+	public void enviarPeticaoFisica() throws Exception {
+				
+		StringBuilder peticaoFisica =  new StringBuilder();
+		peticaoFisica.append("{\"formaRecebimento\":\"2\",");
+		peticaoFisica.append("\"quantidadeVolumes\":2,");
+		peticaoFisica.append("\"quantidadeApensos\":1,");
+		peticaoFisica.append("\"numeroSedex\":\"SR123456789BR\"}");
+		
+		MvcResult resultado = this.mockMvc.perform(
+			post("/api/peticao/fisica")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(peticaoFisica.toString()))
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		Assert.assertEquals(true, !resultado.toString().isEmpty());
 	}
 	
 	/*

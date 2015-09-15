@@ -31,8 +31,12 @@ public class PeticaoEletronica extends Peticao {
 		this.partes.addAll(partes);
 		this.documentos.addAll(documentos);
 	}
+<<<<<<< HEAD
+=======
+	
 	PeticaoEletronica() {
 		
 	}
 	
+>>>>>>> 07c48a6852551e5b9def5694338550108373905e
 }
