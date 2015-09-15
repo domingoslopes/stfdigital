@@ -1,16 +1,20 @@
 package br.jus.stf.autuacao.interfaces;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
 
 import br.jus.stf.AbstractIntegrationTests;
@@ -27,11 +31,27 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	@Test
 	public void enviarPeticaoEletronica() throws Exception {
 		
+		String idDoc = "";
+		String nomeArquivo = "teste_arq_temp.pdf";
+		String mime = "application/pdf";
+		String caminho = "static/tmp/Spring Persistence with Hibernate.pdf";
+		
+		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
+
+	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
+		
+	    idDoc = mockMvc.perform(fileUpload("/api/documentos/upload")
+	    			.file(mockArquivo)
+	    			.contentType(MediaType.MULTIPART_FORM_DATA)
+	    			.content(arquivo))
+	    	.andExpect(status().is2xxSuccessful())
+	    	.andReturn().getResponse().getContentAsString();
+		
 		StringBuilder peticaoEletronica =  new StringBuilder();
 		peticaoEletronica.append("{\"classe\":\"HC\",");
 		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
 		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
-		peticaoEletronica.append("\"documentos\":[5, 6, 7]}");
+		peticaoEletronica.append("\"documentos\":[\"" + idDoc + "\"]}");
 		
 		MvcResult resultado = this.mockMvc.perform(
 			post("/api/peticao/")

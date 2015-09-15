@@ -54,14 +54,15 @@ public class PeticaoApplicationService {
 	 * @return Id da petição eletrônica registrada.
 	 */
 	public Peticao peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
-		String tipoRecebimento = "peticaoEletronica";
+		String tipoRecebimento = "remessaEletronica";
 		String idProcesso = "";
 		
 		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, documentos);
-		
+		/*
 		idProcesso = processoAdapter.iniciar(tipoRecebimento);
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
-	
+		 */
+		
 		return peticaoRepository.save(peticao);
 	}
 	
