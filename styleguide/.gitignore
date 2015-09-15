@@ -1,3 +1,4 @@
+dist/bower_components/
+dist/assets_stf/
 node_modules/
-tpl/bower_components/
-tpl/assets_stf/
+template/

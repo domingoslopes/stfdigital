@@ -1,4 +1,4 @@
 {
-  "directory": "tpl/bower_components",
+  "directory": "dist/bower_components",
   "json": "bower.json"
 }
