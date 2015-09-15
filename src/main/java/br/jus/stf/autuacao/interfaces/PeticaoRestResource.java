@@ -30,6 +30,7 @@ import br.jus.stf.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.autuacao.domain.model.FormaRecebimento;
 import br.jus.stf.autuacao.interfaces.commands.AutuarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.DistribuirPeticaoCommand;
+import br.jus.stf.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoFisicaCommand;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
@@ -198,8 +199,8 @@ public class PeticaoRestResource {
     @ApiOperation(value = "Conclui a pré-autuação de uma determinada petição física", hidden = true)
 	@RequestMapping(value = "/api/peticao/{id}/preautuacao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void preautuar(@PathVariable Long id) {
-		//peticaoApplicationService.preautuar(id);
+	public void preautuar(@PathVariable Long id, @RequestBody PreautuarPeticaoFisicaCommand command) {
+		this.peticaoSerivceFacade.preautuar(id, command.getClasseSugerida()); 
 	}
 
     @ApiOperation(value = "Conclui a autuação de uma determinada petição")
