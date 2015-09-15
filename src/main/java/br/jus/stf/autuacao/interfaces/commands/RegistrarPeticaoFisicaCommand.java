@@ -1,5 +1,7 @@
 package br.jus.stf.autuacao.interfaces.commands;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -13,11 +15,11 @@ public class RegistrarPeticaoFisicaCommand {
 
 	@NotBlank
 	private String formaRecebimento;
-	@NotBlank
+	@NotNull
 	private int quantidadeVolumes;
-	@NotBlank
+	@NotNull
 	private int quantidadeApensos;
-	@NotBlank
+	@NotNull
 	private String numeroSedex;
 	
 	public RegistrarPeticaoFisicaCommand() {
