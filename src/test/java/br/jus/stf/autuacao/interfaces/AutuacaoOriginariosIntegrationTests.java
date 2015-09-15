@@ -1,16 +1,24 @@
 package br.jus.stf.autuacao.interfaces;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Assert;
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
+import org.hibernate.validator.constraints.NotBlank;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.neo4j.cypher.internal.compiler.v2_1.ast.rewriters.isolateAggregation;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
 
 import br.jus.stf.AbstractIntegrationTests;
@@ -25,13 +33,25 @@ import br.jus.stf.AbstractIntegrationTests;
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
 	@Test
-	public void enviarPeticaoEletronica() throws Exception {
+	public void distribuirPeticaoEletronica() throws Exception {
+		
+		String idDoc = "";
+		String nomeArquivo = "teste_arq_temp.pdf";
+		String mime = "application/pdf";
+		String caminho = "pdf/archimate.pdf";
+		
+		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
+
+	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
+		
+	    idDoc = mockMvc.perform(fileUpload("/api/documentos/upload").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
+	    	.andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
 		
 		StringBuilder peticaoEletronica =  new StringBuilder();
 		peticaoEletronica.append("{\"classe\":\"HC\",");
 		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
 		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
-		peticaoEletronica.append("\"documentos\":[5, 6, 7]}");
+		peticaoEletronica.append("\"documentos\":[\"" + idDoc + "\"]}");
 		
 		MvcResult resultado = this.mockMvc.perform(
 			post("/api/peticao/")
@@ -40,9 +60,39 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(status().isOk())
 			.andReturn();
 		
-		String s = resultado.toString();
+		Assert.assertEquals(true, !resultado.toString().isEmpty());
 	}
-	
+		
+	@Test
+	public void distribuirPeticaoFisica() throws Exception {
+		
+		Long idPeticao = 1L;
+		StringBuilder peticaoFisica =  new StringBuilder();
+		peticaoFisica.append("{\"formaRecebimento\":\"2\",");
+		peticaoFisica.append("\"quantidadeVolumes\":2,");
+		peticaoFisica.append("\"quantidadeApensos\":1,");
+		peticaoFisica.append("\"numeroSedex\":\"SR123456789BR\"}");
+		
+		MvcResult resultadoRegistro = this.mockMvc.perform(
+			post("/api/peticao/fisica")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(peticaoFisica.toString()))
+			.andExpect(status().isOk())
+			.andReturn();
+		
+		idPeticao = Long.parseLong(resultadoRegistro.getResponse().getContentAsString());
+		
+		StringBuilder peticaoFisicaParaPreautuacao =  new StringBuilder();
+		peticaoFisicaParaPreautuacao.append("{\"classeSugerida\":\"ADI\"}");
+		
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao.toString() + "/preautuacao")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(peticaoFisicaParaPreautuacao.toString()))
+				.andExpect(status().isOk());
+		
+		Assert.assertEquals(true, idPeticao > 0);
+	}
+		
 	/*
     @Test
     public void distribuir() throws Exception {
