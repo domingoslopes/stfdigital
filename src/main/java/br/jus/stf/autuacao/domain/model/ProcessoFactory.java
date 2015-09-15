@@ -30,7 +30,7 @@ public class ProcessoFactory {
 	public static Processo criarProcesso(ClasseId classe, MinistroId relator, PeticaoId peticao,
 			Set<ParteProcesso> partes, Set<DocumentoId> documentos) {
 		ProcessoId id = processoRepository.nextId();
-		Long numero = processoRepository.proximoNumero(classe);
+		Long numero = processoRepository.nextNumero(classe);
 		
 		return new Processo(id, classe, numero, relator, peticao, partes, documentos);
 	}
