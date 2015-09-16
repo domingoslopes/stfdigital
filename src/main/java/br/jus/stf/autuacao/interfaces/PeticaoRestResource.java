@@ -214,7 +214,7 @@ public class PeticaoRestResource {
 	@RequestMapping(value = "/api/peticao/{id}/devolucao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void devolver(@PathVariable Long id) {
-		this.peticaoSerivceFacade.devolver(id);
+		//this.peticaoSerivceFacade.devolver(id);
 	}
 
     @ApiOperation(value = "Conclui a distribuição de uma determinada petição")
