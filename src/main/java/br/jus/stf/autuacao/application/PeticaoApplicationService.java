@@ -80,7 +80,6 @@ public class PeticaoApplicationService {
 		
 		idProcesso = processoAdapter.iniciar(tipoRecebimento);
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(idProcesso));
-		
 		return peticaoRepository.save(peticao);
 	}
 
@@ -90,7 +89,7 @@ public class PeticaoApplicationService {
 	 */
 	public void preautuar(PeticaoFisica peticaoFisica) {
 		this.peticaoRepository.save(peticaoFisica);
-		//this.tarefaAdapter.completar(peticaoFisica.processosWorkflow().iterator().next().toString());
+		this.tarefaAdapter.completar(peticaoFisica.processosWorkflow().iterator().next().toString());
 	}
 
 	/**
@@ -100,7 +99,7 @@ public class PeticaoApplicationService {
 	 */
 	public void autuar(Peticao peticao, boolean peticaoValida) {
 		
-		String idPeticao = peticao.id().toString();
+		String idPeticao = peticao.id().toLong().toString();
 		
 		this.peticaoRepository.save(peticao);
 		
@@ -126,9 +125,11 @@ public class PeticaoApplicationService {
 	/**
 	 * Devolve uma petição.
 	 * @param peticao Dados da petição.
+	 * @param motivoRejeicao Motivo da rejeição da petição.
 	 */
-	public void devolver(Peticao peticao) {
-		this.tarefaAdapter.completar(peticao.id().toString());
+	public void devolver(Peticao peticao, String motivoRejeicao) {
+		peticao.rejeitar(motivoRejeicao);
+		this.tarefaAdapter.completar(peticao.id().toLong().toString());
 	}
 	
 }

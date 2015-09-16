@@ -3,8 +3,6 @@ package br.jus.stf.workflow.infra;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -29,9 +27,6 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 	@Autowired
 	private TaskService taskService;
 	
-	@Autowired
-	private RepositoryService repoService;
-	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -42,7 +37,6 @@ public class ProcessoRepositoryActiviti implements ProcessoRepository {
 	 */
 	@Override
 	public ProcessInstance criar(String mensagem) {
-		//System.out.println(repoService.getProcessDefinition("autuarOriginarios").getDescription());
 		return runtimeService.startProcessInstanceByMessage(mensagem);
 	}
 	
