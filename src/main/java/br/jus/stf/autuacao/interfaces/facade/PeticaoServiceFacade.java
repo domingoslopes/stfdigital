@@ -1,8 +1,6 @@
 package br.jus.stf.autuacao.interfaces.facade;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +15,6 @@ import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.shared.domain.model.ClasseId;
-import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
 import br.jus.stf.shared.domain.model.PeticaoId;
 
@@ -108,15 +105,16 @@ public class PeticaoServiceFacade {
 	/**
 	 * Devolve uma petição.
 	 * @param idPeticao Id da petição.
+	 * @param motivoRejeicao Motivo da rejeição da petição.
 	 */
-	public void devolver(Long idPeticao) {
+	public void devolver(Long idPeticao, String motivoRejeicao) {
 		Peticao peticao = this.peticaoRepository.findOne(new PeticaoId(idPeticao));
 		
 		if (peticao == null){
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
 		
-		this.peticaoApplicationService.devolver(peticao);
+		this.peticaoApplicationService.devolver(peticao, motivoRejeicao);
 	}
 	
 	/**
