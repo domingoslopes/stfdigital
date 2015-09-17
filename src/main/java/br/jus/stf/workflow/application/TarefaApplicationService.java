@@ -38,13 +38,14 @@ public class TarefaApplicationService {
 	}
 
 	public void completar(String taskId) {
-		tarefaRepository.completar(taskId);
+		
 		Task task = consultar(taskId);
 		ProcessInstance processInstance = processoRepository.consultar(task.getProcessInstanceId());
 		String status = (String) processInstance.getProcessVariables().get("status");
 		ProcessoWorkflowId id = new ProcessoWorkflowId(processInstance.getId());
-		
 		processoWorkflowRepository.updateStatus(id, status);
+		
+		tarefaRepository.completar(taskId);
 	}
 	
 	public void sinalizar(String sinal, String taskId){
@@ -52,6 +53,10 @@ public class TarefaApplicationService {
 		this.tarefaRepository.sinalizar(sinal, task.getExecutionId());
 	}
 
+	public Task consultarPorProcesso(String idProcesso) {
+		return tarefaRepository.consultarPorProcesso(idProcesso);
+	}
+	
 	public Task consultar(String taskId){
 		return tarefaRepository.consultar(taskId);
 	}
