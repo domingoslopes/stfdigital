@@ -93,28 +93,7 @@ public class PeticaoServiceFacade {
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
 		
-		if (peticaoValida){
-			peticao.aceitar(new ClasseId(classe));
-		} else {
-			peticao.rejeitar(motivoRejeicao);
-		}
-		
-		this.peticaoApplicationService.autuar(peticao, peticaoValida);
-	}
-
-	/**
-	 * Devolve uma petição.
-	 * @param idPeticao Id da petição.
-	 * @param motivoRejeicao Motivo da rejeição da petição.
-	 */
-	public void devolver(Long idPeticao, String motivoRejeicao) {
-		Peticao peticao = this.peticaoRepository.findOne(new PeticaoId(idPeticao));
-		
-		if (peticao == null){
-			throw new IllegalArgumentException("Petição não encontrada.");
-		}
-		
-		this.peticaoApplicationService.devolver(peticao, motivoRejeicao);
+		this.peticaoApplicationService.autuar(peticao, classe, peticaoValida, motivoRejeicao);
 	}
 	
 	/**
@@ -129,6 +108,7 @@ public class PeticaoServiceFacade {
 		if (peticao == null){
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
+		
 		Processo processo = peticaoApplicationService.distribuir(peticao, new MinistroId(idMinistroRelator));
 		
 		return new ProcessoDistribuidoDto(processo.classe().toString(), processo.numero(), idMinistroRelator);
