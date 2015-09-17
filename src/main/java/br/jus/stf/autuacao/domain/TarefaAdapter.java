@@ -17,6 +17,8 @@ public interface TarefaAdapter {
 
 	public void sinalizar(String sinal, String executionId);
 	
+	public TarefaDto consultarPorProcesso(String idProcesso);
+	
 	public TarefaDto consultar(String id);
 
 }
