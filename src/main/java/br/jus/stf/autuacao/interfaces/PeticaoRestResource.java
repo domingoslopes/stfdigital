@@ -33,6 +33,7 @@ import br.jus.stf.autuacao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoFisicaCommand;
+import br.jus.stf.autuacao.interfaces.commands.RejeitarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.interfaces.facade.PeticaoServiceFacade;
@@ -210,11 +211,11 @@ public class PeticaoRestResource {
 		this.peticaoSerivceFacade.autuar(id, command.getClasse(), command.isValida(), command.getMotivo());
 	}
 
-    @ApiOperation(value = "Conclui a devolução de uma determinada petição recebida incorretamente", hidden = true)
+    @ApiOperation(value = "Conclui a rejeição de uma determinada petição recebida incorretamente", hidden = true)
 	@RequestMapping(value = "/api/peticao/{id}/devolucao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void devolver(@PathVariable Long id) {
-		//this.peticaoSerivceFacade.devolver(id);
+		
 	}
 
     @ApiOperation(value = "Conclui a distribuição de uma determinada petição")
