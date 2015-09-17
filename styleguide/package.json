@@ -1,21 +1,8 @@
 {
-  "name": "Altair_Admin",
-  "version": "1.3.0",
-  "description": "Material Design Premium Admin Template",
-  "main": "index.php",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "admin",
-    "panel",
-    "material design",
-    "dashboard"
-  ],
-  "author": "tzd",
-  "license": "http://themeforest.net/licenses",
-  "homepage": "http://altair.tzdthemes.com",
-  "private": true,
+  "name": "STF Digital - StyleGuide",
+  "version": "1.0.0",
+  "description": "Guia de estilos para o STF Digital",
+  "author": "Leandro Rezende",
   "devDependencies": {
     "browser-sync": "^2.0.1",
     "chalk": "^1.1.0",

@@ -1,8 +1,6 @@
 package br.jus.stf.autuacao.interfaces.facade;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +15,6 @@ import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.shared.domain.model.ClasseId;
-import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
 import br.jus.stf.shared.domain.model.PeticaoId;
 
@@ -96,27 +93,7 @@ public class PeticaoServiceFacade {
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
 		
-		if (peticaoValida){
-			peticao.aceitar(new ClasseId(classe));
-		} else {
-			peticao.rejeitar(motivoRejeicao);
-		}
-		
-		this.peticaoApplicationService.autuar(peticao, peticaoValida);
-	}
-
-	/**
-	 * Devolve uma petição.
-	 * @param idPeticao Id da petição.
-	 */
-	public void devolver(Long idPeticao) {
-		Peticao peticao = this.peticaoRepository.findOne(new PeticaoId(idPeticao));
-		
-		if (peticao == null){
-			throw new IllegalArgumentException("Petição não encontrada.");
-		}
-		
-		this.peticaoApplicationService.devolver(peticao);
+		this.peticaoApplicationService.autuar(peticao, classe, peticaoValida, motivoRejeicao);
 	}
 	
 	/**
@@ -131,6 +108,7 @@ public class PeticaoServiceFacade {
 		if (peticao == null){
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
+		
 		Processo processo = peticaoApplicationService.distribuir(peticao, new MinistroId(idMinistroRelator));
 		
 		return new ProcessoDistribuidoDto(processo.classe().toString(), processo.numero(), idMinistroRelator);

@@ -12,6 +12,7 @@ import br.jus.stf.workflow.domain.model.TarefaRepository;
 
 /**
  * @author Rodrigo Barreiros
+ * @author Anderson.Araujo
  * 
  * @since 1.0.0
  * @since 26.06.2015
@@ -40,6 +41,11 @@ public class TarefaRepositoryActiviti implements TarefaRepository {
 		runtimeService.signalEventReceived(sinal, executionId);
 	}
 
+	@Override
+	public Task consultarPorProcesso(String idProcesso) {
+		return taskService.createTaskQuery().processInstanceId(idProcesso).singleResult();
+	}
+	
 	@Override
 	public Task consultar(String taskId) {
 		return taskService.createTaskQuery().taskId(taskId).singleResult();
