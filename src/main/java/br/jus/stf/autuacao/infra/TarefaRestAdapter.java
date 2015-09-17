@@ -22,11 +22,6 @@ public class TarefaRestAdapter implements TarefaAdapter {
 
 	@Override
 	public void completar(String id) {
-		//CompletarTarefaCommand command = new CompletarTarefaCommand();
-
-		///command.setIdTarefa(id);
-
-		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
 		tarefaRestService.completar(id);
 	}
 
@@ -37,6 +32,11 @@ public class TarefaRestAdapter implements TarefaAdapter {
 
 		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
 		tarefaRestService.sinalizar(taskId, command);
+	}
+	
+	@Override
+	public TarefaDto consultarPorProcesso(String idProcesso){
+		return this.tarefaRestService.consultarPorProcesso(idProcesso);
 	}
 	
 	@Override
