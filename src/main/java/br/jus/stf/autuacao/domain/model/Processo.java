@@ -84,8 +84,8 @@ public class Processo implements Entity<Processo> {
 		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(relator, "processo.relator.required");
 		Validate.notNull(peticao, "processo.peticao.required");
-		Validate.notEmpty(partes, "processo.partes.notEmpty");
-		Validate.notNull(pecas, "processo.pecas.required");
+		//Validate.notEmpty(partes, "processo.partes.notEmpty");
+		//Validate.notNull(pecas, "processo.pecas.required");
 		
 		this.id = id;
 		this.classe = classe;

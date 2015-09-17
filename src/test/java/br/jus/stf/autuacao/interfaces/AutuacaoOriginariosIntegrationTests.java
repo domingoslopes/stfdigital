@@ -2,29 +2,24 @@ package br.jus.stf.autuacao.interfaces;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Assert;
+import java.io.UnsupportedEncodingException;
+
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.Matchers;
-import org.hibernate.validator.constraints.NotBlank;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.neo4j.cypher.internal.compiler.v2_1.ast.rewriters.isolateAggregation;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MvcResult;
 
 import br.jus.stf.AbstractIntegrationTests;
 
 /**
  * @author Rodrigo Barreiros
+ * @author Anderson.Araujo
  * 
  * @since 1.0.0
  * @since 17.06.2015
@@ -32,8 +27,29 @@ import br.jus.stf.AbstractIntegrationTests;
 
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
-	@Test
-	public void distribuirPeticaoEletronica() throws Exception {
+	private String peticaoValidaParaAutuacao;
+	private String peticaoAutuadaParaDistribuicao;
+	private String peticaoEletronica;
+	private String peticaoFisicaParaRegistro;
+	private String peticaoFisicaParaPreautuacao;
+	private String peticaoInvalidaParaAutuacao;
+	
+	@Before
+
+	public void criarObjetosJSON() throws UnsupportedEncodingException, Exception{
+		//Cria um objeto para ser usado no processo de autuação de uma petição válida.
+		StringBuilder peticaoEletronicaValidaParaAutuacao =  new StringBuilder();
+		peticaoEletronicaValidaParaAutuacao.append("{\"classe\":\"ADI\",");
+		peticaoEletronicaValidaParaAutuacao.append("\"valida\":true,");
+		peticaoEletronicaValidaParaAutuacao.append("\"motivo\":\"\"}");
+		this.peticaoValidaParaAutuacao = peticaoEletronicaValidaParaAutuacao.toString();
+		
+		//Cria um objeto para ser usado no processo de distribuição de uma petição.
+		StringBuilder peticaoAutuadaParaDistribuicao =  new StringBuilder();
+		peticaoAutuadaParaDistribuicao.append("{\"idRelator\":36}");
+		this.peticaoAutuadaParaDistribuicao = peticaoAutuadaParaDistribuicao.toString();
+		
+		//Envia um documento para que seja obtido o seu ID. Este será usado para simular o teste de envio de uma petição eletrônica.
 		
 		String idDoc = "";
 		String nomeArquivo = "teste_arq_temp.pdf";
@@ -44,55 +60,101 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 
 	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
 		
+	    //Envia um documento antes de enviar a petição.
 	    idDoc = mockMvc.perform(fileUpload("/api/documentos/upload").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
 	    	.andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
 		
-		StringBuilder peticaoEletronica =  new StringBuilder();
+	    //Cria um objeto contendo os dados da petição eletrônica a ser usado no teste.
+	    StringBuilder peticaoEletronica =  new StringBuilder();
 		peticaoEletronica.append("{\"classe\":\"HC\",");
 		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
 		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
 		peticaoEletronica.append("\"documentos\":[\"" + idDoc + "\"]}");
+		this.peticaoEletronica = peticaoEletronica.toString();
 		
-		MvcResult resultado = this.mockMvc.perform(
-			post("/api/peticao/")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(peticaoEletronica.toString()))
-			.andExpect(status().isOk())
-			.andReturn();
-		
-		Assert.assertEquals(true, !resultado.toString().isEmpty());
-	}
-		
-	@Test
-	public void distribuirPeticaoFisica() throws Exception {
-		
-		Long idPeticao = 1L;
+		//Cria um objeto contendo os dados da petição física a ser usado no teste do registro da petição física.
 		StringBuilder peticaoFisica =  new StringBuilder();
 		peticaoFisica.append("{\"formaRecebimento\":\"2\",");
 		peticaoFisica.append("\"quantidadeVolumes\":2,");
 		peticaoFisica.append("\"quantidadeApensos\":1,");
 		peticaoFisica.append("\"numeroSedex\":\"SR123456789BR\"}");
+		this.peticaoFisicaParaRegistro = peticaoFisica.toString();
 		
-		MvcResult resultadoRegistro = this.mockMvc.perform(
-			post("/api/peticao/fisica")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(peticaoFisica.toString()))
-			.andExpect(status().isOk())
-			.andReturn();
-		
-		idPeticao = Long.parseLong(resultadoRegistro.getResponse().getContentAsString());
-		
+		//Cria um objeto contendo os dados de uma petição física a ser usado no processo de préautuação.
 		StringBuilder peticaoFisicaParaPreautuacao =  new StringBuilder();
 		peticaoFisicaParaPreautuacao.append("{\"classeSugerida\":\"ADI\"}");
+		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
-		this.mockMvc.perform(post("/api/peticao/" + idPeticao.toString() + "/preautuacao")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(peticaoFisicaParaPreautuacao.toString()))
-				.andExpect(status().isOk());
-		
-		Assert.assertEquals(true, idPeticao > 0);
+		//Cria um objeto para ser usado no processo de rejeição de uma petição.
+		StringBuilder peticaoInValidaParaAutuacao =  new StringBuilder();
+		peticaoInValidaParaAutuacao.append("{\"classe\":\"ADI\",");
+		peticaoInValidaParaAutuacao.append("\"valida\":false,");
+		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}");
+		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
 	}
+	
+	@Test
+	public void distribuirPeticaoEletronica() throws Exception {
+		String idPeticao = "";
 		
+		//Envia a petição eletrônica
+		idPeticao = this.mockMvc.perform(post("/api/peticao/").contentType(MediaType.APPLICATION_JSON)
+			.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		
+		//Realiza a autuação.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/autuacao").contentType(MediaType.APPLICATION_JSON)
+			.content(this.peticaoValidaParaAutuacao)).andExpect(status().isOk());
+		
+		//Realiza a distribuição.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/distribuicao").contentType(MediaType.APPLICATION_JSON)
+			.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+	}
+	
+	/*
+	@Test
+	public void distribuirPeticaoFisica() throws Exception {
+		
+		String idPeticao = "";
+		
+		//Registra a petição física.
+		idPeticao = this.mockMvc.perform(post("/api/peticao/fisica").contentType(MediaType.APPLICATION_JSON)
+			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		
+		//Faz a préautuação da petição registrada.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/preautuacao").contentType(MediaType.APPLICATION_JSON)
+				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk());
+		
+		//Realiza a autuação da petição préautuada.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/autuacao").contentType(MediaType.APPLICATION_JSON)
+				.content(this.peticaoValidaParaAutuacao)).andExpect(status().isOk());
+		
+		//Realiza a distribuição da petição.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/distribuicao").contentType(MediaType.APPLICATION_JSON)
+				.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+	}
+	*/
+	/*
+	@Test
+	public void devolverPeticao() throws Exception{
+		String idPeticao = "";
+		
+		//Registra a petição física.
+		idPeticao = this.mockMvc.perform(post("/api/peticao/fisica").contentType(MediaType.APPLICATION_JSON)
+			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		
+		//Faz a préautuação da petição registrada.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/preautuacao").contentType(MediaType.APPLICATION_JSON)
+				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk());
+		
+		//Realiza a autuação da petição préautuada.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/autuacao").contentType(MediaType.APPLICATION_JSON)
+				.content(this.peticaoInvalidaParaAutuacao)).andExpect(status().isOk());
+		
+		//Realiza a devolução da petição.
+		this.mockMvc.perform(post("/api/peticao/" + idPeticao + "/devolucao").contentType(MediaType.APPLICATION_JSON)
+				.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+	}
+	*/
 	/*
     @Test
     public void distribuir() throws Exception {
