@@ -7,7 +7,7 @@
 	xmlns:tns="autuacao">
   <signal id="peticaoInvalida" name="peticaoInvalida" />
   <message id="remessaFisica" name="remessaFisica" />
-  <message id="remessaEletronica" name="remmessaEletronica" />
+  <message id="remessaEletronica" name="remessaEletronica" />
   <process id="autuarOriginarios" isExecutable="true">
     <startEvent id="receberremessa">
       <messageEventDefinition messageRef="tns:remessaFisica" />
