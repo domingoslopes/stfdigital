@@ -1,30 +1,21 @@
 package br.jus.stf.autuacao.interfaces.facade;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.autuacao.domain.model.PartePeticao;
 import br.jus.stf.autuacao.domain.model.Peticao;
-import br.jus.stf.autuacao.domain.model.PeticaoEletronica;
-import br.jus.stf.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.autuacao.domain.model.PeticaoRepository;
-import br.jus.stf.autuacao.domain.model.TipoPolo;
+import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
-import br.jus.stf.generico.domain.model.Ministro;
-import br.jus.stf.generico.domain.model.MinistroRepository;
 import br.jus.stf.shared.domain.model.ClasseId;
-import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
-import br.jus.stf.shared.domain.model.PessoaId;
 import br.jus.stf.shared.domain.model.PeticaoId;
 
 
@@ -39,18 +30,12 @@ public class PeticaoServiceFacade {
 
 	@Autowired
 	private PeticaoApplicationService peticaoApplicationService;
-	
-	@Autowired
-	private PeticaoFactory peticaoFactory;
 
 	@Autowired
 	private PeticaoRepository peticaoRepository;
 	
 	@Autowired
-	private MinistroRepository ministroRepository;
-	
-	@Autowired
-	private PeticaoDtoAssembler assemblerPeticao;
+	private PeticaoDtoAssembler peticaoDtoAssembler;
 	
 	/**
 	 * Inicia o processo de peticionamento de uma petição eletônica.
@@ -61,17 +46,10 @@ public class PeticaoServiceFacade {
 	 * @return Id da petição gerado automaticamente.
 	 */
 	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
-		
-		Set<PartePeticao> partes = new HashSet<PartePeticao>();
-		Set<DocumentoId> idsDocumentos = this.adicionarDocumentos(documentos);
 		ClasseId classe = new ClasseId(classeSugerida);
-		
-		this.adicionarPartes(poloAtivo, partes, TipoPolo.POLO_ATIVO);
-		this.adicionarPartes(poloPassivo, partes, TipoPolo.POLO_PASSIVO);
-		
-		PeticaoEletronica peticao = this.peticaoFactory.criarPeticaoEletronica(classe, poloAtivo, poloPassivo, idsDocumentos);
 				
-		return peticaoApplicationService.peticionar(peticao);
+		Peticao peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, documentos);
+		return peticao.id().toLong();
 	}
 	
 	/**
@@ -84,9 +62,8 @@ public class PeticaoServiceFacade {
 	 */
 	public Long registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex) {
 		
-		PeticaoFisica peticaoFisica = this.peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
-		
-		return peticaoApplicationService.registrar(peticaoFisica);
+		Peticao peticao = peticaoApplicationService.registrar(volumes, apensos, formaRecebimento, numeroSedex);
+		return peticao.id().toLong();
 	}
 	
 	/**
@@ -116,27 +93,7 @@ public class PeticaoServiceFacade {
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
 		
-		if (peticaoValida){
-			peticao.aceitar(new ClasseId(classe));
-		} else {
-			peticao.rejeitar(motivoRejeicao);
-		}
-		
-		this.peticaoApplicationService.autuar(peticao, peticaoValida);
-	}
-
-	/**
-	 * Devolve uma petição.
-	 * @param idPeticao Id da petição.
-	 */
-	public void devolver(Long idPeticao) {
-		Peticao peticao = this.peticaoRepository.findOne(new PeticaoId(idPeticao));
-		
-		if (peticao == null){
-			throw new IllegalArgumentException("Petição não encontrada.");
-		}
-		
-		this.peticaoApplicationService.devolver(peticao);
+		this.peticaoApplicationService.autuar(peticao, classe, peticaoValida, motivoRejeicao);
 	}
 	
 	/**
@@ -146,26 +103,15 @@ public class PeticaoServiceFacade {
 	 */
 	public ProcessoDistribuidoDto distribuir(Long idPeticao, Long idMinistroRelator) {
 		
-		Peticao peticao = null;
-		Ministro ministroRelator =  null;
-		
-		peticao = this.peticaoRepository.findOne(new PeticaoId(idPeticao));
+		Peticao peticao = peticaoRepository.findOne(new PeticaoId(idPeticao));
 		
 		if (peticao == null){
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
 		
-		ministroRelator = this.ministroRepository.findOne(new MinistroId(idMinistroRelator));
+		Processo processo = peticaoApplicationService.distribuir(peticao, new MinistroId(idMinistroRelator));
 		
-		if (ministroRelator == null){
-			throw new IllegalArgumentException("Ministro não encontrada.");
-		}
-		
-		peticao.distribuir(ministroRelator.codigo());
-		
-		this.peticaoApplicationService.distribuir(peticao, ministroRelator);
-		
-		return new ProcessoDistribuidoDto(peticao.classeProcessual().toString(), peticao.id().toString(), ministroRelator.nome());
+		return new ProcessoDistribuidoDto(processo.classe().toString(), processo.numero(), idMinistroRelator);
 	}
 	
 	public PeticaoDto consultar(Long idPeticao){
@@ -176,24 +122,7 @@ public class PeticaoServiceFacade {
 			throw new IllegalArgumentException("Petição não encontrada.");
 		}
 		
-		return this.assemblerPeticao.toDto(peticao);
+		return this.peticaoDtoAssembler.toDto(peticao);
 	}
 	
-	private void adicionarPartes(List<String> polo, Set<PartePeticao> partes, TipoPolo tipoPolo) {
-		for(String p : polo){
-			PessoaId id = new PessoaId(Long.parseLong(p));
-			PartePeticao partePeticao = new PartePeticao(id, tipoPolo);
-			partes.add(partePeticao);
-		}
-	}
-	
-	private Set<DocumentoId> adicionarDocumentos(List<String> documentos){
-		Set<DocumentoId> idsDocumentos = new HashSet<DocumentoId>(); 
-		
-		for(String doc : documentos){
-			idsDocumentos.add(new DocumentoId(Long.parseLong(doc)));
-		}
-		
-		return idsDocumentos;
-	}
 }

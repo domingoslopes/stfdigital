@@ -12,19 +12,15 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.autuacao.infra.persistence.GerarNumeroProcesso;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
@@ -42,21 +38,20 @@ import br.jus.stf.shared.domain.stereotype.Entity;
 	uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_CLASSE", "NUM_PROCESSO"}))
 public class Processo implements Entity<Processo> {
 
-	@Embedded
+	@EmbeddedId
 	@AttributeOverride(name = "id",
 		column = @Column(name = "SEQ_PROCESSO", insertable = false, updatable = false))
-	private ProcessoId processoId;
+	private ProcessoId id;
 	
 	@Embedded
 	private ClasseId classe;
 	
-	@GerarNumeroProcesso
 	@Column(name = "NUM_PROCESSO", nullable = false)
 	private Long numero;
 	
 	@Embedded
 	@AttributeOverride(name = "id",
-		column = @Column(name = "SEQ_MINISTRO_RELATOR"))
+		column = @Column(name = "COD_MINISTRO_RELATOR"))
 	private MinistroId relator;
 
 	
@@ -82,15 +77,19 @@ public class Processo implements Entity<Processo> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Processo(final ClasseId classe, final MinistroId relator,
+	public Processo(final ProcessoId id, final ClasseId classe, final Long numero, final MinistroId relator,
 			final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<DocumentoId> pecas) {
+		Validate.notNull(id, "processo.id.required");
 		Validate.notNull(classe, "processo.classe.required");
+		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(relator, "processo.relator.required");
 		Validate.notNull(peticao, "processo.peticao.required");
-		Validate.notEmpty(partes, "processo.partes.notEmpty");
-		Validate.notNull(pecas, "processo.pecas.required");
+		//Validate.notEmpty(partes, "processo.partes.notEmpty");
+		//Validate.notNull(pecas, "processo.pecas.required");
 		
+		this.id = id;
 		this.classe = classe;
+		this.numero = numero;
 		this.relator = relator;
 		this.peticao = peticao;
 		this.partes.addAll(partes);
@@ -98,7 +97,7 @@ public class Processo implements Entity<Processo> {
 	}
 
 	public ProcessoId id() {
-		return this.processoId;
+		return this.id;
 	}
 	
 	public ClasseId classe() {
@@ -185,7 +184,7 @@ public class Processo implements Entity<Processo> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((processoId == null) ? 0 : processoId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -200,16 +199,10 @@ public class Processo implements Entity<Processo> {
 
 	@Override
 	public boolean sameIdentityAs(Processo other) {
-		return other != null && this.processoId.sameValueAs(other.processoId);
+		return other != null && this.id.sameValueAs(other.id);
 	}
 	
 	// Hibernate
-	
-	@Id
-	@Column(name = "SEQ_PROCESSO")
-	@SequenceGenerator(name = "PROCESSOID", sequenceName = "AUTUACAO.SEQ_PROCESSO", allocationSize = 1)
-	@GeneratedValue(generator = "PROCESSOID", strategy=GenerationType.SEQUENCE)
-	private Long id;
 	
 	Processo() {
 

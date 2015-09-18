@@ -54,14 +54,21 @@ public class TarefaRestResource {
         tarefaApplicationService.completar(id);
 	}
     
-    //TODO : Substituir validação pelo @Valid e injeção do BindingResult
     @RequestMapping(value = "/tarefas/{id}/sinalizar", method = RequestMethod.PUT)
 	public void sinalizar(@PathVariable("id") String id, @RequestBody SinalizarCommand command) {
-		Set<ConstraintViolation<SinalizarCommand>> result = validator.validate(command);
-		if (!result.isEmpty()) {
+		
+    	Set<ConstraintViolation<SinalizarCommand>> result = validator.validate(command);
+		
+    	if (!result.isEmpty()) {
 			throw new IllegalArgumentException(result.toString());
 		}
-		tarefaApplicationService.sinalizar(id, command.getSinal());
+    	
+		tarefaApplicationService.sinalizar(command.getSinal(), id);
+	}
+    
+    @RequestMapping(value = "/tarefas/processo/{id}", method = RequestMethod.GET)
+	public TarefaDto consultarPorProcesso (@PathVariable("id") String idProcesso) {
+		return tarefaDtoAssembler.toDto(tarefaApplicationService.consultarPorProcesso(idProcesso));
 	}
 	
     @RequestMapping(value = "/tarefas/{id}", method = RequestMethod.GET)

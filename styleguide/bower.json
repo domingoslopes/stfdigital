@@ -1,12 +1,10 @@
 {
-  "name": "stfdigital_styleguide",
+  "name": "STF Digital - StyleGuide",
   "version": "1.0.0",
   "authors": [
     "Leandro Rezende"
   ],
   "description": "Guia de estilos para o STF Digital",
-  "license": "http://themeforest.net/licenses",
-  "homepage": "http://altair.tzdthemes.com",
   "dependencies": {
     "autosize": "~3.0.8",
     "c3js-chart": "~0.4.10",

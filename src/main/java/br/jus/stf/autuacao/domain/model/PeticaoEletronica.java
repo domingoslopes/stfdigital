@@ -9,16 +9,19 @@ import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
+import br.jus.stf.shared.domain.model.PeticaoId;
 
 /**
  * @author Lucas.Rodrigues
  *
  */
 @Entity
-@DiscriminatorValue("ELETRONICA")
+@DiscriminatorValue("ELETRONICO")
 public class PeticaoEletronica extends Peticao {
 	
-	PeticaoEletronica(final ClasseId classeSugerida, final Set<PartePeticao> partes, final Set<DocumentoId> documentos) {
+	public PeticaoEletronica(final PeticaoId id, final Long numero, final ClasseId classeSugerida,
+			final Set<PartePeticao> partes, final Set<DocumentoId> documentos) {
+		super(id, numero);
 		
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		Validate.notEmpty(partes, "peticao.partes.notEmpty");
@@ -27,6 +30,9 @@ public class PeticaoEletronica extends Peticao {
 		this.classeSugerida = classeSugerida;
 		this.partes.addAll(partes);
 		this.documentos.addAll(documentos);
+	}
+	PeticaoEletronica() {
+		
 	}
 	
 }

@@ -1,8 +1,8 @@
 package br.jus.stf.generico.application;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -38,10 +38,14 @@ public class GenericoApplicationService {
 	 * @param pessoas
 	 * @return
 	 */
-	public Set<PessoaId> cadastrarPessoas(List<Pessoa> pessoas) {
-		Set<PessoaId> pessoasCadastradas = new LinkedHashSet<PessoaId>();
-		pessoas.stream().forEach(pessoa -> pessoasCadastradas.add(pessoaRepository.save(pessoa)));
-		return pessoasCadastradas;
+	public List<Pessoa> cadastrarPessoas(List<String> pessoas) {
+		return pessoas.stream()
+				.map(nome -> {
+					PessoaId id = pessoaRepository.nextPessoaId();
+					Pessoa pessoa = new Pessoa(id, nome);
+					return pessoaRepository.save(pessoa);
+				})
+				.collect(Collectors.toList());
 	}
 	
 	/**
@@ -50,10 +54,9 @@ public class GenericoApplicationService {
 	 * @param documentosTemporarios
 	 * @return
 	 */
-	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios) {
-		Set<DocumentoId> documentosSalvos = new LinkedHashSet<DocumentoId>();
-		documentosTemporarios.forEach(docTemp -> documentosSalvos.add(documentoRepository.save(docTemp)));
-		return documentosSalvos;
+	public Map<String, DocumentoId> salvarDocumentos(List<String> documentosTemporarios) {
+		return documentosTemporarios.stream()
+				.collect(Collectors.toMap(docTemp -> docTemp, docTemp -> documentoRepository.save(docTemp)));
 	}
 	
 	/**

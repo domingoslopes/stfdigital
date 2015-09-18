@@ -1,7 +1,9 @@
 package br.jus.stf.autuacao.infra;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,14 +33,20 @@ public class GenericoRestAdapter implements GenericoAdapter {
 	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios) {
 		SalvarDocumentosCommand command = new SalvarDocumentosCommand();
 		command.setDocumentos(documentosTemporarios);
-		return documentoRestResource.salvar(command);
+		return documentoRestResource.salvar(command).stream()
+				.map(dto -> new DocumentoId(dto.getDocumentoId()))
+				.collect(Collectors.toCollection(
+						() -> new LinkedHashSet<DocumentoId>()));
 	}
 
 	@Override
 	public Set<PessoaId> cadastrarPessoas(List<String> pessoas) {
 		CadastrarPessoasCommand command = new CadastrarPessoasCommand();
 		command.setNomes(pessoas);
-		return pessoaRestResource.cadastrar(command);
+		return pessoaRestResource.cadastrar(command).stream()
+				.map(dto -> new PessoaId(dto.getId()))
+				.collect(Collectors.toCollection(
+						() -> new LinkedHashSet<PessoaId>()));
 	}
 
 }
