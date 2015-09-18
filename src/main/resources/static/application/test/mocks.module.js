@@ -12,9 +12,6 @@
 		$log.debug('Aplicação carregada. Mocando as services...');
 		
 		var tarefas = [];
-	        /*[{id: '04', nome: 'registro', descricao : 'Receber Processo Físico'},
-	        {id: '05', nome : 'preautuacao', descricao : 'Pré-autuar Processo'}
-	    ];*/ 
 		
 		var actions = [{
 		    id: "dummy_action",
@@ -50,60 +47,83 @@
 		               { sigla : "AP", nome : "Ação Penal" },
 		               { sigla : "HC", nome : "Habeas Corpus" }];
 		
-		var tipoRecebimentos = [{ sigla : "1", nome : "Balcão" },
-		               { sigla : "2", nome : "Sedex" },
-		               { sigla : "3", nome : "Malote" },
-		               { sigla : "4", nome : "Fax" },
-		               { sigla : "5", nome : "Email" }];
+		var tipoRecebimentos = [{ id : 0, nome : "Balcão" },
+		               { id : 1, nome : "Sedex" },
+		               { id : 2, nome : "Malote" },
+		               { id : 3, nome : "Fax" },
+		               { id : 4, nome : "Email" }];
 		
-		var peticaoEletronica = {id: '2', classe : 'AP', partes: {poloAtivo : ['joao'], poloPassivo : ['maria']}, detalhes: 'detalhes'};
-		var peticoesEletronicas = [peticaoEletronica];
+		var ministros = [{id: 0, nome: 'Min. Roberto Barroso'}, {id: 1, nome: 'Min. Sicrano'}, {id: 2, nome: 'Min. João'}];
 		
-		var peticaoFisica = {id: '2',qtdVolumes: '2',  qtdApensos: '2', tipoRecebimento : '2', numSedex : '2'};
-		var peticoesFisicas = [peticaoFisica];
+		var peticao = {};
 		
-		var ministros = [{id: 1, nome: 'Min. Roberto Barroso'}, {id: 2, nome: 'Min. Sicrano'}, {id: 3, nome: 'Min. João'}];
-		  
+		var peticoes = [];
+		
 		$httpBackend.whenPOST(properties.apiUrl + '/peticao').respond(function(method, url, data, headers){
 			console.log('Enviando peticao eletronica:', method, url, data, headers);
-			tarefas = [];
 			tarefas.push({id: '2', nome : 'autuacao', descricao : 'Autuar Processo'});
-			return [200, peticaoEletronica.id, {}];
-		});
-		
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao/fisica').respond(function(method, url, data, headers){
-			console.log('Enviando peticao fisica:', method, url, data, headers);
-			tarefas.push({id: '2', nome : 'preautuacao', descricao : 'Pré-autuar Processo'});
-			return [200, peticaoFisica.id, {}];
+			//recebe os dados digitados na tela pelo peticionador.
+			data = JSON.parse(data);
+			
+			peticao = {id: '2', classe: data.classe, partes: {poloAtivo : [data.partesPoloAtivo[0]], poloPassivo : [data.partesPoloPassivo[0]]}, detalhes: 'detalhes', qtdVolumes: '', 
+					qtdApensos: '', numSedex : '', tipoRecebimento: '', ministro: ''};
+			peticoes.push(peticao);
+			return [200, peticao.id, {}];
 		});
 		
 		$httpBackend.whenPOST(properties.apiUrl + '/peticao/2/autuacao').respond(function(method, url, data, headers){
 			console.log('Autuando peticao:', method, url, data, headers);
-			tarefas = [{id: '2', nome : 'distribuicao', descricao : 'Distribuir Processo'}];
-			return [200, peticaoEletronica.id, {}];
+			tarefas = [];
+			data = JSON.parse(data);
+			//sobrescreve a informa pois o autuador pode escolhe uma outra classe diferente da selecionada pelo peticionador.
+			peticao.classe = data.classe;
+			limparListaPeticoes(peticao);
+			tarefas.push({id: '2', nome : 'distribuicao', descricao : 'Distribuir Processo'});
+			return [200, peticao.id, {}];
+		});
+		
+		$httpBackend.whenPOST(properties.apiUrl + '/peticao/fisica').respond(function(method, url, data, headers){
+			console.log('Enviando peticao fisica:', method, url, data, headers);
+			tarefas = [];
+			tarefas.push({id: '2', nome : 'preautuacao', descricao : 'Pré-autuar Processo'});
+			
+			data = JSON.parse(data);
+			var indiceTipoRecebimento = parseInt(data.tipoRecebimento);
+			peticao.tipoRecebimento = tipoRecebimentos[indiceTipoRecebimento].nome;
+			limparListaPeticoes(peticao);
+			peticao = {id: '2', classe : '', partes: {poloAtivo : [], poloPassivo : []}, detalhes: 'detalhes', qtdVolumes: data.qtdVolumes, 
+					qtdApensos: data.qtdApensos, numSedex : data.numSedex, tipoRecebimento: peticao.tipoRecebimento};
+			return [200, peticao.id, {}];
+		});
+		
+		$httpBackend.whenPOST(properties.apiUrl + '/peticao/2/preautuacao').respond(function(method, url, data, headers){
+			
+			console.log('Preautuando peticao:', method, url, data, headers);
+			tarefas = [];
+			tarefas.push({id: '2', nome : 'autuacao', descricao : 'Autuar Processo'});
+			data = JSON.parse(data);
+			//o preautuador pode alterar a classe da peticção "por enquanto";
+			peticao.classe = data;
+			limparListaPeticoes(peticao);
+			return [200, peticao.id, {}];
 		});
 		
 		$httpBackend.whenPOST(properties.apiUrl + '/peticao/2/distribuicao').respond(function(method, url, data, headers){
 			console.log('Distribuindo peticao:', method, url, data, headers);
 			tarefas = [];
-			return [200, {classe: 'AP', numero: '2', relator: ministros[0].nome}, {}];
+			data = JSON.parse(data);
+			var indice = parseInt(data);
+			peticao.ministro = ministros[indice].nome;
+			limparListaPeticoes(peticao);
+			return [200, {classe: peticao.classe, numero: peticao.id, relator: peticao.ministro}, {}];
 		});
 		
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao/2/preautuacao').respond(function(method, url, data, headers){
-			console.log('Preautuando peticao:', method, url, data, headers);
-			tarefas = [{id: '2', nome : 'distribuicao', descricao : 'Distribuir Processo'}];
-			return [200, peticaoFisica.id, {}];
-		});
-		
-/*		$httpBackend.whenPOST(properties.apiUrl + '/peticao/fisica/02').respond(function(method, url, data, headers){
-			console.log('Recebendo peticao fisica:', method, url, data, headers);
-			tarefas = [{id: '02', nome : 'pre-atuacao', descricao : 'Pré-autuar Processo'}];
-			return [200, peticaoFisica.id, {}];
-		});
-		*/
 		$httpBackend.whenGET(properties.apiUrl + '/peticoes').respond(function(method, url, data, headers){
 			console.log('Recebendo peticoes:', method, url, data, headers);
-			return [200, peticoesEletronicas, {}];
+			angular.forEach(peticoes, function(peticao) {
+				peticao.isEletronico = true;
+			});
+			return [200, peticoes, {}];
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/classes').respond(function(method, url, data, headers){
@@ -117,13 +137,13 @@
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/peticao/2').respond(function(method, url, data, headers){
-			console.log('Recebendo peticao eletronica:', peticaoEletronica);
-			return [200, peticaoEletronica, {}];
+			console.log('Recebendo peticao eletronica:', peticao);
+			return [200, peticao, {}];
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/peticao/fisica/2').respond(function(method, url, data, headers){
-			console.log('Recebendo peticao fisica:', peticaoFisica);
-			return [200, peticaoFisica, {}];
+			console.log('Recebendo peticao fisica:', peticao);
+			return [200, peticao, {}];
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/tiporecebimentos').respond(function(method, url, data, headers){
@@ -165,7 +185,12 @@
 			return [200, "2345/2015", {}];
 		});
 		
-		$httpBackend.whenGET(/\/.*.tpl.html/).passThrough();
+		var limparListaPeticoes = function(peticao){
+			peticoes = [];
+			peticoes.push(peticao);
+		}
+		
+	//	$httpBackend.whenGET(/\/.*.tpl.html/).passThrough();
 		
 	//	$httpBackend.whenGET(properties.apiUrl + '/classes').passThrough();
 		
