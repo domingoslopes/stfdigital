@@ -222,7 +222,7 @@ gulp.task('test:unit', ['build'], function(cb) {
 /**
  * Executa os teste e2e usado Protractor.
  */
-gulp.task('test:e2e', ['serve', 'webdriver:update'], function() {
+gulp.task('test:e2e', ['webdriver:update'], function() {
 	
 	return gulp.src(protractorConfig.config.specs)
 		.pipe($.protractor.protractor({
