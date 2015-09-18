@@ -30,7 +30,6 @@
 			// É necessário mover o mouse para cima do link, caso contrário o click não vai funcionar
 			browser.actions().mouseMove(element(by.css('a[ui-sref="registro"]'))).perform();
 			element(by.css('a[ui-sref="registro"]')).click();
-			
 			// Força a saída do mouse da barra de menus para que essa barra recue à esquerda
 			browser.actions().mouseMove(element(by.id('papeis'))).perform();
 		};
@@ -38,6 +37,7 @@
 
 		this.executarTarefa = function() {
 			element(by.repeater('tarefa in tarefas').row(0)).element(by.css('a')).click();
+			browser.waitForAngular();
 		};
 		
 		this.tarefas = function () {

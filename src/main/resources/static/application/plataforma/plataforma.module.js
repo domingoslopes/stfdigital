@@ -19,6 +19,14 @@
 					return TarefaService.listar();
 				}
 			}
+		}).state('detalhe', {
+			url: '/detalhe/peticao/:idPeticao',
+			views: {
+				'@': {
+					templateUrl: 'application/autuacao/detalhe/detalhepeticao.tpl.html',
+					controller: 'DetalhePeticaoController'
+				}
+			}
 		}).state('erro', {
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'

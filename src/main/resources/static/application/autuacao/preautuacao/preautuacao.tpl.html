@@ -62,7 +62,7 @@
 							<h6>Qual Classe Processual você<strong> sugere </strong> para sua petição?</h6>
 						</div>
 						<div class="card-description">
-							<select ui-select2 id="classe" ng-model="preautuacao.classe" data-placeholder="Selecione a Classe Sugerida" style="width: 450px;" autofocus>
+							<select ui-select2 id="classe" ng-model="preautuacao.classe" data-placeholder="Selecione a Classe Sugerida" style="width: 450px;">
 								<option value=""></option>
 								<option ng-repeat="classe in preautuacao.classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
 							</select>

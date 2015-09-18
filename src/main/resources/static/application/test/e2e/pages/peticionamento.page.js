@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	var RegistroPage = function () {
+	var PeticionamentoPage = function () {
 		
 		this.classificar = function(sigla) {
 		    var classe =  element(by.css('#s2id_classe a'));
@@ -40,6 +40,6 @@
 		
 	};
 
-	module.exports = RegistroPage;
+	module.exports = PeticionamentoPage;
 	
 })();

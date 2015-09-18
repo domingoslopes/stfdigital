@@ -32,12 +32,15 @@
 				return;
 			}
 			
-			$http.post(properties.apiUrl + '/peticao/' + preautuacao.idPeticao + '/preautuacao').success(function(data, status, headers, config) {
+			PeticaoService.preautuar(preautuacao.idPeticao, preautuacao.classe).success(function(data, status, headers, config) {
 				$log.debug('Sucesso');
 				$state.go('dashboard');
 			}).error(function(data, status, headers, config) {
 				$log.debug('Erro');
 			});
+			
+			
+			
 		};
 	});
 

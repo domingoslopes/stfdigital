@@ -25,8 +25,6 @@
 			registro.tipoRecebimentos = formas;
 		});
 		
-		
-		
 		registro.completar = function() {
 			
 			if (registro.qtdApensos.length == 0){
@@ -47,11 +45,12 @@
 			PeticaoService.registrar(new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, 
 					registro.tipoRecebimento, registro.numSedex)).success(function(data) {
 				$state.go('dashboard');
-				messages.success('Petição Física <b>#0001</b> registrada com sucesso.');
-			}).error(function(data, status) {
-				if (status === 400) {
-					messages.error('A Petição Física <b>não pode ser registrada</b> porque ela não está válida.');
-				}
+				//messages.success('Petição Física <b>#2</b> registrada com sucesso.');
+				}).error(function(data, status) {
+					if (status === 400) {
+						messages.error('A Petição Física <b>não pode ser registrada</b> porque ela não está válida.');
+					}
+
 			});
 		};
 		
