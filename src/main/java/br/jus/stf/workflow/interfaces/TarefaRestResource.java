@@ -29,7 +29,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @since 23.06.2015
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/workflow")
 public class TarefaRestResource {
 	
 	@Autowired
