@@ -15,7 +15,6 @@
 		
 		registro.tipoRecebimento = '';
 		
-<<<<<<< HEAD
 		registro.qtdApensos = "";
 		
 		registro.qtdVolumes = "";
@@ -25,8 +24,6 @@
 		TipoRecebimentoService.listar().success(function(formas){
 			registro.tipoRecebimentos = formas;
 		});
-		
-		
 		
 		registro.completar = function() {
 			
@@ -47,19 +44,15 @@
 			
 			PeticaoService.registrar(new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, 
 					registro.tipoRecebimento, registro.numSedex)).success(function(data) {
-=======
-		registro.completar = function(data) {
-			messages.success(data);
-			$state.go('dashboard');
-			/*$http.post(properties.apiUrl + '/peticao/fisica', {tipoRecebimento:registro.tipoRecebimento}).success(function(data) {
->>>>>>> branch 'master' of https://github.com/supremotribunalfederal/stfdigital.git
+
+				//messages.success(data);
 				$state.go('dashboard');
-				messages.success('Petição Física <b>#0001</b> registrada com sucesso.');
-			}).error(function(data, status) {
-				if (status === 400) {
-					messages.error('A Petição Física <b>não pode ser registrada</b> porque ela não está válida.');
-				}
-			});*/
+				messages.success('Petição Física <b>#2</b> registrada com sucesso.');
+				}).error(function(data, status) {
+					if (status === 400) {
+						messages.error('A Petição Física <b>não pode ser registrada</b> porque ela não está válida.');
+					}
+			});
 		};
 		
 		function RegistrarCommand (qtdVolumes, qtdApensos, tipoRecebimento, numSedex){
