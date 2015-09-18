@@ -8,9 +8,11 @@
 (function() {
 	'use strict';
 
+
 	var PreautuacaoPage = function () {
-	
-		this.classificar = function(sigla){
+		var preautuacao = this;
+		
+		preautuacao.classificar = function(sigla){
 			var classe =  element(by.css('#s2id_classe a'));
 			
 			classe.click();
@@ -22,10 +24,9 @@
 			classes.first().click();
 		}
 		
-		this.finalizar = function() {
+		preautuacao.finalizar = function() {
 			element(by.id('finalizar')).click();
 			
-		    browser.waitForAngular();
 		};
 		
 	};

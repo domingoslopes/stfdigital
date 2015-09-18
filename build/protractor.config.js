@@ -31,6 +31,7 @@ exports.config = {
 	baseUrl : 'http://127.0.0.1:' + port,
 	
 	onPrepare: function() {
+		browser.driver.manage().window().maximize();
 		jasmine.getEnv().addReporter(new HtmlReporter({
 			baseDirectory : 'src/main/resources//static/application/test/e2e/results',
 			takeScreenShotsOnlyForFailedSpecs: true
