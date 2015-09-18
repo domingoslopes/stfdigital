@@ -15,9 +15,17 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 public class DistribuirPeticaoCommand {
 	
 	@NotNull
+	@ApiModelProperty(value = "Id da petição física registrada.", required=true)
+	private Long idPeticao;
+	
+	@NotNull
 	@ApiModelProperty(value = "O ministro sorteado para relatar o processo resultado da petição recebida", required=true)
 	private Long idRelator;
 
+	public Long getIdPeticao() {
+		return this.idPeticao;
+	}
+	
 	public Long getIdRelator() {
 		return idRelator;
 	}

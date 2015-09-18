@@ -1,5 +1,7 @@
 package br.jus.stf.autuacao.interfaces.commands;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,6 +17,10 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Contém as informações necessárias para autuar a petição enviada pelo peticionador")
 public class AutuarPeticaoCommand {
 
+	@NotNull
+	@ApiModelProperty(value = "Id da petição física registrada.", required=true)
+	private Long idPeticao;
+	
 	@NotBlank
 	@ApiModelProperty(value = "A classe processual definitiva, selecionada pelo autuador", required=true)
 	private String classe;
@@ -25,6 +31,10 @@ public class AutuarPeticaoCommand {
 	
 	@ApiModelProperty(value = "Contém o motivo da recusa da petição, no caso de petições inválidas", required=true)
 	private String motivo;
+	
+	public Long getIdPeticao() {
+		return this.idPeticao;
+	}
 	
 	public String getClasse() {
 		return classe;

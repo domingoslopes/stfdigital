@@ -35,7 +35,6 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
 	private String peticaoInvalidaParaAutuacao;
-	private String peticaoRejeitada;
 	
 	@Before
 	public void criarObjetosJSON() throws UnsupportedEncodingException, Exception{
@@ -93,11 +92,6 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoInValidaParaAutuacao.append("\"valida\":false,");
 		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}");
 		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
-		
-		//Cria um objeto contendo os dados de uma petição a ser rejeitada pelo autuador.
-		StringBuilder peticaoRejeitada =  new StringBuilder();
-		peticaoRejeitada.append("{\"motivoRejeicao\":\"Petição Inválida.\"}");
-		this.peticaoRejeitada = peticaoRejeitada.toString();
 	}
 	
 	@Test
@@ -168,7 +162,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	}
 	
 	@Test
-	public void rejeitarrPeticao() throws Exception{
+	public void rejeitarPeticao() throws Exception{
 		
 		String idPeticao = "";
 		
