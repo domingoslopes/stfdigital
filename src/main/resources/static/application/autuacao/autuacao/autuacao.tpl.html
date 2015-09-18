@@ -12,88 +12,148 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
+    	<form ng-submit="autuacao.finalizar()" novalidate>
             <div class="row">
-                <form ng-submit="autuacao.finalizar()" novalidate>
-	                <div class="col-md-6">
-	                    <div class="card share" data-social="item" style="width: 100%">
-	                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-	                        <div class="card-header clearfix">
-	                            <h5>Classe Processual: {{autuacao.peticao.classe}}</h5>
-	                            <h6>Essa é apenas a classe <strong>sugerida pelo peticionador</strong>.</h6>
-	                        </div>
-	                    </div>
-	                    <div class="card share" data-social="item" style="width: 100%">
-	                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-	                        <div class="card-header clearfix">
-	                            <h5>Partes do Polo Ativo</h5>
-	                            <h6>Abaixo, a lista de partes do polo ativo <strong>indicadas pelo peticionador</strong></h6>
-	                        </div>
-	                        <div class="card-description">
-	                            <div class="auto-overflow widget-11-2-table">
-	                                <table class="table table-condensed table-hover" ng-show="autuacao.peticao.partes['poloAtivo'].length">
-	                                    <tbody>
-	                                        <tr ng-repeat="parte in autuacao.peticao.partes['poloAtivo']">
-	                                            <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="card share" data-social="item" style="width: 100%">
-	                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-	                        <div class="card-header clearfix">
-	                            <h5>Partes do Polo Passivo</h5>
-	                            <h6>Abaixo, a lista de partes do polo passivo <strong>indicadas pelo peticionador</strong></h6>
-	                        </div>
-	                        <div class="card-description">
-	                            <div class="auto-overflow widget-11-2-table">
-	                                <table class="table table-condensed table-hover" ng-show="autuacao.peticao.partes['poloPassivo'].length">
-	                                    <tbody>
-	                                        <tr ng-repeat="parte in autuacao.peticao.partes['poloPassivo']">
-	                                            <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
-	                                        </tr>
-	                                    </tbody>
-	                                </table>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="col-md-6">
-	                    <div class="card share" data-social="item" style="width: 100%">
-	                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-	                        <div class="card-header clearfix">
-	                            <h5>Classificação</h5>
-	                            <h6>Qual classe processual você<strong> sugere </strong> para sua petição?</h6>
-	                        </div>
-	                        <div class="card-description">
-	                            <select ui-select2 id="classe" ng-model="autuacao.classe" data-placeholder="Selecione a Classe Definitiva" style="width: 450px;" autofocus>
-	                                <option value=""></option>
-	                                <option ng-repeat="classe in autuacao.classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
-	                            </select>
-	                        </div>
-	                    </div>
-	                    <div class="card share" data-social="item" style="width: 100%">
-	                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-	                        <div class="card-header clearfix">
-	                            <h5>Aptidão</h5>
-	                            <h6>Informe se a petição é <b>válida ou inválida</b>.</h6>
-	                        </div>
-	                        <div class="card-description">
-			                    <div class="radio radio-success">
-			                        <input type="radio" ng-model="autuacao.valida" value="true" id="yes"> 
-			                        <label for="yes">Válida</label> 
-			                        <input type="radio" ng-model="autuacao.valida" value="false" id="no"> 
-			                        <label for="no">Inválida</label>
-			                    </div>
-			                    <textarea class="form-control" id="motivo" ng-model="autuacao.motivo" ng-hide="autuacao.valida === 'true'" placeholder="Informe o motivo de inaptidão da petição." aria-invalid="false"></textarea>
-	                        </div>
-	                    </div>
-	                </div>
-		            <p>
-		                <input id="botaoAutuar" class="btn btn-complete btn-cons m-l-15" type="submit" value="Autuar">
-		            </p>
-		        </form>
+            	<div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Número da Petição: {{autuacao.peticao.id}}</h5>
+                            <h6>Essa é apenas o número <strong>de identificação da petição</strong>.</h6>
+                        </div>
+                    </div>
+	                </div>	
+                <div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Classe Processual: {{autuacao.peticao.classe}}</h5>
+                            <h6>Essa é apenas a classe <strong>sugerida pelo peticionador</strong>.</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="autuacao.peticao.partes['poloAtivo'].length || autuacao.peticao.partes['poloPassivo'].length">
+            	<div class="col-md-6" ng-show="autuacao.peticao.partes['poloAtivo'].length">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Partes do Polo Ativo</h5>
+                            <h6>Abaixo, a lista de partes do polo ativo <strong>indicadas pelo peticionador</strong></h6>
+                        </div>
+                        <div class="card-description">
+                            <div class="auto-overflow widget-11-2-table">
+                                <table class="table table-condensed table-hover">
+                                    <tbody>
+                                        <tr ng-repeat="parte in autuacao.peticao.partes['poloAtivo']">
+                                            <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+	            </div>
+				<div class="col-md-6" ng-show="autuacao.peticao.partes['poloPassivo'].length">
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					        <h5>Partes do Polo Passivo</h5>
+					        <h6>Abaixo, a lista de partes do polo passivo <strong>indicadas pelo peticionador</strong></h6>
+					    </div>
+					    <div class="card-description">
+					        <div class="auto-overflow widget-11-2-table">
+					            <table class="table table-condensed table-hover">
+					                <tbody>
+					                    <tr ng-repeat="parte in autuacao.peticao.partes['poloPassivo']">
+					                        <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+					                    </tr>
+					                </tbody>
+					            </table>
+					        </div>
+					    </div>
+					</div>
+				</div>	
+			</div> 
+	        <div class="row" ng-show="autuacao.peticao.qtdVolumes.length || autuacao.peticao.qtdApensos.length || autuacao.peticao.tipoRecebimento.length || autuacao.peticao.numSedex.length">
+				<div class="col-md-6" ng-show="autuacao.peticao.qtdApensos.length">
+	                <div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					        <h5>Quantidade de volumes: {{autuacao.peticao.qtdVolumes}}</h5>
+					        <h6>Essa é quantidade de volumes <strong>inseridas pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+				</div>
+				<div class="col-md-6" ng-show="autuacao.peticao.qtdApensos.length">
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					    	<h5>Quantidade de apensos: {{autuacao.peticao.qtdApensos}} </h5>
+					    	<h6>Esse é a quantidade de apensos <strong>inseridas pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6" ng-show="autuacao.peticao.tipoRecebimento.length">
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					        <h5>Tipo de recebimento: {{autuacao.peticao.tipoRecebimento}}</h5>
+					        <h6>Essa é tipo de recebimento do processo<strong>inserido pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+				</div>
+				<div class="col-md-6" ng-show="autuacao.peticao.numSedex.length">	
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					    	<h5>Numero do Sedex: {{autuacao.peticao.numSedex}} </h5>
+					    	<h6>Esse é o numero do sedex <strong>inserido pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+                <div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Classificação</h5>
+                            <h6>Qual classe processual você<strong> sugere </strong> para sua petição?</h6>
+                        </div>
+                        <div class="card-description">
+                            <select ui-select2 id="classe" ng-model="autuacao.classe" data-placeholder="Selecione a Classe Definitiva" style="width: 450px;" autofocus>
+                                <option value=""></option>
+                                <option ng-repeat="classe in autuacao.classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
+                            </select>
+                        </div>
+                    </div>
+                 </div>
+                 <div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Aptidão</h5>
+                            <h6>Informe se a petição é <b>válida ou inválida</b>.</h6>
+                        </div>
+                        <div class="card-description">
+		                    <div class="radio radio-success">
+		                        <input type="radio" ng-model="autuacao.valida" value="true" id="yes"> 
+		                        <label for="yes">Válida</label> 
+		                        <input type="radio" ng-model="autuacao.valida" value="false" id="no"> 
+		                        <label for="no">Inválida</label>
+		                    </div>
+		                    <textarea class="form-control" id="motivo" ng-model="autuacao.motivo" ng-hide="autuacao.valida === 'true'" placeholder="Informe o motivo de inaptidão da petição." aria-invalid="false"></textarea>
+                        </div>
+                    </div>
+				</div>
+            </div>
+            <p>
+                <input id="botaoAutuar" class="btn btn-complete btn-cons m-l-15" type="submit" value="Autuar">
+            </p>
+	        </form>
             </div>
 
 	</div>

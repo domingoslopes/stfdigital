@@ -67,11 +67,7 @@
                             <tbody>
                                 <tr ng-repeat="peticao in peticoes">
                                     <td class="font-montserrat fs-12 col-lg-12">
-                                    	<a ui-sref="detalhe{{peticao.id}}({idPeticao: peticao.id})">{{peticao.id}} pet</a>
-										<!-- <address class="margin-bottom-20 margin-top-10">
-											{{tarefa.id}} 
-											<br>{{tarefa.detalhes}}
-										</address> -->
+                                    	<a ui-sref="detalhe({idPeticao: peticao.id})">petição {{peticao.id}} </a>
 									</td>
                                 </tr>
                             </tbody>

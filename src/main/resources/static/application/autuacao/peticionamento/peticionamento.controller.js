@@ -58,7 +58,7 @@
 			
 			PeticaoService.peticionar(new PeticionarCommand($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo)).success(function(data) {
 				$state.go('dashboard');
-				messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
+				//messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
 			}).error(function(data, status) {
 				if (status === 400) {
 					messages.error('A Petição <b>não pôde ser registrada</b> porque ela não está válida.');
