@@ -1,0 +1,15 @@
+#header_main {
+  background: #00A8E3 !important; }
+
+#sidebar_main .sidebar_main_header {
+  height: 48px; }
+
+.menu_section .divider {
+  border: 1px solid #ddd;
+  margin: 10px !important; }
+
+.md-card-list-item-readed {
+  font-weight: 100; }
+
+.md-card-list-item-avatar {
+  border: 1px solid #aaa; }
