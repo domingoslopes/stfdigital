@@ -1,6 +1,5 @@
 package br.jus.stf.autuacao.interfaces;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,17 +23,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.autuacao.domain.model.FormaRecebimento;
 import br.jus.stf.autuacao.interfaces.commands.AutuarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.DistribuirPeticaoCommand;
+import br.jus.stf.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoFisicaCommand;
+import br.jus.stf.autuacao.interfaces.commands.RejeitarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.interfaces.facade.PeticaoServiceFacade;
@@ -150,6 +149,10 @@ public class PeticaoRestResource {
 		for(int i = 0; i < command.getPartesPoloPassivo().size(); i++){
 			poloPassivo.add(command.getPartesPoloPassivo().get(i));
 		}
+		
+		for(int i = 0; i < command.getDocumentos().size(); i++){
+			documentos.add(command.getDocumentos().get(i));
+		}
 				
 		return this.peticaoSerivceFacade.peticionar(classeSugerida, poloAtivo, poloPassivo, documentos);
 	}
@@ -197,8 +200,8 @@ public class PeticaoRestResource {
     @ApiOperation(value = "Conclui a pré-autuação de uma determinada petição física", hidden = true)
 	@RequestMapping(value = "/api/peticao/{id}/preautuacao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void preautuar(@PathVariable Long id) {
-		//peticaoApplicationService.preautuar(id);
+	public void preautuar(@PathVariable Long id, @RequestBody PreautuarPeticaoFisicaCommand command) {
+		this.peticaoSerivceFacade.preautuar(id, command.getClasseSugerida()); 
 	}
 
     @ApiOperation(value = "Conclui a autuação de uma determinada petição")
@@ -208,11 +211,11 @@ public class PeticaoRestResource {
 		this.peticaoSerivceFacade.autuar(id, command.getClasse(), command.isValida(), command.getMotivo());
 	}
 
-    @ApiOperation(value = "Conclui a devolução de uma determinada petição recebida incorretamente", hidden = true)
+    @ApiOperation(value = "Conclui a rejeição de uma determinada petição recebida incorretamente", hidden = true)
 	@RequestMapping(value = "/api/peticao/{id}/devolucao", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void devolver(@PathVariable Long id) {
-		this.peticaoSerivceFacade.devolver(id);
+		
 	}
 
     @ApiOperation(value = "Conclui a distribuição de uma determinada petição")
@@ -220,16 +223,6 @@ public class PeticaoRestResource {
 	public ProcessoDistribuidoDto distribuir(@PathVariable Long id, @RequestBody DistribuirPeticaoCommand command) {
     	
     	return this.peticaoSerivceFacade.distribuir(id, command.getIdRelator());
-    }
-
-    @ApiOperation(value = "Envia um documento de uma petição.")
-	@RequestMapping(value = "/api/documento/envio", method = RequestMethod.POST)
-    public String enviarDocumento(@RequestParam(value="file", required=true) MultipartFile arquivo) throws IOException{
-    	String idRegistroDocumento = "";
-    	    	
-    	idRegistroDocumento = this.peticaoApplicationService.receberDocumentoPeticao(arquivo);
-    	
-    	return idRegistroDocumento;
     }
 
     private String status(String id) {

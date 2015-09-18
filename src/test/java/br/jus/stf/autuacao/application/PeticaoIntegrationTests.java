@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import br.jus.stf.AbstractIntegrationTests;
-
+import br.jus.stf.autuacao.interfaces.facade.PeticaoServiceFacade;
 import br.jus.stf.workflow.application.TarefaApplicationService;
 
 /**
@@ -23,12 +23,17 @@ import br.jus.stf.workflow.application.TarefaApplicationService;
  * @since 19.08.2015
  */
 public class PeticaoIntegrationTests extends AbstractIntegrationTests {
+	
+	@Autowired
+	private PeticaoServiceFacade peticaoServiceFacade;
+	
 	/*
 	@Autowired
 	private PeticaoApplicationService peticaoApplicationService;
 	@Autowired
 	private TarefaApplicationService tarefaApplicationService;
 	private Peticao peticao;
+
 	
 	@Before
 	public void iniciarPeticao(){

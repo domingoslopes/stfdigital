@@ -11,8 +11,11 @@ import br.jus.stf.autuacao.domain.GenericoAdapter;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.PessoaId;
+import br.jus.stf.shared.domain.model.PeticaoId;
 
 /**
+ * Fábrica de petições
+ * 
  * @author Lucas.Rodrigues
  *
  */
@@ -21,6 +24,9 @@ public class PeticaoFactory {
 	
 	@Autowired
 	private GenericoAdapter genericoAdapter;
+	
+	@Autowired
+	private PeticaoRepository peticaoRepository;
 	
 	/**
 	 * Cria uma petição eletrônica
@@ -32,13 +38,18 @@ public class PeticaoFactory {
 	 * @return a petição
 	 */
 	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, 
-			List<String> poloAtivo, List<String> poloPassivo, Set<DocumentoId> documentos) {
+			List<String> poloAtivo, List<String> poloPassivo, List<String> documentosTemporarios) {
 		
 		Set<PartePeticao> partes = new HashSet<PartePeticao>();
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
 		adicionarPartes(partes, poloPassivo, TipoPolo.POLO_PASSIVO);
 		
-		return new PeticaoEletronica(classeSugerida, partes, documentos);
+		Set<DocumentoId> documentos = adicionarDocumentos(documentosTemporarios);
+		
+		PeticaoId id = peticaoRepository.nextId();
+		Long numero = peticaoRepository.nextNumero();
+		
+		return new PeticaoEletronica(id, numero, classeSugerida, partes, documentos);
 	}
 
 	/**
@@ -52,11 +63,14 @@ public class PeticaoFactory {
 	 */
 	public PeticaoFisica criarPeticaoFisica(Integer volumes, Integer apensos, 
 			FormaRecebimento formaRecebimento, String numeroSedex) {
-		return new PeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
+		PeticaoId id = peticaoRepository.nextId();
+		Long numero = peticaoRepository.nextNumero();
+		
+		return new PeticaoFisica(id, numero, volumes, apensos, formaRecebimento, numeroSedex);
 	}
 	
 	/**
-	 * Adiciona as partes da petiçao
+	 * Salva as pessoa, recupera os ids e adiciona as partes da petiçao
 	 * 
 	 * @param partes
 	 * @param polo
@@ -65,6 +79,16 @@ public class PeticaoFactory {
 	private void adicionarPartes(Set<PartePeticao> partes, List<String> polo, TipoPolo tipo) {
 		Set<PessoaId> pessoas = genericoAdapter.cadastrarPessoas(polo);
 		pessoas.forEach(pessoa -> partes.add(new PartePeticao(pessoa, tipo)));
+	}
+	
+	/**
+	 * Salva os documentos temporários e recupera os ids
+	 * 
+	 * @param documentos
+	 * @return
+	 */
+	private Set<DocumentoId> adicionarDocumentos(List<String> documentos){
+		return genericoAdapter.salvarDocumentos(documentos);
 	}
 	
 }

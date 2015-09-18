@@ -18,5 +18,7 @@ public interface TarefaRepository {
 	
 	void sinalizar(String sinal, String executionId);
 	
+	Task consultarPorProcesso(String idProcesso);
+	
 	Task consultar(String taskId);
 }
