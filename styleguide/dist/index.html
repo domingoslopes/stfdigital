@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="bower_components/uikit/css/uikit.almost-flat.min.css" media="all">
 
     <!-- altair admin -->
-    <link rel="stylesheet" href="assets/css/main.min.css" media="all">
+    <link rel="stylesheet" href="assets/css/main.css" media="all">
 
     <!-- altair admin -->
     <link rel="stylesheet" href="assets-stf/css/main.css" media="all">    
@@ -209,10 +209,16 @@
             <ul>
                 <li class="current_section"  title="Tarefas">
                     <a href="index.html">
-                        <span class="menu_icon"><i class="material-icons">&#xE876;</i></span>
-                        <span class="menu_title">Tarefas</span>
+                        <span class="menu_icon"><i class="material-icons">&#xE883;</i></span>
+                        <span class="menu_title">Tarefas abertas</span>
                     </a>
                 </li>
+                <li title="Tarefas">
+                    <a href="index.html">
+                        <span class="menu_icon"><i class="material-icons">&#xE877;</i></span>
+                        <span class="menu_title">Tarefas resolvidas</span>
+                    </a>
+                </li>                
                 <li title="Favoritas" style="opacity:0.3;">
                     <a href="javascript:void(0);" style="cursor:default !important">
                         <span class="menu_icon"><i class="material-icons">&#xE838;</i></span>
@@ -307,14 +313,38 @@
                                 </div>
                                 <div class="md-card-list-item-subject">
                                     <div class="md-card-list-item-sender-small">
-                                        <span>jerrod89@klockowaters.com</span>
+                                        <span>Rodrigo Barreiros</span>
                                     </div>
-                                    <span class='md-card-list-item-readed'>Autuar: Petição 234235 - Classe preliminar: HC <span class='uk-badge uk-badge-danger'>Liminar</span></span>
+                                    <span class='md-card-list-item-readed clickable'>Autuar: Petição 234235 - Classe preliminar: HC <span class='uk-badge uk-badge-danger'>Liminar</span></span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
                                         O paciente mantém em funcionamento a empresa TecnoRádio conforme a legislação em vigor. Entretanto, vem sofrendo constantes ameaças de prisão e apreensão dos equipamentos sob o pálio de que a atividade é vedada pela lei 4.117/62. A esse respeito, já foi aberto pela autoridade policial o inquérito nº ou já foi denunciado pelo Ministério Público em 10/03/2015, sob a acusação de manter em funcionamento da empresa TecnoRádio, A rádio comunitária Suprema, que funciona há mais de 10 anos, utilizando da frequência 3.2 GHZ.
+                                        <Br />
+                                        <Br />
+                                        <div class="md-card-content large-padding" style="padding: 0px 30px ">
+                                            <div class="uk-grid uk-grid-divider grid-block" data-uk-grid-margin>
+                                                <div class="uk-width-medium-1-2">
+                                                    <label class="uk-form-label uk-margin-bottom" for="hobbies"><strong>Partes do polo ativo:</strong></label>
+                                                    <div class="uk-form-row">
+                                                    <br />
+                                                        João da Silva <br />
+                                                        Coatora do Carmo <br />
+                                                        Impetrina da Rosa Santos <br />
+                                                        <span style="margin-left:20px;">ADV. (S) Salvador da Silva</span>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-width-medium-1-2">
+                                                    <label class="uk-form-label uk-margin-bottom" for="hobbies"><strong>Partes do polo passivo:</strong></label>
+                                                    <div class="uk-form-row">
+                                                    <br />
+                                                        João da Silva <br />
+                                                        Maria do Carmo
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </div>                                      
                                     </div>
 
                                         <form action="" class="uk-form-stacked">
@@ -377,23 +407,70 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Júlio César</span>
                                     </div>
-                                    <span><span class="md-card-list-item-readed">Distribuir:  HC 234</span> </span>
+                                    <span><span class="md-card-list-item-readed clickable">Distribuir:  ADC 234</span> </span>
                                 </div>
-                                <div class="md-card-list-item-content-wrapper">
+                                  <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
-                                        Conteúdo
-                                    <form class="md-card-list-item-reply">
-                                        <label for="mailbox_reply_38">Campo exemplo</label>
-                                        <textarea class="md-input md-input-full" name="mailbox_reply_38" id="mailbox_reply_38" cols="30" rows="4"></textarea>
-                                            <div class="uk-grid" data-uk-grid-margin>
-                                                <div class="uk-width-1-1">
-                                                    <div id="form_invoice_services"></div>
-                                                    <div class="uk-text-center uk-margin-medium-top uk-margin-bottom">
-                                                        <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="invoice_form_append_service_btn">Executar Ação</a>
+                                        <!--                                O paciente mantém em funcionamento a empresa TecnoRádio conforme a legislação em vigor. Entretanto, vem sofrendo constantes ameaças de prisão e apreensão dos equipamentos sob o pálio de que a atividade é vedada pela lei 4.117/62. A esse respeito, já foi aberto pela autoridade policial o inquérito nº ou já foi denunciado pelo Ministério Público em 10/03/2015, sob a acusação de manter em funcionamento da empresa TecnoRádio, A rádio comunitária Suprema, que funciona há mais de 10 anos, utilizando da frequência 3.2 GHZ.
+                                        <Br />
+                                        <Br /> -->
+                                        <div class="md-card-content large-padding" style="padding: 0px 30px ">
+                                            <div class="uk-grid uk-grid-divider grid-block" data-uk-grid-margin>
+                                                <div class="uk-width-medium-1-2">
+                                                    <label class="uk-form-label uk-margin-bottom" for="hobbies"><strong>Partes do polo ativo:</strong></label>
+                                                    <div class="uk-form-row">
+                                                    <br />
+                                                        João da Silva <br />
+                                                        Coatora do Carmo <br />
+                                                        Impetrina da Rosa Santos <br />
+                                                        <span style="margin-left:20px;">ADV. (S) Salvador da Silva</span>
+                                                    </div>
+                                                </div>
+                                                <div class="uk-width-medium-1-2">
+                                                    <label class="uk-form-label uk-margin-bottom" for="hobbies"><strong>Partes do polo passivo:</strong></label>
+                                                    <div class="uk-form-row">
+                                                    <br />
+                                                        João da Silva <br />
+                                                        Maria do Carmo
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </div>                                      
+                                    </div>
+
+                                        <form action="" class="uk-form-stacked">
+                                            <div class="md-card-content large-padding">
+                                                <div class="uk-grid" data-uk-grid-margin>
+                                                    <div class="uk-width-medium-1-2">
+                                                        <label class="uk-form-label" for="selec_adv_1">Selecionar Classe:</label>
+                                                        <select id="selec_adv_1" name="selec_adv_1" multiple>
+                                                            <option value="">Manter ADC (Ação Declaratória de Inconstitucionalidade)...</option>
+                                                        </select>
+                                                    </div>
+                                                 
+                                                    <div class="uk-width-medium-1-2">
+                                                        <label class="uk-form-label uk-margin-bottom" for="hobbies">Aptidão da petição</label>
+                                                        <span class="icheck-inline">
+                                                            <input type="radio" name="invoice_due_date" id="invoice_due_date_7" data-md-icheck />
+                                                            <label for="invoice_due_date_7" class="inline-label">Válida</label>
+                                                        </span>
+                                                        <span class="icheck-inline">
+                                                            <input type="radio" name="invoice_due_date" id="invoice_due_date_14" data-md-icheck />
+                                                            <label for="invoice_due_date_14" class="inline-label">Inválida</label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="uk-grid" data-uk-grid-margin>
+                                                    <div class="uk-width-1-1">
+                                                        <div id="form_invoice_services"></div>
+                                                        <div class="uk-text-center uk-margin-medium-top uk-margin-bottom">
+                                                            <a href="#" class="md-btn md-btn-flat md-btn-flat-primary" id="invoice_form_append_service_btn">Autuar</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                    </form>
+                                        </form>
                                 </div>
                             </li>
                             <li>
@@ -421,7 +498,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Tomás Godoi</span>
                                     </div>
-                                    <span>Distribuir: ARE 2333</span></div>
+                                    <span class="clickable">Distribuir: ARE 2333 </span></div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
                                         Conteúdo
@@ -464,7 +541,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Paulo Vencio</span>
                                     </div>
-                                    <span class='md-card-list-item-readed'>Distribuir: RE 2342 <span class='uk-badge uk-badge-info'>RL Impedido</span></span> </div>
+                                    <span class='md-card-list-item-readed clickable'>Distribuir: RE 2342 <span class='uk-badge uk-badge-info'>RL Impedido</span></span> </div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
                                         Conteúdo
@@ -512,7 +589,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Lacyr Silva</span>
                                     </div>
-                                    <span class='md-card-list-item-readed'>Autuar: Petição 643 - Classe preliminar: ARE.</span>
+                                    <span class='md-card-list-item-readed clickable'>Autuar: Petição 643 - Classe preliminar: ARE. <span class="rascunho">Rascunho...</span></span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -557,7 +634,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>André von Glehn</span>
                                     </div>
-                                    <span class='md-card-list-item-readed'>Autuar: Petição 6436 - Classe preliminar: HC.</span>
+                                    <span class='md-card-list-item-readed clickable'>Autuar: Petição 6436 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -602,7 +679,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Flávia Paiva</span>
                                     </div>
-                                    <span class='md-card-list-item-readed'>Autuar: Petição 86786 - Classe preliminar: ADI.</span>
+                                    <span class='md-card-list-item-readed clickable'>Autuar: Petição 86786 - Classe preliminar: ADI.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -652,7 +729,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Vinícius Porto</span>
                                     </div>
-                                    <span>Autuar: Petição 342 - Classe preliminar: HC.</span>
+                                    <span class="clickable">Autuar: Petição 342 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -697,7 +774,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Ricardo Leonidas</span>
                                     </div>
-                                    <span>Autuar: Petição 655 - Classe preliminar: HC.</span>
+                                    <span class="clickable">Autuar: Petição 655 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -742,7 +819,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Paulo Soares</span>
                                     </div>
-                                    <span>Autuar: Petição 8756 - Classe preliminar: HC.</span>
+                                    <span class="clickable">Autuar: Petição 8756 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -787,7 +864,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Anderson Lima</span>
                                     </div>
-                                    <span>Distribuir: ARE 777 </span></div>
+                                    <span class="clickable">Distribuir: ARE 777 </span></div>
                                 <div class="md-card-list-item-content-wrapper">
                                     <div class="md-card-list-item-content">
                                         Conteúdo
@@ -830,7 +907,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Vinicius Kuhlmann</span>
                                     </div>
-                                    <span>Autuar: Petição 333 - Classe preliminar: HC.</span>
+                                    <span class="clickable">Autuar: Petição 333 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -875,7 +952,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Lucas Mariano</span>
                                     </div>
-                                    <span>Autuar: Petição 6665 - Classe preliminar: HC.</span>
+                                    <span class="clickable">Autuar: Petição 6665 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -920,7 +997,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Ricardo L.</span>
                                     </div>
-                                    <span>Autuar: Petição 6433 - Classe preliminar: HC.</span>
+                                    <span class="clickable">Autuar: Petição 6433 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -965,7 +1042,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Paulo Soares</span>
                                     </div>
-                                    <span>Autuar: Petição 3334 - Classe preliminar: HC.</span>
+                                    <span class="clickable">Autuar: Petição 3334 - Classe preliminar: HC.</span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -1010,7 +1087,7 @@
                                     <div class="md-card-list-item-sender-small">
                                         <span>Anderson Araújo</span>
                                     </div>
-                                    <span>Autuar: Petição 234235 - Classe preliminar: HC <span class='uk-badge uk-badge-danger'>Maior 65 anos</span></span>
+                                    <span class="clickable">Autuar: Petição 234235 - Classe preliminar: HC <span class='uk-badge uk-badge-danger'>Maior 65 anos</span></span>
                                     
                                 </div>
                                 <div class="md-card-list-item-content-wrapper">
@@ -1090,9 +1167,9 @@
     </script>
 
     <!-- common functions -->
-    <script src="assets/js/common.min.js"></script>
+    <script src="assets/js/common.js"></script>
     <!-- uikit functions -->
-    <script src="assets/js/uikit_custom.min.js"></script>
+    <script src="assets/js/uikit_custom.js"></script>
     <!-- altair common functions/helpers -->
     <script src="assets/js/altair_admin_common.min.js"></script>
 
@@ -1100,7 +1177,7 @@
 
     <!--  mailbox functions -->
     <script src="assets/js/pages/page_mailbox.min.js"></script>
-    
+
     <!-- ionrangeslider -->
     <script src="bower_components/ionrangeslider/js/ion.rangeSlider.min.js"></script>
     <!-- htmleditor (codeMirror) -->
