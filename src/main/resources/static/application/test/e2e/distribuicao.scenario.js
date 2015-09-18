@@ -60,14 +60,14 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #02');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #2');
 		});
 		
 
 		it('Deveria atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/02\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/2\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -77,18 +77,19 @@
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			principalPage.login('distribuidor');
-			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #02');
+		    principalPage.login('distribuidor');
+		    
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #2');
 		    
 		});
 
 		it('Deveria distribuir a petição autuada', function() {
+			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/02\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/2\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
@@ -97,14 +98,14 @@
 			distribuicaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-		});
+			
+			//Seta o papel recebedor
+			principalPage.login('recebedor');
+		}); 
 		
 		it('Deveria navegar para a página de envio de petições físicas', function() {
 			
 			principalPage = new PrincipalPage();
-			
-			//Seta o papel recebedor
-			principalPage.login('recebedor');
 			
 			// Iniciando o Processo de Remessa Físca
 			principalPage.iniciarProcessoFisico();
@@ -133,30 +134,65 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-autuar Processo #02');
+		   expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-autuar Processo #2');
 		});
 		
 
 		it('Deveria pré-atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/02\/preautuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/2\/preautuacao/);
 		    
-			PreautuacaoPage = new PreautuacaoPage();
+			var preautuacaoPage = new PreautuacaoPage();
 			
-			PreautuacaoPage.classificar('AP');
+			preautuacaoPage.classificar('AP');
 			
-			PreautuacaoPage.finalizar();
+			preautuacaoPage.finalizar();
+			
+			//Seta o papel autuador
+			principalPage.login('autuador');
+			
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+		    
+		});
+		
+		it('Deveria atuar como válida a petição física recebida', function() {
+		    principalPage.executarTarefa();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/2\/autuacao/);
+		    
+			var autuacaoPage = new AutuacaoPage();
+			
+			autuacaoPage.classificar('AP');
+			
+			autuacaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			principalPage.login('distribuidor');
-			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #02');
+		    principalPage.login('distribuidor');
 		    
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #2');
 		});
+		
+		it('Deveria distribuir a petição física autuada', function() {
+			
+		    principalPage.executarTarefa();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/2\/distribuicao/);
+
+			var distribuicaoPage = new DistribuicaoPage();
+			
+			distribuicaoPage.selecionar('Min. Roberto Barroso');
+			
+			distribuicaoPage.finalizar();
+		    
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			//Seta o papel recebedor
+			principalPage.login('recebedor');
+		}); 
 		
 
 	});
