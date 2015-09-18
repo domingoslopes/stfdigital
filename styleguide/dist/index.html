@@ -321,13 +321,12 @@
                                             <div class="md-card-content large-padding">
                                                 <div class="uk-grid" data-uk-grid-margin>
                                                     <div class="uk-width-medium-1-2">
-                                                        <label class="uk-form-label" for="hobbies">Selecionar Classe:</label>
-                                                        <div class="uk-input-group">
-                                                            <span class="uk-input-group-addon"><i class="uk-input-group-icon uk-icon-calendar"></i></span>
-                                                            <label for="invoice_dp">Select date</label>
-                                                            <input class="md-input" type="text" id="invoice_dp" value="" data-uk-datepicker="{format:'DD.MM.YYYY'}">
-                                                        </div>
+                                                        <label class="uk-form-label" for="selec_adv_2">Selecionar Classe:</label>
+                                                        <select id="selec_adv_2" name="selec_adv_2" multiple>
+                                                            <option value="">Manter HC (Habeas Corpus)...</option>
+                                                        </select>
                                                     </div>
+                                                 
                                                     <div class="uk-width-medium-1-2">
                                                         <label class="uk-form-label uk-margin-bottom" for="hobbies">Aptidão da petição</label>
                                                         <span class="icheck-inline">
@@ -1102,6 +1101,12 @@
     <!--  mailbox functions -->
     <script src="assets/js/pages/page_mailbox.min.js"></script>
     
+    <!-- ionrangeslider -->
+    <script src="bower_components/ionrangeslider/js/ion.rangeSlider.min.js"></script>
+    <!-- htmleditor (codeMirror) -->
+    <!--  forms advanced functions -->
+    <script src="assets/js/pages/forms_advanced.js"></script>
+
     <script>
         $(function() {
             // enable hires images
