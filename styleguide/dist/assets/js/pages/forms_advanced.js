@@ -131,9 +131,49 @@ altair_form_adv = {
             labelField: 'name',
             searchField: ['name', 'email'],
             options: [
-                {email: 'brian@thirdroute.com', name: 'Brian Reavis'},
-                {email: 'nikola@tesla.com', name: 'Nikola Tesla'},
-                {email: 'someone@gmail.com'}
+                {email: 'Ação Direta de Inconstitucionalidade', name: 'ADI'},
+                {email: 'AÇÃO CAUTELAR', name: 'AC'},
+                {email: 'AÇÃO CÍVEL ORIGINÁRIA', name: 'ACO'},
+                {email: 'AÇÃO DECLARATÓRIA DE CONSTITUCIONALIDADE', name: 'ADC'},
+                {email: 'AÇÃO DIRETA DE INCONSTITUCIONALIDADE', name: 'ADI'},
+                {email: 'AÇÃO DIRETA DE INCONSTITUCIONALIDADE POR OMISSÃO', name: 'ADO'},
+                {email: 'ARGÜIÇÃO DE DESCUMPRIMENTO DE PRECEITO FUNDAMENTAL', name: 'ADPF'},
+                {email: 'AGRAVO DE INSTRUMENTO', name: 'AI'},
+                {email: 'ARGÜIÇÃO DE IMPEDIMENTO', name: 'AImp'},
+                {email: 'AÇÃO ORIGINÁRIA', name: 'AO'},
+                {email: 'AÇÃO ORIGINÁRIA ESPECIAL', name: 'AOE'},
+                {email: 'AÇÃO PENAL', name: 'AP'},
+                {email: 'AÇÃO RESCISÓRIA', name: 'AR'},
+                {email: 'RECURSO EXTRAORDINÁRIO COM AGRAVO', name: 'ARE'},
+                {email: 'ARGÜIÇÃO DE SUSPEIÇÃO', name: 'AS'},
+                {email: 'CONFLITO DE COMPETÊNCIA', name: 'CC'},
+                {email: 'COMUNICAÇÃO', name: 'Cm'},
+                {email: 'EXCEÇÃO DE INCOMPETÊNCIA', name: 'EI'},
+                {email: 'EXCEÇÃO DE LITISPENDÊNCIA', name: 'EL'},
+                {email: 'EXECUÇÃO PENAL', name: 'EP'},
+                {email: 'EXTRADIÇÃO', name: 'Ext'},
+                {email: 'HABEAS CORPUS', name: 'HC'},
+                {email: 'HABEAS DATA', name: 'HD'},
+                {email: 'INTERVENÇÃO FEDERAL', name: 'IF'},
+                {email: 'INQUÉRITO', name: 'Inq'},
+                {email: 'MANDADO DE INJUNÇÃO', name: 'MI'},
+                {email: 'MANDADO DE SEGURANÇA', name: 'MS'},
+                {email: 'OPOSIÇÃO EM AÇÃO CIVIL ORIGINÁRIA', name: 'OACO'},
+                {email: 'PETIÇÃO', name: 'Pet'},
+                {email: 'PRISÃO PREVENTIVA PARA EXTRADIÇÃO', name: 'PPE'},
+                {email: 'PROPOSTA DE SÚMULA VINCULANTE', name: 'PSV'},
+                {email: 'RECURSO CRIME', name: 'RC'},
+                {email: 'RECLAMAÇÃO', name: 'Rcl'},
+                {email: 'RECURSO EXTRAORDINÁRIO', name: 'RE'},
+                {email: 'RECURSO ORDINÁRIO EM HABEAS CORPUS', name: 'RHC'},
+                {email: 'RECURSO ORDINÁRIO EM HABEAS DATA', name: 'RHD'},
+                {email: 'RECURSO ORDINÁRIO EM MANDADO DE INJUNÇÃO', name: 'RMI'},
+                {email: 'RECURSO ORD. EM MANDADO DE SEGURANÇA', name: 'RMS'},
+                {email: 'REVISÃO CRIMINAL', name: 'RvC'},
+                {email: 'SENTENÇA ESTRANGEIRA CONTESTADA', name: 'SEC'},
+                {email: 'SUSPENSÃO DE LIMINAR', name: 'SL'},
+                {email: 'SUSPENSÃO DE SEGURANÇA', name: 'SS'},
+                {email: 'SUSPENSÃO DE TUTELA ANTECIPADA', name: 'STA'},
             ],
             render: {
                 item: function(item, escape) {
@@ -146,7 +186,7 @@ altair_form_adv = {
                     var label = item.name || item.email;
                     var caption = item.name ? item.email : null;
                     return '<div>' +
-                        '<span class="label">' + escape(label) + '</span>' +
+                        '<span class="label">' + escape(label) + ' - </span>' +
                         (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
                         '</div>';
                 }

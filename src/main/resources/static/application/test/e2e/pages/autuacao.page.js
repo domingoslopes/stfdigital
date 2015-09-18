@@ -7,6 +7,8 @@
 /*jshint undef:false */
 (function() {
 	'use strict';
+	
+	
 
 	var AutuacaoPage = function () {
 		
@@ -20,12 +22,12 @@
 		    var classes = element.all(by.css('.select2-results-dept-0'));
 		    
 		    classes.first().click();
+		    
 		};
 		
 		this.finalizar = function() {
-			element(by.id('botaoAutuar')).click();
 			
-		    browser.waitForAngular();
+			element(by.id('botaoAutuar')).click();
 		};
 		
 	};
