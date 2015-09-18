@@ -33,7 +33,6 @@ import br.jus.stf.autuacao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.commands.RegistrarPeticaoFisicaCommand;
-import br.jus.stf.autuacao.interfaces.commands.RejeitarPeticaoCommand;
 import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDistribuidoDto;
 import br.jus.stf.autuacao.interfaces.facade.PeticaoServiceFacade;
