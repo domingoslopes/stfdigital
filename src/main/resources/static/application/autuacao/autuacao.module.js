@@ -25,8 +25,8 @@
 			}
 		}).state('registro', {
 			url: '/peticao/fisica',
-			sticky : true,
-			deepStateRedirect : true,
+			/*sticky : true,
+			deepStateRedirect : true,*/
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/registro/registro.tpl.html',

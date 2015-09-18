@@ -37,8 +37,8 @@
 				return $http.post(properties.apiUrl + '/peticao/fisica', registrarCommand);
 			},
 			
-			preautuar : function(id, preuatuarCommand){
-				return $http.post(properties.apiUrl + '/peticao/' + id + '/preautucao', preautuarCommand);
+			preautuar : function(id, classe){
+				return $http.post(properties.apiUrl + '/peticao/' + id + '/preautuacao', JSON.stringify(classe));
 			}
 			
 		};
