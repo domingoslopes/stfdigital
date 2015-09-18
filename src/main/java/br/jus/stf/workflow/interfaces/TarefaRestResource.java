@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -29,7 +30,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @since 23.06.2015
  */
 @RestController
-@RequestMapping("/api/workflow/tarefas")
+@RequestMapping("/api")
 public class TarefaRestResource {
 	
 	@Autowired
@@ -42,8 +43,9 @@ public class TarefaRestResource {
 	private Validator validator;
     
     @ApiOperation(value = "Lista todas as tarefas associadas ao papel do usuário corrente")
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<TarefaDto> tarefas(@RequestHeader("papel") String papel) {    	
+	@RequestMapping(value = "/tarefas", method = RequestMethod.GET)
+	public List<TarefaDto> tarefas(@RequestHeader("papel") String papel) {
+    	System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         return tarefaApplicationService.listar(papel).stream()
         		.map(tarefa -> tarefaDtoAssembler.toDto(tarefa))
         		.collect(Collectors.toList());
