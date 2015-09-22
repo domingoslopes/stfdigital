@@ -27,10 +27,11 @@ public class PeticaoEletronica extends Peticao {
 		Validate.notEmpty(partes, "peticao.partes.notEmpty");
 		Validate.notEmpty(documentos, "peticao.documentos.notEmpty");
 	
-		this.classeSugerida = classeSugerida;
-		this.partes.addAll(partes);
-		this.documentos.addAll(documentos);
+		super.sugerirClasse(classeSugerida);
+		partes.forEach(parte -> super.adicionarParte(parte));
+		documentos.forEach(documento -> super.adicionarDocumento(documento));
 	}
+	
 	PeticaoEletronica() {
 		
 	}

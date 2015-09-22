@@ -17,10 +17,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
+import scala.collection.mutable.StringBuilder;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
@@ -36,11 +38,9 @@ import br.jus.stf.shared.domain.stereotype.Entity;
 @javax.persistence.Entity
 @Table(name = "PROCESSO", schema = "AUTUACAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_CLASSE", "NUM_PROCESSO"}))
-public class Processo implements Entity<Processo> {
+public class Processo implements Entity<Processo, ProcessoId> {
 
 	@EmbeddedId
-	@AttributeOverride(name = "id",
-		column = @Column(name = "SEQ_PROCESSO", insertable = false, updatable = false))
 	private ProcessoId id;
 	
 	@Embedded
@@ -50,11 +50,10 @@ public class Processo implements Entity<Processo> {
 	private Long numero;
 	
 	@Embedded
-	@AttributeOverride(name = "id",
+	@AttributeOverride(name = "codigo",
 		column = @Column(name = "COD_MINISTRO_RELATOR"))
 	private MinistroId relator;
 
-	
 	@Embedded
 	private PeticaoId peticao;
 	
@@ -68,6 +67,9 @@ public class Processo implements Entity<Processo> {
 			joinColumns = @JoinColumn(name = "SEQ_PROCESSO"))
 	private Set<DocumentoId> pecas = new TreeSet<DocumentoId>(
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
+	
+	@Transient
+	private String identificacao;
 
 	/**
 	 * @param classe
@@ -94,6 +96,7 @@ public class Processo implements Entity<Processo> {
 		this.peticao = peticao;
 		this.partes.addAll(partes);
 		this.pecas.addAll(pecas);
+		this.identificacao = montarIdentificacao();
 	}
 
 	public ProcessoId id() {
@@ -173,11 +176,7 @@ public class Processo implements Entity<Processo> {
 	}
 	
 	public String identificacao() {
-		return new StringBuilder()
-				.append(classe.toString())
-				.append(" ")
-				.append(numero)
-				.toString();
+		return identificacao;
 	}
 	
 	@Override
@@ -200,6 +199,11 @@ public class Processo implements Entity<Processo> {
 	@Override
 	public boolean sameIdentityAs(Processo other) {
 		return other != null && this.id.sameValueAs(other.id);
+	}
+	
+	private String montarIdentificacao() {
+		return new StringBuilder()
+			.append(classe.toString()).append(numero).toString();
 	}
 	
 	// Hibernate

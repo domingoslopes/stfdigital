@@ -4,6 +4,11 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +41,9 @@ public class ActionService {
 	
 	@Autowired
 	private ActionMappingRegistry mappingRegistry;
+	
+	@Autowired
+	private Validator validator;
 
 	/**
 	 * Retorna a lista de ações de ações registradas.
@@ -70,7 +78,7 @@ public class ActionService {
 		
 		ActionMappingInfo actionInfo = mappingRegistry.findRegisteredActionsById(id);
 		List<?> converted = convertResources(resources, actionInfo);
-		Class<?> controllerClass = actionInfo.getControllerClass(); 
+		Class<?> controllerClass = actionInfo.getControllerClass();
 		
 		if (isAllowed(actionInfo, converted)) {
 			try {
@@ -105,15 +113,29 @@ public class ActionService {
 	 * @return true, se a ação pode ser listada ou executada, false, caso contrário
 	 */
 	private boolean isAllowed(ActionMappingInfo actionInfo, List<?> resources) {
+		Optional.ofNullable(resources)
+			.filter(res -> res.size() > 0)
+			.ifPresent(res -> validarRecursos(res));
 		
 		if (!actionInfo.isValidResourceMode(resources) || !actionInfo.hasNeededAuthorities()) {
 			return false;
-		}
-			
+		}	
 		for (ActionConditionHandlerInfo handlerInfo : actionInfo.getActionHandlersInfo()) {
 			return matches(handlerInfo, resources);
 		}
 		return true;
+	}
+
+	/**
+	 * Valida os recursos com bean validation
+	 * 
+	 * @param resources
+	 */
+	private void validarRecursos(List<?> resources) {
+		Set<ConstraintViolation<List<?>>> violations = validator.validate(resources);
+		if (!violations.isEmpty()) {
+			throw new IllegalArgumentException(violations.toString());
+		}
 	}
 
 	/**
