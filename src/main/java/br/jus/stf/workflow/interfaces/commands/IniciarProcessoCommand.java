@@ -13,6 +13,9 @@ public class IniciarProcessoCommand {
 
 	@NotBlank
 	private String mensagem;
+	
+	@NotBlank
+	private String status;
 		
 	/**
 	 * @param mensagem
@@ -26,6 +29,20 @@ public class IniciarProcessoCommand {
 	 */
 	public String getMensagem() {
 		return this.mensagem;
+	}
+	
+	/**
+	 * @param status
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return this.status;
 	}
 	
 }

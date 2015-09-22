@@ -2,7 +2,8 @@ package br.jus.stf.workflow.domain.model;
 
 import java.util.List;
 
-import org.activiti.engine.task.Task;
+import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
+import br.jus.stf.shared.domain.model.TarefaId;
 
 /**
  * @author Rodrigo Barreiros
@@ -12,13 +13,35 @@ import org.activiti.engine.task.Task;
  */
 public interface TarefaRepository {
 
-	void completar(String taskId);
+	/**
+	 * Completa uma tarefa informando um status
+	 * 
+	 * @param tarefa
+	 * @param status
+	 */
+	void completar(Tarefa tarefa, String status);
 
-	List<Task> listar(String papel);
+	/**
+	 * Lista as tarefas de um papel
+	 * 
+	 * @param papel
+	 * @return
+	 */
+	List<Tarefa> listar(String papel);
 	
-	void sinalizar(String sinal, String executionId);
-	
-	Task consultarPorProcesso(String idProcesso);
-	
-	Task consultar(String taskId);
+	/**
+	 * Consulta uma tarefa
+	 * 
+	 * @param id
+	 * @return
+	 */
+	Tarefa consultar(TarefaId id);
+
+	/**
+	 * Consulta a última tarefa por processo
+	 * 
+	 * @param id
+	 * @return
+	 */
+	Tarefa consultarPorProcesso(ProcessoWorkflowId id);
 }

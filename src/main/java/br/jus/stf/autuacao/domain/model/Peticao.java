@@ -21,10 +21,12 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
+import scala.collection.mutable.StringBuilder;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
@@ -42,11 +44,9 @@ import br.jus.stf.shared.domain.stereotype.Entity;
 @DiscriminatorColumn(name = "TIP_MEIO_PETICAO")
 @Table(name = "PETICAO", schema = "AUTUACAO",
 	uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
-public abstract class Peticao implements Entity<Peticao> {
+public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 
 	@EmbeddedId
-	@AttributeOverride(name = "id", 
-		column = @Column(name = "SEQ_PETICAO", nullable = false, updatable = false))
 	private PeticaoId id;
 	
 	@Column(name = "NUM_PETICAO", nullable = false, updatable = false)
@@ -56,10 +56,26 @@ public abstract class Peticao implements Entity<Peticao> {
 	private Integer ano;
 	
 	@Embedded
+	@AttributeOverride(name = "sigla",
+		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
+	private ClasseId classeSugerida;
+	
+	@Embedded
 	private ClasseId classeProcessual;
 	
 	@Column(name = "DSC_MOTIVO_REJEICAO")
 	private String motivoRejeicao;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
+			targetEntity = PartePeticao.class)
+	@JoinColumn(name = "SEQ_PETICAO")
+	private Set<Parte> partes = new HashSet<Parte>(0);
+		
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PETICAO_DOCUMENTO", schema = "AUTUACAO",
+		joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
+			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO",
@@ -67,22 +83,9 @@ public abstract class Peticao implements Entity<Peticao> {
 	private Set<ProcessoWorkflowId> processosWorkflow = new TreeSet<ProcessoWorkflowId>(
 			(p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 	
-	@Embedded
-	@AttributeOverride(name = "sigla",
-		column = @Column(name = "SIG_CLASSE_SUGERIDA"))
-	protected ClasseId classeSugerida;
-	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,
-		targetEntity = PartePeticao.class)
-	@JoinColumn(name = "SEQ_PETICAO")
-	protected Set<Parte> partes = new HashSet<Parte>(0);
-	
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PETICAO_DOCUMENTO", schema = "AUTUACAO",
-		joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
-	protected Set<DocumentoId> documentos = new TreeSet<DocumentoId>(
-			(d1, d2) -> d1.toLong().compareTo(d2.toLong()));
-	
+	@Transient
+	private String identificacao;
+
 	public Peticao(final PeticaoId id, final Long numero) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
@@ -90,18 +93,23 @@ public abstract class Peticao implements Entity<Peticao> {
 		this.id = id;
 		this.numero = numero;
 		this.ano = Calendar.getInstance().get(Calendar.YEAR);
+		this.identificacao = montarIdentificacao();
 	}
 
 	public PeticaoId id() {
 		return this.id;
 	}
 	
+	public Long numero() {
+		return numero;
+	}
+	
+	public Short ano() {
+		return ano.shortValue();
+	}
+	
 	public String identificacao() {
-		return new StringBuilder()
-				.append(numero)
-				.append("/")
-				.append(ano)
-				.toString();
+		return identificacao;
 	}
 
 	public ClasseId classeSugerida() {
@@ -180,7 +188,7 @@ public abstract class Peticao implements Entity<Peticao> {
 	 */
 	public void aceitar(final ClasseId classeProcessual) {
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
-	
+
 		this.classeProcessual = classeProcessual;
 	}
 
@@ -201,16 +209,8 @@ public abstract class Peticao implements Entity<Peticao> {
 	 */
 	public Processo distribuir(final MinistroId relator) {
 		Validate.notNull(relator, "peticao.ministroRelator.required");
-
-		Set<DocumentoId> documentos = Collections.emptySet();
 		
-		if (getClass().equals(PeticaoEletronica.class)) {
-			documentos = ((PeticaoEletronica) this).documentos();
-		}
-		Set<ParteProcesso> partesProcesso = new HashSet<ParteProcesso>();
-		partes.stream().forEach(parte -> partesProcesso.add(new ParteProcesso(parte.pessoaId(), parte.polo())));
-		
-		return ProcessoFactory.criarProcesso(classeProcessual, relator, id, partesProcesso, documentos);
+		return ProcessoFactory.criarProcesso(classeProcessual, relator, this);
 	}
 
 	public Set<ProcessoWorkflowId> processosWorkflow() {
@@ -225,6 +225,21 @@ public abstract class Peticao implements Entity<Peticao> {
 		Validate.notNull(processoWorkflowId, "peticao.processoWorkflowId.required");
 	
 		this.processosWorkflow.add(processoWorkflowId);
+	}
+	
+	public boolean isEletronica() {
+		return this.getClass().equals(PeticaoEletronica.class);
+	}
+	
+	/**
+	 * Sugestão de classe
+	 * 
+	 * @param classeSugerida
+	 */
+	protected void sugerirClasse(final ClasseId classeSugerida) {
+		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
+		
+		this.classeSugerida = classeSugerida;
 	}
 
 	@Override
@@ -248,9 +263,14 @@ public abstract class Peticao implements Entity<Peticao> {
 	public boolean sameIdentityAs(Peticao other){
 		return other != null && this.id.sameValueAs(other.id);
 	}
+	
+	private String montarIdentificacao() {
+		return new StringBuilder()
+			.append(numero).append("/").append(ano).toString();
+	}
 
 	// Hibernate
-	
+
 	Peticao() {
 		
 	}

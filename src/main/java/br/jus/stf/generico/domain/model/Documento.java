@@ -2,7 +2,6 @@ package br.jus.stf.generico.domain.model;
 
 import java.sql.Blob;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Lob;
@@ -20,11 +19,9 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "DOCUMENTO", schema = "CORPORATIVO")
-public class Documento implements Entity<Documento> {
+public class Documento implements Entity<Documento, DocumentoId> {
 
 	@EmbeddedId
-	@AttributeOverride(name = "id",
-		column = @Column(name = "SEQ_DOCUMENTO", insertable = false, updatable = false))
 	private DocumentoId id;
 	
 	@Lob

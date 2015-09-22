@@ -3,6 +3,8 @@ package br.jus.stf.workflow.interfaces.dto;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.workflow.domain.model.Tarefa;
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -12,8 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TarefaDtoAssembler {
 
-	public TarefaDto toDto(Task task) {
-		return new TarefaDto(task.getId(), task.getTaskDefinitionKey(), task.getName(), task.getProcessInstanceId());
+	public TarefaDto toDto(Tarefa tarefa) {
+		Task task = tarefa.definicao();
+		Long id = tarefa.id().toLong();
+		Long processo = Long.parseLong(task.getProcessInstanceId());
+		return new TarefaDto(id, task.getTaskDefinitionKey(), task.getName(), processo);
 	}
 
 }

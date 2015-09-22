@@ -39,7 +39,7 @@ public class PartePeticao extends Parte {
 	@Column(name = "SEQ_PETICAO_PARTE")
 	@SequenceGenerator(name = "PETICAOPARTEID", sequenceName = "AUTUACAO.SEQ_PETICAO_PARTE", allocationSize = 1)
 	@GeneratedValue(generator = "PETICAOPARTEID", strategy=GenerationType.SEQUENCE)
-	private Long id;
+	private Long sequencial;
 	
 	PartePeticao() {
 		

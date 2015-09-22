@@ -1,20 +1,12 @@
 package br.jus.stf.autuacao.domain;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-
-import br.jus.stf.autuacao.infra.ProcessoRestAdapter;
+import br.jus.stf.autuacao.infra.ProcessoWorkflowRestAdapter;
 import br.jus.stf.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 
@@ -28,14 +20,11 @@ import br.jus.stf.workflow.interfaces.dto.TarefaDto;
  */
 public class PeticaoServiceUnitTests {
 	
-	private static final TarefaDto PREAUTUAR = new TarefaDto("", "", "", "");
+	private static final TarefaDto PREAUTUAR = new TarefaDto(1L, "", "", 1L);
 	private static final String RECEBEDORES = "recebedores";
  
-    @InjectMocks
-    private PeticaoService peticaoService;
- 
     @Spy
-    private ProcessoRestAdapter processoAdapter;
+    private ProcessoWorkflowRestAdapter processoWorkflowRestAdapter;
  
     @Mock
     private TarefaRestResource tarefaService;

@@ -41,7 +41,7 @@ public class GenericoApplicationService {
 	public List<Pessoa> cadastrarPessoas(List<String> pessoas) {
 		return pessoas.stream()
 				.map(nome -> {
-					PessoaId id = pessoaRepository.nextPessoaId();
+					PessoaId id = pessoaRepository.nextId();
 					Pessoa pessoa = new Pessoa(id, nome);
 					return pessoaRepository.save(pessoa);
 				})

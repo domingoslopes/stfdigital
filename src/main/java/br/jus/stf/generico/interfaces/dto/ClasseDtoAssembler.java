@@ -16,6 +16,6 @@ public class ClasseDtoAssembler {
 	
 	public ClasseDto toDto(Classe classe) {
 		Validate.notNull(classe);
-		return new ClasseDto(classe.sigla().toString(), classe.nome());
+		return new ClasseDto(classe.id().toString(), classe.nome());
 	}
 }

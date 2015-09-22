@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.domain.model;
 
+
 /**
  * @author Lucas.Rodrigues
  *
