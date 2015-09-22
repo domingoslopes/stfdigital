@@ -18,23 +18,28 @@ public class PessoaId implements ValueObject<PessoaId> {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "SEQ_PESSOA", nullable = false)
-	private Long id;
+	private Long sequencial;
 
-	public PessoaId(final Long id){
-		Validate.notNull(id, "pessoaId.id.required");
+	public PessoaId(final Long sequencial){
+		Validate.notNull(sequencial, "pessoaId.sequencial.required");
 		
-		this.id = id;
+		this.sequencial = sequencial;
 	}
 
 	public Long toLong(){
-		return id;
+		return sequencial;
 	}
+	
+	@Override
+	public String toString(){
+		return sequencial.toString();
+	}	
 	
 	@Override
 	public int hashCode(){
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
 		return result;
 	}
 
@@ -49,11 +54,7 @@ public class PessoaId implements ValueObject<PessoaId> {
 
 	@Override
 	public boolean sameValueAs(final PessoaId other){
-		return other != null && this.id.equals(other.id);
-	}
-
-	public String toString(){
-		return id.toString();
+		return other != null && this.sequencial.equals(other.sequencial);
 	}
 	
 	//Hibernate

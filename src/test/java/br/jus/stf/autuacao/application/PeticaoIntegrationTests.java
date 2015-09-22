@@ -1,18 +1,10 @@
 package br.jus.stf.autuacao.application;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.activiti.engine.task.Task;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import br.jus.stf.AbstractIntegrationTests;
 import br.jus.stf.autuacao.interfaces.facade.PeticaoServiceFacade;
-import br.jus.stf.workflow.application.TarefaApplicationService;
 
 /**
  * Teste de integração do processo de peticionamento.
@@ -22,6 +14,7 @@ import br.jus.stf.workflow.application.TarefaApplicationService;
  * @since 1.0.0
  * @since 19.08.2015
  */
+@Ignore
 public class PeticaoIntegrationTests extends AbstractIntegrationTests {
 	
 	@Autowired

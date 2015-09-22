@@ -14,31 +14,31 @@
 			},
 			
 			peticionar : function(peticionarCommand) {
-				return $http.post(properties.apiUrl + '/peticao', peticionarCommand);
+				return $http.post(properties.apiUrl + '/peticoes', peticionarCommand);
 			},
 			
-			consultarPeticaoEletronica : function(id) {
-				return $http.get(properties.apiUrl + '/peticao/' + id);
+			consultarPeticao : function(peticaoId) {
+				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId);
 			},
 			
-			consultarPeticaoFisica: function(id) {
-				return $http.get(properties.apiUrl + '/peticao/fisica/' + id);
+			autuar : function(autuarCommand) {
+				return $http.post(properties.apiUrl + '/peticoes/' + autuarCommand.peticaoId + '/autuar', autuarCommand);
 			},
 			
-			autuar : function(id, autuarCommand) {
-				return $http.post(properties.apiUrl + '/peticao/' + id + '/autuacao', autuarCommand);
+			distribuir : function(distribuirCommand) {
+				return $http.post(properties.apiUrl + '/peticoes/' + distribuirCommand.peticaoId + '/distribuir', distribuirCommand);
 			},
 			
-			distribuir : function(id, relator) {
-				return $http.post(properties.apiUrl + '/peticao/' + id + '/distribuicao', JSON.stringify(relator));
+			devolver : function(devolverCommand) {
+				return $http.post(properties.apiUrl + '/peticoes/' + devolverCommand.peticaoId + '/devolver', devolverCommand);
 			},
 			
 			registrar : function(registrarCommand){
-				return $http.post(properties.apiUrl + '/peticao/fisica', registrarCommand);
+				return $http.post(properties.apiUrl + '/peticoes/fisicas', registrarCommand);
 			},
 			
-			preautuar : function(id, classe){
-				return $http.post(properties.apiUrl + '/peticao/' + id + '/preautuacao', JSON.stringify(classe));
+			preautuar : function(preautuarCommand){
+				return $http.post(properties.apiUrl + '/peticoes/fisicas/' + preautuarCommand.peticaoId + '/preautuar', preautuarCommand);
 			}
 			
 		};

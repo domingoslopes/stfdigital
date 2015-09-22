@@ -12,6 +12,9 @@ public class SinalizarCommand {
 
 	@NotBlank
 	private String sinal;
+	
+	@NotBlank
+	private String status;
 
 	public void setSinal(String sinal) {
 		this.sinal = sinal;
@@ -21,4 +24,12 @@ public class SinalizarCommand {
 		return sinal;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 }

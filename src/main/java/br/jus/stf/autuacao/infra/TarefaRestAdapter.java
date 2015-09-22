@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.TarefaAdapter;
+import br.jus.stf.autuacao.domain.model.Peticao;
+import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
 import br.jus.stf.workflow.interfaces.TarefaRestResource;
-import br.jus.stf.workflow.interfaces.commands.SinalizarCommand;
+import br.jus.stf.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 
 /**
@@ -18,30 +20,39 @@ import br.jus.stf.workflow.interfaces.dto.TarefaDto;
 public class TarefaRestAdapter implements TarefaAdapter {
 
 	@Autowired
-	private TarefaRestResource tarefaRestService;
+	private TarefaRestResource tarefaRestResource;
 
 	@Override
-	public void completar(String id) {
-		tarefaRestService.completar(id);
+	public void completarAutuacao(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.ACEITA);		
 	}
 
 	@Override
-	public void sinalizar(String sinal, String taskId) {
-		SinalizarCommand command = new SinalizarCommand();
-		command.setSinal(sinal);
-
-		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
-		tarefaRestService.sinalizar(taskId, command);
+	public void completarPreautuacao(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.A_AUTUAR);
 	}
-	
+
 	@Override
-	public TarefaDto consultarPorProcesso(String idProcesso){
-		return this.tarefaRestService.consultarPorProcesso(idProcesso);
+	public void completarDistribuicao(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.DISTRIBUIDA);	
 	}
 	
 	@Override
-	public TarefaDto consultar(String id){
-		return this.tarefaRestService.consultar(id);
+	public void completarDevolucao(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.DEVOLVIDA);
+	}
+	
+	/**
+	 * Completa uma tarefa do processo com um status
+	 * 
+	 * @param processoWorkflowId
+	 */
+	private void completarTarefaPorProcesso(Peticao peticao, PeticaoStatus status) {
+		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
+		CompletarTarefaCommand command = new CompletarTarefaCommand();
+		command.setStatus(status.toString());
+		TarefaDto dto = tarefaRestResource.consultarPorProcesso(id.toLong());
+		tarefaRestResource.completar(dto.getId(), command);
 	}
 
 }

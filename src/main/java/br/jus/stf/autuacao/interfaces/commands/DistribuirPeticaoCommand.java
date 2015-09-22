@@ -16,17 +16,17 @@ public class DistribuirPeticaoCommand {
 	
 	@NotNull
 	@ApiModelProperty(value = "Id da petição física registrada.", required=true)
-	private Long idPeticao;
+	private Long peticaoId;
 	
 	@NotNull
 	@ApiModelProperty(value = "O ministro sorteado para relatar o processo resultado da petição recebida", required=true)
-	private Long idRelator;
+	private Long ministroId;
 
-	public Long getIdPeticao() {
-		return this.idPeticao;
+	public Long getPeticaoId() {
+		return this.peticaoId;
 	}
 	
-	public Long getIdRelator() {
-		return idRelator;
+	public Long getMinistroId() {
+		return ministroId;
 	}
 }

@@ -3,7 +3,6 @@ package br.jus.stf;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,7 +17,6 @@ import br.jus.stf.plataforma.settings.Profiles;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
 @WebIntegrationTest
-//@IntegrationTest
 @ActiveProfiles(Profiles.DESENVOLVIMENTO)
 public abstract class AbstractIntegrationTests {
 

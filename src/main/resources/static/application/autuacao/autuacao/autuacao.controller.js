@@ -52,13 +52,9 @@
 
     	function AutuarCommand(classe, valida, motivo){
     		var dto = {};
-    		
-    		dto.classe = classe;
-    		
+    		dto.classeId = classe;
     		dto.valida = valida;
-    		
     		dto.motivo = motivo;
-    		
     		return dto;
     	}
 		
