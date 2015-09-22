@@ -24,7 +24,7 @@
 		};
 		
 		function DevolverCommand(peticaoId) {
-			vat dto = {};
+			var dto = {};
 			dto.peticaoId = peticaoId;
 			return dto;
 		}
