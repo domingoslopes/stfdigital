@@ -56,7 +56,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 		InputStream stream = docTemp.stream();
 		long tamanho = docTemp.tamanho();
 		
-		DocumentoId id = nextDocumentoId();
+		DocumentoId id = nextId();
 		Blob conteudo = session.getLobHelper().createBlob(stream, tamanho);
 				
 		Documento documento = super.save(new Documento(id, conteudo));
@@ -74,7 +74,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	}
 
 	@Override
-	public DocumentoId nextDocumentoId() {
+	public DocumentoId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT CORPORATIVO.SEQ_DOCUMENTO.NEXTVAL FROM DUAL");
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new DocumentoId(sequencial);

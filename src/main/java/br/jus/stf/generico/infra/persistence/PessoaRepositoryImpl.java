@@ -35,7 +35,7 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 	}
 
 	@Override
-	public PessoaId nextPessoaId() {
+	public PessoaId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT CORPORATIVO.SEQ_PESSOA.NEXTVAL FROM DUAL");
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new PessoaId(sequencial);

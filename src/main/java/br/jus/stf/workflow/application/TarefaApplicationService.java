@@ -1,17 +1,12 @@
 package br.jus.stf.workflow.application;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
-import br.jus.stf.workflow.domain.model.ProcessoRepository;
-import br.jus.stf.workflow.domain.model.ProcessoWorkflowRepository;
+import br.jus.stf.workflow.domain.model.ProcessoWokflowRepository;
+import br.jus.stf.workflow.domain.model.Tarefa;
 import br.jus.stf.workflow.domain.model.TarefaRepository;
 
 /**
@@ -28,36 +23,17 @@ public class TarefaApplicationService {
 	private TarefaRepository tarefaRepository;
 	
 	@Autowired
-	private ProcessoRepository processoRepository;
-	
-	@Autowired
-	private ProcessoWorkflowRepository processoWorkflowRepository;
+	private ProcessoWokflowRepository processoWorkflowRepository;
 
-	public List<Task> listar(String papel) {
-		return tarefaRepository.listar(papel);
-	}
-
-	public void completar(String taskId) {
-		
-		Task task = consultar(taskId);
-		ProcessInstance processInstance = processoRepository.consultar(task.getProcessInstanceId());
-		String status = (String) processInstance.getProcessVariables().get("status");
-		ProcessoWorkflowId id = new ProcessoWorkflowId(processInstance.getId());
-		processoWorkflowRepository.updateStatus(id, status);
-		
-		tarefaRepository.completar(taskId);
+	/**
+	 * Completa uma tarefa com um status
+	 * 
+	 * @param tarefa
+	 * @param status
+	 */
+	public void completar(Tarefa tarefa, String status) {
+		tarefaRepository.completar(tarefa, status);
+		processoWorkflowRepository.updateStatus(tarefa.processo(), status);
 	}
 	
-	public void sinalizar(String sinal, String taskId){
-		Task task = consultar(taskId);
-		this.tarefaRepository.sinalizar(sinal, task.getExecutionId());
-	}
-
-	public Task consultarPorProcesso(String idProcesso) {
-		return tarefaRepository.consultarPorProcesso(idProcesso);
-	}
-	
-	public Task consultar(String taskId){
-		return tarefaRepository.consultar(taskId);
-	}
 }

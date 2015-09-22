@@ -45,6 +45,6 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 */
 	public String storeTemp(DocumentoTemporario documentoTemporario);
 	
-	public DocumentoId nextDocumentoId();
+	public DocumentoId nextId();
 
 }

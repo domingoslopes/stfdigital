@@ -1,0 +1,300 @@
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "edgeNGram_filter": {
+          "type": "edgeNGram",
+          "min_gram": 2,
+          "max_gram": 20,
+          "side": "front"
+        }
+      },
+      "analyzer": {
+        "edge_nGram_analyzer": {
+          "type": "custom",
+          "tokenizer": "edge_ngram_tokenizer",
+          "filter": [ "lowercase", "asciifolding", "edgeNGram_filter" ]
+        },
+        "whitespace_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [ "lowercase", "asciifolding" ]
+        }
+      },
+      "tokenizer": {
+        "edge_ngram_tokenizer": {
+          "type": "edgeNGram",
+          "min_gram": "2",
+          "max_gram": "5",
+          "token_chars": [ "letter", "whitespace" ,"digit" ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "PeticaoEletronica": {
+      "_all": {
+        "index_analyzer": "edge_nGram_analyzer",
+        "search_analyzer": "whitespace_analyzer"
+      },
+      "dynamic": false,
+      "properties": {      
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "numero": {        
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "ano": {
+          "type": "short",
+          "index": "not_analyzed"
+        },
+        "identificacao": {
+          "type": "string",
+          "include_in_all": true,
+          "term_vector": "yes",
+          "index_analyzer": "edge_nGram_analyzer",
+          "search_analyzer": "whitespace_analyzer"
+        },               
+        "classeSugerida": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "classeProcessual": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "motivoRejeicao": {        
+          "type": "string",
+          "index": "no"
+        },
+        "partes": {
+          "properties": {
+          	"sequencial" : {
+          	  "type": "long",
+          	  "index": "no"
+          	},
+            "pessoaId": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }
+            },
+            "polo": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "documentos": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "processosWorkflow": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+              "index": "not_analyzed"
+            }
+          }
+        }
+      }
+    },
+    "PeticaoFisica": {
+      "_all": {
+        "index_analyzer": "edge_nGram_analyzer",
+        "search_analyzer": "whitespace_analyzer"
+      },
+      "dynamic": false,
+      "properties": {      
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "numero": {        
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "ano": {
+          "type": "short",
+          "index": "not_analyzed"
+        },
+        "identificacao": {
+          "type": "string",
+          "include_in_all": true,
+          "term_vector": "yes",
+          "index_analyzer": "edge_nGram_analyzer",
+          "search_analyzer": "whitespace_analyzer"
+        },               
+        "classeSugerida": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "classeProcessual": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "motivoRejeicao": {        
+          "type": "string",
+          "index": "no"
+        },
+        "partes": {
+          "properties": {
+          	"sequencial" : {
+          	  "type": "long",
+          	  "index": "no"
+          	},
+            "pessoaId": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }
+            },
+            "polo": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "documentos": {     
+          "properties": {
+            "sequencial": {
+              "type": "long",
+              "index": "not_analyzed"              
+            }
+          }
+        },
+        "processosWorkflow": {        
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "volumes": {
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "apensos": {
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "formaRecebimento": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "numeroSedex": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
+    },
+    "Processo": {
+      "_all": {
+        "index_analyzer": "edge_nGram_analyzer",
+        "search_analyzer": "whitespace_analyzer"
+      },
+      "dynamic": false,
+      "properties": {
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "classe": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },        
+        "numero": {        
+          "type": "long",
+          "index": "not_analyzed"
+        }, 
+        "identificacao": {
+          "type": "string",
+          "include_in_all": true,
+          "term_vector": "yes",
+          "index_analyzer": "edge_nGram_analyzer",
+          "search_analyzer": "whitespace_analyzer"
+        },
+        "relator": {
+          "properties": {
+            "codigo": {
+              "type": "long",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "partes": {
+          "properties": {
+          	"sequencial": {
+          	  "type": "long",
+              "index": "no"          	  
+          	},
+            "pessoaId": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }             
+            },
+            "polo": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "pecas": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -22,18 +22,18 @@ public class PreautuarPeticaoFisicaCommand {
 
 	@NotNull
 	@ApiModelProperty(value = "Id da petição física registrada.", required=true)
-	private Long idPeticao;
+	private Long peticaoId;
 	
 	@NotBlank
 	@ApiModelProperty(value = "A classe processual sugerida pelo práutuador.", required=true)
-	private String classeSugerida;
+	private String classeId;
 	
-	public Long getIdPeticao() {
-		return this.idPeticao;
+	public Long getPeticaoId() {
+		return peticaoId;
 	}
 	
-	public String getClasseSugerida() {
-		return this.classeSugerida;
+	public String getClasseId() {
+		return classeId;
 	}
 
 	@Override
