@@ -53,7 +53,9 @@ public class PeticaoServiceFacade {
 	 */
 	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
 		ClasseId classe = new ClasseId(classeSugerida);
+
 		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, documentos);
+
 		return peticao.id().toLong();
 	}
 	

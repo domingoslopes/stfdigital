@@ -12,10 +12,10 @@
 			papeis : function() {
 				return [
 					{nome : 'peticionador'}, 
+					{nome : 'preautuador'},
 					{nome : 'autuador'}, 
 					{nome : 'distribuidor'},
-					{nome : 'recebedor'},
-					{nome : 'preautuador'}
+					{nome : 'recebedor'}
 				];
 			}
 		};

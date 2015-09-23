@@ -25,12 +25,14 @@ public class ProcessoApplicationService {
 
 	/**
 	 * Inicia uma nova instância do processo
+	 * 
+	 * @param informacao o ID da informação relacionada ao processo de trabalho
 	 * @param mensagem Mensagem que inicia um processo
 	 * @param status Status inicial do processo
 	 * @return Identificador da instância do processo.
 	 */
-	public ProcessoWorkflowId iniciar(String mensagem, String status) {
-		return processoWorkflowRepository.criar(mensagem, status);
+	public ProcessoWorkflowId iniciar(Long informacao, String mensagem, String status) {
+		return processoWorkflowRepository.criar(informacao, mensagem, status);
 	}
 	
 	/**

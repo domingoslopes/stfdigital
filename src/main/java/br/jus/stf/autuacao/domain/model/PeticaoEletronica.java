@@ -12,15 +12,13 @@ import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.PeticaoId;
 
 /**
- * @author Lucas.Rodrigues
- *
+ * @author Lucas Rodrigues
  */
 @Entity
 @DiscriminatorValue("ELETRONICO")
 public class PeticaoEletronica extends Peticao {
 	
-	public PeticaoEletronica(final PeticaoId id, final Long numero, final ClasseId classeSugerida,
-			final Set<PartePeticao> partes, final Set<DocumentoId> documentos) {
+	public PeticaoEletronica(final PeticaoId id, final Long numero, final ClasseId classeSugerida, final Set<PartePeticao> partes, final Set<DocumentoId> documentos) {
 		super(id, numero);
 		
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
@@ -33,7 +31,6 @@ public class PeticaoEletronica extends Peticao {
 	}
 	
 	PeticaoEletronica() {
-		
 	}
 	
 }

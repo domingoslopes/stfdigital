@@ -11,11 +11,10 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 /**
  * Objeto usado para enviar os dados necessários para préautuar uma petição física.
  * 
- * @author Anderson.Araujo
+ * @author Anderson Araújo
  * 
  * @version 1.0.0
  * @since 15.09.2015
- *
  */
 @ApiModel(value = "Contém as informações necessárias para préautuar a petição física recebida pelo Recebedor.")
 public class PreautuarPeticaoFisicaCommand {
@@ -40,5 +39,6 @@ public class PreautuarPeticaoFisicaCommand {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this); 
 	}	
+	
 }
 
