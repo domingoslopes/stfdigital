@@ -24,7 +24,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
  *
  */
 @RestController
-@RequestMapping("/api/pesquisa")
+@RequestMapping("/api/pesquisas")
 public class PesquisaRestResource {
 	
 	@Autowired
