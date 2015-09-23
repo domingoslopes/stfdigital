@@ -20,7 +20,7 @@
 			$window.sessionStorage.papel = JSON.stringify('recebedor');
 			
 			$httpBackend.expectGET(properties.apiUrl + '/tiporecebimentos').respond([{sigla : '2', nome: 'Sedex'}, {sigla : '3', nome: 'Malote'}]);
-			$httpBackend.expectGET(properties.apiUrl + '/tarefas').respond([{}]);
+			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
 			
 			stateParams = {idTarefa: 4};
 			
