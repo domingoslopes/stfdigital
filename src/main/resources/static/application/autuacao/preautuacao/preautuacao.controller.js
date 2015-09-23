@@ -18,7 +18,7 @@
 		
 		preautuacao.peticao = {};
 		
-		PeticaoService.consultarPeticaoFisica(preautuacao.idPeticao).success(function(data) {
+		PeticaoService.consultar(preautuacao.idPeticao).success(function(data) {
 			preautuacao.peticao = data;
 		});
 		
@@ -28,14 +28,13 @@
 		
 		preautuacao.finalizar = function() {
 			if (preautuacao.classe.length === 0) {
-				messages.error('Você precisa selecionar <b>a classe processual definitiva</b>.');
+				messages.error('Você precisa selecionar <b>a classe processual sugerida</b>.');
 				return;
 			}
 			
 			var command = new PreautuarCommand(preautuacao.idPeticao, preautuacao.classe);
 			
-			PeticaoService.preautuar(command).success(function(data, status, headers, config) {
-				$log.debug('Sucesso');
+			PeticaoService.preautuar(preautuacao.idPeticao, command).success(function(data, status, headers, config) {
 				$state.go('dashboard');
 			}).error(function(data, status, headers, config) {
 				$log.debug('Erro');
@@ -46,7 +45,8 @@
 	    		dto.peticaoId = peticaoId;
 	    		dto.classeId = classeId;
 	    		return dto;
-	    	};	
+	    	}	
+
 		};
 	});
 

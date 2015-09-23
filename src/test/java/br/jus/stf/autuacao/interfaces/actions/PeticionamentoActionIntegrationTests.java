@@ -30,7 +30,6 @@ import br.jus.stf.AbstractIntegrationTests;
  * @version 1.0.0
  * 
  * @since 17.09.2015
- *
  */
 public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTests {
 	

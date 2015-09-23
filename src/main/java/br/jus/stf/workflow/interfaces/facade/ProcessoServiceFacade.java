@@ -27,22 +27,19 @@ public class ProcessoServiceFacade {
 	@Autowired
 	private ProcessoDtoAssembler processoDtoAssembler;
 
-	public Long iniciar(String mensagem, String status) {
-		ProcessoWorkflowId id = processoApplicationService.iniciar(mensagem, status);
+	public Long iniciar(Long informacao, String mensagem, String status) {
+		ProcessoWorkflowId id = processoApplicationService.iniciar(informacao, mensagem, status);
 		return id.toLong();
 	}
 	
 	public ProcessoDto consultar(Long id) {
 		ProcessoWorkflowId processoId = new ProcessoWorkflowId(id);
-		return Optional.ofNullable(processoWorkflowRepository.findOne(processoId))
-				.map(processoDtoAssembler::toDto)
-				.orElseThrow(IllegalArgumentException::new);
+		return Optional.ofNullable(processoWorkflowRepository.findOne(processoId)).map(processoDtoAssembler::toDto).orElseThrow(IllegalArgumentException::new);
 	}
 	
 	public void sinalizar(Long id, String sinal, String status) {
 		ProcessoWorkflowId processoId = new ProcessoWorkflowId(id);
-		ProcessoWorkflow processo = Optional.ofNullable(processoWorkflowRepository.findOne(processoId))
-										.orElseThrow(IllegalArgumentException::new);
+		ProcessoWorkflow processo = Optional.ofNullable(processoWorkflowRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
 		processoApplicationService.sinalizar(processo , sinal, status);
 	}
 	

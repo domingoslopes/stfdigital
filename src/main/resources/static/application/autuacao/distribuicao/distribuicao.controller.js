@@ -21,9 +21,9 @@
 				return;
 			}
 			
-			var command = new DistribuirCommand($scope.idPeticao, $scope.relator);
+			var command = new DistribuirCommand($scope.relator);
 			
-			PeticaoService.distribuir(command).success(function(data) {
+			PeticaoService.distribuir($scope.idPeticao, command).success(function(data) {
 				$state.go('dashboard');
 				messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
 			}).error(function(data, status) {
@@ -33,12 +33,14 @@
 			});
 		};
 		
-    	function DistribuirCommand(peticaoId, ministroId){
+    	function DistribuirCommand(ministroId){
     		var dto = {};
-    		dto.peticaoId = peticaoId;
+    		
     		dto.ministroId = ministroId;
+    		
     		return dto;
     	}
+    	
 	});
 	
 })();

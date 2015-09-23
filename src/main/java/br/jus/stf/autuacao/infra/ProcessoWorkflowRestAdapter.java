@@ -56,6 +56,7 @@ public class ProcessoWorkflowRestAdapter implements ProcessoWorkflowAdapter {
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
 		command.setMensagem(mensagem);
 		command.setStatus(statusInicial.toString());
+		command.setInformacao(peticao.id().toLong());
 		
 		Long id = processoRestService.iniciar(command);
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(id));

@@ -183,11 +183,7 @@
 		var limparListaPeticoes = function(peticao){
 			peticoes = [];
 			peticoes.push(peticao);
-		}
-		
-	//	$httpBackend.whenGET(/\/.*.tpl.html/).passThrough();
-		
-	//	$httpBackend.whenGET(properties.apiUrl + '/classes').passThrough();
+		};
 		
 	});
 

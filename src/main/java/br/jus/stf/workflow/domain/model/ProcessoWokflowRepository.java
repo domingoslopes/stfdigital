@@ -20,7 +20,7 @@ public interface ProcessoWokflowRepository {
 	 * @param status status inicial do processo
 	 * @return Identificador da instância do processo de autuação criado.
 	 */
-	ProcessoWorkflowId criar(String mensagem, String status);
+	ProcessoWorkflowId criar(Long informacao, String mensagem, String status);
 	
 	/**
 	 * Emite um sinal para um processo
