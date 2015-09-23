@@ -18,7 +18,7 @@
 		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, $window, properties, TarefaService) {
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('recebedor');
-			$httpBackend.expectGET(properties.apiUrl + '/tarefas').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
+			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
 
 			TarefaService.listar().success(function(result) {

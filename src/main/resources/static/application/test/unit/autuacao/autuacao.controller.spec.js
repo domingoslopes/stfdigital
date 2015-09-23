@@ -19,8 +19,8 @@
 		beforeEach(inject(function($controller, $httpBackend, $window, $log, properties) {
 			$window.sessionStorage.papel = JSON.stringify('autuador');
 			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
-			$httpBackend.expectGET(properties.apiUrl + '/peticao/1').respond({classe : 'AP'});
-			$httpBackend.expectGET(properties.apiUrl + '/tarefas').respond([{}]);
+			$httpBackend.expectGET(properties.apiUrl + '/peticoes/1').respond({classe : 'AP'});
+			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
 
 			stateParams = {idTarefa: 1};
 			
