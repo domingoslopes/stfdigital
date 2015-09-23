@@ -11,13 +11,15 @@ public class TarefaDto {
 	private Long id;
 	private String nome;
 	private String descricao;
-	private Long processo;
+	private Long idProcesso;
+	private Long idInformacao;
 
-	public TarefaDto(Long id, String nome, String descricao, Long processo) {
+	public TarefaDto(Long id, String nome, String descricao, Long idProcesso, Long idInformacao) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.processo = processo;
+		this.idProcesso = idProcesso;
+		this.idInformacao = idInformacao;
 	}
 
 	public Long getId() {
@@ -32,8 +34,16 @@ public class TarefaDto {
 		return descricao;
 	}
 	
-	public Long getProcesso(){
-		return this.processo;
+	public void setIdProcesso(Long idProcesso) {
+		this.idProcesso = idProcesso;
+	}
+	
+	public Long getIdProcesso() {
+		return this.idProcesso;
+	}
+	
+	public Long getIdInformacao() {
+		return idInformacao;
 	}
 
 }

@@ -76,7 +76,7 @@
 						resources : $scope.resources
 					};
 					$state.go('actions.' + action.context + '.' + action.id, params);
-				}
+				};
 			}
 		};
 	}]);
@@ -131,7 +131,7 @@
 					$state.go('actions.' + action.context + '.' + action.id, params);
 				};
 			}
-		}
+		};
 	}]);
 
 	/**
@@ -209,7 +209,7 @@
 					messages.error("A ação e os recursos para a ação devem ser válidos!");
 				}
 			}
-		}
+		};
 	}]);
 	
 })();

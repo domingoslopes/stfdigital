@@ -26,7 +26,6 @@ import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
-import scala.collection.mutable.StringBuilder;
 import br.jus.stf.shared.domain.model.ClasseId;
 import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;

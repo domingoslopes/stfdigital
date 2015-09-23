@@ -1,6 +1,5 @@
 package br.jus.stf.generico.domain.model;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Table;

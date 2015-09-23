@@ -26,7 +26,7 @@
 			autuacao.classes = classes;
 		});
 		
-		PeticaoService.consultarPeticaoEletronica(autuacao.idPeticao).success(function(data) {
+		PeticaoService.consultar(autuacao.idPeticao).success(function(data) {
 			autuacao.peticao = data;
 		});
 		

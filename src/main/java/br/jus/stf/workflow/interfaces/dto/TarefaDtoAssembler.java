@@ -18,7 +18,8 @@ public class TarefaDtoAssembler {
 		Task task = tarefa.definicao();
 		Long id = tarefa.id().toLong();
 		Long processo = Long.parseLong(task.getProcessInstanceId());
-		return new TarefaDto(id, task.getTaskDefinitionKey(), task.getName(), processo);
+		Long idInformacao = (Long) task.getProcessVariables().get("informacao");
+		return new TarefaDto(id, task.getTaskDefinitionKey(), task.getName(), processo, idInformacao);
 	}
 
 }

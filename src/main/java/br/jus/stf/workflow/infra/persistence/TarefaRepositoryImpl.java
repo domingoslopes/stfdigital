@@ -33,7 +33,7 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 
 	@Override
 	public List<Tarefa> listar(String papel) {
-		return taskService.createTaskQuery().taskCandidateGroup(papel).list()
+		return taskService.createTaskQuery().taskCandidateGroup(papel).includeProcessVariables().list()
 				.stream()
 				.map(task -> new Tarefa(task))
 				.collect(Collectors.toList());
