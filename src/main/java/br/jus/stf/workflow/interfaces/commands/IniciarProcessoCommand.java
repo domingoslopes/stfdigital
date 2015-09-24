@@ -1,5 +1,7 @@
 package br.jus.stf.workflow.interfaces.commands;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -13,7 +15,21 @@ public class IniciarProcessoCommand {
 
 	@NotBlank
 	private String mensagem;
+	
+	@NotNull
+	private Long informacao;
+	
+	@NotBlank
+	private String status;
 		
+	public IniciarProcessoCommand(Long informacao, String mensagem) {
+		this.informacao = informacao;
+		this.mensagem = mensagem;
+	}
+	
+	public IniciarProcessoCommand() {
+	}
+
 	/**
 	 * @param mensagem
 	 */
@@ -26,6 +42,28 @@ public class IniciarProcessoCommand {
 	 */
 	public String getMensagem() {
 		return this.mensagem;
+	}
+	
+	public void setInformacao(Long informacao) {
+		this.informacao = informacao;
+	}
+	
+	public Long getInformacao() {
+		return informacao;
+	}
+	
+	/**
+	 * @param status
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return this.status;
 	}
 	
 }

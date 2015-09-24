@@ -9,8 +9,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('ActionService', ['$q', '$http', '$templateCache', '$window', 'properties', 
-	                             function($q, $http, $templateCache, $window, properties) {
+	angular.plataforma.service('ActionService', ['$q', '$http', '$templateCache', '$window', 'properties', function($q, $http, $templateCache, $window, properties) {
 
 		var ARRAY_EXCEPTION = "Os recursos devem estar em um array!";
 		
@@ -119,7 +118,7 @@
 						};
 						var error = function(err) {
 							reject(err);
-						}
+						};
 						// verifica os handlers no servidor 
 						var request = null;
 						if (angular.isArray(resources) && resources.length > 0) {
@@ -179,11 +178,11 @@
 		 * Verifica se os recursos são nulos ou indefinidos  
 		 */
 		var isResourcesNullOrUndefined = function(resources) {
-			if (resources == null || angular.isUndefined(resources)) {
+			if (resources === null || angular.isUndefined(resources)) {
 				return true;
 			}
 			return false;
-		}
+		};
 		
 		/**
 		 * Valida se o usuário possui as permissões necessárias para listar uma ação

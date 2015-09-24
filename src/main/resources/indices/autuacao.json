@@ -1,0 +1,280 @@
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "autocomplete_filter": {
+          "type": "edgeNGram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "analyzer": {
+        "autocomplete": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [ "lowercase", "autocomplete_filter" ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "PeticaoEletronica": {
+      "_all": {
+        "index_analyzer": "autocomplete",
+        "search_analyzer": "standard"
+      },
+      "dynamic": false,
+      "properties": {      
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "numero": {        
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "ano": {
+          "type": "short",
+          "index": "not_analyzed"
+        },
+        "identificacao": {
+          "type": "string",
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"
+        },               
+        "classeSugerida": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "classeProcessual": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "motivoRejeicao": {        
+          "type": "string",
+          "index": "no"
+        },
+        "partes": {
+          "properties": {
+          	"sequencial" : {
+          	  "type": "long",
+          	  "index": "no"
+          	},
+            "pessoaId": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }
+            },
+            "polo": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "documentos": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "processosWorkflow": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+              "index": "not_analyzed"
+            }
+          }
+        }
+      }
+    },
+    "PeticaoFisica": {
+      "_all": {
+        "index_analyzer": "autocomplete",
+        "search_analyzer": "standard"
+      },
+      "dynamic": false,
+      "properties": {      
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "numero": {        
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "ano": {
+          "type": "short",
+          "index": "not_analyzed"
+        },
+        "identificacao": {
+          "type": "string",
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"         
+        },               
+        "classeSugerida": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "classeProcessual": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "motivoRejeicao": {        
+          "type": "string",
+          "index": "no"
+        },
+        "partes": {
+          "properties": {
+          	"sequencial" : {
+          	  "type": "long",
+          	  "index": "no"
+          	},
+            "pessoaId": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }
+            },
+            "polo": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "documentos": {     
+          "properties": {
+            "sequencial": {
+              "type": "long",
+              "index": "not_analyzed"              
+            }
+          }
+        },
+        "processosWorkflow": {        
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "volumes": {
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "apensos": {
+          "type": "long",
+          "index": "not_analyzed"
+        },
+        "formaRecebimento": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "numeroSedex": {
+          "type": "string",
+          "index": "not_analyzed"
+        }
+      }
+    },
+    "Processo": {
+      "_all": {
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"
+      },
+      "dynamic": false,
+      "properties": {
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "classe": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },        
+        "numero": {        
+          "type": "long",
+          "index": "not_analyzed"
+        }, 
+        "identificacao": {
+          "type": "string",
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"
+        },
+        "relator": {
+          "properties": {
+            "codigo": {
+              "type": "long",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "partes": {
+          "properties": {
+          	"sequencial": {
+          	  "type": "long",
+              "index": "no"          	  
+          	},
+            "pessoaId": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }             
+            },
+            "polo": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "pecas": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        }
+      }
+    }
+  }
+}

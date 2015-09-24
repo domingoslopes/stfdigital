@@ -19,11 +19,11 @@ public class AutuarPeticaoCommand {
 
 	@NotNull
 	@ApiModelProperty(value = "Id da petição física registrada.", required=true)
-	private Long idPeticao;
+	private Long peticaoId;
 	
 	@NotBlank
 	@ApiModelProperty(value = "A classe processual definitiva, selecionada pelo autuador", required=true)
-	private String classe;
+	private String classeId;
 	
 	@NotBlank
 	@ApiModelProperty(value = "Contém o resultado da análise do autuador, indicando se a petição é válida ou não", required=true)
@@ -32,12 +32,12 @@ public class AutuarPeticaoCommand {
 	@ApiModelProperty(value = "Contém o motivo da recusa da petição, no caso de petições inválidas", required=true)
 	private String motivo;
 	
-	public Long getIdPeticao() {
-		return this.idPeticao;
+	public Long getPeticaoId() {
+		return this.peticaoId;
 	}
 	
-	public String getClasse() {
-		return classe;
+	public String getClasseId() {
+		return classeId;
 	}
 
 	public boolean isValida() {

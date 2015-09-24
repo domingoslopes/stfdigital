@@ -8,22 +8,21 @@ package br.jus.stf.workflow.interfaces.dto;
  */
 public class TarefaDto {
 
-	private String id;
+	private Long id;
 	private String nome;
 	private String descricao;
-	private String idProcesso;
+	private Long idProcesso;
+	private Long idInformacao;
 
-	public TarefaDto() {
-	}
-
-	public TarefaDto(String id, String nome, String descricao, String idProcesso) {
+	public TarefaDto(Long id, String nome, String descricao, Long idProcesso, Long idInformacao) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.idProcesso = idProcesso;
+		this.idInformacao = idInformacao;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -35,12 +34,16 @@ public class TarefaDto {
 		return descricao;
 	}
 	
-	public void setIdProcesso(String idProcesso){
+	public void setIdProcesso(Long idProcesso) {
 		this.idProcesso = idProcesso;
 	}
 	
-	public String getIdProcesso(){
+	public Long getIdProcesso() {
 		return this.idProcesso;
+	}
+	
+	public Long getIdInformacao() {
+		return idInformacao;
 	}
 
 }

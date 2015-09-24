@@ -13,7 +13,7 @@
 		action.verificar = function(result) {
 			messages.success("Sucesso");
 			$scope.$parent.modal.close();
-		}
+		};
 	});
 
 })();

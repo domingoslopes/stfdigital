@@ -14,6 +14,15 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(value = "Representa a petição enviada pelo peticionador")
 public class PeticaoDto {
+	
+	@ApiModelProperty(value = "Id da petição")
+	private Long id;
+	
+	@ApiModelProperty(value = "Número da petição")
+	private Long numero;
+
+	@ApiModelProperty(value = "Ano da petição")
+	private Short ano;
 
 	@ApiModelProperty(value = "Classe processual sugerida pelo peticionador")
 	private String classe;
@@ -24,10 +33,29 @@ public class PeticaoDto {
 	@ApiModelProperty(value = "A lista de documentos anexados pelo peticionador")
 	private List<Long> documentos;
 	
-	public PeticaoDto(String classe, Map<String, List<Long>> partes, List<Long> documentos) {
+	PeticaoDto() {
+		
+	}
+	
+	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<Long> documentos) {
+		this.id = id;
+		this.numero = numero;
+		this.ano = ano;
 		this.classe = classe;
 		this.partes = partes;
 		this.documentos = documentos;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public Long getNumero() {
+		return numero;
+	}
+	
+	public Short ano() {
+		return ano;
 	}
 
 	public String getClasse() {

@@ -15,7 +15,7 @@
     <startEvent id="peticionareletronico">
       <messageEventDefinition messageRef="tns:remessaEletronica" />
     </startEvent>
-    <userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="pre-autuador" />
+    <userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="preautuador" />
     <subProcess id="analise" name="Análise">
       <startEvent id="iniciaranalise"/>
       <userTask id="autuacao" name="Autuar Processo" activiti:candidateGroups="autuador" />

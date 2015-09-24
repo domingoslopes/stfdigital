@@ -112,9 +112,13 @@
             <div class="brand inline">
               <img src="theme/custom/img/logo.png" alt="logo" data-src="theme/custom/img/logo.png" data-src-retina="theme/custom/img/logo_2x.png" width="78" height="22">
             </div>
-          </div>
-        </div>
-        <div id="papeis" class=" pull-right" ng-controller="SecurityController">
+            <div class="search-link">
+            	<i class="pg-search"></i>
+            	<pesquisa campos="['identificacao', 'relator.codigo']" texto="'identificacao'" indices="['autuacao']" filtros="'identificacao'" ordenador="'identificacao'" />
+            </div>
+          </div> 
+        </div>     
+        <div id="papeis" class="pull-right" ng-controller="SecurityController">
           <!-- START User Info-->
           <div class="visible-lg visible-md m-t-10">
             <div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
@@ -342,6 +346,7 @@
 	<script type="text/javascript" src="vendor/ui-router-extras/release/ct-ui-router-extras.js"></script>
 	<script type="text/javascript" src="vendor/angular-mocks/angular-mocks.js"></script>
     <script type="text/javascript" src="vendor/select2/select2.js"></script>
+    <script type="text/javascript" src="vendor/select2/select2_locale_pt-BR.js"></script>
     <script type="text/javascript" src="vendor/angular-ui-select2/src/select2.js"></script>
     <script type="text/javascript" src="vendor/angular-sanitize/angular-sanitize.js"></script>
 	
@@ -361,6 +366,7 @@
     <script type="text/javascript" src="application/plataforma/support/actions/actions.service.js"></script>
     <script type="text/javascript" src="application/plataforma/support/actions/actions.directive.js"></script>
     <script type="text/javascript" src="application/plataforma/support/actions/modal.controller.js"></script>
+	<script type="text/javascript" src="application/plataforma/support/pesquisa/pesquisa.directive.js"></script>
 
     <script type="text/javascript" src="application/test/mocks.module.js"></script>
     
@@ -371,7 +377,6 @@
 	<script type="text/javascript" src="application/autuacao/registro/dummy_action.controller.js"></script>	
     <script type="text/javascript" src="application/autuacao/autuacao/autuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/distribuicao/distribuicao.controller.js"></script>
-    <script type="text/javascript" src="application/autuacao/registro/tipoRecebimento.service.js"></script> 
     <script type="text/javascript" src="application/autuacao/registro/registro.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/preautuacao/preautuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/distribuicao/ministro.service.js"></script>

@@ -2,24 +2,29 @@ package br.jus.stf.generico.infra.persistence;
 
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.sql.Blob;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import org.apache.commons.io.IOUtils;
-import org.hibernate.Session;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.generico.domain.model.Documento;
 import br.jus.stf.generico.domain.model.DocumentoRepository;
 import br.jus.stf.generico.domain.model.DocumentoTemporario;
 import br.jus.stf.shared.domain.model.DocumentoId;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFSDBFile;
 
 /**
  * @author Lucas.Rodrigues
@@ -33,6 +38,9 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	private EntityManager entityManager;
 	
 	@Autowired
+	private GridFsOperations gridOperations;
+	
+	@Autowired
 	public DocumentoRepositoryImpl(EntityManager entityManager) {
 		super(Documento.class, entityManager);
 		this.entityManager = entityManager;
@@ -41,30 +49,46 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	@Override
 	public InputStream loadStream(DocumentoId documentoId) {
 		try {
-			return Optional.ofNullable(super.findOne(documentoId))
-				.orElseThrow(IllegalArgumentException::new)
-				.conteudo().getBinaryStream();
-		} catch(Throwable t) {
+			Documento documento = Optional.ofNullable(super.findOne(documentoId))
+					.orElseThrow(IllegalArgumentException::new);
+
+			GridFSDBFile gridFile = gridOperations.findOne(new Query()
+					.addCriteria(Criteria.where("_id").is(new ObjectId(documento.numeroConteudo()))));
+			
+			return gridFile.getInputStream();
+		} catch (Throwable t) {
 			throw new RuntimeException("Não foi possível carregar o stream do arquivo ", t);
 		}
 	}
 
 	@Override
 	public DocumentoId save(String documentoTemporario) {
-		Session session = (Session) entityManager.getDelegate();
 		DocumentoTemporario docTemp = TEMP_FILES.get(documentoTemporario);
 		InputStream stream = docTemp.stream();
-		long tamanho = docTemp.tamanho();
+		DocumentoId id = nextId();
+		DBObject metaData = new BasicDBObject();
 		
-		DocumentoId id = nextDocumentoId();
-		Blob conteudo = session.getLobHelper().createBlob(stream, tamanho);
-				
-		Documento documento = super.save(new Documento(id, conteudo));
+		metaData.put("seq_documento", id.toLong());
+		metaData.put("nom_arquivo", documentoTemporario);
+		metaData.put("num_tamanho_bytes", docTemp.tamanho());
+		
+		String numeroConteudo = gridOperations.store(stream, documentoTemporario, docTemp.contentType(), metaData).getId().toString();
+		Documento documento = super.save(new Documento(id, numeroConteudo));
+
 		entityManager.flush();
 		IOUtils.closeQuietly(stream);
 		TEMP_FILES.remove(documentoTemporario);
 		docTemp.delete();
 		return documento.id();
+	}
+	
+	@Override
+	public void delete(Documento documento) {
+		String numeroConteudo = documento.numeroConteudo();
+		
+		super.delete(documento);
+		gridOperations.delete(new Query()
+		.addCriteria(Criteria.where("_id").is(new ObjectId(numeroConteudo))));
 	}
 	
 	@Override
@@ -74,8 +98,8 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	}
 
 	@Override
-	public DocumentoId nextDocumentoId() {
-		Query query = entityManager.createNativeQuery("SELECT CORPORATIVO.SEQ_DOCUMENTO.NEXTVAL FROM DUAL");
+	public DocumentoId nextId() {
+		javax.persistence.Query query = entityManager.createNativeQuery("SELECT CORPORATIVO.SEQ_DOCUMENTO.NEXTVAL FROM DUAL");
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new DocumentoId(sequencial);
 	}

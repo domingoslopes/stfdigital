@@ -28,6 +28,6 @@ public interface PessoaRepository {
 	 * 
 	 * @return
 	 */
-	public PessoaId nextPessoaId();
+	public PessoaId nextId();
 	
 }
