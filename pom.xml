@@ -70,6 +70,10 @@
             <artifactId>spring-security-config</artifactId>
         </dependency>
         <dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+        <dependency>
             <groupId>com.mangofactory</groupId>
             <artifactId>swagger-springmvc</artifactId>
             <version>${swagger.version}</version>
@@ -96,6 +100,10 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-bus</artifactId>
 			<version>${reactor-bus.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
 		</dependency>        
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
@@ -124,6 +132,12 @@
         	<artifactId>spring-ws-test</artifactId>
         	<scope>test</scope>
         </dependency>
+        <dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>1.50.0</version>
+			<socpe>test</socpe>
+		</dependency>
     </dependencies>
 
 	<build>

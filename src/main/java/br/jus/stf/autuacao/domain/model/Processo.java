@@ -2,6 +2,7 @@ package br.jus.stf.autuacao.domain.model;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -175,7 +176,8 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	}
 	
 	public String identificacao() {
-		return identificacao;
+		return Optional.ofNullable(identificacao)
+				.orElse(identificacao = montarIdentificacao());
 	}
 	
 	@Override
@@ -202,7 +204,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	
 	private String montarIdentificacao() {
 		return new StringBuilder()
-			.append(classe.toString()).append(numero).toString();
+			.append(classe.toString()).append(" ").append(numero).toString();
 	}
 	
 	// Hibernate
