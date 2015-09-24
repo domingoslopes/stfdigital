@@ -61,8 +61,7 @@ public class PeticaoFactory {
 	 * @param numeroSedex
 	 * @return a petição
 	 */
-	public PeticaoFisica criarPeticaoFisica(Integer volumes, Integer apensos, 
-			FormaRecebimento formaRecebimento, String numeroSedex) {
+	public PeticaoFisica criarPeticaoFisica(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex) {
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
 		

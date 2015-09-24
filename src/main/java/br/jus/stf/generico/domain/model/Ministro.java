@@ -16,7 +16,7 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "MINISTRO", schema = "AUTUACAO")
-public class Ministro implements Entity<Ministro> {
+public class Ministro implements Entity<Ministro, MinistroId> {
 
 	@EmbeddedId
 	private MinistroId codigo;
@@ -32,7 +32,7 @@ public class Ministro implements Entity<Ministro> {
 		this.nome = nome;
 	}
 
-	public MinistroId codigo(){
+	public MinistroId id(){
 		return codigo;
 	}
 

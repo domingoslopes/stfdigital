@@ -59,7 +59,7 @@
 		
 		var peticoes = [];
 		
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao').respond(function(method, url, data, headers){
+		$httpBackend.whenPOST(properties.apiUrl + '/peticoes').respond(function(method, url, data, headers){
 			console.log('Enviando peticao eletronica:', method, url, data, headers);
 			tarefas.push({id: '2', nome : 'autuacao', descricao : 'Autuar Processo'});
 			//recebe os dados digitados na tela pelo peticionador.
@@ -71,7 +71,7 @@
 			return [200, peticao.id, {}];
 		});
 		
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao/2/autuacao').respond(function(method, url, data, headers){
+		$httpBackend.whenPOST(properties.apiUrl + '/peticoes/2/autuar').respond(function(method, url, data, headers){
 			console.log('Autuando peticao:', method, url, data, headers);
 			tarefas = [];
 			data = JSON.parse(data);
@@ -82,7 +82,7 @@
 			return [200, peticao.id, {}];
 		});
 		
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao/fisica').respond(function(method, url, data, headers){
+		$httpBackend.whenPOST(properties.apiUrl + '/peticoes/fisicas').respond(function(method, url, data, headers){
 			console.log('Enviando peticao fisica:', method, url, data, headers);
 			tarefas = [];
 			tarefas.push({id: '2', nome : 'preautuacao', descricao : 'Pré-autuar Processo'});
@@ -96,7 +96,7 @@
 			return [200, peticao.id, {}];
 		});
 		
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao/2/preautuacao').respond(function(method, url, data, headers){
+		$httpBackend.whenPOST(properties.apiUrl + '/peticoes/2/preautuar').respond(function(method, url, data, headers){
 			
 			console.log('Preautuando peticao:', method, url, data, headers);
 			tarefas = [];
@@ -108,7 +108,7 @@
 			return [200, peticao.id, {}];
 		});
 		
-		$httpBackend.whenPOST(properties.apiUrl + '/peticao/2/distribuicao').respond(function(method, url, data, headers){
+		$httpBackend.whenPOST(properties.apiUrl + '/peticoes/2/distribuir').respond(function(method, url, data, headers){
 			console.log('Distribuindo peticao:', method, url, data, headers);
 			tarefas = [];
 			data = JSON.parse(data);
@@ -136,13 +136,8 @@
 			return [200, ministros, {}];
 		});
 		
-		$httpBackend.whenGET(properties.apiUrl + '/peticao/2').respond(function(method, url, data, headers){
-			console.log('Recebendo peticao eletronica:', peticao);
-			return [200, peticao, {}];
-		});
-		
-		$httpBackend.whenGET(properties.apiUrl + '/peticao/fisica/2').respond(function(method, url, data, headers){
-			console.log('Recebendo peticao fisica:', peticao);
+		$httpBackend.whenGET(properties.apiUrl + '/peticoes/2').respond(function(method, url, data, headers){
+			console.log('Recebendo peticao:', peticao);
 			return [200, peticao, {}];
 		});
 		
@@ -151,7 +146,7 @@
 			return [200, tipoRecebimentos, {}];
 		});
 		  
-		$httpBackend.whenGET(properties.apiUrl + '/tarefas').respond(function(method,url,data, headers) {
+		$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond(function(method,url,data, headers) {
 			console.log("Recuperando as tarefas");
 /*			if (headers.papel == 'recebedor') {
 				taref
@@ -188,11 +183,7 @@
 		var limparListaPeticoes = function(peticao){
 			peticoes = [];
 			peticoes.push(peticao);
-		}
-		
-	//	$httpBackend.whenGET(/\/.*.tpl.html/).passThrough();
-		
-	//	$httpBackend.whenGET(properties.apiUrl + '/classes').passThrough();
+		};
 		
 	});
 

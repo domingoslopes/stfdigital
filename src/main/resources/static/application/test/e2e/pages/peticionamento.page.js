@@ -8,18 +8,14 @@
 (function() {
 	'use strict';
 
+	var Utils = require('./support');
+	
+	var utils = new Utils();
+	
 	var PeticionamentoPage = function () {
 		
 		this.classificar = function(sigla) {
-		    var classe =  element(by.css('#s2id_classe a'));
-		    
-		    classe.click();
-		    
-		    classe.sendKeys(sigla);
-		    
-		    var classes = element.all(by.css('.select2-results-dept-0'));
-		    
-		    classes.first().click();
+			utils.select('div#s2id_classe', sigla);
 		};
 		
 		this.partePoloAtivo = function(nome) {

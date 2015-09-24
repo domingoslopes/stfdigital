@@ -14,33 +14,32 @@
 			},
 			
 			peticionar : function(peticionarCommand) {
-				return $http.post(properties.apiUrl + '/peticao', peticionarCommand);
+				return $http.post(properties.apiUrl + '/peticoes', peticionarCommand);
 			},
 			
-			consultarPeticaoEletronica : function(id) {
-				return $http.get(properties.apiUrl + '/peticao/' + id);
+			consultar : function(peticaoId) {
+				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId);
 			},
 			
-			consultarPeticaoFisica: function(id) {
-				return $http.get(properties.apiUrl + '/peticao/fisica/' + id);
+			preautuar : function(peticaoId, preautuarCommand){
+				return $http.post(properties.apiUrl + '/peticoes/fisicas/' + peticaoId + '/preautuar', preautuarCommand);
 			},
 			
-			autuar : function(id, autuarCommand) {
-				return $http.post(properties.apiUrl + '/peticao/' + id + '/autuacao', autuarCommand);
+			autuar : function(peticaoId, autuarCommand) {
+				return $http.post(properties.apiUrl + '/peticoes/' + peticaoId + '/autuar', autuarCommand);
 			},
 			
-			distribuir : function(id, relator) {
-				return $http.post(properties.apiUrl + '/peticao/' + id + '/distribuicao', JSON.stringify(relator));
+			distribuir : function(peticaoId, distribuirCommand) {
+				return $http.post(properties.apiUrl + '/peticoes/' + peticaoId + '/distribuir', distribuirCommand);
+			},
+			
+			devolver : function(peticaoId, devolverCommand) {
+				return $http.post(properties.apiUrl + '/peticoes/' + peticaoId + '/devolver', devolverCommand);
 			},
 			
 			registrar : function(registrarCommand){
-				return $http.post(properties.apiUrl + '/peticao/fisica', registrarCommand);
-			},
-			
-			preautuar : function(id, classe){
-				return $http.post(properties.apiUrl + '/peticao/' + id + '/preautuacao', JSON.stringify(classe));
+				return $http.post(properties.apiUrl + '/peticoes/fisicas', registrarCommand);
 			}
-			
 		};
 	});
 	

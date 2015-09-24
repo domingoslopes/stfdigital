@@ -7,19 +7,28 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('DevolucaoController', function ($log, $http, $state, $stateParams, properties) {
+	angular.autuacao.controller('DevolucaoController', function ($log, PeticaoService, $state, $stateParams, properties) {
 		var devolucao = this;
 		
 		devolucao.idPeticao = $stateParams.idTarefa;
 		
+		var command = new DevolverCommand(devolucao.idPeticao);
+		
 		devolucao.finalizar = function() {
-			$http.post(properties.apiUrl + '/peticao/' + devolucao.idPeticao + '/devolucao').success(function(data, status, headers, config) {
+			PeticaoService.devolver(command).success(function(data, status, headers, config) {
 				$log.debug('Sucesso');
 				$state.go('dashboard');
 			}).error(function(data, status, headers, config) {
 				$log.debug('Erro');
 			});
 		};
+		
+		function DevolverCommand(peticaoId) {
+			var dto = {};
+			dto.peticaoId = peticaoId;
+			return dto;
+		}
+		
 	});
 
 })();

@@ -13,14 +13,18 @@ import org.springframework.data.repository.Repository;
 public interface ProcessoWorkflowRepository extends Repository<ProcessoWorkflow, ProcessoWorkflowId> {
 
 	/**
+	 * Pesquisa um processo de workflow pelo id
 	 * 
 	 * @param id
+	 * @return processo
 	 */
 	public ProcessoWorkflow findOne(ProcessoWorkflowId id);
 	
 	/**
+	 * Consulta processos pelo status
+	 * 
 	 * @param status
-	 * @return
+	 * @return uma lista de processos
 	 */
 	public List<ProcessoWorkflow> findByStatus(String status);
 

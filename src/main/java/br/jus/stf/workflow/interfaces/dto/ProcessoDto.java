@@ -1,31 +1,25 @@
 package br.jus.stf.workflow.interfaces.dto;
 
-import java.util.Map;
 
 public class ProcessoDto {
-	private String id;
-	private Map<String, Object> variaveis;
-	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public Map<String, Object> getVariaveis() {
-		return variaveis;
-	}
-	public void setVariaveis(Map<String, Object> variaveis) {
-		this.variaveis = variaveis;
-	}
+	private Long id;
+	private String status;
 	
 	public ProcessoDto(){
 		
 	}
 	
-	public ProcessoDto(String id, Map<String, Object> variaveis){
+	public ProcessoDto(Long id, String status){
 		this.id = id;
-		this.variaveis = variaveis;
+		this.status = status;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	
 }

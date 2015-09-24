@@ -26,7 +26,7 @@
 			autuacao.classes = classes;
 		});
 		
-		PeticaoService.consultarPeticaoEletronica(autuacao.idPeticao).success(function(data) {
+		PeticaoService.consultar(autuacao.idPeticao).success(function(data) {
 			autuacao.peticao = data;
 		});
 		
@@ -52,13 +52,9 @@
 
     	function AutuarCommand(classe, valida, motivo){
     		var dto = {};
-    		
-    		dto.classe = classe;
-    		
+    		dto.classeId = classe;
     		dto.valida = valida;
-    		
     		dto.motivo = motivo;
-    		
     		return dto;
     	}
 		
