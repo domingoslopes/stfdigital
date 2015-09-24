@@ -42,12 +42,8 @@ public class PersistenceConfiguration {
 	public Flyway flyway(DataSource dataSource) throws Exception {
 		Flyway flyway = new Flyway();
 		
-		flyway.setDataSource(dataSource);
-		flyway.setBaselineVersion("0");
 		flyway.setValidateOnMigrate(false);
-		if(!flyway.isValidateOnMigrate()) {
-			flyway.baseline();
-		}
+		flyway.setDataSource(dataSource);
 		
 		return flyway;
 	}
