@@ -49,7 +49,7 @@ public class PeticaoApplicationService {
 	private PeticaoFactory peticaoFactory;
 
 	/**
-	 * Registra uma nova petilçao.
+	 * Registra uma nova petição.
 	 * 
 	 * @param peticaoEletronica Petição eletrônica recebida.
 	 * 
@@ -152,5 +152,4 @@ public class PeticaoApplicationService {
 		
 		return processo;
 	}
-
 }

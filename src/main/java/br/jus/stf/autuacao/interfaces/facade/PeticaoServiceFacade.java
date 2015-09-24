@@ -20,6 +20,8 @@ import br.jus.stf.shared.domain.model.PeticaoId;
 
 
 /**
+ * Classe responsável pela criação de objetos relacionados ao peticionamento.
+ * 
  * @author Anderson.Araujo
  *
  * @version 1.0.0
@@ -114,6 +116,11 @@ public class PeticaoServiceFacade {
 		return new ProcessoDistribuidoDto(processo.classe().toString(), processo.numero(), idMinistroRelator);
 	}
 	
+	/**
+	 * Consulta um petição de acordo com o id informado.
+	 * @param idPeticao Id da petição.
+	 * @return Objeto contendo os dados da petição.
+	 */
 	public PeticaoDto consultar(Long idPeticao){
 		
 		Peticao peticao = this.peticaoRepository.findOne(new PeticaoId(idPeticao));
@@ -124,5 +131,4 @@ public class PeticaoServiceFacade {
 		
 		return this.peticaoDtoAssembler.toDto(peticao);
 	}
-	
 }
