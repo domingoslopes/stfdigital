@@ -64,15 +64,6 @@ public class PeticaoRestResource {
 	private PeticaoApplicationService peticaoApplicationService;
 	
 	@Autowired
-	private RuntimeService runtimeService;
-	
-	@Autowired
-	private TaskService taskService;
-	
-	@Autowired
-	private HistoryService historyService;
-	
-	@Autowired
 	private EntityManager entityManager;
 	
 	@Autowired
@@ -95,11 +86,12 @@ public class PeticaoRestResource {
 		List<Peticao> peticoes = entityManager.createQuery("from Peticao").getResultList();
 		for (Peticao p : peticoes) {
 			Map<String, String> peticao = new LinkedHashMap<String, String>();
+			peticao.put("id", p.id().toString());
 			if (!p.partesPoloAtivo().isEmpty()) {
 				Pessoa parte = pessoaRepository.findOne(p.partesPoloAtivo().iterator().next().pessoaId());
-				peticao.put("id", String.format("Petição #%s. Autor: %s", p.id().toLong(), parte.nome()));
+				peticao.put("descricao", String.format("Petição #%s. Autor: %s", p.identificacao(), parte.nome()));
 			} else {
-				peticao.put("id", String.format("Petição #%s. Autor: %s", p.id().toLong(), ""));
+				peticao.put("descricao", String.format("Petição #%s. Autor: %s", p.identificacao(), ""));
 			}
 			if (!p.processosWorkflow().isEmpty()) {
 				ProcessoWorkflow workflow = processoWorkflowRepository.findOne(p.processosWorkflow().iterator().next());
