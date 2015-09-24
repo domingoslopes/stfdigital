@@ -43,13 +43,12 @@ public class PersistenceConfiguration {
 		Flyway flyway = new Flyway();
 		
 		flyway.setDataSource(dataSource);
-		flyway.setBaselineOnMigrate(true);
 		flyway.setBaselineVersion("0");
 		flyway.setValidateOnMigrate(false);
-		
 		if(!flyway.isValidateOnMigrate()) {
 			flyway.baseline();
 		}
+		
 		return flyway;
 	}
 	
