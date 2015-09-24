@@ -36,11 +36,11 @@
 						<table class="table table-condensed table-hover">
 							<tbody>
 								<tr ng-repeat="tarefa in tarefas">
-									<td class="font-montserrat fs-12 col-lg-12">
-									   <a ui-sref="{{tarefa.nome}}({idTarefa: tarefa.id})">{{tarefa.descricao}}</a>
+									<td class="font-montserrat fs-12 col-lg-10">
+									   <a ui-sref="{{tarefa.nome}}({idTarefa: tarefa.idInformacao})">{{tarefa.descricao}}</a>
 									</td>
-									<td class="text-right b-l b-dashed b-grey col-lg-1">
-										<span class="hint-text small">#{{tarefa.id}}</span>
+									<td class="text-right b-l b-dashed b-grey col-lg-2">
+										<span class="hint-text small">#{{tarefa.idInformacao}}</span>
 									</td>
 								</tr>
 							</tbody>
@@ -67,7 +67,7 @@
                             <tbody>
                                 <tr ng-repeat="peticao in peticoes">
                                     <td class="font-montserrat fs-12 col-lg-12">
-                                    	<a ui-sref="detalhe({idPeticao: peticao.id})">petição {{peticao.id}} </a>
+                                    	<a ui-sref="detalhe({idPeticao: peticao.id})">{{peticao.descricao}}</a>
 									</td>
                                 </tr>
                             </tbody>

@@ -12,17 +12,17 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-        <form name="taskForm" ng-submit="finalizar()">
+        <form name="taskForm" ng-submit="finalizar()" novalidate>
             <div class="card share" data-social="item" style="width: 100%">
                 <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
                 <div class="card-header clearfix">
                     <h5>Ministro Relator</h5>
-                    <h6>Para qual ministro você deseja distribuir esse processo?</h6>
+                    <h6>Para qual ministro você deseja distribuir esse processo? ({{relator}})</h6>
                 </div>
                 <div class="card-description">
-                    <select ui-select2 id="relator" ng-model="relator" data-placeholder="Selecione o Relator" style="width: 250px;" autofocus>
+                    <select ui-select2 id="relator" ng-model="relator" data-placeholder="Selecione o Relator" style="width: 250px;">
                         <option value=""></option>
-                        <option ng-repeat="ministro in ministros" value="{{ministro.id}}">{{ministro.nome}}</option>
+                        <option ng-repeat="ministro in ministros" value="{{ministro.codigo}}">{{ministro.nome}}</option>
                     </select>
                 </div>
 			</div>

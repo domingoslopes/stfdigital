@@ -39,7 +39,7 @@ public class ParteProcesso extends Parte {
 	@Column(name = "SEQ_PROCESSO_PARTE")
 	@SequenceGenerator(name = "PROCESSOPARTEID", sequenceName = "AUTUACAO.SEQ_PROCESSO_PARTE", allocationSize = 1)
 	@GeneratedValue(generator = "PROCESSOPARTEID", strategy=GenerationType.SEQUENCE)
-	private Long id;
+	private Long sequencial;
 	
 	ParteProcesso() {
 		

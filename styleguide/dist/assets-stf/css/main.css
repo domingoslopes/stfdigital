@@ -13,3 +13,9 @@
 
 .md-card-list-item-avatar {
   border: 1px solid #aaa; }
+
+.clickable {
+  cursor: pointer; }
+
+.rascunho {
+  color: red; }

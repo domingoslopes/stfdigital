@@ -17,7 +17,7 @@
 			$('.modal-backdrop').remove();
 			$element.remove();
 			$previousState.go('modalInvoker');
-		}
+		};
 	});
 
 })();

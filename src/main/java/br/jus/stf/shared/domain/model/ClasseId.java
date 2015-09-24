@@ -26,6 +26,7 @@ public class ClasseId implements ValueObject<ClasseId> {
 		this.sigla = sigla;
 	}
 
+	@Override
 	public String toString(){
 		return sigla;
 	}

@@ -12,7 +12,7 @@
         <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.4.RELEASE</version>
+        <version>1.2.5.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -21,6 +21,16 @@
         <java.version>1.8</java.version>
         <activiti.version>5.18.0</activiti.version>
         <swagger.version>1.0.2</swagger.version>
+        <commons-io.version>2.4</commons-io.version>
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
+        <reactor-bus.version>2.0.4.RELEASE</reactor-bus.version>
+        <powermock-api-mockito.version>1.6.2</powermock-api-mockito.version>
+        <sonar-jacoco-listeners.version>2.1</sonar-jacoco-listeners.version>
+        <frontend-maven-plugin.version>0.0.25</frontend-maven-plugin.version>
+        <node.version>v0.12.4</node.version>
+        <npm.version>1.4.9</npm.version>
+        <jacoco-maven-plugin.version>0.7.5.201505241946</jacoco-maven-plugin.version>
+        <scm.git>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</scm.git>
 		<sonar.host.url>http://digital.stf.jus.br:9000</sonar.host.url>
 		<sonar.jdbc.url>jdbc:h2:tcp://digital.stf.jus.br:9092/sonar</sonar.jdbc.url>
     </properties>
@@ -34,7 +44,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		</dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
@@ -43,23 +53,31 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.boot</groupId> -->
-<!-- 			<artifactId>spring-boot-starter-data-elasticsearch</artifactId> -->
-<!-- 		</dependency>		 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.boot</groupId> -->
-<!-- 			<artifactId>spring-boot-starter-hateoas</artifactId> -->
-<!-- 		</dependency> -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
         </dependency>
         <dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
+        <dependency>
             <groupId>com.mangofactory</groupId>
             <artifactId>swagger-springmvc</artifactId>
             <version>${swagger.version}</version>
-        </dependency>
+        </dependency>       
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -67,13 +85,26 @@
 		<dependency>
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
-		    <version>2.4</version>
+		    <version>${commons-io.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.3.1</version>
-		</dependency>		
+			<version>${commons-fileupload.version}</version>
+		</dependency>
+        <dependency>
+        	<groupId>org.flywaydb</groupId>
+        	<artifactId>flyway-core</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-bus</artifactId>
+			<version>${reactor-bus.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>        
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
@@ -87,13 +118,13 @@
         <dependency>
 			<groupId>org.codehaus.sonar-plugins.java</groupId>
 			<artifactId>sonar-jacoco-listeners</artifactId>
-			<version>2.1</version>
+			<version>${sonar-jacoco-listeners.version}</version>
 			<scope>test</scope>        
         </dependency>
         <dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
-			<version>1.6.2</version>
+			<version>${powermock-api-mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
         <dependency>
@@ -102,14 +133,11 @@
         	<scope>test</scope>
         </dependency>
         <dependency>
-        	<groupId>org.flywaydb</groupId>
-        	<artifactId>flyway-core</artifactId>
-        </dependency>
-        <dependency>
-        	<groupId>org.neo4j</groupId>
-        	<artifactId>neo4j-cypher-compiler-2.1</artifactId>
-        	<version>2.1.5</version>
-        </dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>1.50.0</version>
+			<socpe>test</socpe>
+		</dependency>
     </dependencies>
 
 	<build>
@@ -147,7 +175,7 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>0.0.25</version>
+				<version>${frontend-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>install node and npm</id>
@@ -156,8 +184,8 @@
 						</goals>
 						<phase>generate-resources</phase>
 						<configuration>
-							<nodeVersion>v0.12.4</nodeVersion>
-							<npmVersion>1.4.9</npmVersion>
+							<nodeVersion>${node.version}</nodeVersion>
+							<npmVersion>${npm.version}</npmVersion>
 						</configuration>
 					</execution>
 					<execution>
@@ -185,7 +213,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.5.201505241946</version>
+				<version>${jacoco-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
@@ -206,8 +234,8 @@
 	</build>
 
 	<scm>
-		<url>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</url>
-		<connection>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</connection>
-		<developerConnection>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</developerConnection>
+		<url>${scm.git}</url>
+		<connection>${scm.git}</connection>
+		<developerConnection>${scm.git}</developerConnection>
 	</scm>
 </project>
