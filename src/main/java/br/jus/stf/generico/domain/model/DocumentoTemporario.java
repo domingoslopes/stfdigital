@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Objects;
 
 import org.apache.commons.lang3.Validate;
@@ -49,6 +50,14 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 	
 	public Long tamanho() {
 		return tamanho;
+	}
+	
+	public String contentType() {
+		try {
+			return Files.probeContentType(arquivo.toPath());
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 	
 	public FileInputStream stream() {
