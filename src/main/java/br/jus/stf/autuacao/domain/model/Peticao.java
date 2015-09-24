@@ -3,6 +3,7 @@ package br.jus.stf.autuacao.domain.model;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -108,7 +109,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	}
 	
 	public String identificacao() {
-		return identificacao;
+		return Optional.ofNullable(identificacao)
+				.orElse(identificacao = montarIdentificacao());
 	}
 
 	public ClasseId classeSugerida() {

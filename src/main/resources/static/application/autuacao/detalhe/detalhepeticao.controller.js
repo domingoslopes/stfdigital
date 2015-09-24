@@ -14,7 +14,7 @@
 		
 		var idPeticao = $stateParams.idPeticao;
 		
-		PeticaoService.consultarPeticao(idPeticao).success(function(data) {
+		PeticaoService.consultar(idPeticao).success(function(data) {
 			detalhe.peticao = data;
 		});
 		
