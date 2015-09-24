@@ -22,8 +22,4 @@ public interface ProcessoAdapter {
 	 * @return Identificador da instância do processo de autuação criado.
 	 */
 	public String iniciar(String tipoRecebimento);
-	
-	//public void alterar(String id, String nome, String valor);
-	
-	public Peticao consultar(String id);
 }
