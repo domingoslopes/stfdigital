@@ -36,6 +36,13 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 * @param documento
 	 */
 	public DocumentoId save(String documentoTemporario);
+	
+	/**
+	 * Exclui um documento
+	 * 
+	 * @param documento
+	 */
+	public void delete(Documento documento);
 
 	/**
 	 * Salva um documento temporário
