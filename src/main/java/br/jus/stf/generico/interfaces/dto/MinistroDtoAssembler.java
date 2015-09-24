@@ -17,6 +17,6 @@ public class MinistroDtoAssembler {
 	
 	public MinistroDto toDto(Ministro ministro ) {
 		Validate.notNull(ministro);
-		return new MinistroDto(ministro.codigo().toString(), ministro.nome());
+		return new MinistroDto(ministro.id().toString(), ministro.nome());
 	}
 }

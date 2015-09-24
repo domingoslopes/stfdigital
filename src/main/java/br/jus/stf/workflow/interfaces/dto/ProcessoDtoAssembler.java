@@ -1,12 +1,13 @@
 package br.jus.stf.workflow.interfaces.dto;
 
-import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.stereotype.Component;
+
+import br.jus.stf.shared.domain.model.ProcessoWorkflow;
 
 /**
  * Classe montadora de dtos de processo de bpm
  */
-@Component
+@Component("processoWorkflowDtoAssembler")
 public class ProcessoDtoAssembler {
 	
 	/**
@@ -15,8 +16,8 @@ public class ProcessoDtoAssembler {
 	 * @param processInstance
 	 * @return o dto
 	 */
-	public ProcessoDto toDto(ProcessInstance processInstance) {
-		return new ProcessoDto(processInstance.getId(), processInstance.getProcessVariables());
+	public ProcessoDto toDto(ProcessoWorkflow processo) {
+		return new ProcessoDto(processo.id().toLong(), processo.status());
 	}
 	
 }

@@ -22,6 +22,7 @@ import br.jus.stf.shared.infra.action.support.ActionMappingInfo;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ActionServiceTests {
 	
 	@Mock

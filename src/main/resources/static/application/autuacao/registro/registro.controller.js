@@ -7,67 +7,55 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('RegistroPeticaoFisicaController', function ($log, $http, $state, $timeout, messages, properties, TipoRecebimentoService, PeticaoService) {
+	angular.autuacao.controller('RegistroPeticaoFisicaController', function ($log, $http, $state, $timeout, messages, properties, PeticaoService) {
 		
 		var registro = this;
-		
 		registro.tipoRecebimentos = [];
-		
 		registro.tipoRecebimento = '';
-		
 		registro.qtdApensos = "";
-		
 		registro.qtdVolumes = "";
-		
 		registro.numSedex = "";
 		
-		TipoRecebimentoService.listar().success(function(formas){
-			registro.tipoRecebimentos = formas;
-		});
+		registro.tipoRecebimentos = [{ id : 'BALCAO', nome : "Balcão" }, { id : 'SEDEX', nome : "Sedex" }, { id : 'MALOTE', nome : "Malote" }, { id : 'FAX', nome : "Fax" }, { id : 'EMAIL', nome : "E-mail" }];
 		
 		registro.completar = function() {
 			
-			if (registro.qtdApensos.length == 0){
+			if (registro.qtdApensos.length === 0) {
 				messages.error("Você precisa informar o número de <b>apensos</b>");
 				return;
 			}
 			
-			if (registro.qtdVolumes.length == 0){
+			if (registro.qtdVolumes.length === 0){
 				messages.error("Você precisa informar o número de <b>volumes</b>");
 				return;
 			}
 			
-			if (registro.tipoRecebimento.length == 0){
+			if (registro.tipoRecebimento.length === 0){
 				messages.error("Você precisa selecionar uma forma de envio");
 				return;
 			}
 			
-			PeticaoService.registrar(new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, 
-					registro.tipoRecebimento, registro.numSedex)).success(function(data) {
+			var command = new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, registro.tipoRecebimento, registro.numSedex);
+			
+			PeticaoService.registrar(command).success(function(data) {
 				$state.go('dashboard');
-				//messages.success('Petição Física <b>#2</b> registrada com sucesso.');
-				}).error(function(data, status) {
-					if (status === 400) {
-						messages.error('A Petição Física <b>não pode ser registrada</b> porque ela não está válida.');
-					}
-
+				messages.success('Petição Física <b>#' + data + '</b> registrada com sucesso.');
+			}).error(function(data, status) {
+				if (status === 400) {
+					messages.error('A Petição Física <b>não pode ser registrada</b> porque ela não está válida.');
+				}
 			});
 		};
 		
-		function RegistrarCommand (qtdVolumes, qtdApensos, tipoRecebimento, numSedex){
-			
+		function RegistrarCommand (quantidadeVolumes, quantidadeApensos, formaRecebimento, numeroSedex){
 			var dto = {};
-			
-			dto.qtdVolumes = qtdVolumes;
-			
-			dto.qtdApensos = qtdApensos;
-			
-			dto.tipoRecebimento = tipoRecebimento;
-			
-			dto.numSedex = numSedex;
+
+			dto.quantidadeVolumes = quantidadeVolumes;
+			dto.quantidadeApensos = quantidadeApensos;
+			dto.formaRecebimento = formaRecebimento;
+			dto.numeroSedex = numeroSedex;
 			
 			return dto;
-			
 		}
 	});
 

@@ -18,22 +18,27 @@ public class ProcessoWorkflowId implements ValueObject<ProcessoWorkflowId> {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "NUM_PROCESS_INSTANCE", nullable = false)
-	private Long id;
-
-	public ProcessoWorkflowId(final String id) {
-		Validate.notNull(id, "processoWorkflowId.id.required");
-		this.id = Long.valueOf(id);
+	private Long sequencial;
+	
+	public ProcessoWorkflowId(final Long sequencial) {
+		Validate.notNull(sequencial, "processoWorkflowId.sequencial.required");
+		this.sequencial = sequencial;
 	}
 	
 	public Long toLong(){
-		return id;
+		return sequencial;
 	}
+	
+	@Override
+	public String toString(){
+		return sequencial.toString();
+	}	
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
 		return result;
 	}
 	
@@ -48,12 +53,7 @@ public class ProcessoWorkflowId implements ValueObject<ProcessoWorkflowId> {
 
 	@Override
 	public boolean sameValueAs(final ProcessoWorkflowId other){
-		return other != null && this.id.equals(other.id);
-	}
-
-	@Override
-	public String toString(){
-		return id.toString();
+		return other != null && this.sequencial.equals(other.sequencial);
 	}
 
 	//Hibernate
