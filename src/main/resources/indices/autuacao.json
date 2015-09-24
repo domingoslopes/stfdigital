@@ -2,31 +2,17 @@
   "settings": {
     "analysis": {
       "filter": {
-        "edgeNGram_filter": {
+        "autocomplete_filter": {
           "type": "edgeNGram",
           "min_gram": 2,
-          "max_gram": 20,
-          "side": "front"
+          "max_gram": 20
         }
       },
       "analyzer": {
-        "edge_nGram_analyzer": {
+        "autocomplete": {
           "type": "custom",
-          "tokenizer": "edge_ngram_tokenizer",
-          "filter": [ "lowercase", "asciifolding", "edgeNGram_filter" ]
-        },
-        "whitespace_analyzer": {
-          "type": "custom",
-          "tokenizer": "whitespace",
-          "filter": [ "lowercase", "asciifolding" ]
-        }
-      },
-      "tokenizer": {
-        "edge_ngram_tokenizer": {
-          "type": "edgeNGram",
-          "min_gram": "2",
-          "max_gram": "5",
-          "token_chars": [ "letter", "whitespace" ,"digit" ]
+          "tokenizer": "standard",
+          "filter": [ "lowercase", "autocomplete_filter" ]
         }
       }
     }
@@ -34,8 +20,8 @@
   "mappings": {
     "PeticaoEletronica": {
       "_all": {
-        "index_analyzer": "edge_nGram_analyzer",
-        "search_analyzer": "whitespace_analyzer"
+        "index_analyzer": "autocomplete",
+        "search_analyzer": "standard"
       },
       "dynamic": false,
       "properties": {      
@@ -57,10 +43,8 @@
         },
         "identificacao": {
           "type": "string",
-          "include_in_all": true,
-          "term_vector": "yes",
-          "index_analyzer": "edge_nGram_analyzer",
-          "search_analyzer": "whitespace_analyzer"
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"
         },               
         "classeSugerida": {
           "properties": {
@@ -122,8 +106,8 @@
     },
     "PeticaoFisica": {
       "_all": {
-        "index_analyzer": "edge_nGram_analyzer",
-        "search_analyzer": "whitespace_analyzer"
+        "index_analyzer": "autocomplete",
+        "search_analyzer": "standard"
       },
       "dynamic": false,
       "properties": {      
@@ -145,10 +129,8 @@
         },
         "identificacao": {
           "type": "string",
-          "include_in_all": true,
-          "term_vector": "yes",
-          "index_analyzer": "edge_nGram_analyzer",
-          "search_analyzer": "whitespace_analyzer"
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"         
         },               
         "classeSugerida": {
           "properties": {
@@ -226,8 +208,8 @@
     },
     "Processo": {
       "_all": {
-        "index_analyzer": "edge_nGram_analyzer",
-        "search_analyzer": "whitespace_analyzer"
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"
       },
       "dynamic": false,
       "properties": {
@@ -253,10 +235,8 @@
         }, 
         "identificacao": {
           "type": "string",
-          "include_in_all": true,
-          "term_vector": "yes",
-          "index_analyzer": "edge_nGram_analyzer",
-          "search_analyzer": "whitespace_analyzer"
+          "index_analyzer": "autocomplete",
+          "search_analyzer": "standard"
         },
         "relator": {
           "properties": {
