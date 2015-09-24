@@ -12,7 +12,6 @@ import br.jus.stf.shared.domain.model.PessoaId;
 
 /**
  * @author Lucas.Rodrigues
- *
  */
 @Entity
 @Table(name = "PETICAO_PARTE", schema = "AUTUACAO")
@@ -34,12 +33,11 @@ public class PartePeticao extends Parte {
 		return super.equals(obj);
 	}
 	
-	//Hibernate
 	@Id
 	@Column(name = "SEQ_PETICAO_PARTE")
 	@SequenceGenerator(name = "PETICAOPARTEID", sequenceName = "AUTUACAO.SEQ_PETICAO_PARTE", allocationSize = 1)
 	@GeneratedValue(generator = "PETICAOPARTEID", strategy=GenerationType.SEQUENCE)
-	private Long id;
+	private Long sequencial;
 	
 	PartePeticao() {
 		

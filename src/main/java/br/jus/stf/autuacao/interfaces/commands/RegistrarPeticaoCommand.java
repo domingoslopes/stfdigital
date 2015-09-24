@@ -20,7 +20,7 @@ public class RegistrarPeticaoCommand {
 
 	@NotBlank
 	@ApiModelProperty(value = "Identificador da classe processual sugerida pelo peticionador", required=true)
-	private String classe;
+	private String classeId;
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
@@ -33,12 +33,12 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "A lista de identificadores dos documentos que serão anexados pelo peticionador", required=true)
 	private List<String> documentos;
 
-	public void setClasse(String classe) {
-		this.classe = classe;
+	public void setClasseId(String classeId) {
+		this.classeId = classeId;
 	}
 
-	public String getClasse() {
-		return classe;
+	public String getClasseId() {
+		return classeId;
 	}
 	
 	public void setPartesPoloAtivo(List<String> partesPoloAtivo) {

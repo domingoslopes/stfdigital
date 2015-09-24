@@ -2,14 +2,12 @@ package br.jus.stf.workflow.application;
 
 import javax.transaction.Transactional;
 
-import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.jus.stf.shared.domain.model.ProcessoWorkflow;
 import br.jus.stf.shared.domain.model.ProcessoWorkflowId;
-import br.jus.stf.workflow.domain.model.ProcessoRepository;
-import br.jus.stf.workflow.domain.model.ProcessoWorkflowRepository;
+import br.jus.stf.workflow.domain.model.ProcessoWokflowRepository;
 
 /**
  * @author Rodrigo Barreiros
@@ -23,28 +21,30 @@ import br.jus.stf.workflow.domain.model.ProcessoWorkflowRepository;
 public class ProcessoApplicationService {
 
 	@Autowired
-	private ProcessoRepository processoRepository;
-	
-	@Autowired
-	private ProcessoWorkflowRepository processoWorkflowRepository;
+	private ProcessoWokflowRepository processoWorkflowRepository;
 
 	/**
-	 * Inicia uma nova instância do processo de autuação de originários.
-	 * @param mensagem Identificador da forma de ingresso de uma petição (física ou eletrônica).
-	 * @return Identificador da instãncia do processo de autuação criado.
+	 * Inicia uma nova instância do processo
+	 * 
+	 * @param informacao o ID da informação relacionada ao processo de trabalho
+	 * @param mensagem Mensagem que inicia um processo
+	 * @param status Status inicial do processo
+	 * @return Identificador da instância do processo.
 	 */
-	public String iniciar(String mensagem) {
-		ProcessInstance processInstance = processoRepository.criar(mensagem);
-		String status = (String) processInstance.getProcessVariables().get("status");
-		
-		ProcessoWorkflowId id = new ProcessoWorkflowId(processInstance.getId());
-		ProcessoWorkflow processoWorkflow = new ProcessoWorkflow(id, status);
-		processoWorkflowRepository.save(processoWorkflow);
-		
-		return processInstance.getId();
+	public ProcessoWorkflowId iniciar(Long informacao, String mensagem, String status) {
+		return processoWorkflowRepository.criar(informacao, mensagem, status);
 	}
 	
-	public ProcessInstance consultar(String id){
-		return this.processoRepository.consultar(id);
+	/**
+	 * Emite um sinal para um processo e atualiza seu status
+	 * 
+	 * @param id
+	 * @param sinal
+	 * @param status
+	 */
+	public void sinalizar(ProcessoWorkflow processo, String sinal, String status){
+		processoWorkflowRepository.sinalizar(sinal, status);
+		processoWorkflowRepository.updateStatus(processo.id(), status);
 	}
+	
 }

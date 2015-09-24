@@ -9,15 +9,10 @@
 	
 	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $state, messages, properties, $log, PeticaoService) {
 		$scope.classes = data.data;
-		
 		$scope.classe = '';
-		
 		$scope.partesPoloAtivo = [];
-		
 		$scope.partesPoloPassivo = [];
-		
 		$scope.poloAtivoController = new PartesController($scope.partesPoloAtivo);
-		
 		$scope.poloPassivoController = new PartesController($scope.partesPoloPassivo);
 		
 		$scope.adicionarPoloAtivo = function() {
@@ -55,8 +50,9 @@
 				messages.error('Você precisa informar <b>pelo menos uma parte</b> para o polo <b>passivo</b>.');
 				return;
 			}
+			var command = new PeticionarCommand($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo);
 			
-			PeticaoService.peticionar(new PeticionarCommand($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo)).success(function(data) {
+			PeticaoService.peticionar(command).success(function(data) {
 				$state.go('dashboard');
 				//messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
 			}).error(function(data, status) {
@@ -93,18 +89,14 @@
 					array.pop();
 				}
 			};
-			
 			return partesController;
 		}
 
 
     	function PeticionarCommand(classe, partesPoloAtivo, partesPoloPassivo){
     		var dto = {};
-    		
-    		dto.classe = classe;
-    		
+    		dto.classeId = classe;
     		dto.partesPoloAtivo = [];
-    		
     		dto.partesPoloPassivo = [];
     		
     		angular.forEach(partesPoloAtivo, function(parte) {
@@ -114,7 +106,6 @@
     		angular.forEach(partesPoloPassivo, function(parte) {
     			dto.partesPoloPassivo.push(parte.text);
     		});
-    		
     		return dto;
     	}
 		

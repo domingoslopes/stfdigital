@@ -30,7 +30,6 @@ import br.jus.stf.AbstractIntegrationTests;
  * @version 1.0.0
  * 
  * @since 17.09.2015
- *
  */
 public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTests {
 	
@@ -46,8 +45,8 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		//Cria um objeto para ser usado no processo de autuação de uma petição válida.
 		StringBuilder peticaoEletronicaValidaParaAutuacao =  new StringBuilder();
 		peticaoEletronicaValidaParaAutuacao.append("{\"resources\": ");
-		peticaoEletronicaValidaParaAutuacao.append("[{\"idPeticao\": @,");
-		peticaoEletronicaValidaParaAutuacao.append("\"classe\":\"ADI\",");
+		peticaoEletronicaValidaParaAutuacao.append("[{\"peticaoId\": @,");
+		peticaoEletronicaValidaParaAutuacao.append("\"classeId\":\"ADI\",");
 		peticaoEletronicaValidaParaAutuacao.append("\"valida\":true,");
 		peticaoEletronicaValidaParaAutuacao.append("\"motivo\":\"\"}]}");
 		this.peticaoValidaParaAutuacao = peticaoEletronicaValidaParaAutuacao.toString();
@@ -55,8 +54,8 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		//Cria um objeto para ser usado no processo de distribuição de uma petição.
 		StringBuilder peticaoAutuadaParaDistribuicao =  new StringBuilder();
 		peticaoAutuadaParaDistribuicao.append("{\"resources\": ");
-		peticaoAutuadaParaDistribuicao.append("[{\"idPeticao\": @,");
-		peticaoAutuadaParaDistribuicao.append("\"idRelator\":36}]}");
+		peticaoAutuadaParaDistribuicao.append("[{\"peticaoId\": @,");
+		peticaoAutuadaParaDistribuicao.append("\"ministroId\":36}]}");
 		this.peticaoAutuadaParaDistribuicao = peticaoAutuadaParaDistribuicao.toString();
 		
 		//Envia um documento para que seja obtido o seu ID. Este será usado para simular o teste de envio de uma petição eletrônica.
@@ -76,7 +75,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 	    //Cria um objeto contendo os dados da petição eletrônica a ser usado no teste.
 	    StringBuilder peticaoEletronica =  new StringBuilder();
-		peticaoEletronica.append("{\"resources\": [{\"classe\":\"HC\",");
+		peticaoEletronica.append("{\"resources\": [{\"classeId\":\"HC\",");
 		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
 		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
 		peticaoEletronica.append("\"documentos\":[\"" + idDoc + "\"]}]}");
@@ -84,7 +83,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Cria um objeto contendo os dados da petição física a ser usado no teste do registro da petição física.
 		StringBuilder peticaoFisica =  new StringBuilder();
-		peticaoFisica.append("{\"resources\": [{\"formaRecebimento\":\"2\",");
+		peticaoFisica.append("{\"resources\": [{\"formaRecebimento\":\"SEDEX\",");
 		peticaoFisica.append("\"quantidadeVolumes\":2,");
 		peticaoFisica.append("\"quantidadeApensos\":1,");
 		peticaoFisica.append("\"numeroSedex\":\"SR123456789BR\"}]}");
@@ -93,15 +92,15 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		//Cria um objeto contendo os dados de uma petição física a ser usado no processo de préautuação.
 		StringBuilder peticaoFisicaParaPreautuacao =  new StringBuilder();
 		peticaoFisicaParaPreautuacao.append("{\"resources\": ");
-		peticaoFisicaParaPreautuacao.append("[{\"idPeticao\": @,");
-		peticaoFisicaParaPreautuacao.append("\"classeSugerida\":\"ADI\"}]}");
+		peticaoFisicaParaPreautuacao.append("[{\"peticaoId\": @,");
+		peticaoFisicaParaPreautuacao.append("\"classeId\":\"ADI\"}]}");
 		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
 		//Cria um objeto para ser usado no processo de rejeição de uma petição.
 		StringBuilder peticaoInValidaParaAutuacao =  new StringBuilder();
 		peticaoInValidaParaAutuacao.append("{\"resources\": ");
-		peticaoInValidaParaAutuacao.append("[{\"idPeticao\": @,");
-		peticaoInValidaParaAutuacao.append("\"classe\":\"ADI\",");
+		peticaoInValidaParaAutuacao.append("[{\"peticaoId\": @,");
+		peticaoInValidaParaAutuacao.append("\"classeId\":\"ADI\",");
 		peticaoInValidaParaAutuacao.append("\"valida\":false,");
 		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}]}");
 		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
@@ -116,11 +115,11 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     @Test
     public void executarAcaoDistribuirPeticaoEletronica() throws Exception {
     	
-    	String idPeticao = "";
+    	String peticaoId = "";
     	setAuthenticationAuthorities("peticionador");
     	
     	//Envia a petição eletrônica.
-    	idPeticao = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").contentType(MediaType.APPLICATION_JSON)
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -131,7 +130,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar_peticao/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoValidaParaAutuacao.replace("@", idPeticao))).andExpect(status().isOk());
+			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "distribuidor")).andExpect(status().isOk())
@@ -141,7 +140,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir_peticao/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoAutuadaParaDistribuicao.replace("@", idPeticao))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
@@ -153,11 +152,11 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     @Test
     public void executarAcaoRegistroPeticaoFisica() throws Exception {
     	
-    	String idPeticao = "";
+    	String peticaoId = "";
     	setAuthenticationAuthorities("recebedor");
     	
     	//Envia a petição eletrônica.
-    	idPeticao = super.mockMvc.perform(post("/api/actions/registrar_peticao_fisica/execute").contentType(MediaType.APPLICATION_JSON)
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_fisica/execute").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
@@ -168,7 +167,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Realiza a préautuação da petição física.
 		super.mockMvc.perform(post("/api/actions/preautuar_peticao_fisica/execute").contentType(MediaType.APPLICATION_JSON)
-	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", idPeticao))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
@@ -178,7 +177,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar_peticao/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoValidaParaAutuacao.replace("@", idPeticao))).andExpect(status().isOk());
+			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "distribuidor")).andExpect(status().isOk())
@@ -188,7 +187,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir_peticao/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoAutuadaParaDistribuicao.replace("@", idPeticao))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
@@ -200,11 +199,11 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     @Test
     public void executarAcaoRejeitarPeticao() throws Exception {
     	
-    	String idPeticao = "";
+    	String peticaoId = "";
     	setAuthenticationAuthorities("peticionador");
     	
     	//Envia a petição eletrônica.
-    	idPeticao = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").contentType(MediaType.APPLICATION_JSON)
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -215,7 +214,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar_peticao/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoInvalidaParaAutuacao.replace("@", idPeticao))).andExpect(status().isOk());
+			.content(this.peticaoInvalidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())

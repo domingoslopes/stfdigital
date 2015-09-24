@@ -1,14 +1,14 @@
 package br.jus.stf.autuacao.domain.model;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.shared.domain.model.ClasseId;
-import br.jus.stf.shared.domain.model.DocumentoId;
 import br.jus.stf.shared.domain.model.MinistroId;
-import br.jus.stf.shared.domain.model.PeticaoId;
 import br.jus.stf.shared.domain.model.ProcessoId;
 
 /**
@@ -27,12 +27,21 @@ public class ProcessoFactory {
 		processoRepository = repository;
 	}
 	
-	public static Processo criarProcesso(ClasseId classe, MinistroId relator, PeticaoId peticao,
-			Set<ParteProcesso> partes, Set<DocumentoId> documentos) {
+	public static Processo criarProcesso(ClasseId classe, MinistroId relator, Peticao peticao) {
+		Set<ParteProcesso> partesProcesso = new HashSet<ParteProcesso>();
+		partesProcesso.addAll(coletarPartes(peticao.partesPoloAtivo()));
+		partesProcesso.addAll(coletarPartes(peticao.partesPoloPassivo()));
+		
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(classe);
 		
-		return new Processo(id, classe, numero, relator, peticao, partes, documentos);
+		return new Processo(id, classe, numero, relator, peticao.id(), partesProcesso, peticao.documentos());
+	}
+
+	private static Set<ParteProcesso> coletarPartes(Set<Parte> partesPeticao) {
+		return partesPeticao.stream()
+			.map(parte -> new ParteProcesso(parte.pessoaId(), parte.polo()))
+			.collect(Collectors.toSet());
 	}
 	
 }

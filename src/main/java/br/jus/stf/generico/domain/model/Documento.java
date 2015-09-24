@@ -1,11 +1,7 @@
 package br.jus.stf.generico.domain.model;
 
-import java.sql.Blob;
-
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
@@ -20,31 +16,28 @@ import br.jus.stf.shared.domain.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "DOCUMENTO", schema = "CORPORATIVO")
-public class Documento implements Entity<Documento> {
+public class Documento implements Entity<Documento, DocumentoId> {
 
 	@EmbeddedId
-	@AttributeOverride(name = "id",
-		column = @Column(name = "SEQ_DOCUMENTO", insertable = false, updatable = false))
 	private DocumentoId id;
 	
-	@Lob
-	@Column(name = "BIN_CONTEUDO")	
-	private Blob conteudo;
+	@Column(name = "NUM_CONTEUDO")	
+	private String numeroConteudo;
 
-	public Documento(final DocumentoId id, final Blob conteudo) {
-		Validate.notNull(id);
-		Validate.notNull(conteudo);
+	public Documento(final DocumentoId id, final String numeroConteudo) {
+		Validate.notNull(id, "documento.id.required");
+		Validate.notBlank(numeroConteudo, "documento.numeroConteudo.required");
 		
 		this.id = id;
-		this.conteudo = conteudo;
+		this.numeroConteudo = numeroConteudo;
 	}
 
 	public DocumentoId id() {
 		return id;
 	}
 
-	public Blob conteudo(){
-		return conteudo;
+	public String numeroConteudo(){
+		return numeroConteudo;
 	}
 	
 	@Override

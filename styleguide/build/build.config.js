@@ -10,7 +10,7 @@
 'use strict';
 
 module.exports = {
-	proxy : 'localhost/stf/stfdigital/styleguide/dist',
+	proxy : 'localhost/stfdigital/styleguide/dist',
 	assets : ['src/assets/js/**/*', 'src/assets/fonts/**/*'],
 	images : 'src/assets/images/**/*',
 	sass : 'src/assets/sass/**/*',

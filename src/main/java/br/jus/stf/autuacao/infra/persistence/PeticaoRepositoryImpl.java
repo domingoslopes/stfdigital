@@ -2,6 +2,7 @@ package br.jus.stf.autuacao.infra.persistence;
 
 import java.math.BigInteger;
 import java.util.Calendar;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -27,6 +28,13 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	public PeticaoRepositoryImpl(EntityManager entityManager) {
 		super(Peticao.class, entityManager);
 		this.entityManager = entityManager;
+	}
+	
+	@Override
+	public <T> T findOne(PeticaoId id, Class<T> clazz) {
+		return Optional.ofNullable(super.findOne(id))
+				.map(peticao -> clazz.cast(peticao))
+				.orElse(null);
 	}
 
 	@Override

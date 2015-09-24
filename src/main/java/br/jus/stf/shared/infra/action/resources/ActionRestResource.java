@@ -1,6 +1,6 @@
 package br.jus.stf.shared.infra.action.resources;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -42,7 +42,7 @@ public class ActionRestResource {
     @ApiOperation(value = "Lista as ações de um determinado contexto.")
     @JsonView(ActionView.class)
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public Collection<ActionMappingInfo> list() {
+	public List<ActionMappingInfo> list() {
 
     	return actionService.listActions()
     			.stream()
@@ -84,10 +84,10 @@ public class ActionRestResource {
      */
     @ApiOperation(value = "Verifica se as ações podem ser executadas ou listadas.")
 	@RequestMapping(value = "/isallowed", method = RequestMethod.POST)
-	public Collection<String> verifyAllowed(@RequestBody @Valid VerifyActionsCommand command, BindingResult result) {
+	public List<String> verifyAllowed(@RequestBody @Valid VerifyActionsCommand command, BindingResult result) {
     	
     	if (result.hasErrors()) {
-    		throw new IllegalArgumentException("Verificação inválida: " + result.getAllErrors());
+    		throw new IllegalArgumentException(result.getAllErrors().toString());
     	}
     	return command.getIds()
     		.stream()

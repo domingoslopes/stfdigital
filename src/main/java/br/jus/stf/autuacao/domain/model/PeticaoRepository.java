@@ -15,10 +15,18 @@ public interface PeticaoRepository {
 
 	/**
 	 * 
-	 * @param numeroPeticao
+	 * @param id
 	 * @return peticao
 	 */
 	public Peticao findOne(PeticaoId id);
+	
+	/**
+	 * 
+	 * @param id
+	 * @param clazz tipo de retorno
+	 * @return peticao
+	 */
+	public <T> T findOne(PeticaoId id, Class<T> clazz);
 
 	/**
 	 * @param specification

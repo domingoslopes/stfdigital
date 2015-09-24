@@ -48,11 +48,32 @@ public class PeticaoFisica extends Peticao {
 		this.numeroSedex = numeroSedex;
 	}
 	
+	public Integer volumes() {
+		return volumes;
+	}
+	
+	public Integer apensos() {
+		return apensos;
+	}
+	
+	public FormaRecebimento formaRecebimento() {
+		return formaRecebimento;
+	}
+	
+	public String numeroSedex() {
+		return numeroSedex;
+	}
+	
 	public void preautuar(final ClasseId classeSugerida) {
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		
-		this.classeSugerida = classeSugerida;
+		/*if (!statusAtual.equals(PeticaoStatus.A_PREAUTUAR)) {
+			throw new IllegalStateException("peticao.status.invalid");
+		}*/
+		super.sugerirClasse(classeSugerida);
 	}
+	
+	//Hibernate
 	
 	PeticaoFisica() {
 		

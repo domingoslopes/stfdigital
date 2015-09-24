@@ -14,7 +14,7 @@
 	angular.plataforma.factory('TarefaService', function($http, $window, properties) {
 		return {
 			listar : function() {
-				return $http.get(properties.apiUrl + '/tarefas');
+				return $http.get(properties.apiUrl + '/workflow/tarefas');
 			}
 		};
 	});
