@@ -4,17 +4,18 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.AbstractIntegrationTests;
-import br.jus.stf.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.autuacao.domain.model.PartePeticao;
-import br.jus.stf.autuacao.domain.model.Peticao;
-import br.jus.stf.autuacao.domain.model.PeticaoFactory;
-import br.jus.stf.autuacao.domain.model.Processo;
-import br.jus.stf.autuacao.domain.model.ProcessoFactory;
-import br.jus.stf.autuacao.domain.model.TipoPolo;
-import br.jus.stf.shared.domain.model.ClasseId;
-import br.jus.stf.shared.domain.model.DocumentoId;
-import br.jus.stf.shared.domain.model.MinistroId;
-import br.jus.stf.shared.domain.model.PessoaId;
+import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationEvent;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
+import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.MinistroId;
+import br.jus.stf.shared.PessoaId;
 
 /**
  * @author Lucas.Rodrigues
