@@ -17,8 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import br.jus.stf.shared.infra.action.support.ResourcesMode;
-import br.jus.stf.shared.infra.action.support.ActionMappingInfo;
+import br.jus.stf.plataforma.actions.support.ActionMappingInfo;
+import br.jus.stf.plataforma.actions.support.ResourcesMode;
 
 /**
  * @author Lucas.Rodrigues

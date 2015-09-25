@@ -136,7 +136,7 @@
 			<groupId>de.flapdoodle.embed</groupId>
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
 			<version>1.50.0</version>
-			<socpe>test</socpe>
+			<scope>test</scope>
 		</dependency>
     </dependencies>
 
