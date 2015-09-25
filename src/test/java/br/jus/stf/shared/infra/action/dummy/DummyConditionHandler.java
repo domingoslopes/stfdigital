@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.shared.infra.action.handler.ActionConditionHandler;
+import br.jus.stf.plataforma.actions.handler.ActionConditionHandler;
 
 /**
  * @author Lucas.Rodrigues

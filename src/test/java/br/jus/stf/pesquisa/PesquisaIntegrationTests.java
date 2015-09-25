@@ -14,16 +14,17 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.http.MediaType;
 
 import br.jus.stf.AbstractIntegrationTests;
-import br.jus.stf.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.autuacao.domain.model.PartePeticao;
-import br.jus.stf.autuacao.domain.model.PeticaoFactory;
-import br.jus.stf.autuacao.domain.model.PeticaoFisica;
-import br.jus.stf.autuacao.domain.model.TipoPolo;
-import br.jus.stf.shared.domain.model.ClasseId;
-import br.jus.stf.shared.domain.model.DocumentoId;
-import br.jus.stf.shared.domain.model.MinistroId;
-import br.jus.stf.shared.domain.model.PessoaId;
+import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.distribuicao.application.ProcessoApplicationService;
+import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.MinistroId;
+import br.jus.stf.shared.PessoaId;
 
 /**
  * @author Lucas.Rodrigues
@@ -36,6 +37,9 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 	
 	@Autowired
 	private PeticaoApplicationService peticaoApplicationService;
+	
+	@Autowired
+	private ProcessoApplicationService processoApplicationService;
 	
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
@@ -52,7 +56,7 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 			peticao.aceitar(new ClasseId("HC"));
 			peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
 			peticao.adicionarDocumento(new DocumentoId(1L));
-			peticaoApplicationService.distribuir(peticao, new MinistroId(1L));
+			processoApplicationService.distribuir(peticao, new MinistroId(1L));
 		//}
 		elasticsearchTemplate.refresh("autuacao", true);
 		
