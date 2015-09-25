@@ -6,7 +6,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.AbstractIntegrationTests;
-import br.jus.stf.workflow.application.TarefaApplicationService;
+import br.jus.stf.plataforma.workflow.application.TarefaApplicationService;
+import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
 
 /**
  * Teste do processo de peticionamento.

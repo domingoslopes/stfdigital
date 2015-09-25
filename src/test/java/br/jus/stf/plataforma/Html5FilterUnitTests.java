@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
-import br.jus.stf.plataforma.web.Html5Filter;
+import br.jus.stf.plataforma.shared.web.Html5Filter;
 
 /**
  * Testes unitários para validação do filtro que viabiliza, do lado do servidor, a 

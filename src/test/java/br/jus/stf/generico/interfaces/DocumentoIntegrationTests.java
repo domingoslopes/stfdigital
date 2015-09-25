@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import br.jus.stf.AbstractIntegrationTests;
-import br.jus.stf.generico.interfaces.dto.DocumentoDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
