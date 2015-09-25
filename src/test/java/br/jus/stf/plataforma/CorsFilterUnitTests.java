@@ -1,11 +1,11 @@
 package br.jus.stf.plataforma;
 
-import static br.jus.stf.plataforma.web.CorsFilter.ALLOWED_HEADERS;
-import static br.jus.stf.plataforma.web.CorsFilter.ALLOWED_METHODS;
-import static br.jus.stf.plataforma.web.CorsFilter.ALLOWED_ORIGINS;
-import static br.jus.stf.plataforma.web.CorsFilter.HEADERS;
-import static br.jus.stf.plataforma.web.CorsFilter.METHODS;
-import static br.jus.stf.plataforma.web.CorsFilter.ORIGINS;
+import static br.jus.stf.plataforma.shared.web.CorsFilter.ALLOWED_HEADERS;
+import static br.jus.stf.plataforma.shared.web.CorsFilter.ALLOWED_METHODS;
+import static br.jus.stf.plataforma.shared.web.CorsFilter.ALLOWED_ORIGINS;
+import static br.jus.stf.plataforma.shared.web.CorsFilter.HEADERS;
+import static br.jus.stf.plataforma.shared.web.CorsFilter.METHODS;
+import static br.jus.stf.plataforma.shared.web.CorsFilter.ORIGINS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Test;
 
-import br.jus.stf.plataforma.web.CorsFilter;
+import br.jus.stf.plataforma.shared.web.CorsFilter;
 
 /**
  * Testes unitários para validação do filtro que viabiliza a utilização da 

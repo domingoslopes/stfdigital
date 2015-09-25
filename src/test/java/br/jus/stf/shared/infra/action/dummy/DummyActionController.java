@@ -3,8 +3,8 @@ package br.jus.stf.shared.infra.action.dummy;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.jus.stf.shared.infra.action.annotation.ActionController;
-import br.jus.stf.shared.infra.action.annotation.ActionMapping;
+import br.jus.stf.plataforma.actions.annotation.ActionController;
+import br.jus.stf.plataforma.actions.annotation.ActionMapping;
 
 /**
  * @author Lucas.Rodrigues
