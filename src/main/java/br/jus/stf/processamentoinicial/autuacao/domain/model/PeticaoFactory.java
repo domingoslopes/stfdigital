@@ -11,6 +11,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 
@@ -41,7 +42,7 @@ public class PeticaoFactory {
 	 * @return a petição
 	 */
 	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, 
-			List<String> poloAtivo, List<String> poloPassivo, List<String> documentosTemporarios) {
+			List<String> poloAtivo, List<String> poloPassivo, List<DocumentoTemporarioId> documentosTemporarios) {
 		
 		Set<PartePeticao> partes = new HashSet<PartePeticao>();
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
@@ -89,7 +90,7 @@ public class PeticaoFactory {
 	 * @param documentos
 	 * @return
 	 */
-	private Set<DocumentoId> adicionarDocumentos(List<String> documentos){
+	private Set<DocumentoId> adicionarDocumentos(List<DocumentoTemporarioId> documentos){
 		return documentoAdapter.salvarDocumentos(documentos);
 	}
 	
