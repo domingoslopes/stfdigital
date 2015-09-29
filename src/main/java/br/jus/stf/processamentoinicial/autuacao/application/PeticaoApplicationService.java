@@ -17,6 +17,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Rodrigo Barreiros
@@ -53,7 +54,7 @@ public class PeticaoApplicationService {
 	 * @param peticaoEletronica Petição eletrônica recebida.
 	 * @return Id da petição eletrônica registrada.
 	 */
-	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
+	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<DocumentoTemporarioId> documentos) {
 		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, documentos);
 		processoAdapter.iniciarProcessoWorkflow(peticao);
 		peticaoRepository.save(peticao);
