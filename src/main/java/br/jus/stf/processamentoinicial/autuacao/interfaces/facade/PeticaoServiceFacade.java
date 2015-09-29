@@ -2,6 +2,7 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces.facade;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PeticaoId;
 
 
@@ -46,8 +48,9 @@ public class PeticaoServiceFacade {
 	 */
 	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
 		ClasseId classe = new ClasseId(classeSugerida);
-
-		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, documentos);
+		List<DocumentoTemporarioId> documentosTemporarios = documentos.stream().map(DocumentoTemporarioId::new).collect(Collectors.toList());
+		
+		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, documentosTemporarios);
 
 		return peticao.id().toLong();
 	}
@@ -109,7 +112,6 @@ public class PeticaoServiceFacade {
 	 */
 	public PeticaoDto consultar(Long peticaoId){
 		Peticao peticao = carregarPeticao(peticaoId);
-		System.out.println(peticao.partesPoloAtivo());
 		if (peticao.isEletronica()) {
 			return peticaoDtoAssembler.toDto((PeticaoEletronica) peticao);
 		} else {

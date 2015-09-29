@@ -12,6 +12,7 @@ import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Lucas Rodrigues
@@ -27,7 +28,7 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	private DocumentoRestResource documentoRestResource;
 
 	@Override
-	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios) {
+	public Set<DocumentoId> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		SalvarDocumentosCommand command = new SalvarDocumentosCommand();
 		command.setDocumentos(documentosTemporarios);
 		return documentoRestResource.salvar(command).stream()
