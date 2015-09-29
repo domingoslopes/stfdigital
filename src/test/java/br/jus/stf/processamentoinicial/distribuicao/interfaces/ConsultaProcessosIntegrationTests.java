@@ -17,7 +17,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  * @since 1.0.0
  * @since 29.09.2015
  */
-public class ConsultarProcessosIntegrationTests extends AbstractIntegrationTests {
+public class ConsultaProcessosIntegrationTests extends AbstractIntegrationTests {
 
 	/**
 	 * Teste a consulta de processos pelo identificador. O cenário abaixo valida todos os campos de retorno.
