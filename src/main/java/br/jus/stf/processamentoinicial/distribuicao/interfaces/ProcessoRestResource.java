@@ -20,14 +20,20 @@ import com.wordnik.swagger.annotations.ApiOperation;
  * @since 24.09.2015
  */
 @RestController
-@RequestMapping("/api/peticoes")
+@RequestMapping("/api")
 public class ProcessoRestResource {
 	
 	@Autowired
 	private ProcessoServiceFacade processoServiceFacade;
 
+    @ApiOperation("Recupera as informações de um determinad processo")
+	@RequestMapping(value = "processos/{id}", method = RequestMethod.GET)
+	public ProcessoDto consultar(@PathVariable Long id) {
+    	return processoServiceFacade.consultar(id);
+	}
+
 	@ApiOperation("Conclui a distribuição de uma determinada petição")
-	@RequestMapping(value = "/{id}/distribuir", method = RequestMethod.POST)
+	@RequestMapping(value = "/peticoes/{id}/distribuir", method = RequestMethod.POST)
 	public ProcessoDto distribuir(@PathVariable Long id, @RequestBody DistribuirPeticaoCommand command) {
 		return processoServiceFacade.distribuir(id, command.getMinistroId());
 	}
