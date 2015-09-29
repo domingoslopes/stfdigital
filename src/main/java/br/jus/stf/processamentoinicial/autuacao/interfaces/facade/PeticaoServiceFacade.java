@@ -109,7 +109,6 @@ public class PeticaoServiceFacade {
 	 */
 	public PeticaoDto consultar(Long peticaoId){
 		Peticao peticao = carregarPeticao(peticaoId);
-		System.out.println(peticao.partesPoloAtivo());
 		if (peticao.isEletronica()) {
 			return peticaoDtoAssembler.toDto((PeticaoEletronica) peticao);
 		} else {
