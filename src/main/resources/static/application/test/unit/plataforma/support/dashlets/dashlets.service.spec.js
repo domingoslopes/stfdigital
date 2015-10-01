@@ -10,12 +10,11 @@
 	'use strict';
 
 	describe('Service: Dashlets', function() {
-		var rootScope, dashletsService;
+		var dashletsService;
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, DashletsService) {
-			rootScope = $rootScope;
+		beforeEach(inject(function(DashletsService) {
 			dashletsService = DashletsService;
 		}));
 		
