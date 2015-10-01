@@ -9,7 +9,7 @@
 	
 	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous']);
 
-	angular.plataforma.config(function($stateProvider) {
+	angular.plataforma.config(function($stateProvider, dashletsProvider) {
 		$stateProvider.state('dashboard', {
 			url : '/dashboard',
 			templateUrl : 'application/plataforma/dashboard/dashboard.tpl.html',
@@ -30,6 +30,12 @@
 		}).state('erro', {
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
+		});
+		
+		dashletsProvider.defaultTemplate('application/plataforma/support/dashlet/dashlet.tpl.html')
+		.dashlet('minhas-peticoes', {
+			view: 'application/autuacao/dashlet/minhas-peticoes.tpl.html',
+			controller: 'MinhasPeticoesDashletController'
 		});
 	});
 
