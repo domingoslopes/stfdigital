@@ -56,7 +56,7 @@ public class PeticaoApplicationService {
 	 */
 	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<DocumentoTemporarioId> documentos) {
 		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, documentos);
-		processoAdapter.iniciarProcessoWorkflow(peticao);
+		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
@@ -71,7 +71,7 @@ public class PeticaoApplicationService {
 	 */
 	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
 		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
-		processoAdapter.iniciarProcessoWorkflow(peticao);
+		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
@@ -111,10 +111,11 @@ public class PeticaoApplicationService {
 
 	/**
 	 * Devolve uma petição.
+	 * 
 	 * @param peticao Dados da petição.
 	 */
 	public void devolver(Peticao peticao) {
-		tarefaAdapter.completarDevolucao(peticao);
+		processoAdapter.devolver(peticao);
 	}
 	
 }

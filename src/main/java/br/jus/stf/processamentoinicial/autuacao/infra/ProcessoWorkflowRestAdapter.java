@@ -25,13 +25,25 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	private WorkflowRestResource processoRestService;
 
 	@Override
-	public void iniciarProcessoWorkflow(PeticaoEletronica peticaoEletronica) {
-		iniciarProcessoWorkflow(peticaoEletronica, "remessaEletronica", PeticaoStatus.A_AUTUAR);
+	public void iniciarWorkflow(PeticaoEletronica peticaoEletronica) {
+		IniciarProcessoCommand command = new IniciarProcessoCommand();
+		command.setMensagem("autuarOriginarios");
+		command.setStatus(PeticaoStatus.A_AUTUAR.toString());
+		command.setInformacao(peticaoEletronica.id().toLong());
+		
+		Long id = processoRestService.iniciar(command);
+		peticaoEletronica.associarProcessoWorkflow(new ProcessoWorkflowId(id));
 	}
 
 	@Override
-	public void iniciarProcessoWorkflow(PeticaoFisica peticaoFisica) {
-		iniciarProcessoWorkflow(peticaoFisica, "remessaFisica", PeticaoStatus.A_PREAUTUAR);
+	public void iniciarWorkflow(PeticaoFisica peticaoFisica) {
+		IniciarProcessoCommand command = new IniciarProcessoCommand();
+		command.setMensagem("Remessa de Petições Físicas");
+		command.setStatus(PeticaoStatus.A_PREAUTUAR.toString());
+		command.setInformacao(peticaoFisica.id().toLong());
+		
+		Long id = processoRestService.iniciarPorMensagem(command);
+		peticaoFisica.associarProcessoWorkflow(new ProcessoWorkflowId(id));
 	}
 	
 	@Override
@@ -41,25 +53,17 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setSinal("peticaoInvalida");
 		command.setStatus(PeticaoStatus.REJEITADA.toString());
 
-		// [TODO] Rodrigo Barrerios: Substituir pelo Mecanismo de Integração
 		processoRestService.sinalizar(id.toLong(), command);
 	}
 	
-	/**
-	 * Inicia um processo do workflow
-	 * 
-	 * @param peticao
-	 * @param mensagem
-	 * @param statusInicial
-	 */
-	private void iniciarProcessoWorkflow(Peticao peticao, String mensagem, PeticaoStatus statusInicial) {
-		IniciarProcessoCommand command = new IniciarProcessoCommand();
-		command.setMensagem(mensagem);
-		command.setStatus(statusInicial.toString());
-		command.setInformacao(peticao.id().toLong());
-		
-		Long id = processoRestService.iniciar(command);
-		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(id));
+	@Override
+	public void devolver(Peticao peticao) {
+		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
+		SinalizarCommand command = new SinalizarCommand();
+		command.setSinal("Remessa Indevida");
+		command.setStatus(PeticaoStatus.REJEITADA.toString());
+
+		processoRestService.sinalizar(id.toLong(), command);
 	}
 	
 }

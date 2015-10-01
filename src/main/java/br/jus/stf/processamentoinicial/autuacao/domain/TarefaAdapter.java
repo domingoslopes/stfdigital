@@ -19,6 +19,4 @@ public interface TarefaAdapter {
 	
 	void completarDistribuicao(Peticao peticao);
 	
-	void completarDevolucao(Peticao peticao);
-
 }
