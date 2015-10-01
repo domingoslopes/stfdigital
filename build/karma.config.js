@@ -20,7 +20,6 @@ module.exports = {
 		baseDir + '/vendor/ui-router-extras/release/ct-ui-router-extras.js',
 		baseDir + '/vendor/angular-ui-select2/src/select2.js',
 		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
-		baseDir + '/application/app.js', 
 		baseDir + '/application/plataforma/**/*.module.js', 
 		baseDir + '/application/plataforma/**/*.js', 
 		baseDir + '/application/autuacao/**/*.js', 
@@ -56,7 +55,7 @@ module.exports = {
 		outputDir : baseDir + '/application/test/unit/results/html'
 	},
 
-	logLevel : 'info',
+	logLevel : 'error',
 
 	urlRoot : '/__test/',
 
