@@ -22,13 +22,13 @@ public interface WorkflowAdapter {
 	 * Iniciar uma nova instância do processo de autuação de petição eletrônica
 	 * @param peticaoEletronica
 	 */
-	void iniciarProcessoWorkflow(PeticaoEletronica peticaoEletronica);
+	void iniciarWorkflow(PeticaoEletronica peticaoEletronica);
 	
 	/**
 	 * Iniciar uma nova instância do processo de autuação de petição eletrônica
 	 * @param peticaoFisica
 	 */
-	void iniciarProcessoWorkflow(PeticaoFisica peticaoFisica);
+	void iniciarWorkflow(PeticaoFisica peticaoFisica);
 	
 	/**
 	 * Emite um sinal para o processo que rejeita a autução da petição
@@ -36,5 +36,7 @@ public interface WorkflowAdapter {
 	 * @param peticao
 	 */
 	void rejeitarAutuacao(Peticao peticao);
+	
+	void devolver(Peticao peticao);
 	
 }
