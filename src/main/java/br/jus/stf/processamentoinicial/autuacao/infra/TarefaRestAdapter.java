@@ -37,11 +37,6 @@ public class TarefaRestAdapter implements TarefaAdapter {
 		completarTarefaPorProcesso(peticao, PeticaoStatus.DISTRIBUIDA);	
 	}
 	
-	@Override
-	public void completarDevolucao(Peticao peticao) {
-		completarTarefaPorProcesso(peticao, PeticaoStatus.DEVOLVIDA);
-	}
-	
 	/**
 	 * Completa uma tarefa do processo com um status
 	 * 
