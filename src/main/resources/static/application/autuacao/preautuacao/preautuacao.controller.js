@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, properties, ClasseService, PeticaoService) {
+	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, properties, messages, ClasseService, PeticaoService) {
 		var preautuacao = this;
 		
 		preautuacao.idPeticao = $stateParams.idTarefa;
