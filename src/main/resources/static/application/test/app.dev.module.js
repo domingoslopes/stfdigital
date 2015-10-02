@@ -17,7 +17,10 @@
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
 		$urlRouterProvider.otherwise('/dashboard');
-		$locationProvider.html5Mode(true);
+		$locationProvider.html5Mode({
+			enabled: true,
+			requireBase: false, // Alterando o requireBase para false, pois estava causando erro no teste unitário
+		});
 		$logProvider.debugEnabled(true);
 		$stateProvider.state('root', {
 		});

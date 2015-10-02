@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="content" ng-controller="DetalhePeticaoController as detalhe">
 	<div class="jumbotron" data-pages="parallax">
 		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
@@ -135,4 +136,143 @@
  			<button class="btn btn-complete btn-cons" onClick="location.href='dashboard'">Voltar</button>
 		</p>	
 	</div>
+=======
+<div class="content" ng-controller="DetalhePeticaoController as detalhe">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Detalhe da Petição</p>
+					</li>
+					<li><a href="#" id="subtitulo" class="active">Detalhes</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<div class="row">
+			<div class="col-md-6" ng-show="detalhe.peticao.classe.length" >
+				<div class="card share" data-social="item" style="width: 100%">
+					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					<div class="card-header clearfix ">
+						<h5>Classe</h5>
+					</div>
+					<div class="card-description">
+						<h6>Classe Processual: <strong>{{detalhe.peticao.classe}}</strong></h6>
+					</div>
+				</div>
+		    </div>
+		    <div class="col-md-6">
+			    <div class="card share" data-social="item" style="width: 100%">
+					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					<div class="card-header clearfix ">
+						<h5>Número da Petição</h5>
+					</div>
+					<div class="card-description">
+						 <h6>Número da Petição: <strong>{{detalhe.peticao.id}}</strong></h6>
+					</div>
+				</div>
+		    </div>
+		</div>
+		<div class="row" ng-show="detalhe.peticao.partes['poloPassivo'].length || detalhe.peticao.partes['poloAtivo'].length" >
+			<div class="col-md-6" ng-show="detalhe.peticao.partes['poloAtivo'].length">
+				<div class="card share" data-social="item" style="width: 100%">
+					<div class="circle" data-toggle="tooltip" title=""
+						data-container="body" data-original-title="Label"></div>
+					<div class="card-header clearfix">
+						<h5>Partes do Polo Ativo</h5>
+					</div>
+					<div class="card-description">
+						<div class="auto-overflow widget-11-2-table">
+							<table class="table table-condensed table-hover" >
+								<tbody>
+									<tr ng-repeat="parte in detalhe.peticao.partes['poloAtivo']">
+										<td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="col-md-6" ng-show="detalhe.peticao.partes['poloPassivo'].length">
+	            <div class="card share" data-social="item" style="width: 100%">
+	                <div class="circle" data-toggle="tooltip" title=""
+	                    data-container="body" data-original-title="Label"></div>
+	                <div class="card-header clearfix">
+	                    <h5>Partes do Polo Passivo</h5>
+	            	</div>
+	                <div class="card-description">
+	                    <div class="auto-overflow widget-11-2-table">
+	                        <table class="table table-condensed table-hover">
+	                            <tbody>
+	                                <tr ng-repeat="parte in detalhe.peticao.partes['poloPassivo']">
+	                                    <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+	                                </tr>
+	                            </tbody>
+	                        </table>
+	                    </div>
+		            </div>
+           		</div>
+            </div>
+		</div>
+		<div class="row">
+			<div class="col-md-6" ng-show="detalhe.peticao.qtdVolumes.length">
+				<div class="card share" data-social="item" style="width: 100%">
+					<div class="circle" data-toggle="tooltip" title=""
+						data-container="body" data-original-title="Label"></div>
+					<div class="card-header clearfix">
+						<h5>Quantidade de volumes</h5>
+					</div>
+					<div class="card-description">
+						<h6>Quantidade de Volumes: {{detalhe.peticao.qtdVolume}}</h6>
+					</div>
+				</div>
+			</div>
+               <div class="col-md-6" ng-show="detalhe.peticao.qtdApensos.length">
+                   <div class="card share" data-social="item" style="width: 100%">
+                       <div class="circle" data-toggle="tooltip" title=""
+                           data-container="body" data-original-title="Label"></div>
+                       <div class="card-header clearfix">
+                           <h5>Quantidade de Apensos</h5>
+                       </div>
+                       <div class="card-description">
+                       	<h6>Quantidade de Apensos: {{detalhe.peticao.qtdApensos}}</h6>
+                       </div>
+                   </div>
+               </div>
+		</div>
+			
+		<div class="row">
+			<div class="col-md-6" ng-show="detalhe.peticao.tipoRecebimento.length">
+				<div class="card share" data-social="item" style="width: 100%">
+					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					<div class="card-header clearfix ">
+						<h5>Forma de Envio</h5>
+					</div>
+					<div class="card-description">
+						<h6>Tipo de Recebimento: {{detalhe.peticao.tipoRecebimento}}</h6>
+					</div>
+				</div>
+			</div>
+            <div class="col-md-6" ng-show="detalhe.peticao.numSedex.length">
+                <div class="card share" data-social="item" style="width: 100%">
+                     <div class="circle" data-toggle="tooltip" title=""
+                         data-container="body" data-original-title="Label"></div>
+                     <div class="card-header clearfix">
+                         <h5>Número do Sedex</h5>
+                     </div>
+                     <div class="card-description">
+                     	<h6>Número do Sedex: {{detalhe.peticao.numSedex}}</h6>
+                     </div>
+                 </div>
+            </div>
+		</div>
+		<br />
+ 		<p>
+        	<h5><a ui-sref="dashboard"><strong>voltar </strong></a></h5>
+		</p>	
+	</div>
+>>>>>>> b182d54255a45aa0407e0dbebe864d57947bc79d
 </div>
