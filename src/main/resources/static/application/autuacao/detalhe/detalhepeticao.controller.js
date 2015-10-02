@@ -18,9 +18,6 @@
 			detalhe.peticao = data;
 		});
 		
-		//detalhe.peticao = {id: idPeticao, classe : 'AP', poloAtivo : ['João', 'Lucas'], poloPassivo : ['GeanCarlo', 'Esdras'], qtdVolumes: '2', qtdApensos : '2', tipoRecebimento: 'Sedex', numSedex: '20'};
-		
-		
 	});
 	
 })();
