@@ -46,5 +46,9 @@ public class WorkflowApplicationService {
 		processoWorkflowRepository.sinalizar(sinal, status);
 		processoWorkflowRepository.updateStatus(processo.id(), status);
 	}
+
+	public ProcessoWorkflowId iniciarPorMensagem(Long informacao, String mensagem, String status) {
+		return processoWorkflowRepository.criarPorMensagem(informacao, mensagem, status);
+	}
 	
 }
