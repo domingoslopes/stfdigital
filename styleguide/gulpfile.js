@@ -8,7 +8,13 @@
  * @since 1.0.0
  * 
  * 0. Varáveis genéricas
- * 1. common_js
+ * 1. JAVASCRIPT
+ * 2. CSS
+ * 3. IMAGES
+ * 4. HTML
+ * 5. ESTRUTURAIS
+ *
+ * 1. js:common
  * 2. sass
  * 3. copy:assets
  * 4. images
@@ -53,12 +59,18 @@ var chalk_error = chalk.bold.red;
 var pjson = require('./package.json');
 var version = pjson.version;
 
+/**
+ * Ambiente de produção ou desenvolvimento
+ */
+var production = false;
+
 /***************************
- * 1. common_js
- * Minifica e concatena os javascripts
+ * 1. JAVASCRIPT
  **************************/
 
-gulp.task('common_js', function () {
+// 1.1 - js:common
+// Minifica e concatena os javascripts
+gulp.task('js:common', function () {
     return gulp.src([
             "bower_components/jquery/dist/jquery.js",
             "bower_components/modernizr/modernizr.js",
@@ -97,7 +109,6 @@ gulp.task('common_js', function () {
             "bower_components/hammerjs/hammer.js",
             // jquery.debouncedresize
             "bower_components/jquery.debouncedresize/js/jquery.debouncedresize.js"
-
         ])
         .pipe(plugins.concat('common.js'))
         .on('error', function(err) {
@@ -115,8 +126,9 @@ gulp.task('common_js', function () {
         .pipe(gulp.dest('assets/js/'));
 });
 
+// 1.2 - js:uikit
 // cutom uikit
-gulp.task('uikit_js', function () {
+gulp.task('js:uikit', function () {
     return gulp.src([
             // uikit core
             "bower_components/uikit/js/uikit.js",
@@ -148,8 +160,9 @@ gulp.task('uikit_js', function () {
         .pipe(gulp.dest('assets/js/'));
 });
 
+// 1.3 - js:uikit_htmleditor
 // uikit htmleditor
-gulp.task('uikit_htmleditor_js', function () {
+gulp.task('js:uikit_htmleditor', function () {
     return gulp.src([
             // htmleditor
             "bower_components/codemirror/lib/codemirror.js",
@@ -176,8 +189,9 @@ gulp.task('uikit_htmleditor_js', function () {
         .pipe(gulp.dest('assets/js/'));
 });
 
+// 1.4 - js:kendoui
 // custom kendoui
-gulp.task('kendoui_js', function () {
+gulp.task('js:kendoui', function () {
     // js
     return  gulp.src([
             "bower_components/kendo-ui-core/src/js/kendo.core.js",
@@ -220,8 +234,9 @@ gulp.task('kendoui_js', function () {
 
 });
 
+// 1.5 - js:page_specific
 // common/page specific functions
-gulp.task('page_specific_js', function () {
+gulp.task('js:page_specific', function () {
     return gulp.src([
         'assets/js/altair_admin_common.js',
         'assets/js/pages/*.js',
@@ -239,26 +254,39 @@ gulp.task('page_specific_js', function () {
         }));
 });
 
+// 1.6 - js
+// Roda todas as tarefas de Javascript
+gulp.task('js', ['js:common','js:uikit','js:uikit_htmleditor','js:kendoui', 'js:page_specific']);
+
 /***************************
- * 2. sass
- * Transforma SASS em CSS
+ * 2. CSS
  **************************/
 
+// 2.1 - sass
+// Transforma SASS em CSS
 gulp.task('sass', function() {
-    return gulp.src(config.sass)
+    return gulp.src(config.sass.source)
         .pipe(plugins.sass())
         .on('error', plugins.sass.logError)
-        .pipe(gulp.dest(config.sasscompiled))
+        .pipe(gulp.dest(production ? config.sass.prodDest : config.sass.devDest))
         .pipe(plugins.size({
             title: 'sass'
-    }));
+        }));
+});
+
+// 2.2 - css
+// Concatena arquivos CSS do SASS com CSS adicionais
+gulp.task('css', function() {
+    return gulp.src(config.css.source)
+        /** @TODO: Concatenar e minificar **/
+        .pipe(gulp.dest(production ? config.css.prodDest : config.css.devDest))
 });
 
 /***************************
  * 3. copy:assets
  * Copia os assets para a pasta adequada
  **************************/
-
+/*
  gulp.task('copy:assets', function() {
     return gulp.src(config.assets, {
         dot: true
@@ -268,41 +296,82 @@ gulp.task('sass', function() {
             title: 'copy:assets'
         }));
 });
+*/
 
 /***************************
- * 4. images
- * Otimiza as imagens e coloca na pasta adequada
+ * 3. IMAGENS
  **************************/
 gulp.task('images', function() {
     return gulp.src(config.images)
-    .pipe(plugins.imagemin({
-        progressive: true,
-        interlaced: true
-    }))
-    .pipe(gulp.dest(config.imagesstf))
-    .pipe(plugins.size({
-        title: 'images'
-    }));
+        .pipe(plugins.imagemin({
+            progressive: true,
+            interlaced: true
+        }))
+        .pipe(gulp.dest(config.imagesstf))
+        .pipe(plugins.size({
+            title: 'images'
+        }));
 });
 
 /***************************
- * 5. browser-sync
- * Antes de abrir o HTML no browser, executa o SASS e copia os assets
+ * 4. HTML
  **************************/
 
+// 4.1. jade
+// Processa os códigos JADE
+gulp.task('jade', function() {
+    return gulp.src(config.jade.source)
+        .pipe(jade())
+        .pipe(gulp.dest(production ? config.jade.prodDest : config.jade.devDest))
+});
 
-gulp.task('browser-sync', ['sass', 'copy:assets'], function() {
+// 4.2. html
+// Minifica os HTMLs
+gulp.task('html', function() {
+    return gulp.src(config.html.source)
+        .pipe(plugins.htmlminifier({collapseWhitespace: true}))
+        .pipe(gulp.dest(production ? config.html.prodDest : config.html.devDest))
+});
+
+/***************************
+ * 5. ESTRUTURAIS
+ **************************/
+
+// 5.1. build
+// Constrói todos os arquivos no ambiente selecionado
+gulp.task('build', function(callback) {
+    return plugins.runSequence('js', 'css', 'images', 'html', callback);
+});
+
+// 5.2. release
+// Faz a release de produção de todos os arquivos
+gulp.task('release', function(callback) {
+    return plugins.runSequence('production', 'build', callback);
+});
+
+// 5.3. production
+// Entra no ambiente de produção
+gulp.task('production', function() {
+    production = true;
+});
+
+// 5.4. browser-sync
+// Inicia um servidor Web e escuta por mudanças
+gulp.task('browser-sync', function() {
+    // Inicia o servidor BrowserSync
     browserSync.init({
-        // http://www.browsersync.io/docs/options/#option-host
-        //host: "192.168.1.2",
-        // http://www.browsersync.io/docs/options/#option-proxy
-        proxy: config.proxy,
+        // http://www.browsersync.io/docs/options/#option-server
+        server: {
+            baseDir: (production ? config.webRoot.prod : config.webRoot.dev)
+        },
         // http://www.browsersync.io/docs/options/#option-notify
         notify: false
     });
 
-    gulp.watch(config.sass, ['sass'])
+    // Escuta por mudanças e roda tarefas necessárias
+    gulp.watch(config.sass.source, ['sass'])
 
+    // Observa mudanças em todos os sources e recarrega a página em mudanças
     gulp.watch([
         config.html,
         config.js,
@@ -314,33 +383,8 @@ gulp.task('browser-sync', ['sass', 'copy:assets'], function() {
     ]).on('change', browserSync.reload);
 });
 
-/***************************
- * 6. all_js
- * Roda todas as tarefas de Javascript
- **************************/
-
-gulp.task('all_js', ['common_js','uikit_js','uikit_htmleditor_js','kendoui_js','page_specific_js']);
-
-/***************************
- * 7. release
- * Roda a task browser sync
- **************************/
-
-gulp.task('release', function(callback) {
-    return plugins.runSequence(
-        ['browser-sync', 'images'],
-        callback
-    );
-});
-
-/***************************
- * 8. default
- * Roda a task browser sync
- **************************/
-
+// 5.5. default
+// Constrói arquivos e inicia servidor web em ambiente de desenvolvimento
 gulp.task('default', function(callback) {
-    return plugins.runSequence(
-        ['browser-sync'],
-        callback
-    );
+    return plugins.runSequence('build', 'browser-sync', callback);
 });
