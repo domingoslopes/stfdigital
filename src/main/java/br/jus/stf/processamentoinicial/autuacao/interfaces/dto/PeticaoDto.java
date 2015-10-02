@@ -31,13 +31,13 @@ public class PeticaoDto {
 	private Map<String, List<Long>> partes;
 	
 	@ApiModelProperty(value = "A lista de peças anexadas pelo peticionador")
-	private List<Long> pecas;
+	private List<PecaDto> pecas;
 	
 	PeticaoDto() {
 		
 	}
 	
-	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<Long> pecas) {
+	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas) {
 		this.id = id;
 		this.numero = numero;
 		this.ano = ano;
@@ -66,7 +66,7 @@ public class PeticaoDto {
 		return partes;
 	}
 	
-	public List<Long> getPecas() {
+	public List<PecaDto> getPecas() {
 		return pecas;
 	}
 	
