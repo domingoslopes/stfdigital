@@ -59,7 +59,6 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		this.peticaoAutuadaParaDistribuicao = peticaoAutuadaParaDistribuicao.toString();
 		
 		//Envia um documento para que seja obtido o seu ID. Este será usado para simular o teste de envio de uma petição eletrônica.
-		
 		String idDoc = "";
 		String nomeArquivo = "teste_arq_temp.pdf";
 		String mime = "application/pdf";
@@ -78,9 +77,11 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoEletronica.append("{\"resources\": [{\"classeId\":\"HC\",");
 		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
 		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
-		peticaoEletronica.append("\"documentos\":[\"" + idDoc + "\"]}]}");
+		peticaoEletronica.append("\"pecas\": [{\"documentoTemporario\":\"" + idDoc + "\",");
+		peticaoEletronica.append("\"tipo\":1,");
+		peticaoEletronica.append("\"descricao\":\"Petição inicial\"}]}]}");
 		this.peticaoEletronica = peticaoEletronica.toString();
-		
+
 		//Cria um objeto contendo os dados da petição física a ser usado no teste do registro da petição física.
 		StringBuilder peticaoFisica =  new StringBuilder();
 		peticaoFisica.append("{\"resources\": [{\"formaRecebimento\":\"SEDEX\",");

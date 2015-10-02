@@ -43,7 +43,19 @@ public class ProcessoWorkflowRepositoryImpl extends SimpleJpaRepository<Processo
 	}
 	
 	@Override
-	public ProcessoWorkflowId criar(Long informacao, String mensagem, String status) {
+	public ProcessoWorkflowId criar(Long informacao, String processoId, String status) {
+		Map<String, Object> variaveis = new HashMap<String, Object>();
+		variaveis.put("status", status);
+		variaveis.put("informacao", informacao);
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processoId, variaveis);
+		ProcessoWorkflowId id = new ProcessoWorkflowId(Long.parseLong(processInstance.getId()));
+		ProcessoWorkflow processo = new ProcessoWorkflow(id, status);
+		super.save(processo);
+		return id;
+	}
+
+	@Override
+	public ProcessoWorkflowId criarPorMensagem(Long informacao, String mensagem, String status) {
 		Map<String, Object> variaveis = new HashMap<String, Object>();
 		variaveis.put("status", status);
 		variaveis.put("informacao", informacao);
