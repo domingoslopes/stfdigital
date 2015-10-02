@@ -58,14 +58,14 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		   expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #7');
+		   expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #40');
 		});
 		
 
 		it('Deveria pré-atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/preautuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/40\/preautuacao/);
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
@@ -83,7 +83,7 @@
 		it('Deveria atuar como válida a petição física recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/40\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -97,14 +97,14 @@
 		    
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #7');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #40');
 		});
 		
 		it('Deveria distribuir a petição física autuada', function() {
 			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/40\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
