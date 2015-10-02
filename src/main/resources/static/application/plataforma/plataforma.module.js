@@ -32,11 +32,7 @@
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
 		});
 		
-		dashletsProvider.defaultTemplate('application/plataforma/support/dashlet/dashlet.tpl.html')
-		.dashlet('minhas-peticoes', {
-			view: 'application/autuacao/dashlet/minhas-peticoes.tpl.html',
-			controller: 'MinhasPeticoesDashletController'
-		});
+		dashletsProvider.defaultTemplate('application/plataforma/support/dashlet/dashlet.tpl.html');
 	});
 
 })();
