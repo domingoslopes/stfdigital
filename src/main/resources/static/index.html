@@ -32,7 +32,12 @@
     <link class="main-stylesheet" href="theme/assets/pages/css/themes/simple.css" rel="stylesheet" type="text/css" />
     
     <!-- BEGIN Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="tmp/style.css" />
+    <link rel="stylesheet" type="text/css"/>
+           <style>
+            .my-drop-zone { border: dotted 3px lightgray; }
+            .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+            .another-file-over-class { border: dotted 3px green; }
+        </style>
   </head>
   <body class="fixed-header">
     <!-- BEGIN SIDEBAR -->
@@ -165,18 +170,6 @@
         <div ui-view="modal" autoscroll="false"></div>
         <!-- END PAGE CONTENT -->
         <!-- START FOOTER -->
-        <div class="container-fluid container-fixed-lg footer">
-          <div class="copyright sm-text-center">
-            <p class="small no-margin pull-left sm-pull-reset">
-              <span class="hint-text">Copyright © 2014</span>
-              <span class="font-montserrat">Supremo Tribunal Federal</span>.
-              <span class="hint-text">Todos os direitos reservados.</span>
-              <span class="sm-block"><a href="#" class="m-l-10 m-r-10">Termos de Uso</a> | <a href="#" class="m-l-10">Política de Privacidade</a>
-                        </span>
-            </p>
-            <div class="clearfix"></div>
-          </div>
-        </div>
         <!-- END FOOTER -->
       </div>
       <!-- END PAGE CONTENT WRAPPER -->
@@ -348,7 +341,9 @@
     <script type="text/javascript" src="vendor/select2/select2.js"></script>
     <script type="text/javascript" src="vendor/select2/select2_locale_pt-BR.js"></script>
     <script type="text/javascript" src="vendor/angular-ui-select2/src/select2.js"></script>
+    <script type="text/javascript" src="vendor/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="vendor/angular-sanitize/angular-sanitize.js"></script>
+   	<script type="text/javascript" src="vendor/angular-file-upload/dist/angular-file-upload.min.js"></script>
 	
 	<!-- endbuild -->
 

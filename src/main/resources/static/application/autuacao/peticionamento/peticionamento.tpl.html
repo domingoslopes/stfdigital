@@ -84,6 +84,93 @@
                     </div>
                 </div>
 			</div>
+			<div class="row">
+				<div class="col-md-3">
+					 <div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix ">
+							<h5>Inclusão de Documentos</h5>
+						</div>
+						<div class="card-description">
+		                        <!-- 3. nv-file-over uploader="link" over-class="className" 
+		                        <div class="well my-drop-zone" nv-file-over="" uploader="uploader" onclick="$('#idSelectFilePecas').click();">
+		                            <strong>CLIQUE AQUI </strong>para enviar a sua peça.
+		                        </div> -->
+		                    
+		                    <div nv-file-drop="" uploader="uploader">
+	                            <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="well my-drop-zone"  onclick="$('#idSelectFilePecas').click();"">
+	                                Another drop zone with its own settings
+	                            </div>
+                        	</div>
+		                    <input  id="idSelectFilePecas" type="file" name="file" nv-file-select="" uploader="uploader" multiple  ng-class="uploader.isHTML5 ? 'invisible' : ''"/><br/>
+	              		</div>
+	              	</div>
+				</div>
+		        <div class="col-md-9" style="margin-bottom: 40px">
+			        <div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix ">
+							<h5>Lista de documentos</h5>
+							<h6>Quantidade de documentos incluídos: {{ uploader.queue.length }}.</h6>
+						</div>
+						<div class="card-description">
+		                    <table class="table">
+		                        <thead>
+		                            <tr>
+		                                <th width="50%">Título</th>
+		                                <th ng-show="uploader.isHTML5">Tamanho</th>
+		                                <th ng-show="uploader.isHTML5">Progresso</th>
+		                                <th>Tipo de Peça</th>
+		                                <th>Ações</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody>
+		                            <tr ng-repeat="peca in pecas">
+		                            	<td data-ng-click="visualizar(peca)"><strong>{{ peca.fileItem.file.name }}</strong></td>
+		                                <td ng-show="uploader.isHTML5" nowrap>{{ peca.fileItem.file.size/1024/1024|number:2 }} MB</td>
+		                                <td ng-show="uploader.isHTML5">
+		                                    <div class="progress" style="margin-bottom: 0;">
+		                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': peca.fileItem.progress + '%' }"></div>
+		                                    </div>
+		                                </td>
+		                                <td>
+		                                    <select required ng-model="peca.tipo" style="max-width: 110px; min-width: 110px;" ui-select2="configurarSelect2({{$index}})">
+												 <option value=""></option>
+												 <option data-ng-repeat="tipoPeca in tiposPeca" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
+											</select>
+		                                </td>
+		                                <td nowrap>
+		                                    <button type="button" class="btn btn-warning btn-xs" ng-click="peca.fileItem.cancel()" ng-disabled="!peca.fileItem.isUploading">
+		                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+		                                    </button>
+		                                    <button type="button" class="btn btn-danger btn-xs" ng-click="peca.fileItem.remove()">
+		                                        <span class="glyphicon glyphicon-trash"></span> Remove
+		                                    </button>
+		                                </td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                    <div>
+		                        <div>
+		                            Queue progress:
+		                            <div class="progress" style="">
+		                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+		                            </div>
+		                        </div>
+		                        <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+		                            <span class="glyphicon glyphicon-upload"></span> Upload all
+		                        </button>
+		                        <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+		                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+		                        </button>
+		                        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+		                            <span class="glyphicon glyphicon-trash"></span> Remove all
+		                        </button>
+		                    </div>
+		                </div>
+					</div>
+             	</div>
+            </div>
 			<br />
 
 			<p>
@@ -91,4 +178,5 @@
 			</p>
 		</form>
 	</div>
+	<div data-ng-include="'application/autuacao/peticionamento/modalVisualizacaoPeca.html'"></div>
 </div>

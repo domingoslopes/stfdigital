@@ -59,14 +59,14 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #6');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #39');
 		});
 		
 
 		it('Deveria atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/6\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/39\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -80,7 +80,7 @@
 		    
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #6');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #39');
 		    
 		});
 
@@ -88,7 +88,7 @@
 			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/6\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/39\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
