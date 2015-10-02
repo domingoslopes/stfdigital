@@ -17,8 +17,8 @@ public class PeticaoFisicaDto extends PeticaoDto {
 	private String formaRecebimento;
 	private String numeroSedex;
 
-	public PeticaoFisicaDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<Long> documentos) {
-		super(id, numero, ano, classe, partes, documentos);
+	public PeticaoFisicaDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<Long> pecas) {
+		super(id, numero, ano, classe, partes, pecas);
 	}
 	
 	/**

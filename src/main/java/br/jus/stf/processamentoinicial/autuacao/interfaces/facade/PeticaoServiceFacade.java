@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.facade;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -9,10 +10,12 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.shared.ClasseId;
@@ -43,14 +46,21 @@ public class PeticaoServiceFacade {
 	 * @param classeSugerida Sugestão de classe processual.
 	 * @param poloAtivo Lista contendo os ids das partes do polo ativo.
 	 * @param poloPassivo Lista contendo os ids das partes do polo passivo.
-	 * @param documentos Lista contendo os ids dos documentos da petição eletrônica.
+	 * @param pecas Lista contendo os ids das pecas da petição eletrônica.
 	 * @return Id da petição gerado automaticamente.
 	 */
-	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
+	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<Map<String, String>> pecas) {
 		ClasseId classe = new ClasseId(classeSugerida);
-		List<DocumentoTemporarioId> documentosTemporarios = documentos.stream().map(DocumentoTemporarioId::new).collect(Collectors.toList());
+		List<PecaTemporaria> pecasTemporarias = pecas.stream()
+				.map(peca -> {
+					DocumentoTemporarioId documentoTemporario = new DocumentoTemporarioId(peca.get("documentoTemporario"));
+					TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(peca.get("tipo")));
+					String descricao = peca.get("descricao");
+					return new PecaTemporaria(documentoTemporario, tipo, descricao);
+				})
+				.collect(Collectors.toList());
 		
-		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, documentosTemporarios);
+		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, pecasTemporarias);
 
 		return peticao.id().toLong();
 	}

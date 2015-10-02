@@ -49,7 +49,7 @@ public class PeticaoDtoAssembler {
 		String classe = (classeId.isPresent())? classeId.get().toString():null;
 		List<Long> partesPoloAtivo = new LinkedList<Long>();
 		List<Long> partesPoloPassivo = new LinkedList<Long>();
-		List<Long> documentos = new LinkedList<Long>();
+		List<Long> pecas = new LinkedList<Long>();
 		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
 		
 		peticao.partesPoloAtivo().forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
@@ -59,12 +59,12 @@ public class PeticaoDtoAssembler {
 		partes.put("Polo Ativo", partesPoloAtivo);
 		partes.put("Polo Passivo", partesPoloPassivo);
 		
-		peticao.documentos().forEach(documento -> documentos.add(documento.toLong()));
+		peticao.pecas().forEach(peca -> pecas.add(peca.toLong()));
 		
 		if (isFisica) {
-			return new PeticaoFisicaDto(id, numero, ano, classe, partes, documentos);
+			return new PeticaoFisicaDto(id, numero, ano, classe, partes, pecas);
 		} else {
-			return new PeticaoDto(id, numero, ano, classe, partes, documentos);
+			return new PeticaoDto(id, numero, ano, classe, partes, pecas);
 		}
 
 	}
