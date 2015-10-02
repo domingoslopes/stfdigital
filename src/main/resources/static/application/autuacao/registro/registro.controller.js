@@ -33,7 +33,7 @@
 			if (registro.tipoRecebimento.length === 0){
 				messages.error("Você precisa selecionar uma forma de envio");
 				return;
-			}
+			};
 			
 			var command = new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, registro.tipoRecebimento, registro.numSedex);
 			
