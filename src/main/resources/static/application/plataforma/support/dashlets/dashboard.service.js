@@ -8,8 +8,13 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('DashletsService', ['$http', '$q', function($http, $q) {
+	angular.plataforma.service('DashboardService', ['$http', '$q', function($http, $q) {
 		
+		/**
+		 * Recupera os dashlets do papel atual.
+		 * 
+		 * TODO Colocar a chamada real para o back-end.
+		 */
 		this.getDashlets = function() {
 			return $q.when(['minhas-peticoes']);
 		};

@@ -9,17 +9,17 @@
 (function() {
 	'use strict';
 
-	describe('Service: Dashlets', function() {
-		var dashletsService;
+	describe('Service: Dashboard', function() {
+		var DashboardService;
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(DashletsService) {
-			dashletsService = DashletsService;
+		beforeEach(inject(function(_DashboardService_) {
+			DashboardService = _DashboardService_;
 		}));
 		
 		it('Deveria ter carregado as dashlets', function() {
-			dashletsService.getDashlets().then(function(dashlets) {
+			DashboardService.getDashlets().then(function(dashlets) {
 				expect(dashlets).toBe(['minhas-peticoes']);
 			});
 		});
