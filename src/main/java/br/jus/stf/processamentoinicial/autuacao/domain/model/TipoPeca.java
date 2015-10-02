@@ -24,7 +24,7 @@ public class TipoPeca implements ValueObject<TipoPeca> {
 	@GeneratedValue(generator = "TIPOPECAID", strategy=GenerationType.SEQUENCE)
 	private Long sequencial;
 	
-	@Column(name = "NOM_TIPO_PECA")
+	@Column(name = "NOM_TIPO_PECA", nullable = false)
 	private String nome;
 	
 	public TipoPeca(final Long sequencial, final String nome) {
