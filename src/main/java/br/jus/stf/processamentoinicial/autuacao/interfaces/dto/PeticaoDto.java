@@ -30,20 +30,20 @@ public class PeticaoDto {
 	@ApiModelProperty(value = "A lista de partes do polo ativo e a lista de partes do polo passivo")
 	private Map<String, List<Long>> partes;
 	
-	@ApiModelProperty(value = "A lista de documentos anexados pelo peticionador")
-	private List<Long> documentos;
+	@ApiModelProperty(value = "A lista de peças anexadas pelo peticionador")
+	private List<Long> pecas;
 	
 	PeticaoDto() {
 		
 	}
 	
-	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<Long> documentos) {
+	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<Long> pecas) {
 		this.id = id;
 		this.numero = numero;
 		this.ano = ano;
 		this.classe = classe;
 		this.partes = partes;
-		this.documentos = documentos;
+		this.pecas = pecas;
 	}
 	
 	public Long getId() {
@@ -66,8 +66,8 @@ public class PeticaoDto {
 		return partes;
 	}
 	
-	public List<Long> getDocumentos() {
-		return documentos;
+	public List<Long> getPecas() {
+		return pecas;
 	}
 	
 }

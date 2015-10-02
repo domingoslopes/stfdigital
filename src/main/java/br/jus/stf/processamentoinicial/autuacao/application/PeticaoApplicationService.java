@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
@@ -17,7 +18,6 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
-import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Rodrigo Barreiros
@@ -54,9 +54,9 @@ public class PeticaoApplicationService {
 	 * @param peticaoEletronica Petição eletrônica recebida.
 	 * @return Id da petição eletrônica registrada.
 	 */
-	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<DocumentoTemporarioId> documentos) {
-		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, documentos);
-		processoAdapter.iniciarProcessoWorkflow(peticao);
+	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas) {
+		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas);
+		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
@@ -71,7 +71,7 @@ public class PeticaoApplicationService {
 	 */
 	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
 		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
-		processoAdapter.iniciarProcessoWorkflow(peticao);
+		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
@@ -111,10 +111,11 @@ public class PeticaoApplicationService {
 
 	/**
 	 * Devolve uma petição.
+	 * 
 	 * @param peticao Dados da petição.
 	 */
 	public void devolver(Peticao peticao) {
-		tarefaAdapter.completarDevolucao(peticao);
+		processoAdapter.devolver(peticao);
 	}
 	
 }
