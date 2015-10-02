@@ -9,7 +9,7 @@
 	
 	angular.autuacao = angular.module('autuacao', []);
 	
-	angular.autuacao.config(function config($stateProvider) {
+	angular.autuacao.config(function config($stateProvider, dashletsProvider) {
 		$stateProvider.state('peticionamento', {
 			url: '/peticao',
 			views: {
@@ -86,6 +86,11 @@
 					controller: 'DummyActionController'
 				}
 			}
+		});
+		
+		dashletsProvider.dashlet('minhas-peticoes', {
+			view: 'application/autuacao/dashlets/peticoes.tpl.html',
+			controller: 'MinhasPeticoesDashletController'
 		});
 	});
 
