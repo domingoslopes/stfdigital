@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous']);
+	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3']);
 
 	angular.plataforma.config(function($stateProvider, DashletsProvider) {
 		$stateProvider.state('dashboard', {
