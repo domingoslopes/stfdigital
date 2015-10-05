@@ -8,29 +8,43 @@
  * 
  * @since 1.0.0
  */ 
+/**
+ * @author Tomas.Godoi
+ * @since 1.0.0
+ */
 (function() {
 	'use strict';
 	
+	/**
+	 * @ngdoc directive
+	 * @name dashboard
+	 * @memberOf plataforma
+	 * 
+	 * @description Diretiva para renderizar um dashboard específico.
+	 * A especificação dos dashlets que compõem o dashboard é obtida por meio do DashboardService.
+	 * 
+	 * @example
+	 * <div data-dashboard=""></div>
+	 */
 	angular.plataforma.directive('dashboard', ['$compile', 'Dashlets', 'DashboardService', function($compile, Dashlets, DashboardService) {
 		return {
 			restrict : 'ECA',
-			priority: 400,
+			scope: {},
+			priority: 0,
 			link: function(scope, element, attrs) {
-				console.log('link');
-				var dashletName = 'minhas-peticoes';
-				var controller = Dashlets.getDashletController(dashletName);
-				var template = Dashlets.getDashletView(dashletName);
-				
-				DashboardService.getDashlets().then(function(dashes) {
-					console.log(dashes);
+				DashboardService.getDashlets().then(function(dashlets) {
+					if (dashlets && dashlets.length > 0) {
+						var dashletName = dashlets[0];
+						var controller = Dashlets.getDashletController(dashletName);
+						var template = Dashlets.getDashletView(dashletName);
+						element.html('<div class="row"><div class="col-md-6 col-lg-6 hidden-xlg m-b-10"><div data-ng-controller="' + controller + '" data-ng-include="' +
+								"'" + template + "'" + '"></div></div></div>');
+						
+						var link = $compile(element.contents());
+						
+						link(scope);
+					}
 				});
-				
-				element.html('<div class="row"><div class="col-md-6 col-lg-6 hidden-xlg m-b-10"><div data-ng-controller="' + controller + '" data-ng-include="' +
-						"'" + template + "'" + '"></div></div></div>');
-				
-				var link = $compile(element.contents());
-				
-				link(scope);
 			}
 		};
 	}]);

@@ -25,7 +25,7 @@
 		
 		beforeEach(module(function($provide) {
 			$provide.value('DashboardService', mockDashboardService);
-			$provide.value('dashlets', mockDashlets);
+			$provide.value('Dashlets', mockDashlets);
 		}));
 		
 		beforeEach(inject(function(_$compile_, $rootScope, _$q_) {
@@ -37,17 +37,15 @@
 		beforeEach(function() {
 			spyOn(mockDashboardService, 'getDashlets').and.returnValue($q.when(['dashlet-01']));
 			spyOn(mockDashlets, 'getDashletController').and.returnValue('MinhasPeticoesDashletController');
-			spyOn(mockDashlets, 'getDashletView').and.returnValue('application/autuacao/dashlets/peticoes.tpl.html');
+			spyOn(mockDashlets, 'getDashletView').and.returnValue('application/autuacao/autuacao/dashlets/peticoes.tpl.html');
 		});
 		
 		it('Deveria ter compilado a diretiva', function() {
 			var element = $compile('<div data-dashboard=""></div>')(scope);
 			
 			scope.$digest();
-			console.log(element);
-		});
-		it('Deveria ter executado o teste2', function() {
-			expect(true).toBe(true);
+			// TODO Criar uma verificação desse conteúdo.
+//			console.log(element);
 		});
 
 	});

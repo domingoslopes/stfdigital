@@ -8,7 +8,22 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('DashboardService', ['$http', '$q', function($http, $q) {
+	angular.plataforma.service('DashboardService', ['$http', '$q', '$window', function($http, $q, $window) {
+
+		var getPapelAtivo = function() {
+			return JSON.parse($window.sessionStorage.getItem('papel'));
+		};
+		
+		var mockDashletsFromPapel = function(papel) {
+			switch (papel.nome) {
+			case 'peticionador':
+				return ['minhas-peticoes'];
+			case 'preautuador':
+				return ['peticoes-para-preautuar'];
+			default:
+				break;
+			};
+		};
 		
 		/**
 		 * Recupera os dashlets do papel atual.
@@ -16,7 +31,8 @@
 		 * TODO Colocar a chamada real para o back-end.
 		 */
 		this.getDashlets = function() {
-			return $q.when(['minhas-peticoes']);
+			var papelAtivo = getPapelAtivo();
+			return $q.when(mockDashletsFromPapel(papelAtivo));
 		};
 		
 	}]);

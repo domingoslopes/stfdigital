@@ -89,8 +89,11 @@
 		});
 		
 		DashletsProvider.dashlet('minhas-peticoes', {
-			view: 'application/autuacao/dashlets/peticoes.tpl.html',
+			view: 'application/autuacao/autuacao/dashlets/peticoes.tpl.html',
 			controller: 'MinhasPeticoesDashletController'
+		}).dashlet('peticoes-para-preautuar', {
+			view: 'application/autuacao/preautuacao/dashlets/peticoes-preautuar.tpl.html',
+			controller: 'MinhasPeticoesParaAutuarDashletController'
 		});
 	});
 
