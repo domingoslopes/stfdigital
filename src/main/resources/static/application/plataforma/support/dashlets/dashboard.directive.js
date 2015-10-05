@@ -11,15 +11,15 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma.directive('dashboard', ['$compile', 'dashlets', 'DashboardService', function($compile, dashlets, DashboardService) {
+	angular.plataforma.directive('dashboard', ['$compile', 'Dashlets', 'DashboardService', function($compile, Dashlets, DashboardService) {
 		return {
 			restrict : 'ECA',
 			priority: 400,
 			link: function(scope, element, attrs) {
 				console.log('link');
 				var dashletName = 'minhas-peticoes';
-				var controller = dashlets.getDashletController(dashletName);
-				var template = dashlets.getDashletView(dashletName);
+				var controller = Dashlets.getDashletController(dashletName);
+				var template = Dashlets.getDashletView(dashletName);
 				
 				DashboardService.getDashlets().then(function(dashes) {
 					console.log(dashes);
@@ -35,15 +35,15 @@
 		};
 	}]);
 	
-	angular.plataforma.directive('fastDashboard', ['$compile', 'dashlets', 'DashboardService', function($compile, dashlets, DashboardService) {
+	angular.plataforma.directive('fastDashboard', ['$compile', 'Dashlets', 'DashboardService', function($compile, Dashlets, DashboardService) {
 		return {
 			restrict : 'ECA',
 			priority: 400,
 			compile: function(tElement) {
 				return function(scope, $element, attrs) {
 					var dashletName = 'minhas-peticoes';
-					var controller = dashlets.getDashletController(dashletName);
-					var template = dashlets.getDashletView(dashletName);
+					var controller = Dashlets.getDashletController(dashletName);
+					var template = Dashlets.getDashletView(dashletName);
 					
 					var html = '<div class="row"><div class="col-md-6 col-lg-6 hidden-xlg m-b-10">' + 'Teste' + '</div></div>';
 					

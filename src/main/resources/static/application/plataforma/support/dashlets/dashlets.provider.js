@@ -13,7 +13,7 @@
 	 * @name DashletsProvider
 	 * @memberOf plataforma
 	 * 
-	 * @description Este provider permite o registros de dashlets pelos módulos da aplicação
+	 * @description Este provider permite o registro de dashlets pelos módulos da aplicação
 	 * 
 	 * @example
 	 * angular.module('meu-modulo', ['plataforma']).config(['DashletsProvider', function(DashletsProvider) {
@@ -24,7 +24,7 @@
 	 *     });
 	 * }]);
 	 */
-	angular.plataforma.provider('dashlets', [function() {
+	angular.plataforma.provider('Dashlets', [function() {
 		var definedDashlets = [];
 		var defaultDashletTemplate = '';
 		
