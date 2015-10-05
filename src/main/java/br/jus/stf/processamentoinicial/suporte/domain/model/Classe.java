@@ -21,7 +21,7 @@ public class Classe implements Entity<Classe, ClasseId> {
 	@EmbeddedId
 	private ClasseId sigla;
 	
-	@Column(name = "NOM_CLASSE")
+	@Column(name = "NOM_CLASSE", nullable = false)
 	private String nome;
 
 	public Classe(final ClasseId sigla, final String nome){

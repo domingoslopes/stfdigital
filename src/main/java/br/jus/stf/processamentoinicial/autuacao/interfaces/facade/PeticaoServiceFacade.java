@@ -55,8 +55,7 @@ public class PeticaoServiceFacade {
 				.map(peca -> {
 					DocumentoTemporarioId documentoTemporario = new DocumentoTemporarioId(peca.get("documentoTemporario"));
 					TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(peca.get("tipo")));
-					String descricao = peca.get("descricao");
-					return new PecaTemporaria(documentoTemporario, tipo, descricao);
+					return new PecaTemporaria(documentoTemporario, tipo, tipo.nome());
 				})
 				.collect(Collectors.toList());
 		
