@@ -22,9 +22,10 @@ public abstract class Parte implements ValueObject<Parte> {
 	private static final long serialVersionUID = 1L;
 	
 	@Embedded
+	@Column(nullable = false)
 	private PessoaId pessoaId;
 	
-	@Column(name = "TIP_POLO")
+	@Column(name = "TIP_POLO", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TipoPolo polo;
 

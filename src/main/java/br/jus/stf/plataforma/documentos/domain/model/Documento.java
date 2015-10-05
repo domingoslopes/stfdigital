@@ -21,7 +21,7 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	@EmbeddedId
 	private DocumentoId id;
 	
-	@Column(name = "NUM_CONTEUDO")	
+	@Column(name = "NUM_CONTEUDO", nullable = false)	
 	private String numeroConteudo;
 
 	public Documento(final DocumentoId id, final String numeroConteudo) {
