@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
@@ -76,6 +77,22 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	@Override
 	public List<TipoPeca> findAllTipoPeca() {
 		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo ORDER BY tipo.nome");
+		
+		return query.getResultList();
+	}
+	
+	@Override
+	public Orgao findOneOrgao(Long id) {
+		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.sequencial = :id");
+		query.setParameter("id", id);
+		
+		return (Orgao)query.getSingleResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Orgao> findAllOrgao() {
+		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao ORDER BY orgao.nome");
 		
 		return query.getResultList();
 	}
