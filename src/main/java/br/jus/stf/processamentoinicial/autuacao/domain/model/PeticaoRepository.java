@@ -66,4 +66,14 @@ public interface PeticaoRepository {
 	 */
 	public List<TipoPeca> findAllTipoPeca();
 	
+	/**
+	 * @para id
+	 * @return o órgao
+	 */
+	public Orgao findOneOrgao(Long id);
+	
+	/**
+	 * @return a lista de órgãos
+	 */
+	public List<Orgao> findAllOrgao();
 }
