@@ -1,4 +1,6 @@
 /**
+ * @namespace plataforma
+ * 
  * @author Rodrigo Barreiros
  * 
  * @since 1.0.0

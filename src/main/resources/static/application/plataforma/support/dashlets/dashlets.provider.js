@@ -1,7 +1,6 @@
 // TODO Tomas.Godoi Incluir mais validações dos métodos de configuração.
+
 /**
- * @namespace plataforma
- * 
  * @author Tomas.Godoi
  * @since 1.0.0
  */
