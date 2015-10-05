@@ -10,17 +10,94 @@
 'use strict';
 
 module.exports = {
-	proxy : 'localhost/stfdigital/styleguide/dist',
-	assets : ['src/assets/js/**/*', 'src/assets/fonts/**/*'],
-	images : 'src/assets/images/**/*',
-	sass : 'src/assets/sass/**/*',
-	jade : 'src/assets/jade/**/*',	
-	sasscompiled : 'dist/assets-stf/css',
-	htmlcompiled : 'dist/assets-stf/css',	
-	dist : 'dist/',
-    html : 'dist/*.html',
-    jsvendor : 'dist/assets/js/**/*.js',
-    css : 'dist/assets-stf/css/**/*.css',
-    js : 'dist/assets-stf/js/**/*.js',  
-    imagesstf : 'dist/assets-stf/images/**/*'   
+	// Raíz do servidor Web
+	webRoot: './dist',
+
+	// Bower
+	bower: "dist/bower_components",
+
+	// SASS
+	sass: {
+		// Source
+		source: [
+			'./src/assets/**/*.sass',
+			'./src/assets-stf/**/*.sass',
+		],
+		// Destino
+		dest: './dist/assets/css',
+	},
+
+	// JADE
+	jade: {
+		// Source
+		source: [
+			'./src/assets/jade/**/*.jade',
+			'./src/assets-stf/jade/**/*.jade',
+		],
+		// Destino 
+		dest: './dist'
+	},
+
+	// CSS
+	css: {
+		// Source
+		source: [
+			'./src/assets/css/**/*.css',
+			'./src/assets-stf/css/**/*.css',
+		],
+		// Destino em ambiente de produção
+		dest: './dist/assets/css',
+		// Nome do arquivo concatenado
+		concat: 'main.css',
+		// Opções de minificação (https://github.com/jakubpawlowicz/clean-css#how-to-use-clean-css-api)
+		minifyOptions: {
+
+		}
+	},
+
+	// HTML
+	html: {
+		// Source
+		source: [
+			'./src/assets/html/**/*.html',
+			'./src/assets-stf/html/**/*.html',
+		],
+		// Destino
+		dest: './dist',
+		// Opções de minificação (https://github.com/kangax/html-minifier#options-quick-reference)
+		minifyOptions: {
+			collapseWhitespace: true
+		},
+	},
+
+	// IMAGENS
+	image: {
+		// Source
+		source: [
+			'./src/assets/img/**/*',
+			'./src/assets-stf/img/**/*',
+		],
+		// Destino
+		dest: './dist/assets/img'
+	},
+
+	// JAVASCRIPT
+	js: {
+		// Source
+		source: './src/assets/js',
+		// Destino
+		dest: './dist/assets/js',
+		// Nome do arquivo concatenado
+		concat: 'common.js',
+	},
+
+	// ASSETS
+	assets: {
+		// Source
+		source: [
+			'./src/assets/{icons,fonts}/**/*'
+		],
+		// Destino
+		dest: './dist/assets'
+	}
 };
