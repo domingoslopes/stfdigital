@@ -20,6 +20,10 @@
 				return ['minhas-peticoes'];
 			case 'preautuador':
 				return ['peticoes-para-preautuar'];
+			case 'autuador':
+				return ['grafico-peticoes'];
+			case 'distribuidor':
+				return ['grafico-distribuicao'];
 			default:
 				break;
 			};
