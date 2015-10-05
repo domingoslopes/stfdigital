@@ -16585,7 +16585,7 @@ https://github.com/imakewebthings/waypoints/blog/master/licenses.txt
   }
 }())
 ;
-/*! VelocityJS.org (1.2.2). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
+/*! VelocityJS.org (1.2.3). (C) 2014 Julian Shapiro. MIT @license: en.wikipedia.org/wiki/MIT_License */
 
 /*************************
    Velocity jQuery Shim
@@ -18661,7 +18661,7 @@ return function (global, window, document, undefined) {
         /* Support is included for jQuery's argument overloading: $.animate(propertyMap [, duration] [, easing] [, complete]).
            Overloading is detected by checking for the absence of an object being passed into options. */
         /* Note: The stop and finish actions do not accept animation options, and are therefore excluded from this check. */
-        if (!/^(stop|finish)$/i.test(propertiesMap) && !$.isPlainObject(options)) {
+        if (!/^(stop|finish|finishAll)$/i.test(propertiesMap) && !$.isPlainObject(options)) {
             /* The utility function shifts all arguments one position to the right, so we adjust for that offset. */
             var startingArgumentPosition = argumentIndex + 1;
 
@@ -18727,6 +18727,7 @@ return function (global, window, document, undefined) {
                 break;
 
             case "finish":
+            case "finishAll":
             case "stop":
                 /*******************
                     Action: Stop
@@ -18744,6 +18745,22 @@ return function (global, window, document, undefined) {
                         }
 
                         delete Data(element).delayTimer;
+                    }
+
+                    /* If we want to finish everything in the queue, we have to iterate through it
+                       and call each function. This will make them active calls below, which will
+                       cause them to be applied via the duration setting. */
+                    if (propertiesMap === "finishAll" && (options === true || Type.isString(options))) {
+                        /* Iterate through the items in the element's queue. */
+                        $.each($.queue(element, Type.isString(options) ? options : ""), function(_, item) {
+                            /* The queue array can contain an "inprogress" string, which we skip. */
+                            if (Type.isFunction(item)) {
+                                item();
+                            }
+                        });
+
+                        /* Clearing the $.queue() array is achieved by resetting it to []. */
+                        $.queue(element, Type.isString(options) ? options : "", []);
                     }
                 });
 
@@ -18777,10 +18794,11 @@ return function (global, window, document, undefined) {
                             }
 
                             /* Iterate through the calls targeted by the stop command. */
-                            $.each(elements, function(l, element) {                                
+                            $.each(elements, function(l, element) {
                                 /* Check that this call was applied to the target element. */
                                 if (element === activeElement) {
-                                    /* Optionally clear the remaining queued calls. */
+                                    /* Optionally clear the remaining queued calls. If we're doing "finishAll" this won't find anything,
+                                       due to the queue-clearing above. */
                                     if (options === true || Type.isString(options)) {
                                         /* Iterate through the items in the element's queue. */
                                         $.each($.queue(element, Type.isString(options) ? options : ""), function(_, item) {
@@ -18808,7 +18826,7 @@ return function (global, window, document, undefined) {
                                         }
 
                                         callsToStop.push(i);
-                                    } else if (propertiesMap === "finish") {
+                                    } else if (propertiesMap === "finish" || propertiesMap === "finishAll") {
                                         /* To get active tweens to finish immediately, we forcefully shorten their durations to 1ms so that
                                         they finish upon the next rAf tick then proceed with normal call completion logic. */
                                         activeCall[2].duration = 1;
@@ -20060,7 +20078,7 @@ return function (global, window, document, undefined) {
                             tween.currentValue = currentValue;
 
                             /* If we're tweening a fake 'tween' property in order to log transition values, update the one-per-call variable so that
-                               it can be passed into the progress callback. */ 
+                               it can be passed into the progress callback. */
                             if (property === "tween") {
                                 tweenDummyValue = currentValue;
                             } else {
@@ -28039,7 +28057,7 @@ if (typeof exports == "object") {
      Begin prism-core.js
 ********************************************** */
 
-self = (typeof window !== 'undefined')
+var _self = (typeof window !== 'undefined')
 	? window   // if in browser
 	: (
 		(typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope)
@@ -28058,7 +28076,7 @@ var Prism = (function(){
 // Private helper vars
 var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
 
-var _ = self.Prism = {
+var _ = _self.Prism = {
 	util: {
 		encode: function (tokens) {
 			if (tokens instanceof Token) {
@@ -28091,7 +28109,8 @@ var _ = self.Prism = {
 					return clone;
 
 				case 'Array':
-					return o.map(function(v) { return _.util.clone(v); });
+					// Check for existence for IE8
+					return o.map && o.map(function(v) { return _.util.clone(v); });
 			}
 
 			return o;
@@ -28180,7 +28199,8 @@ var _ = self.Prism = {
 			}
 		}
 	},
-
+	plugins: {},
+	
 	highlightAll: function(async, callback) {
 		var elements = document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code');
 
@@ -28212,17 +28232,7 @@ var _ = self.Prism = {
 			parent.className = parent.className.replace(lang, '').replace(/\s+/g, ' ') + ' language-' + language;
 		}
 
-		if (!grammar) {
-			return;
-		}
-
 		var code = element.textContent;
-
-		if(!code) {
-			return;
-		}
-
-		code = code.replace(/^(?:\r?\n|\r)/,'');
 
 		var env = {
 			element: element,
@@ -28231,13 +28241,18 @@ var _ = self.Prism = {
 			code: code
 		};
 
+		if (!code || !grammar) {
+			_.hooks.run('complete', env);
+			return;
+		}
+
 		_.hooks.run('before-highlight', env);
 
-		if (async && self.Worker) {
+		if (async && _self.Worker) {
 			var worker = new Worker(_.filename);
 
 			worker.onmessage = function(evt) {
-				env.highlightedCode = Token.stringify(JSON.parse(evt.data), language);
+				env.highlightedCode = evt.data;
 
 				_.hooks.run('before-insert', env);
 
@@ -28245,11 +28260,13 @@ var _ = self.Prism = {
 
 				callback && callback.call(env.element);
 				_.hooks.run('after-highlight', env);
+				_.hooks.run('complete', env);
 			};
 
 			worker.postMessage(JSON.stringify({
 				language: env.language,
-				code: env.code
+				code: env.code,
+				immediateClose: true
 			}));
 		}
 		else {
@@ -28262,6 +28279,7 @@ var _ = self.Prism = {
 			callback && callback.call(element);
 
 			_.hooks.run('after-highlight', env);
+			_.hooks.run('complete', env);
 		}
 	},
 
@@ -28420,29 +28438,32 @@ Token.stringify = function(o, language, parent) {
 	var attributes = '';
 
 	for (var name in env.attributes) {
-		attributes += name + '="' + (env.attributes[name] || '') + '"';
+		attributes += (attributes ? ' ' : '') + name + '="' + (env.attributes[name] || '') + '"';
 	}
 
 	return '<' + env.tag + ' class="' + env.classes.join(' ') + '" ' + attributes + '>' + env.content + '</' + env.tag + '>';
 
 };
 
-if (!self.document) {
-	if (!self.addEventListener) {
+if (!_self.document) {
+	if (!_self.addEventListener) {
 		// in Node.js
-		return self.Prism;
+		return _self.Prism;
 	}
  	// In worker
-	self.addEventListener('message', function(evt) {
+	_self.addEventListener('message', function(evt) {
 		var message = JSON.parse(evt.data),
 		    lang = message.language,
-		    code = message.code;
+		    code = message.code,
+		    immediateClose = message.immediateClose;
 
-		self.postMessage(JSON.stringify(_.util.encode(_.tokenize(code, _.languages[lang]))));
-		self.close();
+		_self.postMessage(_.highlight(code, _.languages[lang], lang));
+		if (immediateClose) {
+			_self.close();
+		}
 	}, false);
 
-	return self.Prism;
+	return _self.Prism;
 }
 
 // Get current script and highlight
@@ -28458,12 +28479,17 @@ if (script) {
 	}
 }
 
-return self.Prism;
+return _self.Prism;
 
 })();
 
 if (typeof module !== 'undefined' && module.exports) {
 	module.exports = Prism;
+}
+
+// hack for components to work correctly in node.js
+if (typeof global !== 'undefined') {
+	global.Prism = Prism;
 }
 
 
@@ -28473,11 +28499,11 @@ if (typeof module !== 'undefined' && module.exports) {
 
 Prism.languages.markup = {
 	'comment': /<!--[\w\W]*?-->/,
-	'prolog': /<\?.+?\?>/,
-	'doctype': /<!DOCTYPE.+?>/,
+	'prolog': /<\?[\w\W]+?\?>/,
+	'doctype': /<!DOCTYPE[\w\W]+?>/,
 	'cdata': /<!\[CDATA\[[\w\W]*?]]>/i,
 	'tag': {
-		pattern: /<\/?[^\s>\/]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\\1|\\?(?!\1)[\w\W])*\1|[^\s'">=]+))?)*\s*\/?>/i,
+		pattern: /<\/?[^\s>\/=.]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\\1|\\?(?!\1)[\w\W])*\1|[^\s'">=]+))?)*\s*\/?>/i,
 		inside: {
 			'tag': {
 				pattern: /^<\/?[^\s>\/]+/i,
@@ -28489,7 +28515,7 @@ Prism.languages.markup = {
 			'attr-value': {
 				pattern: /=(?:('|")[\w\W]*?(\1)|[^\s>]+)/i,
 				inside: {
-					'punctuation': /=|>|"/
+					'punctuation': /[=>"']/
 				}
 			},
 			'punctuation': /\/?>/,
@@ -28513,6 +28539,11 @@ Prism.hooks.add('wrap', function(env) {
 	}
 });
 
+Prism.languages.xml = Prism.languages.markup;
+Prism.languages.html = Prism.languages.markup;
+Prism.languages.mathml = Prism.languages.markup;
+Prism.languages.svg = Prism.languages.markup;
+
 
 /* **********************************************
      Begin prism-css.js
@@ -28523,17 +28554,20 @@ Prism.languages.css = {
 	'atrule': {
 		pattern: /@[\w-]+?.*?(;|(?=\s*\{))/i,
 		inside: {
-			'punctuation': /[;:]/
+			'rule': /@[\w-]+/
+			// See rest below
 		}
 	},
-	'url': /url\((?:(["'])(\\\n|\\?.)*?\1|.*?)\)/i,
-	'selector': /[^\{\}\s][^\{\};]*(?=\s*\{)/,
-	'string': /("|')(\\\n|\\?.)*?\1/,
+	'url': /url\((?:(["'])(\\(?:\r\n|[\w\W])|(?!\1)[^\\\r\n])*\1|.*?)\)/i,
+	'selector': /[^\{\}\s][^\{\};]*?(?=\s*\{)/,
+	'string': /("|')(\\(?:\r\n|[\w\W])|(?!\1)[^\\\r\n])*\1/,
 	'property': /(\b|\B)[\w-]+(?=\s*:)/i,
 	'important': /\B!important\b/i,
-	'punctuation': /[\{\};:]/,
-	'function': /[-a-z0-9]+(?=\()/i
+	'function': /[-a-z0-9]+(?=\()/i,
+	'punctuation': /[(){};:]/
 };
+
+Prism.languages.css['atrule'].inside.rest = Prism.util.clone(Prism.languages.css);
 
 if (Prism.languages.markup) {
 	Prism.languages.insertBefore('markup', 'tag', {
@@ -28584,9 +28618,9 @@ Prism.languages.clike = {
 			lookbehind: true
 		}
 	],
-	'string': /("|')(\\[\s\S]|(?!\1)[^\\\r\n])*\1/,
+	'string': /(["'])(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
 	'class-name': {
-		pattern: /((?:(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/i,
+		pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/i,
 		lookbehind: true,
 		inside: {
 			punctuation: /(\.|\\)/
@@ -28594,15 +28628,9 @@ Prism.languages.clike = {
 	},
 	'keyword': /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
 	'boolean': /\b(true|false)\b/,
-	'function': {
-		pattern: /[a-z0-9_]+\(/i,
-		inside: {
-			punctuation: /\(/
-		}
-	},
-	'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?)\b/,
-	'operator': /[-+]{1,2}|!|<=?|>=?|={1,3}|&{1,2}|\|?\||\?|\*|\/|~|\^|%/,
-	'ignore': /&(lt|gt|amp);/i,
+	'function': /[a-z0-9_]+(?=\()/i,
+	'number': /\b-?(?:0x[\da-f]+|\d*\.?\d+(?:e[+-]?\d+)?)\b/i,
+	'operator': /--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*|\/|~|\^|%/,
 	'punctuation': /[{}[\];(),.:]/
 };
 
@@ -28614,7 +28642,8 @@ Prism.languages.clike = {
 Prism.languages.javascript = Prism.languages.extend('clike', {
 	'keyword': /\b(as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|false|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|true|try|typeof|var|void|while|with|yield)\b/,
 	'number': /\b-?(0x[\dA-Fa-f]+|0b[01]+|0o[0-7]+|\d*\.?\d+([Ee][+-]?\d+)?|NaN|Infinity)\b/,
-	'function': /(?!\d)[a-z0-9_$]+(?=\()/i
+	// Allow for all non-ASCII characters (See http://stackoverflow.com/a/2008444)
+	'function': /[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(?=\()/i
 });
 
 Prism.languages.insertBefore('javascript', 'keyword', {
@@ -28659,13 +28688,14 @@ if (Prism.languages.markup) {
 	});
 }
 
+Prism.languages.js = Prism.languages.javascript;
 
 /* **********************************************
      Begin prism-file-highlight.js
 ********************************************** */
 
 (function () {
-	if (!self.Prism || !self.document || !document.querySelector) {
+	if (typeof self === 'undefined' || !self.Prism || !self.document || !document.querySelector) {
 		return;
 	}
 
@@ -28682,56 +28712,58 @@ if (Prism.languages.markup) {
 			'psm1': 'powershell'
 		};
 
-		Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function(pre) {
-			var src = pre.getAttribute('data-src');
+		if(Array.prototype.forEach) { // Check to prevent error in IE8
+			Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+				var src = pre.getAttribute('data-src');
 
-			var language, parent = pre;
-			var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
-			while (parent && !lang.test(parent.className)) {
-				parent = parent.parentNode;
-			}
-
-			if (parent) {
-				language = (pre.className.match(lang) || [,''])[1];
-			}
-
-			if (!language) {
-				var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-				language = Extensions[extension] || extension;
-			}
-
-			var code = document.createElement('code');
-			code.className = 'language-' + language;
-
-			pre.textContent = '';
-
-			code.textContent = 'Loading…';
-
-			pre.appendChild(code);
-
-			var xhr = new XMLHttpRequest();
-
-			xhr.open('GET', src, true);
-
-			xhr.onreadystatechange = function() {
-				if (xhr.readyState == 4) {
-
-					if (xhr.status < 400 && xhr.responseText) {
-						code.textContent = xhr.responseText;
-
-						Prism.highlightElement(code);
-					}
-					else if (xhr.status >= 400) {
-						code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-					}
-					else {
-						code.textContent = '✖ Error: File does not exist or is empty';
-					}
+				var language, parent = pre;
+				var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
+				while (parent && !lang.test(parent.className)) {
+					parent = parent.parentNode;
 				}
-			};
 
-			xhr.send(null);
-		});
+				if (parent) {
+					language = (pre.className.match(lang) || [, ''])[1];
+				}
+
+				if (!language) {
+					var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+					language = Extensions[extension] || extension;
+				}
+
+				var code = document.createElement('code');
+				code.className = 'language-' + language;
+
+				pre.textContent = '';
+
+				code.textContent = 'Loading…';
+
+				pre.appendChild(code);
+
+				var xhr = new XMLHttpRequest();
+
+				xhr.open('GET', src, true);
+
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState == 4) {
+
+						if (xhr.status < 400 && xhr.responseText) {
+							code.textContent = xhr.responseText;
+
+							Prism.highlightElement(code);
+						}
+						else if (xhr.status >= 400) {
+							code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+						}
+						else {
+							code.textContent = '✖ Error: File does not exist or is empty';
+						}
+					}
+				};
+
+				xhr.send(null);
+			});
+		}
 
 	};
 
@@ -28756,7 +28788,7 @@ Prism.languages.php = Prism.languages.extend('clike', {
 	'keyword': /\b(and|or|xor|array|as|break|case|cfunction|class|const|continue|declare|default|die|do|else|elseif|enddeclare|endfor|endforeach|endif|endswitch|endwhile|extends|for|foreach|function|include|include_once|global|if|new|return|static|switch|use|require|require_once|var|while|abstract|interface|public|implements|private|protected|parent|throw|null|echo|print|trait|namespace|final|yield|goto|instanceof|finally|try|catch)\b/i,
 	'constant': /\b[A-Z0-9_]{2,}\b/,
 	'comment': {
-		pattern: /(^|[^\\])(\/\*[\w\W]*?\*\/|(^|[^:])(\/\/).*?(\r?\n|$))/,
+		pattern: /(^|[^\\])(?:\/\*[\w\W]*?\*\/|\/\/.*)/,
 		lookbehind: true
 	}
 });
@@ -28765,15 +28797,15 @@ Prism.languages.php = Prism.languages.extend('clike', {
 // common than strings containing hashes...
 Prism.languages.insertBefore('php', 'class-name', {
 	'shell-comment': {
-		pattern: /(^|[^\\])#.*?(\r?\n|$)/,
+		pattern: /(^|[^\\])#.*/,
 		lookbehind: true,
 		alias: 'comment'
 	}
 });
 
 Prism.languages.insertBefore('php', 'keyword', {
-	'delimiter': /(\?>|<\?php|<\?)/i,
-	'variable': /(\$\w+)\b/i,
+	'delimiter': /\?>|<\?(?:php)?/i,
+	'variable': /\$\w+\b/i,
 	'package': {
 		pattern: /(\\|namespace\s+|use\s+)[\w\\]+/,
 		lookbehind: true,
@@ -28826,7 +28858,8 @@ if (Prism.languages.markup) {
 		}
 
 		for (var i = 0, t; t = env.tokenStack[i]; i++) {
-			env.highlightedCode = env.highlightedCode.replace('{{{PHP' + (i + 1) + '}}}', Prism.highlight(t, env.grammar, 'php'));
+			// The replace prevents $$, $&, $`, $', $n, $nn from being interpreted as special patterns
+			env.highlightedCode = env.highlightedCode.replace('{{{PHP' + (i + 1) + '}}}', Prism.highlight(t, env.grammar, 'php').replace(/\$/g, '$$$$'));
 		}
 
 		env.element.innerHTML = env.highlightedCode;
@@ -28849,15 +28882,30 @@ if (Prism.languages.markup) {
 	});
 }
 
-Prism.hooks.add('after-highlight', function (env) {
+(function() {
+
+if (typeof self === 'undefined' || !self.Prism || !self.document) {
+	return;
+}
+
+Prism.hooks.add('complete', function (env) {
+	if (!env.code) {
+		return;
+	}
+
 	// works only for <code> wrapped inside <pre> (not inline)
 	var pre = env.element.parentNode;
 	var clsReg = /\s*\bline-numbers\b\s*/;
 	if (
 		!pre || !/pre/i.test(pre.nodeName) ||
-		// Abort only if nor the <pre> nor the <code> have the class
+			// Abort only if nor the <pre> nor the <code> have the class
 		(!clsReg.test(pre.className) && !clsReg.test(env.element.className))
 	) {
+		return;
+	}
+
+	if (env.element.querySelector(".line-numbers-rows")) {
+		// Abort if line numbers already exists
 		return;
 	}
 
@@ -28870,10 +28918,11 @@ Prism.hooks.add('after-highlight', function (env) {
 		pre.className += ' line-numbers';
 	}
 
-	var linesNum = (1 + env.code.split('\n').length);
+	var match = env.code.match(/\n(?!$)/g);
+	var linesNum = match ? match.length + 1 : 1;
 	var lineNumbersWrapper;
 
-	var lines = new Array(linesNum);
+	var lines = new Array(linesNum + 1);
 	lines = lines.join('<span></span>');
 
 	lineNumbersWrapper = document.createElement('span');
@@ -28887,8 +28936,10 @@ Prism.hooks.add('after-highlight', function (env) {
 	env.element.appendChild(lineNumbersWrapper);
 
 });
+
+}());
 /*!
-	Autosize 3.0.8
+	Autosize 3.0.13
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -28907,6 +28958,21 @@ Prism.hooks.add('after-highlight', function (env) {
 })(this, function (exports, module) {
 	'use strict';
 
+	var set = typeof Set === 'function' ? new Set() : (function () {
+		var list = [];
+
+		return {
+			has: function has(key) {
+				return Boolean(list.indexOf(key) > -1);
+			},
+			add: function add(key) {
+				list.push(key);
+			},
+			'delete': function _delete(key) {
+				list.splice(list.indexOf(key), 1);
+			} };
+	})();
+
 	function assign(ta) {
 		var _ref = arguments[1] === undefined ? {} : arguments[1];
 
@@ -28915,13 +28981,16 @@ Prism.hooks.add('after-highlight', function (env) {
 		var _ref$setOverflowY = _ref.setOverflowY;
 		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
 
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
+		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 		var heightOffset = null;
-		var overflowY = 'hidden';
+		var overflowY = null;
+		var clientWidth = ta.clientWidth;
 
 		function init() {
 			var style = window.getComputedStyle(ta, null);
+
+			overflowY = style.overflowY;
 
 			if (style.resize === 'vertical') {
 				ta.style.resize = 'none';
@@ -28933,6 +29002,10 @@ Prism.hooks.add('after-highlight', function (env) {
 				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
 			} else {
 				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+			}
+			// Fix when a textarea is not on document body and heightOffset is Not a Number
+			if (isNaN(heightOffset)) {
+				heightOffset = 0;
 			}
 
 			update();
@@ -28978,6 +29051,9 @@ Prism.hooks.add('after-highlight', function (env) {
 
 			ta.style.height = endHeight + 'px';
 
+			// used to check if an update is actually necessary on window.resize
+			clientWidth = ta.clientWidth;
+
 			// prevents scroll-position jumping
 			document.documentElement.scrollTop = htmlTop;
 			document.body.scrollTop = bodyTop;
@@ -29007,12 +29083,18 @@ Prism.hooks.add('after-highlight', function (env) {
 			}
 		}
 
+		var pageResize = function pageResize() {
+			if (ta.clientWidth !== clientWidth) {
+				update();
+			}
+		};
+
 		var destroy = (function (style) {
-			window.removeEventListener('resize', update);
+			window.removeEventListener('resize', pageResize);
 			ta.removeEventListener('input', update);
 			ta.removeEventListener('keyup', update);
-			ta.removeAttribute('data-autosize-on');
 			ta.removeEventListener('autosize:destroy', destroy);
+			set['delete'](ta);
 
 			Object.keys(style).forEach(function (key) {
 				ta.style[key] = style[key];
@@ -29033,14 +29115,11 @@ Prism.hooks.add('after-highlight', function (env) {
 			ta.addEventListener('keyup', update);
 		}
 
-		window.addEventListener('resize', update);
+		window.addEventListener('resize', pageResize);
 		ta.addEventListener('input', update);
 		ta.addEventListener('autosize:update', update);
-		ta.setAttribute('data-autosize-on', true);
+		set.add(ta);
 
-		if (setOverflowY) {
-			ta.style.overflowY = 'hidden';
-		}
 		if (setOverflowX) {
 			ta.style.overflowX = 'hidden';
 			ta.style.wordWrap = 'break-word';

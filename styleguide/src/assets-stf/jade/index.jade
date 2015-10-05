@@ -1,0 +1,982 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='initial-scale=1.0,maximum-scale=1.0,user-scalable=no')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    // Remove Tap Highlight on Windows Phone IE
+    meta(name='msapplication-tap-highlight', content='no')
+    link(rel='icon', type='image/png', href='assets/img/favicon-16x16.png', sizes='16x16')
+    link(rel='icon', type='image/png', href='assets/img/favicon-32x32.png', sizes='32x32')
+    title Minhas Tarefas - STF Digital :: Styleguide v.1.0.0
+    // uikit
+    link(rel='stylesheet', href='bower_components/uikit/css/uikit.almost-flat.min.css', media='all')
+    // altair admin
+    link(rel='stylesheet', href='assets/css/main.css', media='all')
+    // matchMedia polyfill for testing media queries in JS
+    //if lte IE 9
+      script(type='text/javascript', src='bower_components/matchMedia/matchMedia.js')
+      script(type='text/javascript', src='bower_components/matchMedia/matchMedia.addListener.js')
+    //endif
+  body.sidebar_main_open.sidebar_main_swipe
+    // main header
+    header#header_main
+      .header_main_content
+        nav.uk-navbar
+          // main sidebar switch
+          a#sidebar_main_toggle.sSwitch.sSwitch_left(href='#')
+            span.sSwitchIcon
+          // secondary sidebar switch
+          a#sidebar_secondary_toggle.sSwitch.sSwitch_right.sidebar_secondary_check(href='#')
+            span.sSwitchIcon
+          #menu_top.uk-float-left.uk-hidden-small
+            .uk-button-dropdown(data-uk-dropdown="{mode:'click'}")
+              a.top_menu_toggle(href='#')
+                i.material-icons.md-24 &#xE8F0;
+              .uk-dropdown.uk-dropdown-width-3
+                .uk-grid.uk-dropdown-grid(data-uk-grid-margin='')
+                  .uk-width-2-3
+                    .uk-grid.uk-grid-width-medium-1-3.uk-margin-top.uk-margin-bottom.uk-text-center(data-uk-grid-margin='')
+                      a(href='page_mailbox.html')
+                        i.material-icons.md-36 &#xE158;
+                        span.uk-text-muted.uk-display-block Supremo
+                      a(href='page_invoices.html')
+                        i.material-icons.md-36 &#xE53E;
+                        span.uk-text-muted.uk-display-block Consulta
+                      a(href='page_chat.html')
+                        i.material-icons.md-36.md-color-red-600 &#xE0B9;
+                        span.uk-text-muted.uk-display-block eGab
+                      a(href='page_scrum_board.html')
+                        i.material-icons.md-36 &#xE85C;
+                        span.uk-text-muted.uk-display-block eSTF Decisão
+                      a(href='page_snippets.html')
+                        i.material-icons.md-36 &#xE86F;
+                        span.uk-text-muted.uk-display-block eSessões
+                  .uk-width-1-3
+                    ul.uk-nav.uk-nav-dropdown.uk-panel
+                      li.uk-nav-header Mais usados
+                      li
+                        a(href='components_accordion.html') Visualizador de Peças
+                      li
+                        a(href='components_buttons.html') eSessões
+                      li
+                        a(href='components_notifications.html') eGab
+                      li
+                        a(href='components_sortable.html') eSTF Decisão
+          .uk-navbar-flip
+            ul.uk-navbar-nav.user_actions
+              li
+                a#main_search_btn.user_action_icon(href='#')
+                  i.material-icons.md-24.md-light &#xE8B6;
+              li(data-uk-dropdown="{mode:'click'}")
+                a.user_action_icon(href='#')
+                  i.material-icons.md-24.md-light &#xE7F4;
+                  span.uk-badge 16
+                .uk-dropdown.uk-dropdown-xlarge.uk-dropdown-flip
+                  .md-card-content
+                    ul.uk-tab.uk-tab-grid(data-uk-tab="{connect:'#header_alerts',animation:'slide-horizontal'}")
+                      li.uk-width-1-2.uk-active
+                        a.js-uk-prevent.uk-text-small(href='#') Mensagens diretas (12)
+                      li.uk-width-1-2
+                        a.js-uk-prevent.uk-text-small(href='#') Notificações (4)
+                    ul#header_alerts.uk-switcher.uk-margin
+                      li
+                        ul.md-list.md-list-addon
+                          li
+                            .md-list-addon-element
+                              span.md-user-letters.md-bg-cyan RB
+                            .md-list-content
+                              span.md-list-heading
+                                a(href='pages_mailbox.html') Preciso de ajuda no HC 2342.
+                              span.uk-text-small.uk-text-muted João, marquei o trecho que conversamos no HC 2342.
+                          li
+                            .md-list-addon-element
+                              img.md-user-image.md-list-addon-avatar(src='assets/img/avatars/geancarlo.png', alt='')
+                            .md-list-content
+                              span.md-list-heading
+                                a(href='pages_mailbox.html') Não entendi seu comentário no ADI 2342.
+                              span.uk-text-small.uk-text-muted Por favor explique melhor. 
+                          li
+                            .md-list-addon-element
+                              span.md-user-letters.md-bg-light-green te
+                            .md-list-content
+                              span.md-list-heading
+                                a(href='pages_mailbox.html') Devo cancelar o ARE 2342?
+                              span.uk-text-small.uk-text-muted João, o ARE 2342 não procedo. Vou cancelar. Alguma objeção?
+                        .uk-text-center.uk-margin-top.uk-margin-small-bottom
+                          a.md-btn.md-btn-flat.md-btn-flat-primary.js-uk-prevent(href='page_mailbox.html') Ver todos
+                      li
+                        ul.md-list.md-list-addon
+                          li
+                            .md-list-addon-element
+                              i.md-list-addon-icon.material-icons.uk-text-warning &#xE8B2;
+                            .md-list-content
+                              span.md-list-heading Andamento rejeitado.
+                              span.uk-text-small.uk-text-muted.uk-text-truncate O HC 2342 foi devolvido para você.
+                          li
+                            .md-list-addon-element
+                              i.md-list-addon-icon.material-icons.uk-text-success &#xE88F;
+                            .md-list-content
+                              span.md-list-heading Andamento aceito.
+                              span.uk-text-small.uk-text-muted.uk-text-truncate O ARE 234 foi aceito na Seção de XYZ.
+                          li
+                            .md-list-addon-element
+                              i.md-list-addon-icon.material-icons.uk-text-danger &#xE001;
+                            .md-list-content
+                              span.md-list-heading Andamento rejeitado.
+                              span.uk-text-small.uk-text-muted.uk-text-truncate O HC 234 está cmo deadline atrasado.
+                          li
+                            .md-list-addon-element
+                              i.md-list-addon-icon.material-icons.uk-text-primary &#xE8FD;
+                            .md-list-content
+                              span.md-list-heading Há 15 tarefas não lidas.
+                              span.uk-text-small.uk-text-muted.uk-text-truncate
+                                | Você já viuq ue há 15 tarefas atrasadas há mais de 30 dias? Clique para acessá-las.
+              li(data-uk-dropdown="{mode:'click'}")
+                a.user_action_image(href='#')
+                  img.md-user-image(src='assets/img/avatars/leandro.png', alt='')
+                .uk-dropdown.uk-dropdown-small.uk-dropdown-flip
+                  ul.uk-nav.js-uk-prevent
+                    li
+                      a(href='page_user_profile.html') Meu perfil
+                    li
+                      a(href='page_settings.html') Configurações
+                    li
+                      a(href='login.html') Sair
+      .header_main_search_form
+        i.md-icon.header_main_search_close.material-icons &#xE5CD;
+        form.uk-form
+          input.header_main_search_input(type='text')
+          button.header_main_search_btn.uk-button-link
+            i.md-icon.material-icons &#xE8B6;
+    // main header end
+    // main sidebar
+    aside#sidebar_main
+      .sidebar_main_header
+        .sidebar_logo
+          a.sSidebar_hide(href='index.html')
+            img(src='assets/img/logo_main.png', alt='Logo do STF')
+          a.sSidebar_show(href='index.html')
+            img(src='assets/img/logo_main_small.png', alt='', height='32', width='32')
+      .menu_section
+        ul
+          li.current_section(title='Tarefas')
+            a(href='index.html')
+              span.menu_icon
+                i.material-icons &#xE883;
+              span.menu_title Tarefas abertas
+          li(title='Tarefas')
+            a(href='resolvidas.html')
+              span.menu_icon
+                i.material-icons &#xE877;
+              span.menu_title Tarefas resolvidas
+          li(title='Favoritas', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+                i.material-icons &#xE838;
+              span.menu_title Favoritas
+          li(title='Agendado', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+                i.material-icons &#xE858;
+              span.menu_title Agendado
+          li(title='Rascunho')
+            a(href='rascunho.html')
+              span.menu_icon
+                i.material-icons &#xE151;
+              span.menu_title Rascunho
+          li.divider
+          li(title='Dashboards', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+                i.material-icons &#xE871;
+              span.menu_title Dashboards
+          li(title='Histórico', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+                i.material-icons &#xE889;
+              span.menu_title Histórico
+          li(title='Contatos', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+                i.material-icons &#xE853;
+              span.menu_title Contatos
+          li.divider
+          li.separador(style='padding:0px 10px 10px 10px; font-size:12px; color:#ccc')
+            | Processos de Negócio
+          li(title='Autuação', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+              span.menu_title Autuação
+          li(title='Autuação', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+              span.menu_title Elaboração de textos
+          li(title='Autuação', style='opacity:0.3;')
+            a(href='javascript:void(0);', style='cursor:default !important')
+              span.menu_icon
+              span.menu_title Jurisprudência
+          li.divider
+    // main sidebar end
+    #top_bar
+      .md-top-bar
+        .uk-width-large-8-10.uk-container-center
+          .uk-clearfix
+            .md-top-bar-actions-left
+              .md-top-bar-checkbox
+                input#mailbox_select_all(type='checkbox', name='mailbox_select_all', data-md-icheck='')
+            .md-top-bar-actions-right
+              .md-top-bar-icons
+                i#mailbox_list_split.md-icon.material-icons &#xE8EE;
+                i#mailbox_list_combined.md-icon.material-icons &#xE8F2;
+    #page_content
+      #page_content_inner
+        #mailbox.md-card-list-wrapper
+          .uk-width-large-8-10.uk-container-center
+            .md-card-list
+              .md-card-list-header.heading_list Hoje
+              .md-card-list-header.md-card-list-header-combined.heading_list(style='display: none') Todas as Mensagens
+              ul.hierarchical_slide
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 17 Set
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/barreiros.png', alt='')
+                  .md-card-list-item-sender
+                    span Rodrigo Barreiros
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Rodrigo Barreiros
+                    span.md-card-list-item-readed.clickable
+                      | Autuar: Petição 234235 - Classe preliminar: HC 
+                      span.uk-badge.uk-badge-danger Liminar
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | O paciente mantém em funcionamento a empresa TecnoRádio conforme a legislação em vigor. Entretanto, vem sofrendo constantes ameaças de prisão e apreensão dos equipamentos sob o pálio de que a atividade é vedada pela lei 4.117/62. A esse respeito, já foi aberto pela autoridade policial o inquérito nº ou já foi denunciado pelo Ministério Público em 10/03/2015, sob a acusação de manter em funcionamento da empresa TecnoRádio, A rádio comunitária Suprema, que funciona há mais de 10 anos, utilizando da frequência 3.2 GHZ.
+                      br
+                      br
+                      .md-card-content.large-padding(style='padding: 0px 30px ')
+                        .uk-grid.uk-grid-divider.grid-block(data-uk-grid-margin='')
+                          .uk-width-medium-1-2
+                            label.uk-form-label.uk-margin-bottom(for='hobbies')
+                              strong Partes do polo ativo:
+                            .uk-form-row
+                              br
+                              |                                                         João da Silva 
+                              br
+                              |                                                         Coatora do Carmo 
+                              br
+                              |                                                         Impetrina da Rosa Santos 
+                              br
+                              span(style='margin-left:20px;') ADV. (S) Salvador da Silva
+                          .uk-width-medium-1-2
+                            label.uk-form-label.uk-margin-bottom(for='hobbies')
+                              strong Partes do polo passivo:
+                            .uk-form-row
+                              br
+                              |                                                         João da Silva 
+                              br
+                              |                                                         Maria do Carmo
+                    form.uk-form-stacked(action='')
+                      .md-card-content.large-padding
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-medium-1-2
+                            label.uk-form-label(for='selec_adv_2') Selecionar Classe:
+                            select#selec_adv_2(name='selec_adv_2', multiple='')
+                              option(value='') Manter HC (Habeas Corpus)...
+                          .uk-width-medium-1-2
+                            label.uk-form-label.uk-margin-bottom(for='hobbies') Aptidão da petição
+                            span.icheck-inline
+                              input#invoice_due_date_7(type='radio', name='invoice_due_date', data-md-icheck='')
+                              label.inline-label(for='invoice_due_date_7') Válida
+                            span.icheck-inline
+                              input#invoice_due_date_14(type='radio', name='invoice_due_date', data-md-icheck='')
+                              label.inline-label(for='invoice_due_date_14') Inválida
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Autuar
+                li.md-card-list-item-selected
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 17 Set
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/leandro.png', alt='')
+                  .md-card-list-item-sender
+                    span Leandro Rezende
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Leandro Rezende
+                    span
+                      span.md-card-list-item-readed.clickable
+                        strong Autuado.
+                        |  ADC 234. Aguardando distribuição. Sem responsável.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Você não pode autuar processos. 
+                      br
+                      |                                         Ainda não há nenhum responsável selecionado para autuar esse processo.
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 17 Set
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    span.md-card-list-item-avatar.md-bg-light-green TG
+                  .md-card-list-item-sender
+                    span Tomás Godoi
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Tomás Godoi
+                    span.clickable Distribuir: ARE 2333 
+                  .md-card-list-item-content-wrapper
+                    form.uk-form-stacked(action='')
+                      .md-card-content.large-padding
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-medium-2-2(style='margin-top:20px')
+                            label.uk-form-label(for='selec_adv_3') Selecionar Ministro:
+                            select#selec_adv_3(name='selec_adv_3', multiple='')
+                              option(value='') Digite o nome do Ministro...
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') DISTRIBUIR
+                li.md-card-list-item-selected
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 17 Set
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/leandro.png', alt='')
+                  .md-card-list-item-sender
+                    span Leandro Rezende
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Leandro Rezende
+                    span
+                      span.md-card-list-item-readed.clickable
+                        strong Autuado.
+                        |  ADC 888. Aguardando distribuição com 
+                        a(href='javascript:void(0);') João da Silva
+                        | . 
+                        span.uk-badge.uk-badge-info RL Impedido
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_1722') Campo exemplo
+                        textarea#mailbox_reply_1722.md-input.md-input-full(name='mailbox_reply_1722', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+            .md-card-list
+              .md-card-list-header.heading_list Ontem
+              ul.hierarchical_slide
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 17 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    span.md-card-list-item-avatar.md-bg-grey LS
+                  .md-card-list-item-sender
+                    span Lacyr Silva
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Lacyr Silva
+                    span.md-card-list-item-readed.clickable
+                      | Autuar: Petição 643 - Classe preliminar: ARE. 
+                      span.rascunho Rascunho...
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_1915') Campo exemplo
+                        textarea#mailbox_reply_1915.md-input.md-input-full(name='mailbox_reply_1915', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li.md-card-list-item-selected
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 17 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/leandro.png', alt='')
+                  .md-card-list-item-sender
+                    span Leandro Rezende
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Leandro Rezende
+                    span.md-card-list-item-readed.clickable
+                      strong Peticionado. 
+                      | Petição 6436. Classe preliminar: HC. Aguardando Autuação.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_763') Campo exemplo
+                        textarea#mailbox_reply_763.md-input.md-input-full(name='mailbox_reply_763', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 17 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    span.md-card-list-item-avatar.md-bg-grey FP
+                  .md-card-list-item-sender
+                    span Flávia Paiva
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Flávia Paiva
+                    span.md-card-list-item-readed.clickable
+                      | Autuar: Petição 86786 - Classe preliminar: ADI. 
+                      span.rascunho
+                        | Rascunho...
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_1818') Campo exemplo
+                        textarea#mailbox_reply_1818.md-input.md-input-full(name='mailbox_reply_1818', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+            .md-card-list
+              .md-card-list-header.heading_list Nesse mês
+              ul.hierarchical_slide
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 16 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    span.md-card-list-item-avatar.md-bg-light-green VP
+                  .md-card-list-item-sender
+                    span Vinícius Porto
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Vinícius Porto
+                    span.clickable Autuar: Petição 342 - Classe preliminar: HC.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_272') Campo exemplo
+                        textarea#mailbox_reply_272.md-input.md-input-full(name='mailbox_reply_272', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 15 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    span.md-card-list-item-avatar.md-bg-cyan LR
+                  .md-card-list-item-sender
+                    span Ricardo Leonidas
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Ricardo Leonidas
+                    span.clickable Autuar: Petição 655 - Classe preliminar: HC.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_1592') Campo exemplo
+                        textarea#mailbox_reply_1592.md-input.md-input-full(name='mailbox_reply_1592', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 14 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/paulo.png', alt='')
+                  .md-card-list-item-sender
+                    span Paulo Soares
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Paulo Soares
+                    span.clickable Autuar: Petição 8756 - Classe preliminar: HC.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_848') Campo exemplo
+                        textarea#mailbox_reply_848.md-input.md-input-full(name='mailbox_reply_848', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 13 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/anderson.png', alt='')
+                  .md-card-list-item-sender
+                    span Anderson Lima
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Anderson Lima
+                    span.clickable Distribuir: ARE 777 
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_1485') Campo exemplo
+                        textarea#mailbox_reply_1485.md-input.md-input-full(name='mailbox_reply_1485', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 12 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/vinicius.png', alt='')
+                  .md-card-list-item-sender
+                    span Vinicius Kuhlmann
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Vinicius Kuhlmann
+                    span.clickable Autuar: Petição 333 - Classe preliminar: HC.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_39') Campo exemplo
+                        textarea#mailbox_reply_39.md-input.md-input-full(name='mailbox_reply_39', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 16 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    span.md-card-list-item-avatar.md-bg-light-green LM
+                  .md-card-list-item-sender
+                    span Lucas Mariano
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Lucas Mariano
+                    span.clickable Autuar: Petição 6665 - Classe preliminar: HC.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_272') Campo exemplo
+                        textarea#mailbox_reply_272.md-input.md-input-full(name='mailbox_reply_272', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 15 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    span.md-card-list-item-avatar.md-bg-cyan RL
+                  .md-card-list-item-sender
+                    span Ricardo L.
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Ricardo L.
+                    span.clickable Autuar: Petição 6433 - Classe preliminar: HC.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_1592') Campo exemplo
+                        textarea#mailbox_reply_1592.md-input.md-input-full(name='mailbox_reply_1592', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+                  span.md-card-list-item-date 14 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/geancarlo.png', alt='')
+                  .md-card-list-item-sender
+                    span Paulo Soares
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Paulo Soares
+                    span.clickable Autuar: Petição 3334 - Classe preliminar: HC.
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_848') Campo exemplo
+                        textarea#mailbox_reply_848.md-input.md-input-full(name='mailbox_reply_848', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+                li
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Excluir
+                  span.md-card-list-item-date 13 Ago
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+                  .md-card-list-item-avatar-wrapper
+                    img.md-card-list-item-avatar(src='assets/img/avatars/esdras.png', alt='')
+                  .md-card-list-item-sender
+                    span Anderson Araújo
+                  .md-card-list-item-subject
+                    .md-card-list-item-sender-small
+                      span Anderson Araújo
+                    span.clickable
+                      | Autuar: Petição 234235 - Classe preliminar: HC 
+                      span.uk-badge.uk-badge-danger Maior 65 anos
+                  .md-card-list-item-content-wrapper
+                    .md-card-list-item-content
+                      | Conteúdo
+                      form.md-card-list-item-reply
+                        label(for='mailbox_reply_1485') Campo exemplo
+                        textarea#mailbox_reply_1485.md-input.md-input-full(name='mailbox_reply_1485', cols='30', rows='4')
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1
+                            #form_invoice_services
+                            .uk-text-center.uk-margin-medium-top.uk-margin-bottom
+                              a#invoice_form_append_service_btn.md-btn.md-btn-flat.md-btn-flat-primary(href='#') Executar Ação
+    .md-fab-wrapper
+      a.md-fab.md-fab-accent(href='#mailbox_new_message', data-uk-modal='{center:true}')
+        i.material-icons &#xE150;
+    #mailbox_new_message.uk-modal
+      .uk-modal-dialog
+        button.uk-modal-close.uk-close(type='button')
+        form
+          .uk-modal-header
+            h3.uk-modal-title Peticionar novo Processo
+          .uk-margin-medium-bottom
+            label(for='mail_new_to') Classe do Processo
+            input#mail_new_to.md-input(type='text')
+          .uk-margin-large-bottom
+            label(for='mail_new_message') Incluir Partes
+            textarea#mail_new_message.md-input(name='mail_new_message', cols='30', rows='6')
+          .uk-modal-footer
+            a.md-icon-btn(href='#')
+              i.md-icon.material-icons &#xE226;
+            button.uk-float-right.md-btn.md-btn-flat.md-btn-flat-primary(type='button') Peticionar
+    // google web fonts
+    script.
+      WebFontConfig = {
+      google: {
+      families: [
+      'Source+Code+Pro:400,700:latin',
+      'Roboto:400,300,500,700,400italic:latin'
+      ]
+      }
+      };
+      (function() {
+      var wf = document.createElement('script');
+      wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+      wf.type = 'text/javascript';
+      wf.async = 'true';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(wf, s);
+      })();
+    // common functions
+    script(src='assets/js/common.js')
+    // uikit functions
+    script(src='assets/js/uikit_custom.js')
+    // altair common functions/helpers
+    script(src='assets/js/altair_admin_common.min.js')
+    // page specific plugins
+    // mailbox functions
+    script(src='assets/js/pages/page_mailbox.min.js')
+    // ionrangeslider
+    script(src='bower_components/ionrangeslider/js/ion.rangeSlider.min.js')
+    // htmleditor (codeMirror)
+    // forms advanced functions
+    script(src='assets/js/pages/forms_advanced.min.js')
+    script.
+      $(function() {
+        // enable hires images
+        altair_helpers.retina_images();
+        // fastClick (touch devices)
+        if(Modernizr.touch) {
+            FastClick.attach(document.body);
+        }
+      });
