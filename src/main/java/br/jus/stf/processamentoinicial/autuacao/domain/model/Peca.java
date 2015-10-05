@@ -2,6 +2,8 @@ package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.Validate;
@@ -15,12 +17,14 @@ public abstract class Peca implements ValueObject<Peca> {
 	private static final long serialVersionUID = 1L;
 	
 	@Embedded
+	@Column(nullable = false)
 	private DocumentoId documento;
 	
-	@Column(name = "SEQ_TIPO_PECA")
+	@ManyToOne
+	@JoinColumn(name = "SEQ_TIPO_PECA", nullable = false)
 	private TipoPeca tipo;
 	
-	@Column(name = "DSC_PECA")
+	@Column(name = "DSC_PECA", nullable = false)
 	private String descricao;
 	
 	protected Peca(final DocumentoId documento, final TipoPeca tipo, final String descricao) {

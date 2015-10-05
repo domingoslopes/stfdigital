@@ -45,6 +45,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	private ProcessoId id;
 	
 	@Embedded
+	@Column(nullable = false)
 	private ClasseId classe;
 	
 	@Column(name = "NUM_PROCESSO", nullable = false)
@@ -56,14 +57,15 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	private MinistroId relator;
 
 	@Embedded
+	@Column(nullable = false)
 	private PeticaoId peticao;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = ParteProcesso.class)
-	@JoinColumn(name = "SEQ_PROCESSO")
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
 	private Set<Parte> partes = new HashSet<Parte>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaProcesso.class)
-	@JoinColumn(name = "SEQ_PROCESSO")
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
 	private Set<Peca> pecas = new LinkedHashSet<Peca>(0); // Para utilizar TreeSet Peca deve implementar Comparable
 	
 	@Transient

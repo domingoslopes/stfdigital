@@ -19,13 +19,13 @@ import br.jus.stf.shared.PeticaoId;
 @DiscriminatorValue("FISICO")
 public class PeticaoFisica extends Peticao {
 
-	@Column(name = "QTD_VOLUME")
+	@Column(name = "QTD_VOLUME", nullable = false)
 	private Integer volumes;
 	
-	@Column(name = "QTD_APENSO")
+	@Column(name = "QTD_APENSO", nullable = false)
 	private Integer apensos;
 	
-	@Column(name = "TIP_FORMA_RECEBIMENTO")
+	@Column(name = "TIP_FORMA_RECEBIMENTO", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private FormaRecebimento formaRecebimento;
 	
