@@ -21,7 +21,7 @@
 			$window.sessionStorage.papel = JSON.stringify('preautuador');
 			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
 //			$httpBackend.expectGET(properties.apiUrl + '/peticoes/fisicas/2/preautuar').respond({tipoRecebimento : 'Sedex'});
-			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
+//			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
 
 			mockMessages = {};
 			stateParams = {idTarefa: 2};
