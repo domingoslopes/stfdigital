@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('DashboardService', ['$http', '$q', '$window', function($http, $q, $window) {
+	angular.plataforma.service('DashboardService', ['$http', '$q', '$window', 'properties', function($http, $q, $window, properties) {
 
 		var getPapelAtivo = function() {
 			return JSON.parse($window.sessionStorage.getItem('papel'));
@@ -35,8 +35,15 @@
 		 * TODO Colocar a chamada real para o back-end.
 		 */
 		this.getDashlets = function() {
-			var papelAtivo = getPapelAtivo();
-			return $q.when(mockDashletsFromPapel(papelAtivo));
+			var deferred = $q.defer();
+			$http.get(properties.apiUrl + '/dashboards/padrao').success(function(dashboardDto) {
+				deferred.resolve(dashboardDto.dashlets);
+			}).error(function() {
+				deferred.reject();
+			});
+			return deferred.promise;
+//			var papelAtivo = getPapelAtivo();
+//			return $q.when(mockDashletsFromPapel(papelAtivo));
 		};
 		
 	}]);
