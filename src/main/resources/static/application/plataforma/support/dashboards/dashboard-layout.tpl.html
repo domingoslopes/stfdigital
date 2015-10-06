@@ -1,0 +1,9 @@
+<div data-ng-repeat="linha in linhas">
+	<div class="row">
+		<div data-ng-repeat="coluna in linha.colunas">
+			<div data-ng-class="coluna.columnClasses">
+				<div data-dashlet="coluna.dashlet"></div>
+			</div>
+		</div>
+	</div>
+</div>
