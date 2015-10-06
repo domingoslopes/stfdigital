@@ -33,10 +33,8 @@
 			priority: -101,
 			templateUrl: 'application/plataforma/support/dashboards/dashboard-layout.tpl.html',
 			controller: ['$scope', function($scope) {
-				console.log('dashboard');
 				$scope.linhas = [];
 				DashboardService.getDashlets().then(function(dashlets) {
-					console.log(dashlets);
 					if (dashlets && dashlets.length > 0) {
 						var linhaAtual, columnClasses;
 						for (var i = 0; i < dashlets.length; i++) {
@@ -65,7 +63,6 @@
 			priority: -200,
 			link: function(scope, element, attrs) {
 				$timeout(function() {
-					console.log('dashlet');
 					var dashletName = scope.dashlet;
 					var controller = Dashlets.getDashletController(dashletName);
 					var template = Dashlets.getDashletView(dashletName);

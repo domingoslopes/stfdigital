@@ -8,6 +8,14 @@
 (function() {
 	'use strict';
 
+	/**
+	 * @ngdoc service
+	 * @name DashboardService
+	 * @memberOf plataforma
+	 * 
+	 * @description Service para fornecer informações sobre Dashboards.
+	 * 
+	 */	
 	angular.plataforma.service('DashboardService', ['$http', '$q', '$window', 'properties', function($http, $q, $window, properties) {
 
 		var getPapelAtivo = function() {
@@ -32,9 +40,11 @@
 		};
 		
 		/**
-		 * Recupera os dashlets do papel atual.
+		 * @function getDashlets
+		 * @memberOf DashboardService
 		 * 
-		 * TODO Colocar a chamada real para o back-end.
+		 * @description Recupera os dashlets do papel atual.
+		 * 
 		 */
 		this.getDashlets = function() {
 			var deferred = $q.defer();
@@ -43,9 +53,9 @@
 			}).error(function() {
 				deferred.reject();
 			});
-//			return deferred.promise;
-			var papelAtivo = getPapelAtivo();
-			return $q.when(mockDashletsFromPapel(papelAtivo));
+			return deferred.promise;
+//			var papelAtivo = getPapelAtivo();
+//			return $q.when(mockDashletsFromPapel(papelAtivo));
 		};
 		
 	}]);
