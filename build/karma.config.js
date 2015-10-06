@@ -14,6 +14,7 @@ module.exports = {
 
 	// Definindo a lista de arquivos quer serão carregados no browser durante os testes...
 	files : [
+		baseDir + '/theme/assets/plugins/jquery/jquery-1.11.1.min.js',
 		baseDir + '/vendor/angular/angular.js',
 		baseDir + '/vendor/angular-mocks/angular-mocks.js',
 		baseDir + '/vendor/angular-ui-router/release/angular-ui-router.js',
