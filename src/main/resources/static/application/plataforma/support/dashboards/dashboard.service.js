@@ -24,6 +24,8 @@
 				return ['grafico-peticoes'];
 			case 'distribuidor':
 				return ['grafico-distribuicao'];
+			case 'recebedor':
+				return ['grafico-distribuicao', 'minhas-peticoes', 'grafico-peticoes', 'peticoes-para-preautuar'];
 			default:
 				break;
 			};
