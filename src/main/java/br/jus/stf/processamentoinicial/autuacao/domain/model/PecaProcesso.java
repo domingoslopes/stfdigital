@@ -16,6 +16,16 @@ public class PecaProcesso extends Peca {
 	
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@Column(name = "SEQ_PROCESSO_PECA")
+	@SequenceGenerator(name = "PROCESSOPECAID", sequenceName = "AUTUACAO.SEQ_PROCESSO_PECA", allocationSize = 1)
+	@GeneratedValue(generator = "PROCESSOPECAID", strategy = GenerationType.SEQUENCE)
+	private Long sequencial;
+	
+	PecaProcesso() {
+		
+	}
+	
 	public PecaProcesso(final DocumentoId documento, final TipoPeca tipoPeca,
 			final String descricao) {
 		super(documento, tipoPeca, descricao);
@@ -34,16 +44,6 @@ public class PecaProcesso extends Peca {
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);
-	}
-	
-	@Id
-	@Column(name = "SEQ_PROCESSO_PECA")
-	@SequenceGenerator(name = "PROCESSOPECAID", sequenceName = "AUTUACAO.SEQ_PROCESSO_PECA", allocationSize = 1)
-	@GeneratedValue(generator = "PROCESSOPECAID", strategy=GenerationType.SEQUENCE)
-	private Long sequencial;
-	
-	PecaProcesso() {
-		
 	}
 
 }

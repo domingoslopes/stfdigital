@@ -20,6 +20,10 @@ public class MinistroId implements ValueObject<MinistroId>{
 	@Column(name = "COD_MINISTRO", nullable = false)
 	private Long codigo;
 
+	MinistroId() {
+
+	}
+
 	public MinistroId(final Long codigo){
 		Validate.notNull(codigo, "ministroId.codigo.required");
 		
@@ -58,12 +62,6 @@ public class MinistroId implements ValueObject<MinistroId>{
 	 */
 	public boolean sameValueAs(final MinistroId other){
 		return other != null && this.codigo.equals(other.codigo);
-	}
-
-	//Hibernate
-	
-	MinistroId() {
-		
 	}
 	
 }

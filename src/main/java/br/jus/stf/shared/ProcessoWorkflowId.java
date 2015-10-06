@@ -20,6 +20,10 @@ public class ProcessoWorkflowId implements ValueObject<ProcessoWorkflowId> {
 	@Column(name = "NUM_PROCESS_INSTANCE", nullable = false)
 	private Long sequencial;
 	
+	ProcessoWorkflowId() {
+
+	}
+	
 	public ProcessoWorkflowId(final Long sequencial) {
 		Validate.notNull(sequencial, "processoWorkflowId.sequencial.required");
 		this.sequencial = sequencial;
@@ -54,12 +58,6 @@ public class ProcessoWorkflowId implements ValueObject<ProcessoWorkflowId> {
 	@Override
 	public boolean sameValueAs(final ProcessoWorkflowId other){
 		return other != null && this.sequencial.equals(other.sequencial);
-	}
-
-	//Hibernate
-	
-	ProcessoWorkflowId() {
-		
 	}
 	
 }
