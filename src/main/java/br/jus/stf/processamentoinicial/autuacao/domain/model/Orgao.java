@@ -30,6 +30,10 @@ public class Orgao implements ValueObject<Orgao> {
 	@Column(name = "NOM_ORGAO", nullable = false)
 	private String nome;
 	
+	Orgao() {
+
+	}
+	
 	public Orgao(final Long sequencial, final String nome) {
 		Validate.notNull(sequencial, "orgao.sequencial.required");
 		Validate.notBlank(nome, "orgao.nome.required");
@@ -66,10 +70,6 @@ public class Orgao implements ValueObject<Orgao> {
 	@Override
 	public boolean sameValueAs(final Orgao other){
 		return other != null && this.sequencial.equals(other.sequencial);
-	}
-	
-	Orgao() {
-		
 	}
 	
 }
