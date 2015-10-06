@@ -17,6 +17,10 @@ import br.jus.stf.shared.stereotype.Entity;
 @javax.persistence.Entity
 @Table(name = "CLASSE", schema = "AUTUACAO")
 public class Classe implements Entity<Classe, ClasseId> {
+
+	Classe() {
+
+	}
 	
 	@EmbeddedId
 	private ClasseId sigla;
@@ -32,6 +36,7 @@ public class Classe implements Entity<Classe, ClasseId> {
 		this.nome = nome;
 	}
 
+	@Override
 	public ClasseId id(){
 		return this.sigla;
 	}
@@ -62,9 +67,4 @@ public class Classe implements Entity<Classe, ClasseId> {
 		return other != null && this.sigla.sameValueAs(other.sigla);
 	}
 	
-	//Hibernate
-
-	Classe() {
-		
-	}
 }
