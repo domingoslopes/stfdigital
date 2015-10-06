@@ -41,9 +41,9 @@
 			}).error(function() {
 				deferred.reject();
 			});
-			return deferred.promise;
-//			var papelAtivo = getPapelAtivo();
-//			return $q.when(mockDashletsFromPapel(papelAtivo));
+//			return deferred.promise;
+			var papelAtivo = getPapelAtivo();
+			return $q.when(mockDashletsFromPapel(papelAtivo));
 		};
 		
 	}]);

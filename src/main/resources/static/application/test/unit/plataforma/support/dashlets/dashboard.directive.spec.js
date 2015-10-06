@@ -37,7 +37,7 @@
 		beforeEach(function() {
 			spyOn(mockDashboardService, 'getDashlets').and.returnValue($q.when(['dashlet-01']));
 			spyOn(mockDashlets, 'getDashletController').and.returnValue('MinhasPeticoesDashletController');
-			spyOn(mockDashlets, 'getDashletView').and.returnValue('application/autuacao/autuacao/dashlets/peticoes.tpl.html');
+			spyOn(mockDashlets, 'getDashletView').and.returnValue('application/autuacao/peticionamento/dashlets/peticoes.tpl.html');
 		});
 		
 		it('Deveria ter compilado a diretiva', function() {
