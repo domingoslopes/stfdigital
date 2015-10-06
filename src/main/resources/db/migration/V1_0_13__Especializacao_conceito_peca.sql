@@ -1,6 +1,6 @@
 create sequence autuacao.seq_tipo_peca;
 
-create table autuacao.tipo_peca (seq_tipo_peca bigint not null, nom_tipo_peca varchar(100), primary key (seq_tipo_peca));
+create table autuacao.tipo_peca (seq_tipo_peca bigint not null, nom_tipo_peca varchar2(100) not null, primary key (seq_tipo_peca));
 
 insert into autuacao.tipo_peca (seq_tipo_peca, nom_tipo_peca) values (autuacao.seq_tipo_peca.nextval, 'Petição inicial');
 INSERT INTO autuacao.tipo_peca (seq_tipo_peca, nom_tipo_peca) VALUES (autuacao.seq_tipo_peca.nextval, 'Custas');
