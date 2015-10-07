@@ -12,28 +12,31 @@ import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
+/**
+ * @author Rafael Alencar
+ */
 @Entity
-@Table(name = "TIPO_PECA", schema = "AUTUACAO")
-public class TipoPeca implements ValueObject<TipoPeca> {
+@Table(name = "ORGAO", schema = "AUTUACAO")
+public class Orgao implements ValueObject<Orgao> {
 	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "SEQ_TIPO_PECA")
-	@SequenceGenerator(name = "TIPOPECAID", sequenceName = "AUTUACAO.SEQ_TIPO_PECA", allocationSize = 1)
-	@GeneratedValue(generator = "TIPOPECAID", strategy=GenerationType.SEQUENCE)
+	@Column(name = "SEQ_ORGAO")
+	@SequenceGenerator(name = "ORGAOID", sequenceName = "AUTUACAO.SEQ_ORGAO", allocationSize = 1)
+	@GeneratedValue(generator = "ORGAOID", strategy=GenerationType.SEQUENCE)
 	private Long sequencial;
 	
-	@Column(name = "NOM_TIPO_PECA", nullable = false)
+	@Column(name = "NOM_ORGAO", nullable = false)
 	private String nome;
 	
-	TipoPeca() {
+	Orgao() {
 
 	}
 	
-	public TipoPeca(final Long sequencial, final String nome) {
-		Validate.notNull(sequencial, "tipoPeca.sequencial.required");
-		Validate.notBlank(nome, "tipoPeca.nome.required");
+	public Orgao(final Long sequencial, final String nome) {
+		Validate.notNull(sequencial, "orgao.sequencial.required");
+		Validate.notBlank(nome, "orgao.nome.required");
 		
 		this.sequencial = sequencial;
 		this.nome = nome;
@@ -58,14 +61,14 @@ public class TipoPeca implements ValueObject<TipoPeca> {
 	@Override
 	public boolean equals(Object obj) {
 	    if (this == obj) return true;
-	    if (obj == null || !(obj instanceof TipoPeca)) return false;
+	    if (obj == null || !(obj instanceof Orgao)) return false;
 	    
-	    final TipoPeca other = (TipoPeca) obj;
+	    final Orgao other = (Orgao) obj;
 	    return sameValueAs(other);
 	}
 	
 	@Override
-	public boolean sameValueAs(final TipoPeca other){
+	public boolean sameValueAs(final Orgao other){
 		return other != null && this.sequencial.equals(other.sequencial);
 	}
 	

@@ -59,9 +59,5 @@ public class PecaTemporaria implements ValueObject<PecaTemporaria> {
 	public boolean sameValueAs(final PecaTemporaria other){
 		return other != null && this.documentoTemporario.sameValueAs(other.documentoTemporario) && this.tipo.sameValueAs(other.tipo);
 	}
-	
-	PecaTemporaria() {
-		
-	}
 
 }

@@ -27,6 +27,7 @@ public class Tarefa implements Entity<Tarefa, TarefaId> {
 		this.processo = new ProcessoWorkflowId(processo);
 	}
 	
+	@Override
 	public TarefaId id() {
 		return id;
 	}
