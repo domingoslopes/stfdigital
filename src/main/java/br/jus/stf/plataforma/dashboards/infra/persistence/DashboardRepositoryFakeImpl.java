@@ -12,6 +12,13 @@ import br.jus.stf.plataforma.dashboards.domain.model.Dashboard;
 import br.jus.stf.plataforma.dashboards.domain.model.DashboardRepository;
 import br.jus.stf.plataforma.dashboards.domain.model.Dashlet;
 
+/**
+ * Implementação fake temporária do DashboardRepository. Essa implementação fixa
+ * Dashboards padrões para os papéis.
+ * 
+ * @author Tomas.Godoi
+ *
+ */
 @Repository
 public class DashboardRepositoryFakeImpl implements DashboardRepository {
 
@@ -23,8 +30,8 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 		mapeamentoPapelDashboard.put("autuador", buildDashboardFromDashlets("grafico-peticoes"));
 		mapeamentoPapelDashboard.put("distribuidor",
 				buildDashboardFromDashlets("grafico-distribuicao", "grafico-peticoes"));
-		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("grafico-distribuicao",
-				"minhas-peticoes", "grafico-peticoes", "peticoes-para-preautuar"));
+		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("grafico-distribuicao", "minhas-peticoes",
+				"grafico-peticoes", "peticoes-para-preautuar"));
 	}
 
 	private static Dashboard buildDashboardFromDashlets(String... dashletsNames) {
