@@ -27,6 +27,10 @@ public abstract class Peca implements ValueObject<Peca> {
 	@Column(name = "DSC_PECA", nullable = false)
 	private String descricao;
 	
+	Peca() {
+
+	}
+	
 	protected Peca(final DocumentoId documento, final TipoPeca tipo, final String descricao) {
 		Validate.notNull(documento, "peca.documento.required");
 		Validate.notNull(tipo, "peca.tipo.required");
@@ -72,10 +76,6 @@ public abstract class Peca implements ValueObject<Peca> {
 	@Override
 	public boolean sameValueAs(final Peca other){
 		return other != null && this.documento.sameValueAs(other.documento) && this.tipo.sameValueAs(other.tipo);
-	}
-	
-	Peca() {
-		
 	}
 
 }
