@@ -20,6 +20,10 @@ public class ClasseId implements ValueObject<ClasseId> {
 	@Column(name = "SIG_CLASSE", nullable = false)
 	private String sigla;
 
+	ClasseId() {
+
+	}
+	
 	public ClasseId(final String sigla){
 		Validate.notBlank(sigla, "classeId.sigla.required");
 		
@@ -54,12 +58,6 @@ public class ClasseId implements ValueObject<ClasseId> {
 	 */
 	public boolean sameValueAs(final ClasseId other){
 		return other != null && this.sigla.equals(other.sigla);
-	}
-
-	//Hibernate
-	
-	ClasseId() {
-		
 	}
 	
 }

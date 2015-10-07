@@ -15,6 +15,7 @@ public enum TipoPolo implements ValueObject<TipoPolo>{
 	 * 
 	 * @param other
 	 */
+	@Override
 	public boolean sameValueAs(final TipoPolo other){
 		return this.equals(other);
 	}
