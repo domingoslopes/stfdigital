@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  forms_wysiwyg.js - forms_wysiwyg.html
+*/
+
 $(function() {
     // wysiwyg editor
     altair_wysiwyg.init();

@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  forms_wizard.js - forms_wizard.html
+*/
+
 $(function() {
     // wizard
     altair_wizard.advanced_wizard();

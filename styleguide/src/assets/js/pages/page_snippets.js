@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_snippets.js - page_snippets.html
+*/
+
 $(function() {
     // snippets init functions
     altair_snippets.init();

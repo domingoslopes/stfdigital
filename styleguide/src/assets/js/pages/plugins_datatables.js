@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  plugins_datatables.js - plugins_datatables.html
+*/
+
 $(function() {
     // datatables
     altair_datatables.dt_default();
@@ -140,7 +148,6 @@ altair_datatables = {
             });
 
             $( tt.fnContainer() ).insertBefore( $dt_tableTools.closest('.dt-uikit').find('.dt-uikit-header'));
-
 
             $body.on('click',function(e) {
                 if($body.hasClass('DTTT_Print')) {

@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_settings.js - page_settings.html
+*/
+
 $(function() {
     // init settings
     altair_page_settings.init();

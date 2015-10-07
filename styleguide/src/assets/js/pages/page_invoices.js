@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_invoices.js - page_invoices.html
+*/
+
 $(function() {
     // init invoices
     altair_invoices.init();

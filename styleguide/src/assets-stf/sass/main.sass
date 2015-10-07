@@ -22,14 +22,14 @@
 //
 // Estas configurações podem ser variáveis globais de cor e espaçamento.
 //-------------------------------------
-
+@import "partials/_config"
 
 //-------------------------------------
 //  # 2. Ferramentas
 //
 // Incluir todos os mixins e funções.
 //-------------------------------------
-
+@import "partials/_ferramentas"
 
 //-------------------------------------
 //  # 3. Genéricos
@@ -37,8 +37,7 @@
 // É nesta camada que fica o código que deve definir regras muito genéricas. 
 // Usá-la para colocar um reset ou um normalize.
 //-------------------------------------
-
-
+@import "partials/_genericos"
 
 //-------------------------------------
 //  # 4. Base
@@ -46,8 +45,7 @@
 // Aqui definimos a aparência de <a>, <blockquote>, <ul>, <h1> 
 // e todos os outros elementos HTML puros.
 //-------------------------------------
-
-
+@import "partials/_base"
 
 //-------------------------------------
 //  # 5. Objetos
@@ -55,46 +53,18 @@
 // todo o seu projeto. Objetos media, .button e .ui-list são alguns que se encaixam nesta camada.
 // Usar padrão de nomenclatura BEM
 //-------------------------------------
-
-#header_main
-	background: #00A8E3 !important
-
-#sidebar_main .sidebar_main_header
-	height: 48px
-
-.menu_section
-	.divider 
-		border:		1px solid #ddd
-		margin:		10px !important
-
-.md-card-list-item-readed
-	font-weight: 100 
-
-.md-card-list-wrapper 
-.md-card-list 
-.md-card-list-item-avatar-wrapper 
-.md-card-list-item-avatar
-	border: 1px solid #aaa
-
-	
-
+@import "partials/_objetos"
 
 //-------------------------------------
 //  # 6. Componentes
 // Partes de uma interface com estilos mais definidos e específicos. 
 // É aqui que estilos para uma "lista de processos" ou "cabeçalho principal" seriam encontrados.
 //-------------------------------------
-
-
+@import "partials/_componentes"
 
 //-------------------------------------
 //  # 7. Hacks
 // Um ótimo exemplo é uma classe como .hidden. Segundo o ITCSS, aqui é perfeitamente 
 // aceitável que você use !important.
 //-------------------------------------
-
-.clickable
-	cursor: pointer
-
-.rascunho
-	color: red
+@import "partials/_hacks"
