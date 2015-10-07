@@ -19,6 +19,16 @@ public class PartePeticao extends Parte {
 
 	private static final long serialVersionUID = 4186066720961522553L;
 	
+	@Id
+	@Column(name = "SEQ_PETICAO_PARTE")
+	@SequenceGenerator(name = "PETICAOPARTEID", sequenceName = "AUTUACAO.SEQ_PETICAO_PARTE", allocationSize = 1)
+	@GeneratedValue(generator = "PETICAOPARTEID", strategy=GenerationType.SEQUENCE)
+	private Long sequencial;
+	
+	PartePeticao() {
+		
+	}
+	
 	public PartePeticao(PessoaId pessoaId, TipoPolo tipoPolo) {
 		super(pessoaId, tipoPolo);
 	}
@@ -31,16 +41,6 @@ public class PartePeticao extends Parte {
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);
-	}
-	
-	@Id
-	@Column(name = "SEQ_PETICAO_PARTE")
-	@SequenceGenerator(name = "PETICAOPARTEID", sequenceName = "AUTUACAO.SEQ_PETICAO_PARTE", allocationSize = 1)
-	@GeneratedValue(generator = "PETICAOPARTEID", strategy=GenerationType.SEQUENCE)
-	private Long sequencial;
-	
-	PartePeticao() {
-		
 	}
 	
 }

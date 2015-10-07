@@ -15,6 +15,10 @@ public class DocumentoTemporarioId implements ValueObject<DocumentoTemporarioId>
 	
 	private String id;
 
+	DocumentoTemporarioId() {
+
+	}
+
 	public DocumentoTemporarioId(final String id){
 		Validate.notNull(id, "documentoTemporarioId.id.required");
 		
@@ -46,10 +50,6 @@ public class DocumentoTemporarioId implements ValueObject<DocumentoTemporarioId>
 	@Override
 	public boolean sameValueAs(final DocumentoTemporarioId other){
 		return other != null && this.id.equals(other.id);
-	}
-
-	DocumentoTemporarioId() {
-		
 	}
 	
 }
