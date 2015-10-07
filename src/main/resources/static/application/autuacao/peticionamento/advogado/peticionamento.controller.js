@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $state, messages, properties, $log, PeticaoService, FileUploader) {
+	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $state, messages, properties, $log, $window,PeticaoService, FileUploader, PecaService) {
 		$scope.classes = data.data;
 		$scope.classe = '';
 		$scope.partesPoloAtivo = [];
@@ -58,16 +58,6 @@
         	peca.documentoTemporario = response;
         };
         
-		function recuperarPecaPorItem(item) {
-			var p = null;
-			angular.forEach($scope.pecas, function(peca) {
-				if (peca.fileItem == item) {
-					p = peca;
-				}
-			});
-			return p;
-		}
-		
         // FILTERS
 
         uploader.filters.push({
@@ -118,22 +108,54 @@
 			$scope.poloPassivoController.remover(parteSelecionada);
 		};
 		
-		/*$scope.getPecas = function() {
-			return PeticaoService.getPeticao().pecas;
-		};*/
-		
-		//$scope.pecaVisualizadaFile = undefined;
-		$scope.visualizar = function(item){
+		//remove as peças da petição
+		$scope.remover = function(peca, apagarDoServidor) {
+			if (apagarDoServidor) {
+				var pecaFull = recuperarPecaPorItem(peca.item);
+				var arquivoTemporario = [pecaFull.id];
+				PecaService.excluirArquivosTemporarios(arquivoTemporario);
+			}
 			
-			window.open('api/documento/' + item,'._file','');
-			//$scope.pecaVisualizadaFile = item._file;
-	    	//$scope.$emit("event:showModal", "divModalVizualizarPeca");
+			peca.item.remove();
+			removeArrayItem($scope.getPecas(), peca);
+		};
+		
+		function recuperarPecaPorItem(item) {
+			var p = null;
+			angular.forEach($scope.pecas, function(peca) {
+				if (peca.fileItem == item) {
+					p = peca;
+				}
+			});
+			return p;
+		}
+		
+		function removeArrayItem(array, item) {
+			var index = array.indexOf(item);
+			if (index > -1) {
+				array.splice(index, 1);
+			}
+		}
+		
+		
+		$scope.limparPecas = function() {
+			var arquivosTemporarios = [];
+			angular.forEach($scope.getPecas(), function(peca) {
+				arquivosTemporarios.push(peca.id);
+			});
+			PecaService.excluirArquivosTemporarios(arquivosTemporarios);
+			uploader.clearQueue();
+			uploader.progress = 0;
+			PecaService.limpar(pecas);
+		};
+		
+		
+		$scope.visualizar = function(peca){
+		     var file = new Blob([peca.fileItem._file], {type: 'application/pdf'});
+             var fileURL = window.URL.createObjectURL(file);
+             $window.open(fileURL);
 	    };
 	    
-	   /* $scope.fecharModal = function() {
-	    	$scope.pecaVisualizadaFile = undefined;
-	    };*/
-
 		$scope.finalizar = function() {
 			if ($scope.classe.length === 0) {
 				messages.error('Você precisa selecionar <b>a classe processual sugerida</b>.');
@@ -157,7 +179,7 @@
 	    	});
 	    	
 	    	if(tiposSelecionados.length < $scope.pecas.length){
-	    		messages.error('Por favor, classifique todas as pe�as da sua peti��o.');
+	    		messages.error('Por favor, classifique todas as peças da sua petição.');
 	    		
 	    		return;
 	    	}
@@ -174,49 +196,6 @@
 			});
 			
 		};
-		
-		
-	//-----------------------------------------------------------------------------------------
-		
-        //uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-        /*    console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-
-        uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-        };
-        uploader.onBeforeUploadItem = function(item) {
-            console.info('onBeforeUploadItem', item);
-        };
-        uploader.onProgressItem = function(fileItem, progress) {
-            console.info('onProgressItem', fileItem, progress);
-        };
-        uploader.onProgressAll = function(progress) {
-            console.info('onProgressAll', progress);
-        };
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            console.info('onSuccessItem', fileItem, response, status, headers);
-        };
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
-            console.info('onErrorItem', fileItem, response, status, headers);
-        };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
-        };
-        /*uploader.onCompleteItem = function(fileItem, response, status, headers) {
-            console.info('onCompleteItem', fileItem, response, status, headers);
-        };*/
-        /*uploader.onCompleteAll = function() {
-            console.info('onCompleteAll');
-        };
-
-        console.info('uploader', uploader);*/
-		
-		//-----------------------------------------------------------------------------------------
-		
-		
-		
-		
 		
 		
 		
@@ -267,7 +246,7 @@
     		
     		angular.forEach(pecas, function(peca){
     			delete peca.fileItem;
-    		})
+    		});
     		
     		dto.documentos = pecas;
     		
