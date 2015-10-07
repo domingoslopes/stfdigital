@@ -32,6 +32,10 @@ public class PeticaoFisica extends Peticao {
 	@Column(name = "NUM_SEDEX")
 	private String numeroSedex;
 	
+	PeticaoFisica() {
+
+	}
+	
 	public PeticaoFisica(final PeticaoId id, final Long numero, final Integer volumes, 
 			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex) {
 		super(id, numero);
@@ -73,10 +77,9 @@ public class PeticaoFisica extends Peticao {
 		super.sugerirClasse(classeSugerida);
 	}
 	
-	//Hibernate
-	
-	PeticaoFisica() {
-		
+	@Override
+	public boolean hasRepresentacao() {
+		return false;
 	}
 	
 }

@@ -18,6 +18,10 @@ import br.jus.stf.shared.stereotype.Entity;
 @Table(name = "MINISTRO", schema = "AUTUACAO")
 public class Ministro implements Entity<Ministro, MinistroId> {
 
+	Ministro() {
+
+	}
+
 	@EmbeddedId
 	private MinistroId codigo;
 	
@@ -32,6 +36,7 @@ public class Ministro implements Entity<Ministro, MinistroId> {
 		this.nome = nome;
 	}
 
+	@Override
 	public MinistroId id(){
 		return codigo;
 	}
@@ -57,13 +62,9 @@ public class Ministro implements Entity<Ministro, MinistroId> {
 		return sameIdentityAs(other);
 	}
 	
+	@Override
 	public boolean sameIdentityAs(final Ministro other) {
 		return other != null && this.codigo.sameValueAs(other.codigo);
 	}
-
-	//Hibernate
 	
-	Ministro() {
-		
-	}
 }

@@ -27,6 +27,10 @@ public class TipoPeca implements ValueObject<TipoPeca> {
 	@Column(name = "NOM_TIPO_PECA", nullable = false)
 	private String nome;
 	
+	TipoPeca() {
+
+	}
+	
 	public TipoPeca(final Long sequencial, final String nome) {
 		Validate.notNull(sequencial, "tipoPeca.sequencial.required");
 		Validate.notBlank(nome, "tipoPeca.nome.required");
@@ -63,10 +67,6 @@ public class TipoPeca implements ValueObject<TipoPeca> {
 	@Override
 	public boolean sameValueAs(final TipoPeca other){
 		return other != null && this.sequencial.equals(other.sequencial);
-	}
-	
-	TipoPeca() {
-		
 	}
 	
 }
