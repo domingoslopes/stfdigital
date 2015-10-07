@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.dashboards.domain.model.Dashboard;
 
+/**
+ * Componente de conversão para DashboardDto.
+ * 
+ * @author Tomas.Godoi
+ *
+ */
 @Component
 public class DashboardDtoAssembler {
 

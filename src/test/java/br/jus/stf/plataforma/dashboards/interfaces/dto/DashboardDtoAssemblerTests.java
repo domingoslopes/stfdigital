@@ -4,12 +4,17 @@ import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
 import br.jus.stf.plataforma.dashboards.domain.model.Dashboard;
 import br.jus.stf.plataforma.dashboards.domain.model.Dashlet;
-import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDto;
-import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDtoAssembler;
 
+/**
+ * Testes unitários para o DashboardDtoAssembler.
+ * 
+ * @author Tomas.Godoi
+ *
+ */
 public class DashboardDtoAssemblerTests {
 
 	private DashboardDtoAssembler dashboardDtoAssembler;
@@ -19,6 +24,7 @@ public class DashboardDtoAssemblerTests {
 		dashboardDtoAssembler = new DashboardDtoAssembler();
 	}
 
+	@Test
 	public void converterDashboardToDtoUnicoDashlet() {
 		Dashboard dashboard = new Dashboard();
 		dashboard.setDashlets(Arrays.asList(new Dashlet("dashlet-01")));
@@ -26,6 +32,7 @@ public class DashboardDtoAssemblerTests {
 		Assert.assertArrayEquals(new String[] { "dashlet-01" }, dto.getDashlets().toArray());
 	}
 
+	@Test
 	public void converterDashboardToDtoVariosDashlets() {
 		Dashboard dashboard = new Dashboard();
 		dashboard.setDashlets(
@@ -35,6 +42,7 @@ public class DashboardDtoAssemblerTests {
 				dto.getDashlets().toArray());
 	}
 
+	@Test
 	public void converterDashboardToDtoNenhumDashlet() {
 		Dashboard dashboard = new Dashboard();
 		DashboardDto dto = dashboardDtoAssembler.toDto(dashboard);

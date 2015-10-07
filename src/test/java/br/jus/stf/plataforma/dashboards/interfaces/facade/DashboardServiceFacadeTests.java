@@ -18,6 +18,12 @@ import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDto;
 import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDtoAssembler;
 import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacade;
 
+/**
+ * Testes unitários para o DashboardServiceFacade.
+ * 
+ * @author Tomas.Godoi
+ *
+ */
 public class DashboardServiceFacadeTests {
 
 	@Mock

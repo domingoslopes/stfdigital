@@ -22,12 +22,12 @@ public class DashboardRestResource {
 
 	@Autowired
 	private DashboardServiceFacade dashboardServiceFacade;
-	
-	@ApiOperation("Recupera o dashboard padrão para o perfil atual do usuário")
+
+	@ApiOperation("Recupera o dashboard padrão para o papel recebido")
 	@RequestMapping(value = "/padrao", method = RequestMethod.GET)
 	public DashboardDto recuperarPadrao(@RequestHeader("papel") String papel) {
 		DashboardDto dashboard = dashboardServiceFacade.recuperarPadrao(papel);
 		return dashboard;
 	}
-	
+
 }
