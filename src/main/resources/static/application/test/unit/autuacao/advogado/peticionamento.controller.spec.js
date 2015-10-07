@@ -20,7 +20,7 @@
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('peticionador');
 			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
-
+			
 			ClasseService.listar().success(function(result) {
 				fakeData = result;
 			});
