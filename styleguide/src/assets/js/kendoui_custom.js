@@ -45,7 +45,7 @@
         slice = [].slice,
         globalize = window.Globalize;
 
-    kendo.version = "2015.2.805";
+    kendo.version = "2015.2.902";
 
     function Class() {}
 
@@ -2028,10 +2028,10 @@ function pad(number, digits, end) {
         support.detectBrowser = function(ua) {
             var browser = false, match = [],
                 browserRxs = {
+                    edge: /(edge)[ \/]([\w.]+)/i,
                     webkit: /(chrome)[ \/]([\w.]+)/i,
                     safari: /(webkit)[ \/]([\w.]+)/i,
                     opera: /(opera)(?:.*version|)[ \/]([\w.]+)/i,
-                    edge: /(edge)[ \/]([\w.]+)/i,
                     msie: /(msie\s|trident.*? rv:)([\w.]+)/i,
                     mozilla: /(mozilla)(?:.*? rv:([\w.]+)|)/i
                 };
@@ -2090,6 +2090,8 @@ function pad(number, digits, end) {
                 cssClass = "webkit";
             } else if (browser.opera) {
                 cssClass = "opera";
+            } else if (browser.edge) {
+                cssClass = "edge";
             }
 
             if (cssClass) {
@@ -4313,27 +4315,55 @@ return window.kendo;
     ];
 
     Color.namedColors = {
-        aqua: "00ffff", azure: "f0ffff", beige: "f5f5dc",
-        black: "000000", blue: "0000ff", brown: "a52a2a",
-        coral: "ff7f50", cyan: "00ffff", darkblue: "00008b",
-        darkcyan: "008b8b", darkgray: "a9a9a9", darkgreen: "006400",
-        darkorange: "ff8c00", darkred: "8b0000", dimgray: "696969",
-        fuchsia: "ff00ff", gold: "ffd700", goldenrod: "daa520",
-        gray: "808080", green: "008000", greenyellow: "adff2f",
+        aliceblue: "f0f8ff", antiquewhite: "faebd7", aqua: "00ffff",
+        aquamarine: "7fffd4", azure: "f0ffff", beige: "f5f5dc",
+        bisque: "ffe4c4", black: "000000", blanchedalmond: "ffebcd",
+        blue: "0000ff", blueviolet: "8a2be2", brown: "a52a2a",
+        burlywood: "deb887", cadetblue: "5f9ea0", chartreuse: "7fff00",
+        chocolate: "d2691e", coral: "ff7f50", cornflowerblue: "6495ed",
+        cornsilk: "fff8dc", crimson: "dc143c", cyan: "00ffff",
+        darkblue: "00008b", darkcyan: "008b8b", darkgoldenrod: "b8860b",
+        darkgray: "a9a9a9", darkgrey: "a9a9a9", darkgreen: "006400",
+        darkkhaki: "bdb76b", darkmagenta: "8b008b", darkolivegreen: "556b2f",
+        darkorange: "ff8c00", darkorchid: "9932cc", darkred: "8b0000",
+        darksalmon: "e9967a", darkseagreen: "8fbc8f", darkslateblue: "483d8b",
+        darkslategray: "2f4f4f", darkslategrey: "2f4f4f", darkturquoise: "00ced1",
+        darkviolet: "9400d3", deeppink: "ff1493", deepskyblue: "00bfff",
+        dimgray: "696969", dimgrey: "696969", dodgerblue: "1e90ff",
+        firebrick: "b22222", floralwhite: "fffaf0", forestgreen: "228b22",
+        fuchsia: "ff00ff", gainsboro: "dcdcdc", ghostwhite: "f8f8ff",
+        gold: "ffd700", goldenrod: "daa520", gray: "808080",
+        grey: "808080", green: "008000", greenyellow: "adff2f",
+        honeydew: "f0fff0", hotpink: "ff69b4", indianred: "cd5c5c",
         indigo: "4b0082", ivory: "fffff0", khaki: "f0e68c",
-        lightblue: "add8e6", lightgrey: "d3d3d3", lightgreen: "90ee90",
-        lightpink: "ffb6c1", lightyellow: "ffffe0", lime: "00ff00",
-        limegreen: "32cd32", linen: "faf0e6", magenta: "ff00ff",
-        maroon: "800000", mediumblue: "0000cd", navy: "000080",
-        olive: "808000", orange: "ffa500", orangered: "ff4500",
-        orchid: "da70d6", pink: "ffc0cb", plum: "dda0dd",
-        purple: "800080", red: "ff0000", royalblue: "4169e1",
-        salmon: "fa8072", silver: "c0c0c0", skyblue: "87ceeb",
-        slateblue: "6a5acd", slategray: "708090", snow: "fffafa",
+        lavender: "e6e6fa", lavenderblush: "fff0f5", lawngreen: "7cfc00",
+        lemonchiffon: "fffacd", lightblue: "add8e6", lightcoral: "f08080",
+        lightcyan: "e0ffff", lightgoldenrodyellow: "fafad2", lightgray: "d3d3d3",
+        lightgrey: "d3d3d3", lightgreen: "90ee90", lightpink: "ffb6c1",
+        lightsalmon: "ffa07a", lightseagreen: "20b2aa", lightskyblue: "87cefa",
+        lightslategray: "778899", lightslategrey: "778899", lightsteelblue: "b0c4de",
+        lightyellow: "ffffe0", lime: "00ff00", limegreen: "32cd32",
+        linen: "faf0e6", magenta: "ff00ff", maroon: "800000",
+        mediumaquamarine: "66cdaa", mediumblue: "0000cd", mediumorchid: "ba55d3",
+        mediumpurple: "9370d8", mediumseagreen: "3cb371", mediumslateblue: "7b68ee",
+        mediumspringgreen: "00fa9a", mediumturquoise: "48d1cc", mediumvioletred: "c71585",
+        midnightblue: "191970", mintcream: "f5fffa", mistyrose: "ffe4e1",
+        moccasin: "ffe4b5", navajowhite: "ffdead", navy: "000080",
+        oldlace: "fdf5e6", olive: "808000", olivedrab: "6b8e23",
+        orange: "ffa500", orangered: "ff4500", orchid: "da70d6",
+        palegoldenrod: "eee8aa", palegreen: "98fb98", paleturquoise: "afeeee",
+        palevioletred: "d87093", papayawhip: "ffefd5", peachpuff: "ffdab9",
+        peru: "cd853f", pink: "ffc0cb", plum: "dda0dd",
+        powderblue: "b0e0e6", purple: "800080", red: "ff0000",
+        rosybrown: "bc8f8f", royalblue: "4169e1", saddlebrown: "8b4513",
+        salmon: "fa8072", sandybrown: "f4a460", seagreen: "2e8b57",
+        seashell: "fff5ee", sienna: "a0522d", silver: "c0c0c0",
+        skyblue: "87ceeb", slateblue: "6a5acd", slategray: "708090",
+        slategrey: "708090", snow: "fffafa", springgreen: "00ff7f",
         steelblue: "4682b4", tan: "d2b48c", teal: "008080",
-        tomato: "ff6347", turquoise: "40e0d0", violet: "ee82ee",
-        wheat: "f5deb3", white: "ffffff", whitesmoke: "f5f5f5",
-        yellow: "ffff00", yellowgreen: "9acd32"
+        thistle: "d8bfd8", tomato: "ff6347", turquoise: "40e0d0",
+        violet: "ee82ee", wheat: "f5deb3", white: "ffffff",
+        whitesmoke: "f5f5f5", yellow: "ffff00", yellowgreen: "9acd32"
     };
 
     // Tools from ColorPicker =================================================
@@ -8553,7 +8583,7 @@ return window.kendo;
         if (transportOptions) {
             transportOptions.read = typeof transportOptions.read === STRING ? { url: transportOptions.read } : transportOptions.read;
 
-            if (dataSource) {
+            if (options.type === "jsdo") {
                 transportOptions.dataSource = dataSource;
             }
 
@@ -8953,7 +8983,12 @@ return window.kendo;
         },
 
         _find: function(method, value) {
-            var idx, length, node, data, children;
+            var idx, length, node, children;
+            var data = this._data;
+
+            if (!data) {
+                return;
+            }
 
             node = DataSource.fn[method].call(this, value);
 
@@ -8962,10 +8997,6 @@ return window.kendo;
             }
 
             data = this._flatData(this._data);
-
-            if (!data) {
-                return;
-            }
 
             for (idx = 0, length = data.length; idx < length; idx++) {
                 children = data[idx].children;
@@ -10944,8 +10975,7 @@ return window.kendo;
 
             if (!options.modal) {
                 DOCUMENT_ELEMENT.unbind(that.downEvent, that._mousedownProxy);
-                that._scrollableParents().unbind(SCROLL, that._resizeProxy);
-                WINDOW.unbind(RESIZE_SCROLL, that._resizeProxy);
+                that._toggleResize(false);
             }
 
             kendo.destroy(that.element.children());
@@ -10993,11 +11023,8 @@ return window.kendo;
                     // this binding hangs iOS in editor
                     if (!(support.mobileOS.ios || support.mobileOS.android)) {
                         // all elements in IE7/8 fire resize event, causing mayhem
-                        that._scrollableParents()
-                            .unbind(SCROLL, that._resizeProxy)
-                            .bind(SCROLL, that._resizeProxy);
-                        WINDOW.unbind(RESIZE_SCROLL, that._resizeProxy)
-                              .bind(RESIZE_SCROLL, that._resizeProxy);
+                        that._toggleResize(false);
+                        that._toggleResize(true);
                     }
                 }
 
@@ -11066,7 +11093,10 @@ return window.kendo;
             if (that.visible()) {
                 wrap = (that.wrapper[0] ? that.wrapper : kendo.wrap(that.element).hide());
 
+                that._toggleResize(false);
+
                 if (that._closing || that._trigger(CLOSE)) {
+                    that._toggleResize(true);
                     return;
                 }
 
@@ -11081,8 +11111,6 @@ return window.kendo;
                 });
 
                 DOCUMENT_ELEMENT.unbind(that.downEvent, that._mousedownProxy);
-                that._scrollableParents().unbind(SCROLL, that._resizeProxy);
-                WINDOW.unbind(RESIZE_SCROLL, that._resizeProxy);
 
                 if (skipEffects) {
                     animation = { hide: true, effects: {} };
@@ -11123,6 +11151,13 @@ return window.kendo;
                     that.close();
                 }
             }
+        },
+
+        _toggleResize: function(toggle) {
+            var method = toggle ? "on" : "off";
+
+            this._scrollableParents()[method](SCROLL, this._resizeProxy);
+            WINDOW[method](RESIZE_SCROLL, this._resizeProxy);
         },
 
         _mousedown: function(e) {
@@ -11211,7 +11246,7 @@ return window.kendo;
             // $(window).height() uses documentElement to get the height
             viewportWidth = isWindow ? window.innerWidth : viewport.width();
             viewportHeight = isWindow ? window.innerHeight : viewport.height();
-            
+
             if (isWindow && docEl.scrollHeight - docEl.clientHeight > 0) {
                 viewportWidth -= kendo.support.scrollbar();
             }
@@ -14824,6 +14859,9 @@ return window.kendo;
 
             if (value !== undefined) {
                 element[0].value = value;
+                if (element[0].value && !value) {
+                    element[0].selectedIndex = -1;
+                }
             }
         },
 
@@ -23009,6 +23047,7 @@ return window.kendo;
                 .on("keydown" + ns, proxy(that._keydown, that))
                 .on("paste" + ns, proxy(that._search, that))
                 .on("focus" + ns, function () {
+                    that._active = true;
                     that._prev = that._accessor();
                     that._placeholder(false);
                     wrapper.addClass(FOCUSED);
@@ -23016,6 +23055,7 @@ return window.kendo;
                 .on("focusout" + ns, function () {
                     that._change();
                     that._placeholder();
+                    that._active = false;
                     wrapper.removeClass(FOCUSED);
                 })
                 .attr({
@@ -23272,6 +23312,8 @@ return window.kendo;
             var item = e.item;
             var element = this.element;
 
+            this._active = true;
+
             if (this.trigger("select", { item: item })) {
                 this.close();
                 return;
@@ -23330,9 +23372,10 @@ return window.kendo;
 
             that._angularItems("compile");
 
-            //reset list value
-            that.listView.value([]);
-            that.listView.focus(-1);
+            if (that._open) {
+                that.listView.value([]);
+                that.listView.focus(-1);
+            }
 
             that.listView.filter(false);
 
@@ -23375,7 +23418,7 @@ return window.kendo;
         },
 
         _listChange: function() {
-            if (!this.listView.filter()) {
+            if (!this.listView.filter() && this._active) {
                 this._selectValue(this.listView.selectedDataItems()[0]);
             }
         },
@@ -30091,7 +30134,10 @@ return window.kendo;
                     item = element.data("button");
 
                 if (item.options.togglable) {
-                    item.toggle(checked ? checked : !item.options.selected, true);
+                    if (checked === undefined) {
+                        checked = true;
+                    }
+                    item.toggle(checked, true);
                 }
             },
 

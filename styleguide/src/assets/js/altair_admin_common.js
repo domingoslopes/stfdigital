@@ -392,7 +392,7 @@
 
                 setTimeout(function() {
                     $window.resize();
-                },280);
+                }, 280);
             }
 
             // language switcher
@@ -605,26 +605,10 @@
             }
         },
         hide_sidebar: function() {
-            $sidebar_secondary.velocity({
-                right: -$sidebar_secondary.width() - 4
-            },{
-                duration: 280,
-                easing: easing_swiftOut,
-                begin: function() {
-                    $body.removeClass('sidebar_secondary_active');
-                }
-            });
+            $body.removeClass('sidebar_secondary_active');
         },
         show_sidebar: function() {
-            $sidebar_secondary.velocity({
-                right: 0
-            },{
-                duration: 400,
-                easing: easing_swiftOut,
-                begin: function() {
-                    $body.addClass('sidebar_secondary_active');
-                }
-            });
+            $body.addClass('sidebar_secondary_active');
         }
     };
 
@@ -850,7 +834,18 @@
             $(".md-expand-group").children().velocity("transition.expandIn", { stagger: 175, drag: true });
         },
         card_overlay: function() {
-            $('.md-card').on('click','.md-card-overlay-toggler', function(e) {
+            var $md_card = $('.md-card');
+
+            // replace toggler icon (x) when overlay is active
+            $md_card.each(function() {
+                var $this = $(this);
+                if($this.hasClass('md-card-overlay-active')) {
+                    $this.find('.md-card-overlay-toggler').html('&#xE5CD;')
+                }
+            });
+
+            // toggle card overlay
+            $md_card.on('click','.md-card-overlay-toggler', function(e) {
                 e.preventDefault();
                 if(!$(this).closest('.md-card').hasClass('md-card-overlay-active')) {
                     $(this)
@@ -930,7 +925,6 @@
                     }
                     $this.closest('.md-input-wrapper').append('<span class="md-input-bar"/>');
 
-
                     altair_md.update_input($this);
                 }
                 $body
@@ -939,10 +933,12 @@
                     })
                     .on('blur', '.md-input', function() {
                         $(this).closest('.md-input-wrapper').removeClass('md-input-focus');
-                        if($(this).val() != '') {
-                            $(this).closest('.md-input-wrapper').addClass('md-input-filled')
-                        } else {
-                            $(this).closest('.md-input-wrapper').removeClass('md-input-filled')
+                        if(!$(this).hasClass('label-fixed')) {
+                            if($(this).val() != '') {
+                                $(this).closest('.md-input-wrapper').addClass('md-input-filled')
+                            } else {
+                                $(this).closest('.md-input-wrapper').removeClass('md-input-filled')
+                            }
                         }
                     })
                     .on('change', '.md-input', function() {
@@ -981,6 +977,9 @@
             }
             if(object.prop('disabled')) {
                 object.closest('.md-input-wrapper').addClass('md-input-wrapper-disabled')
+            }
+            if(object.hasClass('label-fixed')) {
+                object.closest('.md-input-wrapper').addClass('md-input-filled')
             }
             if(object.val() != '') {
                 object.closest('.md-input-wrapper').addClass('md-input-filled')
@@ -1103,7 +1102,7 @@
                     var $this = $(this),
                         $thisChildren = $this.attr('data-slide-children') ? $this.children($this.attr('data-slide-children')) : $this.children(),
                         thisChildrenLength = $thisChildren.length,
-                        thisContext = $this.attr('data-slide-context') ? $this.closest($this.attr('data-slide-context')) : 'window',
+                        thisContext = $this.attr('data-slide-context') ? $this.closest($this.attr('data-slide-context'))[0] : 'window',
                         baseDelay = 100;
 
                     if(thisChildrenLength >= 1) {

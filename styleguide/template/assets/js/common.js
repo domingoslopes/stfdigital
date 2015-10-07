@@ -15939,7 +15939,7 @@ if ( typeof define === 'function' && define.amd ) {
 }));
 
 /*!
-Waypoints - 3.1.1
+Waypoints - 4.0.0
 Copyright © 2011-2015 Caleb Troughton
 Licensed under the MIT license.
 https://github.com/imakewebthings/waypoints/blog/master/licenses.txt
@@ -16288,7 +16288,7 @@ https://github.com/imakewebthings/waypoints/blog/master/licenses.txt
     /*eslint-disable eqeqeq */
     var isWindow = this.element == this.element.window
     /*eslint-enable eqeqeq */
-    var contextOffset = this.adapter.offset()
+    var contextOffset = isWindow ? undefined : this.adapter.offset()
     var triggeredGroups = {}
     var axes
 
@@ -16361,9 +16361,11 @@ https://github.com/imakewebthings/waypoints/blog/master/licenses.txt
       }
     }
 
-    for (var groupKey in triggeredGroups) {
-      triggeredGroups[groupKey].flushTriggers()
-    }
+    Waypoint.requestAnimationFrame(function() {
+      for (var groupKey in triggeredGroups) {
+        triggeredGroups[groupKey].flushTriggers()
+      }
+    })
 
     return this
   }
@@ -28888,7 +28890,7 @@ Prism.hooks.add('after-highlight', function (env) {
 
 });
 /*!
-	Autosize 3.0.8
+	Autosize 3.0.12
 	license: MIT
 	http://www.jacklmoore.com/autosize
 */
@@ -28907,6 +28909,21 @@ Prism.hooks.add('after-highlight', function (env) {
 })(this, function (exports, module) {
 	'use strict';
 
+	var set = typeof Set === 'function' ? new Set() : (function () {
+		var list = [];
+
+		return {
+			has: function has(key) {
+				return Boolean(list.indexOf(key) > -1);
+			},
+			add: function add(key) {
+				list.push(key);
+			},
+			'delete': function _delete(key) {
+				list.splice(list.indexOf(key), 1);
+			} };
+	})();
+
 	function assign(ta) {
 		var _ref = arguments[1] === undefined ? {} : arguments[1];
 
@@ -28915,7 +28932,7 @@ Prism.hooks.add('after-highlight', function (env) {
 		var _ref$setOverflowY = _ref.setOverflowY;
 		var setOverflowY = _ref$setOverflowY === undefined ? true : _ref$setOverflowY;
 
-		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || ta.hasAttribute('data-autosize-on')) return;
+		if (!ta || !ta.nodeName || ta.nodeName !== 'TEXTAREA' || set.has(ta)) return;
 
 		var heightOffset = null;
 		var overflowY = 'hidden';
@@ -28933,6 +28950,10 @@ Prism.hooks.add('after-highlight', function (env) {
 				heightOffset = -(parseFloat(style.paddingTop) + parseFloat(style.paddingBottom));
 			} else {
 				heightOffset = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+			}
+			// Fix when a textarea is not on document body and heightOffset is Not a Number
+			if (isNaN(heightOffset)) {
+				heightOffset = 0;
 			}
 
 			update();
@@ -29011,8 +29032,8 @@ Prism.hooks.add('after-highlight', function (env) {
 			window.removeEventListener('resize', update);
 			ta.removeEventListener('input', update);
 			ta.removeEventListener('keyup', update);
-			ta.removeAttribute('data-autosize-on');
 			ta.removeEventListener('autosize:destroy', destroy);
+			set['delete'](ta);
 
 			Object.keys(style).forEach(function (key) {
 				ta.style[key] = style[key];
@@ -29036,7 +29057,7 @@ Prism.hooks.add('after-highlight', function (env) {
 		window.addEventListener('resize', update);
 		ta.addEventListener('input', update);
 		ta.addEventListener('autosize:update', update);
-		ta.setAttribute('data-autosize-on', true);
+		set.add(ta);
 
 		if (setOverflowY) {
 			ta.style.overflowY = 'hidden';

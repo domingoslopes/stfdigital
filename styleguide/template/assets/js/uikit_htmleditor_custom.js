@@ -87,6 +87,7 @@
       focused: false,
       suppressEdits: false, // used to disable editing during key handlers when in readOnly mode
       pasteIncoming: false, cutIncoming: false, // help recognize paste/cut edits in input.poll
+      selectingText: false,
       draggingText: false,
       highlight: new Delayed(), // stores highlight worker timeout
       keySeq: null,  // Unfinished key sequence
@@ -1135,7 +1136,8 @@
     var pasted = e.clipboardData && e.clipboardData.getData("text/plain");
     if (pasted) {
       e.preventDefault();
-      runInOp(cm, function() { applyTextInput(cm, pasted, 0, null, "paste"); });
+      if (!isReadOnly(cm) && !cm.options.disableInput)
+        runInOp(cm, function() { applyTextInput(cm, pasted, 0, null, "paste"); });
       return true;
     }
   }
@@ -1283,6 +1285,7 @@
 
       on(te, "compositionstart", function() {
         var start = cm.getCursor("from");
+        if (input.composing) input.composing.range.clear()
         input.composing = {
           start: start,
           range: cm.markText(start, cm.getCursor("to"), {className: "CodeMirror-composing"})
@@ -1531,6 +1534,10 @@
       }
     },
 
+    readOnlyChanged: function(val) {
+      if (!val) this.reset();
+    },
+
     setUneditable: nothing,
 
     needsContentAttribute: false
@@ -1549,7 +1556,6 @@
     init: function(display) {
       var input = this, cm = input.cm;
       var div = input.div = display.lineDiv;
-      div.contentEditable = "true";
       disableBrowserMagic(div);
 
       on(div, "paste", function(e) { handlePaste(e, cm); })
@@ -1590,7 +1596,7 @@
 
       on(div, "input", function() {
         if (input.composing) return;
-        if (!input.pollContent())
+        if (isReadOnly(cm) || !input.pollContent())
           runInOp(input.cm, function() {regChange(cm);});
       });
 
@@ -1815,17 +1821,24 @@
       this.div.focus();
     },
     applyComposition: function(composing) {
-      if (composing.data && composing.data != composing.startData)
+      if (isReadOnly(this.cm))
+        operation(this.cm, regChange)(this.cm)
+      else if (composing.data && composing.data != composing.startData)
         operation(this.cm, applyTextInput)(this.cm, composing.data, 0, composing.sel);
     },
 
     setUneditable: function(node) {
-      node.setAttribute("contenteditable", "false");
+      node.contentEditable = "false"
     },
 
     onKeyPress: function(e) {
       e.preventDefault();
-      operation(this.cm, applyTextInput)(this.cm, String.fromCharCode(e.charCode == null ? e.keyCode : e.charCode), 0);
+      if (!isReadOnly(this.cm))
+        operation(this.cm, applyTextInput)(this.cm, String.fromCharCode(e.charCode == null ? e.keyCode : e.charCode), 0);
+    },
+
+    readOnlyChanged: function(val) {
+      this.div.contentEditable = String(val != "nocursor")
     },
 
     onContextMenu: nothing,
@@ -2270,7 +2283,7 @@
       var range = doc.sel.ranges[i];
       var collapsed = range.empty();
       if (collapsed || cm.options.showCursorWhenSelecting)
-        drawSelectionCursor(cm, range, curFragment);
+        drawSelectionCursor(cm, range.head, curFragment);
       if (!collapsed)
         drawSelectionRange(cm, range, selFragment);
     }
@@ -2278,8 +2291,8 @@
   }
 
   // Draws a cursor for the given range
-  function drawSelectionCursor(cm, range, output) {
-    var pos = cursorCoords(cm, range.head, "div", null, null, !cm.options.singleCursorHeightPerLine);
+  function drawSelectionCursor(cm, head, output) {
+    var pos = cursorCoords(cm, head, "div", null, null, !cm.options.singleCursorHeightPerLine);
 
     var cursor = output.appendChild(elt("div", "\u00a0", "CodeMirror-cursor"));
     cursor.style.left = pos.left + "px";
@@ -2403,8 +2416,8 @@
 
     doc.iter(doc.frontier, Math.min(doc.first + doc.size, cm.display.viewTo + 500), function(line) {
       if (doc.frontier >= cm.display.viewFrom) { // Visible
-        var oldStyles = line.styles;
-        var highlighted = highlightLine(cm, line, state, true);
+        var oldStyles = line.styles, tooLong = line.text.length > cm.options.maxHighlightLength;
+        var highlighted = highlightLine(cm, line, tooLong ? copyState(doc.mode, state) : state, true);
         line.styles = highlighted.styles;
         var oldCls = line.styleClasses, newCls = highlighted.classes;
         if (newCls) line.styleClasses = newCls;
@@ -2413,9 +2426,10 @@
           oldCls != newCls && (!oldCls || !newCls || oldCls.bgClass != newCls.bgClass || oldCls.textClass != newCls.textClass);
         for (var i = 0; !ischange && i < oldStyles.length; ++i) ischange = oldStyles[i] != line.styles[i];
         if (ischange) changedLines.push(doc.frontier);
-        line.stateAfter = copyState(doc.mode, state);
+        line.stateAfter = tooLong ? state : copyState(doc.mode, state);
       } else {
-        processLine(cm, line.text, state);
+        if (line.text.length <= cm.options.maxHighlightLength)
+          processLine(cm, line.text, state);
         line.stateAfter = doc.frontier % 5 == 0 ? copyState(doc.mode, state) : null;
       }
       ++doc.frontier;
@@ -2978,12 +2992,12 @@
     var callbacks = group.delayedCallbacks, i = 0;
     do {
       for (; i < callbacks.length; i++)
-        callbacks[i]();
+        callbacks[i].call(null);
       for (var j = 0; j < group.ops.length; j++) {
         var op = group.ops[j];
         if (op.cursorActivityHandlers)
           while (op.cursorActivityCalled < op.cursorActivityHandlers.length)
-            op.cursorActivityHandlers[op.cursorActivityCalled++](op.cm);
+            op.cursorActivityHandlers[op.cursorActivityCalled++].call(null, op.cm);
       }
     } while (i < callbacks.length);
   }
@@ -3443,9 +3457,11 @@
     on(d.wrapper, "scroll", function() { d.wrapper.scrollTop = d.wrapper.scrollLeft = 0; });
 
     d.dragFunctions = {
-      simple: function(e) {if (!signalDOMEvent(cm, e)) e_stop(e);},
+      enter: function(e) {if (!signalDOMEvent(cm, e)) e_stop(e);},
+      over: function(e) {if (!signalDOMEvent(cm, e)) { onDragOver(cm, e); e_stop(e); }},
       start: function(e){onDragStart(cm, e);},
-      drop: operation(cm, onDrop)
+      drop: operation(cm, onDrop),
+      leave: function() {clearDragCursor(cm);}
     };
 
     var inp = d.input.getField();
@@ -3462,8 +3478,9 @@
       var funcs = cm.display.dragFunctions;
       var toggle = value ? on : off;
       toggle(cm.display.scroller, "dragstart", funcs.start);
-      toggle(cm.display.scroller, "dragenter", funcs.simple);
-      toggle(cm.display.scroller, "dragover", funcs.simple);
+      toggle(cm.display.scroller, "dragenter", funcs.enter);
+      toggle(cm.display.scroller, "dragover", funcs.over);
+      toggle(cm.display.scroller, "dragleave", funcs.leave);
       toggle(cm.display.scroller, "drop", funcs.drop);
     }
   }
@@ -3536,7 +3553,10 @@
 
     switch (e_button(e)) {
     case 1:
-      if (start)
+      // #3261: make sure, that we're not starting a second selection
+      if (cm.state.selectingText)
+        cm.state.selectingText(e);
+      else if (start)
         leftButtonDown(cm, e, start);
       else if (e_target(e) == display.scroller)
         e_preventDefault(e);
@@ -3656,7 +3676,8 @@
       setSelection(doc, normalizeSelection(ranges.concat([ourRange]), ourIndex),
                    {scroll: false, origin: "*mouse"});
     } else if (ranges.length > 1 && ranges[ourIndex].empty() && type == "single" && !e.shiftKey) {
-      setSelection(doc, normalizeSelection(ranges.slice(0, ourIndex).concat(ranges.slice(ourIndex + 1)), 0));
+      setSelection(doc, normalizeSelection(ranges.slice(0, ourIndex).concat(ranges.slice(ourIndex + 1)), 0),
+                   {scroll: false, origin: "*mouse"});
       startSel = doc.sel;
     } else {
       replaceOneSelection(doc, ourIndex, ourRange, sel_mouse);
@@ -3734,6 +3755,7 @@
     }
 
     function done(e) {
+      cm.state.selectingText = false;
       counter = Infinity;
       e_preventDefault(e);
       display.input.focus();
@@ -3747,6 +3769,7 @@
       else extend(e);
     });
     var up = operation(cm, done);
+    cm.state.selectingText = up;
     on(document, "mousemove", move);
     on(document, "mouseup", up);
   }
@@ -3786,6 +3809,7 @@
 
   function onDrop(e) {
     var cm = this;
+    clearDragCursor(cm);
     if (signalDOMEvent(cm, e) || eventInWidget(cm.display, e))
       return;
     e_preventDefault(e);
@@ -3855,6 +3879,25 @@
       }
       e.dataTransfer.setDragImage(img, 0, 0);
       if (presto) img.parentNode.removeChild(img);
+    }
+  }
+
+  function onDragOver(cm, e) {
+    var pos = posFromMouse(cm, e);
+    if (!pos) return;
+    var frag = document.createDocumentFragment();
+    drawSelectionCursor(cm, pos, frag);
+    if (!cm.display.dragCursor) {
+      cm.display.dragCursor = elt("div", null, "CodeMirror-cursors CodeMirror-dragcursors");
+      cm.display.lineSpace.insertBefore(cm.display.dragCursor, cm.display.cursorDiv);
+    }
+    removeChildrenAndAdd(cm.display.dragCursor, frag);
+  }
+
+  function clearDragCursor(cm) {
+    if (cm.display.dragCursor) {
+      cm.display.lineSpace.removeChild(cm.display.dragCursor);
+      cm.display.dragCursor = null;
     }
   }
 
@@ -5064,7 +5107,7 @@
 
     execCommand: function(cmd) {
       if (commands.hasOwnProperty(cmd))
-        return commands[cmd](this);
+        return commands[cmd].call(null, this);
     },
 
     triggerElectric: methodOp(function(text) { triggerElectric(this, text); }),
@@ -5356,8 +5399,8 @@
       cm.display.disabled = true;
     } else {
       cm.display.disabled = false;
-      if (!val) cm.display.input.reset();
     }
+    cm.display.input.readOnlyChanged(val)
   });
   option("disableInput", false, function(cm, val) {if (!val) cm.display.input.reset();}, true);
   option("dragDrop", true, dragDropChanged);
@@ -6783,7 +6826,9 @@
 
   function getLineStyles(cm, line, updateFrontier) {
     if (!line.styles || line.styles[0] != cm.state.modeGen) {
-      var result = highlightLine(cm, line, line.stateAfter = getStateBefore(cm, lineNo(line)));
+      var state = getStateBefore(cm, lineNo(line));
+      var result = highlightLine(cm, line, line.text.length > cm.options.maxHighlightLength ? copyState(cm.doc.mode, state) : state);
+      line.stateAfter = state;
       line.styles = result.styles;
       if (result.classes) line.styleClasses = result.classes;
       else if (line.styleClasses) line.styleClasses = null;
@@ -6800,7 +6845,7 @@
     var stream = new StringStream(text, cm.options.tabSize);
     stream.start = stream.pos = startAt || 0;
     if (text == "") callBlankLine(mode, state);
-    while (!stream.eol() && stream.pos <= cm.options.maxHighlightLength) {
+    while (!stream.eol()) {
       readToken(mode, stream, state);
       stream.start = stream.pos;
     }
@@ -6918,7 +6963,7 @@
           txt.setAttribute("cm-text", "\t");
           builder.col += tabWidth;
         } else if (m[0] == "\r" || m[0] == "\n") {
-          var txt = content.appendChild(elt("span", m[0] == "\r" ? "␍" : "␤", "cm-invalidchar"));
+          var txt = content.appendChild(elt("span", m[0] == "\r" ? "\u240d" : "\u2424", "cm-invalidchar"));
           txt.setAttribute("cm-text", m[0]);
           builder.col += 1;
         } else {
@@ -8177,7 +8222,7 @@
 
   // The inverse of countColumn -- find the offset that corresponds to
   // a particular column.
-  function findColumn(string, goal, tabSize) {
+  var findColumn = CodeMirror.findColumn = function(string, goal, tabSize) {
     for (var pos = 0, col = 0;;) {
       var nextTab = string.indexOf("\t", pos);
       if (nextTab == -1) nextTab = string.length;
@@ -8470,14 +8515,16 @@
 
   // KEY NAMES
 
-  var keyNames = {3: "Enter", 8: "Backspace", 9: "Tab", 13: "Enter", 16: "Shift", 17: "Ctrl", 18: "Alt",
-                  19: "Pause", 20: "CapsLock", 27: "Esc", 32: "Space", 33: "PageUp", 34: "PageDown", 35: "End",
-                  36: "Home", 37: "Left", 38: "Up", 39: "Right", 40: "Down", 44: "PrintScrn", 45: "Insert",
-                  46: "Delete", 59: ";", 61: "=", 91: "Mod", 92: "Mod", 93: "Mod", 107: "=", 109: "-", 127: "Delete",
-                  173: "-", 186: ";", 187: "=", 188: ",", 189: "-", 190: ".", 191: "/", 192: "`", 219: "[", 220: "\\",
-                  221: "]", 222: "'", 63232: "Up", 63233: "Down", 63234: "Left", 63235: "Right", 63272: "Delete",
-                  63273: "Home", 63275: "End", 63276: "PageUp", 63277: "PageDown", 63302: "Insert"};
-  CodeMirror.keyNames = keyNames;
+  var keyNames = CodeMirror.keyNames = {
+    3: "Enter", 8: "Backspace", 9: "Tab", 13: "Enter", 16: "Shift", 17: "Ctrl", 18: "Alt",
+    19: "Pause", 20: "CapsLock", 27: "Esc", 32: "Space", 33: "PageUp", 34: "PageDown", 35: "End",
+    36: "Home", 37: "Left", 38: "Up", 39: "Right", 40: "Down", 44: "PrintScrn", 45: "Insert",
+    46: "Delete", 59: ";", 61: "=", 91: "Mod", 92: "Mod", 93: "Mod",
+    106: "*", 107: "=", 109: "-", 110: ".", 111: "/", 127: "Delete",
+    173: "-", 186: ";", 187: "=", 188: ",", 189: "-", 190: ".", 191: "/", 192: "`", 219: "[", 220: "\\",
+    221: "]", 222: "'", 63232: "Up", 63233: "Down", 63234: "Left", 63235: "Right", 63272: "Delete",
+    63273: "Home", 63275: "End", 63276: "PageUp", 63277: "PageDown", 63302: "Insert"
+  };
   (function() {
     // Number keys
     for (var i = 0; i < 10; i++) keyNames[i + 48] = keyNames[i + 96] = String(i);
@@ -8782,7 +8829,7 @@
 
   // THE END
 
-  CodeMirror.version = "5.5.0";
+  CodeMirror.version = "5.7.0";
 
   return CodeMirror;
 });
@@ -8828,8 +8875,10 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   if (modeCfg.underscoresBreakWords === undefined)
     modeCfg.underscoresBreakWords = true;
 
-  // Turn on fenced code blocks? ("```" to start/end)
-  if (modeCfg.fencedCodeBlocks === undefined) modeCfg.fencedCodeBlocks = false;
+  // Use `fencedCodeBlocks` to configure fenced code blocks. false to
+  // disable, string to specify a precise regexp that the fence should
+  // match, and true to allow three or more backticks or tildes (as
+  // per CommonMark).
 
   // Turn on task lists? ("- [ ] " and "- [x] ")
   if (modeCfg.taskLists === undefined) modeCfg.taskLists = false;
@@ -8861,9 +8910,11 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   ,   ulRE = /^[*\-+]\s+/
   ,   olRE = /^[0-9]+([.)])\s+/
   ,   taskListRE = /^\[(x| )\](?=\s)/ // Must follow ulRE or olRE
-  ,   atxHeaderRE = /^(#+)(?: |$)/
+  ,   atxHeaderRE = modeCfg.allowAtxHeaderWithoutSpace ? /^(#+)/ : /^(#+)(?: |$)/
   ,   setextHeaderRE = /^ *(?:\={1,}|-{1,})\s*$/
-  ,   textRE = /^[^#!\[\]*_\\<>` "'(~]+/;
+  ,   textRE = /^[^#!\[\]*_\\<>` "'(~]+/
+  ,   fencedCodeRE = new RegExp("^(" + (modeCfg.fencedCodeBlocks === true ? "~~~+|```+" : modeCfg.fencedCodeBlocks) +
+                                ")[ \\t]*([\\w+#]*)");
 
   function switchInline(stream, state, f) {
     state.f = state.inline = f;
@@ -8875,6 +8926,9 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     return f(stream, state);
   }
 
+  function lineIsEmpty(line) {
+    return !line || !/\S/.test(line.string)
+  }
 
   // Blocks
 
@@ -8899,7 +8953,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     state.trailingSpace = 0;
     state.trailingSpaceNewLine = false;
     // Mark this line as blank
-    state.thisLineHasContent = false;
+    state.prevLine = state.thisLine
+    state.thisLine = null
     return null;
   }
 
@@ -8930,7 +8985,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     var match = null;
     if (state.indentationDiff >= 4) {
       stream.skipToEnd();
-      if (prevLineIsIndentedCode || !state.prevLineHasContent) {
+      if (prevLineIsIndentedCode || lineIsEmpty(state.prevLine)) {
         state.indentation -= 4;
         state.indentedCode = true;
         return code;
@@ -8944,7 +8999,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       if (modeCfg.highlightFormatting) state.formatting = "header";
       state.f = state.inline;
       return getType(state);
-    } else if (state.prevLineHasContent && !state.quote && !prevLineIsList && !prevLineIsIndentedCode && (match = stream.match(setextHeaderRE))) {
+    } else if (!lineIsEmpty(state.prevLine) && !state.quote && !prevLineIsList &&
+               !prevLineIsIndentedCode && (match = stream.match(setextHeaderRE))) {
       state.header = match[0].charAt(0) == '=' ? 1 : 2;
       if (modeCfg.highlightFormatting) state.formatting = "header";
       state.f = state.inline;
@@ -8959,7 +9015,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     } else if (stream.match(hrRE, true)) {
       state.hr = true;
       return hr;
-    } else if ((!state.prevLineHasContent || prevLineIsList) && (stream.match(ulRE, false) || stream.match(olRE, false))) {
+    } else if ((lineIsEmpty(state.prevLine) || prevLineIsList) && (stream.match(ulRE, false) || stream.match(olRE, false))) {
       var listType = null;
       if (stream.match(ulRE, true)) {
         listType = 'ul';
@@ -8967,7 +9023,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         stream.match(olRE, true);
         listType = 'ol';
       }
-      state.indentation += 4;
+      state.indentation = stream.column() + stream.current().length;
       state.list = true;
       state.listDepth++;
       if (modeCfg.taskLists && stream.match(taskListRE, false)) {
@@ -8976,9 +9032,10 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.f = state.inline;
       if (modeCfg.highlightFormatting) state.formatting = ["list", "list-" + listType];
       return getType(state);
-    } else if (modeCfg.fencedCodeBlocks && stream.match(/^```[ \t]*([\w+#]*)/, true)) {
+    } else if (modeCfg.fencedCodeBlocks && (match = stream.match(fencedCodeRE, true))) {
+      state.fencedChars = match[1]
       // try switching mode
-      state.localMode = getMode(RegExp.$1);
+      state.localMode = getMode(match[2]);
       if (state.localMode) state.localState = state.localMode.startState();
       state.f = state.block = local;
       if (modeCfg.highlightFormatting) state.formatting = "code-block";
@@ -9002,7 +9059,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   }
 
   function local(stream, state) {
-    if (stream.sol() && stream.match("```", false)) {
+    if (stream.sol() && state.fencedChars && stream.match(state.fencedChars, false)) {
       state.localMode = state.localState = null;
       state.f = state.block = leavingLocal;
       return null;
@@ -9015,9 +9072,10 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   }
 
   function leavingLocal(stream, state) {
-    stream.match("```");
+    stream.match(state.fencedChars);
     state.block = blockNormal;
     state.f = inlineNormal;
+    state.fencedChars = null;
     if (modeCfg.highlightFormatting) state.formatting = "code-block";
     state.code = true;
     var returnType = getType(state);
@@ -9445,8 +9503,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return {
         f: blockNormal,
 
-        prevLineHasContent: false,
-        thisLineHasContent: false,
+        prevLine: null,
+        thisLine: null,
 
         block: blockNormal,
         htmlState: null,
@@ -9469,7 +9527,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         quote: 0,
         trailingSpace: 0,
         trailingSpaceNewLine: false,
-        strikethrough: false
+        strikethrough: false,
+        fencedChars: null
       };
     },
 
@@ -9477,8 +9536,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return {
         f: s.f,
 
-        prevLineHasContent: s.prevLineHasContent,
-        thisLineHasContent: s.thisLineHasContent,
+        prevLine: s.prevLine,
+        thisLine: s.this,
 
         block: s.block,
         htmlState: s.htmlState && CodeMirror.copyState(htmlMode, s.htmlState),
@@ -9491,6 +9550,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         text: s.text,
         formatting: false,
         linkTitle: s.linkTitle,
+        code: s.code,
         em: s.em,
         strong: s.strong,
         strikethrough: s.strikethrough,
@@ -9503,7 +9563,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         indentedCode: s.indentedCode,
         trailingSpace: s.trailingSpace,
         trailingSpaceNewLine: s.trailingSpaceNewLine,
-        md_inside: s.md_inside
+        md_inside: s.md_inside,
+        fencedChars: s.fencedChars
       };
     },
 
@@ -9512,27 +9573,24 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       // Reset state.formatting
       state.formatting = false;
 
-      if (stream.sol()) {
-        var forceBlankLine = !!state.header || state.hr;
+      if (stream != state.thisLine) {
+        var forceBlankLine = state.header || state.hr;
 
         // Reset state.header and state.hr
         state.header = 0;
         state.hr = false;
 
         if (stream.match(/^\s*$/, true) || forceBlankLine) {
-          state.prevLineHasContent = false;
           blankLine(state);
-          return forceBlankLine ? this.token(stream, state) : null;
-        } else {
-          state.prevLineHasContent = state.thisLineHasContent;
-          state.thisLineHasContent = true;
+          if (!forceBlankLine) return null
+          state.prevLine = null
         }
+
+        state.prevLine = state.thisLine
+        state.thisLine = stream
 
         // Reset state.taskList
         state.taskList = false;
-
-        // Reset state.code
-        state.code = false;
 
         // Reset state.trailingSpace
         state.trailingSpace = 0;
@@ -9689,12 +9747,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       "if": kw("if"), "while": A, "with": A, "else": B, "do": B, "try": B, "finally": B,
       "return": C, "break": C, "continue": C, "new": C, "delete": C, "throw": C, "debugger": C,
       "var": kw("var"), "const": kw("var"), "let": kw("var"),
-      "function": kw("function"), "catch": kw("catch"),
+      "async": kw("async"), "function": kw("function"), "catch": kw("catch"),
       "for": kw("for"), "switch": kw("switch"), "case": kw("case"), "default": kw("default"),
       "in": operator, "typeof": operator, "instanceof": operator,
       "true": atom, "false": atom, "null": atom, "undefined": atom, "NaN": atom, "Infinity": atom,
-      "this": kw("this"), "module": kw("module"), "class": kw("class"), "super": kw("atom"),
-      "yield": C, "export": kw("export"), "import": kw("import"), "extends": C
+      "this": kw("this"), "class": kw("class"), "super": kw("atom"),
+      "await": C, "yield": C, "export": kw("export"), "import": kw("import"), "extends": C
     };
 
     // Extend the 'normal' keywords with the TypeScript language extensions
@@ -9761,6 +9819,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return ret("=>", "operator");
     } else if (ch == "0" && stream.eat(/x/i)) {
       stream.eatWhile(/[\da-f]/i);
+      return ret("number", "number");
+    } else if (ch == "0" && stream.eat(/o/i)) {
+      stream.eatWhile(/[0-7]/i);
+      return ret("number", "number");
+    } else if (ch == "0" && stream.eat(/b/i)) {
+      stream.eatWhile(/[01]/i);
       return ret("number", "number");
     } else if (/\d/.test(ch)) {
       stream.match(/^\d*(?:\.\d*)?(?:[eE][+\-]?\d+)?/);
@@ -10004,10 +10068,9 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "default") return cont(expect(":"));
     if (type == "catch") return cont(pushlex("form"), pushcontext, expect("("), funarg, expect(")"),
                                      statement, poplex, popcontext);
-    if (type == "module") return cont(pushlex("form"), pushcontext, afterModule, popcontext, poplex);
     if (type == "class") return cont(pushlex("form"), className, poplex);
-    if (type == "export") return cont(pushlex("form"), afterExport, poplex);
-    if (type == "import") return cont(pushlex("form"), afterImport, poplex);
+    if (type == "export") return cont(pushlex("stat"), afterExport, poplex);
+    if (type == "import") return cont(pushlex("stat"), afterImport, poplex);
     return pass(pushlex("stat"), expression, expect(";"), poplex);
   }
   function expression(type) {
@@ -10025,6 +10088,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
 
     var maybeop = noComma ? maybeoperatorNoComma : maybeoperatorComma;
     if (atomicTypes.hasOwnProperty(type)) return cont(maybeop);
+    if (type == "async") return cont(expression);
     if (type == "function") return cont(functiondef, maybeop);
     if (type == "keyword c") return cont(noComma ? maybeexpressionNoComma : maybeexpression);
     if (type == "(") return cont(pushlex(")"), maybeexpression, comprehension, expect(")"), poplex, maybeop);
@@ -10090,7 +10154,9 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "variable") {cx.marked = "property"; return cont();}
   }
   function objprop(type, value) {
-    if (type == "variable" || cx.style == "keyword") {
+    if (type == "async") {
+      return cont(objprop);
+    } else if (type == "variable" || cx.style == "keyword") {
       cx.marked = "property";
       if (value == "get" || value == "set") return cont(getterSetter);
       return cont(afterprop);
@@ -10228,10 +10294,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type != "variable") return pass();
     cx.marked = "property";
     return cont();
-  }
-  function afterModule(type, value) {
-    if (type == "string") return cont(statement);
-    if (type == "variable") { register(value); return cont(maybeFrom); }
   }
   function afterExport(_type, value) {
     if (value == "*") { cx.marked = "keyword"; return cont(maybeFrom, expect(";")); }
@@ -10448,7 +10510,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
     "die echo empty exit eval include include_once isset list require require_once return " +
     "print unset __halt_compiler self static parent yield insteadof finally";
   var phpAtoms = "true false null TRUE FALSE NULL __CLASS__ __DIR__ __FILE__ __LINE__ __METHOD__ __FUNCTION__ __NAMESPACE__ __TRAIT__";
-  var phpBuiltin = "func_num_args func_get_arg func_get_args strlen strcmp strncmp strcasecmp strncasecmp each error_reporting define defined trigger_error user_error set_error_handler restore_error_handler get_declared_classes get_loaded_extensions extension_loaded get_extension_funcs debug_backtrace constant bin2hex hex2bin sleep usleep time mktime gmmktime strftime gmstrftime strtotime date gmdate getdate localtime checkdate flush wordwrap htmlspecialchars htmlentities html_entity_decode md5 md5_file crc32 getimagesize image_type_to_mime_type phpinfo phpversion phpcredits strnatcmp strnatcasecmp substr_count strspn strcspn strtok strtoupper strtolower strpos strrpos strrev hebrev hebrevc nl2br basename dirname pathinfo stripslashes stripcslashes strstr stristr strrchr str_shuffle str_word_count strcoll substr substr_replace quotemeta ucfirst ucwords strtr addslashes addcslashes rtrim str_replace str_repeat count_chars chunk_split trim ltrim strip_tags similar_text explode implode setlocale localeconv parse_str str_pad chop strchr sprintf printf vprintf vsprintf sscanf fscanf parse_url urlencode urldecode rawurlencode rawurldecode readlink linkinfo link unlink exec system escapeshellcmd escapeshellarg passthru shell_exec proc_open proc_close rand srand getrandmax mt_rand mt_srand mt_getrandmax base64_decode base64_encode abs ceil floor round is_finite is_nan is_infinite bindec hexdec octdec decbin decoct dechex base_convert number_format fmod ip2long long2ip getenv putenv getopt microtime gettimeofday getrusage uniqid quoted_printable_decode set_time_limit get_cfg_var magic_quotes_runtime set_magic_quotes_runtime get_magic_quotes_gpc get_magic_quotes_runtime import_request_variables error_log serialize unserialize memory_get_usage var_dump var_export debug_zval_dump print_r highlight_file show_source highlight_string ini_get ini_get_all ini_set ini_alter ini_restore get_include_path set_include_path restore_include_path setcookie header headers_sent connection_aborted connection_status ignore_user_abort parse_ini_file is_uploaded_file move_uploaded_file intval floatval doubleval strval gettype settype is_null is_resource is_bool is_long is_float is_int is_integer is_double is_real is_numeric is_string is_array is_object is_scalar ereg ereg_replace eregi eregi_replace split spliti join sql_regcase dl pclose popen readfile rewind rmdir umask fclose feof fgetc fgets fgetss fread fopen fpassthru ftruncate fstat fseek ftell fflush fwrite fputs mkdir rename copy tempnam tmpfile file file_get_contents stream_select stream_context_create stream_context_set_params stream_context_set_option stream_context_get_options stream_filter_prepend stream_filter_append fgetcsv flock get_meta_tags stream_set_write_buffer set_file_buffer set_socket_blocking stream_set_blocking socket_set_blocking stream_get_meta_data stream_register_wrapper stream_wrapper_register stream_set_timeout socket_set_timeout socket_get_status realpath fnmatch fsockopen pfsockopen pack unpack get_browser crypt opendir closedir chdir getcwd rewinddir readdir dir glob fileatime filectime filegroup fileinode filemtime fileowner fileperms filesize filetype file_exists is_writable is_writeable is_readable is_executable is_file is_dir is_link stat lstat chown touch clearstatcache mail ob_start ob_flush ob_clean ob_end_flush ob_end_clean ob_get_flush ob_get_clean ob_get_length ob_get_level ob_get_status ob_get_contents ob_implicit_flush ob_list_handlers ksort krsort natsort natcasesort asort arsort sort rsort usort uasort uksort shuffle array_walk count end prev next reset current key min max in_array array_search extract compact array_fill range array_multisort array_push array_pop array_shift array_unshift array_splice array_slice array_merge array_merge_recursive array_keys array_values array_count_values array_reverse array_reduce array_pad array_flip array_change_key_case array_rand array_unique array_intersect array_intersect_assoc array_diff array_diff_assoc array_sum array_filter array_map array_chunk array_key_exists pos sizeof key_exists assert assert_options version_compare ftok str_rot13 aggregate session_name session_module_name session_save_path session_id session_regenerate_id session_decode session_register session_unregister session_is_registered session_encode session_start session_destroy session_unset session_set_save_handler session_cache_limiter session_cache_expire session_set_cookie_params session_get_cookie_params session_write_close preg_match preg_match_all preg_replace preg_replace_callback preg_split preg_quote preg_grep overload ctype_alnum ctype_alpha ctype_cntrl ctype_digit ctype_lower ctype_graph ctype_print ctype_punct ctype_space ctype_upper ctype_xdigit virtual apache_request_headers apache_note apache_lookup_uri apache_child_terminate apache_setenv apache_response_headers apache_get_version getallheaders mysql_connect mysql_pconnect mysql_close mysql_select_db mysql_create_db mysql_drop_db mysql_query mysql_unbuffered_query mysql_db_query mysql_list_dbs mysql_list_tables mysql_list_fields mysql_list_processes mysql_error mysql_errno mysql_affected_rows mysql_insert_id mysql_result mysql_num_rows mysql_num_fields mysql_fetch_row mysql_fetch_array mysql_fetch_assoc mysql_fetch_object mysql_data_seek mysql_fetch_lengths mysql_fetch_field mysql_field_seek mysql_free_result mysql_field_name mysql_field_table mysql_field_len mysql_field_type mysql_field_flags mysql_escape_string mysql_real_escape_string mysql_stat mysql_thread_id mysql_client_encoding mysql_get_client_info mysql_get_host_info mysql_get_proto_info mysql_get_server_info mysql_info mysql mysql_fieldname mysql_fieldtable mysql_fieldlen mysql_fieldtype mysql_fieldflags mysql_selectdb mysql_createdb mysql_dropdb mysql_freeresult mysql_numfields mysql_numrows mysql_listdbs mysql_listtables mysql_listfields mysql_db_name mysql_dbname mysql_tablename mysql_table_name pg_connect pg_pconnect pg_close pg_connection_status pg_connection_busy pg_connection_reset pg_host pg_dbname pg_port pg_tty pg_options pg_ping pg_query pg_send_query pg_cancel_query pg_fetch_result pg_fetch_row pg_fetch_assoc pg_fetch_array pg_fetch_object pg_fetch_all pg_affected_rows pg_get_result pg_result_seek pg_result_status pg_free_result pg_last_oid pg_num_rows pg_num_fields pg_field_name pg_field_num pg_field_size pg_field_type pg_field_prtlen pg_field_is_null pg_get_notify pg_get_pid pg_result_error pg_last_error pg_last_notice pg_put_line pg_end_copy pg_copy_to pg_copy_from pg_trace pg_untrace pg_lo_create pg_lo_unlink pg_lo_open pg_lo_close pg_lo_read pg_lo_write pg_lo_read_all pg_lo_import pg_lo_export pg_lo_seek pg_lo_tell pg_escape_string pg_escape_bytea pg_unescape_bytea pg_client_encoding pg_set_client_encoding pg_meta_data pg_convert pg_insert pg_update pg_delete pg_select pg_exec pg_getlastoid pg_cmdtuples pg_errormessage pg_numrows pg_numfields pg_fieldname pg_fieldsize pg_fieldtype pg_fieldnum pg_fieldprtlen pg_fieldisnull pg_freeresult pg_result pg_loreadall pg_locreate pg_lounlink pg_loopen pg_loclose pg_loread pg_lowrite pg_loimport pg_loexport http_response_code get_declared_traits getimagesizefromstring socket_import_stream stream_set_chunk_size trait_exists header_register_callback class_uses session_status session_register_shutdown echo print global static exit array empty eval isset unset die include require include_once require_once json_decode json_encode json_last_error json_last_error_msg curl_close curl_copy_handle curl_errno curl_error curl_escape curl_exec curl_file_create curl_getinfo curl_init curl_multi_add_handle curl_multi_close curl_multi_exec curl_multi_getcontent curl_multi_info_read curl_multi_init curl_multi_remove_handle curl_multi_select curl_multi_setopt curl_multi_strerror curl_pause curl_reset curl_setopt_array curl_setopt curl_share_close curl_share_init curl_share_setopt curl_strerror curl_unescape curl_version mysqli_affected_rows mysqli_autocommit mysqli_change_user mysqli_character_set_name mysqli_close mysqli_commit mysqli_connect_errno mysqli_connect_error mysqli_connect mysqli_data_seek mysqli_debug mysqli_dump_debug_info mysqli_errno mysqli_error_list mysqli_error mysqli_fetch_all mysqli_fetch_array mysqli_fetch_assoc mysqli_fetch_field_direct mysqli_fetch_field mysqli_fetch_fields mysqli_fetch_lengths mysqli_fetch_object mysqli_fetch_row mysqli_field_count mysqli_field_seek mysqli_field_tell mysqli_free_result mysqli_get_charset mysqli_get_client_info mysqli_get_client_stats mysqli_get_client_version mysqli_get_connection_stats mysqli_get_host_info mysqli_get_proto_info mysqli_get_server_info mysqli_get_server_version mysqli_info mysqli_init mysqli_insert_id mysqli_kill mysqli_more_results mysqli_multi_query mysqli_next_result mysqli_num_fields mysqli_num_rows mysqli_options mysqli_ping mysqli_prepare mysqli_query mysqli_real_connect mysqli_real_escape_string mysqli_real_query mysqli_reap_async_query mysqli_refresh mysqli_rollback mysqli_select_db mysqli_set_charset mysqli_set_local_infile_default mysqli_set_local_infile_handler mysqli_sqlstate mysqli_ssl_set mysqli_stat mysqli_stmt_init mysqli_store_result mysqli_thread_id mysqli_thread_safe mysqli_use_result mysqli_warning_count";
+  var phpBuiltin = "func_num_args func_get_arg func_get_args strlen strcmp strncmp strcasecmp strncasecmp each error_reporting define defined trigger_error user_error set_error_handler restore_error_handler get_declared_classes get_loaded_extensions extension_loaded get_extension_funcs debug_backtrace constant bin2hex hex2bin sleep usleep time mktime gmmktime strftime gmstrftime strtotime date gmdate getdate localtime checkdate flush wordwrap htmlspecialchars htmlentities html_entity_decode md5 md5_file crc32 getimagesize image_type_to_mime_type phpinfo phpversion phpcredits strnatcmp strnatcasecmp substr_count strspn strcspn strtok strtoupper strtolower strpos strrpos strrev hebrev hebrevc nl2br basename dirname pathinfo stripslashes stripcslashes strstr stristr strrchr str_shuffle str_word_count strcoll substr substr_replace quotemeta ucfirst ucwords strtr addslashes addcslashes rtrim str_replace str_repeat count_chars chunk_split trim ltrim strip_tags similar_text explode implode setlocale localeconv parse_str str_pad chop strchr sprintf printf vprintf vsprintf sscanf fscanf parse_url urlencode urldecode rawurlencode rawurldecode readlink linkinfo link unlink exec system escapeshellcmd escapeshellarg passthru shell_exec proc_open proc_close rand srand getrandmax mt_rand mt_srand mt_getrandmax base64_decode base64_encode abs ceil floor round is_finite is_nan is_infinite bindec hexdec octdec decbin decoct dechex base_convert number_format fmod ip2long long2ip getenv putenv getopt microtime gettimeofday getrusage uniqid quoted_printable_decode set_time_limit get_cfg_var magic_quotes_runtime set_magic_quotes_runtime get_magic_quotes_gpc get_magic_quotes_runtime import_request_variables error_log serialize unserialize memory_get_usage var_dump var_export debug_zval_dump print_r highlight_file show_source highlight_string ini_get ini_get_all ini_set ini_alter ini_restore get_include_path set_include_path restore_include_path setcookie header headers_sent connection_aborted connection_status ignore_user_abort parse_ini_file is_uploaded_file move_uploaded_file intval floatval doubleval strval gettype settype is_null is_resource is_bool is_long is_float is_int is_integer is_double is_real is_numeric is_string is_array is_object is_scalar ereg ereg_replace eregi eregi_replace split spliti join sql_regcase dl pclose popen readfile rewind rmdir umask fclose feof fgetc fgets fgetss fread fopen fpassthru ftruncate fstat fseek ftell fflush fwrite fputs mkdir rename copy tempnam tmpfile file file_get_contents file_put_contents stream_select stream_context_create stream_context_set_params stream_context_set_option stream_context_get_options stream_filter_prepend stream_filter_append fgetcsv flock get_meta_tags stream_set_write_buffer set_file_buffer set_socket_blocking stream_set_blocking socket_set_blocking stream_get_meta_data stream_register_wrapper stream_wrapper_register stream_set_timeout socket_set_timeout socket_get_status realpath fnmatch fsockopen pfsockopen pack unpack get_browser crypt opendir closedir chdir getcwd rewinddir readdir dir glob fileatime filectime filegroup fileinode filemtime fileowner fileperms filesize filetype file_exists is_writable is_writeable is_readable is_executable is_file is_dir is_link stat lstat chown touch clearstatcache mail ob_start ob_flush ob_clean ob_end_flush ob_end_clean ob_get_flush ob_get_clean ob_get_length ob_get_level ob_get_status ob_get_contents ob_implicit_flush ob_list_handlers ksort krsort natsort natcasesort asort arsort sort rsort usort uasort uksort shuffle array_walk count end prev next reset current key min max in_array array_search extract compact array_fill range array_multisort array_push array_pop array_shift array_unshift array_splice array_slice array_merge array_merge_recursive array_keys array_values array_count_values array_reverse array_reduce array_pad array_flip array_change_key_case array_rand array_unique array_intersect array_intersect_assoc array_diff array_diff_assoc array_sum array_filter array_map array_chunk array_key_exists pos sizeof key_exists assert assert_options version_compare ftok str_rot13 aggregate session_name session_module_name session_save_path session_id session_regenerate_id session_decode session_register session_unregister session_is_registered session_encode session_start session_destroy session_unset session_set_save_handler session_cache_limiter session_cache_expire session_set_cookie_params session_get_cookie_params session_write_close preg_match preg_match_all preg_replace preg_replace_callback preg_split preg_quote preg_grep overload ctype_alnum ctype_alpha ctype_cntrl ctype_digit ctype_lower ctype_graph ctype_print ctype_punct ctype_space ctype_upper ctype_xdigit virtual apache_request_headers apache_note apache_lookup_uri apache_child_terminate apache_setenv apache_response_headers apache_get_version getallheaders mysql_connect mysql_pconnect mysql_close mysql_select_db mysql_create_db mysql_drop_db mysql_query mysql_unbuffered_query mysql_db_query mysql_list_dbs mysql_list_tables mysql_list_fields mysql_list_processes mysql_error mysql_errno mysql_affected_rows mysql_insert_id mysql_result mysql_num_rows mysql_num_fields mysql_fetch_row mysql_fetch_array mysql_fetch_assoc mysql_fetch_object mysql_data_seek mysql_fetch_lengths mysql_fetch_field mysql_field_seek mysql_free_result mysql_field_name mysql_field_table mysql_field_len mysql_field_type mysql_field_flags mysql_escape_string mysql_real_escape_string mysql_stat mysql_thread_id mysql_client_encoding mysql_get_client_info mysql_get_host_info mysql_get_proto_info mysql_get_server_info mysql_info mysql mysql_fieldname mysql_fieldtable mysql_fieldlen mysql_fieldtype mysql_fieldflags mysql_selectdb mysql_createdb mysql_dropdb mysql_freeresult mysql_numfields mysql_numrows mysql_listdbs mysql_listtables mysql_listfields mysql_db_name mysql_dbname mysql_tablename mysql_table_name pg_connect pg_pconnect pg_close pg_connection_status pg_connection_busy pg_connection_reset pg_host pg_dbname pg_port pg_tty pg_options pg_ping pg_query pg_send_query pg_cancel_query pg_fetch_result pg_fetch_row pg_fetch_assoc pg_fetch_array pg_fetch_object pg_fetch_all pg_affected_rows pg_get_result pg_result_seek pg_result_status pg_free_result pg_last_oid pg_num_rows pg_num_fields pg_field_name pg_field_num pg_field_size pg_field_type pg_field_prtlen pg_field_is_null pg_get_notify pg_get_pid pg_result_error pg_last_error pg_last_notice pg_put_line pg_end_copy pg_copy_to pg_copy_from pg_trace pg_untrace pg_lo_create pg_lo_unlink pg_lo_open pg_lo_close pg_lo_read pg_lo_write pg_lo_read_all pg_lo_import pg_lo_export pg_lo_seek pg_lo_tell pg_escape_string pg_escape_bytea pg_unescape_bytea pg_client_encoding pg_set_client_encoding pg_meta_data pg_convert pg_insert pg_update pg_delete pg_select pg_exec pg_getlastoid pg_cmdtuples pg_errormessage pg_numrows pg_numfields pg_fieldname pg_fieldsize pg_fieldtype pg_fieldnum pg_fieldprtlen pg_fieldisnull pg_freeresult pg_result pg_loreadall pg_locreate pg_lounlink pg_loopen pg_loclose pg_loread pg_lowrite pg_loimport pg_loexport http_response_code get_declared_traits getimagesizefromstring socket_import_stream stream_set_chunk_size trait_exists header_register_callback class_uses session_status session_register_shutdown echo print global static exit array empty eval isset unset die include require include_once require_once json_decode json_encode json_last_error json_last_error_msg curl_close curl_copy_handle curl_errno curl_error curl_escape curl_exec curl_file_create curl_getinfo curl_init curl_multi_add_handle curl_multi_close curl_multi_exec curl_multi_getcontent curl_multi_info_read curl_multi_init curl_multi_remove_handle curl_multi_select curl_multi_setopt curl_multi_strerror curl_pause curl_reset curl_setopt_array curl_setopt curl_share_close curl_share_init curl_share_setopt curl_strerror curl_unescape curl_version mysqli_affected_rows mysqli_autocommit mysqli_change_user mysqli_character_set_name mysqli_close mysqli_commit mysqli_connect_errno mysqli_connect_error mysqli_connect mysqli_data_seek mysqli_debug mysqli_dump_debug_info mysqli_errno mysqli_error_list mysqli_error mysqli_fetch_all mysqli_fetch_array mysqli_fetch_assoc mysqli_fetch_field_direct mysqli_fetch_field mysqli_fetch_fields mysqli_fetch_lengths mysqli_fetch_object mysqli_fetch_row mysqli_field_count mysqli_field_seek mysqli_field_tell mysqli_free_result mysqli_get_charset mysqli_get_client_info mysqli_get_client_stats mysqli_get_client_version mysqli_get_connection_stats mysqli_get_host_info mysqli_get_proto_info mysqli_get_server_info mysqli_get_server_version mysqli_info mysqli_init mysqli_insert_id mysqli_kill mysqli_more_results mysqli_multi_query mysqli_next_result mysqli_num_fields mysqli_num_rows mysqli_options mysqli_ping mysqli_prepare mysqli_query mysqli_real_connect mysqli_real_escape_string mysqli_real_query mysqli_reap_async_query mysqli_refresh mysqli_rollback mysqli_select_db mysqli_set_charset mysqli_set_local_infile_default mysqli_set_local_infile_handler mysqli_sqlstate mysqli_ssl_set mysqli_stat mysqli_stmt_init mysqli_store_result mysqli_thread_id mysqli_thread_safe mysqli_use_result mysqli_warning_count";
   CodeMirror.registerHelper("hintWords", "php", [phpKeywords, phpAtoms, phpBuiltin].join(" ").split(" "));
   CodeMirror.registerHelper("wordChars", "php", /[\w$]/);
 
@@ -10467,14 +10529,15 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
         return "variable-2";
       },
       "<": function(stream, state) {
-        if (stream.match(/<</)) {
-          var nowDoc = stream.eat("'");
+        var before;
+        if (before = stream.match(/<<\s*/)) {
+          var quoted = stream.eat(/['"]/);
           stream.eatWhile(/[\w\.]/);
-          var delim = stream.current().slice(3 + (nowDoc ? 1 : 0));
-          if (nowDoc) stream.eat("'");
+          var delim = stream.current().slice(before[0].length + (quoted ? 2 : 1));
+          if (quoted) stream.eat(quoted);
           if (delim) {
             (state.tokStack || (state.tokStack = [])).push(delim, 0);
-            state.tokenize = phpString(delim, nowDoc ? false : true);
+            state.tokenize = phpString(delim, quoted != "'");
             return "string";
           }
         }
@@ -10521,6 +10584,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       if (!isPHP) {
         if (stream.match(/^<\?\w*/)) {
           state.curMode = phpMode;
+          if (!state.php) state.php = CodeMirror.startState(phpMode, htmlMode.indent(state.html, ""))
           state.curState = state.php;
           return "meta";
         }
@@ -10544,6 +10608,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
       } else if (isPHP && state.php.tokenize == null && stream.match("?>")) {
         state.curMode = htmlMode;
         state.curState = state.html;
+        if (!state.php.context.prev) state.php = null;
         return "meta";
       } else {
         return phpMode.token(stream, state.curState);
@@ -10552,7 +10617,8 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 
     return {
       startState: function() {
-        var html = CodeMirror.startState(htmlMode), php = CodeMirror.startState(phpMode);
+        var html = CodeMirror.startState(htmlMode)
+        var php = parserConfig.startOpen ? CodeMirror.startState(phpMode) : null
         return {html: html,
                 php: php,
                 curMode: parserConfig.startOpen ? phpMode : htmlMode,
@@ -10562,7 +10628,7 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 
       copyState: function(state) {
         var html = state.html, htmlNew = CodeMirror.copyState(htmlMode, html),
-            php = state.php, phpNew = CodeMirror.copyState(phpMode, php), cur;
+            php = state.php, phpNew = php && CodeMirror.copyState(phpMode, php), cur;
         if (state.curMode == htmlMode) cur = htmlNew;
         else cur = phpNew;
         return {html: htmlNew, php: phpNew, curMode: state.curMode, curState: cur,
@@ -10604,6 +10670,8 @@ CodeMirror.defineMIME("application/typescript", { name: "javascript", typescript
 })(function(CodeMirror) {
 "use strict";
 
+var urlRE = /^((?:(?:aaas?|about|acap|adiumxtra|af[ps]|aim|apt|attachment|aw|beshare|bitcoin|bolo|callto|cap|chrome(?:-extension)?|cid|coap|com-eventbrite-attendee|content|crid|cvs|data|dav|dict|dlna-(?:playcontainer|playsingle)|dns|doi|dtn|dvb|ed2k|facetime|feed|file|finger|fish|ftp|geo|gg|git|gizmoproject|go|gopher|gtalk|h323|hcp|https?|iax|icap|icon|im|imap|info|ipn|ipp|irc[6s]?|iris(?:\.beep|\.lwz|\.xpc|\.xpcs)?|itms|jar|javascript|jms|keyparc|lastfm|ldaps?|magnet|mailto|maps|market|message|mid|mms|ms-help|msnim|msrps?|mtqp|mumble|mupdate|mvn|news|nfs|nih?|nntp|notes|oid|opaquelocktoken|palm|paparazzi|platform|pop|pres|proxy|psyc|query|res(?:ource)?|rmi|rsync|rtmp|rtsp|secondlife|service|session|sftp|sgn|shttp|sieve|sips?|skype|sm[bs]|snmp|soap\.beeps?|soldat|spotify|ssh|steam|svn|tag|teamspeak|tel(?:net)?|tftp|things|thismessage|tip|tn3270|tv|udp|unreal|urn|ut2004|vemmi|ventrilo|view-source|webcal|wss?|wtai|wyciwyg|xcon(?:-userid)?|xfire|xmlrpc\.beeps?|xmpp|xri|ymsgr|z39\.50[rs]?):(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\([^\s()<>]*\))+(?:\([^\s()<>]*\)|[^\s`*!()\[\]{};:'".,<>?«»“”‘’]))/i
+
 CodeMirror.defineMode("gfm", function(config, modeConfig) {
   var codeDepth = 0;
   function blankLine(state) {
@@ -10630,7 +10698,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
 
       // Hack to prevent formatting override inside code blocks (block and inline)
       if (state.codeBlock) {
-        if (stream.match(/^```/)) {
+        if (stream.match(/^```+/)) {
           state.codeBlock = false;
           return null;
         }
@@ -10640,7 +10708,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
       if (stream.sol()) {
         state.code = false;
       }
-      if (stream.sol() && stream.match(/^```/)) {
+      if (stream.sol() && stream.match(/^```+/)) {
         stream.skipToEnd();
         state.codeBlock = true;
         return null;
@@ -10671,25 +10739,29 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
       }
       if (stream.sol() || state.ateSpace) {
         state.ateSpace = false;
-        if(stream.match(/^(?:[a-zA-Z0-9\-_]+\/)?(?:[a-zA-Z0-9\-_]+@)?(?:[a-f0-9]{7,40}\b)/)) {
-          // User/Project@SHA
-          // User@SHA
-          // SHA
-          state.combineTokens = true;
-          return "link";
-        } else if (stream.match(/^(?:[a-zA-Z0-9\-_]+\/)?(?:[a-zA-Z0-9\-_]+)?#[0-9]+\b/)) {
-          // User/Project#Num
-          // User#Num
-          // #Num
-          state.combineTokens = true;
-          return "link";
+        if (modeConfig.gitHubSpice !== false) {
+          if(stream.match(/^(?:[a-zA-Z0-9\-_]+\/)?(?:[a-zA-Z0-9\-_]+@)?(?:[a-f0-9]{7,40}\b)/)) {
+            // User/Project@SHA
+            // User@SHA
+            // SHA
+            state.combineTokens = true;
+            return "link";
+          } else if (stream.match(/^(?:[a-zA-Z0-9\-_]+\/)?(?:[a-zA-Z0-9\-_]+)?#[0-9]+\b/)) {
+            // User/Project#Num
+            // User#Num
+            // #Num
+            state.combineTokens = true;
+            return "link";
+          }
         }
       }
-      if (stream.match(/^((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\([^\s()<>]*\))+(?:\([^\s()<>]*\)|[^\s`*!()\[\]{};:'".,<>?«»“”‘’]))/i) &&
-         stream.string.slice(stream.start - 2, stream.start) != "](") {
+      if (stream.match(urlRE) &&
+          stream.string.slice(stream.start - 2, stream.start) != "](" &&
+          (stream.start == 0 || /\W/.test(stream.string.charAt(stream.start - 1)))) {
         // URLs
         // Taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls
         // And then (issue #1160) simplified to make it not crash the Chrome Regexp engine
+        // And then limited url schemes to the CommonMark list, so foo:bar isn't matched as a URL
         state.combineTokens = true;
         return "link";
       }
@@ -10702,7 +10774,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
   var markdownConfig = {
     underscoresBreakWords: false,
     taskLists: true,
-    fencedCodeBlocks: true,
+    fencedCodeBlocks: '```',
     strikethrough: true
   };
   for (var attr in modeConfig) {
@@ -12388,7 +12460,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
   return this || (typeof window !== 'undefined' ? window : global);
 }());
 
-/*! UIkit 2.21.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.22.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
@@ -12432,10 +12504,10 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
                 UI.$('textarea[data-uk-htmleditor]', context).each(function() {
 
-                    var editor = UI.$(this), obj;
+                    var editor = UI.$(this);
 
                     if (!editor.data('htmleditor')) {
-                        obj = UI.htmleditor(editor, UI.Utils.options(editor.attr('data-uk-htmleditor')));
+                        UI.htmleditor(editor, UI.Utils.options(editor.attr('data-uk-htmleditor')));
                     }
                 });
             });
@@ -12448,8 +12520,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
             this.CodeMirror = this.options.CodeMirror || CodeMirror;
             this.buttons    = {};
 
-            tpl = tpl.replace(/\{:lblPreview\}/g, this.options.lblPreview);
-            tpl = tpl.replace(/\{:lblCodeview\}/g, this.options.lblCodeview);
+            tpl = tpl.replace(/\{:lblPreview}/g, this.options.lblPreview);
+            tpl = tpl.replace(/\{:lblCodeview}/g, this.options.lblCodeview);
 
             this.htmleditor = UI.$(tpl);
             this.content    = this.htmleditor.find('.uk-htmleditor-content');
@@ -12481,7 +12553,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
                 // append custom stylesheet
                 if (typeof(this.options.iframe) === 'string') {
-                   this.preview.container.parent().append('<link rel="stylesheet" href="'+this.options.iframe+'">');
+                    this.preview.container.parent().append('<link rel="stylesheet" href="'+this.options.iframe+'">');
                 }
 
             } else {
@@ -12497,13 +12569,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
                     if ($this.htmleditor.attr('data-mode') == 'tab') return;
 
                     // calc position
-                    var codeHeight       = codeContent.height() - codeScroll.height(),
-                        previewHeight    = previewContainer[0].scrollHeight - ($this.iframe ? $this.iframe.height() : previewContainer.height()),
-                        ratio            = previewHeight / codeHeight,
-                        previewPostition = codeScroll.scrollTop() * ratio;
+                    var codeHeight      = codeContent.height() - codeScroll.height(),
+                        previewHeight   = previewContainer[0].scrollHeight - ($this.iframe ? $this.iframe.height() : previewContainer.height()),
+                        ratio           = previewHeight / codeHeight,
+                        previewPosition = codeScroll.scrollTop() * ratio;
 
                     // apply new scroll
-                    previewContainer.scrollTop(previewPostition);
+                    previewContainer.scrollTop(previewPosition);
 
                 }, 10));
 
@@ -12551,7 +12623,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
             this.debouncedRedraw = UI.Utils.debounce(function () { $this.redraw(); }, 5);
 
             this.on('init.uk.component', function() {
-                $this.redraw();
+                $this.debouncedRedraw();
             });
 
             this.element.attr('data-uk-check-display', 1).on('display.uk.check', function(e) {
@@ -12571,7 +12643,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
         replaceInPreview: function(regexp, callback) {
 
-            var editor = this.editor, results = [], value = editor.getValue(), offset = -1;
+            var editor = this.editor, results = [], value = editor.getValue(), offset = -1, index = 0;
 
             this.currentvalue = this.currentvalue.replace(regexp, function() {
 
@@ -12596,11 +12668,13 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
                     }
                 };
 
-                var result = callback(match);
+                var result = callback(match, index);
 
                 if (!result) {
                     return arguments[0];
                 }
+
+                index++;
 
                 results.push(match);
                 return result;
@@ -12845,7 +12919,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
                     cm.setCursor({ line: posend.line, ch: cm.getLine(posend.line).length });
                     cm.focus();
                 }
-            }
+            };
 
             editor.on('action.listUl', function() {
                 listfn();
@@ -12975,7 +13049,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
             UI.$.extend(editor, {
 
                 enableMarkdown: function() {
-                    enableMarkdown()
+                    enableMarkdown();
                     this.render();
                 },
                 disableMarkdown: function() {

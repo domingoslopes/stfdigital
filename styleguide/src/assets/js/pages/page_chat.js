@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_chat.js - page_chat.html
+*/
+
 $(function() {
     // copy user list to sidebar
     altair_chat.copy_user_list();

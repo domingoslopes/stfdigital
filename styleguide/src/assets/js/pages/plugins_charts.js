@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  plugins_charts.js - plugins_charts.html
+*/
+
 $(function() {
     // metrics-graphics
     altair_charts.metrics_graphics();

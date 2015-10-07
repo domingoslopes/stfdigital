@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  forms_validation.js - forms_validation.html
+*/
+
 //  require altair_forms.parsley_validation_config(); ( altair_admin_common.js )
 
 $(function() {

@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_contact_list.js - page_contact_list.html
+*/
+
 $(function() {
     // dynamic grid
     altair_contact_list.init();
