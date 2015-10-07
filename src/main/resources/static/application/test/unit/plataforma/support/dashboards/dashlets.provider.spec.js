@@ -42,17 +42,11 @@
 				expect(Dashlets.getDashletView('dashlet-01')).toBe('view-01');
 				expect(Dashlets.getDashletController('dashlet-01')).toBe('Controller01');
 			});
-			
-			it('Deveria ter configurado o defaultTemplate', function() {
-				DashletsProvider.defaultTemplate('template-01');
-				
-				expect(Dashlets.getDefaultDashletTemplate()).toBe('template-01');
-			});
 		});
 		
 		describe('Com configurações não realizadas sendo chamadas', function() {
 			it('Deveria ter reclamado de configuração inválida', function() {
-				DashletsProvider.defaultTemplate('template-01').dashlet('dashlet-01', {
+				DashletsProvider.dashlet('dashlet-01', {
 					view: 'view-01',
 					controller: 'Controller01'
 				});

@@ -63,9 +63,6 @@
 		};
 		
 		var Dashlets = function() {
-			this.getDefaultDashletTemplate = function() {
-				return defaultDashletTemplate;
-			};
 			this.getDashletView = function(name) {
 				return getDashletDefinition(name).view;
 			};
