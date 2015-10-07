@@ -33,8 +33,6 @@
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
 		});
-		
-		DashletsProvider.defaultTemplate('application/plataforma/support/dashlet/dashlet.tpl.html');
 	});
 
 })();
