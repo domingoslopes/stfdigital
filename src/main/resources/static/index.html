@@ -30,6 +30,7 @@
     <link href="theme/assets/pages/css/pages-icons.css" rel="stylesheet" type="text/css">
     <link class="main-stylesheet" href="theme/assets/pages/css/pages.css" rel="stylesheet" type="text/css" />
     <link class="main-stylesheet" href="theme/assets/pages/css/themes/simple.css" rel="stylesheet" type="text/css" />
+        <link class="main-stylesheet" href="tmp/style.css" rel="stylesheet" type="text/css" />
     
     <!-- BEGIN Custom CSS -->
     <link rel="stylesheet" type="text/css"/>
@@ -78,6 +79,13 @@
               <span class="details">Petições Digitais</span>
             </a>
             <span class="icon-thumbnail bg-success"><i id="novoItemIcon" class="fa fa-plus"></i></span>
+          </li>
+          <li>
+            <a ui-sref="peticionamento-orgao" class="detailed">
+              <span class="title">Novo Item</span>
+              <span class="details">Petições Órgãos</span>
+            </a>
+            <span class="icon-thumbnail bg-success"><i id="novoItemOrgaoIcon" class="fa fa-plus"></i></span>
           </li>
         </ul>
         <div class="clearfix"></div>
@@ -367,8 +375,11 @@
     
     <script type="text/javascript" src="application/autuacao/autuacao.module.js"></script>
     <script type="text/javascript" src="application/autuacao/detalhe/detalhepeticao.controller.js"></script>
-    <script type="text/javascript" src="application/autuacao/peticionamento/peticionamento.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/advogado/peticionamento.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/orgao/peticionamento.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/classe.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/peca.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/orgao.service.js"></script>
 	<script type="text/javascript" src="application/autuacao/registro/dummy_action.controller.js"></script>	
     <script type="text/javascript" src="application/autuacao/autuacao/autuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/distribuicao/distribuicao.controller.js"></script>
@@ -377,6 +388,7 @@
     <script type="text/javascript" src="application/autuacao/distribuicao/ministro.service.js"></script>
     <script type="text/javascript" src="application/autuacao/devolucao/devolucao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticao.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/directives/visualizadorPdfDirective.js"></script>
 
 	<script type="text/javascript" src="tmp/templates.js"></script>
     <script type="text/javascript" src="tmp/properties.js"></script>
