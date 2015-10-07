@@ -5,7 +5,6 @@ import java.util.List;
 public class DashboardDto {
 
 	private List<String> dashlets;
-	private String layout;
 
 	public List<String> getDashlets() {
 		return dashlets;
@@ -13,14 +12,6 @@ public class DashboardDto {
 
 	public void setDashlets(List<String> dashlets) {
 		this.dashlets = dashlets;
-	}
-
-	public String getLayout() {
-		return layout;
-	}
-
-	public void setLayout(String layout) {
-		this.layout = layout;
 	}
 
 }

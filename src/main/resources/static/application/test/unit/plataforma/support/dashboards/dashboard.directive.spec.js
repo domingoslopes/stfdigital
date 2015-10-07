@@ -10,22 +10,17 @@
 	'use strict';
 
 	describe('Directive: Dashboard', function() {
-		var $compile, $q, scope;
+		var $compile, $q, scope, $compileProvider;
 		
 		var mockDashboardService = {
 			getDashlets: function() {}
 		};
-		
-		var mockDashlets = {
-			getDashletController: function() {},
-			getDashletView: function() {}
-		};
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(module(function($provide) {
+		beforeEach(module(function($provide, _$compileProvider_) {
 			$provide.value('DashboardService', mockDashboardService);
-			$provide.value('Dashlets', mockDashlets);
+			$compileProvider = _$compileProvider_;
 		}));
 		
 		beforeEach(inject(function(_$compile_, $rootScope, _$q_) {
@@ -35,17 +30,32 @@
 		}));
 
 		beforeEach(function() {
-			spyOn(mockDashboardService, 'getDashlets').and.returnValue($q.when(['dashlet-01']));
-			spyOn(mockDashlets, 'getDashletController').and.returnValue('MinhasPeticoesDashletController');
-			spyOn(mockDashlets, 'getDashletView').and.returnValue('application/autuacao/peticionamento/dashlets/peticoes.tpl.html');
+			spyOn(mockDashboardService, 'getDashlets').and.returnValue($q.when(['dashlet-01', 'dashlet-02']));
 		});
 		
 		it('Deveria ter compilado a diretiva', function() {
+			var dashletsNames = [];
+			// Sobreescrevendo a diretiva interna utilizada.
+			$compileProvider.directive('dashlet', function() {
+				return {
+					restrict : 'ECA',
+					priority: 9999,
+					scope: {
+						dashlet: '='
+					},
+					terminal: true,
+					template: '',
+					link: function(scope, element, attrs) {
+						dashletsNames.push(scope.dashlet);
+					}
+				};
+			});
+			
 			var element = $compile('<div data-dashboard=""></div>')(scope);
 			
 			scope.$digest();
-			// TODO Criar uma verificação desse conteúdo.
-//			console.log(element);
+			
+			expect(dashletsNames).toEqual(['dashlet-01', 'dashlet-02']);
 		});
 
 	});
