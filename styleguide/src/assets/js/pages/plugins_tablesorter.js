@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  plugins_tablesorter.js - plugins_tablesorter.html
+*/
+
 $(function() {
     // make table cell focusable
     var $focus_highlight = $('.focus-highlight');

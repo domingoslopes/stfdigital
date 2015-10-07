@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_user_profile.js - page_user_profile.html
+*/
+
 $(function() {
     // user profile
     altair_user_profile.init();

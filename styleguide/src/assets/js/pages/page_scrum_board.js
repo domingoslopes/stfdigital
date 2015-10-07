@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_scrum_board.js - page_scrum_board.html
+*/
+
 $(function() {
     // draggable tasks
     altair_scrum_board.draggable_tasks();

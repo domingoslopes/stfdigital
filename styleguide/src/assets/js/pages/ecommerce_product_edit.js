@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  ecommerce_product_edit.js - ecommerce_product_edit.html
+*/
+
 $(function() {
     // product edit
     altair_product_edit.init();

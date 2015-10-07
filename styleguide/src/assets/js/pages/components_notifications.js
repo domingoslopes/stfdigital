@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  components_notifications.js - components_notifications.html
+*/
+
 // custom callback
 function notify_callback() {
     return alert('Notify closed!');

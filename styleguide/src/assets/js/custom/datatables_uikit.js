@@ -172,7 +172,7 @@
         }
 
 
-    }; // /factory
+    };
 
     $('body').on( 'init.dt', '.dt-uikit', function () {
 

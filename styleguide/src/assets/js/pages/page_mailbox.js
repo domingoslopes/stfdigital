@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  page_mailbox.js - page_mailbox.html
+*/
+
 $(function() {
     // mailbox init functions
     altair_mailbox.init();

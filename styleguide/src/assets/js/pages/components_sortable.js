@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  components_sortable.js - components_sortable.html
+*/
+
 $(function() {
     // dragula.js
 	altair_sortable.dragula_sortable();

@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  plugins_gantt_chart.js - plugins_gantt_chart.html
+*/
+
 $(function() {
 	altair_gantt.init();
 });

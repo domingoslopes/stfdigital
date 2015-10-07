@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  login.js - login.html
+*/
+
 $(function() {
     // login_page
     altair_login_page.init();

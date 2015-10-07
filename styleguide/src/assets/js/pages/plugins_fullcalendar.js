@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  plugins_fullcalendar.js - plugins_fullcalendar.html
+*/
+
 $(function() {
     // fullcalendar
     altair_fullcalendar.calendar_selectable();

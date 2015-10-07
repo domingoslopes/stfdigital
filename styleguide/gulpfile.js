@@ -25,6 +25,16 @@
 var path = require('path');
 
 /**
+ * Auxiliar de streams
+ */
+var merge = require('merge-stream');
+
+/**
+ * Deleta diretórios/arquivos
+ */
+var del = require('del');
+
+/**
  * Obtém variáveis gerais para as tarefas do gulp
  */
 var config = require('./build/build.config.js');
@@ -50,12 +60,6 @@ var chalk = require('chalk');
 var chalk_error = chalk.bold.red;
 
 /**
- * Baixa os pacotes necessários para o template
- */
-var pjson = require('./package.json');
-var version = pjson.version;
-
-/**
  * Ambiente de produção ou desenvolvimento
  */
 var production = false;
@@ -64,229 +68,77 @@ var production = false;
  * 1. JAVASCRIPT
  **************************/
 
-// 1.1 - js:common
+// 1.1. - js
 // Minifica e concatena os javascripts
-gulp.task('js:common', function () {
-    return gulp.src([
-            config.bower + "/jquery/dist/jquery.js",
-            config.bower + "/modernizr/modernizr.js",
-            // moment
-            config.bower + "/moment/moment.js",
-            // retina images
-            config.bower + "/dense/src/dense.js",
-            // fastclick (touch devices)
-            config.bower + "/fastclick/lib/fastclick.js",
-            // custom scrollbar
-            config.bower + "/jquery.scrollbar/jquery.scrollbar.js",
-            // create easing functions from cubic-bezier co-ordinates
-            config.bower + "/jquery-bez/jquery.bez.min.js",
-            // Get the actual width/height of invisible DOM elements with jQuery
-            config.bower + "/jquery.actual/jquery.actual.js",
-            // waypoints
-            config.bower + "/waypoints/lib/jquery.waypoints.js",
-            // velocityjs (animation)
-            config.bower + "/velocity/velocity.js",
-            config.bower + "/velocity/velocity.ui.js",
-            // advanced cross-browser ellipsis
-            config.bower + "/jQuery.dotdotdot/src/js/jquery.dotdotdot.js",
-            // iCheck
-            config.bower + "/jquery-icheck/icheck.js",
-            // selectize
-            config.bower + "/selectize/dist/js/standalone/selectize.js",
-            // switchery
-            config.bower + "/switchery/dist/switchery.js",
-            // prism syntax highlighter
-            config.bower + "/prism/prism.js",
-            config.bower + "/prism/components/prism-php.js",
-            config.bower + "/prism/plugins/line-numbers/prism-line-numbers.js",
-            // textarea-autosize
-            config.bower + "/autosize/dist/autosize.js",
-            // hammerjs
-            config.bower + "/hammerjs/hammer.js",
-            // jquery.debouncedresize
-            config.bower + "/jquery.debouncedresize/js/jquery.debouncedresize.js"
-        ])
+gulp.task('js', function () {
+    return plugins.runSequence('js:common', 'js:page-specific');
+});
+
+// 1.2. js:common
+// Gera arquivos JS comuns a várias páginas
+gulp.task('js:common', function() {
+    return gulp.src(config.js.common_source)
         .pipe(plugins.concat(config.js.concat))
         .on('error', function(err) {
             console.log(chalk_error(err.message));
             this.emit('end');
         })
-        .pipe(gulp.dest(config.js.dest))
-        .pipe(plugins.uglify({
-            mangle: true
-        }))
-        .pipe(plugins.rename('common.min.js'))
-        .pipe(plugins.size({
-            showFiles: true
-        }))
         .pipe(gulp.dest(config.js.dest));
 });
 
-// 1.2 - js:uikit
-// cutom uikit
-gulp.task('js:uikit', function () {
-    return gulp.src([
-            // uikit core
-            config.bower + "/uikit/js/uikit.js",
-            // uikit components
-            config.bower + "/uikit/js/components/accordion.js",
-            config.bower + "/uikit/js/components/autocomplete.js",
-            config.js.source + "/custom/uikit_datepicker.js",
-            config.bower + "/uikit/js/components/form-password.js",
-            config.bower + "/uikit/js/components/form-select.js",
-            config.bower + "/uikit/js/components/grid.js",
-            config.bower + "/uikit/js/components/nestable.js",
-            config.bower + "/uikit/js/components/notify.js",
-            config.bower + "/uikit/js/components/sortable.js",
-            config.bower + "/uikit/js/components/sticky.js",
-            config.bower + "/uikit/js/components/tooltip.js",
-            config.js.source + "/custom/uikit_timepicker.js",
-            config.bower + "/uikit/js/components/upload.js",
-            config.js.source + "/custom/uikit_beforeready.js"
-        ])
-        .pipe(plugins.concat('uikit_custom.js'))
-        .pipe(gulp.dest(config.js.dest))
-        .pipe(plugins.uglify({
-            mangle: true
-        }))
-        .pipe(plugins.rename('uikit_custom.min.js'))
-        .pipe(plugins.size({
-            showFiles: true
-        }))
-        .pipe(gulp.dest(config.js.dest));
-});
-
-// 1.3 - js:uikit_htmleditor
-// uikit htmleditor
-gulp.task('js:uikit_htmleditor', function () {
-    return gulp.src([
-            // htmleditor
-            config.bower + "/codemirror/lib/codemirror.js",
-            config.bower + "/codemirror/mode/markdown/markdown.js",
-            config.bower + "/codemirror/addon/mode/overlay.js",
-            config.bower + "/codemirror/mode/javascript/javascript.js",
-            config.bower + "/codemirror/mode/php/php.js",
-            config.bower + "/codemirror/mode/gfm/gfm.js",
-            config.bower + "/codemirror/mode/xml/xml.js",
-            config.bower + "/marked/lib/marked.js",
-            config.bower + "/uikit/js/components/htmleditor.js"
-        ])
-        .pipe(plugins.concat('uikit_htmleditor_custom.js'))
-        .pipe(gulp.dest(config.js.dest))
-        .pipe(plugins.uglify({
-            mangle: true
-        }).on('error', function(e) {
-            console.log('\x07',e.message); return this.end();
-        }))
-        .pipe(plugins.rename('uikit_htmleditor_custom.min.js'))
-        .pipe(plugins.size({
-            showFiles: true
-        }))
-        .pipe(gulp.dest(config.js.dest));
-});
-
-// 1.4 - js:kendoui
-// custom kendoui
-gulp.task('js:kendoui', function () {
-    // js
-    return  gulp.src([
-            config.bower + "/kendo-ui-core/src/js/kendo.core.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.color.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.data.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.calendar.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.popup.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.datepicker.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.timepicker.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.datetimepicker.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.list.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.fx.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.userevents.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.menu.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.draganddrop.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.slider.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.mobile.scroller.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.autocomplete.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.combobox.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.dropdownlist.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.colorpicker.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.combobox.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.maskedtextbox.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.multiselect.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.numerictextbox.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.toolbar.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.panelbar.js",
-            config.bower + "/kendo-ui-core/src/js/kendo.window.js"
-        ])
-        .pipe(plugins.concat('kendoui_custom.js'))
-        .pipe(gulp.dest(config.js.dest))
-        .pipe(plugins.uglify({
-            mangle: true
-        }))
-        .pipe(plugins.rename('kendoui_custom.min.js'))
-        .pipe(plugins.size({
-            showFiles: true
-        }))
-        .pipe(gulp.dest(config.js.dest));
-
-});
-
-// 1.5 - js:page_specific
-// common/page specific functions
-gulp.task('js:page_specific', function () {
-    return gulp.src([
-            config.js.source + '/altair_admin_common.js',
-            config.js.source + '/pages/*.js',
-            config.js.source + '/custom/*.js',
-            '!' + config.js.source + '/**/*.min.js'
-        ])
-        .pipe(plugins.uglify({
-            mangle: true
-        }))
-        .pipe(plugins.rename({
-            extname: ".min.js"
-        }))
+// 1.3. js:page-specific
+gulp.task('js:page-specific', function() {
+    return gulp.src(config.js.page_specific_source)
+        .on('error', function(err) {
+            console.log(chalk_error(err.message));
+            this.emit('end');
+        })
         .pipe(gulp.dest(function(file) {
-            var fullPath     = path.resolve(__dirname, config.js.source);
+            var fullPath = path.resolve(__dirname, config.js.directory);
             var baseDestPath = path.resolve(__dirname, config.js.dest);
-            var finalPath    = path.resolve(baseDestPath, file.path.replace(fullPath + path.sep, ''))
+            var finalPath = path.resolve(baseDestPath, file.path.replace(fullPath + path.sep, ''));
             
             return path.dirname(finalPath);
         }));
-
 });
-
-// 1.6 - js
-// Roda todas as tarefas de Javascript
-gulp.task('js', ['js:common','js:uikit','js:uikit_htmleditor','js:kendoui', 'js:page_specific']);
 
 /***************************
  * 2. CSS
  **************************/
 
-// 2.1 - sass
+// 2.1 - css
+// Copia arquivos CSS source em dist
+gulp.task('css', function() {
+    var source = config.css.source;
+
+    var stream = gulp.src(config.css.source)
+        .pipe(plugins.size({
+            title: 'css'
+        }))
+        .pipe(gulp.dest(config.css.dest))
+});
+
+// 2.2 - sass
 // Transforma SASS em CSS
 gulp.task('sass', function() {
     return gulp.src(config.sass.source)
         .pipe(plugins.sass())
         .on('error', plugins.sass.logError)
-        .pipe(gulp.dest(config.sass.dest))
         .pipe(plugins.size({
             title: 'sass'
-        }));
+        }))
+        .pipe(gulp.dest(config.sass.dest));
 });
 
-// 2.2 - css
-// Concatena arquivos CSS do SASS com CSS adicionais
-gulp.task('css', function() {
-    var stream = gulp.src(config.css.source)
-        .pipe(plugins.concat(config.css.concat))
-
-    if (production) {
-        /** @TODO: Gerar Sourcemaps **/
-        stream.pipe(plugins.minifyCss(config.css.minifyOptions))
-    }
-
-    return stream.pipe(gulp.dest(config.css.dest))
+// 2.3 - less
+// Transforma LESS em CSS
+gulp.task('less', function() {
+    return gulp.src(config.less.source)
+        .pipe(plugins.size({
+            title: 'less'
+        }))
+        .pipe(plugins.less())
+        .pipe(gulp.dest(config.less.dest));
 });
 
 /***************************
@@ -298,16 +150,14 @@ gulp.task('images', function() {
     stream = gulp.src(config.image.source);
 
     if (production) {
-        stream = stream.pipe(plugins.imagemin({
-            progressive: true,
-            interlaced: true
-        }));
+        stream = stream.pipe(plugins.imagemin(config.image.minifyOptions));
     }
     
-    return stream.pipe(plugins.size({
+    return stream
+        .pipe(plugins.size({
             title: 'images'
         }))
-    .pipe(gulp.dest(config.image.dest));
+        .pipe(gulp.dest(config.image.dest));
 });
 
 /***************************
@@ -317,18 +167,38 @@ gulp.task('images', function() {
 // 4.1. jade
 // Processa os códigos JADE
 gulp.task('jade', function() {
-    return gulp.src(config.jade.source)
+    var stream = gulp.src(config.jade.source)
         .pipe(plugins.jade())
-        .pipe(gulp.dest(config.jade.dest))
+
+    if (production) {
+        stream = stream
+            .pipe(plugins.usemin({
+                path: path.resolve(__dirname, config.jade.dest),
+                js: [plugins.uglify(config.js.minifyOptions), plugins.rev],
+                css: [plugins.minifyCss(config.css.minifyOptions), 'concat']
+            }))
+            .on('error', function(err) { 
+                console.log(err.toString());
+                this.emit("end");
+            });
+    }
+
+    return stream.pipe(gulp.dest(config.jade.dest));
 });
 
 // 4.2. html
 // Minifica os HTMLs (ambiente de produção, somente)
 gulp.task('html', function() {
-    stream = gulp.src(config.html.source);
+    var stream = gulp.src(config.html.source);
 
     if (production) {
-        stream = stream.pipe(plugins.htmlMinifier(config.html.minifyOptions));
+        stream = stream
+            .pipe(plugins.htmlMinifier(config.html.minifyOptions))
+            .pipe(plugins.usemin({
+                path: path.resolve(__dirname, config.html.dest),
+                js: [plugins.uglify(config.js.minifyOptions), plugins.rev],
+                css: [plugins.minifyCss(config.css.minifyOptions), 'concat']
+            }));
     }
 
     return stream.pipe(gulp.dest(config.html.dest));
@@ -341,8 +211,18 @@ gulp.task('html', function() {
 // 5.1. assets
 // Copia assets necessários e que não passam por algum tipo de processamento
 gulp.task('assets', function(callback) {
-    return gulp.src(config.assets.source)
-        .pipe(gulp.dest(config.assets.dest));
+    var streams = [];
+
+    for (index in config.assets) {
+        asset = config.assets[index];
+        
+        var stream = gulp.src(asset[0])
+            .pipe(gulp.dest(asset[1]));
+
+        streams.push(stream);
+    }
+
+    return merge.apply(merge, streams);
 });
 
 /***************************
@@ -352,28 +232,38 @@ gulp.task('assets', function(callback) {
 // 6.1. default
 // Constrói arquivos e inicia servidor web em ambiente de desenvolvimento
 gulp.task('default', function(callback) {
-    return plugins.runSequence('build', 'browser-sync', callback);
+    return plugins.runSequence('build', 'serve', callback);
 });
 
-// 6.2. production
+// 6.2.a. production
 // Entra no ambiente de produção
 gulp.task('production', function() {
     production = true;
 });
 
-// 6.3. build
-// Constrói todos os arquivos no ambiente selecionado
-gulp.task('build', function(callback) {
-    return plugins.runSequence('sass', ['js', 'css', 'images', 'jade', 'assets'], 'html', callback);
+// 6.2.b. dist
+// Alias da task production, por conveniência
+gulp.task('dist', ['production']);
+
+// 6.3. clean
+// Limpa arquivos distribuição
+gulp.task('clean', function() {
+    return del(config.webRoot);
 });
 
-// 6.4. release
+// 6.4. build
+// Constrói todos os arquivos no ambiente selecionado
+gulp.task('build', function(callback) {
+    return plugins.runSequence(['sass', 'less'], ['js', 'css', 'images', 'assets'], 'jade', 'html', callback);
+});
+
+// 6.5. release
 // Faz a release de produção de todos os arquivos
 gulp.task('release', function(callback) {
     return plugins.runSequence('production', 'build', callback);
 });
 
-// 6.5. serve
+// 6.6. serve
 // Inicia um servidor Web e escuta por mudanças
 gulp.task('serve', function() {
     // Inicia o servidor BrowserSync
@@ -385,15 +275,21 @@ gulp.task('serve', function() {
         // http://www.browsersync.io/docs/options/#option-notify
         notify: false
     });
+});
 
-    // Escuta por mudanças, roda tarefas necessárias e recarrega o navegador
+// 6.7. watch
+// Escuta por mudanças, roda tarefas necessárias e recarrega o navegador
+gulp.task('watch', function(callback) {
     gulp.watch(config.sass.source, generateRunCallback('sass', browserSync.reload));
+    gulp.watch(config.less.source, generateRunCallback('less', browserSync.reload));
     gulp.watch(config.jade.source, generateRunCallback('jade', browserSync.reload));
     gulp.watch(config.css.source, generateRunCallback('css', browserSync.reload));
     gulp.watch(config.html.source, generateRunCallback('html', browserSync.reload));
     gulp.watch(config.image.source, generateRunCallback('images', browserSync.reload));
     gulp.watch(config.js.source, generateRunCallback('js', browserSync.reload));
     gulp.watch(config.assets.source, generateRunCallback('assets', browserSync.reload));
+
+    callback();
 });
 
 /***************************
@@ -402,8 +298,9 @@ gulp.task('serve', function() {
 
 // 7.1. generateRunCallback
 // Roda uma tarefa e, em sequência (síncrono), chama um callback
-function generateRunCallback(task, callback) {
+function generateRunCallback(/** tasks, callback **/) {
+    var args = arguments;
     return function() {
-        plugins.runSequence(task, callback);
+        plugins.runSequence.apply(plugins.runSequence, args);
     }
 }

@@ -1,3 +1,11 @@
+/*
+*  Altair Admin
+*  @version v2.0.0
+*  @author tzd
+*  @license http://themeforest.net/licenses
+*  components_nestable.js - components_nestable.html
+*/
+
 $(function() {
     // serialize nestable list
     altair_nestable.init();
