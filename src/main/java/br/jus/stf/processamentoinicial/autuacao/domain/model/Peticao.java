@@ -82,6 +82,10 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@Transient
 	private String identificacao;
 
+	Peticao() {
+
+	}
+	
 	public Peticao(final PeticaoId id, final Long numero) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
@@ -92,6 +96,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.identificacao = montarIdentificacao();
 	}
 
+	@Override
 	public PeticaoId id() {
 		return this.id;
 	}
@@ -228,6 +233,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return this.getClass().equals(PeticaoEletronica.class);
 	}
 	
+	public abstract boolean hasRepresentacao();
+	
 	/**
 	 * Sugestão de classe
 	 * 
@@ -264,11 +271,6 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	private String montarIdentificacao() {
 		return new StringBuilder()
 			.append(numero).append("/").append(ano).toString();
-	}
-
-	// Hibernate
-	Peticao() {
-		
 	}
 	
 }
