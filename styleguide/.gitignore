@@ -1,4 +1,4 @@
-dist/bower_components/
-dist/assets_stf/
+dist/
 node_modules/
 template/bower_components
+src/bower_components
