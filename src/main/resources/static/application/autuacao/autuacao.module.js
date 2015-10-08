@@ -15,7 +15,7 @@
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
-					controller: 'PeticionamentoController',
+					controller: 'PeticionamentoAdvogadoController',
 					resolve : {
 						data : function(ClasseService) {
 							return ClasseService.listar();
@@ -28,7 +28,7 @@
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/peticionamento/orgao/peticionamento.tpl.html',
-					controller: 'PeticionamentoController',
+					controller: 'PeticionamentoOrgaoController',
 					resolve : {
 						data : function(ClasseService) {
 							return ClasseService.listar();
