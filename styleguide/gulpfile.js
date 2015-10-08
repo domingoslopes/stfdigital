@@ -7,106 +7,53 @@
  * @since 03.09.2015
  * @since 1.0.0
  * 
- * 0. Varáveis genéricas
- * 1. JAVASCRIPT
+ * 1. VARIÁVEIS E FERRAMENTAS
  * 2. CSS
- * 3. IMAGES
+ * 3. IMAGENS
  * 4. HTML
- * 5. ESTRUTURAIS
+ * 5. ASSETS
+ * 6. ESTRUTURAIS
  */
 
-/***************************
- * 0. Varáveis genéricas
- **************************/
+/********************************************************************************
+ * 1. VARIÁVEIS E FERRAMENTAS
+ ********************************************************************************/
 
-/**
- * Auxiliar de caminhos
- */
+// 1.1. Ferramentas úteis para as tasks
+
+// Gulp
+var gulp = require('gulp');
+// Ferramentas de caminhos/diretórios
 var path = require('path');
-
-/**
- * Auxiliar de streams
- */
+// Faz merge de streams
 var merge = require('merge-stream');
-
-/**
- * Deleta diretórios/arquivos
- */
+// Deleta arquivos
 var del = require('del');
+// Eyecandies para o terminal (cor, negrito, etc)
+var chalk = require('chalk');
+// Sincronização entre arquivos e visualização no navegador
+var browserSync = require('browser-sync').create();
 
-/**
- * Obtém variáveis gerais para as tarefas do gulp
- */
+// 1.2. Obtém variáveis gerais para as tarefas do gulp
 var config = require('./build/build.config.js');
 
-/**
- * Define o plugins para usar qualquer tipo de plugin gulp
- */
-var gulp = require('gulp'),
-    plugins = require("gulp-load-plugins")({
+// 1.3. Define o plugins para usar qualquer tipo de plugin gulp
+var plugins = require("gulp-load-plugins")({
         pattern: ['gulp-*', 'gulp.*', '*'],
         replaceString: /\bgulp[\-.]/
     });
 
-/**
- * Define o browserSync para atualizar browser ao editar arquivos
- */
-var browserSync = require('browser-sync').create();
-
-/**
- * Define o chalk para colorir a tela do prompt de comando
- */
-var chalk = require('chalk');
+// 1.4. Define o chalk para colorir a tela do prompt de comando
 var chalk_error = chalk.bold.red;
 
-/**
- * Ambiente de produção ou desenvolvimento
- */
+// 1.5. Ambiente de produção ou desenvolvimento
 var production = false;
 
-/***************************
- * 1. JAVASCRIPT
- **************************/
-
-// 1.1. - js
-// Minifica e concatena os javascripts
-gulp.task('js', function () {
-    return plugins.runSequence('js:common', 'js:page-specific');
-});
-
-// 1.2. js:common
-// Gera arquivos JS comuns a várias páginas
-gulp.task('js:common', function() {
-    return gulp.src(config.js.common_source)
-        .pipe(plugins.concat(config.js.concat))
-        .on('error', function(err) {
-            console.log(chalk_error(err.message));
-            this.emit('end');
-        })
-        .pipe(gulp.dest(config.js.dest));
-});
-
-// 1.3. js:page-specific
-gulp.task('js:page-specific', function() {
-    return gulp.src(config.js.page_specific_source)
-        .on('error', function(err) {
-            console.log(chalk_error(err.message));
-            this.emit('end');
-        })
-        .pipe(gulp.dest(function(file) {
-            var fullPath = path.resolve(__dirname, config.js.directory);
-            var baseDestPath = path.resolve(__dirname, config.js.dest);
-            var finalPath = path.resolve(baseDestPath, file.path.replace(fullPath + path.sep, ''));
-            
-            return path.dirname(finalPath);
-        }));
-});
-
-/***************************
+/********************************************************************************
  * 2. CSS
- **************************/
+ ********************************************************************************/
 
-// 2.1 - css
+// 2.1. css
 // Copia arquivos CSS source em dist
 gulp.task('css', function() {
     var source = config.css.source;
@@ -118,7 +65,7 @@ gulp.task('css', function() {
         .pipe(gulp.dest(config.css.dest))
 });
 
-// 2.2 - sass
+// 2.2. sass
 // Transforma SASS em CSS
 gulp.task('sass', function() {
     return gulp.src(config.sass.source)
@@ -130,7 +77,7 @@ gulp.task('sass', function() {
         .pipe(gulp.dest(config.sass.dest));
 });
 
-// 2.3 - less
+// 2.3. less
 // Transforma LESS em CSS
 gulp.task('less', function() {
     return gulp.src(config.less.source)
@@ -141,11 +88,12 @@ gulp.task('less', function() {
         .pipe(gulp.dest(config.less.dest));
 });
 
-/***************************
+/********************************************************************************
  * 3. IMAGENS
- **************************/
+ ********************************************************************************/
+
 // 3.1. images
-// Otimiza as imagens, em ambiente de produção
+// Otimiza as imagens em ambiente de produção
 gulp.task('images', function() {
     stream = gulp.src(config.image.source);
 
@@ -160,27 +108,22 @@ gulp.task('images', function() {
         .pipe(gulp.dest(config.image.dest));
 });
 
-/***************************
+/********************************************************************************
  * 4. HTML
- **************************/
+ ********************************************************************************/
 
 // 4.1. jade
 // Processa os códigos JADE
 gulp.task('jade', function() {
     var stream = gulp.src(config.jade.source)
         .pipe(plugins.jade())
+        .on('error', function(err) { 
+            console.log(err.toString());
+            this.emit("end");
+        });
 
     if (production) {
-        stream = stream
-            .pipe(plugins.usemin({
-                path: path.resolve(__dirname, config.jade.dest),
-                js: [plugins.uglify(config.js.minifyOptions), plugins.rev],
-                css: [plugins.minifyCss(config.css.minifyOptions), 'concat']
-            }))
-            .on('error', function(err) { 
-                console.log(err.toString());
-                this.emit("end");
-            });
+        stream = stream.pipe(plugins.usemin(useminConfig(path.resolve(__dirname, config.jade.dest))))
     }
 
     return stream.pipe(gulp.dest(config.jade.dest));
@@ -189,24 +132,21 @@ gulp.task('jade', function() {
 // 4.2. html
 // Minifica os HTMLs (ambiente de produção, somente)
 gulp.task('html', function() {
-    var stream = gulp.src(config.html.source);
+    var stream = gulp.src(config.html.source)
+        
 
     if (production) {
         stream = stream
             .pipe(plugins.htmlMinifier(config.html.minifyOptions))
-            .pipe(plugins.usemin({
-                path: path.resolve(__dirname, config.html.dest),
-                js: [plugins.uglify(config.js.minifyOptions), plugins.rev],
-                css: [plugins.minifyCss(config.css.minifyOptions), 'concat']
-            }));
+            //.pipe(plugins.usemin(useminConfig(path.resolve(__dirname, config.html.dest))))
     }
 
     return stream.pipe(gulp.dest(config.html.dest));
 });
 
-/***************************
- * 5. OUTROS
- **************************/
+/********************************************************************************
+ * 5. ASSETS
+ ********************************************************************************/
 
 // 5.1. assets
 // Copia assets necessários e que não passam por algum tipo de processamento
@@ -225,9 +165,9 @@ gulp.task('assets', function(callback) {
     return merge.apply(merge, streams);
 });
 
-/***************************
+/********************************************************************************
  * 6. ESTRUTURAIS
- **************************/
+ ********************************************************************************/
 
 // 6.1. default
 // Constrói arquivos e inicia servidor web em ambiente de desenvolvimento
@@ -254,7 +194,7 @@ gulp.task('clean', function() {
 // 6.4. build
 // Constrói todos os arquivos no ambiente selecionado
 gulp.task('build', function(callback) {
-    return plugins.runSequence(['sass', 'less'], ['js', 'css', 'images', 'assets'], 'jade', 'html', callback);
+    return plugins.runSequence(['sass', 'less'], ['css', 'images', 'assets'], 'jade', 'html', callback);
 });
 
 // 6.5. release
@@ -270,7 +210,10 @@ gulp.task('serve', function() {
     browserSync.init({
         // http://www.browsersync.io/docs/options/#option-server
         server: {
-            baseDir: config.webRoot
+            baseDir: config.webRoot,
+            routes: {
+                "/altair-template": "template"
+            }
         },
         // http://www.browsersync.io/docs/options/#option-notify
         notify: false
@@ -280,13 +223,27 @@ gulp.task('serve', function() {
 // 6.7. watch
 // Escuta por mudanças, roda tarefas necessárias e recarrega o navegador
 gulp.task('watch', function(callback) {
-    gulp.watch(config.sass.source, generateRunCallback('sass', browserSync.reload));
-    gulp.watch(config.less.source, generateRunCallback('less', browserSync.reload));
-    gulp.watch(config.jade.source, generateRunCallback('jade', browserSync.reload));
-    gulp.watch(config.css.source, generateRunCallback('css', browserSync.reload));
+    // Tarefas que devem rodar também as tarefas de JADE e HTML após modificadas em modo de produção
+    var htmlChainTasks = {
+        'sass': config.sass.watch,
+        'less': config.less.source,
+        'css': config.less.source,
+        'assets': config.js.watch
+    }
+
+    for (task in htmlChainTasks) {
+        src = htmlChainTasks[task];
+
+        if (production) {
+            gulp.watch(src, generateRunCallback(task, ['jade', 'html'], browserSync.reload));
+        } else {
+            gulp.watch(src, generateRunCallback(task, browserSync.reload));
+        }
+    }
+
+    gulp.watch(config.jade.watch, generateRunCallback('jade', browserSync.reload));
     gulp.watch(config.html.source, generateRunCallback('html', browserSync.reload));
     gulp.watch(config.image.source, generateRunCallback('images', browserSync.reload));
-    gulp.watch(config.js.source, generateRunCallback('js', browserSync.reload));
     gulp.watch(config.assets.source, generateRunCallback('assets', browserSync.reload));
 
     callback();
@@ -297,10 +254,20 @@ gulp.task('watch', function(callback) {
  **************************/
 
 // 7.1. generateRunCallback
-// Roda uma tarefa e, em sequência (síncrono), chama um callback
+// Gera uma tarefa de runSequence
 function generateRunCallback(/** tasks, callback **/) {
     var args = arguments;
     return function() {
         plugins.runSequence.apply(plugins.runSequence, args);
+    }
+}
+
+// 7.2. useminConfig
+// Gera configuração do gulp-usemin
+function useminConfig(directory) {
+    return {
+        path: directory,
+        js: [plugins.uglify(config.js.minifyOptions), plugins.rev],
+        css: [plugins.minifyCss(config.css.minifyOptions), 'concat']
     }
 }
