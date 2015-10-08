@@ -13,6 +13,13 @@
 var fs = require("fs");
 var bowerdirectory =  JSON.parse(fs.readFileSync(".bowerrc", "utf8")).directory;
 
+/**
+ * NOTA
+ *----------
+ * Não utilizar './' no início dos caminhos referentes a watch. Devido ao comportamento
+ * do gulp, novos arquivos não serão identificados no watch caso o caminho possua.
+ */
+
 // Exporta a configuração
 module.exports = {
 	// Raíz do servidor Web / Pasta de distribuição (será limpa em construções)
@@ -26,6 +33,13 @@ module.exports = {
 			'./src/assets-stf/sass/**/*.sass',
 			'!./src/assets-stf/sass/partials/**/*.sass'
 		],
+
+		// Conteúdo que deve ser observado para recarregar páginas
+		watch: [
+			'src/assets/sass/**/*.sass',
+			'src/assets-stf/sass/**/*.sass',
+		],
+
 		// Destino
 		dest: './dist/assets/sass',
 	},
@@ -46,6 +60,12 @@ module.exports = {
 			'./src/assets-stf/jade/**/*.jade',
 			'!./src/assets-stf/jade/partials/**/*.jade'
 		],
+
+		// Conteúdo que deve ser observado para recarregar páginas
+		watch: [
+			'src/assets-stf/jade/**/*.jade',
+		],
+
 		// Destino 
 		dest: './dist'
 	},
@@ -85,10 +105,8 @@ module.exports = {
 	// IMAGENS
 	image: {
 		// Source
-		source: [
-			'./src/assets/img/**/*',
-			'./src/assets-stf/img/**/*',
-		],
+		source: './src/assets-stf/img/**/*',
+
 		// Destino
 		dest: './dist/assets/img',
 		
@@ -106,8 +124,8 @@ module.exports = {
 
 		// Conteúdo que deve ser observado para recarregar páginas
 		watch: [
-			"./src/assets/**/*.js",
-            "./src/assets-stf/**/*.js",
+			"src/assets/**/*.js",
+            "src/assets-stf/**/*.js",
         ], 
 
         // Opções de minificação

@@ -13,14 +13,13 @@
 
     <title>Minhas Tarefas - STF Digital :: Styleguide v.1.0.0</title>
 
+    <!-- build:css assets/css/main.css -->
     <!-- uikit -->
-    <link rel="stylesheet" href="bower_components/uikit/css/uikit.almost-flat.min.css" media="all">
-
+    <link rel='stylesheet' href='bower_components/uikit/css/uikit.almost-flat.min.css' media='all'>
     <!-- altair admin -->
-    <link rel="stylesheet" href="assets/css/main.css" media="all">
-
-    <!-- altair admin -->
-    <link rel="stylesheet" href="assets-stf/css/main.css" media="all">    
+    <link rel='stylesheet' href='assets/less/main.css' media='all'>
+    <link rel='stylesheet' href='assets/sass/main.css' media='all'>
+    <!-- endbuild -->
 
     <!-- matchMedia polyfill for testing media queries in JS -->
     <!--[if lte IE 9]>
@@ -556,23 +555,54 @@
         })();
     </script>
 
-    <!-- common functions -->
-    <script src="assets/js/common.js"></script>
-    <!-- uikit functions -->
-    <script src="assets/js/uikit_custom.js"></script>
+    <script src='bower_components/jquery/dist/jquery.js'></script>
+    <script src='bower_components/modernizr/modernizr.js'></script>
+    <!-- moment -->
+    <script src='bower_components/moment/moment.js'></script>
+    <!-- retina images -->
+    <script src='bower_components/dense/src/dense.js'></script>
+    <!-- fastclick (touch devices) -->
+    <script src='bower_components/fastclick/lib/fastclick.js'></script>
+    <!-- custom scrollbar -->
+    <script src='bower_components/jquery.scrollbar/jquery.scrollbar.js'></script>
+    <!-- create easing functions from cubic-bezier co-ordinates -->
+    <script src='bower_components/jquery-bez/jquery.bez.min.js'></script>
+    <!-- Get the actual width/height of invisible DOM elements with jQuery -->
+    <script src='bower_components/jquery.actual/jquery.actual.js'></script>
+    <!-- waypoints -->
+    <script src='bower_components/waypoints/lib/jquery.waypoints.js'></script>
+    <!-- velocityjs (animation) -->
+    <script src='bower_components/velocity/velocity.js'></script>
+    <script src='bower_components/velocity/velocity.ui.js'></script>
+    <!-- iCheck - Cria checkboxes similares às do iOS -->
+    <script src='bower_components/jquery-icheck/icheck.js'></script>
+    <!-- selectize - Caixas de seleção avançadas -->
+    <script src='bower_components/selectize/dist/js/standalone/selectize.js'></script>
+    <!-- textarea-autosize -->
+    <script src='bower_components/autosize/dist/autosize.js'></script>
     <!-- altair common functions/helpers -->
-    <script src="assets/js/altair_admin_common.min.js"></script>
-
-    <!-- page specific plugins -->
-
-    <!--  mailbox functions -->
-    <script src="assets/js/pages/page_mailbox.min.js"></script>
-
+    <script src='assets/js/altair_admin_common.js'></script>
+    <!-- mailbox functions -->
+    <script src='assets/js/pages/page_mailbox.js'></script>
     <!-- ionrangeslider -->
-    <script src="bower_components/ionrangeslider/js/ion.rangeSlider.min.js"></script>
-    <!-- htmleditor (codeMirror) -->
-    <!--  forms advanced functions -->
-    <script src="assets/js/pages/forms_advanced.js"></script>
+    <script src='bower_components/ionrangeslider/js/ion.rangeSlider.js'></script>
+    <!-- forms advanced functions -->
+    <script src='assets/js/pages/forms_advanced.js'></script>
+
+    <!--
+    =============================================================================================
+     UIKIT
+    =============================================================================================
+    -->
+
+    <script src='bower_components/uikit/js/uikit.js'></script>
+    <!-- uikit components -->
+    <script src='bower_components/uikit/js/components/autocomplete.js'></script>
+    <script src='assets/js/custom/uikit_datepicker.js'></script>
+    <script src='assets/js/custom/uikit_timepicker.js'></script>
+    <script src='bower_components/uikit/js/components/upload.js'></script>
+    <script src='assets/js/custom/uikit_beforeready.js'></script>
+    <!-- endbuild -->
 
     <script>
         $(function() {
