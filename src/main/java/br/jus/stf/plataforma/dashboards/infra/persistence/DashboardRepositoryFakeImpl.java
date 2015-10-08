@@ -25,9 +25,9 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 	private static final Map<String, Dashboard> mapeamentoPapelDashboard = new HashMap<>();
 
 	static {
-		mapeamentoPapelDashboard.put("peticionador", buildDashboardFromDashlets("minhas-peticoes"));
+		mapeamentoPapelDashboard.put("peticionador", buildDashboardFromDashlets("minhas-tarefas", "minhas-peticoes"));
 		mapeamentoPapelDashboard.put("preautuador", buildDashboardFromDashlets("peticoes-para-preautuar"));
-		mapeamentoPapelDashboard.put("autuador", buildDashboardFromDashlets("grafico-peticoes"));
+		mapeamentoPapelDashboard.put("autuador", buildDashboardFromDashlets("minhas-tarefas"));
 		mapeamentoPapelDashboard.put("distribuidor",
 				buildDashboardFromDashlets("grafico-distribuicao", "grafico-peticoes"));
 		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("grafico-distribuicao", "minhas-peticoes",
@@ -46,7 +46,12 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 
 	@Override
 	public Dashboard consultarPadraoDoPapel(String papel) {
-		return mapeamentoPapelDashboard.get(papel);
+		Dashboard dashboard = mapeamentoPapelDashboard.get(papel);
+		if (dashboard == null) { // Caso não tenha um dashboard designado para o papel, monta um padrão.
+			dashboard = new Dashboard();
+			dashboard.setDashlets(Arrays.asList(new Dashlet("minhas-tarefas")));
+		}
+		return dashboard;
 	}
 
 }
