@@ -55,6 +55,8 @@
 		
 		var ministros = [{id: 0, nome: 'Min. Roberto Barroso'}, {id: 1, nome: 'Min. Sicrano'}, {id: 2, nome: 'Min. João'}];
 		
+		//var tipoPecao - [{id : 0, nome : "Petição Inicial"}, {id : 2 , nome: "Ato coator"}, {id}]
+		
 		var peticao = {};
 		
 		var peticoes = [];
