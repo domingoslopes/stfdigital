@@ -33,6 +33,11 @@
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
 		});
+		
+		DashletsProvider.dashlet('minhas-tarefas', {
+			view: 'application/plataforma/workflow/dashlets/minhas-tarefas.tpl.html',
+			controller: 'MinhasTarefasDashletController'
+		});
 	});
 
 })();
