@@ -57,10 +57,13 @@
 			
 			peticionamentoPage.uploadPecas();
 			
+			peticionamentoPage.removePecas();
+			
+			peticionamentoPage.uploadPecas();
+			
 			peticionamentoPage.selecionarTipoPeca('Ato coator');
 		    
 			peticionamentoPage.registrar();
-
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			

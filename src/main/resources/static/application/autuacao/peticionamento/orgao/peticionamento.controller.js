@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $state, messages, properties, $log, $window,PeticaoService, FileUploader, PecaService, OrgaoService) {
+	angular.autuacao.controller('PeticionamentoOrgaoController', function (data, $scope, $state, messages, properties, $log, $window,PeticaoService, FileUploader, PecaService, OrgaoService) {
 		
 		$scope.classes = data.data;
 		$scope.classe = '';
@@ -118,13 +118,13 @@
 		//remove as peças da petição
 		$scope.remover = function(peca, apagarDoServidor) {
 			if (apagarDoServidor) {
-				var pecaFull = recuperarPecaPorItem(peca.item);
+				var pecaFull = recuperarPecaPorItem(peca.fileItem);
 				var arquivoTemporario = [pecaFull.id];
 				PecaService.excluirArquivosTemporarios(arquivoTemporario);
 			}
 			
-			peca.item.remove();
-			removeArrayItem($scope.getPecas(), peca);
+			peca.fileItem.remove();
+			removeArrayItem($scope.pecas, peca);
 		};
 		
 		function recuperarPecaPorItem(item) {
