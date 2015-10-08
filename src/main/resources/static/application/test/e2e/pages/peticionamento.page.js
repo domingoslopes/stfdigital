@@ -51,6 +51,10 @@
 		    browser.sleep(2000);
 		};
 		
+		this.removePecas = function(){
+			element(by.id('btnRemovePecas')).click();
+		}
+		
 		this.selecionarTipoPeca = function(descricao) {
 			 utils.select('div#s2id_tipoPecaId', descricao);
 		};
