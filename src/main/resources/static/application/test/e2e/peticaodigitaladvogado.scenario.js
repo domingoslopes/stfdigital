@@ -22,6 +22,8 @@
 	
 	var principalPage;
 	
+	var peticaoId;
+	
 	describe('Autuação de Petições Digitais Originárias:', function() {
 		
 		beforeEach(function() {
@@ -36,7 +38,7 @@
 			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
 			
 			// Iniciando o Processo de Autuação...
-			principalPage.iniciarProcessoDigital();
+			principalPage.iniciarProcesso('peticionamento', 'novoItemIcon');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao/);
@@ -45,28 +47,51 @@
 		it('Deveria enviar uma nova petição digital', function() {
 			var peticionamentoPage = new PeticionamentoPage();
 			
-			peticionamentoPage.classificar('AP');
+			peticionamentoPage.classificarClasse('AP');
 			
 			peticionamentoPage.partePoloAtivo('João da Silva');
 		    
 			peticionamentoPage.partePoloPassivo('Maria da Silva');
+			
+			peticionamentoPage.uploadPecas();
+			
+			peticionamentoPage.selecionarTipoPeca('Ato coator');
 		    
 			peticionamentoPage.registrar();
 
+			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
 			principalPage.login('autuador');
 			
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toEqual(6);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #6');
+		    var pos;
+		    var res;
+		    
+		    
+		    //peticaoId = compilarId(principalPage.tarefas().get(0).getText());
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	console.log(pos);
+		    	res = text.substr(pos+1, text.length);
+		    });
+		    
+		    
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #' + res );
+		    
+/*			compilarId = function(texto){
+				var pos = texto.search("#");
+				var res = texto.substr(pos+1, texto.length);
+				return res;
+			};*/
 		});
 		
 
 		it('Deveria atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/6\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/144\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -78,9 +103,9 @@
 			
 		    principalPage.login('distribuidor');
 		    
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toEqual(2);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #6');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #144');
 		    
 		});
 
@@ -88,7 +113,7 @@
 			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/6\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/144\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
@@ -100,6 +125,10 @@
 			
 			principalPage.login('recebedor');
 		}); 
+		
+
 
 	});
+	
+
 })();

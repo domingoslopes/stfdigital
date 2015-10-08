@@ -16,7 +16,8 @@
 					{nome : 'preautuador'},
 					{nome : 'cartoraria'},
 					{nome : 'autuador'}, 
-					{nome : 'distribuidor'}
+					{nome : 'distribuidor'},
+					{nome : 'representante'}
 				];
 			}
 		};
