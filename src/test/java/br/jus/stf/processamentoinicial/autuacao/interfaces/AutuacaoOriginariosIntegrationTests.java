@@ -68,7 +68,8 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoEletronica.append("{\"classeId\":\"HC\",");
 		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
 		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
-		peticaoEletronica.append("\"documentos\":[\"" + idDoc + "\"]}");
+		peticaoEletronica.append("\"pecas\": [{\"documentoTemporario\":\"" + idDoc + "\",");
+		peticaoEletronica.append("\"tipo\":1}]}]}");
 		this.peticaoEletronica = peticaoEletronica.toString();
 		
 		//Cria um objeto contendo os dados da petição física a ser usado no teste do registro da petição física.

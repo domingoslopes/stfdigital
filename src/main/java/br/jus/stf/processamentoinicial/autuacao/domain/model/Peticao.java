@@ -3,6 +3,7 @@ package br.jus.stf.processamentoinicial.autuacao.domain.model;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -30,7 +31,6 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.shared.ClasseId;
-import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoWorkflowId;
@@ -68,20 +68,24 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	private String motivoRejeicao;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PartePeticao.class)
-	@JoinColumn(name = "SEQ_PETICAO")
+	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
 	private Set<Parte> partes = new HashSet<Parte>(0);
 		
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PETICAO_DOCUMENTO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
-	private Set<DocumentoId> documentos = new TreeSet<DocumentoId>((d1, d2) -> d1.toLong().compareTo(d2.toLong()));
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaPeticao.class)
+	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
+	private Set<Peca> pecas = new LinkedHashSet<Peca>(0); // Para utilizar TreeSet Peca deve implementar Comparable
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO"))
+	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
 	private Set<ProcessoWorkflowId> processosWorkflow = new TreeSet<ProcessoWorkflowId>((p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 	
 	@Transient
 	private String identificacao;
 
+	Peticao() {
+
+	}
+	
 	public Peticao(final PeticaoId id, final Long numero) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
@@ -92,6 +96,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.identificacao = montarIdentificacao();
 	}
 
+	@Override
 	public PeticaoId id() {
 		return this.id;
 	}
@@ -147,28 +152,28 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return this.partes.remove(parte);
 	}
 	
-	public Set<DocumentoId> documentos(){
-		return Collections.unmodifiableSet(this.documentos);
+	public Set<Peca> pecas(){
+		return Collections.unmodifiableSet(this.pecas);
 	}
 
 	/**
 	 * 
-	 * @param documento
+	 * @param peca
 	 */
-	public boolean adicionarDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.required");
+	public boolean adicionarPeca(final Peca peca) {
+		Validate.notNull(peca, "peticao.peca.required");
 	
-		return this.documentos.add(documento);
+		return this.pecas.add(peca);
 	}
 	
 	/**
 	 * 
-	 * @param documento
+	 * @param peca
 	 */
-	public boolean removerDocumento(final DocumentoId documento) {
-		Validate.notNull(documento, "peticao.documento.required");
+	public boolean removerPeca(final Peca peca) {
+		Validate.notNull(peca, "peticao.peca.required");
 	
-		return this.documentos.remove(documento);
+		return this.pecas.remove(peca);
 	}
 
 	public ClasseId classeProcessual() {
@@ -228,6 +233,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return this.getClass().equals(PeticaoEletronica.class);
 	}
 	
+	public abstract boolean hasRepresentacao();
+	
 	/**
 	 * Sugestão de classe
 	 * 
@@ -264,11 +271,6 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	private String montarIdentificacao() {
 		return new StringBuilder()
 			.append(numero).append("/").append(ano).toString();
-	}
-
-	// Hibernate
-	Peticao() {
-		
 	}
 	
 }

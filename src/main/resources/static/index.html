@@ -31,9 +31,15 @@
     <link href="theme/assets/pages/css/pages-icons.css" rel="stylesheet" type="text/css">
     <link class="main-stylesheet" href="theme/assets/pages/css/pages.css" rel="stylesheet" type="text/css" />
     <link class="main-stylesheet" href="theme/assets/pages/css/themes/simple.css" rel="stylesheet" type="text/css" />
+        <link class="main-stylesheet" href="tmp/style.css" rel="stylesheet" type="text/css" />
     
     <!-- BEGIN Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="tmp/style.css" />
+    <link rel="stylesheet" type="text/css"/>
+           <style>
+            .my-drop-zone { border: dotted 3px lightgray; }
+            .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+            .another-file-over-class { border: dotted 3px green; }
+        </style>
   </head>
   <body class="fixed-header">
     <!-- BEGIN SIDEBAR -->
@@ -74,6 +80,13 @@
               <span class="details">Petições Digitais</span>
             </a>
             <span class="icon-thumbnail bg-success"><i id="novoItemIcon" class="fa fa-plus"></i></span>
+          </li>
+          <li>
+            <a ui-sref="peticionamento-orgao" class="detailed">
+              <span class="title">Novo Item</span>
+              <span class="details">Petições Órgãos</span>
+            </a>
+            <span class="icon-thumbnail bg-success"><i id="novoItemOrgaoIcon" class="fa fa-plus"></i></span>
           </li>
         </ul>
         <div class="clearfix"></div>
@@ -166,18 +179,6 @@
         <div ui-view="modal" autoscroll="false"></div>
         <!-- END PAGE CONTENT -->
         <!-- START FOOTER -->
-        <div class="container-fluid container-fixed-lg footer">
-          <div class="copyright sm-text-center">
-            <p class="small no-margin pull-left sm-pull-reset">
-              <span class="hint-text">Copyright © 2014</span>
-              <span class="font-montserrat">Supremo Tribunal Federal</span>.
-              <span class="hint-text">Todos os direitos reservados.</span>
-              <span class="sm-block"><a href="#" class="m-l-10 m-r-10">Termos de Uso</a> | <a href="#" class="m-l-10">Política de Privacidade</a>
-                        </span>
-            </p>
-            <div class="clearfix"></div>
-          </div>
-        </div>
         <!-- END FOOTER -->
       </div>
       <!-- END PAGE CONTENT WRAPPER -->
@@ -349,7 +350,9 @@
     <script type="text/javascript" src="vendor/select2/select2.js"></script>
     <script type="text/javascript" src="vendor/select2/select2_locale_pt-BR.js"></script>
     <script type="text/javascript" src="vendor/angular-ui-select2/src/select2.js"></script>
+    <script type="text/javascript" src="vendor/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="vendor/angular-sanitize/angular-sanitize.js"></script>
+   	<script type="text/javascript" src="vendor/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <script type="text/javascript" src="vendor/d3/d3.js"></script>
     <script type="text/javascript" src="vendor/nvd3/build/nv.d3.js"></script>
     <script type="text/javascript" src="vendor/angular-nvd3/dist/angular-nvd3.js"></script>
@@ -379,8 +382,11 @@
     
     <script type="text/javascript" src="application/autuacao/autuacao.module.js"></script>
     <script type="text/javascript" src="application/autuacao/detalhe/detalhepeticao.controller.js"></script>
-    <script type="text/javascript" src="application/autuacao/peticionamento/peticionamento.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/advogado/peticionamento.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/orgao/peticionamento.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/classe.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/peca.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/orgao.service.js"></script>
 	<script type="text/javascript" src="application/autuacao/registro/dummy_action.controller.js"></script>	
     <script type="text/javascript" src="application/autuacao/autuacao/autuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/distribuicao/distribuicao.controller.js"></script>
@@ -389,6 +395,7 @@
     <script type="text/javascript" src="application/autuacao/distribuicao/ministro.service.js"></script>
     <script type="text/javascript" src="application/autuacao/devolucao/devolucao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticao.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/directives/visualizadorPdfDirective.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/dashlets/peticoes.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/autuacao/dashlets/grafico-peticoes.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/preautuacao/dashlets/peticoes-preautuar.controller.js"></script>
