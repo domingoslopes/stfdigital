@@ -12,13 +12,9 @@
 	
 	var PeticionamentoPage = require('./pages/peticionamento.page');
 	
-	var RegistroPage = require('./pages/registro.page');
-	
 	var AutuacaoPage = require('./pages/autuacao.page');
 	
 	var DistribuicaoPage = require('./pages/distribuicao.page');
-	
-	var PreautuacaoPage = require('./pages/preautuacao.page');
 	
 	var principalPage;
 	
@@ -26,71 +22,60 @@
 	
 	var peticaoId;
 	
-	describe('Autuação de Petições Físicas Originárias:', function() {
+	describe('Autuação de Petições Digitais Originárias por Órgãos:', function() {
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
 		});
 
-		it('Deveria navegar para a página de envio de petições físicas', function() {
+		it('Deveria navegar para a página de envio de petições digitais por órgãos', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
 			
-			// Iniciando o Processo de Remessa Físca
-			principalPage.iniciarProcesso('registro', 'novaPFIcon');
+			// Verificando se a Home Page tem conteúdo...
+			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
+			
+			// Iniciando o Processo de Autuação...
+			principalPage.iniciarProcesso('peticionamento-orgao', 'novoItemOrgaoIcon');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/orgao/);
 		});
-		
-		it('Deveria registrar uma petição física', function(){
-			var registroPage = new RegistroPage();
+
+		it('Deveria enviar uma nova petição digital com órgão', function() {
+			var peticionamentoPage = new PeticionamentoPage();
 			
-			registroPage.qtdVolumes(2);
+			peticionamentoPage.classificarClasse('AP');
 			
-			registroPage.qtdApensos(2);
+			peticionamentoPage.classificarOrgao('PGR');
 			
-			registroPage.classificarTipoRecebimento('Sedex');
+			peticionamentoPage.partePoloAtivo('Pedro de Souza');
+		    
+			peticionamentoPage.partePoloPassivo('Ana de Souza');
 			
-			registroPage.numSedex(2);
+			peticionamentoPage.uploadPecas();
 			
-			registroPage.registrar();
-			
+			peticionamentoPage.selecionarTipoPeca('Petição Inicial');
+		    
+			peticionamentoPage.registrar();
+
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			principalPage.login('preautuador');
+			principalPage.login('autuador');
 			
-		    expect(principalPage.tarefas().count()).toEqual(5);
+		    expect(principalPage.tarefas().count()).toEqual(6);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
 		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #' + peticaoId);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #' + peticaoId);
 		    });
 		    
 		});
 		
 
-		it('Deveria pré-atuar como válida a petição recebida', function() {
-		    principalPage.executarTarefa();
-
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/preautuacao/);
-		    
-			var preautuacaoPage = new PreautuacaoPage();
-			
-			preautuacaoPage.classificar('AP');
-			
-			preautuacaoPage.finalizar();
-			
-			//Seta o papel autuador
-			principalPage.login('autuador');
-			
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-		    
-		});
-		
-		it('Deveria atuar como válida a petição física recebida', function() {
+		it('Deveria atuar como válida a petição recebida com órgão', function() {
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
@@ -115,8 +100,8 @@
 		    });
 		    
 		});
-		
-		it('Deveria distribuir a petição física autuada', function() {
+
+		it('Deveria distribuir a petição autuada com órgão', function() {
 			
 		    principalPage.executarTarefa();
 
@@ -130,9 +115,8 @@
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			//Seta o papel recebedor
 			principalPage.login('recebedor');
 		}); 
-		
+
 	});
 })();

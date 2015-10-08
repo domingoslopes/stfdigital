@@ -22,6 +22,8 @@
 	
 	var principalPage;
 	
+	var pos;
+	
 	var peticaoId;
 	
 	describe('Autuação de Petições Digitais Originárias:', function() {
@@ -66,32 +68,22 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(6);
 		    
-		    var pos;
-		    var res;
-		    
-		    
-		    //peticaoId = compilarId(principalPage.tarefas().get(0).getText());
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
-		    	console.log(pos);
-		    	res = text.substr(pos+1, text.length);
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #' + peticaoId);
 		    });
 		    
-		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #' + res );
-		    
-/*			compilarId = function(texto){
-				var pos = texto.search("#");
-				var res = texto.substr(pos+1, texto.length);
-				return res;
-			};*/
 		});
 		
 
 		it('Deveria atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
+		    
+		    var urlExpressao = 
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/144\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -103,17 +95,22 @@
 			
 		    principalPage.login('distribuidor');
 		    
-		    expect(principalPage.tarefas().count()).toEqual(2);
+		    expect(principalPage.tarefas().count()).toEqual(3);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #144');
-		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
+		    });
+		    		    
 		});
 
 		it('Deveria distribuir a petição autuada', function() {
 			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/144\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
