@@ -19,8 +19,8 @@
 			utils.select('div#s2id_classe', sigla);
 		};
 		
-		this.classificarOrgaoClasse = function(sigla) {
-			utils.select('div#s2id_orgao', sigla);
+		this.classificarOrgao = function(nome) {
+			utils.select('div#s2id_orgao', nome);
 		};
 		
 		this.partePoloAtivo = function(nome) {
