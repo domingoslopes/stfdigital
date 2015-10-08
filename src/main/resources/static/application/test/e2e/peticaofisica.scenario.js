@@ -33,7 +33,7 @@
 			principalPage = new PrincipalPage();
 			
 			// Iniciando o Processo de Remessa Físca
-			principalPage.iniciarProcessoFisico();
+			principalPage.iniciarProcesso('registro', 'novaPFIcon');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
@@ -58,14 +58,14 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		   expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #7');
+		   expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #108');
 		});
 		
 
 		it('Deveria pré-atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/preautuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/108\/preautuacao/);
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
@@ -83,7 +83,7 @@
 		it('Deveria atuar como válida a petição física recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/108\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -97,14 +97,14 @@
 		    
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #7');
+		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #108');
 		});
 		
 		it('Deveria distribuir a petição física autuada', function() {
 			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/108\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
