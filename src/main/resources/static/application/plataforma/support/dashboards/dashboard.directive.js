@@ -16,28 +16,15 @@
 	 * @example
 	 * <div data-dashboard=""></div>
 	 */
-	angular.plataforma.directive('dashboard', ['$compile', 'Dashlets', 'DashboardService', function($compile, Dashlets, DashboardService) {
+	angular.plataforma.directive('dashboard', ['$compile', 'Dashlets', 'DashboardService', 'DashboardLayoutManager', function($compile, Dashlets, DashboardService, DashboardLayoutManager) {
 		return {
 			restrict : 'ECA',
 			scope: {},
 			templateUrl: 'application/plataforma/support/dashboards/dashboard-layout.tpl.html',
 			controller: ['$scope', function($scope) {
-				$scope.linhas = [];
+				$scope.layout = {};
 				DashboardService.getDashlets().then(function(dashlets) {
-					if (dashlets && dashlets.length > 0) {
-						var linhaAtual, columnClasses;
-						for (var i = 0; i < dashlets.length; i++) {
-							if (i % 2 === 0) {
-								linhaAtual = {
-									colunas: []
-								};
-								$scope.linhas.push(linhaAtual);
-								linhaAtual.colunas.push({dashlet: dashlets[i], columnClasses: ['col-md-6', 'col-lg-6', 'hidden-xlg m-b-10']});
-							} else {
-								linhaAtual.colunas.push({dashlet: dashlets[i], columnClasses: ['col-md-6', 'col-lg-6', 'hidden-xlg m-b-10']});
-							}
-						}
-					}
+					$scope.layout = DashboardLayoutManager.defaultLayout(dashlets);
 				});
 			}]
 		};
