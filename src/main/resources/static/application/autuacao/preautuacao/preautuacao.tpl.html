@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-        <form ng-submit="preautuacao.finalizar()">
+        <form>
         	<div class="row">
         		<div class="col-md-6">
 					<div class="card share" data-social="item" style="width: 100%">
@@ -70,9 +70,9 @@
 					</div>
 				</div>
 			</div>
-        	
             <p>
-                <input id="finalizar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Finalizar">
+                <button id="devolver" class="btn btn-danger btn-cons" ng-click="preautuacao.devolver()">Devolver</button>
+                <button id="finalizar" class="btn btn-complete btn-cons" ng-click="preautuacao.finalizar()">Finalizar</button>
             </p>
         </form>
 	</div>

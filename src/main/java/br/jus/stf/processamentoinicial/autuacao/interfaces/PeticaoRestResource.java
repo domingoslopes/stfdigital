@@ -1,7 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -107,13 +107,20 @@ public class PeticaoRestResource {
 		
 		// [TODO] Remover assim que o frond-end for capaz de enviar a lista real
 		byte[] conteudo = IOUtils.toByteArray(new ClassPathResource("pdf/archimate.pdf").getInputStream());
-	    MockMultipartFile mockArquivo = new MockMultipartFile("file", "teste_arq_temp.pdf", "application/pdf", conteudo);
-		command.setDocumentos(Arrays.asList(documentoServiceFacade.salvarDocumentoTemporario(mockArquivo)));
+		MockMultipartFile mockArquivo = new MockMultipartFile("file", "teste_arq_temp.pdf", "application/pdf", conteudo);
+		List<Map<String,String>> pecas = new ArrayList<Map<String,String>>();
+	    Map<String,String> peca = new LinkedHashMap<String,String>();
+	    
+	    peca.put("documentoTemporario", documentoServiceFacade.salvarDocumentoTemporario(mockArquivo));
+	    peca.put("tipo", "1");
+	    peca.put("descricao", "Petição inicial");
+	    pecas.add(peca);
+	    command.setPecas(pecas);
 		
 		if (binding.hasErrors()) {
 			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
 		}
-		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getDocumentos());
+		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas());
 	}
 
     @ApiOperation("Registra uma nova petição física")

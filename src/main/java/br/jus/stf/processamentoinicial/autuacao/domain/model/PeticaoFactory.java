@@ -2,7 +2,10 @@ package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.PrimitiveIterator.OfInt;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,22 +41,22 @@ public class PeticaoFactory {
 	 * @param classeSugerida
 	 * @param poloAtivo
 	 * @param poloPassivo
-	 * @param documentos
+	 * @param pecas
 	 * @return a petição
 	 */
 	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, 
-			List<String> poloAtivo, List<String> poloPassivo, List<DocumentoTemporarioId> documentosTemporarios) {
+			List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecasTemporarias) {
 		
 		Set<PartePeticao> partes = new HashSet<PartePeticao>();
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
 		adicionarPartes(partes, poloPassivo, TipoPolo.POLO_PASSIVO);
 		
-		Set<DocumentoId> documentos = adicionarDocumentos(documentosTemporarios);
+		Set<PecaPeticao> pecas = adicionarPecas(pecasTemporarias);
 		
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
 		
-		return new PeticaoEletronica(id, numero, classeSugerida, partes, documentos);
+		return new PeticaoEletronica(id, numero, classeSugerida, partes, pecas);
 	}
 
 	/**
@@ -85,13 +88,25 @@ public class PeticaoFactory {
 	}
 	
 	/**
-	 * Salva os documentos temporários e recupera os ids
+	 * Salva as peças temporárias e recupera os ids
 	 * 
-	 * @param documentos
+	 * @param pecas
 	 * @return
 	 */
-	private Set<DocumentoId> adicionarDocumentos(List<DocumentoTemporarioId> documentos){
-		return documentoAdapter.salvarDocumentos(documentos);
+	private Set<PecaPeticao> adicionarPecas(List<PecaTemporaria> pecas) {
+		List<DocumentoTemporarioId> documentosTemporarios = pecas.stream()
+				.map(peca -> peca.documentoTemporario())
+				.collect(Collectors.toList());
+		Set<DocumentoId> documentos = documentoAdapter.salvarDocumentos(documentosTemporarios);
+		OfInt linhas = IntStream.range(0, documentos.size()).iterator();
+
+		return documentos.stream()
+				.map(documento -> {
+					int index = linhas.nextInt();
+					TipoPeca tipo = pecas.get(index).tipo();
+					String descricao = pecas.get(index).descricao();
+					return new PecaPeticao(documento, tipo, descricao);
+				}).collect(Collectors.toSet());
 	}
 	
 }

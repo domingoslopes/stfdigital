@@ -22,12 +22,17 @@ public abstract class Parte implements ValueObject<Parte> {
 	private static final long serialVersionUID = 1L;
 	
 	@Embedded
+	@Column(nullable = false)
 	private PessoaId pessoaId;
 	
-	@Column(name = "TIP_POLO")
+	@Column(name = "TIP_POLO", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TipoPolo polo;
 
+	Parte() {
+
+	}
+	
 	protected Parte(final PessoaId pessoaId, final TipoPolo polo){
 		Validate.notNull(pessoaId, "parte.pessoaId.required");
 		Validate.notNull(polo, "parte.polo.required");
@@ -67,7 +72,4 @@ public abstract class Parte implements ValueObject<Parte> {
 		return other != null && this.pessoaId.sameValueAs(other.pessoaId) && this.polo.sameValueAs(other.polo);
 	}
 	
-	Parte() {
-		
-	}
 }
