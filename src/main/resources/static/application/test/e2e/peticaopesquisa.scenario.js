@@ -24,10 +24,10 @@
 		});
 		
 		it('Deveria pesquisar uma petição', function(){
-			pesquisaPeticaoPage.filtrarPorNumero(22);
+			//pesquisaPeticaoPage.filtrarPorNumero(22);
 			pesquisaPeticaoPage.filtrarPorAno(2015);
-			pesquisaPeticaoPage.filtrarPorClasse('ADI');
-			pesquisaPeticaoPage.filtrarPorParte('João');
+			pesquisaPeticaoPage.filtrarPorClasse('AP');
+			pesquisaPeticaoPage.filtrarPorParte('Maria da Silva');
 			pesquisaPeticaoPage.pesquisar();
 			
 		    expect(pesquisaPeticaoPage.resultados().count()).toBeGreaterThan(0);    

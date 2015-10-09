@@ -20,7 +20,7 @@ public class ElasticsearchConfiguration {
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
 	
-	@PostConstruct
+    @PostConstruct
 	private void configure() {
 		if (!elasticsearchTemplate.indexExists(Pesquisa.class)) {
 			elasticsearchTemplate.createIndex(Pesquisa.class);
