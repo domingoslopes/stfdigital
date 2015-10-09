@@ -1,3 +1,4 @@
+// TODO Remover essa controller quando começar a utilizar o mecanismo de dashlets
 /**
  * @author Rodrigo Barreiros
  * 
