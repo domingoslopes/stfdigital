@@ -29,8 +29,8 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 		mapeamentoPapelDashboard.put("preautuador", buildDashboardFromDashlets("peticoes-para-preautuar"));
 		mapeamentoPapelDashboard.put("autuador", buildDashboardFromDashlets("minhas-tarefas"));
 		mapeamentoPapelDashboard.put("distribuidor",
-				buildDashboardFromDashlets("grafico-distribuicao", "grafico-peticoes"));
-		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("grafico-distribuicao", "minhas-peticoes",
+				buildDashboardFromDashlets("minhas-tarefas", "grafico-distribuicao", "grafico-peticoes"));
+		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("minhas-tarefas", "grafico-distribuicao",
 				"grafico-peticoes", "peticoes-para-preautuar"));
 	}
 
