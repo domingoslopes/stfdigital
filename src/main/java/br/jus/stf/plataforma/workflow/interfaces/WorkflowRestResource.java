@@ -37,11 +37,18 @@ public class WorkflowRestResource {
 	private Validator validator;
 
 	//TODO : Substituir validação pelo @Valid e injeção do BindingResult
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long iniciar(@RequestBody IniciarProcessoCommand command) {
 		validate(command);
 		return processoServiceFacade.iniciar(command.getInformacao(), command.getMensagem(), command.getStatus());
+	}
+	
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public Long iniciarPorMensagem(@RequestBody IniciarProcessoCommand command) {
+		validate(command);
+		return processoServiceFacade.iniciarPorMensagem(command.getInformacao(), command.getMensagem(), command.getStatus());
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)

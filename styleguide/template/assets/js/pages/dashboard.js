@@ -333,7 +333,6 @@ altair_dashboard = {
                             var $clndr_events_panel = $('.clndr_events'),
                                 thisDate = target.date._i;
 
-
                             $(target.element)
                                 .siblings('.day').removeClass('day-active')
                                 .end()
@@ -508,7 +507,7 @@ altair_dashboard = {
                 var $this = $(this);
                 if(!$this.hasClass(active_class)) {
                     var this_src = $this.attr('data-video-src'),
-                        iframe_embed = '<iframe height="150" src="https://www.youtube.com/embed/' + this_src + '?rel=0" frameborder="0" allowfullscreen></iframe>'
+                        iframe_embed = '<iframe height="150" src="https://www.youtube.com/embed/' + this_src + '?rel=0" frameborder="0" allowfullscreen></iframe>';
 
                     $video_playlist.children('li').removeClass(active_class);
                     $this.addClass(active_class);

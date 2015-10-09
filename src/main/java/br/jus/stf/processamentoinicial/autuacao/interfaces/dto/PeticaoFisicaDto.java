@@ -6,8 +6,7 @@ import java.util.Map;
 import com.wordnik.swagger.annotations.ApiModel;
 
 /**
- * @author Lucas.Rodrigues
- * 
+ * @author Lucas Rodrigues
  */
 @ApiModel(value = "Representa a petição física registrada")
 public class PeticaoFisicaDto extends PeticaoDto {
@@ -17,8 +16,8 @@ public class PeticaoFisicaDto extends PeticaoDto {
 	private String formaRecebimento;
 	private String numeroSedex;
 
-	public PeticaoFisicaDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<Long> documentos) {
-		super(id, numero, ano, classe, partes, documentos);
+	public PeticaoFisicaDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas) {
+		super(id, numero, ano, classe, partes, pecas);
 	}
 	
 	/**

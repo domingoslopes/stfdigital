@@ -53,5 +53,7 @@ public interface ProcessoWokflowRepository {
 	 * @param status
 	 */
 	void updateStatus(ProcessoWorkflowId processoWorkflowId, String status);
+
+	ProcessoWorkflowId criarPorMensagem(Long informacao, String mensagem, String status);
 	
 }

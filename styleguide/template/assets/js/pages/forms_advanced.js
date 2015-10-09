@@ -7,6 +7,8 @@ $(function() {
     altair_form_adv.adv_selects();
     // masked_inputs
     altair_form_adv.masked_inputs();
+    // date range
+    altair_form_adv.date_range();
 });
 
 altair_form_adv = {
@@ -211,5 +213,26 @@ altair_form_adv = {
         if($maskedInput.length) {
             $maskedInput.inputmask();
         }
+    },
+    // date range
+    date_range: function() {
+        var $dp_start = $('#uk_dp_start'),
+            $dp_end = $('#uk_dp_end');
+
+        var start_date = UIkit.datepicker($dp_start, {
+            format:'DD.MM.YYYY'
+        });
+
+        var end_date = UIkit.datepicker($dp_end, {
+            format:'DD.MM.YYYY'
+        });
+
+        $dp_start.on('change',function() {
+            end_date.options.minDate = $dp_start.val();
+        });
+
+        $dp_end.on('change',function() {
+            start_date.options.maxDate = $dp_end.val();
+        });
     }
 };

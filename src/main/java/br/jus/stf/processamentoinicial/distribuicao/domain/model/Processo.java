@@ -2,19 +2,16 @@ package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,9 +22,10 @@ import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
 import br.jus.stf.shared.ClasseId;
-import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
@@ -47,6 +45,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	private ProcessoId id;
 	
 	@Embedded
+	@Column(nullable = false)
 	private ClasseId classe;
 	
 	@Column(name = "NUM_PROCESSO", nullable = false)
@@ -58,15 +57,16 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	private MinistroId relator;
 
 	@Embedded
+	@Column(nullable = false)
 	private PeticaoId peticao;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = ParteProcesso.class)
-	@JoinColumn(name = "SEQ_PROCESSO")
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
 	private Set<Parte> partes = new HashSet<Parte>(0);
 	
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PROCESSO_DOCUMENTO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO"))
-	private Set<DocumentoId> pecas = new TreeSet<DocumentoId>( (p1, p2) -> p1.toLong().compareTo(p2.toLong()));
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaProcesso.class)
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	private Set<Peca> pecas = new LinkedHashSet<Peca>(0); // Para utilizar TreeSet Peca deve implementar Comparable
 	
 	@Transient
 	private String identificacao;
@@ -79,7 +79,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Processo(final ProcessoId id, final ClasseId classe, final Long numero, final MinistroId relator, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<DocumentoId> pecas) {
+	public Processo(final ProcessoId id, final ClasseId classe, final Long numero, final MinistroId relator, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas) {
 		Validate.notNull(id, "processo.id.required");
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
@@ -152,7 +152,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * 
 	 * @param peca
 	 */
-	public boolean adicionarPeca(final DocumentoId peca){
+	public boolean adicionarPeca(final Peca peca){
 		Validate.notNull(peca, "peticao.peca.required");
 	
 		return this.pecas.add(peca);
@@ -162,13 +162,13 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * 
 	 * @param peca
 	 */
-	public boolean removerPeca(final DocumentoId peca){
+	public boolean removerPeca(final Peca peca){
 		Validate.notNull(peca, "peticao.peca.required");
 	
 		return this.pecas.remove(peca);
 	}
 
-	public Set<DocumentoId> pecas() {
+	public Set<Peca> pecas() {
 		return Collections.unmodifiableSet(pecas);
 	}
 	

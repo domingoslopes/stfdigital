@@ -18,3 +18,25 @@ body {
      * background-color: black !important;
      */ 
 }
+
+.force-pointer {
+	cursor: pointer;
+}
+
+.my-drop-zone {
+	border: dotted 1px lightgray;
+	background-color: rgba(0,0,0,0.03); 
+	min-height: 180px;
+	background-image: url("/theme/custom/img/dropzone.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.my-drop-zone-single {
+	border: dotted 1px lightgray;
+	background-color: rgba(0,0,0,0.03); 
+	min-height: 360px;
+	background-image: url("../img/dropzone_stf_sem_arraste.png");
+	background-repeat: no-repeat;
+	background-position: center center;
+}
