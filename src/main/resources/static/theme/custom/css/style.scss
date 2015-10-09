@@ -24,7 +24,7 @@ body {
 }
 
 .my-drop-zone {
-	border: dotted 1px lightgray;
+	border: dotted 3px lightgray;
 	background-color: rgba(0,0,0,0.03); 
 	min-height: 180px;
 	background-image: url("/theme/custom/img/dropzone.png");
@@ -39,4 +39,12 @@ body {
 	background-image: url("../img/dropzone_stf_sem_arraste.png");
 	background-repeat: no-repeat;
 	background-position: center center;
+}
+
+.nv-file-over { 
+	border: dotted 3px red; 
+}
+
+.another-file-over-class {
+	border: dotted 3px green;
 }

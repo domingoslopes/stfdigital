@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Peticionamento Controller', function() {
+	describe('Peticionamento Advogado Controller', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
@@ -27,7 +27,7 @@
 			
 			$httpBackend.flush();
 			
-			controller = $controller('PeticionamentoController', {
+			controller = $controller('PeticionamentoAdvogadoController', {
 				$scope : scope,
 				data : {
 					data : fakeData
