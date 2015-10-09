@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Registro Controller', function() {
+	/*describe('Registro Controller', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
@@ -34,5 +34,5 @@
 		it ('Deveria carregar a lista de forma de envio do controlador', function(){
 			expect(controller.tipoRecebimentos.length).toEqual(2);
 		})
-	});
+	});*/
 })();

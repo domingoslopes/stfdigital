@@ -23,13 +23,11 @@ public class AutuacaoConfiguration {
 	@PostConstruct
 	private void configure() throws Exception {
 				
-		if (!indexadorRestAdapter.existeIndice("autuacao")) {
-			ClassPathResource resource = new ClassPathResource("/indices/autuacao.json");
-			String configuracao = FileUtils.readFileToString(resource.getFile());
-			configuracao = StringUtils.trimAllWhitespace(configuracao);
+		ClassPathResource resource = new ClassPathResource("/indices/processamentoinicial/autuacao.json");
+		String configuracao = FileUtils.readFileToString(resource.getFile());
+		configuracao = StringUtils.trimAllWhitespace(configuracao);
 			
-			indexadorRestAdapter.criarIndice("autuacao", configuracao);
-		}
+		indexadorRestAdapter.criarIndice("autuacao", configuracao);
 	}
 	
 }

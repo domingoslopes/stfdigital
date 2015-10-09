@@ -18,7 +18,7 @@ exports.config = {
 		defaultTimeoutInterval : 30000
 	},
 
-	specs : [ baseDir + '/application/test/e2e/**/*.scenario.js' ],
+	specs : [ baseDir + '/application/test/e2e/**/pesquisapeticao.scenario.js' ],
 
 	capabilities : {
 		'browserName' : 'chrome'
@@ -33,7 +33,7 @@ exports.config = {
 	onPrepare: function() {
 		browser.driver.manage().window().maximize();
 		jasmine.getEnv().addReporter(new HtmlReporter({
-			baseDirectory : 'src/main/resources//static/application/test/e2e/results',
+			baseDirectory : 'src/main/resources/static/application/test/e2e/results',
 			takeScreenShotsOnlyForFailedSpecs: true
 		}));
 	}

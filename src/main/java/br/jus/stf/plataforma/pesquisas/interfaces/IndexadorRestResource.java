@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,21 +37,15 @@ public class IndexadorRestResource {
 		}
 		indexadorServiceFacade.criarIndice(command.getIndice(), command.getConfiguracao());
 	}
-	
-	@ApiOperation("Indexa objetos para pesquisa")
-	@RequestMapping(value = "/{indice}/existe", method = RequestMethod.POST)
-	public boolean existeIndice(@PathVariable String indice) {
-		return indexadorServiceFacade.existeIndice(indice);
-	}
 
 	@ApiOperation("Indexa objetos para pesquisa")
-	@RequestMapping(value = "/{indice}", method = RequestMethod.POST)
-	public void indexar(@PathVariable String indice, @RequestBody @Valid IndexarCommand command, BindingResult result) throws Exception {
+	@RequestMapping(value = "/documentos", method = RequestMethod.POST)
+	public void indexar(@RequestBody @Valid IndexarCommand command, BindingResult result) throws Exception {
 		
 		if (result.hasErrors()) {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
-		indexadorServiceFacade.indexar(indice, command.getTipo(), command.getId(), command.getObjeto());
+		indexadorServiceFacade.indexar(command.getId(), command.getTipo(), command.getIndice(), command.getObjeto());
 	}
 
 }

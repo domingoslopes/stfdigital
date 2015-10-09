@@ -70,6 +70,19 @@
 					controller: 'DevolucaoController'
 				}
 			}
+		}).state('pesquisa.peticao', {
+			url: '/peticao',
+			views: {
+				'@': {
+					templateUrl: 'application/autuacao/pesquisa/peticao.tpl.html',
+					controller: 'PesquisaPeticaoController',
+					resolve : {
+						classes : function(ClasseService) {
+							return ClasseService.listar();
+						}
+					}
+				}
+			}
 		}).state('actions.autuacao', { // estado abstrato para agrupar as ações do contexto
 			abstract : true
 		}).state('actions.autuacao.dummy_action', {

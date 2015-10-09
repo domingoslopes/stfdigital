@@ -2,11 +2,9 @@ package br.jus.stf.pesquisa;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,28 +42,24 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
 	
-	@PersistenceContext
-	private EntityManager entityManager;
-	
 	@Test
 	public void pesquisar() throws Exception {
 		
-		//for (int i = 0; i < 20; i++) {
-			PeticaoFisica peticao = peticaoApplicationService.registrar(1, 1, FormaRecebimento.SEDEX, "123");
-			peticao.preautuar(new ClasseId("HC"));
-			peticao.aceitar(new ClasseId("HC"));
-			peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
-			peticao.adicionarDocumento(new DocumentoId(1L));
-			processoApplicationService.distribuir(peticao, new MinistroId(1L));
-		//}
-		elasticsearchTemplate.refresh("autuacao", true);
+		PeticaoFisica peticao = peticaoApplicationService.registrar(1, 1, FormaRecebimento.SEDEX, "123");
+		peticao.preautuar(new ClasseId("HC"));
+		peticao.aceitar(new ClasseId("HC"));
+		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
+		peticao.adicionarDocumento(new DocumentoId(1L));
+		processoApplicationService.distribuir(peticao, new MinistroId(1L));
+		elasticsearchTemplate.refresh("distribuicao", true);
 		
-		mockMvc.perform(post("/api/pesquisa")
+		mockMvc.perform(post("/api/pesquisas/sugestoes")
     			.contentType(MediaType.APPLICATION_JSON)
-    			.content("{\"indices\": [\"autuacao\"], \"filtros\": {\"identificacao\": \"HC\"}, \"campos\": [\"identificacao\", \"relator.codigo\"], \"ordenador\": \"identificacao\" }"))
+    			//.content("{\"indices\": [\"distribuicao\"], \"filtros\": {\"identificacao\": \"HC\"}, \"campos\": [\"identificacao\", \"relator.codigo\"], \"ordenadores\": {\"identificacao\" : \"ASC\"} }"))
+    			.content("{\"indices\": [\"distribuicao\"], \"filtros\": {\"identificacao_sugestao\": \"HC\"} }"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].tipo", is("Processo")));
-			//.andDo(MockMvcResultHandlers.print());
+			.andExpect(jsonPath("$[0].tipo", is("Processo")))
+			.andDo(print());
 
 	}
 	
