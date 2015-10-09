@@ -18,7 +18,7 @@ exports.config = {
 		defaultTimeoutInterval : 30000
 	},
 
-	specs : [ baseDir + '/application/test/e2e/**/pesquisapeticao.scenario.js' ],
+	specs : [ baseDir + '/application/test/e2e/**/*.scenario.js' ],
 
 	capabilities : {
 		'browserName' : 'chrome'
