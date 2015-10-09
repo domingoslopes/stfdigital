@@ -1,4 +1,7 @@
 /**
+ * Exemplo de Controller para dashlet. Alterar para implementação real
+ * que faça sentido para o negócio.
+ * 
  * @author Tomas.Godoi
  * 
  * @since 1.0.0
