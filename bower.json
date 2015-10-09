@@ -20,7 +20,8 @@
         "datatables.net-rowreorder-bs" : "~1.0.0",
         "datatables.net-buttons-bs": "~1.0.3",
         "ckeditor": "~4.5.3",
-        "angular-file-upload": "~2.1.4"
+        "angular-file-upload": "~2.1.4",
+        "angular-nvd3": "~1.0.2"
     },
     "ignoredDependencies": [ ],
     "devDependencies": {
