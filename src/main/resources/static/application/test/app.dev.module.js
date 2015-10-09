@@ -12,7 +12,7 @@
 		angular.bootstrap(document, ['appDev']);
 	});
 
-	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'mocks'])
+	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'angularFileUpload', 'mocks'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
@@ -21,7 +21,7 @@
 			enabled: true,
 			requireBase: false, // Alterando o requireBase para false, pois estava causando erro no teste unitário
 		});
-		$logProvider.debugEnabled(true);
+		$logProvider.debugEnabled(false);
 		$stateProvider.state('root', {
 		});
 	})

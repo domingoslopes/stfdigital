@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Peticionamento Controller', function() {
+	describe('Peticionamento Órgão Controller', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
@@ -27,7 +27,7 @@
 			
 			$httpBackend.flush();
 			
-			controller = $controller('PeticionamentoController', {
+			controller = $controller('PeticionamentoOrgaoController', {
 				$scope : scope,
 				data : {
 					data : fakeData
@@ -35,7 +35,7 @@
 			});
 		}));
 
-		it('Deveria carregar a lista de classes no escopo do controlador', function() {
+		it('Deveria carregar a lista de orgão no escopo do controlador', function() {
 			expect(scope.orgaos.length).toEqual(3);
 		});
 		
