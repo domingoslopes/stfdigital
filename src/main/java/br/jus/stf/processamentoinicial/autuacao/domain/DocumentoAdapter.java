@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Lucas Rodrigues
@@ -23,6 +24,6 @@ public interface DocumentoAdapter {
 	 * @param documentosTemporarios
 	 * @return a lista de ids dos documentos
 	 */
-	public Set<DocumentoId> salvarDocumentos(List<String> documentosTemporarios);
+	public Set<DocumentoId> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios);
 
 }

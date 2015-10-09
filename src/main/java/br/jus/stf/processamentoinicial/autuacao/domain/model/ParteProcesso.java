@@ -20,6 +20,16 @@ public class ParteProcesso extends Parte {
 
 	private static final long serialVersionUID = -729211641099556612L;
 	
+	@Id
+	@Column(name = "SEQ_PROCESSO_PARTE")
+	@SequenceGenerator(name = "PROCESSOPARTEID", sequenceName = "AUTUACAO.SEQ_PROCESSO_PARTE", allocationSize = 1)
+	@GeneratedValue(generator = "PROCESSOPARTEID", strategy=GenerationType.SEQUENCE)
+	private Long sequencial;
+	
+	ParteProcesso() {
+		
+	}
+	
 	public ParteProcesso(PessoaId pessoaId, TipoPolo tipoPolo) {
 		super(pessoaId, tipoPolo);
 	}
@@ -32,17 +42,6 @@ public class ParteProcesso extends Parte {
 	@Override
 	public boolean equals(Object obj) {
 		return super.equals(obj);
-	}
-	
-	//Hibernate
-	@Id
-	@Column(name = "SEQ_PROCESSO_PARTE")
-	@SequenceGenerator(name = "PROCESSOPARTEID", sequenceName = "AUTUACAO.SEQ_PROCESSO_PARTE", allocationSize = 1)
-	@GeneratedValue(generator = "PROCESSOPARTEID", strategy=GenerationType.SEQUENCE)
-	private Long sequencial;
-	
-	ParteProcesso() {
-		
 	}
 	
 }

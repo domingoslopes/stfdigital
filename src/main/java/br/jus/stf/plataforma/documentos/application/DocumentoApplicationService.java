@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Rodrigo Barreiros
@@ -29,9 +30,9 @@ public class DocumentoApplicationService {
 	 * @param documentosTemporarios
 	 * @return
 	 */
-	public Map<String, DocumentoId> salvarDocumentos(List<String> documentosTemporarios) {
+	public Map<String, DocumentoId> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		return documentosTemporarios.stream()
-				.collect(Collectors.toMap(docTemp -> docTemp, docTemp -> documentoRepository.save(docTemp)));
+				.collect(Collectors.toMap(docTemp -> docTemp.toString(), docTemp -> documentoRepository.save(docTemp)));
 	}
 
 	/**
