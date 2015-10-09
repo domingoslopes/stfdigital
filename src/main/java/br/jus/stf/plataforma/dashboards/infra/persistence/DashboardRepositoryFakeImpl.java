@@ -25,13 +25,11 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 	private static final Map<String, Dashboard> mapeamentoPapelDashboard = new HashMap<>();
 
 	static {
-		mapeamentoPapelDashboard.put("peticionador", buildDashboardFromDashlets("minhas-tarefas", "minhas-peticoes"));
-		mapeamentoPapelDashboard.put("preautuador", buildDashboardFromDashlets("peticoes-para-preautuar"));
+		mapeamentoPapelDashboard.put("peticionador", buildDashboardFromDashlets("minhas-tarefas"));
+		mapeamentoPapelDashboard.put("preautuador", buildDashboardFromDashlets("minhas-tarefas"));
 		mapeamentoPapelDashboard.put("autuador", buildDashboardFromDashlets("minhas-tarefas"));
-		mapeamentoPapelDashboard.put("distribuidor",
-				buildDashboardFromDashlets("minhas-tarefas", "grafico-distribuicao", "grafico-peticoes"));
-		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("minhas-tarefas", "grafico-distribuicao",
-				"grafico-peticoes", "peticoes-para-preautuar"));
+		mapeamentoPapelDashboard.put("distribuidor", buildDashboardFromDashlets("minhas-tarefas"));
+		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("minhas-tarefas"));
 	}
 
 	private static Dashboard buildDashboardFromDashlets(String... dashletsNames) {
