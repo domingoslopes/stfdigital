@@ -54,6 +54,6 @@
         "node": ">=0.12.x"
     },
     "scripts": {
-        "postinstall": "gulp release"
+        "postinstall": "gulp build"
     }
 }

@@ -59,7 +59,7 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		processoApplicationService.distribuir(peticao, new MinistroId(1L));
 		elasticsearchTemplate.refresh("autuacao", true);
 
-		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"autuacao\"], \"filtros\": {\"identificacao\": \"HC\"}, \"campos\": [\"identificacao\", \"relator.codigo\"], \"ordenador\": \"identificacao\" }"))
+		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"distribuicao\"], \"filtros\": {\"identificacao\": \"HC\"}, \"campos\": [\"identificacao\", \"relator.codigo\"], \"ordenador\": \"identificacao\" }"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].tipo", is("Processo")));
 	}

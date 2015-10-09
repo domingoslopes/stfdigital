@@ -1,7 +1,6 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,11 +9,8 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -103,20 +99,7 @@ public class PeticaoRestResource {
 	@ApiOperation("Registra uma nova petição eletrônica")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Petição Inválida")})
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public Long peticionar(@RequestBody @Valid RegistrarPeticaoCommand command, BindingResult binding) throws IOException {
-		
-		// [TODO] Remover assim que o frond-end for capaz de enviar a lista real
-		byte[] conteudo = IOUtils.toByteArray(new ClassPathResource("pdf/archimate.pdf").getInputStream());
-		MockMultipartFile mockArquivo = new MockMultipartFile("file", "teste_arq_temp.pdf", "application/pdf", conteudo);
-		List<Map<String,String>> pecas = new ArrayList<Map<String,String>>();
-	    Map<String,String> peca = new LinkedHashMap<String,String>();
-	    
-	    peca.put("documentoTemporario", documentoServiceFacade.salvarDocumentoTemporario(mockArquivo));
-	    peca.put("tipo", "1");
-	    peca.put("descricao", "Petição inicial");
-	    pecas.add(peca);
-	    command.setPecas(pecas);
-		
+	public Long peticionar(@RequestBody @Valid RegistrarPeticaoCommand command, BindingResult binding) throws IOException {	    		
 		if (binding.hasErrors()) {
 			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
 		}
