@@ -7,7 +7,7 @@
 	'use strict';
 	
 	angular.autuacao.controller('MinhasPeticoesParaAutuarDashletController', ['$scope', function($scope) {
-		$scope.titulo = 'Dashlet Minhas Petições para Autuar';
+		$scope.titulo = 'Dashlet Minhas Petições para Pré-Autuar';
 	}]);
 
 })();
