@@ -14,8 +14,21 @@
 			url: '/peticao',
 			views: {
 				'@': {
-					templateUrl: 'application/autuacao/peticionamento/peticionamento.tpl.html',
-					controller: 'PeticionamentoController',
+					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
+					controller: 'PeticionamentoAdvogadoController',
+					resolve : {
+						data : function(ClasseService) {
+							return ClasseService.listar();
+						}
+					}
+				}
+			}
+		}).state('peticionamento-orgao', {
+			url: '/peticao/orgao',
+			views: {
+				'@': {
+					templateUrl: 'application/autuacao/peticionamento/orgao/peticionamento.tpl.html',
+					controller: 'PeticionamentoOrgaoController',
 					resolve : {
 						data : function(ClasseService) {
 							return ClasseService.listar();
