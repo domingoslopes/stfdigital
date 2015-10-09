@@ -137,7 +137,7 @@
 	/**
 	 * Botão de uma ação específica
 	 * Ex. de uso: 
-	 * <action id="excluir_recurso" resources="recursos"
+	 * <action-executor id="excluir_recurso" resources="recursos"
 	 * 	btn-class="btn-success"	icon-class="fa fa-hand-peace-o" description="Finalizar"
 	 * 	show-description="true" verify-if-allowed="true" show-not-allowed="false" /> 
 	 */

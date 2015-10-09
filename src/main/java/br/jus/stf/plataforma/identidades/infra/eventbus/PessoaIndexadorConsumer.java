@@ -1,4 +1,4 @@
-package br.jus.stf.processamentoinicial.autuacao.infra.eventbus;
+package br.jus.stf.plataforma.identidades.infra.eventbus;
 
 import static reactor.bus.selector.Selectors.$;
 
@@ -12,12 +12,13 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import reactor.bus.Event;
 import reactor.bus.EventBus;
 import reactor.fn.Consumer;
+import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
 import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
-import br.jus.stf.shared.stereotype.Entity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -27,9 +28,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Component
-public class IndexadorConsumer implements Consumer<Event<Entity<?, ?>>>, InitializingBean {
+public class PessoaIndexadorConsumer implements Consumer<Event<Pessoa>>, InitializingBean {
 
-	private static String INDICE = "autuacao";
+	private static String INDICE = "pessoa";
 	
 	@Autowired
 	private EventBus eventBus;
@@ -48,24 +49,41 @@ public class IndexadorConsumer implements Consumer<Event<Entity<?, ?>>>, Initial
 	}
 	
 	@Override
-	public void accept(Event<Entity<?, ?>> event) {
-		Entity<?, ?> entity = event.getData();
+	public void accept(Event<Pessoa> event) {
+		Pessoa pessoa = event.getData();
 		try {
-			IndexarCommand indexarCommand = createCommand(entity);
-			indexadorRestResource.indexar(INDICE, indexarCommand, new BeanPropertyBindingResult(indexarCommand, "indexarCommand"));
+			IndexarCommand indexarCommand = criarComando(pessoa);
+			indexadorRestResource.indexar(indexarCommand, new BeanPropertyBindingResult(indexarCommand, "indexarCommand"));
 		} catch (Exception e) {
 			//event.consumeError(e);
 			throw new RuntimeException("Não foi possível indexar o objeto!", e);
 		}
 	}
 
-	private IndexarCommand createCommand(Entity<?, ?> entity) throws IOException {
+	/**
+	 * @param pessoa
+	 * @return
+	 * @throws IOException
+	 */
+	private IndexarCommand criarComando(Pessoa pessoa) throws IOException {
 		IndexarCommand command = new IndexarCommand();
-		command.setTipo(entity.getClass().getSimpleName());
-		command.setId(entity.id().toString());
-		String json = objectMapper.writeValueAsString(entity);
-		command.setObjeto(objectMapper.readTree(json));
+		command.setId(pessoa.id().toString());
+		command.setTipo(pessoa.getClass().getSimpleName());
+		command.setIndice(INDICE);
+		command.setObjeto(criarJson(pessoa));
 		return command;
+	}
+	
+	/**
+	 * Cria um json para ser indexado
+	 * 
+	 * @param pessoa
+	 * @return
+	 * @throws IOException
+	 */
+	private JsonNode criarJson(Pessoa pessoa) throws IOException {
+		String jsonString = objectMapper.writeValueAsString(pessoa);
+		return objectMapper.readTree(jsonString);
 	}
 
 }
