@@ -27,8 +27,13 @@ public class WorkflowServiceFacade {
 	@Autowired
 	private ProcessoDtoAssembler processoDtoAssembler;
 
-	public Long iniciar(Long informacao, String mensagem, String status) {
-		ProcessoWorkflowId id = processoApplicationService.iniciar(informacao, mensagem, status);
+	public Long iniciarPorMensagem(Long informacao, String mensagem, String status) {
+		ProcessoWorkflowId id = processoApplicationService.iniciarPorMensagem(informacao, mensagem, status);
+		return id.toLong();
+	}
+	
+	public Long iniciar(Long informacao, String chave, String status) {
+		ProcessoWorkflowId id = processoApplicationService.iniciar(informacao, chave, status);
 		return id.toLong();
 	}
 	

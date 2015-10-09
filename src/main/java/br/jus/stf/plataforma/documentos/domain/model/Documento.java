@@ -18,10 +18,14 @@ import br.jus.stf.shared.stereotype.Entity;
 @Table(name = "DOCUMENTO", schema = "CORPORATIVO")
 public class Documento implements Entity<Documento, DocumentoId> {
 
+	Documento() {
+
+	}
+
 	@EmbeddedId
 	private DocumentoId id;
 	
-	@Column(name = "NUM_CONTEUDO")	
+	@Column(name = "NUM_CONTEUDO", nullable = false)	
 	private String numeroConteudo;
 
 	public Documento(final DocumentoId id, final String numeroConteudo) {
@@ -32,6 +36,7 @@ public class Documento implements Entity<Documento, DocumentoId> {
 		this.numeroConteudo = numeroConteudo;
 	}
 
+	@Override
 	public DocumentoId id() {
 		return id;
 	}
@@ -61,10 +66,5 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	public boolean sameIdentityAs(final Documento other) {
 		return other != null && this.id.sameValueAs(other.id);
 	}
-
-	//Hibernate
 	
-	Documento() {
-		
-	}
 }

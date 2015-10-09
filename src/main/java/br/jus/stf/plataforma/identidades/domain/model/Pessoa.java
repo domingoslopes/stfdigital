@@ -18,6 +18,10 @@ import br.jus.stf.shared.stereotype.Entity;
 @Table(name = "PESSOA", schema = "CORPORATIVO")
 public class Pessoa implements Entity<Pessoa, PessoaId> {
 
+	Pessoa() {
+
+	}
+
 	@EmbeddedId
 	private PessoaId id;
 	
@@ -25,13 +29,14 @@ public class Pessoa implements Entity<Pessoa, PessoaId> {
 	private String nome;
 
 	public Pessoa(final PessoaId id, final String nome){
-		Validate.notNull(nome, "pessoa.id.required");
+		Validate.notNull(id, "pessoa.id.required");
 		Validate.notBlank(nome, "pessoa.nome.required");
 		
 		this.id = id;
 		this.nome = nome;
 	}
 
+	@Override
 	public PessoaId id(){
 		return id;
 	}
@@ -60,12 +65,6 @@ public class Pessoa implements Entity<Pessoa, PessoaId> {
 	@Override
 	public boolean sameIdentityAs(final Pessoa other) {
 		return other != null && this.id.sameValueAs(other.id);
-	}
-	
-	//Hibernate
-	
-	Pessoa() {
-		
 	}
 	
 }

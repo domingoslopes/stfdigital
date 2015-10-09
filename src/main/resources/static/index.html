@@ -33,15 +33,10 @@
     <link href="theme/assets/pages/css/pages-icons.css" rel="stylesheet" type="text/css">
     <link class="main-stylesheet" href="theme/assets/pages/css/pages.css" rel="stylesheet" type="text/css" />
     <link class="main-stylesheet" href="theme/assets/pages/css/themes/simple.css" rel="stylesheet" type="text/css" />
-    <link class="main-stylesheet" href="tmp/style.css" rel="stylesheet" type="text/css" />
     
     <!-- BEGIN Custom CSS -->
-    <link rel="stylesheet" type="text/css"/>
-           <style>
-            .my-drop-zone { border: dotted 3px lightgray; }
-            .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
-            .another-file-over-class { border: dotted 3px green; }
-        </style>
+    <link class="main-stylesheet" href="tmp/style.css" rel="stylesheet" type="text/css" />
+    
   </head>
   <body class="fixed-header">
     <!-- BEGIN SIDEBAR -->
@@ -82,6 +77,13 @@
               <span class="details">Petições Digitais</span>
             </a>
             <span class="icon-thumbnail bg-success"><i id="novoItemIcon" class="fa fa-plus"></i></span>
+          </li>
+          <li>
+            <a ui-sref="peticionamento-orgao" class="detailed">
+              <span class="title">Novo Item</span>
+              <span class="details">Petições Órgãos</span>
+            </a>
+            <span class="icon-thumbnail bg-success"><i id="novoItemOrgaoIcon" class="fa fa-plus"></i></span>
           </li>
           <li>
             <a ui-sref="peticionamento-orgao" class="detailed">

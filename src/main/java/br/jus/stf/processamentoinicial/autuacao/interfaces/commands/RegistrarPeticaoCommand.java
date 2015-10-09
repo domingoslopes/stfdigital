@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.commands;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
@@ -30,8 +31,8 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
 	private List<String> partesPoloPassivo;
 	
-	@ApiModelProperty(value = "A lista de identificadores dos documentos que serão anexados pelo peticionador", required=true)
-	private List<String> documentos;
+	@ApiModelProperty(value = "A lista de identificadores das peças que serão anexados pelo peticionador", required=true)
+	private List<Map<String, String>> pecas;
 
 	public void setClasseId(String classeId) {
 		this.classeId = classeId;
@@ -57,12 +58,12 @@ public class RegistrarPeticaoCommand {
 		return partesPoloPassivo;
 	}
 	
-	public void setDocumentos(List<String> documentos) {
-		this.documentos = documentos;
+	public void setPecas(List<Map<String, String>> pecas) {
+		this.pecas = pecas;
 	}
 	
-	public List<String> getDocumentos() {
-		return documentos;
+	public List<Map<String, String>> getPecas() {
+		return pecas;
 	}
 	
 	@Override
