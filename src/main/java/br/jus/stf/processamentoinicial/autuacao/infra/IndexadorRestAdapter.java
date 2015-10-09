@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Lucas.Rodrigues
  *
  */
-@Component
+@Component("indexadorAutuacao")
 public class IndexadorRestAdapter {
 
 	@Autowired
@@ -26,10 +26,6 @@ public class IndexadorRestAdapter {
 		JsonNode json = objectMapper.readTree(configuracao);
 		CriarIndiceCommand command = new CriarIndiceCommand(indice, json);
 		indexadorRestResource.criarIndice(command, new BeanPropertyBindingResult(command, "criarIndiceCommand"));
-	}
-	
-	public boolean existeIndice(String indice) {
-		return indexadorRestResource.existeIndice(indice);
 	}
 	
 }

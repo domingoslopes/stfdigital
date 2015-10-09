@@ -12,15 +12,18 @@
 		angular.bootstrap(document, ['appDev']);
 	});
 
-	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'mocks'])
+	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'mocks', 'templates'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
 		$urlRouterProvider.otherwise('/dashboard');
-		$locationProvider.html5Mode(true);
+		//$locationProvider.html5Mode(true);
 		$logProvider.debugEnabled(true);
 		$stateProvider.state('root', {
 		});
+	})
+	.run(function(ActionService, $state) {
+		ActionService.load("autuacao");
 	})
 	.value('version', '0.1.0');
 	

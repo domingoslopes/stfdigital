@@ -46,9 +46,7 @@ public class PeticaoServiceFacade {
 	 */
 	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<String> documentos) {
 		ClasseId classe = new ClasseId(classeSugerida);
-
 		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, documentos);
-
 		return peticao.id().toLong();
 	}
 	
@@ -73,9 +71,7 @@ public class PeticaoServiceFacade {
 	 */
 	public void preautuar(Long peticaoId, String classeId) {
 		ClasseId classe = new ClasseId(classeId);
-		PeticaoId id = new PeticaoId(peticaoId);
-		PeticaoFisica peticao = Optional.ofNullable(peticaoRepository.findOne(id, PeticaoFisica.class))
-									.orElseThrow(IllegalArgumentException::new);
+		PeticaoFisica peticao = carregarPeticao(peticaoId);
 		peticaoApplicationService.preautuar(peticao, classe);
 	}
 	
@@ -124,10 +120,11 @@ public class PeticaoServiceFacade {
 	 * @param peticaoId
 	 * @return a petição
 	 */
-	private Peticao carregarPeticao(Long peticaoId) {
+	@SuppressWarnings("unchecked")
+	private <T> T carregarPeticao(Long peticaoId) {
 		PeticaoId id = new PeticaoId(peticaoId);
-		return Optional.ofNullable(peticaoRepository.findOne(id))
-				.orElseThrow(IllegalArgumentException::new);
+		return (T) Optional.ofNullable(peticaoRepository.findOne(id))
+					.orElseThrow(IllegalArgumentException::new);
 	}
 	
 }
