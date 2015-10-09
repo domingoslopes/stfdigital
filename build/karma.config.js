@@ -14,15 +14,17 @@ module.exports = {
 
 	// Definindo a lista de arquivos quer serão carregados no browser durante os testes...
 	files : [
+	 	baseDir + '/vendor/jquery/dist/jquery.js',
 		baseDir + '/vendor/angular/angular.js',
 		baseDir + '/vendor/angular-mocks/angular-mocks.js',
+		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
 		baseDir + '/vendor/angular-ui-router/release/angular-ui-router.js',
 		baseDir + '/vendor/ui-router-extras/release/ct-ui-router-extras.js',
 		baseDir + '/vendor/angular-ui-select2/src/select2.js',
-		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
-		baseDir + '/application/app.js', 
+		baseDir + '/vendor/select2/select2.js', 
 		baseDir + '/application/plataforma/**/*.module.js', 
-		baseDir + '/application/plataforma/**/*.js', 
+		baseDir + '/application/plataforma/**/*.js',
+		baseDir + '/application/autuacao/**/*.module.js',
 		baseDir + '/application/autuacao/**/*.js', 
 		baseDir + '/tmp/*.js',
 		baseDir + '/application/test/**/*.module.js',
@@ -60,5 +62,5 @@ module.exports = {
 
 	urlRoot : '/__test/',
 
-	browsers : [ 'PhantomJS' ]
+	browsers : [ 'Chrome' ]
 };
