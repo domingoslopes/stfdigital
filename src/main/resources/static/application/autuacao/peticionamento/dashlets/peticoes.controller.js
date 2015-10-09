@@ -6,8 +6,12 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('MinhasPeticoesDashletController', ['$scope', function($scope) {
-		$scope.titulo = 'Dashlet Minhas Petições';
+	angular.autuacao.controller('MinhasPeticoesDashletController', ['$scope', 'PeticaoService', function($scope, PeticaoService) {
+		$scope.titulo = 'Minhas Petições';
+		
+		PeticaoService.listar().success(function(peticoes) {
+			$scope.peticoes = peticoes;
+		});
 	}]);
 
 })();
