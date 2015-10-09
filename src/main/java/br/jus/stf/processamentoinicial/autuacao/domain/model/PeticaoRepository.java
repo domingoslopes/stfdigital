@@ -48,4 +48,25 @@ public interface PeticaoRepository {
 	 */
 	public Long nextNumero();
 	
+	/**
+	 * @para id
+	 * @return o tipo de peça
+	 */
+	public TipoPeca findOneTipoPeca(Long id);
+	
+	/**
+	 * @return a lista de tipos de peças
+	 */
+	public List<TipoPeca> findAllTipoPeca();
+	
+	/**
+	 * @para id
+	 * @return o órgao
+	 */
+	public Orgao findOneOrgao(Long id);
+	
+	/**
+	 * @return a lista de órgãos
+	 */
+	public List<Orgao> findAllOrgao();
 }
