@@ -23,6 +23,10 @@ public class ProcessoWorkflow implements Entity<ProcessoWorkflow, ProcessoWorkfl
 	@Column(name = "DSC_STATUS_PROCESS_INSTANCE")
 	private String status;
 	
+	ProcessoWorkflow() {
+
+	}
+	
 	public ProcessoWorkflow(final ProcessoWorkflowId id, final String status){
 		Validate.notNull(id, "processoWorkflow.id.required");
 		Validate.notBlank(status, "processoWorkflow.status.required");
@@ -59,12 +63,6 @@ public class ProcessoWorkflow implements Entity<ProcessoWorkflow, ProcessoWorkfl
 	@Override
 	public boolean sameIdentityAs(final ProcessoWorkflow other){
 		return other != null && this.id.sameValueAs(other.id);
-	}
-	
-	//Hibernate
-	
-	ProcessoWorkflow() {
-		
 	}
 
 }

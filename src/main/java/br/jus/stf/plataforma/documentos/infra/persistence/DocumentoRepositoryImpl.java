@@ -21,6 +21,7 @@ import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -61,22 +62,22 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	}
 
 	@Override
-	public DocumentoId save(String documentoTemporario) {
-		DocumentoTemporario docTemp = TEMP_FILES.get(documentoTemporario);
+	public DocumentoId save(DocumentoTemporarioId documentoTemporario) {
+		DocumentoTemporario docTemp = TEMP_FILES.get(documentoTemporario.toString());
 		InputStream stream = docTemp.stream();
 		DocumentoId id = nextId();
 		DBObject metaData = new BasicDBObject();
 		
 		metaData.put("seq_documento", id.toLong());
-		metaData.put("nom_arquivo", documentoTemporario);
+		metaData.put("nom_arquivo", documentoTemporario.toString());
 		metaData.put("num_tamanho_bytes", docTemp.tamanho());
 		
-		String numeroConteudo = gridOperations.store(stream, documentoTemporario, docTemp.contentType(), metaData).getId().toString();
+		String numeroConteudo = gridOperations.store(stream, documentoTemporario.toString(), docTemp.contentType(), metaData).getId().toString();
 		Documento documento = super.save(new Documento(id, numeroConteudo));
 
 		entityManager.flush();
 		IOUtils.closeQuietly(stream);
-		TEMP_FILES.remove(documentoTemporario);
+		TEMP_FILES.remove(documentoTemporario.toString());
 		docTemp.delete();
 		return documento.id();
 	}
