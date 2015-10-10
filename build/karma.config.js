@@ -21,6 +21,8 @@ module.exports = {
 		baseDir + '/vendor/angular-ui-select2/src/select2.js',
 		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
 		baseDir + '/vendor/angular-file-upload/dist/angular-file-upload.min.js',
+		baseDir + '/vendor/moment/min/moment-with-locales.min.js',
+		baseDir + '/vendor/angular-moment/angular-moment.min.js',
 		baseDir + '/application/plataforma/**/*.module.js', 
 		baseDir + '/application/plataforma/**/*.js', 
 		baseDir + '/application/autuacao/**/*.js', 
