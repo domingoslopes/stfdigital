@@ -1,0 +1,12 @@
+<div class="notification-item clearfix" data-ng-class="{unread: !notification.lido}">
+	<div class="heading">
+		<a href="#"> <i
+			class="fa fa-exclamation-circle m-r-10"></i>
+			<span class="bold">{{notification.texto}}</span>
+		</a>
+		<span class="pull-right time"><span data-am-time-ago="notification.hora"></span></span>
+	</div>
+	<div class="option">
+		<a href="" class="mark" title="{{!notification.lido ? 'Marcar como lido' : ''}}" data-ng-click="marcarComoLido(notification)"></a>
+	</div>
+</div>
