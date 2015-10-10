@@ -89,7 +89,7 @@ public class ActivitiConfiguration {
 	private DataSource dataSourceActiviti() {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(org.h2.Driver.class);
-		dataSource.setUrl("jdbc:h2:~/stfdigitalactiviti;AUTO_SERVER=TRUE;");
+		dataSource.setUrl("jdbc:h2:mem:stfdigitalactiviti;MODE=Oracle;DB_CLOSE_DELAY=-1");
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
 		return dataSource;
