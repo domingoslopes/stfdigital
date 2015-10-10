@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous']);
+	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'angularMoment']);
 
 	angular.plataforma.config(function($stateProvider) {
 		$stateProvider.state('dashboard', {
@@ -32,6 +32,11 @@
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
 		});
 	});
+	
+	// Configurando o locale do angularMoment para pt_br
+	angular.plataforma.run(['amMoment', function(amMoment) {
+		amMoment.changeLocale('pt_br');
+	}]);
 
 })();
 

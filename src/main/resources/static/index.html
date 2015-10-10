@@ -125,7 +125,9 @@
             <div class="brand inline">
               <img src="theme/custom/img/logo.png" alt="logo" data-src="theme/custom/img/logo.png" data-src-retina="theme/custom/img/logo_2x.png" width="78" height="22">
             </div>
-            <div class="search-link">
+            <div data-notification-center=""></div>
+			
+			<div class="search-link">
             	<i class="pg-search"></i>
             	<pesquisa campos="['identificacao', 'relator.codigo']" texto="'identificacao'" indices="['autuacao']" filtros="'identificacao'" ordenador="'identificacao'" />
             </div>
@@ -352,6 +354,8 @@
     <script type="text/javascript" src="vendor/ckeditor/ckeditor.js"></script>
     <script type="text/javascript" src="vendor/angular-sanitize/angular-sanitize.js"></script>
    	<script type="text/javascript" src="vendor/angular-file-upload/dist/angular-file-upload.min.js"></script>
+   	<script type="text/javascript" src="vendor/moment/min/moment-with-locales.min.js"></script>
+   	<script type="text/javascript" src="vendor/angular-moment/angular-moment.min.js"></script>
 	
 	<!-- endbuild -->
 
@@ -370,6 +374,8 @@
     <script type="text/javascript" src="application/plataforma/support/actions/actions.directive.js"></script>
     <script type="text/javascript" src="application/plataforma/support/actions/modal.controller.js"></script>
 	<script type="text/javascript" src="application/plataforma/support/pesquisa/pesquisa.directive.js"></script>
+	<script type="text/javascript" src="application/plataforma/support/notification/notification.directive.js"></script>
+	<script type="text/javascript" src="application/plataforma/support/notification/notification.service.js"></script>
 
     <script type="text/javascript" src="application/test/mocks.module.js"></script>
     
