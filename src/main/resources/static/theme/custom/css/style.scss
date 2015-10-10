@@ -40,3 +40,8 @@ body {
 	background-repeat: no-repeat;
 	background-position: center center;
 }
+
+.notification-center .notification-panel .notification-body {
+	overflow: auto;
+	max-height: 500px;
+}
