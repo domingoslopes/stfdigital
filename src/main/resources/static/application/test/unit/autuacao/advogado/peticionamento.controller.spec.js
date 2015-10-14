@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Peticionamento Controller', function() {
+	describe('Peticionamento Controller Advogado', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
@@ -16,7 +16,7 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties, ClasseService) {
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties, FileUploader, ClasseService) {
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('peticionador');
 			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
@@ -27,7 +27,7 @@
 			
 			$httpBackend.flush();
 			
-			controller = $controller('PeticionamentoController', {
+			controller = $controller('PeticionamentoAdvogadoController', {
 				$scope : scope,
 				data : {
 					data : fakeData

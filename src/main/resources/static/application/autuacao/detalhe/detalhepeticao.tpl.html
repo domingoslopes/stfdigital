@@ -152,7 +152,11 @@
 	                                <tr ng-repeat="peca in detalhe.peticao.pecas">
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peca.descricao}}</td>
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peca.tipo}}</td>
-	                                    <td class="font-montserrat fs-12 col-lg-12"></td>
+	                                    <td>
+		                                    <a  ng-click="visualizar(peca.id)" data-placement="top">
+		                                       	<i class="glyphicon glyphicon-eye-open"></i>
+		                                    </a>
+		                                </td>
 	                                </tr>
 	                            </tbody>
 	                        </table>
