@@ -14,13 +14,18 @@ module.exports = {
 
 	// Definindo a lista de arquivos quer serão carregados no browser durante os testes...
 	files : [
+	 	baseDir + '/vendor/jquery/dist/jquery.js',
 		baseDir + '/vendor/angular/angular.js',
 		baseDir + '/vendor/angular-mocks/angular-mocks.js',
+		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
 		baseDir + '/vendor/angular-ui-router/release/angular-ui-router.js',
 		baseDir + '/vendor/ui-router-extras/release/ct-ui-router-extras.js',
 		baseDir + '/vendor/angular-ui-select2/src/select2.js',
-		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
+		baseDir + '/vendor/select2/select2.js',
 		baseDir + '/vendor/angular-file-upload/dist/angular-file-upload.min.js',
+	    baseDir + '/vendor/d3/d3.js',
+	    baseDir + '/vendor/nvd3/build/nv.d3.js',
+	    baseDir + '/vendor/angular-nvd3/dist/angular-nvd3.js',
 		baseDir + '/application/plataforma/**/*.module.js', 
 		baseDir + '/application/plataforma/**/*.js', 
 		baseDir + '/application/autuacao/**/*.js', 

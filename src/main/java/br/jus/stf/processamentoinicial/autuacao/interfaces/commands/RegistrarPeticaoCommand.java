@@ -31,6 +31,7 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
 	private List<String> partesPoloPassivo;
 	
+	@NotEmpty
 	@ApiModelProperty(value = "A lista de identificadores das peças que serão anexados pelo peticionador", required=true)
 	private List<Map<String, String>> pecas;
 

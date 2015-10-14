@@ -21,6 +21,9 @@ public class PessoaApplicationService {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private PessoaApplicationEvent pessoaApplicationEvent;
 
 	/**
 	 * Cadastra pessoas
@@ -33,7 +36,9 @@ public class PessoaApplicationService {
 				.map(nome -> {
 					PessoaId id = pessoaRepository.nextId();
 					Pessoa pessoa = new Pessoa(id, nome);
-					return pessoaRepository.save(pessoa);
+					pessoaRepository.save(pessoa);
+					pessoaApplicationEvent.pessoaCadastrada(pessoa);
+					return pessoa;
 				})
 				.collect(Collectors.toList());
 	}
