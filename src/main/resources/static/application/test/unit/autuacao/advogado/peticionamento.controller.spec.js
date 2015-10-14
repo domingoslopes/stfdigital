@@ -8,7 +8,8 @@
 (function() {
 	'use strict';
 
-	describe('Peticionamento Controller Advogado', function() {
+	describe('Peticionamento Advogado Controller', function() {
+
 		var fakeData = [];
 		var stateParams = [];
 		var controller;

@@ -9,7 +9,7 @@
 	
 	angular.autuacao = angular.module('autuacao', []);
 	
-	angular.autuacao.config(function config($stateProvider) {
+	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
 		$stateProvider.state('peticionamento', {
 			url: '/peticao',
 			views: {
@@ -83,6 +83,19 @@
 					controller: 'DevolucaoController'
 				}
 			}
+		}).state('pesquisa.peticao', {
+			url: '/peticao',
+			views: {
+				'@': {
+					templateUrl: 'application/autuacao/pesquisa/peticao.tpl.html',
+					controller: 'PesquisaPeticaoController',
+					resolve : {
+						classes : function(ClasseService) {
+							return ClasseService.listar();
+						}
+					}
+				}
+			}
 		}).state('actions.autuacao', { // estado abstrato para agrupar as ações do contexto
 			abstract : true
 		}).state('actions.autuacao.dummy_action', {
@@ -99,6 +112,20 @@
 					controller: 'DummyActionController'
 				}
 			}
+		});
+		
+		DashletsProvider.dashlet('minhas-peticoes', {
+			view: 'application/autuacao/peticionamento/dashlets/peticoes.tpl.html',
+			controller: 'MinhasPeticoesDashletController'
+		}).dashlet('peticoes-para-preautuar', {
+			view: 'application/autuacao/preautuacao/dashlets/peticoes-preautuar.tpl.html',
+			controller: 'MinhasPeticoesParaAutuarDashletController'
+		}).dashlet('grafico-peticoes', {
+			view: 'application/autuacao/autuacao/dashlets/grafico-peticoes.tpl.html',
+			controller: 'GraficoPeticoesDashletController'
+		}).dashlet('grafico-distribuicao', {
+			view: 'application/autuacao/distribuicao/dashlets/grafico-distribuicao.tpl.html',
+			controller: 'GraficoDistribuicaoDashletController'
 		});
 	});
 
