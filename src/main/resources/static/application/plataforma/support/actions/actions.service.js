@@ -14,7 +14,9 @@
 		var ARRAY_EXCEPTION = "Os recursos devem estar em um array!";
 		
 		//attributes
+		var deferred = $q.defer();
 		var actions = {};
+		var that = this;
 		
 		//public methods
 		
@@ -22,25 +24,27 @@
 		 * Recupera uma ação
 		 */
 		this.get = function(id) {
-			return angular.copy(actions[id]);
+			return $q.when(deferred.promise, function(actionsLoaded) {
+				actions = actionsLoaded;
+				return angular.copy(actions[id]);
+			});
 		};
 		
 		/**
 		 * Carrega as ações de um determinado contexto
 		 */
 		this.load =	function(context) {
-			return $q(function(resolve, reject) {
-				$http.get(properties.apiUrl + /*'/' + context + */'/actions', $templateCache)
+			return $http.get(properties.apiUrl + /*'/' + context + */'/actions', $templateCache)
 					.then(function(result) {
+						var actions = {};
 						angular.forEach(result.data, function(action) {
 							action.context = context;
 							actions[action.id] = action;
 						});
-						resolve();
+						deferred.resolve(actions);
 					}, function(err) {
-						reject(err);
+						deferred.reject(err);
 					});
-			});
 		};
 		
 		/**
@@ -172,8 +176,6 @@
 		
 		//private methods
 		
-		var isValidResources = this.isValidResources;
-		
 		/**
 		 * Verifica se os recursos são nulos ou indefinidos  
 		 */
@@ -208,7 +210,7 @@
 		 */
 		var isAllowed = function(action, resources, context) {
 			if (!isActionContext(action, context) ||
-					!isValidResources(action, resources) ||
+					!that.isValidResources(action, resources) ||
 					!hasNeededAuthorities(action)) {
 				return false;
 			}

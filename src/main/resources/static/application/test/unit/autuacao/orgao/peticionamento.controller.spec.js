@@ -8,7 +8,9 @@
 (function() {
 	'use strict';
 
+
 	describe('Peticionamento Órgão Controller', function() {
+
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
@@ -16,7 +18,7 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties, OrgaoService) {
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties, FileUploader, OrgaoService) {
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('representante');
 			$httpBackend.expectGET(properties.apiUrl + '/orgaos').respond([{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }]);
@@ -34,6 +36,7 @@
 				}
 			});
 		}));
+
 
 		it('Deveria carregar a lista de orgão no escopo do controlador', function() {
 			expect(scope.orgaos.length).toEqual(3);

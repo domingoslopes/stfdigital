@@ -47,6 +47,8 @@
 		               { sigla : "AP", nome : "Ação Penal" },
 		               { sigla : "HC", nome : "Habeas Corpus" }];
 		
+		var orgaos = [{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }];
+		
 		var tipoRecebimentos = [{ id : 0, nome : "Balcão" },
 		               { id : 1, nome : "Sedex" },
 		               { id : 2, nome : "Malote" },
@@ -131,6 +133,11 @@
 		$httpBackend.whenGET(properties.apiUrl + '/classes').respond(function(method, url, data, headers){
 			console.log('Recebendo classes:', method, url, data, headers);
 			return [200, classes, {}];
+		});
+		
+		$httpBackend.whenGET(properties.apiUrl + '/orgaos').respond(function(method, url, data, headers){
+			console.log('Recebendo orgãos:', method, url, data, headers);
+			return [200, orgaos, {}];
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/ministros').respond(function(method, url, data, headers){

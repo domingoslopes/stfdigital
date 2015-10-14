@@ -66,21 +66,21 @@
             <span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
           </li>
           <li>
-            <a ui-sref="registro" class="detailed">
+          	<a ui-sref="registro" class="detailed">
               <span class="title">Novo Item</span>
               <span class="details">Petições Físicas</span>
             </a>
             <span class="icon-thumbnail bg-success"><i id="novaPFIcon" class="fa fa-plus"></i></span>
           </li>
           <li>
-            <a ui-sref="peticionamento" class="detailed">
+            <a ui-sref="peticionamento.advogado" class="detailed">
               <span class="title">Novo Item</span>
               <span class="details">Petições Digitais</span>
             </a>
             <span class="icon-thumbnail bg-success"><i id="novoItemIcon" class="fa fa-plus"></i></span>
           </li>
           <li>
-            <a ui-sref="peticionamento-orgao" class="detailed">
+            <a ui-sref="peticionamento.orgao" class="detailed">
               <span class="title">Novo Item</span>
               <span class="details">Petições Órgãos</span>
             </a>
@@ -271,11 +271,12 @@
     
     <script type="text/javascript" src="application/autuacao/autuacao.module.js"></script>
     <script type="text/javascript" src="application/autuacao/detalhe/detalhepeticao.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/peticionamento.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/advogado/peticionamento.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/orgao/peticionamento.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/classe.service.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/peca.service.js"></script>
-    <script type="text/javascript" src="application/autuacao/peticionamento/orgao.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/peticionamento/orgao/orgao.service.js"></script>
 	<script type="text/javascript" src="application/autuacao/registro/dummy_action.controller.js"></script>	
     <script type="text/javascript" src="application/autuacao/autuacao/autuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/distribuicao/distribuicao.controller.js"></script>
