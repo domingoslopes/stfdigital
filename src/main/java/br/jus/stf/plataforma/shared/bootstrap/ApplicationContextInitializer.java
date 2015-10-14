@@ -19,14 +19,14 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @EnableWebSecurity
 @ComponentScan("br.jus.stf")
 public class ApplicationContextInitializer {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ApplicationContextInitializer.class, args);
-    }
     
     @Bean
     public LocalValidatorFactoryBean validator() {
     	return new LocalValidatorFactoryBean();
+    }
+    
+    public static void main(String[] args) {
+        SpringApplication.run(ApplicationContextInitializer.class, args);
     }
     
 }
