@@ -40,7 +40,7 @@
 			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
 			
 			// Iniciando o Processo de Autuação...
-			principalPage.iniciarProcesso('peticionamento', 'novoItemIcon');
+			principalPage.iniciarProcesso('peticionamento.advogado', 'novoItemIcon');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao/);
@@ -69,7 +69,7 @@
 			
 			principalPage.login('autuador');
 			
-		    expect(principalPage.tarefas().count()).toEqual(6);
+		    expect(principalPage.tarefas().count()).toEqual(11);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");

@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Peticionamento Controller', function() {
+	describe('Peticionamento Controller Orgãos', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
@@ -16,7 +16,7 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties, OrgaoService) {
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties, FileUploader, OrgaoService) {
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('representante');
 			$httpBackend.expectGET(properties.apiUrl + '/orgaos').respond([{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }]);
@@ -27,7 +27,7 @@
 			
 			$httpBackend.flush();
 			
-			controller = $controller('PeticionamentoController', {
+			controller = $controller('PeticionamentoOrgaoController', {
 				$scope : scope,
 				data : {
 					data : fakeData
@@ -35,7 +35,7 @@
 			});
 		}));
 
-		it('Deveria carregar a lista de classes no escopo do controlador', function() {
+		it('Deveria carregar a lista de orgãos no escopo do controlador', function() {
 			expect(scope.orgaos.length).toEqual(3);
 		});
 		

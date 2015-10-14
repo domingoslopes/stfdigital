@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('RegistroPeticaoFisicaController', function ($log, $http, $state, $timeout, messages, properties, PeticaoService) {
+	angular.autuacao.controller('RegistroPeticaoFisicaController', function ($log, $http, $state, $timeout, messages, properties, ActionService) {
 		
 		var registro = this;
 		registro.tipoRecebimentos = [];
@@ -37,7 +37,8 @@
 			
 			var command = new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, registro.tipoRecebimento, registro.numSedex);
 			
-			PeticaoService.registrar(command).success(function(data) {
+			ActionService.execute('registrar_peticao_fisica', [command])
+			  .success(function(data) {
 				$state.go('dashboard');
 				messages.success('Petição Física <b>#' + data + '</b> registrada com sucesso.');
 			}).error(function(data, status) {
