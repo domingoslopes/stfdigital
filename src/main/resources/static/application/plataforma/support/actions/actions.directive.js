@@ -88,7 +88,7 @@
 	 * 	btn-class="btn-success"	icon-class="fa fa-hand-peace-o"
 	 * 	show-description="false" show-not-allowed="false" /> 
 	 */
-	angular.plataforma.directive('action', ['$state', 'ActionService', function ($state, ActionService) {
+	angular.plataforma.directive('action', ['$state', '$timeout', 'ActionService', function ($state, $timeout, ActionService) {
 		return {
 			restrict : 'E',
 			scope : {
@@ -101,27 +101,30 @@
 			},
 			templateUrl : 'application/plataforma/support/actions/action.tpl.html',
 			controller : function($scope) {
-				var action = ActionService.get($scope.id);
-				$scope.description = action.description;
-				$scope.disabled = true;
-				$scope.showAction = true;
-				$scope.showIcon = angular.isString($scope.iconClass);
-				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
-				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
-				
-				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
-					$scope.showDescription = true;
-				}
-				//Verifica se a ação é permitida
-				ActionService.isAllowed($scope.id, $scope.resources)
-					.then(function(isAllowed) {
-						$scope.disabled = !isAllowed;
-
-						if ($scope.disabled && angular.isDefined($scope.showNotAllowed)) {
-							$scope.showAction = $scope.showNotAllowed;
-						}
-					});
-				
+				var action = {};
+				$timeout(function() {
+					action = ActionService.get($scope.id);
+					$scope.description = action.description;
+					$scope.disabled = true;
+					$scope.showAction = true;
+					$scope.showIcon = angular.isString($scope.iconClass);
+					$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
+					$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+					
+					if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
+						$scope.showDescription = true;
+					}
+					//Verifica se a ação é permitida
+					ActionService.isAllowed($scope.id, $scope.resources)
+						.then(function(isAllowed) {
+							$scope.disabled = !isAllowed;
+	
+							if ($scope.disabled && angular.isDefined($scope.showNotAllowed)) {
+								$scope.showAction = $scope.showNotAllowed;
+							}
+						});
+				}, 200);
+	
 				//vai para o estado de uma ação, passando os recursos como parâmetro
 				$scope.go = function() {
 					var params = {
