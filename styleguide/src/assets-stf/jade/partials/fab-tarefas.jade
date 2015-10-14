@@ -1,7 +1,21 @@
 .md-fab-wrapper
-  a.md-fab.md-fab-accent(href='#mailbox_new_message', data-uk-modal='{center:true}')
-    i.material-icons &#xE150;
-#mailbox_new_message.uk-modal
-  .uk-modal-dialog
-    button.uk-modal-close.uk-close(type='button')
-    include ./modal-peticionar-novo-processo.jade
+	a.md-fab.md-fab-accent.md-fab-actions(href="#")
+		i.material-icons &#xE145;
+
+	.md-fab-wrapper-small
+		a.md-fab.md-fab-small.md-bg-grey.md-color-grey-100(href="#modal-novo-processo-fisico", data-uk-modal="{center:true}")
+			span N
+			label.md-fab-label.md-bg-grey Registrar Processos Novos
+		a.md-fab.md-fab-small.md-bg-grey.md-color-grey-100(href="#")
+			span E
+			label.md-fab-label.md-bg-grey Registrar Processo Existente
+		a.md-fab.md-fab-small.md-bg-grey.md-color-grey-100(href="#")
+			span D
+			label.md-fab-label.md-bg-grey Registrar Petição Duplicada
+		a.md-fab.md-fab-small.md-bg-grey.md-color-grey-100(href="#")
+			span P
+			label.md-fab-label.md-bg-grey.animated.fadeInUp Registrar HC sem advogado
+
+#modal-novo-processo-fisico.uk-modal
+	.uk-modal-dialog.uk-modal-dialog-large
+		include ./modal-novo-processo-fisico.jade
