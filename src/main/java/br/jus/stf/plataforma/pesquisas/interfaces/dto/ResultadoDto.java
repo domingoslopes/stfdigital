@@ -4,13 +4,13 @@ package br.jus.stf.plataforma.pesquisas.interfaces.dto;
  * @author Lucas.Rodrigues
  *
  */
-public class ResultadoPesquisaDto {
+public class ResultadoDto {
 
 	private String id;
 	private String tipo;
 	private Object objeto;
 	
-	public ResultadoPesquisaDto(String id, String tipo, Object objeto) {
+	public ResultadoDto(String id, String tipo, Object objeto) {
 		this.id = id;
 		this.tipo = tipo;
 		this.objeto = objeto;

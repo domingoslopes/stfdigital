@@ -3,7 +3,6 @@ package br.jus.stf.processamentoinicial.autuacao.infra.persistence;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -33,11 +32,10 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 		this.entityManager = entityManager;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T findOne(PeticaoId id, Class<T> clazz) {
-		return Optional.ofNullable(super.findOne(id))
-				.map(peticao -> clazz.cast(peticao))
-				.orElse(null);
+	public <T extends Peticao> T findOne(PeticaoId id) {
+		return (T) super.findOne(id);
 	}
 
 	@Override

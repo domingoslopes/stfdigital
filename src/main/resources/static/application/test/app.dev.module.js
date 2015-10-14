@@ -12,8 +12,8 @@
 		angular.bootstrap(document, ['appDev']);
 	});
 
-	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize','angularFileUpload', 'mocks'])
-	
+	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'angularFileUpload', 'mocks'])
+
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('error-handler');
 		$urlRouterProvider.otherwise('/dashboard');
@@ -21,9 +21,12 @@
 			enabled: true,
 			requireBase: false, // Alterando o requireBase para false, pois estava causando erro no teste unitário
 		});
-		$logProvider.debugEnabled(true);
+		$logProvider.debugEnabled(false);
 		$stateProvider.state('root', {
 		});
+	})
+	.run(function(ActionService, $state) {
+		ActionService.load("autuacao");
 	})
 	.value('version', '0.1.0');
 	

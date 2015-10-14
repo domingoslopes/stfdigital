@@ -25,15 +25,15 @@
 				return;
 			}
 			
-			if (registro.qtdVolumes.length === 0){
+			if (registro.qtdVolumes.length === 0) {
 				messages.error("Você precisa informar o número de <b>volumes</b>");
 				return;
 			}
 			
-			if (registro.tipoRecebimento.length === 0){
+			if (registro.tipoRecebimento.length === 0) {
 				messages.error("Você precisa selecionar uma forma de envio");
 				return;
-			};
+			}
 			
 			var command = new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, registro.tipoRecebimento, registro.numSedex);
 			
