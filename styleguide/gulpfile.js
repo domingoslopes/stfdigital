@@ -165,6 +165,13 @@ gulp.task('assets', function(callback) {
     return merge.apply(merge, streams);
 });
 
+// 5.2. js
+// Faz a mesma operação que 'assets', mas separadamente para o 
+gulp.task('js', function(callback) {
+    return gulp.src(config.js.source)
+        .pipe(gulp.dest(config.js.dest));
+});
+
 /********************************************************************************
  * 6. ESTRUTURAIS
  ********************************************************************************/
@@ -194,7 +201,7 @@ gulp.task('clean', function() {
 // 6.4. build
 // Constrói todos os arquivos no ambiente selecionado
 gulp.task('build', function(callback) {
-    return plugins.runSequence(['sass', 'less'], ['css', 'images', 'assets'], 'jade', 'html', callback);
+    return plugins.runSequence(['sass', 'less'], ['css', 'images', 'js', 'assets'], 'jade', 'html', callback);
 });
 
 // 6.5. release
@@ -228,7 +235,7 @@ gulp.task('watch', function(callback) {
         'sass': config.sass.watch,
         'less': config.less.source,
         'css': config.less.source,
-        'assets': config.js.watch
+        'js': config.js.watch
     }
 
     for (task in htmlChainTasks) {
@@ -243,7 +250,7 @@ gulp.task('watch', function(callback) {
 
     gulp.watch(config.jade.watch, generateRunCallback('jade', browserSync.reload));
     gulp.watch(config.html.source, generateRunCallback('html', browserSync.reload));
-    gulp.watch(config.image.source, generateRunCallback('images', browserSync.reload));
+    gulp.watch(config.image.watch, generateRunCallback('images', browserSync.reload));
     gulp.watch(config.assets.source, generateRunCallback('assets', browserSync.reload));
 
     callback();
