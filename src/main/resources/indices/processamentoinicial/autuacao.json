@@ -98,13 +98,30 @@
             }
           }
         },
-        "documentos": {
+        "pecas": {
           "properties": {
-            "sequencial": {
-              "type": "long",
-              "index": "not_analyzed",
-          	  "include_in_all" : false
-            }
+          	"documentoId": {
+              "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }
+	        },
+          	"tipo": {
+          	  "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }
+	        },
+	        "descricao": {
+          	  "type": "string",
+		      "analyzer": "whitespace_analyzer"
+	        }
           }
         },
         "processosWorkflow": {
@@ -188,13 +205,30 @@
             }
           }
         },
-        "documentos": {     
+        "pecas": {
           "properties": {
-            "sequencial": {
-              "type": "long",
-              "index": "not_analyzed",
-          	  "include_in_all" : false              
-            }
+          	"documentoId": {
+              "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }
+	        },
+          	"tipo": {
+          	  "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }
+	        },
+	        "descricao": {
+          	  "type": "string",
+		      "analyzer": "whitespace_analyzer"
+	        }
           }
         },
         "processosWorkflow": {        
