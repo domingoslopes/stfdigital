@@ -12,13 +12,21 @@
 		$scope.papeis = SecurityService.papeis();
 		
 		$scope.ativar = function(papel) {
-			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
-			$scope.papelAtivo = papel;
-			
-			$state.go('dashboard', {}, {reload: true});
+			selecionarPapel(papel);
+			$window.location.href = '/';
 		};
 		
-		$scope.ativar($scope.papeis[0]);
+		if (angular.isUndefined($window.sessionStorage.getItem('papel'))) {
+			selecionarPapel($scope.papeis[0]);
+		} else {
+			var papel = JSON.parse($window.sessionStorage.getItem('papel'));
+			selecionarPapel(papel);
+		}
+		
+		function selecionarPapel(papel) {
+			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
+			$scope.papelAtivo = papel;
+		};
 		
 	});
 	

@@ -16,22 +16,27 @@ public class PeticaoActionsResource {
 	@Autowired
 	private PeticaoServiceFacade peticaoServiceFacade;
 
-	@ActionMapping(id = "REGISTRAR_PETICAO_ELETRONICA", name = "RegistrarPeticaoEletronica", neededAuthorities = {"peticionador"})
+	@ActionMapping(id = "REGISTRAR_PETICAO_ELETRONICA", name = "Registrar Petição Eletrônica", neededAuthorities = {"peticionador"})
 	public Long peticionar(RegistrarPeticaoCommand command) {			
 		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas());
 	}
 	
-	@ActionMapping(id = "REGISTRAR_PETICAO_FISICA", name = "RegistrarPeticaoFisica", neededAuthorities = {"recebedor"})
+	@ActionMapping(id = "REGISTRAR_PETICAO_ELETRONICA_ORGAO", name = "Registrar Petição Eletrônica", neededAuthorities = {"representante"})
+	public Long peticionarOrgao(RegistrarPeticaoCommand command) {			
+		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas());
+	}
+	
+	@ActionMapping(id = "REGISTRAR_PETICAO_FISICA", name = "Registrar Petição Física", neededAuthorities = {"recebedor"})
 	public Long registrar(RegistrarPeticaoFisicaCommand command) {		
     	return peticaoServiceFacade.registrar(command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex());
 	}
 	
-	@ActionMapping(id = "PREAUTUAR_PETICAO_FISICA", name = "PreautuarPeticaoFisica", neededAuthorities = {"preautuador"})
+	@ActionMapping(id = "PREAUTUAR_PETICAO_FISICA", name = "Preautuar Petição Física", neededAuthorities = {"preautuador"})
 	public void preautuar(PreautuarPeticaoFisicaCommand command) {
 		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId()); 
 	}
 	
-	@ActionMapping(id = "AUTUAR_PETICAO", name = "AutuarPeticao", neededAuthorities = {"autuador"})
+	@ActionMapping(id = "AUTUAR_PETICAO", name = "Autuar Petição", neededAuthorities = {"autuador"})
 	public void autuar(AutuarPeticaoCommand command) {
 		peticaoServiceFacade.autuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo()); 
 	}
