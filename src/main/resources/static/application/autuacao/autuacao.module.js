@@ -14,8 +14,8 @@
 			url: '/peticao',
 			views: {
 				'@': {
-					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
-					controller: 'PeticionamentoAdvogadoController',
+					templateUrl: 'application/autuacao/peticionamento/peticionamento.tpl.html',
+					controller: 'PeticionamentoController',
 					resolve : {
 						data : function(ClasseService) {
 							return ClasseService.listar();
@@ -23,17 +23,19 @@
 					}
 				}
 			}
-		}).state('peticionamento-orgao', {
-			url: '/peticao/orgao',
+		}).state('peticionamento.advogado', {
 			views: {
-				'@': {
+				'@peticionamento': {
+					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
+					controller: 'PeticionamentoAdvogadoController'
+				}
+			}
+		}).state('peticionamento.orgao', {
+			url: '/orgao',
+			views: {
+				'@peticionamento': {
 					templateUrl: 'application/autuacao/peticionamento/orgao/peticionamento.tpl.html',
-					controller: 'PeticionamentoOrgaoController',
-					resolve : {
-						data : function(ClasseService) {
-							return ClasseService.listar();
-						}
-					}
+					controller: 'PeticionamentoOrgaoController'
 				}
 			}
 		}).state('registro', {
