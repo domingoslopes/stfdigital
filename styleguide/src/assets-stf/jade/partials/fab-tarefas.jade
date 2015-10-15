@@ -4,8 +4,11 @@
 
 	.md-fab-wrapper-small
 		a.md-fab.md-fab-small.md-bg-grey.md-color-grey-100(href="#modal-novo-processo-fisico", data-uk-modal="{center:true}")
-			span N
-			label.md-fab-label.md-bg-grey Registrar Processos Novos
+			span Nf
+			label.md-fab-label.md-bg-grey Registrar Novo Processo Físico
+		a.md-fab.md-fab-small.md-bg-grey.md-color-grey-100(href="#modal-novo-processo-digital", data-uk-modal="{center:true}")
+			span Nd
+			label.md-fab-label.md-bg-grey Registrar Novo Processo Digital
 		a.md-fab.md-fab-small.md-bg-grey.md-color-grey-100(href="#")
 			span E
 			label.md-fab-label.md-bg-grey Registrar Processo Existente
@@ -19,3 +22,7 @@
 #modal-novo-processo-fisico.uk-modal
 	.uk-modal-dialog.uk-modal-dialog-large
 		include ./modal-novo-processo-fisico.jade
+
+#modal-novo-processo-digital.uk-modal
+	.uk-modal-dialog.uk-modal-dialog-large
+		include ./modal-novo-processo-digital.jade
