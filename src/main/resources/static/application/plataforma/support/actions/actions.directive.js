@@ -46,7 +46,7 @@
 	 */
 	angular.plataforma.directive('actions', ['$state', 'ActionService', function ($state, ActionService) {
 		return {
-			restrict : 'E',
+			restrict : 'AE',
 			scope : {
 				resources : '=', //obrigatório, recursos que sofrerão a ação
 				type : '@', //obrigatório, indica o tipo dos recursos
@@ -88,9 +88,9 @@
 	 * 	btn-class="btn-success"	icon-class="fa fa-hand-peace-o"
 	 * 	show-description="false" show-not-allowed="false" /> 
 	 */
-	angular.plataforma.directive('action', ['$state', '$timeout', 'ActionService', function ($state, $timeout, ActionService) {
+	angular.plataforma.directive('action', ['$state', 'ActionService', function ($state, ActionService) {
 		return {
-			restrict : 'E',
+			restrict : 'AE',
 			scope : {
 				id : '@', //obrigatório, identificador da ação
 				resources : '=', //obrigatório, recursos que sofrerão a ação
@@ -101,9 +101,7 @@
 			},
 			templateUrl : 'application/plataforma/support/actions/action.tpl.html',
 			controller : function($scope) {
-				var action = {};
-				$timeout(function() {
-					action = ActionService.get($scope.id);
+				ActionService.get($scope.id).then(function(action) {
 					$scope.description = action.description;
 					$scope.disabled = true;
 					$scope.showAction = true;
@@ -123,17 +121,62 @@
 								$scope.showAction = $scope.showNotAllowed;
 							}
 						});
-				}, 200);
-	
-				//vai para o estado de uma ação, passando os recursos como parâmetro
-				$scope.go = function() {
-					var params = {
-						action : action,
-						resources : $scope.resources
+					
+					//vai para o estado de uma ação, passando os recursos como parâmetro
+					$scope.go = function() {
+						var params = {
+							action : action,
+							resources : $scope.resources
+						};
+						$state.go('actions.' + action.context + '.' + action.id, params);
 					};
-					$state.go('actions.' + action.context + '.' + action.id, params);
-				};
+				});
 			}
+		};
+	}]);
+	
+	/**
+	 * Botão de uma ação específica no menu
+	 * Ex. de uso: 
+	 * <action-menu id="excluir_recurso" resources="recursos" /> 
+	 */
+	angular.plataforma.directive('actionMenu', ['$state', 'ActionService', function ($state, ActionService) {
+		return {
+			restrict : 'AE',
+			transclude : true,
+			replace : false,
+			scope : {
+				id : '@', //obrigatório, identificador da ação
+				resources : '=', //obrigatório, recursos que sofrerão a ação
+				state : '@', //obrigatório, estado para realizar a ação
+				title : '@', //obrigatório, título para o menu
+				details : '@' //opcional, detalhamento do item do menu, default= descrição da ação
+			},
+			templateUrl : 'application/plataforma/support/actions/actionmenu.tpl.html',
+			controller : function($scope) {
+				ActionService.get($scope.id).then(function(action) {
+					$scope.showAction = false;
+					
+					if (angular.isUndefined($scope.details)) {
+						$scope.details = action.description;
+					}
+					
+					//Verifica se a ação é permitida
+					ActionService.isAllowed($scope.id, $scope.resources)
+						.then(function(isAllowed) {
+							$scope.showAction = isAllowed;
+						});
+					
+					//vai para o estado de uma ação, passando os recursos como parâmetro
+					$scope.go = function() {
+						var params = {
+							action : action,
+							resources : $scope.resources
+						};
+						$state.go($scope.state, params);
+					};
+				});
+			}			
 		};
 	}]);
 
@@ -146,12 +189,13 @@
 	 */
 	angular.plataforma.directive('actionExecutor', ['ActionService', 'messages', function (ActionService, messages) {
 		return {
-			restrict : 'E',
+			restrict : 'AE',
 			scope : {
 				id : '@', //obrigatório, identificador da ação
 				resources : '=', //opcional, recursos que sofrerão a ação devem ser informados se a ação exigir
 				result : '=', //opcional, resultado da execução da ação
-				callback : '&', //opcional, uma função para ser executada após receber o resultado, o resultado é passado como parâmetro
+				fnValidate : '&', //opcional, uma função para ser executada antes de enviar a requisição
+				fnResult : '&', //opcional, uma função para ser executada após receber o resultado, o resultado é passado como parâmetro
 				btnClass : '@', //opcional, classes do botão, default= 'btn btn-default'
 				iconClass : '@', //opcional, classes do ícone
 				description : '@', //opcional, descrição do botão, se não informado usará a descrição da ação
@@ -161,56 +205,62 @@
 			},
 			templateUrl : 'application/plataforma/support/actions/executor.tpl.html',
 			controller : function($scope) {
-				var action = ActionService.get($scope.id);
-				if (angular.isObject(action) &&
-						ActionService.isValidResources(action, $scope.resources)) {
-					$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
-					$scope.disabled = true;
-					$scope.showAction = true;
-					$scope.showIcon = angular.isString($scope.iconClass);
-					$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
-					$scope.icon = $scope.showIcon ? $scope.iconClass : "";
-					
-					if (angular.isUndefined($scope.verifyIfAllowed)) {
-						$scope.verifyIfAllowed = true;	
-					}
-					
-					if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
-						$scope.showDescription = true;
-					}
-					
-					//Verifica se a ação é permitida, caso seja pedido para verificar
-					if ($scope.verifyIfAllowed) {
-						ActionService.isAllowed($scope.id, $scope.resources)
-							.then(function(isAllowed) {
-								$scope.disabled = !isAllowed;
-	
-								if ($scope.disabled && angular.isDefined($scope.showNotAllowed)) {
-									$scope.showAction = $scope.showNotAllowed;
+				ActionService.get($scope.id).then(function(action) {
+					if (angular.isObject(action) &&
+							ActionService.isValidResources(action, $scope.resources)) {
+						$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
+						$scope.disabled = true;
+						$scope.showAction = true;
+						$scope.showIcon = angular.isString($scope.iconClass);
+						$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
+						$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+						
+						if (angular.isUndefined($scope.verifyIfAllowed)) {
+							$scope.verifyIfAllowed = true;	
+						}
+						
+						if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
+							$scope.showDescription = true;
+						}
+						
+						//Verifica se a ação é permitida, caso seja pedido para verificar
+						if ($scope.verifyIfAllowed) {
+							ActionService.isAllowed($scope.id, $scope.resources)
+								.then(function(isAllowed) {
+									$scope.disabled = !isAllowed;
+		
+									if ($scope.disabled && angular.isDefined($scope.showNotAllowed)) {
+										$scope.showAction = $scope.showNotAllowed;
+									}
+								});
+						} else {
+							$scope.disabled = false;
+						}
+						
+						// Executa a ação
+						$scope.execute = function() {
+							if (angular.isFunction($scope.fnValidate())) {
+								if (!$scope.fnValidate()()) {
+									return;
 								}
-							});
+							}
+							ActionService.execute($scope.id, $scope.resources)
+								.then(function(result) {
+									if (angular.isDefined($scope.result)) {
+										$scope.result = result.data;
+									}
+									// verifica se o callback é uma função e executa
+									if (angular.isFunction($scope.fnResult())) {
+										$scope.fnResult()(result.data);
+									}
+								}, function(err) {
+									messages.error(err);
+								});
+						};
 					} else {
-						$scope.disabled = false;
+						messages.error("A ação e os recursos para a ação devem ser válidos!");
 					}
-					
-					// Executa a ação
-					$scope.execute = function() {
-						ActionService.execute($scope.id, $scope.resources)
-							.then(function(result) {
-								if (angular.isDefined($scope.result)) {
-									$scope.result = result.data;
-								}
-								// verifica se o callback é uma função e executa
-								if (angular.isFunction($scope.callback())) {
-									$scope.callback()(result.data);
-								}
-							}, function(err) {
-								messages.error(err);
-							});
-					};
-				} else {
-					messages.error("A ação e os recursos para a ação devem ser válidos!");
-				}
+				});
 			}
 		};
 	}]);

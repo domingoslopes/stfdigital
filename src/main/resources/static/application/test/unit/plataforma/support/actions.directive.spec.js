@@ -65,7 +65,9 @@
 			template = $compile(element)(scope);
 			actionService = ActionService;
 			ActionService.get = function(actionId) {
-				return actions[0];
+				return $q(function(res, rej) {
+					res(actions[0]);
+				});
 			};
 			actionService.isAllowed = function () {
 				return $q(function(res, rej) {
@@ -110,7 +112,9 @@
 			template = $compile(element)(scope);
 			actionService = ActionService;
 			actionService.get = function(actionId) {
-				return actions[0];
+				return $q(function(res, rej) {
+					res(actions[0]);
+				});
 			};
 			actionService.isAllowed = function () {
 				return $q(function(res, rej) {

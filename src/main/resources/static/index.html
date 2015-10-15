@@ -65,27 +65,9 @@
             </a>
             <span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
           </li>
-          <li>
-          	<a ui-sref="registro" class="detailed">
-              <span class="title">Novo Item</span>
-              <span class="details">Petições Físicas</span>
-            </a>
-            <span class="icon-thumbnail bg-success"><i id="novaPFIcon" class="fa fa-plus"></i></span>
-          </li>
-          <li>
-            <a ui-sref="peticionamento.advogado" class="detailed">
-              <span class="title">Novo Item</span>
-              <span class="details">Petições Digitais</span>
-            </a>
-            <span class="icon-thumbnail bg-success"><i id="novoItemIcon" class="fa fa-plus"></i></span>
-          </li>
-          <li>
-            <a ui-sref="peticionamento.orgao" class="detailed">
-              <span class="title">Novo Item</span>
-              <span class="details">Petições Órgãos</span>
-            </a>
-            <span class="icon-thumbnail bg-success"><i id="novoItemOrgaoIcon" class="fa fa-plus"></i></span>
-          </li>
+          <li action-menu id="registrar_peticao_fisica" title="Novo Item" details="Petição Física" state="registro" resources="[{}]"></li>
+          <li action-menu id="registrar_peticao_eletronica" title="Novo Item" details="Petição Digital" state="peticionamento.advogado" resources="[{}]"></li>
+          <li action-menu id="registrar_peticao_eletronica_orgao" title="Novo Item" details="Petição Órgão" state="peticionamento.orgao" resources="[{}]"></li>
         </ul>
         <div class="clearfix"></div>
       </div>
