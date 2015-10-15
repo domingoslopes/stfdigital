@@ -51,9 +51,9 @@ html(lang="en")
           .uk-width-large-8-10.uk-container-center
 
             .md-card-list
-              .md-card-list-header.heading_list Hoje
+              .md-card-list-header.heading_list Pré-Autuação
               ul.hierarchical_slide
-                li.md-card-list-item-selected
+                li.md-card-list-item.stf-card-list-item
                   .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
                     a.md-icon.material-icons(href='#') &#xE5D4;
                     .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
@@ -76,94 +76,62 @@ html(lang="en")
                   .md-card-list-item-select
                     input(type='checkbox', data-md-icheck='')
 
-                  .md-card-list-item-avatar-wrapper
-                    img.md-card-list-item-avatar(src='assets/img/avatars/leandro.png', alt='')
-
                   .md-card-list-item-sender
-                     span.md-card-list-item-closed 23/2015 - Novo processo físico (6)
+                     span.md-card-list-item-closed Pet. 34/2015
                   
                   .md-card-list-item-subject
                     span.md-card-list-item-closed
-                      span Aguardando Pré-Autuação...
-                      span.uk-margin-left 12/2015 - 20 Volumes, 2 Apensos, Recebido por FAX
+                      span.uk-badge Aguardando Pré-Autuação
+                      span.uk-margin-left 20 Volumes, 2 Apensos, Recebido por FAX
                     span.md-card-list-item-open
-                      h3.uk-margin-small-top.uk-margin-bottom-remove Pré-autuando Petição 23/2015
-                  hr.md-card-list-item-open.uk-margin-bottom-remove
+                      h3.uk-margin-small-top.uk-margin-bottom-remove Pré-autuando Petição 34/2015
+                  hr.md-card-list-item-open
 
                   .md-card-list-item-content-wrapper
-                    .md-card-list-item-content.uk-padding-top-remove
-                      | [[ Histórico ]]
                     form.uk-form-stacked(action='')
                       .md-card-content.large-padding
                         .uk-grid(data-uk-grid-margin='')
                           .uk-width-1-1.uk-width-large-2-3
                             .z-depth-1.stf-padding
                               label.uk-form-label(for='classe-processo') Sugira uma Classe para o Processo
-                              select.classe-processo(name='classe-processo')
-
-                              .z-depth-1.stf-padding.uk-margin-top
-                                label.uk-form-label Histório de Tribunais Anteriores
-                                
-                                .uk-grid
-                                  .uk-width-1-4
-                                    label.uk-form-label UF
-                                    input.md-input(name='uf[]', value='DF')
-                                  .uk-width-1-4
-                                    label.uk-form-label Órgão
-                                    input.md-input(name='orgao[]', value='TJ')
-                                  .uk-width-1-4
-                                    label.uk-form-label Número
-                                    input.md-input(name='numero[]', value='12345')
-                                  .uk-width-1-4
-                                    span.uk-badge.md-bg-grey-200.md-color-grey-900.uk-margin-top
-                                      | DF/TJ/12345 
-                                      a.uk-vertical-align-middle(href="javascript:void(0)")
-                                        i.material-icons.md-color-red-500 &#xE5CD;
-                                
-                                .uk-grid
-                                  .uk-width-1-4
-                                    label.uk-form-label UF
-                                    input.md-input(name='uf[]')
-                                  .uk-width-1-4
-                                    label.uk-form-label Órgão
-                                    input.md-input(name='orgao[]')
-                                  .uk-width-1-4
-                                    label.uk-form-label Número
-                                    input.md-input(name='numero[]')
-                                  .uk-width-1-4
-                                    button.md-btn.md-btn-stf-primary.uk-text-small(onclick='return false;')
-                                      i.material-icons.md-color-grey-50 &#xE145;
+                              select.selectize-dropdown-below.classe-processo(name='classe-processo')
 
                           .uk-width-1-1.uk-width-large-1-3
                             .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
                               .uk-grid.md-color-grey-50
                                 .uk-width-1-2
                                   span Petição
-                                  .uk-h2.uk-margin-bottom 23/2015
+                                  .uk-h2.uk-margin-bottom 34/2015
 
                                 .uk-width-1-2.uk-text-right
                                   span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
                                   br
                                   span 2 Apensos
 
-                              .grid-processo-titulo.md-color-grey-50 Número Único
-                              .grid-processo-descricao.md-color-grey-900: strong STF/1234523
+                              .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small
+                                span Nenhuma classe foi sugerida ainda
+
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
                               .grid-processo-titulo.md-color-grey-50 Classe Sugerida
                               .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
-                              .grid-processo-titulo.md-color-grey-50 Histório de Tribunais Anteriores
-                              .grid-processo-descricao
-                                span.uk-badge.md-bg-grey-200.md-color-grey-900 DF/TJ/12345
-
-                              .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small
-                                span Não há -alguma informação necessária-
 
                             .uk-width-1-1.uk-text-center.uk-margin-top
                               button.md-btn.md-btn-success.uk-margin-small-bottom Pré-Autuar Processo
 
             .md-card-list
-              .md-card-list-header.heading_list Ontem
+              .md-card-list-header.heading_list Autuação
               ul.hierarchical_slide
-                li.md-card-list-item-selected
+                li.md-card-list-item.stf-card-list-item
                   .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
                     a.md-icon.material-icons(href='#') &#xE5D4;
                     .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
@@ -182,22 +150,390 @@ html(lang="en")
                             |  Arquivar
 
                   span.md-card-list-item-date 10 Out
+                  
                   .md-card-list-item-select
                     input(type='checkbox', data-md-icheck='')
-                  .md-card-list-item-sender
-                     span 23/2015 - Novo processo físico (6)
-                  .md-card-list-item-subject
-                    span
-                      span.uk-badge.uk-badge
-                        i.material-icons &#xE876;
-                        | Pré-Autuado HC/123
 
-                      span.uk-margin-left Petição 6/2015 - Aprovada
-                      
-                        
+                  .md-card-list-item-sender
+                     span.md-card-list-item-closed Pet. 34/2015
+                  
+                  .md-card-list-item-subject
+                    span.md-card-list-item-closed
+                      span.uk-badge Aguardando Autuação
+                      span.uk-margin-left Provável HC
+                    span.md-card-list-item-open
+                      h3.uk-margin-small-top.uk-margin-bottom-remove Autuando Petição 34/2015
+                  hr.md-card-list-item-open
+
                   .md-card-list-item-content-wrapper
-                    .md-card-list-item-content
-                      | Conteúdo
+                    form.uk-form-stacked(action='')
+                      .md-card-content.large-padding
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1.uk-width-large-2-3
+                            .z-depth-1.stf-padding
+                              label.uk-form-label(for='classe-processo') Deseja confirmar classe?
+                              select.selectize-dropdown-below.classe-processo(name='classe-processo')
+                                option(selected, value="HC")
+
+                              .z-depth-1.stf-padding.uk-margin-top
+                                .uk-grid
+                                  .uk-width-1-2
+                                    span Polo Ativo
+                                  .uk-width-1-2
+                                    span Polo Passivo
+
+                                .uk-grid
+                                  .uk-width-1-2
+                                    .uk-grid
+                                      .ul-width-1-2
+                                        input.md-input(name='polo_ativo[]', value='João Silva')
+                                      .ul-width-1-2
+                                        span.uk-badge.uk-badge-success.uk-margin-top 
+                                          | João Silva
+                                          a.uk-vertical-align-middle.uk-margin-small-left(href="javascript:void(0)")
+                                            i.material-icons.md-color-red-500 &#xE5CD;
+
+                                    .uk-grid
+                                      .ul-width-1-2
+                                        input.md-input(name='polo_ativo[]')
+                                      .ul-width-1-2
+                                        button.md-btn.md-btn-stf-primary.stf-btn-xsmall.uk-text-small.uk-margin-small-top(onclick='return false;')
+                                          i.material-icons.md-color-grey-50 &#xE145;
+
+                                  .uk-width-1-2
+                                    .uk-grid
+                                      .ul-width-1-2
+                                        input.md-input(name='polo_ativo[]', value='José Alves')
+                                      .ul-width-1-2
+                                        span.uk-badge.uk-badge-warning.uk-margin-top 
+                                          | José Alves
+                                          a.uk-vertical-align-middle.uk-margin-small-left(href="javascript:void(0)")
+                                            i.material-icons.md-color-red-500 &#xE5CD;
+
+                                    .uk-grid
+                                      .ul-width-1-2
+                                        input.md-input(name='polo_ativo[]')
+                                      .ul-width-1-2
+                                        button.md-btn.md-btn-stf-primary.stf-btn-xsmall.uk-text-small.uk-margin-small-top(onclick='return false;')
+                                          i.material-icons.md-color-grey-50 &#xE145;
+                                
+                          .uk-width-1-1.uk-width-large-1-3
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
+                              .grid-processo-titulo.md-color-grey-50 Classe Sugerida
+                              .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
+                              .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small
+                                span Nenhuma parte foi inserida ainda
+
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
+                              .grid-processo-titulo.md-color-grey-50 Classe Sugerida
+                              .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
+                              .grid-processo-titulo.md-color-grey-50 Partes
+                              .grid-processo-descricao.md-color-grey-900 
+                                span.uk-badge.uk-badge-success.uk-margin-small-top.uk-margin-small-right João Silva
+                                span.uk-badge.uk-badge-warning.uk-margin-small-top.uk-margin-small-right José Alves
+
+                          .uk-width-1-1.uk-text-center.uk-margin-top
+                            button.md-btn.md-btn-success.uk-margin-small-bottom Validar
+                            button.md-btn.md-btn-danger.uk-margin-small-bottom.uk-margin-small-left Invalidar
+
+            .md-card-list
+              .md-card-list-header.heading_list Justificativa
+              ul.hierarchical_slide
+                li.md-card-list-item.stf-card-list-item
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+
+                  span.md-card-list-item-date 10 Out
+                  
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+
+                  .md-card-list-item-sender
+                     span.md-card-list-item-closed Pet. 34/2015
+                  
+                  .md-card-list-item-subject
+                    span.md-card-list-item-closed
+                      span.uk-badge Aguardando Justificativa
+                    span.md-card-list-item-open
+                      h3.uk-margin-small-top.uk-margin-bottom-remove Justificando Invalidação da Petição 34/2015
+                  hr.md-card-list-item-open
+
+                  .md-card-list-item-content-wrapper
+                    form.uk-form-stacked(action='')
+                      .md-card-content.large-padding
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1.uk-width-large-2-3
+                            .z-depth-1.stf-padding
+                              label.uk-form-label(for='modelo-justificativa') Modelo
+                              select.selectize-dropdown-below.modelo-justificativa.uk-margin-bottom(name='modelo-justificativa')
+
+                              label.uk-form-label(for="justificativa") Justificativa
+                              textarea.md-input.md-input-full(name="justificativa", cols="30", rows="4")
+                                
+                          .uk-width-1-1.uk-width-large-1-3
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
+                              .grid-processo-titulo.md-color-grey-50 Classe Sugerida
+                              .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
+                              .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small
+                                span Nenhuma parte foi inserida
+
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
+                              .grid-processo-titulo.md-bg-red-600.md-color-grey-50.uk-text-center Inválido
+                              .grid-processo-titulo.md-color-grey-50 Classe Sugerida
+                              .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
+                              .grid-processo-titulo.md-color-grey-50 Partes
+                              .grid-processo-descricao.md-color-grey-900 
+                                span.uk-badge.uk-badge-success.uk-margin-small-top.uk-margin-small-right João Silva
+                                span.uk-badge.uk-badge-warning.uk-margin-small-top.uk-margin-small-right José Alves
+
+                          .uk-width-1-1.uk-text-center.uk-margin-top
+                            button.md-btn.md-btn-danger.uk-margin-small-bottom.uk-margin-small-left Rejeitar Petição
+
+            .md-card-list
+              .md-card-list-header.heading_list Distribuição
+              ul.hierarchical_slide
+                li.md-card-list-item.stf-card-list-item
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+
+                  span.md-card-list-item-date 10 Out
+                  
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+
+                  .md-card-list-item-sender
+                     span.md-card-list-item-closed Pet. 34/2015
+                  
+                  .md-card-list-item-subject
+                    span.md-card-list-item-closed
+                      span.uk-badge Autuado
+                    span.md-card-list-item-open
+                      h3.uk-margin-small-top.uk-margin-bottom-remove Distribuindo Petição 34/2015
+                  hr.md-card-list-item-open
+
+                  .md-card-list-item-content-wrapper
+                    form.uk-form-stacked(action='')
+                      .md-card-content.large-padding
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1.uk-width-large-2-3
+                            .z-depth-1.stf-padding
+                              label.uk-form-label(for='selecionar-relator') Selecionar Relator
+                              select.selectize-dropdown-below.selecionar-relator.uk-margin-bottom(name='selecionar-relator')
+                                
+                          .uk-width-1-1.uk-width-large-1-3
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
+                              .grid-processo-titulo.md-color-grey-50 Classe Sugerida
+                              .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
+                              .grid-processo-titulo.md-color-grey-50 Partes
+                              .grid-processo-descricao.md-color-grey-900 
+                                span.uk-badge.uk-badge-success.uk-margin-small-top.uk-margin-small-right João Silva
+                                span.uk-badge.uk-badge-warning.uk-margin-small-top.uk-margin-small-right José Alves
+
+                          .uk-width-1-1.uk-text-center.uk-margin-top
+                            button.md-btn.md-btn-success.uk-margin-small-bottom.uk-margin-small-left Autuar Petição
+
+            .md-card-list
+              .md-card-list-header.heading_list Julgamento
+              ul.hierarchical_slide
+                li.md-card-list-item.stf-card-list-item
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+
+                  span.md-card-list-item-date 10 Out
+                  
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+
+                  .md-card-list-item-sender
+                     span.md-card-list-item-closed Pet. 34/2015
+                  
+                  .md-card-list-item-subject
+                    span.md-card-list-item-closed
+                      span.uk-badge Distribuindo
+                    span.md-card-list-item-open
+                      h3.uk-margin-small-top.uk-margin-bottom-remove Julgando Petição 34/2015
+                  hr.md-card-list-item-open
+
+                  .md-card-list-item-content-wrapper
+                    form.uk-form-stacked(action='')
+                      .md-card-content.large-padding
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1.uk-width-large-2-3
+                                
+                          .uk-width-1-1.uk-width-large-1-3
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
+                              .grid-processo-titulo.md-color-grey-50 Classe Sugerida
+                              .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
+                              .grid-processo-titulo.md-color-grey-50 Partes
+                              .grid-processo-descricao.md-color-grey-900 
+                                span.uk-badge.uk-badge-success.uk-margin-small-top.uk-margin-small-right João Silva
+                                span.uk-badge.uk-badge-warning.uk-margin-small-top.uk-margin-small-right José Alves
+                              .grid-processo-titulo.md-color-grey-50 Ministro
+                              .grid-processo-descricao.md-color-grey-900 Gilmar Mendes
+
+            .md-card-list
+              .md-card-list-header.heading_list Devolução
+              ul.hierarchical_slide
+                li.md-card-list-item.stf-card-list-item
+                  .md-card-list-item-menu(data-uk-dropdown="{mode:'click'}")
+                    a.md-icon.material-icons(href='#') &#xE5D4;
+                    .uk-dropdown.uk-dropdown-flip.uk-dropdown-small
+                      ul.uk-nav
+                        li
+                          a(href='#')
+                            i.material-icons &#xE876;
+                            |  Autuar
+                        li
+                          a(href='#')
+                            i.material-icons &#xE15E;
+                            |  Devolver
+                        li
+                          a(href='#')
+                            i.material-icons &#xE149;
+                            |  Arquivar
+
+                  span.md-card-list-item-date 10 Out
+                  
+                  .md-card-list-item-select
+                    input(type='checkbox', data-md-icheck='')
+
+                  .md-card-list-item-sender
+                     span.md-card-list-item-closed Pet. 34/2015
+                  
+                  .md-card-list-item-subject
+                    span.md-card-list-item-closed
+                      span.uk-badge Aguardando Devolução
+                    span.md-card-list-item-open
+                      h3.uk-margin-small-top.uk-margin-bottom-remove Devolução da Petição 34/2015
+                  hr.md-card-list-item-open
+
+                  .md-card-list-item-content-wrapper
+                    form.uk-form-stacked(action='')
+                      .md-card-content.large-padding
+                        .uk-grid(data-uk-grid-margin='')
+                          .uk-width-1-1.uk-width-large-2-3
+                                
+                          .uk-width-1-1.uk-width-large-1-3
+                            .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+                              .uk-grid.md-color-grey-50
+                                .uk-width-1-2
+                                  span Petição
+                                  .uk-h2.uk-margin-bottom 34/2015
+
+                                .uk-width-1-2.uk-text-right
+                                  span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+                                  br
+                                  span 2 Apensos
+
+                              .grid-processo-titulo.md-bg-red-600.md-color-grey-50.uk-text-center Inválido
+                              .grid-processo-titulo.md-color-grey-50 Classe Sugerida
+                              .grid-processo-descricao.md-color-grey-900 HC - Habeas Corpus
+                              .grid-processo-titulo.md-color-grey-50 Partes
+                              .grid-processo-descricao.md-color-grey-900 
+                                span.uk-badge.uk-badge-success.uk-margin-small-top.uk-margin-small-right João Silva
+                                span.uk-badge.uk-badge-warning.uk-margin-small-top.uk-margin-small-right José Alves
 
     include ./partials/fab-tarefas.jade
 
@@ -287,11 +623,10 @@ html(lang="en")
           $(".classe-processo").selectize({
             persist: false,
             maxItems: 1,
-            valueField: 'nome',
+            valueField: 'sigla',
             labelField: 'nome',
-            searchField: ['nome'],
+            searchField: ['sigla', 'nome'],
             options: [
-              {sigla: 'ADI',  nome: 'Ação Direta de Inconstitucionalidade'},
               {sigla: 'AC',   nome: 'AÇÃO CAUTELAR'},
               {sigla: 'ACO',  nome: 'AÇÃO CÍVEL ORIGINÁRIA'},
               {sigla: 'ADC',  nome: 'AÇÃO DECLARATÓRIA DE CONSTITUCIONALIDADE'},
@@ -341,6 +676,56 @@ html(lang="en")
               },
               option: function(item, escape) {
                 return '<div><span class="processo-sigla">' + escape(item.sigla) + '</span> - <span class="processo-classe">' + escape(item.nome) + '</span></div>';
+              }
+            }
+          });
+
+          $(".modelo-justificativa").selectize({
+            persist: false,
+            maxItems: 1,
+            valueField: 'id',
+            labelField: 'nome',
+            searchField: ['nome'],
+            options: [
+              {id: 1, nome: 'Não deveria vir para o STF'},
+              {id: 2, nome: 'Justificativa 2'},
+              {id: 3, nome: 'Justificativa 3'},
+            ],
+            render: {
+              item: function(item, escape) {
+                return '<div><span class="modelo-justificativa">' + escape(item.nome) + '</span></div>';
+              },
+              option: function(item, escape) {
+                return '<div><span class="modelo-justificativa">' + escape(item.nome) + '</span></div>';
+              }
+            }
+          });
+
+          $(".selecionar-relator").selectize({
+            persist: false,
+            maxItems: 1,
+            valueField: 'nome',
+            labelField: 'nome',
+            searchField: ['nome'],
+            options: [
+              {nome: 'Ricardo Lewandowski'},
+              {nome: 'Cármen Lúcia'},
+              {nome: 'Celso de Mello'},
+              {nome: 'Marco Aurélio'},
+              {nome: 'Gilmar Mendes'},
+              {nome: 'Dias Toffoli'},
+              {nome: 'Luiz Fux'},
+              {nome: 'Rosa Weber'},
+              {nome: 'Teori Zavascki'},
+              {nome: 'Roberto Barroso'},
+              {nome: 'Edson Fachin'}
+            ],
+            render: {
+              item: function(item, escape) {
+                return '<div><span class="selecionar-relator">' + escape(item.nome) + '</span></div>';
+              },
+              option: function(item, escape) {
+                return '<div><span class="selecionar-relator">' + escape(item.nome) + '</span></div>';
               }
             }
           });

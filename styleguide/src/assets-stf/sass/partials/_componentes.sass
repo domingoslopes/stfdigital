@@ -43,8 +43,12 @@
 			display: inherit !important
 
 .grid-processo
+	color: rgba(255, 255, 255, 0.35)
+
 	&.grid-processo-primary
 		background: $stf-color-primary
+		.grid-processo-titulo
+			color: rgba(255, 255, 255, 0.5)
 
 	.grid-processo-titulo, .grid-processo-descricao
 		@extend .stf-padding-small
@@ -59,11 +63,30 @@
 	&.md-btn-stf-primary
 		background: $stf-color-primary
 
+	&.stf-btn-xsmall
+		min-height: 32px
+		line-height: 32px
+		min-width: 32px
+		padding: 0
+
 .uk-close
 	&.stf-close
 		&.md-color-white
 			&:after
 				color: white
+
+// Personalização 
+.selectize-dropdown-below
+	.selectize-dropdown
+		margin-top: 0
+
+// Personalização do Card List Item do Material Design / AltAir
+.md-card-list-wrapper
+	.stf-card-list-item
+		cursor: pointer
+
+		&.item-shown
+			cursor: default
 
 // Personalização do Modal do AltAir
 .uk-modal-dialog
@@ -71,6 +94,7 @@
 		margin: -24px -24px 16px -24px
 		padding: 20px
 		border-radius: 0px
+		@extend .z-depth-1
 
 		&.stf-modal-header-primary
 			background: $stf-color-primary
@@ -107,6 +131,7 @@
 			height: 32px
 			float: left
 			margin-right: 8px
+			border: 1px solid #CCC
 
 			&.stf-comment-item-avatar-large
 				width: 64px
@@ -123,4 +148,6 @@
 			.stf-comment-item-comment
 				height: 16px
 				border: 1px solid #CCC
-				@extend .stf-padding-small
+				width: 100%
+				box-sizing: border-box
+				@extend .stf-padding
