@@ -69,8 +69,8 @@
 							<table class="table table-responsive table-hover table-condensed">
 								<thead>
 									<tr>
-										<th>Identificação</th>
-										<th>Classe sugerida</th>
+										<th>Classe</th>
+										<th>Número</th>
 										<th>Ações</th>
 									</tr>
 								</thead>
@@ -79,8 +79,8 @@
 										<td colspan="3">Nenhum resultado disponível!</td>
 									</tr>
 									<tr ng-repeat="resultado in resultados">
-										<td>{{resultado.objeto.identificacao}}</td>
-										<td>{{resultado.objeto.ministroSugerido.codigo}}</td>
+										<td>{{resultado.objeto.classe.sigla}}</td>
+										<td>{{resultado.objeto.numero}}</td>
 										<td><a ui-sref="detalhe({idPeticao: resultado.id})" title="Visualizar"><i class="fa fa-eye" /></a></td>
 									</tr>
 								</tbody>
