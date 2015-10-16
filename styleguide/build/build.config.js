@@ -110,6 +110,9 @@ module.exports = {
 		// Destino
 		dest: './dist/assets/img',
 		
+		// Conteúdo que deve ser observado para recarregar páginas
+		watch: './src/assets-stf/img/**/*',
+
 		// Opções de minificação (https://github.com/sindresorhus/gulp-imagemin#options)
 		minifyOptions: {
             progressive: true,
@@ -119,6 +122,15 @@ module.exports = {
 
 	// JAVASCRIPT
 	js: {
+		// Source
+		source: [
+			'./src/assets/js/**/*.js',
+			'./src/assets-stf/js/**/*.js'
+		],
+
+		// Destino
+		dest: './dist/assets/js',
+
 		// Diretório que guarda arquivos JS
 		directory: "./src/assets/js/",
 
@@ -142,11 +154,6 @@ module.exports = {
 		['./src/assets/{icons,fonts}/**/*', './dist/assets'],
 
 		// Bower
-		[bowerdirectory + '/**', './dist/bower_components'],
-
-		// Arquivos necessários para páginas específicas
-		['./src/assets/js/altair_admin_common.js', './dist/assets/js'],
-		['./src/assets/js/pages/*.js', './dist/assets/js/pages'],
-		['./src/assets/js/custom/*.js', './dist/assets/js/custom'],
+		[bowerdirectory + '/**', './dist/bower_components']
 	],
 };

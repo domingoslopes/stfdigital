@@ -14,9 +14,12 @@ public class PecaDto {
 	
 	private String descricao;
 	
-	public PecaDto(String tipo, String descricao) {
+	private Long documentoId;
+	
+	public PecaDto(String tipo, String descricao, Long documentoId) {
 		this.tipo = tipo;
 		this.descricao = descricao;
+		this.documentoId = documentoId;
 	}
 	
 	public String getTipo() {
@@ -25,6 +28,10 @@ public class PecaDto {
 	
 	public String getDescricao() {
 		return descricao;
+	}
+	
+	public Long getDocumentoId() {
+		return documentoId;
 	}
 	
 }

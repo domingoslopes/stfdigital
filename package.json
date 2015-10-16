@@ -35,6 +35,9 @@
         "gulp-bower": "~0.0.10",
         "gulp-ng-config": "~1.2.1",
         "gulp-run": "~1.6.10",
+        "gulp-shell": "~0.4.3",
+        "jsdoc": "~3.3.0",
+        "angular-jsdoc": "~1.2.1",
         "jshint-stylish": "~1.0.2",
         "karma": "~0.12.31",
         "karma-chrome-launcher": "~0.1.8",
@@ -54,6 +57,6 @@
         "node": ">=0.12.x"
     },
     "scripts": {
-        "postinstall": "gulp release"
+        "postinstall": "gulp build"
     }
 }

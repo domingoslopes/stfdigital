@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -82,7 +83,9 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Cria um objeto contendo os dados de uma petição física a ser usado no processo de préautuação.
 		StringBuilder peticaoFisicaParaPreautuacao =  new StringBuilder();
-		peticaoFisicaParaPreautuacao.append("{\"classeId\":\"ADI\"}");
+		peticaoFisicaParaPreautuacao.append("{\"classeId\":\"ADI\",");
+		peticaoFisicaParaPreautuacao.append("\"valida\":true,");
+		peticaoFisicaParaPreautuacao.append("\"motivo\":\"\"}");
 		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
 		//Cria um objeto para ser usado no processo de rejeição de uma petição.
@@ -138,7 +141,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Faz a préautuação da petição registrada.
 		this.mockMvc.perform(post("/api/peticoes/fisicas/" + peticaoId + "/preautuar").contentType(MediaType.APPLICATION_JSON)
-				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk());
+				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
 		
 		//Recupera a(s) tarefa(s) do autuador.
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
