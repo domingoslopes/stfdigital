@@ -42,7 +42,7 @@
 		});
 		
 		it ('Deveria realizar uma pesquisa', function() {
-			scope.ministro = '28';
+			scope.ministro = 28;
 			var command = { 
 				indices : ['distribuicao'],
 				ordenadores : {'identificacao' : 'ASC'},
@@ -52,7 +52,6 @@
 				return { then : function(cb) {return cb({data : ['teste']}); } };
 			});
 			scope.pesquisar();
-			
 			expect(pesquisaService.pesquisar).toHaveBeenCalledWith(command);
 			expect(scope.resultados).toEqual(['teste']);
 		});
