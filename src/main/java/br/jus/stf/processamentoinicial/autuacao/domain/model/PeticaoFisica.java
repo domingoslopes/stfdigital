@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.ClasseId;
@@ -40,11 +41,12 @@ public class PeticaoFisica extends Peticao {
 			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex) {
 		super(id, numero);
 		
-		Validate.isTrue(volumes != null && volumes > 0);
-		Validate.notNull(apensos);
-		Validate.notNull(formaRecebimento);
-		Validate.isTrue(formaRecebimento != FormaRecebimento.SEDEX ||
-				!Validate.notBlank(numeroSedex).isEmpty());
+		Validate.isTrue(volumes != null && volumes > 0, "peticaoFisica.volumes.maiorQueZero");
+		Validate.isTrue(apensos != null && apensos >= 0, "peticaoFisica.apensos.maiorIgualAZero");
+		Validate.notNull(formaRecebimento, "peticaoFisica.formaRecebimento.required");
+		Validate.isTrue((formaRecebimento != FormaRecebimento.SEDEX && StringUtils.isBlank(numeroSedex)) ||
+						(formaRecebimento == FormaRecebimento.SEDEX && !StringUtils.isBlank(numeroSedex)),
+						"peticaoFisica.formaRecebimento.invalid");
 		
 		this.volumes = volumes;
 		this.apensos = apensos;
