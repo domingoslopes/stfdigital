@@ -10,7 +10,7 @@ import br.jus.stf.plataforma.identidades.domain.model.PessoaUnitTests;
 import br.jus.stf.plataforma.shared.web.CorsFilterUnitTests;
 import br.jus.stf.plataforma.shared.web.Html5FilterUnitTests;
 import br.jus.stf.plataforma.workflow.domain.model.TarefaUnitTests;
-import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationServiceUnitTests;
+import br.jus.stf.processamentoinicial.autuacao.application.PecaDevolucaoBuilderUnitTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronicaUnitTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisicaUnitTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoUnitTests;
@@ -28,8 +28,8 @@ import br.jus.stf.shared.ProcessoWorkflowUnitTests;
 import br.jus.stf.shared.TarefaIdUnitTests;
 
 @RunWith(Suite.class)
-@SuiteClasses({ 
-	PeticaoApplicationServiceUnitTests.class,
+@SuiteClasses({
+	PecaDevolucaoBuilderUnitTests.class,
 	Html5FilterUnitTests.class,
 	CorsFilterUnitTests.class,
 	DocumentoTemporarioUnitTests.class,

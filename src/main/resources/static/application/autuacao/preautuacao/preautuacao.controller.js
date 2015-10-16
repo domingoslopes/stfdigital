@@ -12,6 +12,10 @@
 		
 		preautuacao.idPeticao = $stateParams.idTarefa;
 		
+		preautuacao.valida = 'true';
+		
+		preautuacao.motivo = '';
+
 		preautuacao.classe = "";
 		
 		preautuacao.classes = [];
@@ -32,45 +36,29 @@
 				return;
 			}
 			
-			var command = new PreautuarCommand(preautuacao.idPeticao, preautuacao.classe);
-			
-			PeticaoService.preautuar(preautuacao.idPeticao, command).success(function(data) {
-				$log.debug('Autuado!');
-				$state.go('dashboard');
-			}).error(function(data, status, headers, config) {
-				$log.debug('Erro');
-			});
-		};
-		
-		preautuacao.devolver = function() {
-			if (preautuacao.classe.length === 0) {
-				messages.error('Você precisa selecionar <b>a classe processual sugerida</b>.');
+			if (preautuacao.valida === 'false' && preautuacao.motivo.length === 0) {
+				messages.error('Para petição incorretas, você precisa informar os detalhes do motivo.');
 				return;
 			}
 			
-			var command = new DevolverCommand(preautuacao.idPeticao);
-			
-			PeticaoService.devolver(preautuacao.idPeticao, command).success(function(data) {
-				$log.debug('Devolvido!');
+			PeticaoService.preautuar(preautuacao.idPeticao, new PreautuarCommand(preautuacao.classe, preautuacao.valida, preautuacao.motivo)).success(function(data) {
 				$state.go('dashboard');
-			}).error(function(data, status, headers, config) {
-				$log.debug('Erro');
+				messages.success('Petição pré-autuada com sucesso.');
+			}).error(function(data, status) {
+				if (status === 400) {
+					messages.error('A Petição <b>não pôde ser pré-autuada</b> porque ela não está válida.');
+				}
 			});
 		};
 		
-    	function PreautuarCommand(peticaoId, classeId){
-    		var dto = {};
-    		dto.peticaoId = peticaoId;
-    		dto.classeId = classeId;
-    		return dto;
+    	function PreautuarCommand(classeId, valida, motivo){
+    		var command = {};
+    		command.classeId = classeId;
+    		command.valida = valida;
+    		command.motivo = motivo;
+    		return command;
     	}
     	
-		function DevolverCommand(peticaoId) {
-			var dto = {};
-			dto.peticaoId = peticaoId;
-			return dto;
-		}
-		
 	});
 
 })();

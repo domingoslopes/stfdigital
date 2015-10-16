@@ -3,6 +3,8 @@ package br.jus.stf.processamentoinicial.distribuicao.interfaces.dto;
 import java.util.List;
 import java.util.Map;
 
+import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
+
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -33,9 +35,9 @@ public class ProcessoDto {
 	private Map<String, List<Long>> partes;
 	
 	@ApiModelProperty(value = "A lista de peças anexadas")
-	private List<Long> pecas;
+	private List<PecaDto> pecas;
 	
-	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<Long> pecas) {
+	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas) {
 		this.id = id;
 		this.classe = classe;
 		this.numero = numero;
@@ -64,7 +66,7 @@ public class ProcessoDto {
 		return partes;
 	}
 	
-	public List<Long> getPecas() {
+	public List<PecaDto> getPecas() {
 		return pecas;
 	}
 	

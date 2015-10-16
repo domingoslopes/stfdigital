@@ -40,8 +40,6 @@
 			}
 		}).state('registro', {
 			url: '/peticao/fisica',
-			/*sticky : true,
-			deepStateRedirect : true,*/
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/registro/registro.tpl.html',
@@ -83,6 +81,14 @@
 				'@': {
 					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
 					controller: 'DevolucaoController'
+				}
+			}
+		}).state('processos', {
+			url: '/processos/:processoId',
+			views: {
+				'@': {
+					templateUrl: 'application/autuacao/visualizacao/processos/visualizacao.tpl.html',
+					controller: 'VisualizacaoProcessoController'
 				}
 			}
 		}).state('pesquisa.peticao', {

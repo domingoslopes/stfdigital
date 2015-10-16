@@ -38,17 +38,23 @@ public class PeticaoEletronica extends Peticao {
 
 		super.sugerirClasse(classeSugerida);
 		partes.forEach(parte -> super.adicionarParte(parte));
-		pecas.forEach(peca -> super.adicionarPeca(peca));
+		pecas.forEach(peca -> super.juntar(peca));
 	}
 
 	public PeticaoEletronica(final PeticaoId id, final Long numero,
 			final ClasseId classeSugerida, final Set<PartePeticao> partes,
 			final Set<PecaPeticao> pecas, final Orgao orgaoRepresentado) {
-		this(id, numero, classeSugerida, partes, pecas);
-		
+		super(id, numero);
+
+		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
+		Validate.notEmpty(partes, "peticao.partes.notEmpty");
+		Validate.notEmpty(pecas, "peticao.pecas.notEmpty");
 		Validate.notNull(orgaoRepresentado,
 				"peticao.orgaoRepresentado.required");
 
+		super.sugerirClasse(classeSugerida);
+		partes.forEach(parte -> super.adicionarParte(parte));
+		pecas.forEach(peca -> super.juntar(peca));
 		this.orgaoRepresentado = orgaoRepresentado;
 	}
 
