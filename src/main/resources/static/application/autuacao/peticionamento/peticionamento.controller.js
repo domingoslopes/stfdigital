@@ -225,7 +225,7 @@
     		dto.classeId = classe;
     		dto.partesPoloAtivo = [];
     		dto.partesPoloPassivo = [];
-    		dto.documentos = [];
+    		dto.pecas = [];
     		
     		angular.forEach(partesPoloAtivo, function(parte) {
     			dto.partesPoloAtivo.push(parte.text);
@@ -239,7 +239,7 @@
     			delete peca.fileItem;
     		});
     		
-    		dto.documentos = pecas;
+    		dto.pecas = pecas;
     		
     		return dto;
     	}

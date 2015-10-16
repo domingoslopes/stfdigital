@@ -14,8 +14,8 @@
 			url: '/peticao',
 			views: {
 				'@': {
-					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
-					controller: 'PeticionamentoAdvogadoController',
+					templateUrl: 'application/autuacao/peticionamento/peticionamento.tpl.html',
+					controller: 'PeticionamentoController',
 					resolve : {
 						data : function(ClasseService) {
 							return ClasseService.listar();
@@ -23,20 +23,22 @@
 					}
 				}
 			}
-		}).state('peticionamento-orgao', {
-			url: '/peticao/orgao',
+		}).state('peticionamento.advogado', {
 			views: {
-				'@': {
-					templateUrl: 'application/autuacao/peticionamento/orgao/peticionamento.tpl.html',
-					controller: 'PeticionamentoOrgaoController',
-					resolve : {
-						data : function(ClasseService) {
-							return ClasseService.listar();
-						}
-					}
+				'@peticionamento': {
+					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
+					controller: 'PeticionamentoAdvogadoController'
 				}
 			}
-		}).state('registro', {
+		}).state('peticionamento.orgao', {
+			url: '/orgao',
+			views: {
+				'@peticionamento': {
+					templateUrl: 'application/autuacao/peticionamento/orgao/peticionamento.tpl.html',
+					controller: 'PeticionamentoOrgaoController'
+				}
+			}
+		}).state('actions.registro', {
 			url: '/peticao/fisica',
 			/*sticky : true,
 			deepStateRedirect : true,*/
@@ -89,6 +91,19 @@
 				'@': {
 					templateUrl: 'application/autuacao/pesquisa/peticao.tpl.html',
 					controller: 'PesquisaPeticaoController',
+					resolve : {
+						classes : function(ClasseService) {
+							return ClasseService.listar();
+						}
+					}
+				}
+			}
+		}).state('pesquisa.processo', {
+			url: '/processo',
+			views: {
+				'@': {
+					templateUrl: 'application/autuacao/pesquisa/processo.tpl.html',
+					controller: 'PesquisaProcessoController',
 					resolve : {
 						classes : function(ClasseService) {
 							return ClasseService.listar();
