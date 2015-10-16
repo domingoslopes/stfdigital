@@ -11,52 +11,76 @@ import br.jus.stf.shared.ClasseId;
 
 public class ClasseTest {
 	
-	private ClasseId idValido = new ClasseId("HC");
-	private String nomeValido = "Habeas Corpus";
-	private ClasseId idNulo = null;
-	private String nomeVazio = "";
-	private String nomeNulo = null;
-
 	@Test
 	public void criaClasseValida() {
-		Classe classe = new Classe(idValido, nomeValido);
+		Classe classe = new Classe(new ClasseId("HC"), "Habeas Corpus");
 		
 		assertNotNull(classe);
-		assertEquals(classe.id(), idValido);
-		assertEquals(classe.nome(), nomeValido);
+		assertEquals(classe.id(), new ClasseId("HC"));
+		assertEquals(classe.nome(), "Habeas Corpus");
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void criaClasseComIdNulo() {
-		new Classe(idNulo, nomeValido);
+		new Classe(null, "Habeas Corpus");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void criaClasseComNomeVazio() {
-		new Classe(idValido, nomeVazio);
+		new Classe(new ClasseId("HC"), "");
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void criaClasseComNomeNulo() {
-		new Classe(idValido, nomeNulo);
+		new Classe(new ClasseId("HC"), null);
 	}
 	
 	@Test
-	public void classesIguais() {
-		Classe classe1 = new Classe(idValido, nomeValido);
-		Classe classe2 = new Classe(idValido, nomeValido);
+	public void comparaClassesIguais() {
+		Classe classe1 = new Classe(new ClasseId("HC"), "Habeas Corpus");
+		Classe classe2 = new Classe(new ClasseId("HC"), "Habeas Corpus");
 		
-		assertTrue(classe1.sameIdentityAs(classe2));
 		assertTrue(classe1.equals(classe2));
 	}
 	
 	@Test
-	public void classesDiferentes() {
-		Classe classe1 = new Classe(idValido, nomeValido);
+	public void comparaClassesComIdentidadesIguais() {
+		Classe classe1 = new Classe(new ClasseId("HC"), "Habeas Corpus");
+		Classe classe2 = new Classe(new ClasseId("HC"), "Habeas Corpus");
+		
+		assertTrue(classe1.sameIdentityAs(classe2));
+	}
+	
+	@Test
+	public void comparaClassesComHashesIguais() {
+		Classe classe1 = new Classe(new ClasseId("HC"), "Habeas Corpus");
+		Classe classe2 = new Classe(new ClasseId("HC"), "Habeas Corpus");
+		
+		assertTrue(classe1.hashCode() == classe2.hashCode());
+	}
+	
+	@Test
+	public void comparaClassesDiferentes() {
+		Classe classe1 = new Classe(new ClasseId("HC"), "Habeas Corpus");
+		Classe classe2 = new Classe(new ClasseId("HD"), "Habeas Data");
+		
+		assertFalse(classe1.equals(classe2));
+	}
+	
+	@Test
+	public void comparaClassesComIdentidadesDiferentes() {
+		Classe classe1 = new Classe(new ClasseId("HC"), "Habeas Corpus");
 		Classe classe2 = new Classe(new ClasseId("HD"), "Habeas Data");
 		
 		assertFalse(classe1.sameIdentityAs(classe2));
-		assertFalse(classe1.equals(classe2));
+	}
+	
+	@Test
+	public void comparaClassesComHashesDiferentes() {
+		Classe classe1 = new Classe(new ClasseId("HC"), "Habeas Corpus");
+		Classe classe2 = new Classe(new ClasseId("HD"), "Habeas Data");
+		
+		assertFalse(classe1.hashCode() == classe2.hashCode());
 	}
 
 }
