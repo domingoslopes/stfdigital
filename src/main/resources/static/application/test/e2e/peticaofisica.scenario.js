@@ -35,9 +35,10 @@
 		it('Deveria navegar para a página de envio de petições físicas', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
+			principalPage.login('recebedor');
 			
 			// Iniciando o Processo de Remessa Físca
-			principalPage.iniciarProcesso('registro', 'novaPFIcon');
+			principalPage.iniciarProcesso('link_registrar_peticao_fisica');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
