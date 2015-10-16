@@ -71,6 +71,7 @@
 									<tr>
 										<th>Identificação</th>
 										<th>Classe sugerida</th>
+										<th>Relator</th>
 										<th>Ações</th>
 									</tr>
 								</thead>
@@ -80,7 +81,8 @@
 									</tr>
 									<tr ng-repeat="resultado in resultados">
 										<td>{{resultado.objeto.identificacao}}</td>
-										<td>{{resultado.objeto.ministroSugerido.codigo}}</td>
+										<td>{{resultado.objeto.classeSugerida.sigla}}</td>
+										<td>{{resultado.objeto.relator.nome}}</td>
 										<td><a ui-sref="detalhe({idPeticao: resultado.id})" title="Visualizar"><i class="fa fa-eye" /></a></td>
 									</tr>
 								</tbody>
