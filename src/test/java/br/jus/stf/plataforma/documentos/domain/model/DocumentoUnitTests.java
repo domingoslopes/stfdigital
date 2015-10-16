@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import br.jus.stf.shared.DocumentoId;
 
-public class DocumentoTest {
+public class DocumentoUnitTests {
 	
 	@Test
 	public void criaDocumentoValido() {

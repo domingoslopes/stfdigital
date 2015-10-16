@@ -10,7 +10,7 @@ import org.junit.Test;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
 
-public class PeticaoFisicaTest {
+public class PeticaoFisicaUnitTests {
 
 	@Test
 	public void criaPeticaoFisicaBalcaoValida() {

@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ClasseIdTest {
+public class ClasseIdUnitTests {
 	
 	@Test
 	public void criaClasseIdValida() {

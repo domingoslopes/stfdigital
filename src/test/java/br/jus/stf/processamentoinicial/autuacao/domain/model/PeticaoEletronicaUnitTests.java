@@ -18,7 +18,7 @@ import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 
-public class PeticaoEletronicaTest {
+public class PeticaoEletronicaUnitTests {
 	
 	private Set<PartePeticao> partes;
 	private Set<PecaPeticao> pecas;

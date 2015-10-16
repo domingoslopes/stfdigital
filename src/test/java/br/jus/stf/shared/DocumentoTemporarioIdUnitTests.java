@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class DocumentoTemporarioIdTest {
+public class DocumentoTemporarioIdUnitTests {
 	
 	@Test
 	public void criaDocumentoTemporarioIdValido() {

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import br.jus.stf.shared.ClasseId;
 
-public class ClasseTest {
+public class ClasseUnitTests {
 	
 	@Test
 	public void criaClasseValida() {

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import br.jus.stf.shared.MinistroId;
 
-public class MinistroTest {
+public class MinistroUnitTests {
 	
 	@Test
 	public void criaMinistroValido() {

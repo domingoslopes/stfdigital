@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import br.jus.stf.shared.PessoaId;
 
-public class PessoaTest {
+public class PessoaUnitTests {
 	
 	@Test
 	public void criaPessoaValida() {
