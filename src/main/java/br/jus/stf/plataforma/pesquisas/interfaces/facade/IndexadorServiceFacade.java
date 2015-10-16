@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
-import br.jus.stf.plataforma.pesquisas.domain.model.IndexadorRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.command.DocumentoRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -28,7 +28,7 @@ public class IndexadorServiceFacade {
 	private IndexadorApplicationService indexadorApplicationService;
 	
 	@Autowired
-	private IndexadorRepository indexadorRepository;
+	private DocumentoRepository documentoRepository;
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -40,7 +40,6 @@ public class IndexadorServiceFacade {
 	 * @throws JsonProcessingException 
 	 */
 	public void criarIndice(String indice, JsonNode configuracao) throws JsonProcessingException {
-		Validate.isTrue(!indexadorRepository.existe(indice));
 		JsonNode config = configuracao.findValue("settings");
 		JsonNode map = configuracao.findValue("mappings");
 		indexadorApplicationService.criarIndice(indice, converterJsonString(config), converterJsonMap(map));
@@ -55,28 +54,19 @@ public class IndexadorServiceFacade {
 		}
 		return mapeamentos;
 	}
-
-	/**
-	 * Verifica se o índice existe
-	 * 
-	 * @param indice
-	 * @return
-	 */
-	public boolean existeIndice(String indice) {
-		return indexadorRepository.existe(indice);
-	}
 	
 	/**
 	 * Indexa um objeto
 	 * 
-	 * @param indice
+	 * @param id 
 	 * @param tipo
-	 * @param id
+	 * @param indice 
 	 * @param objeto
 	 * @throws JsonProcessingException
 	 */
-	public void indexar(String indice, String tipo, String id, JsonNode objeto) throws JsonProcessingException {
-		indexadorApplicationService.indexar(indice, tipo, id, converterJsonString(objeto));
+	public void indexar(String id, String tipo, String indice, JsonNode objeto) throws JsonProcessingException {
+		Indice index = new Indice(indice); 
+		indexadorApplicationService.indexar(id, tipo, index, converterJsonString(objeto));
 	}
 	
 	/**

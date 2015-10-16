@@ -24,6 +24,10 @@ public interface DocumentoAdapter {
 	 * @param documentosTemporarios
 	 * @return a lista de ids dos documentos
 	 */
-	public Set<DocumentoId> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios);
+	Set<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios);
+	
+	DocumentoId salvar(DocumentoTemporarioId documentoTemporario);
+	
+	DocumentoTemporarioId upload(String nome, byte[] documento);
 
 }

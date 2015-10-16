@@ -3,7 +3,6 @@ package br.jus.stf.processamentoinicial.distribuicao.application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationEvent;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
@@ -28,7 +27,7 @@ public class ProcessoApplicationService {
 
 	// TODO: Remover essa dependência com o módulo de petições
 	@Autowired
-	private PeticaoApplicationEvent peticaoApplicationEvent;
+	private ProcessoApplicationEvent processoApplicationEvent;
 	
 	/**
 	 * Distribui um processo para um Ministro Relator.
@@ -41,7 +40,7 @@ public class ProcessoApplicationService {
 		tarefaAdapter.completarDistribuicao(peticao);
 		Processo processo = peticao.distribuir(ministroRelator);
 		processoRepository.save(processo);
-		peticaoApplicationEvent.processoDistribuido(processo);
+		processoApplicationEvent.processoDistribuido(processo);
 		return processo;
 	}
 

@@ -31,12 +31,13 @@
 		it('Deveria navegar para a página de envio de petições digitais por órgãos', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
+			principalPage.login('representante');
 			
 			// Verificando se a Home Page tem conteúdo...
 			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
 			
 			// Iniciando o Processo de Autuação...
-			principalPage.iniciarProcesso('peticionamento-orgao', 'novoItemOrgaoIcon');
+			principalPage.iniciarProcesso('link_registrar_peticao_eletronica_orgao');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/orgao/);
@@ -47,7 +48,7 @@
 			
 			peticionamentoPage.classificarClasse('AP');
 			
-			peticionamentoPage.classificarOrgao('PGR');
+			peticionamentoPage.classificarOrgao('Procuradoria-Geral');
 			
 			peticionamentoPage.partePoloAtivo('Pedro de Souza');
 		    
@@ -67,7 +68,7 @@
 			
 			principalPage.login('autuador');
 			
-		    expect(principalPage.tarefas().count()).toEqual(6);
+		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -91,10 +92,14 @@
 			autuacaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+		    
+		});
+
+		it('Deveria distribuir a petição autuada com órgão', function() {
 			
 		    principalPage.login('distribuidor');
 		    
-		    expect(principalPage.tarefas().count()).toEqual(3);
+		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -102,10 +107,6 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-		    
-		});
-
-		it('Deveria distribuir a petição autuada com órgão', function() {
 			
 		    principalPage.executarTarefa();
 
@@ -118,8 +119,6 @@
 			distribuicaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
-			principalPage.login('recebedor');
 		}); 
 
 	});

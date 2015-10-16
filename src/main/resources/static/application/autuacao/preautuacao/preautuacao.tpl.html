@@ -18,7 +18,7 @@
 					<div class="card share" data-social="item" style="width: 100%">
 					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 					    <div class="card-header clearfix">
-					        <h5>Quantidade de volumes: {{preautuacao.peticao.qtdVolumes}}</h5>
+					        <h5>Quantidade de volumes: {{preautuacao.peticao.volumes}}</h5>
 					        <h6>Essa é quantidade de volumes <strong>inseridas pelo recebedor</strong>.</h6>
 					    </div>
 					</div>
@@ -27,7 +27,7 @@
 					<div class="card share" data-social="item" style="width: 100%">
 					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 					    <div class="card-header clearfix">
-					    	<h5>Quantidade de apensos: {{preautuacao.peticao.qtdApensos}} </h5>
+					    	<h5>Quantidade de apensos: {{preautuacao.peticao.apensos}} </h5>
 					    	<h6>Esse é a quantidade de apensos <strong>inseridas pelo recebedor</strong>.</h6>
 					    </div>
 					</div>
@@ -38,7 +38,7 @@
 	        		<div class="card share" data-social="item" style="width: 100%">
 					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 					    <div class="card-header clearfix">
-					        <h5>Tipo de recebimento: {{preautuacao.peticao.tipoRecebimento}}</h5>
+					        <h5>Tipo de recebimento: {{preautuacao.peticao.formaRecebimento}}</h5>
 					        <h6>Essa é tipo de recebimento do processo<strong>inserido pelo recebedor</strong>.</h6>
 					    </div>
 					</div>
@@ -47,7 +47,7 @@
 					<div class="card share" data-social="item" style="width: 100%">
 					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 					    <div class="card-header clearfix">
-					    	<h5>Numero do Sedex: {{preautuacao.peticao.numSedex}} </h5>
+					    	<h5>Numero do Sedex: {{preautuacao.peticao.numeroSedex}} </h5>
 					    	<h6>Esse é o numero do sedex <strong>inserido pelo recebedor</strong>.</h6>
 					    </div>
 					</div>
@@ -70,8 +70,27 @@
 					</div>
 				</div>
 			</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Análise</h5>
+                            <h6>Informe se a petição está <b>Correta ou Indevida</b>.</h6>
+                        </div>
+                        <div class="card-description">
+                            <div class="radio radio-success">
+                                <input type="radio" ng-model="preautuacao.valida" value="true" id="yes"> 
+                                <label for="yes">Correta</label> 
+                                <input type="radio" ng-model="preautuacao.valida" value="false" id="no"> 
+                                <label for="no">Indevida</label>
+                            </div>
+                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" ng-hide="preautuacao.valida === 'true'" placeholder="Informe os motivos que levam a petição a ser indevida" aria-invalid="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <p>
-                <button id="devolver" class="btn btn-danger btn-cons" ng-click="preautuacao.devolver()">Devolver</button>
                 <button id="finalizar" class="btn btn-complete btn-cons" ng-click="preautuacao.finalizar()">Finalizar</button>
             </p>
         </form>

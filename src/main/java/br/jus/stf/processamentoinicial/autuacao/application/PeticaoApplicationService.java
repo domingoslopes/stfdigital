@@ -1,23 +1,31 @@
 package br.jus.stf.processamentoinicial.autuacao.application;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
+import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Rodrigo Barreiros
@@ -47,15 +55,27 @@ public class PeticaoApplicationService {
 	
 	@Autowired
 	private ProcessoRepository processoRepository;
+	
+	@Autowired
+	private DocumentoAdapter documentoAdapter;
+	
+	@Autowired
+	private PecaDevolucaoBuilder pecaDevolucaoBuilder;
 
 	/**
 	 * Registra uma nova petilçao.
 	 * 
 	 * @param peticaoEletronica Petição eletrônica recebida.
+	 * @param orgaoId o órgão do representante
 	 * @return Id da petição eletrônica registrada.
 	 */
-	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas) {
-		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas);
+	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas, Optional<Long> orgaoId) {
+		PeticaoEletronica peticao;
+		if (orgaoId.isPresent()) {
+			peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId.get());
+		} else {
+			peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas);
+		}
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
@@ -82,11 +102,16 @@ public class PeticaoApplicationService {
 	 * 
 	 * @param peticao Dados da petição física.
 	 * @param classeSugerida
+	 * @param motivoDevolucao 
+	 * @param peticaoValida 
 	 */
-
-	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida) {
+	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
+		if (peticaoValida) {
+			tarefaAdapter.completarPreautuacao(peticao);
+		} else {
+			processoAdapter.devolver(peticao);
+		}
 		peticao.preautuar(classeSugerida);
-		tarefaAdapter.completarPreautuacao(peticao);
 		peticaoRepository.save(peticao);
 	}
 
@@ -99,7 +124,7 @@ public class PeticaoApplicationService {
 	 * @param motivoRejeicao Motivo da rejeição da petição.
 	 */	
 	public void autuar(Peticao peticao, ClasseId classe, boolean peticaoValida, String motivoRejeicao) {
-		if (peticaoValida){
+		if (peticaoValida) {
 			peticao.aceitar(classe);
 			tarefaAdapter.completarAutuacao(peticao);
 		} else {
@@ -114,8 +139,21 @@ public class PeticaoApplicationService {
 	 * 
 	 * @param peticao Dados da petição.
 	 */
-	public void devolver(Peticao peticao) {
-		processoAdapter.devolver(peticao);
+	public void devolver(Peticao peticao, TipoDevolucao tipoDevolucao, Long numero) {
+    	// Passo 01: Gerando o Ofício de Devolução e fazendo o upload do documento (arquivo temporário)...
+		byte[] oficio = pecaDevolucaoBuilder.build(peticao.identificacao(), tipoDevolucao, numero);
+		DocumentoTemporarioId documentoTemporarioId = documentoAdapter.upload(tipoDevolucao.nome(), oficio);
+		
+		// Passo 02: Salvando o Documento Temporário no Sistema de Armazenamento Definitivo...
+		DocumentoId documentoId = documentoAdapter.salvar(documentoTemporarioId);
+		
+		// Passo 03: Juntando a Peça de Devolução (Ofício) à Petição...
+		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(1)); // TODO: Alterar o Tipo de Peça.
+		peticao.juntar(new PecaPeticao(documentoId, tipo, String.format("Ofício nº %s", numero)));
+		peticaoRepository.save(peticao);
+		
+		// Passo 04: Completando a tarefa no BPM...
+		tarefaAdapter.completarDevolucao(peticao);
 	}
 	
 }

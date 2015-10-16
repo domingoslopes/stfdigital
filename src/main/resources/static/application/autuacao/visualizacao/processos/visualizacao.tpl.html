@@ -1,0 +1,117 @@
+<div class="content">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Processo</p>
+					</li>
+					<li><a href="#" id="subtitulo" class="active">Informações Detalhadas</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card share" data-social="item" style="width: 100%">
+					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					<div class="card-header clearfix ">
+						<h5>Identificação</h5>
+					</div>
+					<div class="card-description">
+						<h6  class="font-montserrat">Identificação: <strong>{{processo.classe}} {{processo.numero}}</strong></h6>
+					</div>
+				</div>
+		    </div>
+            <div class="col-md-6">
+                <div class="card share" data-social="item" style="width: 100%">
+                    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                    <div class="card-header clearfix ">
+                        <h5>Relator</h5>
+                    </div>
+                    <div class="card-description">
+                        <h6  class="font-montserrat">Ministro: <strong>{{processo.relator}}</strong></h6>
+                    </div>
+                </div>
+            </div>
+		</div>
+        <div class="row" ng-show="processo.partes['Polo Ativo'].length || processo.partes['Polo Passivo'].length"">
+            <div class="col-md-6" ng-show="processo.partes['Polo Ativo'].length">
+                <div class="card share" data-social="item" style="width: 100%">
+                    <div class="circle" data-toggle="tooltip" title=""
+                        data-container="body" data-original-title="Label"></div>
+                    <div class="card-header clearfix">
+                        <h5>Partes do Polo Ativo</h5>
+                    </div>
+                    <div class="card-description">
+                        <div class="auto-overflow widget-11-2-table">
+                            <table class="table table-condensed table-hover" >
+                                <tbody>
+                                    <tr ng-repeat="parte in processo.partes['Polo Ativo']">
+                                        <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" ng-show="processo.partes['Polo Passivo'].length">
+                <div class="card share" data-social="item" style="width: 100%">
+                    <div class="circle" data-toggle="tooltip" title=""
+                        data-container="body" data-original-title="Label"></div>
+                    <div class="card-header clearfix">
+                        <h5>Partes do Polo Passivo</h5>
+                    </div>
+                    <div class="card-description">
+                        <div class="auto-overflow widget-11-2-table">
+                            <table class="table table-condensed table-hover">
+                                <tbody>
+                                    <tr ng-repeat="parte in processo.partes['Polo Passivo']">
+                                        <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="processo.pecas.length">
+            <div class="col-md-12">
+                <div class="card share" data-social="item" style="width: 100%">
+                    <div class="circle" data-toggle="tooltip" title=""
+                        data-container="body" data-original-title="Label"></div>
+                    <div class="card-header clearfix">
+                        <h5>Peças da Petição</h5>
+                    </div>
+                    <div class="card-description">
+                        <div class="auto-overflow widget-11-2-table">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="50%">Título</th>
+                                        <th width="40%">Tipo de Peça</th>
+                                        <th width="10%">Arquivo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="peca in processo.pecas">
+                                        <td class="font-montserrat fs-12 col-lg-12">{{peca.descricao}}</td>
+                                        <td class="font-montserrat fs-12 col-lg-12">{{peca.tipo}}</td>
+                                        <td class="font-montserrat fs-12 col-lg-12"><a ng-href="{{urlConteudo(peca)}}" target="_blank">Visualizar</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+ 		<p>
+ 			<button class="btn btn-complete btn-cons" onClick="location.href='dashboard'">Voltar</button>
+		</p>	
+	</div>
+</div>

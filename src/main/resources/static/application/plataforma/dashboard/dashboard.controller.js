@@ -1,3 +1,4 @@
+// TODO Remover essa controller quando começar a utilizar o mecanismo de dashlets
 /**
  * @author Rodrigo Barreiros
  * 
@@ -10,10 +11,6 @@
 	angular.plataforma.controller('DashboardController', function (data, $scope, $http, properties, PeticaoService) {
 		
 		$scope.tarefas = data.data;
-		
-		PeticaoService.listar().success(function(peticoes) {
-			$scope.peticoes = peticoes;
-		});
 		
 	});
 	

@@ -31,8 +31,9 @@
 			});
 //			$httpBackend.flush();
 		}));
+		
 		it ('Deveria carregar a lista de forma de envio do controlador', function(){
 			expect(controller.tipoRecebimentos.length).toEqual(5); // TODO Atualizar este teste quando fizer a chamada realmente ao back-end /tiporecebimentos
-		})
+		});
 	});
 })();
