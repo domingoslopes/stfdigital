@@ -38,7 +38,7 @@ public class PeticaoEletronica extends Peticao {
 
 		super.sugerirClasse(classeSugerida);
 		partes.forEach(parte -> super.adicionarParte(parte));
-		pecas.forEach(peca -> super.adicionarPeca(peca));
+		pecas.forEach(peca -> super.juntar(peca));
 	}
 
 	public PeticaoEletronica(final PeticaoId id, final Long numero,
@@ -54,7 +54,7 @@ public class PeticaoEletronica extends Peticao {
 
 		super.sugerirClasse(classeSugerida);
 		partes.forEach(parte -> super.adicionarParte(parte));
-		pecas.forEach(peca -> super.adicionarPeca(peca));
+		pecas.forEach(peca -> super.juntar(peca));
 		this.orgaoRepresentado = orgaoRepresentado;
 	}
 

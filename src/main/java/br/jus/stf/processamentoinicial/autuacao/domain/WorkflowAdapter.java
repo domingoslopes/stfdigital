@@ -6,11 +6,9 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 
-
-
 /**
  * @author Rodrigo Barreiros
- * @author anderson.araujo
+ * @author Anderson Araújo
  * 
  * @since 1.0.0
  * @since 26.06.2015

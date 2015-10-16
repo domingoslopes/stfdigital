@@ -40,9 +40,7 @@ public class ProcessoServiceFacade {
 	 */
 	public ProcessoDto consultar(Long id){
 		ProcessoId processoId = new ProcessoId(id);
-		
 		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
-		
 		return processoDtoAssembler.toDto(processo);
 	}
 
@@ -55,9 +53,8 @@ public class ProcessoServiceFacade {
 	public ProcessoDto distribuir(Long peticaoId, Long ministroId) {
 		MinistroId ministro = new MinistroId(ministroId);
 		PeticaoId id = new PeticaoId(peticaoId);
-		
-		Peticao peticao = Optional.ofNullable(peticaoRepository.findOne(id)).orElseThrow(IllegalArgumentException::new);
-
+		Peticao peticao = Optional.ofNullable((Peticao) peticaoRepository.findOne(id))
+								  .orElseThrow(IllegalArgumentException::new);
 		Processo processo = processoApplicationService.distribuir(peticao, ministro);
 		return processoDtoAssembler.toDto(processo);
 	}
