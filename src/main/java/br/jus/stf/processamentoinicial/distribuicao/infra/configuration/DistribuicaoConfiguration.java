@@ -19,7 +19,7 @@ import br.jus.stf.processamentoinicial.distribuicao.infra.IndexadorRestAdapter;
 @Configuration
 public class DistribuicaoConfiguration {
 	
-	private static final String DISTRIBUICAO_RESOURCE = "/indices/processamentoinicial/autuacao.json";
+	private static final String DISTRIBUICAO_RESOURCE = "/indices/processamentoinicial/distribuicao.json";
 	
 	@Autowired
 	private IndexadorRestAdapter indexadorRestAdapter;
