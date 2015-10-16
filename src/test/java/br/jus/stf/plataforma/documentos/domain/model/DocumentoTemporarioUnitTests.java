@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
-public class DocumentoTemporarioTest {
+public class DocumentoTemporarioUnitTests {
 	
 	private MockMultipartFile mockMultiFile;
 	

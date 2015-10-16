@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class MinistroIdTest {
+public class MinistroIdUnitTests {
 	
 	@Test
 	public void criaMinistroIdValido() {

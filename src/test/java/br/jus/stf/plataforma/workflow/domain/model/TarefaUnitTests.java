@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import br.jus.stf.shared.ProcessoWorkflowId;
 import br.jus.stf.shared.TarefaId;
 
-public class TarefaTest {
+public class TarefaUnitTests {
 
 	@Mock
 	private Task taskValida;

@@ -26,7 +26,7 @@ import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
-public class PeticaoTest {
+public class PeticaoUnitTests {
 	
 	@InjectMocks
 	private ProcessoFactory mockProcessoFactory;
