@@ -7,26 +7,39 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('DevolucaoController', function ($log, PeticaoService, $state, $stateParams, properties) {
+	angular.autuacao.controller('DevolucaoController', function ($log, PeticaoService, $state, $stateParams, messages, properties) {
 		var devolucao = this;
 		
 		devolucao.idPeticao = $stateParams.idTarefa;
 		
-		var command = new DevolverCommand(devolucao.idPeticao);
+		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, {id : 'TRANSITADO', nome : "Transitado"}, {id : 'BAIXADO', nome : "Baixado"}];
+		
+		devolucao.tipoDevolucao = '';
+		
+		devolucao.numeroOficio;
 		
 		devolucao.finalizar = function() {
-			PeticaoService.devolver(command).success(function(data, status, headers, config) {
-				$log.debug('Sucesso');
-				$state.go('dashboard');
-			}).error(function(data, status, headers, config) {
-				$log.debug('Erro');
+			if (devolucao.tipoDevolucao.length === 0) {
+				messages.error('Você precisa selecionar <b>o tipo de devolução</b>.');
+				return;
+			}
+			
+			if (!angular.isNumber(devolucao.numeroOficio)) {
+				messages.error('Você precisa informar <b>o número do ofício</b>.');
+				return;
+			}
+			
+			PeticaoService.devolver(devolucao.idPeticao, new DevolverCommand(devolucao.tipoDevolucao, devolucao.numeroOficio)).success(function(data) {
+				$state.go('detalhe', {idPeticao: devolucao.idPeticao});
+				messages.success('Petição devolvida com sucesso.');
 			});
 		};
 		
-		function DevolverCommand(peticaoId) {
-			var dto = {};
-			dto.peticaoId = peticaoId;
-			return dto;
+		function DevolverCommand(tipoDevolucao, numeroOficio) {
+			var command = {};
+			command.tipoDevolucao = tipoDevolucao; 
+			command.numeroOficio = numeroOficio;
+			return command;
 		}
 		
 	});

@@ -40,8 +40,7 @@ public class ProcessoServiceFacade {
 	 */
 	public ProcessoDto consultar(Long id){
 		ProcessoId processoId = new ProcessoId(id);
-		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId))
-									.orElseThrow(IllegalArgumentException::new);
+		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
 		return processoDtoAssembler.toDto(processo);
 	}
 

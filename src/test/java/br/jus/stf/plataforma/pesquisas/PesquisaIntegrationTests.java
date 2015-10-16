@@ -55,7 +55,7 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		peticao.aceitar(new ClasseId("HC"));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
-		peticao.adicionarPeca(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
+		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
 		processoApplicationService.distribuir(peticao, new MinistroId(1L));
 		elasticsearchTemplate.refresh("distribuicao", true);
 

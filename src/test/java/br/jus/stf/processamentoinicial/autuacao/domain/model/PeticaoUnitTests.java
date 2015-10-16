@@ -272,7 +272,7 @@ public class PeticaoUnitTests {
 		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
 		
 		assertTrue(peticao.pecas().size() == 0);
-		peticao.adicionarPeca(peca);
+		peticao.juntar(peca);
 		assertTrue(peticao.pecas().size() == 1);
 		assertTrue(peticao.pecas().contains(peca));
 	}
@@ -281,7 +281,7 @@ public class PeticaoUnitTests {
 	public void tentaAdicionarPecaAPeticaoInformandoNulo() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L);
 		
-		peticao.adicionarPeca(null);
+		peticao.juntar(null);
 	}
 	
 	@Test
@@ -289,7 +289,7 @@ public class PeticaoUnitTests {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L);
 		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
 		
-		peticao.adicionarPeca(peca);
+		peticao.juntar(peca);
 		assertTrue(peticao.pecas().size() == 1);
 		peticao.removerPeca(peca);
 		assertTrue(peticao.pecas().size() == 0);

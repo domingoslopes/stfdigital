@@ -44,8 +44,7 @@ public class PeticaoFactory {
 	 * @param pecas
 	 * @return a petição
 	 */
-	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, 
-			List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecasTemporarias) {
+	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecasTemporarias) {
 		
 		Set<PartePeticao> partes = new HashSet<PartePeticao>();
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
@@ -57,6 +56,32 @@ public class PeticaoFactory {
 		Long numero = peticaoRepository.nextNumero();
 		
 		return new PeticaoEletronica(id, numero, classeSugerida, partes, pecas);
+	}
+
+	/**
+	 * Cria uma petição eletrônica enviada por um órgão
+	 * 
+	 * @param classeSugerida
+	 * @param poloAtivo
+	 * @param poloPassivo
+	 * @param pecas
+	 * @param orgaoId o ID do órgão do representante
+	 * @return a petição
+	 */
+	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecasTemporarias, Long orgaoId) {
+		
+		Set<PartePeticao> partes = new HashSet<PartePeticao>();
+		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
+		adicionarPartes(partes, poloPassivo, TipoPolo.POLO_PASSIVO);
+		
+		Set<PecaPeticao> pecas = adicionarPecas(pecasTemporarias);
+		
+		PeticaoId id = peticaoRepository.nextId();
+		Long numero = peticaoRepository.nextNumero();
+		
+		Orgao orgao = peticaoRepository.findOneOrgao(orgaoId);
+		
+		return new PeticaoEletronica(id, numero, classeSugerida, partes, pecas, orgao);
 	}
 
 	/**
@@ -97,7 +122,7 @@ public class PeticaoFactory {
 		List<DocumentoTemporarioId> documentosTemporarios = pecas.stream()
 				.map(peca -> peca.documentoTemporario())
 				.collect(Collectors.toList());
-		Set<DocumentoId> documentos = documentoAdapter.salvarDocumentos(documentosTemporarios);
+		Set<DocumentoId> documentos = documentoAdapter.salvar(documentosTemporarios);
 		OfInt linhas = IntStream.range(0, documentos.size()).iterator();
 
 		return documentos.stream()

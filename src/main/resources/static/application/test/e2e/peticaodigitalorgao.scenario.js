@@ -48,7 +48,7 @@
 			
 			peticionamentoPage.classificarClasse('AP');
 			
-			peticionamentoPage.classificarOrgao('PGR');
+			peticionamentoPage.classificarOrgao('Procuradoria-Geral');
 			
 			peticionamentoPage.partePoloAtivo('Pedro de Souza');
 		    

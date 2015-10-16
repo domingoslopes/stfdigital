@@ -23,6 +23,11 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	private TarefaRestResource tarefaRestResource;
 
 	@Override
+	public void completarDevolucao(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.DEVOLVIDA);		
+	}
+
+	@Override
 	public void completarAutuacao(Peticao peticao) {
 		completarTarefaPorProcesso(peticao, PeticaoStatus.ACEITA);		
 	}

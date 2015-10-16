@@ -18,12 +18,12 @@ public class PeticaoActionsResource {
 
 	@ActionMapping(id = "REGISTRAR_PETICAO_ELETRONICA", name = "Registrar Petição Eletrônica", neededAuthorities = {"peticionador"})
 	public Long peticionar(RegistrarPeticaoCommand command) {			
-		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas());
+		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas(), command.getOrgaoId());
 	}
 	
 	@ActionMapping(id = "REGISTRAR_PETICAO_ELETRONICA_ORGAO", name = "Registrar Petição Eletrônica", neededAuthorities = {"representante"})
 	public Long peticionarOrgao(RegistrarPeticaoCommand command) {			
-		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas());
+		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas(), command.getOrgaoId());
 	}
 	
 	@ActionMapping(id = "REGISTRAR_PETICAO_FISICA", name = "Registrar Petição Física", neededAuthorities = {"recebedor"})
@@ -33,7 +33,7 @@ public class PeticaoActionsResource {
 	
 	@ActionMapping(id = "PREAUTUAR_PETICAO_FISICA", name = "Preautuar Petição Física", neededAuthorities = {"preautuador"})
 	public void preautuar(PreautuarPeticaoFisicaCommand command) {
-		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId()); 
+		peticaoServiceFacade.preautuar(null, command.getClasseId(), false, null); 
 	}
 	
 	@ActionMapping(id = "AUTUAR_PETICAO", name = "Autuar Petição", neededAuthorities = {"autuador"})

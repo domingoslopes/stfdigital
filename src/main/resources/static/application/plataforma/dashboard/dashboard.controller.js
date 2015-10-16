@@ -12,10 +12,6 @@
 		
 		$scope.tarefas = data.data;
 		
-		PeticaoService.listar().success(function(peticoes) {
-			$scope.peticoes = peticoes;
-		});
-		
 	});
 	
 })();

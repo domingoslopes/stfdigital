@@ -73,9 +73,6 @@ public class PeticaoFisica extends Peticao {
 	public void preautuar(final ClasseId classeSugerida) {
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		
-		/*if (!statusAtual.equals(PeticaoStatus.A_PREAUTUAR)) {
-			throw new IllegalStateException("peticao.status.invalid");
-		}*/
 		super.sugerirClasse(classeSugerida);
 	}
 	
