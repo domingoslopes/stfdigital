@@ -12,10 +12,33 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-        <form ng-submit="devolucao.finalizar()">
-            <p>
-                <input class="btn btn-complete btn-cons m-t-10" type="submit" value="Finalizar">
-            </p>
-        </form>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form id="searchForm" ng-submit="devolucao.finalizar()" role="form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group form-group-default">
+                                        <label>Motivo da Devolução</label>
+                                        <select ui-select2 id="tipoDevolucao" ng-model="devolucao.tipoDevolucao" class="full-width">
+                                            <option value=""></option>
+                                            <option ng-repeat="tipoDevolucao in devolucao.tiposDevolucao" value="{{tipoDevolucao.id}}">{{tipoDevolucao.nome}}</option>
+			                            </select>
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                        <label>Número do Ofício</label>
+                                        <input id="numero" type="number" ng-model="devolucao.numeroOficio" class="form-control" autofocus="autofocus" />
+                                    </div>
+                                </div>
+                            </div>
+                            <p>
+                                <input class="btn btn-complete btn-cons m-t-10" type="submit" value="Finalizar">
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
 </div>

@@ -1,9 +1,14 @@
 package br.jus.stf.plataforma.shared.persistence;
 
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
+import org.h2.tools.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
@@ -17,11 +22,17 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 //@Profile(Profiles.DESENVOLVIMENTO)
 public class PersistenceMemoryConfiguration {
 	
+	@Value("${H2.web.port}")
+	private String webPort;
+	
+	@Value("${H2.tcp.port}")
+	private String tcpPort;
+	
 	@Bean(name = "dataSource")
 	public DataSource dataSource() throws Exception {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(org.h2.Driver.class);
-		dataSource.setUrl("jdbc:h2:~/stfdigital;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1");
+		dataSource.setUrl("jdbc:h2:mem:stfdigital;MODE=Oracle;DB_CLOSE_DELAY=-1");
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
 		return dataSource;
@@ -39,6 +50,17 @@ public class PersistenceMemoryConfiguration {
 		hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
 		hibernateJpaVendorAdapter.setShowSql(false);
 		return hibernateJpaVendorAdapter;
+	}
+	
+	@Bean(initMethod = "start", destroyMethod = "stop")
+	public Server h2WebServer() throws SQLException {
+		return Server.createWebServer("-web", "-webAllowOthers", "-webPort", webPort);	
+	}
+	
+	@Bean(initMethod = "start", destroyMethod = "stop")
+	@DependsOn("h2WebServer")
+	public Server h2Server(Server h2WebServer) throws SQLException {
+		return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", tcpPort);
 	}
 	
 }

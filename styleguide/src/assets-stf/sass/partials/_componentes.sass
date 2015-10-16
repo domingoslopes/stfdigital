@@ -3,3 +3,151 @@
 // Partes de uma interface com estilos mais definidos e específicos. 
 // É aqui que estilos para uma "lista de processos" ou "cabeçalho principal" seriam encontrados.
 //-------------------------------------
+
+.md-fab
+	&.md-fab-small > span
+		line-height: 48px
+		height: inherit
+		width: inherit
+		font-size: 24px
+
+	.md-fab-label
+		display: none
+		opacity: 0
+		font-size: 1em
+		padding: 0 1em
+		position: absolute
+		right: 48px + 15px
+		top: 12px
+		height: 24px
+		line-height: 24px
+		white-space: nowrap
+		transition: 1s
+
+	&:hover .md-fab-label
+		display: inline-block
+		opacity: 1
+
+.md-card-list 
+	.md-card-list-item-closed
+		display: inherit !important
+
+	.md-card-list-item-open
+		display: none !important
+
+	.item-shown
+		.md-card-list-item-closed
+			display: none !important
+
+		.md-card-list-item-open
+			display: inherit !important
+
+.grid-processo
+	color: rgba(255, 255, 255, 0.35)
+
+	&.grid-processo-primary
+		background: $stf-color-primary
+		.grid-processo-titulo
+			color: rgba(255, 255, 255, 0.5)
+
+	.grid-processo-titulo, .grid-processo-descricao
+		@extend .stf-padding-small
+
+	.grid-processo-titulo
+		background: rgba(255, 255, 255, 0.25)
+
+	.grid-processo-descricao
+		background: #FFFFFF
+
+.md-btn
+	&.md-btn-stf-primary
+		background: $stf-color-primary
+
+	&.stf-btn-xsmall
+		min-height: 32px
+		line-height: 32px
+		min-width: 32px
+		padding: 0
+
+.uk-close
+	&.stf-close
+		&.md-color-white
+			&:after
+				color: white
+
+// Personalização 
+.selectize-dropdown-below
+	.selectize-dropdown
+		margin-top: 0
+
+// Personalização do Card List Item do Material Design / AltAir
+.md-card-list-wrapper
+	.stf-card-list-item
+		cursor: pointer
+
+		&.item-shown
+			cursor: default
+
+// Personalização do Modal do AltAir
+.uk-modal-dialog
+	.stf-modal-header
+		margin: -24px -24px 16px -24px
+		padding: 20px
+		border-radius: 0px
+		@extend .z-depth-1
+
+		&.stf-modal-header-primary
+			background: $stf-color-primary
+			color: $stf-color-primary-accent
+
+		.stf-modal-header-icon
+			float: left
+			font-size: 54px
+
+		.stf-modal-header-heading, .stf-modal-header-subheading
+			display: block
+			margin-top: -8px
+
+		.stf-modal-header-heading
+			font-weight: 700
+			font-size: 36px
+
+		.stf-modal-header-subheading
+			font-weight: 300
+			font-size: 24px
+
+		.stf-modal-header-subheading + .stf-modal-header-heading,
+		.stf-modal-header-heading + .stf-modal-header-subheading
+			margin-bottom: -8px
+
+	.stf-modal-separator
+		margin: 12px -24px
+
+// Lista de comentários
+.stf-comment-list
+	.stf-comment-item
+		.stf-comment-item-avatar
+			width: 32px
+			height: 32px
+			float: left
+			margin-right: 8px
+			border: 1px solid #CCC
+
+			&.stf-comment-item-avatar-large
+				width: 64px
+				height: 64px
+
+		.stf-comment-item-content
+			font-size: 0.9em
+			display: inline-block;
+			vertical-align: top;
+
+			.stf-comment-item-actions
+				font-size: 0.9em
+
+			.stf-comment-item-comment
+				height: 16px
+				border: 1px solid #CCC
+				width: 100%
+				box-sizing: border-box
+				@extend .stf-padding

@@ -15,6 +15,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
@@ -47,9 +48,10 @@ public class PeticaoServiceFacade {
 	 * @param poloAtivo Lista contendo os ids das partes do polo ativo.
 	 * @param poloPassivo Lista contendo os ids das partes do polo passivo.
 	 * @param pecas Lista contendo os ids das pecas da petição eletrônica.
+	 * @param orgaoId o identificador do órgão para o qual o seu representante está peticionando 
 	 * @return Id da petição gerado automaticamente.
 	 */
-	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<Map<String, String>> pecas) {
+	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<Map<String, String>> pecas, Long orgaoId) {
 		ClasseId classe = new ClasseId(classeSugerida);
 		List<PecaTemporaria> pecasTemporarias = pecas.stream()
 				.map(peca -> {
@@ -59,8 +61,7 @@ public class PeticaoServiceFacade {
 				})
 				.collect(Collectors.toList());
 		
-		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, pecasTemporarias);
-
+		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, pecasTemporarias, Optional.ofNullable(orgaoId));
 		return peticao.id().toLong();
 	}
 	
@@ -80,15 +81,16 @@ public class PeticaoServiceFacade {
 	
 	/**
 	 * Realiza a preautuação de uma petição física.
+	 * 
 	 * @param peticaoId Id da petição física.
 	 * @param classeId Classe processual sugerida.
+	 * @param peticaoValida indica se a petição está correta ou indevida 
+	 * @param motivoDevolucao o motivo da devolução, no caso de petições indevidas 
 	 */
-	public void preautuar(Long peticaoId, String classeId) {
+	public void preautuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoDevolucao) {
 		ClasseId classe = new ClasseId(classeId);
-		PeticaoId id = new PeticaoId(peticaoId);
-		PeticaoFisica peticao = Optional.ofNullable(peticaoRepository.findOne(id, PeticaoFisica.class))
-									.orElseThrow(IllegalArgumentException::new);
-		peticaoApplicationService.preautuar(peticao, classe);
+		PeticaoFisica peticao = carregarPeticao(peticaoId);
+		peticaoApplicationService.preautuar(peticao, classe, peticaoValida, motivoDevolucao);
 	}
 	
 	/**
@@ -108,9 +110,9 @@ public class PeticaoServiceFacade {
 	 * Devolve uma petição.
 	 * @param peticaoId Id da petição.
 	 */
-	public void devolver(Long peticaoId) {
+	public void devolver(Long peticaoId, TipoDevolucao tipoDevolucao, Long numero) {
 		Peticao peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.devolver(peticao);
+		peticaoApplicationService.devolver(peticao, tipoDevolucao, numero);
 	}
 	
 	/**
@@ -135,10 +137,11 @@ public class PeticaoServiceFacade {
 	 * @param peticaoId
 	 * @return a petição
 	 */
-	private Peticao carregarPeticao(Long peticaoId) {
+	@SuppressWarnings("unchecked")
+	private <T> T carregarPeticao(Long peticaoId) {
 		PeticaoId id = new PeticaoId(peticaoId);
-		return Optional.ofNullable(peticaoRepository.findOne(id))
-				.orElseThrow(IllegalArgumentException::new);
+		return (T) Optional.ofNullable(peticaoRepository.findOne(id))
+					.orElseThrow(IllegalArgumentException::new);
 	}
 	
 }
