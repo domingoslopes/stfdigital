@@ -31,7 +31,7 @@
 			pesquisaPeticaoPage.pesquisar();
 			
 		    expect(pesquisaPeticaoPage.resultados().count()).toBeGreaterThan(0);    
-		    expect(pesquisaPeticaoPage.resultados().get(0).getText()).toMatch('/2015 ADI');
+		    expect(pesquisaPeticaoPage.resultados().get(0).getText()).toMatch('/2015 AP');
 		});	
 	});
 })();

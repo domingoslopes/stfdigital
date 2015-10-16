@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDto;
 import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacade;
+
+import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Api REST para recuperar dashboards.
