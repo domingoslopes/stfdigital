@@ -1,0 +1,84 @@
+button.uk-modal-close.uk-close.stf-close.md-color-white(type='button')
+
+.uk-modal-header.stf-modal-header.stf-modal-header-primary
+  i.material-icons.stf-modal-header-icon.uk-border-circle.uk-margin-right.z-depth-1.md-bg-grey-50.md-color-stf-primary &#xE145;
+  span.stf-modal-header-subheading Registrar Recebimento
+  span.stf-modal-header-heading Novo Processo Físico
+
+form
+  .uk-grid
+    .uk-width-3-5
+      .z-depth-1.stf-padding
+        .uk-grid(data-uk-grid-margin='')
+          .uk-width-1-1.uk-width-large-1-2
+            label.uk-form-label(for='qtd_volumes') Quantidade de Volumes
+            input.md-input(name='qtd_volumes')
+          .uk-width-1-1.uk-width-large-1-2
+            label.uk-form-label(for='qtd_apensos') Quantidade de Apensos
+            input.md-input(name='qtd_apensos')
+              
+        .uk-grid(data-uk-grid-margin='')
+          .uk-width-1-1.uk-width-large-1-2
+            label.uk-form-label(for='forma_recebimento') Forma de recebimento
+            input.md-input(name='forma_recebimento')
+          .uk-width-1-1.uk-width-large-1-2
+            label.uk-form-label(for='identificacao_correspondencia') Identificação da correspondência
+            input.md-input(name='identificacao_correspondencia')
+
+    .uk-width-2-5
+      .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+        .uk-grid
+          .uk-width-1-2
+            .uk-h2.uk-margin-bottom.uk-margin-small-top Novo Processo
+
+          .uk-width-1-2.uk-text-right
+            span.uk-margin-bottom-remove.uk-margin-small-top Nº de Volumes
+            br
+            span Nº de Apensos
+
+        .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small
+          span Tipo de recebimento e número de identificação
+
+      .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+        .uk-grid.md-color-grey-50
+          .uk-width-1-2
+            .uk-h2.uk-margin-bottom.uk-margin-small-top Novo Processo
+
+          .uk-width-1-2.uk-text-right
+            span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+            br
+            span 2 Apensos
+
+        .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small.md-color-grey-50
+          span Recebido por Correio sob número: 23423
+
+      .uk-width-1-1.uk-text-center.uk-margin-top
+        button.md-btn.md-btn-success.uk-margin-small-bottom Registrar Processo Físico
+
+    .uk-width-1-1
+      hr.stf-modal-separator
+      
+      span
+        a(href="#") 6 pessoas 
+        | comentaram isso.
+
+      hr.stf-modal-separator
+
+      .stf-comment-list
+        .stf-comment-item
+          img.stf-comment-item-avatar(src='assets/img/avatars/leandro.png', alt='')
+          .stf-comment-item-content
+            a.stf-comment-item-author(href='#') João da Silva 
+            span Não consegui identificar se há 2 ou 3 apensos. Por via das dúvidas, deixei 2.
+
+            .stf-comment-item-actions
+              a(href="#") Responder
+              span.uk-text-muted 
+                | 9 mins ao 
+                strong Registrar recebimento de Novo Processo Físico
+
+        .stf-comment-item.uk-margin-top.uk-flex
+          img.stf-comment-item-avatar.stf-comment-item-avatar-large.uk-flex-item-none(src='assets/img/avatars/leandro.png', alt='')
+
+          .stf-comment-item-content.uk-flex-item-auto
+            input.stf-comment-item-comment(name='comentario', placeholder='Escreva um comentário...')

@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-		<form ng-submit="registro.completar()">
+		<form>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="card share" data-social="item" style="width: 100%">
@@ -75,7 +75,9 @@
 			<br />
 			
 			<p>
-    			<input id="botaoRegistrar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Registrar">
+    			<action-executor id="registrar_peticao_fisica" resources="registro.recursos" fn-validate="registro.validar"
+	 				fn-result="registro.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Registrar"
+	 				show-description="true" verify-if-allowed="true" /> 
  			</p>
 		</form>
 	</div>

@@ -28,7 +28,7 @@
 			
 			$httpBackend.flush();
 			
-			controller = $controller('PeticionamentoAdvogadoController', {
+			controller = $controller('PeticionamentoController', {
 				$scope : scope,
 				data : {
 					data : fakeData
