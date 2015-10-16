@@ -23,6 +23,9 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "Identificador da classe processual sugerida pelo peticionador", required=true)
 	private String classeId;
 	
+	@ApiModelProperty(value = "Identificador do Órgão para o qual o seu representante está peticionando, se for o caso", required=false)
+	private Long orgaoId;
+	
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
 	private List<String> partesPoloAtivo;
@@ -41,6 +44,14 @@ public class RegistrarPeticaoCommand {
 
 	public String getClasseId() {
 		return classeId;
+	}
+	
+	public void setOrgaoId(Long orgaoId) {
+		this.orgaoId = orgaoId;
+	}
+	
+	public Long getOrgaoId() {
+		return orgaoId;
 	}
 	
 	public void setPartesPoloAtivo(List<String> partesPoloAtivo) {

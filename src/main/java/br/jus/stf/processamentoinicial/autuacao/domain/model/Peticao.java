@@ -160,7 +160,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 * 
 	 * @param peca
 	 */
-	public boolean adicionarPeca(final Peca peca) {
+	public boolean juntar(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
 	
 		return this.pecas.add(peca);

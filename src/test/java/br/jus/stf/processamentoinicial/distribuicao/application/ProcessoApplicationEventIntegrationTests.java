@@ -33,7 +33,7 @@ public class ProcessoApplicationEventIntegrationTests extends AbstractIntegratio
 	public void processoDistribuidoEvent() {
 		Peticao peticao = peticaoFactory.criarPeticaoFisica(1, 1, FormaRecebimento.SEDEX, "123");
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
-		peticao.adicionarPeca(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
+		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
 		Processo processo = ProcessoFactory.criarProcesso(new ClasseId("HC"), new MinistroId(1L), peticao);
 		processoApplicationEvent.processoDistribuido(processo);

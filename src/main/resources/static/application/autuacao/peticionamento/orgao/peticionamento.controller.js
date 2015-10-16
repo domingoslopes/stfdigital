@@ -11,11 +11,9 @@
 
 		$scope.$parent.child = $scope;
 		
-		//mock feito até que o serviço de backend seja construído
-		$scope.orgaos = [{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }];
-		/*OrgaoService.listar().success(function(orgaos) {
+		OrgaoService.listar().success(function(orgaos) {
 			$scope.orgaos = orgaos;
-		});*/
+		});
 		
 		$scope.validar = function() {
 			
