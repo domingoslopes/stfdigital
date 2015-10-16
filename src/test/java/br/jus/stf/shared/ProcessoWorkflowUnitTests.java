@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ProcessoWorkflowTest {
+public class ProcessoWorkflowUnitTests {
 	
 	@Test
 	public void criaProcessoWorkflowValido() {

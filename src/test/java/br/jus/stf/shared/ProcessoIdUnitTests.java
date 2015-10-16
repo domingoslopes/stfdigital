@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ProcessoIdTest {
+public class ProcessoIdUnitTests {
 	
 	@Test
 	public void criaProcessoIdValido() {
