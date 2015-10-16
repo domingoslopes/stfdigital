@@ -16,16 +16,18 @@
 			$window.location.href = '/';
 		};
 		
-		if (angular.isUndefined($window.sessionStorage.getItem('papel'))) {
+		var papel = JSON.parse($window.sessionStorage.getItem('papel'));
+		
+		if (papel == null) {
 			selecionarPapel($scope.papeis[0]);
 		} else {
-			var papel = JSON.parse($window.sessionStorage.getItem('papel'));
 			selecionarPapel(papel);
 		}
 		
 		function selecionarPapel(papel) {
 			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
 			$scope.papelAtivo = papel;
+			$state.go('dashboard', {}, {reload: true});
 		};
 		
 	});
