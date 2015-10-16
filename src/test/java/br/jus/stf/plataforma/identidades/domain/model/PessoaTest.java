@@ -11,52 +11,76 @@ import br.jus.stf.shared.PessoaId;
 
 public class PessoaTest {
 	
-	private PessoaId idValido = new PessoaId(1L);
-	private String nomeValido = "José da Silva";
-	private PessoaId idNulo = null;
-	private String nomeVazio = "";
-	private String nomeNulo = null;
-
 	@Test
 	public void criaPessoaValida() {
-		Pessoa pessoa = new Pessoa(idValido, nomeValido);
+		Pessoa pessoa = new Pessoa(new PessoaId(1L), "José da Silva");
 		
 		assertNotNull(pessoa);
-		assertEquals(pessoa.id(), idValido);
-		assertEquals(pessoa.nome(), nomeValido);
+		assertEquals(pessoa.id(), new PessoaId(1L));
+		assertEquals(pessoa.nome(), "José da Silva");
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void criaPessoaComIdNulo() {
-		new Pessoa(idNulo, nomeValido);
+		new Pessoa(null, "José da Silva");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void criaPessoaComNomeVazio() {
-		new Pessoa(idValido, nomeVazio);
+		new Pessoa(new PessoaId(1L), "");
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void criaPessoaComNomeNulo() {
-		new Pessoa(idValido, nomeNulo);
+		new Pessoa(new PessoaId(1L), null);
 	}
 	
 	@Test
-	public void pessoasIguais() {
-		Pessoa pessoa1 = new Pessoa(idValido, nomeValido);
-		Pessoa pessoa2 = new Pessoa(idValido, nomeValido);
+	public void comparaPessoasIguais() {
+		Pessoa pessoa1 = new Pessoa(new PessoaId(1L), "José da Silva");
+		Pessoa pessoa2 = new Pessoa(new PessoaId(1L), "José da Silva");
 		
-		assertTrue(pessoa1.sameIdentityAs(pessoa2));
 		assertTrue(pessoa1.equals(pessoa2));
 	}
 	
 	@Test
-	public void pessoasDiferentes() {
-		Pessoa pessoa1 = new Pessoa(idValido, nomeValido);
+	public void comparaPessoasComIdentidadesIguais() {
+		Pessoa pessoa1 = new Pessoa(new PessoaId(1L), "José da Silva");
+		Pessoa pessoa2 = new Pessoa(new PessoaId(1L), "José da Silva");
+		
+		assertTrue(pessoa1.sameIdentityAs(pessoa2));
+	}
+	
+	@Test
+	public void comparaPessoasComHashesIguais() {
+		Pessoa pessoa1 = new Pessoa(new PessoaId(1L), "José da Silva");
+		Pessoa pessoa2 = new Pessoa(new PessoaId(1L), "José da Silva");
+		
+		assertTrue(pessoa1.hashCode() == pessoa2.hashCode());
+	}
+	
+	@Test
+	public void comparaPessoasDiferentes() {
+		Pessoa pessoa1 = new Pessoa(new PessoaId(1L), "José da Silva");
+		Pessoa pessoa2 = new Pessoa(new PessoaId(2L), "Maria Antônia");
+		
+		assertFalse(pessoa1.equals(pessoa2));
+	}
+	
+	@Test
+	public void comparaPessoasComIdentidadesDiferentes() {
+		Pessoa pessoa1 = new Pessoa(new PessoaId(1L), "José da Silva");
 		Pessoa pessoa2 = new Pessoa(new PessoaId(2L), "Maria Antônia");
 		
 		assertFalse(pessoa1.sameIdentityAs(pessoa2));
-		assertFalse(pessoa1.equals(pessoa2));
+	}
+	
+	@Test
+	public void comparaPessoasComHashesDiferentes() {
+		Pessoa pessoa1 = new Pessoa(new PessoaId(1L), "José da Silva");
+		Pessoa pessoa2 = new Pessoa(new PessoaId(2L), "Maria Antônia");
+		
+		assertFalse(pessoa1.hashCode() == pessoa2.hashCode());
 	}
 
 }

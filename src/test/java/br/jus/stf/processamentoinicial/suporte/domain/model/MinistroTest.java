@@ -1,5 +1,6 @@
 package br.jus.stf.processamentoinicial.suporte.domain.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -10,52 +11,76 @@ import br.jus.stf.shared.MinistroId;
 
 public class MinistroTest {
 	
-	private MinistroId idValido = new MinistroId(1L);
-	private String nomeValido = "Carlos Ayres Britto";
-	private MinistroId idNulo = null;
-	private String nomeVazio = "";
-	private String nomeNulo = null;
-
 	@Test
 	public void criaMinistroValido() {
-		Ministro ministro = new Ministro(idValido, nomeValido);
+		Ministro ministro = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
 		
 		assertNotNull(ministro);
-		assertTrue(ministro.id() == idValido);
-		assertTrue(ministro.nome() == nomeValido);
+		assertEquals(ministro.id(), new MinistroId(1L));
+		assertEquals(ministro.nome(), "Carlos Ayres Britto");
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void criaMinistroComIdNulo() {
-		new Ministro(idNulo, nomeValido);
+		new Ministro(null, "Carlos Ayres Britto");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void criaMinistroComNomeVazio() {
-		new Ministro(idValido, nomeVazio);
+		new Ministro(new MinistroId(1L), "");
 	}
 	
 	@Test(expected=NullPointerException.class)
 	public void criaMinistroComNomeNulo() {
-		new Ministro(idValido, nomeNulo);
+		new Ministro(new MinistroId(1L), null);
 	}
 	
 	@Test
-	public void ministrosIguais() {
-		Ministro ministro1 = new Ministro(idValido, nomeValido);
-		Ministro ministro2 = new Ministro(idValido, nomeValido);
+	public void comparaMinistrosIguais() {
+		Ministro ministro1 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
+		Ministro ministro2 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
 		
-		assertTrue(ministro1.sameIdentityAs(ministro2));
 		assertTrue(ministro1.equals(ministro2));
 	}
 	
 	@Test
-	public void ministrosDiferentes() {
-		Ministro ministro1 = new Ministro(idValido, nomeValido);
+	public void comparaMinistrosComIdentidadesIguais() {
+		Ministro ministro1 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
+		Ministro ministro2 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
+		
+		assertTrue(ministro1.sameIdentityAs(ministro2));
+	}
+	
+	@Test
+	public void comparaMinistrosComHashesIguais() {
+		Ministro ministro1 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
+		Ministro ministro2 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
+		
+		assertTrue(ministro1.hashCode() == ministro2.hashCode());
+	}
+	
+	@Test
+	public void comparaMinistrosDiferentes() {
+		Ministro ministro1 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
+		Ministro ministro2 = new Ministro(new MinistroId(2L), "Ellen Gracie");
+		
+		assertFalse(ministro1.equals(ministro2));
+	}
+	
+	@Test
+	public void comparaMinistrosComIdentidadesDiferentes() {
+		Ministro ministro1 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
 		Ministro ministro2 = new Ministro(new MinistroId(2L), "Ellen Gracie");
 		
 		assertFalse(ministro1.sameIdentityAs(ministro2));
-		assertFalse(ministro1.equals(ministro2));
+	}
+	
+	@Test
+	public void comparaMinistrosComHashesDiferentes() {
+		Ministro ministro1 = new Ministro(new MinistroId(1L), "Carlos Ayres Britto");
+		Ministro ministro2 = new Ministro(new MinistroId(2L), "Ellen Gracie");
+		
+		assertFalse(ministro1.hashCode() == ministro2.hashCode());
 	}
 
 }

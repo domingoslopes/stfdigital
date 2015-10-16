@@ -20,7 +20,7 @@ public class DocumentoTemporarioId implements ValueObject<DocumentoTemporarioId>
 	}
 
 	public DocumentoTemporarioId(final String id){
-		Validate.notNull(id, "documentoTemporarioId.id.required");
+		Validate.notBlank(id, "documentoTemporarioId.id.required");
 		
 		this.id = id;
 	}
