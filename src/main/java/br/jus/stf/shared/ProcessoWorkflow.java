@@ -35,6 +35,7 @@ public class ProcessoWorkflow implements Entity<ProcessoWorkflow, ProcessoWorkfl
 		this.status = status;
 	}
 
+	@Override
 	public ProcessoWorkflowId id() {
 		return id;
 	}

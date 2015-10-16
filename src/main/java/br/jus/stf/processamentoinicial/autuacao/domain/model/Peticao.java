@@ -73,7 +73,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaPeticao.class)
 	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
-	private Set<Peca> pecas = new LinkedHashSet<Peca>(0); // Para utilizar TreeSet Peca deve implementar Comparable
+	private Set<Peca> pecas = new LinkedHashSet<Peca>(0);
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
@@ -190,6 +190,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 */
 	public void aceitar(final ClasseId classeProcessual) {
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
+		Validate.notNull(this.classeSugerida, "peticao.aceitar.classeSugerida.invalid");
 
 		this.classeProcessual = classeProcessual;
 	}
@@ -199,7 +200,9 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 * @param motivoRejeicao
 	 */
 	public void rejeitar(final String motivoRejeicao) {
-		Validate.notNull(motivoRejeicao, "peticao.motivoRejeicao.required");
+		Validate.notBlank(motivoRejeicao, "peticao.motivoRejeicao.required");
+		Validate.notNull(this.classeSugerida, "peticao.rejeitar.classeSugerida.invalid");
+		Validate.isTrue(this.classeProcessual == null, "peticao.rejeitar.classeProcessual.invalid");
 	
 		this.motivoRejeicao = motivoRejeicao;
 	}
@@ -211,6 +214,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 */
 	public Processo distribuir(final MinistroId relator) {
 		Validate.notNull(relator, "peticao.ministroRelator.required");
+		Validate.notNull(this.classeProcessual, "peticao.distribuir.classeProcessual.invalid");
 		
 		return ProcessoFactory.criarProcesso(classeProcessual, relator, this);
 	}
