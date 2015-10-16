@@ -53,8 +53,9 @@
     		if (angular.isNumber($scope.numero)) {
     			dto.filtros.numero = $scope.numero;
     		}
-     		if (angular.isNumber(parseInt($scope.ministro)) && !$.isEmptyObject($scope.ministro)) {
-    			dto.filtros['relator.codigo'] = parseInt($scope.ministro);
+    		var codigo = parseInt($scope.ministro);
+     		if (Number.isFinite(codigo)) {
+    			dto.filtros['relator.codigo'] = codigo;
     		}
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {
     			dto.filtros['classe.sigla'] = $scope.classe;
