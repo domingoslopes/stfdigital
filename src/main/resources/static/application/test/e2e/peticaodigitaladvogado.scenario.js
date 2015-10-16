@@ -35,12 +35,13 @@
 		it('Deveria navegar para a página de envio de petições digitais', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
+			//principalPage.login('peticionador');
 			
 			// Verificando se a Home Page tem conteúdo...
 			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
 			
 			// Iniciando o Processo de Autuação...
-			principalPage.iniciarProcesso('peticionamento.advogado', 'novoItemIcon');
+			principalPage.iniciarProcesso('link_registrar_peticao_eletronica');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao/);
@@ -69,7 +70,7 @@
 			
 			principalPage.login('autuador');
 			
-		    expect(principalPage.tarefas().count()).toEqual(11);
+		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -95,6 +96,10 @@
 			autuacaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+		    		    
+		});
+
+		it('Deveria distribuir a petição autuada', function() {
 			
 		    principalPage.login('distribuidor');
 		    
@@ -106,10 +111,6 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-		    		    
-		});
-
-		it('Deveria distribuir a petição autuada', function() {
 			
 		    principalPage.executarTarefa();
 
@@ -122,8 +123,6 @@
 			distribuicaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
-			principalPage.login('recebedor');
 		}); 
 		
 
