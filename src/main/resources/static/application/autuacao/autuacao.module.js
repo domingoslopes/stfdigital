@@ -38,7 +38,7 @@
 					controller: 'PeticionamentoOrgaoController'
 				}
 			}
-		}).state('actions.registro', {
+		}).state('registro', {
 			url: '/peticao/fisica',
 			/*sticky : true,
 			deepStateRedirect : true,*/

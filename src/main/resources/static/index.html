@@ -65,27 +65,9 @@
             </a>
             <span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
           </li>
-          <li>
-          	<a ui-sref="registro" class="detailed">
-              <span class="title">Novo Item</span>
-              <span class="details">Petições Físicas</span>
-            </a>
-            <span class="icon-thumbnail bg-success"><i id="novaPFIcon" class="fa fa-plus"></i></span>
-          </li>
-          <li>
-            <a ui-sref="peticionamento.advogado" class="detailed">
-              <span class="title">Novo Item</span>
-              <span class="details">Petições Digitais</span>
-            </a>
-            <span class="icon-thumbnail bg-success"><i id="novoItemIcon" class="fa fa-plus"></i></span>
-          </li>
-          <li>
-            <a ui-sref="peticionamento.orgao" class="detailed">
-              <span class="title">Novo Item</span>
-              <span class="details">Petições Órgãos</span>
-            </a>
-            <span class="icon-thumbnail bg-success"><i id="novoItemOrgaoIcon" class="fa fa-plus"></i></span>
-          </li>
+          <li action-menu id="registrar_peticao_fisica" title="Novo Item" details="Petição Física" state="registro" resources="[{}]"></li>
+          <li action-menu id="registrar_peticao_eletronica" title="Novo Item" details="Petição Digital" state="peticionamento.advogado" resources="[{}]"></li>
+          <li action-menu id="registrar_peticao_eletronica_orgao" title="Novo Item" details="Petição Órgão" state="peticionamento.orgao" resources="[{}]"></li>
         </ul>
         <div class="clearfix"></div>
       </div>
@@ -134,7 +116,7 @@
 						</span>
 						<ul class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10" role="menu">
 							<li><a style="line-height: 15px" ui-sref="pesquisa.peticao" id="pesquisa_peticao">Petição</a></li>
-							<li><a style="line-height: 15px" ui-sref="pesquisa.processo">Processo</a></li>
+							<li><a style="line-height: 15px" href="#">Processo</a></li>
 						</ul>
 					</div>
 				</div>
@@ -255,8 +237,8 @@
     <script type="text/javascript" src="application/plataforma/support/version/version.directive.js"></script>
     <script type="text/javascript" src="application/plataforma/support/error-handling/error-handler.interceptor.js"></script>
     <script type="text/javascript" src="application/plataforma/support/messaging/messages.util.js"></script>
-    <script type="text/javascript" src="application/plataforma/support/security/security.controller.js"></script>
-    <script type="text/javascript" src="application/plataforma/support/security/security.service.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/security/security.controller.js"></script>    
+    <script type="text/javascript" src="application/plataforma/support/security/security.service.js"></script>    
     <script type="text/javascript" src="application/plataforma/support/actions/actions.service.js"></script>
     <script type="text/javascript" src="application/plataforma/support/actions/actions.directive.js"></script>
     <script type="text/javascript" src="application/plataforma/support/actions/modal.controller.js"></script>
@@ -286,7 +268,7 @@
     <script type="text/javascript" src="application/autuacao/devolucao/devolucao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticao.service.js"></script>
     <script type="text/javascript" src="application/autuacao/pesquisa/pesquisapeticao.controller.js"></script>
-    <script type="text/javascript" src="application/autuacao/pesquisa/pesquisaprocesso.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pesquisa/pesquisaprocesso.controller.js"></script>    
     <script type="text/javascript" src="application/autuacao/peticionamento/dashlets/peticoes.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/autuacao/dashlets/grafico-peticoes.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/preautuacao/dashlets/peticoes-preautuar.controller.js"></script>
