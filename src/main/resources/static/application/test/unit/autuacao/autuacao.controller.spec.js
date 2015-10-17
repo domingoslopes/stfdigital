@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	xdescribe('Autuação Controller', function() {
+	describe('Autuação Controller', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
