@@ -24,7 +24,7 @@ import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacade
  * @author Tomas.Godoi
  *
  */
-public class DashboardServiceFacadeTests {
+public class DashboardServiceFacadeUnitTests {
 
 	@Mock
 	private DashboardRepository dashboardRepository;
