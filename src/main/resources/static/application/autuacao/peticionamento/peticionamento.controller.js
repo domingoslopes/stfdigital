@@ -218,7 +218,7 @@
 				}
 			};
 			return partesController;
-		};
+		}
 
     	$scope.command = function PeticionarCommand(classe, partesPoloAtivo, partesPoloPassivo, pecas){
     		var dto = {};
@@ -242,7 +242,7 @@
     		dto.pecas = pecas;
     		
     		return dto;
-    	}
+    	};
 		
 	});
 
