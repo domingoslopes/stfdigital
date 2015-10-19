@@ -13,6 +13,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -29,12 +30,16 @@ public class ProcessoApplicationEventIntegrationTests extends AbstractIntegratio
 	@Autowired
 	private PeticaoFactory peticaoFactory;
 	
+	@Autowired
+	private ProcessoRepository processoRepository;
+	
 	@Test
 	public void processoDistribuidoEvent() {
 		Peticao peticao = peticaoFactory.criarPeticaoFisica(1, 1, FormaRecebimento.SEDEX, "123");
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
 		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
+		new ProcessoFactory(processoRepository);
 		Processo processo = ProcessoFactory.criarProcesso(new ClasseId("HC"), new MinistroId(1L), peticao);
 		processoApplicationEvent.processoDistribuido(processo);
 	}

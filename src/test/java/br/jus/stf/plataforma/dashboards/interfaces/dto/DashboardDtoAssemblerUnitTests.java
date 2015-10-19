@@ -15,7 +15,7 @@ import br.jus.stf.plataforma.dashboards.domain.model.Dashlet;
  * @author Tomas.Godoi
  *
  */
-public class DashboardDtoAssemblerTests {
+public class DashboardDtoAssemblerUnitTests {
 
 	private DashboardDtoAssembler dashboardDtoAssembler;
 
