@@ -1,0 +1,33 @@
+// Personalização do FAB
+.md-fab
+	// Mixin para gerar o label para o FAB de acordo com o tamanho (Específico demais para ferramentas)
+	@mixin generate-md-fab-label($size)
+		opacity: 0
+		font-size: 1em
+		padding: 0 1em
+		position: absolute
+		right: $size + 15px
+		top: $size / 4
+		height: $size / 2
+		line-height: $size / 2
+		white-space: nowrap
+		transition: 250ms
+
+	// Label no FAB, que aparece em hover
+	&.md-fab-small .md-fab-label
+		@include generate-md-fab-label(48px)
+
+	.md-fab-label
+		@include generate-md-fab-label(64px)
+
+	&:hover 
+		.md-fab-label
+			display: inline-block
+			opacity: 1
+
+	// Permitir pequenos FAB como sub-itens
+	&.md-fab-small > span
+		line-height: 48px
+		height: inherit
+		width: inherit
+		font-size: 24px
