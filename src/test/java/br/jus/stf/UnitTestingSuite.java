@@ -4,6 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import br.jus.stf.plataforma.actions.ActionMappingInfoUnitTests;
+import br.jus.stf.plataforma.actions.ActionMappingRegistryUnitTests;
+import br.jus.stf.plataforma.actions.ActionServiceUnitTests;
+import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDtoAssemblerUnitTests;
+import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacadeUnitTests;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporarioUnitTests;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoUnitTests;
 import br.jus.stf.plataforma.identidades.domain.model.PessoaUnitTests;
@@ -11,6 +16,7 @@ import br.jus.stf.plataforma.shared.web.CorsFilterUnitTests;
 import br.jus.stf.plataforma.shared.web.Html5FilterUnitTests;
 import br.jus.stf.plataforma.workflow.domain.model.TarefaUnitTests;
 import br.jus.stf.processamentoinicial.autuacao.application.PecaDevolucaoBuilderUnitTests;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.OrgaoUnitTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronicaUnitTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisicaUnitTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoUnitTests;
@@ -50,7 +56,13 @@ import br.jus.stf.shared.TarefaIdUnitTests;
 	ProcessoIdUnitTests.class,
 	ProcessoWorkflowIdUnitTests.class,
 	ProcessoWorkflowUnitTests.class,
-	TarefaIdUnitTests.class
+	TarefaIdUnitTests.class,
+	ActionMappingInfoUnitTests.class,
+	ActionMappingRegistryUnitTests.class,
+	ActionServiceUnitTests.class,
+	DashboardServiceFacadeUnitTests.class,
+	DashboardDtoAssemblerUnitTests.class,
+	OrgaoUnitTests.class
 })
 public class UnitTestingSuite {
 

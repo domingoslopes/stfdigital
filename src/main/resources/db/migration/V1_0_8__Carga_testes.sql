@@ -14,7 +14,7 @@ INSERT INTO corporativo.pessoa (seq_pessoa, nom_pessoa) VALUES (corporativo.seq_
 INSERT INTO corporativo.pessoa (seq_pessoa, nom_pessoa) VALUES (corporativo.seq_pessoa.nextval, 'ADRIANE BARROS DE OLIVEIRA NUNES');
 INSERT INTO corporativo.pessoa (seq_pessoa, nom_pessoa) VALUES (corporativo.seq_pessoa.nextval, 'ZENIR NEITZKE');
 
-INSERT INTO corporativo.documento VALUES (corporativo.seq_documento.nextval, FILE_READ('classpath:pdf/archimate.pdf'));
+INSERT INTO corporativo.documento VALUES (corporativo.seq_documento.nextval, FILE_READ('classpath:banner.txt'));
 
 INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, tip_meio_peticao) VALUES (autuacao.seq_peticao.nextval, 2015, 1, 'ADI', 'ELETRONICO');
 
