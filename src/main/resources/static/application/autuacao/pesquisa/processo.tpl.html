@@ -81,7 +81,7 @@
 									<tr ng-repeat="resultado in resultados">
 										<td>{{resultado.objeto.classe.sigla}}</td>
 										<td>{{resultado.objeto.numero}}</td>
-										<td><a ui-sref="detalhe({idPeticao: resultado.id})" title="Visualizar"><i class="fa fa-eye" /></a></td>
+										<td><a ui-sref="processos({processoId: resultado.id})" title="Visualizar"><i class="fa fa-eye" /></a></td>
 									</tr>
 								</tbody>
 							</table>

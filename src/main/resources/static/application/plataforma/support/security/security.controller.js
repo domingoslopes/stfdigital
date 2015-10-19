@@ -18,7 +18,7 @@
 		
 		var papel = JSON.parse($window.sessionStorage.getItem('papel'));
 		
-		if (papel == null) {
+		if (papel === null) {
 			selecionarPapel($scope.papeis[0]);
 		} else {
 			selecionarPapel(papel);
@@ -28,7 +28,7 @@
 			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
 			$scope.papelAtivo = papel;
 			$state.go('dashboard', {}, {reload: true});
-		};
+		}
 		
 	});
 	
