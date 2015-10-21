@@ -24,6 +24,9 @@ build/dist
 # Docs
 docs
 
+# Logs
+application.log
+
 # Tests
 src/main/resources/static/application/test/e2e/results/*
 src/main/resources/static/application/test/unit/results/*
