@@ -148,7 +148,7 @@ public class PeticaoApplicationService {
 		DocumentoId documentoId = documentoAdapter.salvar(documentoTemporarioId);
 		
 		// Passo 03: Juntando a Peça de Devolução (Ofício) à Petição...
-		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(1)); // TODO: Alterar o Tipo de Peça.
+		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8)); // TODO: Alterar o Tipo de Peça.
 		peticao.juntar(new PecaPeticao(documentoId, tipo, String.format("Ofício nº %s", numero)));
 		peticaoRepository.save(peticao);
 		
