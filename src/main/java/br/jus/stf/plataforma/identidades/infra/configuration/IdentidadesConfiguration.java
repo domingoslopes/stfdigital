@@ -1,16 +1,12 @@
 package br.jus.stf.plataforma.identidades.infra.configuration;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 
-import br.jus.stf.plataforma.identidades.infra.IndexadorRestAdapter;
+import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
+import br.jus.stf.plataforma.shared.util.ResourceFileUtils;
 
 /**
  * @author Lucas.Rodrigues
@@ -19,6 +15,7 @@ import br.jus.stf.plataforma.identidades.infra.IndexadorRestAdapter;
 @Configuration
 public class IdentidadesConfiguration {
 	
+	public static final String INDICE = "pessoa";
 	private static final String PESSOA_RESOURCE = "/indices/identidades/pessoa.json"; 
 	
 	@Autowired
@@ -26,20 +23,8 @@ public class IdentidadesConfiguration {
 	
 	@PostConstruct
 	private void configure() throws Exception {
-		String configuracao = readConfiguration(PESSOA_RESOURCE);			
-		indexadorRestAdapter.criarIndice("pessoa", configuracao);
-	}
-
-	/**
-	 * Retorna uma string do conteúdo do arquivo
-	 * 
-	 * @param location
-	 * @return
-	 * @throws IOException 
-	 */
-	private String readConfiguration(String location) throws IOException {
-		InputStream input = getClass().getResourceAsStream(location);
-		return StringUtils.trimAllWhitespace(IOUtils.toString(input));
+		String configuracao = ResourceFileUtils.read(PESSOA_RESOURCE);			
+		indexadorRestAdapter.criarIndice(INDICE, configuracao);
 	}
 	
 }
