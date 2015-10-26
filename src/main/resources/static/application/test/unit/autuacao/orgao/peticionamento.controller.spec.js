@@ -11,8 +11,6 @@
 
 	describe('Peticionamento Órgão Controller', function() {
 
-		var fakeData = [];
-		var stateParams = [];
 		var controller;
 		var scope;
 
@@ -21,20 +19,13 @@
 		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties, FileUploader, OrgaoService) {
 			scope = $rootScope.$new();
 			$window.sessionStorage.papel = JSON.stringify('representante');
-			$httpBackend.expectGET(properties.apiUrl + '/orgaos').respond([{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }]);
+			$httpBackend.expectGET(properties.apiUrl + '/orgaos').respond([{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }]);			
 			
-			OrgaoService.listar().success(function(result) {
-				fakeData = result;
+			controller = $controller('PeticionamentoOrgaoController', {
+				$scope : scope
 			});
 			
 			$httpBackend.flush();
-			
-			controller = $controller('PeticionamentoOrgaoController', {
-				$scope : scope,
-				data : {
-					data : fakeData
-				}
-			});
 		}));
 
 
