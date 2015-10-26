@@ -11,13 +11,13 @@
 				role="menu" aria-labelledby="notification-center">
 				<div class="notification-panel">
 					<div class="notification-body scrollable">
-						<div data-ng-repeat="notification in notifications | limitTo: getMaxNotifications()">
+						<div data-ng-repeat="notificacao in notificacoes | orderBy:'-hora'">
 							<div data-ng-include="defaultNotificationTemplate"></div>
 						</div>
-						<div class="notification-footer text-center" data-ng-show="!lerTodas">
-							<a href="" data-ng-click="mostrarTodas()">Ler todas as notificações</a> <a
-								class="portlet-refresh text-black pull-right"> <i
-								class="pg-refresh_new"></i>
+						<div class="notification-footer text-center">
+							<a href="" data-ng-click="mostrarTodas()">Ler todas as notificações</a>
+							<a href="" data-ng-click="marcarTodas()" class="portlet-refresh text-black pull-right">
+								<i class="pg-refresh_new"></i>
 							</a>
 						</div>
 					</div>

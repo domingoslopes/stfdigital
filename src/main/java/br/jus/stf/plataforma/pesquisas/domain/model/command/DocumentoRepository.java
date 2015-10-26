@@ -19,6 +19,13 @@ public interface DocumentoRepository {
 	 * 
 	 * @param objeto
 	 */
-	void salvar(Documento objeto);
+	void salvar(Documento documento);
+	
+	/**
+	 * Realiza uma atualização parcial do documento
+	 * 
+	 * @param documento
+	 */
+	void atualizar(Documento documento);
 	
 }

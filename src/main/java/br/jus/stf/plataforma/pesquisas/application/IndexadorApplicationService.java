@@ -20,7 +20,7 @@ import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
 public class IndexadorApplicationService {
 	
 	@Autowired
-	private DocumentoRepository indexadorRepository;
+	private DocumentoRepository documentoRepository;
 
 	/**
 	 * Cria um índice
@@ -31,7 +31,7 @@ public class IndexadorApplicationService {
 	 */
 	public void criarIndice(String nome, String configuracao, Map<String, String> mapeamentos) {
 		Indice indice = new Indice(nome, configuracao, mapeamentos);
-		indexadorRepository.criar(indice);
+		documentoRepository.criar(indice);
 	}
 	
 	/**
@@ -44,7 +44,19 @@ public class IndexadorApplicationService {
 	 */
 	public void indexar(String id, String tipo, Indice indice, String objeto) {
 		Documento documento = new Documento(id, tipo, indice, objeto);
-		indexadorRepository.salvar(documento);
+		documentoRepository.salvar(documento);
+	}
+
+	/**
+	 * Atualiza parcialmente um documento
+	 * 
+	 * @param id
+	 * @param indice
+	 * @param objeto
+	 */
+	public void atualizar(String id, String tipo, Indice indice, String objeto) {
+		Documento documento = new Documento(id, tipo, indice, objeto);
+		documentoRepository.atualizar(documento);
 	}
 
 }

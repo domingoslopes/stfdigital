@@ -7,9 +7,9 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'angularMoment']);
+	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3', 'angularMoment']);
 
-	angular.plataforma.config(function($stateProvider) {
+	angular.plataforma.config(function($stateProvider, DashletsProvider) {
 		$stateProvider.state('dashboard', {
 			url : '/dashboard',
 			templateUrl : 'application/plataforma/dashboard/dashboard.tpl.html',
@@ -31,6 +31,12 @@
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
 		});
+		
+		
+		DashletsProvider.dashlet('minhas-tarefas', {
+			view: 'application/plataforma/workflow/dashlets/minhas-tarefas.tpl.html',
+			controller: 'MinhasTarefasDashletController'
+		});		
 	});
 	
 	// Configurando o locale do angularMoment para pt_br
