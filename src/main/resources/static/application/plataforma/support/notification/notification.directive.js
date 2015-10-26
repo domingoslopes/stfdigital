@@ -5,34 +5,42 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma.directive('notificationCenter', ['NotificationService', function(NotificationService) {
+	angular.plataforma.directive('notificationCenter', ['NotificationService', '$window', function(NotificationService, $window) {
 		return {
 			restrict: 'EA',
 			scope: {},
 			replace: true,
 			templateUrl: 'application/plataforma/support/notification/notification-center.tpl.html',
 			controller: function($scope) {
-				$scope.notifications = [];
+				$scope.notificacoes = [];
 				$scope.defaultNotificationTemplate = 'application/plataforma/support/notification/templates/default.tpl.html';
 				
-				NotificationService.list().then(function(notifications) {
-					$scope.notifications = notifications;
-				});
-				
-				$scope.marcarComoLido = function(notification) {
-					NotificationService.marcarComoLido(notification).then(function() {
-						notification.lido = true;
-					});
+				var receberNotificacao = function(notificacao) {
+					$scope.notificacoes.push(notificacao);
 				};
 				
-				$scope.lerTodas = false;
+				NotificationService.registrarNotificacao(receberNotificacao);
+				NotificationService.listarNaoLidas();
+				
+				$scope.marcarComoLida = function(notificacao) {
+					var lidas = [];
+					lidas.push(notificacao);
+					NotificationService.marcarComoLida(lidas);
+				};
+				
+				$scope.marcarTodas = function() {
+					NotificationService.marcarComoLida($scope.notificacoes);
+				};
+				
 				$scope.mostrarTodas = function() {
-					$scope.lerTodas = true;
+					NotificationService.listarLidas($scope.notificacoes);
 				};
 				
-				$scope.getMaxNotifications = function() {
-					return $scope.lerTodas ? $scope.notifications.length : 5;
-				};
+			},
+			link: function(scope, element) {
+				element.find('.dropdown-menu').click(function(event) {
+					event.stopPropagation();
+				});
 			}
 		};
 	}]);

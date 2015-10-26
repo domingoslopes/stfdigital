@@ -102,25 +102,26 @@
         </div>
         <!-- END MOBILE CONTROLS -->
         <div class=" pull-left sm-table">
-				<div class="header-inner">
-					<div class="brand inline">
-						<img src="theme/custom/img/logo.png" alt="logo"
-							data-src="theme/custom/img/logo.png"
-							data-src-retina="theme/custom/img/logo_2x.png" width="78"
-							height="22">
-					</div>
-					<div id="pesquisas" class="search-link dropdown">
-						<span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							<i class="pg-search"></i>
-							Pesquisar
-						</span>
-						<ul class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10" role="menu">
-							<li><a style="line-height: 15px" ui-sref="pesquisa.peticao" id="pesquisa_peticao">Petição</a></li>
-							<li><a style="line-height: 15px" ui-sref="pesquisa.processo">Processo</a></li>
-						</ul>
-					</div>
+			<div class="header-inner">
+				<div class="brand inline">
+					<img src="theme/custom/img/logo.png" alt="logo"
+						data-src="theme/custom/img/logo.png"
+						data-src-retina="theme/custom/img/logo_2x.png" width="78"
+						height="22">
 				</div>
-			</div>     
+				<notification-center></notification-center>
+				<div id="pesquisas" class="search-link dropdown">
+					<span class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<i class="pg-search"></i>
+						Pesquisar
+					</span>
+					<ul class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10" role="menu">
+						<li><a style="line-height: 15px" ui-sref="pesquisa.peticao" id="pesquisa_peticao">Petição</a></li>
+						<li><a style="line-height: 15px" ui-sref="pesquisa.processo">Processo</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>     
         <div id="papeis" class="pull-right" ng-controller="SecurityController">
           <!-- START User Info-->
           <div class="visible-lg visible-md m-t-10">
