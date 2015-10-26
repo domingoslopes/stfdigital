@@ -16,9 +16,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationContext;
 
 import br.jus.stf.plataforma.actions.dummy.DummyActionController;
-import br.jus.stf.plataforma.actions.service.ActionMappingRegistry;
-import br.jus.stf.plataforma.actions.service.ActionService;
-import br.jus.stf.plataforma.actions.support.ActionMappingInfo;
+import br.jus.stf.plataforma.shared.actions.service.ActionMappingRegistry;
+import br.jus.stf.plataforma.shared.actions.service.ActionService;
+import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 

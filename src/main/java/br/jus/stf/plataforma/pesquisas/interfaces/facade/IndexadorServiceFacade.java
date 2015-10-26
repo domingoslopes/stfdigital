@@ -70,6 +70,19 @@ public class IndexadorServiceFacade {
 	}
 	
 	/**
+	 * Atualiza um objeto
+	 * 
+	 * @param id
+	 * @param indice
+	 * @param objeto
+	 * @throws JsonProcessingException 
+	 */
+	public void atualizar(String id, String tipo, String indice, JsonNode objeto) throws JsonProcessingException {
+		Indice index = new Indice(indice); 
+		indexadorApplicationService.atualizar(id, tipo, index, converterJsonString(objeto));
+	}
+	
+	/**
 	 * Converte o objeto a ser indexado em uma string e encapsula em um outro objeto
 	 * 
 	 * @param json

@@ -1,16 +1,12 @@
 package br.jus.stf.processamentoinicial.distribuicao.infra.configuration;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 
-import br.jus.stf.processamentoinicial.distribuicao.infra.IndexadorRestAdapter;
+import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
+import br.jus.stf.plataforma.shared.util.ResourceFileUtils;
 
 /**
  * @author Lucas.Rodrigues
@@ -19,6 +15,7 @@ import br.jus.stf.processamentoinicial.distribuicao.infra.IndexadorRestAdapter;
 @Configuration
 public class DistribuicaoConfiguration {
 	
+	public static final String INDICE = "distribuicao";
 	private static final String DISTRIBUICAO_RESOURCE = "/indices/processamentoinicial/distribuicao.json";
 	
 	@Autowired
@@ -26,20 +23,8 @@ public class DistribuicaoConfiguration {
 	
 	@PostConstruct
 	private void configure() throws Exception {
-		String configuracao = readConfiguration(DISTRIBUICAO_RESOURCE);
-		indexadorRestAdapter.criarIndice("distribuicao", configuracao);
-	}
-	
-	/**
-	 * Retorna uma string do conteúdo do arquivo
-	 * 
-	 * @param location
-	 * @return
-	 * @throws IOException 
-	 */
-	private String readConfiguration(String location) throws IOException {
-		InputStream input = getClass().getResourceAsStream(location);
-		return StringUtils.trimAllWhitespace(IOUtils.toString(input));
+		String configuracao = ResourceFileUtils.read(DISTRIBUICAO_RESOURCE);
+		indexadorRestAdapter.criarIndice(INDICE, configuracao);
 	}
 	
 }
