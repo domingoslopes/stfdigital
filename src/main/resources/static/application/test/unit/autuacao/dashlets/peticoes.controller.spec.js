@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	describe('Dashlet: Controller: MinhasPeticoesDashletController', function() {
+	describe('Dashlet Minhas Petições: Controller', function() {
 		var controller;
 		var scope;
 
