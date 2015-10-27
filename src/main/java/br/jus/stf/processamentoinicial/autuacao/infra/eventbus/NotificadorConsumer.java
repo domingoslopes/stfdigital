@@ -5,7 +5,6 @@ import static reactor.bus.selector.Selectors.$;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import reactor.bus.EventBus;
 import reactor.fn.Consumer;
 import br.jus.stf.plataforma.notificacoes.interfaces.NotificacaoRestResource;
 import br.jus.stf.plataforma.notificacoes.interfaces.command.NotificarCommand;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 
 /**
  * Consumidor de eventos de aplicação para enviar para indexação
@@ -25,7 +25,7 @@ import br.jus.stf.plataforma.notificacoes.interfaces.command.NotificarCommand;
  *
  */
 @Component
-public class NotificadorConsumer implements Consumer<Event<Map<String , String>>>, InitializingBean {
+public class NotificadorConsumer implements Consumer<Event<PeticaoRecebida>>, InitializingBean {
 
 	@Autowired
 	private EventBus eventBus;
@@ -39,10 +39,10 @@ public class NotificadorConsumer implements Consumer<Event<Map<String , String>>
 	}
 	
 	@Override
-	public void accept(Event<Map<String, String>> event) {
-		Map<String, String> notificacao = event.getData();
+	public void accept(Event<PeticaoRecebida> event) {
+		Peticao peticao = event.getData().peticao();
 		try {
-			NotificarCommand notificarCommand = criarComando(notificacao);
+			NotificarCommand notificarCommand = criarComando(peticao);
 			notificacaoRestResource.notificar(notificarCommand, new BeanPropertyBindingResult(notificarCommand, "notificarCommand"));
 		} catch (Exception e) {
 			//event.consumeError(e);
@@ -55,11 +55,11 @@ public class NotificadorConsumer implements Consumer<Event<Map<String , String>>
 	 * @return
 	 * @throws IOException
 	 */
-	private NotificarCommand criarComando(Map<String, String> notificacao) throws IOException {
+	private NotificarCommand criarComando(Peticao peticao) throws IOException {
 		NotificarCommand command = new NotificarCommand();
-		command.setMensagem(notificacao.get("mensagem"));
+		command.setMensagem("Petição " + peticao.identificacao() + " recebida.");
 		List<String> notificados = new ArrayList<String>();
-		notificados.add(notificacao.get("notificado"));
+		notificados.add(peticao.isEletronica() ? "autuador" : "preautuador");
 		command.setNotificados(notificados);
 		command.setTipo("UI");
 		return command;
