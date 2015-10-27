@@ -20,7 +20,7 @@ import br.jus.stf.processamentoinicial.autuacao.infra.configuration.AutuacaoConf
  *
  */
 @Component
-public class PeticaoIndexadorConsumer implements Consumer<Event<Peticao>>, InitializingBean {
+public class PeticaoIndexadorConsumer implements Consumer<Event<PeticaoRecebida>>, InitializingBean {
 	
 	@Autowired
 	private EventBus eventBus;
@@ -34,8 +34,8 @@ public class PeticaoIndexadorConsumer implements Consumer<Event<Peticao>>, Initi
 	}
 	
 	@Override
-	public void accept(Event<Peticao> event) {
-		Peticao peticao = event.getData();
+	public void accept(Event<PeticaoRecebida> event) {
+		Peticao peticao = event.getData().peticao();
 		try {
 			indexadorRestAdapter.indexar(AutuacaoConfiguration.INDICE, peticao);
 		} catch (Exception e) {
