@@ -38,7 +38,7 @@
 			// Sobreescrevendo a diretiva interna utilizada.
 			$compileProvider.directive('dashlet', function() {
 				return {
-					restrict : 'ECA',
+					restrict : 'EA',
 					priority: 9999,
 					scope: {
 						dashlet: '='

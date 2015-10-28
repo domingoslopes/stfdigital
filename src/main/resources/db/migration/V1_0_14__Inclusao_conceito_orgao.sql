@@ -1,6 +1,6 @@
-create sequence autuacao.seq_orgao;
+create sequence autuacao.seq_orgao increment by 1 start with 1 nomaxvalue minvalue 1 nocycle nocache;
 
-create table autuacao.orgao (seq_orgao bigint not null, nom_orgao varchar2(200) not null, primary key (seq_orgao));
+create table autuacao.orgao (seq_orgao bigint not null, nom_orgao varchar2(200) not null, constraint pk_orgao primary key (seq_orgao));
 
 INSERT INTO autuacao.orgao (seq_orgao, nom_orgao) VALUES (autuacao.seq_orgao.nextval, 'ADVOCACIA-GERAL DA UNIÃO');
 INSERT INTO autuacao.orgao (seq_orgao, nom_orgao) VALUES (autuacao.seq_orgao.nextval, 'DEFENSORIA PÚBLICA DA UNIÃO');
