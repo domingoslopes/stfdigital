@@ -12,12 +12,16 @@ public class Dashboard {
 
 	private List<Dashlet> dashlets;
 
-	public List<Dashlet> getDashlets() {
-		return dashlets;
+	public Dashboard() {
+		
 	}
-
-	public void setDashlets(List<Dashlet> dashlets) {
+	
+	public Dashboard(List<Dashlet> dashlets) {
 		this.dashlets = dashlets;
+	}
+	
+	public List<Dashlet> dashlets() {
+		return dashlets;
 	}
 
 }

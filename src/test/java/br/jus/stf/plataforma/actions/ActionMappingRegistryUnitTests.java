@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import br.jus.stf.plataforma.shared.actions.service.ActionMappingRegistry;
 
-public class ActionMappingRegistryTests {
+public class ActionMappingRegistryUnitTests {
 
 	@Test(expected = RuntimeException.class)
 	public void findNotRegisteredAction() {
