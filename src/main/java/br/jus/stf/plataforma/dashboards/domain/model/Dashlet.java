@@ -15,12 +15,8 @@ public class Dashlet {
 		this.nome = nome;
 	}
 
-	public String getNome() {
+	public String nome() {
 		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 }
