@@ -43,31 +43,31 @@
 		/**
 		 * @function dashlet
 		 * @description Define um dashlet.
-		 * @param name {string} Nome do dashlet
+		 * @param id {string} Id do dashlet
 		 * @param definition {object} Objeto de definição do dashlet
 		 * 
 		 * @memberOf DashletsProvider 
 		 */
-		this.dashlet = function(name, definition) {
-			definedDashlets.push({'name': name, 'definition': definition});
+		this.dashlet = function(id, definition) {
+			definedDashlets.push({'id': id, 'definition': definition});
 			return this;
 		};
 		
-		var getDashletDefinition = function(name) {
+		var getDashletDefinition = function(id) {
 			for (var i in definedDashlets) {
-				if (definedDashlets[i].name == name) {
+				if (definedDashlets[i].id == id) {
 					return definedDashlets[i].definition;
 				}
 			}
-			throw new Error("Dashlet " + name + " não foi encontrada.");
+			throw new Error("Dashlet " + id + " não foi encontrado.");
 		};
 		
 		var Dashlets = function() {
-			this.getDashletView = function(name) {
-				return getDashletDefinition(name).view;
+			this.getDashletView = function(id) {
+				return getDashletDefinition(id).view;
 			};
-			this.getDashletController = function(name) {
-				return getDashletDefinition(name).controller;
+			this.getDashletController = function(id) {
+				return getDashletDefinition(id).controller;
 			};
 		};
 		

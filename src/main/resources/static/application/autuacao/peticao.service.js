@@ -9,6 +9,10 @@
 
 	angular.plataforma.factory('PeticaoService', function($http, $q, properties) {
 		return {
+			listar : function() {
+				return $http.get(properties.apiUrl + '/peticoes');
+			},
+			
 			peticionar : function(peticionarCommand) {
 				return $http.post(properties.apiUrl + '/peticoes', peticionarCommand);
 			},

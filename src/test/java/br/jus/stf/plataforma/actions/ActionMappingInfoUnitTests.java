@@ -24,7 +24,7 @@ import br.jus.stf.plataforma.actions.support.ResourcesMode;
  * @author Lucas.Rodrigues
  *
  */
-public class ActionMappingInfoTests {
+public class ActionMappingInfoUnitTests {
 
 	@Mock(answer = Answers.CALLS_REAL_METHODS)
 	private ActionMappingInfo actionMappingInfo;
