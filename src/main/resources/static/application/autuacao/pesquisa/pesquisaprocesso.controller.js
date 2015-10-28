@@ -54,7 +54,7 @@
     			dto.filtros.numero = $scope.numero;
     		}
     		var codigo = parseInt($scope.ministro);
-     		if (Number.isFinite(codigo)) {
+     		if (isFinite(codigo)) {
     			dto.filtros['relator.codigo'] = codigo;
     		}
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {

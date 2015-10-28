@@ -58,7 +58,6 @@ public class PersistenceConfiguration {
 		Properties prop = new Properties();
 		prop.put("hibernate.jdbc.use_scrollable_resultset", "false");
 		prop.put("hibernate.hbm2ddl.import_files_sql_extractor", "org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor");
-		prop.put("hibernate.hbm2ddl.auto", "none");
 		prop.put("hibernate.format_sql", "true");
 		prop.put("hibernate.show_sql", "false");
 		return prop;

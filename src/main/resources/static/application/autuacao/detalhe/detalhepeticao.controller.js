@@ -18,11 +18,10 @@
 			detalhe.peticao = data;
 		});
 		
-		detalhe.visualizar = function(pecaId){
-		    //var file = new Blob([peca.fileItem._file], {type: 'application/pdf'});
-            //var fileURL = window.URL.createObjectURL(file);
-            $window.open(api/docummentos/pecaId);
-	    };
+		detalhe.urlConteudo = function(peca) {
+			return properties.apiUrl + '/documentos/' + peca.documentoId;
+		};
+		
 		
 	});
 	

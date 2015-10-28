@@ -55,7 +55,9 @@
 		               { id : 3, nome : "Fax" },
 		               { id : 4, nome : "Email" }];
 		
-		var ministros = [{id: 0, nome: 'Min. Roberto Barroso'}, {id: 1, nome: 'Min. Sicrano'}, {id: 2, nome: 'Min. João'}];
+		var ministros = [{id: 0, nome: 'Min. Roberto Barroso'}, {id: 1, nome: 'Min. Sicrano'}, {id: 2, nome: 'Min. João'}, {id: 28, nome: 'Min. Celso de Mello'}];
+		
+		var tiposPeca = [{id : 1, descricao : "Petição Inicial"}, {id : 2 , descricao: "Ato coator"}, {id: 3, descricao: "Documentos Comprobatórios"}];
 		
 		//var tipoPecao - [{id : 0, nome : "Petição Inicial"}, {id : 2 , nome: "Ato coator"}, {id}]
 		

@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -31,6 +32,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  * 
  * @since 17.09.2015
  */
+@Ignore
 public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTests {
 	
 	private String peticaoValidaParaAutuacao;
