@@ -16,8 +16,6 @@
 		
 		devolucao.tipoDevolucao = '';
 		
-		devolucao.numeroOficio;
-		
 		devolucao.finalizar = function() {
 			if (devolucao.tipoDevolucao.length === 0) {
 				messages.error('Você precisa selecionar <b>o tipo de devolução</b>.');

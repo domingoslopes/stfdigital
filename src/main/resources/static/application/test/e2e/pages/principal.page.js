@@ -25,7 +25,6 @@
 			browser.actions().mouseMove(element(by.id('papeis'))).perform();
 		};
 		
-
 		this.executarTarefa = function() {
 			element(by.repeater('tarefa in tarefas').row(0)).element(by.css('a')).click();
 			browser.waitForAngular();
@@ -40,7 +39,14 @@
 		    
 		    element(by.id(papel)).click();
 		    
-		    //browser.waitForAngular();
+		    // O login pode levar algum tempo, já que recarrega toda a página.
+		    // Para garantir que o login ocorreu completamente, nós esperamos ele redirecionar
+		    // para o dashboard e só retornamos quando ele validar a URL.
+			return browser.driver.wait(function() {
+				return browser.driver.getCurrentUrl().then(function(url) {
+					return /dashboard/.test(url);
+				});
+			}, 10000);
 		};
 		
 	};

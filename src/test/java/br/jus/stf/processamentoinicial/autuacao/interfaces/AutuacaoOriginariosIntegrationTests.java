@@ -11,11 +11,11 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -26,6 +26,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  * @since 1.0.0
  * @since 17.06.2015
  */
+@Ignore
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
 	private String peticaoValidaParaAutuacao;
@@ -141,7 +142,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Faz a préautuação da petição registrada.
 		this.mockMvc.perform(post("/api/peticoes/fisicas/" + peticaoId + "/preautuar").contentType(MediaType.APPLICATION_JSON)
-				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do autuador.
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())

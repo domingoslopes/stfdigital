@@ -19,8 +19,8 @@ public class DashboardDtoAssembler {
 	public DashboardDto toDto(Dashboard dashboard) {
 		DashboardDto dashboardDto = new DashboardDto();
 		dashboardDto.setDashlets(new ArrayList<String>());
-		Optional.ofNullable(dashboard.getDashlets()).ifPresent(d -> d.forEach(dashlet -> {
-			dashboardDto.getDashlets().add(dashlet.getNome());
+		Optional.ofNullable(dashboard.dashlets()).ifPresent(d -> d.forEach(dashlet -> {
+			dashboardDto.getDashlets().add(dashlet.nome());
 		}));
 		return dashboardDto;
 	}

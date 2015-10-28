@@ -1,0 +1,53 @@
+// Card de Processo
+.card-processo
+	background: $stf-color-primary
+	border: 1px solid darken($stf-color-primary, 10%)
+	border-radius: 1px
+	color: white
+	margin-bottom: 16px
+	@extend .stf-padding
+
+	&.card-processo-desabilitado
+		color: rgba(255, 255, 255, 0.35)
+
+		.card-processo-titulo
+			h2
+				color: rgba(255, 255, 255, 0.5)
+		
+	.card-processo-titulo
+		h2
+			margin-bottom: 16px
+			margin-top: 0
+			color: white
+
+	.card-processo-resumo
+		text-align: right
+		span 
+			margin-bottom: 0
+			margin-top: 8px
+
+	.card-processo-grid
+		.card-processo-grid-titulo, 
+		.card-processo-grid-descricao,
+		.card-processo-grid-item-vazio,
+		.card-processo-grid-item-invalido
+			@extend .stf-padding-small
+			
+		.card-processo-grid-item-vazio
+			background: rgba(255, 255, 255, 0.15)
+			color: rgba(255, 255, 255, 0.75)
+			text-align: center
+			margin-top: 16px
+
+		.card-processo-grid-titulo
+			margin-top: 16px
+			background: rgba(255, 255, 255, 0.3)
+
+		.card-processo-grid-descricao
+			background: #FFFFFF
+			color: #333
+
+		.card-processo-grid-item-invalido
+			background: $stf-color-danger
+			text-align: center
+			margin-bottom: 16px

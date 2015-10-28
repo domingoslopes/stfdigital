@@ -1,0 +1,21 @@
+// Personalização do Card List Item do Material Design / AltAir
+.md-card-list-wrapper
+	.stf-card-list-item
+		cursor: pointer
+
+		&.item-shown
+			cursor: default
+
+	.md-card-list 
+		.md-card-list-item-closed
+			display: inherit !important
+
+		.md-card-list-item-open
+			display: none !important
+
+		.item-shown
+			.md-card-list-item-closed
+				display: none !important
+
+			.md-card-list-item-open
+				display: inherit !important

@@ -15,7 +15,7 @@ import br.jus.stf.plataforma.dashboards.domain.model.Dashlet;
  * @author Tomas.Godoi
  *
  */
-public class DashboardDtoAssemblerTests {
+public class DashboardDtoAssemblerUnitTests {
 
 	private DashboardDtoAssembler dashboardDtoAssembler;
 
@@ -26,17 +26,14 @@ public class DashboardDtoAssemblerTests {
 
 	@Test
 	public void converterDashboardToDtoUnicoDashlet() {
-		Dashboard dashboard = new Dashboard();
-		dashboard.setDashlets(Arrays.asList(new Dashlet("dashlet-01")));
+		Dashboard dashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01")));
 		DashboardDto dto = dashboardDtoAssembler.toDto(dashboard);
 		Assert.assertArrayEquals(new String[] { "dashlet-01" }, dto.getDashlets().toArray());
 	}
 
 	@Test
 	public void converterDashboardToDtoVariosDashlets() {
-		Dashboard dashboard = new Dashboard();
-		dashboard.setDashlets(
-				Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02"), new Dashlet("dashlet-03")));
+		Dashboard dashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02"), new Dashlet("dashlet-03")));
 		DashboardDto dto = dashboardDtoAssembler.toDto(dashboard);
 		Assert.assertArrayEquals(new String[] { "dashlet-01", "dashlet-02", "dashlet-03" },
 				dto.getDashlets().toArray());
