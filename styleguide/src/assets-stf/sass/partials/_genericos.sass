@@ -10,7 +10,6 @@
 	color: $stf-color-primary
 
 // Sombras
-
 .z-depth-0
 	box-shadow: none !important
 
@@ -28,3 +27,19 @@
 
 .z-depth-5
     box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22)
+
+/**
+ * Gera classes .stf-padding-x-y, análogas ao .uk-margin-x-y
+ * São classes utilitárias para adicionar padding em um elemento.
+ *
+ * x : Indica o tamanho do padding, podendo ser "-small", "-large" ou nada
+ * y : Indica a lateral em que será aplicado o padding. Quando nada, aplica 
+ *     em todos. Pode ser: -top, -right, -bottom, -left ou nada.
+ */
+@each $prefix, $size in (-small, 8px), ("", 16px), (-large, 48px)
+	.stf-padding#{$prefix}
+		padding: $size
+	
+	@each $side in top, right, bottom, left
+		.stf-padding#{$prefix}-#{$side}
+			padding-#{$side}: $size

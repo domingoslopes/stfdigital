@@ -18,7 +18,7 @@
 	 */
 	angular.plataforma.directive('dashboard', ['$compile', 'Dashlets', 'DashboardService', 'DashboardLayoutManager', function($compile, Dashlets, DashboardService, DashboardLayoutManager) {
 		return {
-			restrict : 'ECA',
+			restrict : 'EA',
 			scope: {},
 			templateUrl: 'application/plataforma/support/dashboards/dashboard-layout.tpl.html',
 			controller: ['$scope', function($scope) {
@@ -42,7 +42,7 @@
 	 */
 	angular.plataforma.directive('dashlet', ['$compile', '$timeout', 'Dashlets', function($compile, $timeout, Dashlets) {
 		return {
-			restrict : 'ECA',
+			restrict : 'EA',
 			scope: {
 				dashlet: '='
 			},

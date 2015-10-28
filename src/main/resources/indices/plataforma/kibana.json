@@ -1,0 +1,10 @@
+{
+  "settings": {
+  	"index.mapper.dynamic": true
+  },
+  "mappings": {
+  	".kibana": {
+  		"dynamic": true
+  	}
+  }
+}

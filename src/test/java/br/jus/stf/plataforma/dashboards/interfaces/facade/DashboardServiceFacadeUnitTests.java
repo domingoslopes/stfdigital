@@ -24,7 +24,7 @@ import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacade
  * @author Tomas.Godoi
  *
  */
-public class DashboardServiceFacadeTests {
+public class DashboardServiceFacadeUnitTests {
 
 	@Mock
 	private DashboardRepository dashboardRepository;
@@ -42,8 +42,7 @@ public class DashboardServiceFacadeTests {
 
 	@Test
 	public void recuperarPadrao() throws Exception {
-		Dashboard fakeDashboard = new Dashboard();
-		fakeDashboard.setDashlets(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02")));
+		Dashboard fakeDashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02")));
 		Mockito.when(dashboardRepository.consultarPadraoDoPapel("papel")).thenReturn(fakeDashboard);
 
 		DashboardDto dashboard = dashboardServiceFacade.recuperarPadrao("papel");

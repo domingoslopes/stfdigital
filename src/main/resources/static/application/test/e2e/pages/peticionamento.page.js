@@ -49,6 +49,7 @@
 		    // Envia o caminho e o arquivo para o input fazer a submissão. Não é necessário clicar no botão
 		    fileElem.sendKeys(absolutePath);
 		    browser.sleep(2000);
+		    browser.waitForAngular();
 		};
 		
 		this.removePecas = function() {
