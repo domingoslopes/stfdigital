@@ -1,4 +1,6 @@
 /**
+ * @namespace plataforma
+ * 
  * @author Rodrigo Barreiros
  * 
  * @since 1.0.0
@@ -13,12 +15,7 @@
 		$stateProvider.state('dashboard', {
 			url : '/dashboard',
 			templateUrl : 'application/plataforma/dashboard/dashboard.tpl.html',
-			controller : 'DashboardController',
-			resolve : {
-				data : function(TarefaService) {
-					return TarefaService.listar();
-				}
-			}
+			controller : 'DashboardController'
 		}).state('detalhe', {
 			url: '/detalhe/peticao/:idPeticao',
 			views: {

@@ -1,4 +1,5 @@
-// TODO Remover essa controller quando começar a utilizar o mecanismo de dashlets
+// Essa dashlet controlará os aspectos mais abrangentes do dashboard, não se responsabilizando
+// mais pela exibição de Minhas Tarefas e Minhas Petições 
 /**
  * @author Rodrigo Barreiros
  * 
@@ -8,9 +9,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DashboardController', function (data, $scope, $http, properties, PeticaoService) {
-		
-		$scope.tarefas = data.data;
+	angular.plataforma.controller('DashboardController', function ($scope, $http, properties) {
 		
 	});
 	
