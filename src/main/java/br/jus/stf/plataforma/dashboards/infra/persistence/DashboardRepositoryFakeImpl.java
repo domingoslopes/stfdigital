@@ -33,12 +33,11 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 	}
 
 	private static Dashboard buildDashboardFromDashlets(String... dashletsNames) {
-		Dashboard dashboard = new Dashboard();
 		List<Dashlet> dashlets = new ArrayList<>();
 		Arrays.asList(dashletsNames).forEach(d -> {
 			dashlets.add(new Dashlet(d));
 		});
-		dashboard.setDashlets(dashlets);
+		Dashboard dashboard = new Dashboard(dashlets);
 		return dashboard;
 	}
 
@@ -46,8 +45,7 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 	public Dashboard consultarPadraoDoPapel(String papel) {
 		Dashboard dashboard = mapeamentoPapelDashboard.get(papel);
 		if (dashboard == null) { // Caso não tenha um dashboard designado para o papel, monta um padrão.
-			dashboard = new Dashboard();
-			dashboard.setDashlets(Arrays.asList(new Dashlet("minhas-tarefas")));
+			dashboard = new Dashboard(Arrays.asList(new Dashlet("minhas-tarefas")));
 		}
 		return dashboard;
 	}
