@@ -42,8 +42,7 @@ public class DashboardServiceFacadeUnitTests {
 
 	@Test
 	public void recuperarPadrao() throws Exception {
-		Dashboard fakeDashboard = new Dashboard();
-		fakeDashboard.setDashlets(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02")));
+		Dashboard fakeDashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02")));
 		Mockito.when(dashboardRepository.consultarPadraoDoPapel("papel")).thenReturn(fakeDashboard);
 
 		DashboardDto dashboard = dashboardServiceFacade.recuperarPadrao("papel");
