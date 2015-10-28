@@ -10,6 +10,7 @@
 		
 		TarefaService.listar().success(function(tarefas) {
 			$scope.tarefas = tarefas;
+			
 		});
 		
 	}]);

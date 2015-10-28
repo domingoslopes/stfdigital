@@ -52,12 +52,12 @@
 				});
 				
 				expect(function() {
-					Dashlets.getDashletView('dashlet-nao-configurada');
-				}).toThrow(new Error('Dashlet dashlet-nao-configurada não foi encontrada.'));
+					Dashlets.getDashletView('dashlet-nao-configurado');
+				}).toThrow(new Error('Dashlet dashlet-nao-configurado não foi encontrado.'));
 				
 				expect(function() {
-					Dashlets.getDashletController('dashlet-nao-configurada');
-				}).toThrow(new Error('Dashlet dashlet-nao-configurada não foi encontrada.'));
+					Dashlets.getDashletController('dashlet-nao-configurado');
+				}).toThrow(new Error('Dashlet dashlet-nao-configurado não foi encontrado.'));
 			});
 		});
 	});

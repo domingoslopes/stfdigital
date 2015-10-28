@@ -26,31 +26,31 @@ form
             input.md-input(name='identificacao_correspondencia')
 
     .uk-width-2-5
-      .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
+      .card-processo.card-processo-desabilitado
         .uk-grid
-          .uk-width-1-2
-            .uk-h2.uk-margin-bottom.uk-margin-small-top Novo Processo
+          .uk-width-1-2.card-processo-titulo
+            h2 Novo Processo
 
-          .uk-width-1-2.uk-text-right
-            span.uk-margin-bottom-remove.uk-margin-small-top Nº de Volumes
+          .uk-width-1-2.card-processo-resumo
+            span Nº de Volumes
             br
             span Nº de Apensos
 
-        .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small
-          span Tipo de recebimento e número de identificação
+        .card-processo-grid
+          .card-processo-grid-item-vazio Tipo de recebimento e número de identificação
+          
+      .card-processo
+        .uk-grid
+          .uk-width-1-2.card-processo-titulo
+            h2 Novo Processo
 
-      .uk-panel.uk-panel-box.uk-panel-box-primary.grid-processo.grid-processo-primary
-        .uk-grid.md-color-grey-50
-          .uk-width-1-2
-            .uk-h2.uk-margin-bottom.uk-margin-small-top Novo Processo
-
-          .uk-width-1-2.uk-text-right
-            span.uk-margin-bottom-remove.uk-margin-small-top 20 Volumes
+          .uk-width-1-2.card-processo-resumo
+            span Nº de Volumes
             br
-            span 2 Apensos
+            span Nº de Apensos
 
-        .grid-processo-titulo.uk-text-center.uk-margin-top.stf-padding-small.md-color-grey-50
-          span Recebido por Correio sob número: 23423
+        .card-processo-grid
+          .card-processo-grid-item-vazio Recebido por Correio sob número: 23423
 
       .uk-width-1-1.uk-text-center.uk-margin-top
         button.md-btn.md-btn-success.uk-margin-small-bottom Registrar Processo Físico

@@ -21,7 +21,7 @@
 				messages.error('Você precisa selecionar <b>a classe processual sugerida</b>.');
 				return false;
 			}
-			if (!Number.isFinite(parseInt($scope.orgao))) {
+			if (!isFinite(parseInt($scope.orgao))) {
 				messages.error('Você precisa selecionar <b>um órgão</b>.');
 				return false;	
 			}
