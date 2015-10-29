@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.workflow.application.WorkflowApplicationService;
+import br.jus.stf.plataforma.workflow.domain.model.Metadado;
 import br.jus.stf.plataforma.workflow.domain.model.ProcessoWokflowRepository;
 import br.jus.stf.plataforma.workflow.interfaces.dto.ProcessoDto;
 import br.jus.stf.plataforma.workflow.interfaces.dto.ProcessoDtoAssembler;
@@ -26,14 +27,16 @@ public class WorkflowServiceFacade {
 	
 	@Autowired
 	private ProcessoDtoAssembler processoDtoAssembler;
-
-	public Long iniciarPorMensagem(Long informacao, String mensagem, String status) {
-		ProcessoWorkflowId id = processoApplicationService.iniciarPorMensagem(informacao, mensagem, status);
+	
+	public Long iniciar(String chave, Long informacao, String tipoInformacao, String status) {
+		Metadado metadado = new Metadado(informacao, tipoInformacao, status);
+		ProcessoWorkflowId id = processoApplicationService.iniciar(chave, metadado);
 		return id.toLong();
 	}
 	
-	public Long iniciar(Long informacao, String chave, String status) {
-		ProcessoWorkflowId id = processoApplicationService.iniciar(informacao, chave, status);
+	public Long iniciarPorMensagem(String mensagem, Long informacao, String tipoInformacao, String status) {
+		Metadado metadado = new Metadado(informacao, tipoInformacao, status);
+		ProcessoWorkflowId id = processoApplicationService.iniciarPorMensagem(mensagem, metadado);
 		return id.toLong();
 	}
 	

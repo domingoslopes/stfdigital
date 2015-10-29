@@ -32,7 +32,7 @@ public interface PeticaoRepository {
 	 * @param peticao
 	 * @return o id da peticao
 	 */
-	public Peticao save(Peticao peticao);
+	public <T extends Peticao> T save(Peticao peticao);
 	
 	/**
 	 * Gera o próximo id da petição
