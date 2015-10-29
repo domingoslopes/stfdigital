@@ -19,11 +19,15 @@ public class IniciarProcessoCommand {
 	@NotNull
 	private Long informacao;
 	
+	@NotNull
+	private String tipoInformacao;
+	
 	@NotBlank
 	private String status;
 		
-	public IniciarProcessoCommand(Long informacao, String mensagem) {
+	public IniciarProcessoCommand(Long informacao, String tipoInformacao, String mensagem) {
 		this.informacao = informacao;
+		this.tipoInformacao = tipoInformacao;
 		this.mensagem = mensagem;
 	}
 	
@@ -50,6 +54,14 @@ public class IniciarProcessoCommand {
 	
 	public Long getInformacao() {
 		return informacao;
+	}
+	
+	public void setTipoInformacao(String tipoInformacao) {
+		this.tipoInformacao = tipoInformacao;
+	}
+	
+	public String getTipoInformacao() {
+		return tipoInformacao;
 	}
 	
 	/**

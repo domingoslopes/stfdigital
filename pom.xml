@@ -9,7 +9,7 @@
 
     <name>STF Digital</name>
     
-        <parent>
+    <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.2.6.RELEASE</version>
@@ -27,6 +27,7 @@
         <powermock-api-mockito.version>1.6.2</powermock-api-mockito.version>
         <sonar-jacoco-listeners.version>2.1</sonar-jacoco-listeners.version>
         <frontend-maven-plugin.version>0.0.25</frontend-maven-plugin.version>
+        <spring-security.version>4.0.2.RELEASE</spring-security.version>
         <node.version>v0.12.4</node.version>
         <npm.version>1.4.9</npm.version>
         <jacoco-maven-plugin.version>0.7.5.201505241946</jacoco-maven-plugin.version>
@@ -46,13 +47,21 @@
             <artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-        </dependency>        
+        </dependency>		
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-messaging</artifactId>
+		</dependency>
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-actuator</artifactId>
@@ -64,7 +73,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>        
+		</dependency>
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
 		<dependency>
 		    <groupId>org.springframework.data</groupId>
 		    <artifactId>spring-data-elasticsearch</artifactId>
@@ -101,20 +114,15 @@
 			<version>1.50.0</version>
 		</dependency>
         <dependency>
-        	<groupId>org.scala-lang</groupId>
-        	<artifactId>scala-library</artifactId>
-        	<version>2.10.4</version>
-        </dependency>
-        <dependency>
-        	<groupId>org.neo4j</groupId>
-        	<artifactId>neo4j-cypher-compiler-2.1</artifactId>
-        	<version>2.1.5</version>
-        </dependency>
-        <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.5.7</version>
-        </dependency>               
+        </dependency>
+        <dependency>
+            <groupId>com.icegreen</groupId>
+            <artifactId>greenmail</artifactId>
+            <version>1.4.1</version>
+        </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
@@ -123,6 +131,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
         </dependency>
         <dependency>
 			<groupId>org.codehaus.sonar-plugins.java</groupId>
@@ -145,6 +154,11 @@
     
     <dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-bom</artifactId>
+				<version>${spring-security.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>

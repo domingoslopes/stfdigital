@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3']);
+	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3', 'angularMoment']);
 
 	angular.plataforma.config(function($stateProvider, DashletsProvider) {
 		$stateProvider.state('dashboard', {
@@ -34,6 +34,11 @@
 			controller: 'MinhasTarefasDashletController'
 		});
 	});
+	
+	// Configurando o locale do angularMoment para pt_br
+	angular.plataforma.run(['amMoment', function(amMoment) {
+		amMoment.changeLocale('pt_br');
+	}]);
 
 })();
 

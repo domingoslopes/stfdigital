@@ -1,0 +1,28 @@
+<ul
+	class="notification-list no-margin hidden-sm hidden-xs b-grey b-l b-r no-style p-l-30 p-r-20">
+	<li class="p-r-15 inline">
+		<div class="dropdown">
+			<a href="javascript:;" id="notification-center"
+				class="icon-set globe-fill" data-toggle="dropdown"
+				aria-expanded="false"> <span class="bubble"></span>
+			</a>
+
+			<div class="dropdown-menu notification-toggle notification-center"
+				role="menu" aria-labelledby="notification-center">
+				<div class="notification-panel">
+					<div class="notification-body scrollable">
+						<div data-ng-repeat="notificacao in notificacoes | orderBy:'-hora'">
+							<div data-ng-include="defaultNotificationTemplate"></div>
+						</div>
+						<div class="notification-footer text-center">
+							<a href="" data-ng-click="mostrarTodas()">Ler todas as notificações</a>
+							<a href="" data-ng-click="marcarTodas()" class="portlet-refresh text-black pull-right">
+								<i class="pg-refresh_new"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</li>
+</ul>

@@ -7,7 +7,7 @@ import br.jus.stf.shared.stereotype.ValueObject;
  * @version 1.0
  * @created 14-ago-2015 18:57:03
  */
-public enum TipoPolo implements ValueObject<TipoPolo>{
+public enum TipoPolo implements ValueObject<TipoPolo> {
 	POLO_ATIVO,
 	POLO_PASSIVO;
 
@@ -16,7 +16,7 @@ public enum TipoPolo implements ValueObject<TipoPolo>{
 	 * @param other
 	 */
 	@Override
-	public boolean sameValueAs(final TipoPolo other){
+	public boolean sameValueAs(final TipoPolo other) {
 		return this.equals(other);
 	}
 }

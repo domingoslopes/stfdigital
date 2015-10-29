@@ -7,11 +7,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -25,8 +26,6 @@ import br.jus.stf.shared.DocumentoTemporarioId;
  */
 @Component
 public class DocumentoRestAdapter implements DocumentoAdapter {
-
-	private static final String CONTENT_TYPE = "application/pdf";
 	
 	@Autowired
 	private DocumentoRestResource documentoRestResource;
@@ -54,7 +53,7 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 
 	@Override
 	public DocumentoTemporarioId upload(String nome, byte[] documento) {
-		MockMultipartFile file = new MockMultipartFile(nome, nome + ".pdf", CONTENT_TYPE, documento);
+		MultipartFile file = new PDFMultipartFile(nome, documento);
 		return new DocumentoTemporarioId(documentoRestResource.upload(file));
 	}
 

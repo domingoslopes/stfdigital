@@ -21,7 +21,7 @@ public interface PessoaRepository {
 	 * 
 	 * @param pessoa
 	 */
-	public Pessoa save(Pessoa pessoa);
+	public <T extends Pessoa> T save(Pessoa pessoa);
 	
 	/**
 	 * Recupera o id para uma nova pessoa
