@@ -16,11 +16,19 @@ public interface ProcessoWokflowRepository {
 	
 	/**
 	 * Cria uma instância do processo.
-	 * @param mensagem mensagem que iniciará o processo.
-	 * @param status status inicial do processo
+	 * @param chave mensagem que iniciará o processo.
+	 * @param metadado metadado do objeto alvo do processo. 
 	 * @return Identificador da instância do processo de autuação criado.
 	 */
-	ProcessoWorkflowId criar(Long informacao, String mensagem, String status);
+	ProcessoWorkflowId criar(String chave, Metadado metadado);
+	
+	/**
+	 * Inicia um processo por uma mensagem
+	 * @param mensagem mensagem que iniciará o processo.
+	 * @param metadado metadado do objeto alvo do processo. 
+	 * @return Identificador da instância do processo de autuação criado.
+	 */
+	ProcessoWorkflowId criarPorMensagem(String mensagem, Metadado metadado);
 	
 	/**
 	 * Emite um sinal para um processo
@@ -44,7 +52,7 @@ public interface ProcessoWokflowRepository {
 	 * @param processo
 	 * @return
 	 */
-	ProcessoWorkflow save(ProcessoWorkflow processo);
+	<T extends ProcessoWorkflow> T save(ProcessoWorkflow processo);
 
 	/**
 	 * Atualiza o status do processo
@@ -53,7 +61,5 @@ public interface ProcessoWokflowRepository {
 	 * @param status
 	 */
 	void updateStatus(ProcessoWorkflowId processoWorkflowId, String status);
-
-	ProcessoWorkflowId criarPorMensagem(Long informacao, String mensagem, String status);
 	
 }

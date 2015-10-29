@@ -11,8 +11,6 @@
 
 	angular.plataforma.controller('DashboardController', function ($scope, $http, properties) {
 		
-		
-		
 	});
 	
 })();
