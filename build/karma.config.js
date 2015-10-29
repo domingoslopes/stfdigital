@@ -23,6 +23,8 @@ module.exports = {
 		baseDir + '/vendor/angular-ui-select2/src/select2.js',
 		baseDir + '/vendor/select2/select2.js',
 		baseDir + '/vendor/angular-file-upload/dist/angular-file-upload.min.js',
+		baseDir + '/vendor/moment/min/moment-with-locales.min.js',
+		baseDir + '/vendor/angular-moment/angular-moment.min.js',		
 	    baseDir + '/vendor/d3/d3.js',
 	    baseDir + '/vendor/nvd3/build/nv.d3.js',
 	    baseDir + '/vendor/angular-nvd3/dist/angular-nvd3.js',

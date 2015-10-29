@@ -56,10 +56,7 @@ public class MinistroId implements ValueObject<MinistroId>{
 		return sameValueAs(other);
 	}
 
-	/**
-	 * 
-	 * @param other
-	 */
+	@Override
 	public boolean sameValueAs(final MinistroId other){
 		return other != null && this.codigo.equals(other.codigo);
 	}

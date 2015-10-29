@@ -47,8 +47,8 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Peticao save(Peticao peticao) {
-		return super.save(peticao);
+	public <T extends Peticao> T save(Peticao peticao) {
+		return (T) super.save(peticao);
 	}
 	
 	@Override
