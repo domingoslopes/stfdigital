@@ -15,26 +15,16 @@
 		browser.get('/');
 		this.conteudo = element(by.css('body'));
 		
-		this.iniciarProcessoDigital = function () {
-			browser.actions().mouseMove(element(by.id('novoItemIcon'))).perform();
-			// É necessário mover o mouse para cima do link, caso contrário o click não vai funcionar
-			browser.actions().mouseMove(element(by.css('a[ui-sref="peticionamento"]'))).perform();
-			element(by.css('a[ui-sref="peticionamento"]')).click();
+		this.iniciarProcesso = function (idIcon) {
+			browser.actions().mouseMove(element(by.css('i.pg-home'))).perform();
+			var elem = element(by.id(idIcon));
+			browser.actions().mouseMove(elem).perform();
+			elem.click();
 			
 			// Força a saída do mouse da barra de menus para que essa barra recue à esquerda
 			browser.actions().mouseMove(element(by.id('papeis'))).perform();
 		};
 		
-		this.iniciarProcessoFisico = function () {
-			browser.actions().mouseMove(element(by.id('novaPFIcon'))).perform();
-			// É necessário mover o mouse para cima do link, caso contrário o click não vai funcionar
-			browser.actions().mouseMove(element(by.css('a[ui-sref="registro"]'))).perform();
-			element(by.css('a[ui-sref="registro"]')).click();
-			// Força a saída do mouse da barra de menus para que essa barra recue à esquerda
-			browser.actions().mouseMove(element(by.id('papeis'))).perform();
-		};
-		
-
 		this.executarTarefa = function() {
 			element(by.repeater('tarefa in tarefas').row(0)).element(by.css('a')).click();
 			browser.waitForAngular();
@@ -49,7 +39,14 @@
 		    
 		    element(by.id(papel)).click();
 		    
-		    browser.waitForAngular();
+		    // O login pode levar algum tempo, já que recarrega toda a página.
+		    // Para garantir que o login ocorreu completamente, nós esperamos ele redirecionar
+		    // para o dashboard e só retornamos quando ele validar a URL.
+			return browser.driver.wait(function() {
+				return browser.driver.getCurrentUrl().then(function(url) {
+					return /dashboard/.test(url);
+				});
+			}, 10000);
 		};
 		
 	};

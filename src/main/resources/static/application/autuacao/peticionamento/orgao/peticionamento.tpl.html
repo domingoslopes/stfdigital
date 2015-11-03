@@ -1,0 +1,30 @@
+<div class="col-md-6">
+	<div class="card share" data-social="item" style="width: 100%">
+		<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+		<div class="card-header clearfix ">
+			<h5>Classificação da Petição</h5>
+			<h6>Qual classe processual você<strong> sugere </strong> para sua petição?</h6>
+		</div>
+		<div class="card-description">
+			<select ui-select2 id="classe" ng-model="classe" data-placeholder="Selecione a Classe Sugerida" style="width: 450px;" autofocus>
+				<option value=""></option>
+				<option ng-repeat="classe in classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
+			</select>
+		</div>
+	</div>
+</div>
+<div class="col-md-6">
+	<div class="card share" data-social="item" style="width: 100%">
+		<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+		<div class="card-header clearfix ">
+			<h5>Classificação de Órgãos</h5>
+			<h6>Qual órgão você<strong> representa </strong>?</h6>
+		</div>
+		<div class="card-description">
+			<select ui-select2 id="orgao" ng-model="orgao" data-placeholder="Selecione o Órgão Sugerido" style="width: 450px;" autofocus>
+				<option value=""></option>
+				<option ng-repeat="orgao in orgaos" value="{{orgao.id}}">{{orgao.nome}} ({{orgao.id}})</option>
+			</select>
+		</div>
+	</div>
+</div>

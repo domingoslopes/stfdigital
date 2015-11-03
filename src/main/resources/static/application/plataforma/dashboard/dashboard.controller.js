@@ -1,3 +1,5 @@
+// Essa dashlet controlará os aspectos mais abrangentes do dashboard, não se responsabilizando
+// mais pela exibição de Minhas Tarefas e Minhas Petições 
 /**
  * @author Rodrigo Barreiros
  * 
@@ -7,13 +9,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DashboardController', function (data, $scope, $http, properties, PeticaoService) {
-		
-		$scope.tarefas = data.data;
-		
-		PeticaoService.listar().success(function(peticoes) {
-			$scope.peticoes = peticoes;
-		});
+	angular.plataforma.controller('DashboardController', function ($scope, $http, properties) {
 		
 	});
 	

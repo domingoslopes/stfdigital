@@ -141,7 +141,6 @@ altair_datatables = {
 
             $( tt.fnContainer() ).insertBefore( $dt_tableTools.closest('.dt-uikit').find('.dt-uikit-header'));
 
-
             $body.on('click',function(e) {
                 if($body.hasClass('DTTT_Print')) {
                     if ( !$(e.target).closest(".DTTT").length && !$(e.target).closest(".uk-table").length) {

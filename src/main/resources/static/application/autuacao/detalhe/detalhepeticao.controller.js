@@ -18,6 +18,11 @@
 			detalhe.peticao = data;
 		});
 		
+		detalhe.urlConteudo = function(peca) {
+			return properties.apiUrl + '/documentos/' + peca.documentoId;
+		};
+		
+		
 	});
 	
 })();

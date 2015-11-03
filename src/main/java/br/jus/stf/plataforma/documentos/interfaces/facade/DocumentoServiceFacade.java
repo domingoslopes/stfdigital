@@ -14,6 +14,7 @@ import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDtoAssembler;
 import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Rodrigo Barreiros
@@ -33,7 +34,7 @@ public class DocumentoServiceFacade {
 	@Autowired
 	private DocumentoRepository documentoRepository;
 
-	public List<DocumentoDto> salvarDocumentos(List<String> documentosTemporarios) {
+	public List<DocumentoDto> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		return documentoApplicationService.salvarDocumentos(documentosTemporarios).entrySet().stream()
 				.map(entry -> documentoDtoAssembler.toDto(entry.getKey(), entry.getValue()))
 				.collect(Collectors.toList());
