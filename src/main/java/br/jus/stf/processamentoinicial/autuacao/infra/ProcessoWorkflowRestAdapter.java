@@ -21,6 +21,9 @@ import br.jus.stf.shared.ProcessoWorkflowId;
 @Component
 public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 
+	private static final String PETICAO_INVALIDA = "Petição Inválida";
+	private static final String REMESSA_INDEVIDA = "Remessa Indevida";
+	
 	@Autowired
 	private WorkflowRestResource processoRestService;
 
@@ -30,6 +33,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setMensagem("autuarOriginarios");
 		command.setStatus(PeticaoStatus.A_AUTUAR.toString());
 		command.setInformacao(peticaoEletronica.id().toLong());
+		command.setTipoInformacao(peticaoEletronica.getClass().getSimpleName());
 		
 		Long id = processoRestService.iniciar(command);
 		peticaoEletronica.associarProcessoWorkflow(new ProcessoWorkflowId(id));
@@ -41,6 +45,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setMensagem("Remessa de Petições Físicas");
 		command.setStatus(PeticaoStatus.A_PREAUTUAR.toString());
 		command.setInformacao(peticaoFisica.id().toLong());
+		command.setTipoInformacao(peticaoFisica.getClass().getSimpleName());
 		
 		Long id = processoRestService.iniciarPorMensagem(command);
 		peticaoFisica.associarProcessoWorkflow(new ProcessoWorkflowId(id));
@@ -50,7 +55,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	public void rejeitarAutuacao(Peticao peticao) {
 		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
 		SinalizarCommand command = new SinalizarCommand();
-		command.setSinal("peticaoInvalida");
+		command.setSinal(PETICAO_INVALIDA);
 		command.setStatus(PeticaoStatus.REJEITADA.toString());
 
 		processoRestService.sinalizar(id.toLong(), command);
@@ -60,7 +65,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	public void devolver(Peticao peticao) {
 		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
 		SinalizarCommand command = new SinalizarCommand();
-		command.setSinal("Remessa Indevida");
+		command.setSinal(REMESSA_INDEVIDA);
 		command.setStatus(PeticaoStatus.REJEITADA.toString());
 
 		processoRestService.sinalizar(id.toLong(), command);

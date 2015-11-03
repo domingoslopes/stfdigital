@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.workflow.domain.model;
 
-import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.ProcessoWorkflowId;
@@ -14,17 +13,22 @@ import br.jus.stf.shared.stereotype.Entity;
 public class Tarefa implements Entity<Tarefa, TarefaId> {
 	
 	private TarefaId id;
-	private Task task;
+	private String nome;
+	private String descricao; 
 	private ProcessoWorkflowId processo;
+	private Metadado metadado;
 	
-	public Tarefa(Task task) {
-		Validate.notNull(task, "tarefa.task.required");
-		
-		Long id = Long.parseLong(task.getId());	
-		this.id = new TarefaId(id);
-		this.task = task;
-		Long processo = Long.parseLong(task.getProcessInstanceId());
-		this.processo = new ProcessoWorkflowId(processo);
+	public Tarefa(TarefaId id, String nome, String descricao, ProcessoWorkflowId processo, Metadado metadado) {
+		Validate.notNull(id, "tarefa.id.required");
+		Validate.notBlank(nome, "tarefa.nome.required");
+		Validate.notBlank(descricao, "tarefa.descricao.required");
+		Validate.notNull(processo, "tarefa.processo.required");
+			
+		this.id = id;
+		this.nome = nome;
+		this.descricao = descricao;
+		this.processo = processo;
+		this.metadado = metadado;
 	}
 	
 	@Override
@@ -32,17 +36,20 @@ public class Tarefa implements Entity<Tarefa, TarefaId> {
 		return id;
 	}
 	
-	/**
-	 * Definição de uma tarefa
-	 * 
-	 * @return tarefa do activiti
-	 */
-	public Task definicao() {
-		return task;
+	public String nome() {
+		return nome;
+	}
+	
+	public String descricao() {
+		return descricao;
 	}
 	
 	public ProcessoWorkflowId processo() {
 		return processo;
+	}
+	
+	public Metadado metadado() {
+		return metadado;
 	}
 
 	@Override

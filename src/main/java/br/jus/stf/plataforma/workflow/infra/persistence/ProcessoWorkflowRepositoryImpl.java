@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.workflow.domain.model.Metadado;
 import br.jus.stf.plataforma.workflow.domain.model.ProcessoWokflowRepository;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
@@ -43,27 +44,41 @@ public class ProcessoWorkflowRepositoryImpl extends SimpleJpaRepository<Processo
 	}
 	
 	@Override
-	public ProcessoWorkflowId criar(Long informacao, String processoId, String status) {
-		Map<String, Object> variaveis = new HashMap<String, Object>();
-		variaveis.put("status", status);
-		variaveis.put("informacao", informacao);
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processoId, variaveis);
+	public ProcessoWorkflowId criar(String chave, Metadado metadado) {
+		Map<String, Object> variaveis = criarMapaVariaveis(metadado);
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(chave, variaveis);
+		return salvar(processInstance, metadado);
+	}
+
+	@Override
+	public ProcessoWorkflowId criarPorMensagem(String mensagem, Metadado metadado) {
+		Map<String, Object> variaveis = criarMapaVariaveis(metadado);
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByMessage(mensagem, variaveis);
+		return salvar(processInstance, metadado);
+	}
+
+	/**
+	 * @param metadado
+	 * @param processInstance
+	 * @return o id do processo
+	 */
+	private ProcessoWorkflowId salvar(ProcessInstance processInstance, Metadado metadado) {
 		ProcessoWorkflowId id = new ProcessoWorkflowId(Long.parseLong(processInstance.getId()));
-		ProcessoWorkflow processo = new ProcessoWorkflow(id, status);
+		ProcessoWorkflow processo = new ProcessoWorkflow(id, metadado.status());
 		super.save(processo);
 		return id;
 	}
 
-	@Override
-	public ProcessoWorkflowId criarPorMensagem(Long informacao, String mensagem, String status) {
+	/**
+	 * @param metadado
+	 * @return
+	 */
+	private Map<String, Object> criarMapaVariaveis(Metadado metadado) {
 		Map<String, Object> variaveis = new HashMap<String, Object>();
-		variaveis.put("status", status);
-		variaveis.put("informacao", informacao);
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByMessage(mensagem, variaveis);
-		ProcessoWorkflowId id = new ProcessoWorkflowId(Long.parseLong(processInstance.getId()));
-		ProcessoWorkflow processo = new ProcessoWorkflow(id, status);
-		super.save(processo);
-		return id;
+		variaveis.put("status", metadado.status());
+		variaveis.put("informacao", metadado.informacao());
+		variaveis.put("tipoInformacao", metadado.tipoInformacao());
+		return variaveis;
 	}
 
 	@Override
@@ -75,8 +90,8 @@ public class ProcessoWorkflowRepositoryImpl extends SimpleJpaRepository<Processo
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ProcessoWorkflow save(ProcessoWorkflow processo) {
-		return super.save(processo);
+	public <T extends ProcessoWorkflow> T save(ProcessoWorkflow processo) {
+		return (T) super.save(processo);
 	}
 	
 	@Override

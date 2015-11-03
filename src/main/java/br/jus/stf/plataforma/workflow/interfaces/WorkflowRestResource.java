@@ -41,14 +41,14 @@ public class WorkflowRestResource {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long iniciar(@RequestBody IniciarProcessoCommand command) {
 		validate(command);
-		return processoServiceFacade.iniciar(command.getInformacao(), command.getMensagem(), command.getStatus());
+		return processoServiceFacade.iniciar(command.getMensagem(), command.getInformacao(), command.getTipoInformacao(), command.getStatus());
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long iniciarPorMensagem(@RequestBody IniciarProcessoCommand command) {
 		validate(command);
-		return processoServiceFacade.iniciarPorMensagem(command.getInformacao(), command.getMensagem(), command.getStatus());
+		return processoServiceFacade.iniciarPorMensagem(command.getMensagem(), command.getInformacao(), command.getTipoInformacao(), command.getStatus());
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -71,38 +71,3 @@ public class WorkflowRestResource {
 	}
 	
 }
-/**
-@RestController
-@RequestMapping("/api/workflow/processos")
-public class ProcessoRestResource {
-
-	@Autowired
-	private ProcessoApplicationService processoApplicationService;
-	
-	@Autowired
-	private ProcessoDtoAssembler processoDtoAssembler;
-	
-	@Autowired
-	private Validator validator;
-
-	//TODO : Substituir validação pelo @Valid e injeção do BindingResult
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	@ResponseStatus(HttpStatus.CREATED)
-	public String iniciar(@RequestBody IniciarProcessoCommand command) {
-		validate(command);
-		return processoApplicationService.iniciar(command.getIdInformacao(), command.getMensagem());
-	}
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ProcessoDto consultar(@PathVariable("id") String id) { 
-		return processoDtoAssembler.toDto(processoApplicationService.consultar(id));
-	}
-	
-	private void validate(Object object) {
-		Set<ConstraintViolation<Object>> result = validator.validate(object);
-		if (!result.isEmpty()) {
-			throw new IllegalArgumentException(result.toString());
-		}
-	}
-}
-*/

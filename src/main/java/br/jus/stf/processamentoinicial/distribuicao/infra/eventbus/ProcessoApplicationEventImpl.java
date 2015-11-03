@@ -22,7 +22,7 @@ public class ProcessoApplicationEventImpl implements ProcessoApplicationEvent {
 
 	@Override
 	public void processoDistribuido(Processo processo) {
-		eventBus.notify("indexadorEventBus", Event.wrap(processo));
+		eventBus.notify("indexadorEventBus", Event.wrap(new ProcessoDistribuido(processo)));
 	}
 
 }

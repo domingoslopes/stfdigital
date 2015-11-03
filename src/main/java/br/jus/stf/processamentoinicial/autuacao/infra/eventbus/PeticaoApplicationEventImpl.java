@@ -22,7 +22,9 @@ public class PeticaoApplicationEventImpl implements PeticaoApplicationEvent {
 	
 	@Override
 	public void peticaoRecebida(Peticao peticao) {
-		eventBus.notify("indexadorEventBus", Event.wrap(peticao));
+		PeticaoRecebida evento = new PeticaoRecebida(peticao);
+		eventBus.notify("indexadorEventBus", Event.wrap(evento));
+		eventBus.notify("notificadorEventBus", Event.wrap(evento));
 	}
 
 }

@@ -28,7 +28,7 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 	public void enviarArquivo() throws Exception {
 		String nomeArquivo = "teste_arq_temp.pdf";
 		String mime = "application/pdf";
-		String caminho = "pdf/archimate.pdf";
+		String caminho = "pdf/padraoAD-V2.pdf";
 		
 		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
 

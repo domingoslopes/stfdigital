@@ -25,6 +25,8 @@ import br.jus.stf.shared.PeticaoId;
 
 
 /**
+ * Classe responsável pela criação de objetos relacionados ao peticionamento.
+ * 
  * @author Anderson.Araujo
  *
  * @version 1.0.0
