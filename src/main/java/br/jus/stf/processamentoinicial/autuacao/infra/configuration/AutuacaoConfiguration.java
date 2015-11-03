@@ -5,12 +5,11 @@ import java.io.InputStream;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 
-import br.jus.stf.processamentoinicial.autuacao.infra.IndexadorRestAdapter;
+import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
+import br.jus.stf.plataforma.shared.util.ResourceFileUtils;
 
 /**
  * @author Lucas.Rodrigues
@@ -19,6 +18,7 @@ import br.jus.stf.processamentoinicial.autuacao.infra.IndexadorRestAdapter;
 @Configuration
 public class AutuacaoConfiguration {
 	
+	public static final String INDICE = "autuacao";
 	private static final String AUTUACAO_RESOURCE = "/indices/processamentoinicial/autuacao.json";
 	
 	@Autowired
@@ -26,20 +26,8 @@ public class AutuacaoConfiguration {
 	
 	@PostConstruct
 	private void configure() throws Exception {
-		String configuracao = readConfiguration(AUTUACAO_RESOURCE);			
-		indexadorRestAdapter.criarIndice("autuacao", configuracao);
-	}
-	
-	/**
-	 * Retorna uma string do conteúdo do arquivo
-	 * 
-	 * @param location
-	 * @return
-	 * @throws IOException 
-	 */
-	private String readConfiguration(String location) throws IOException {
-		InputStream input = getClass().getResourceAsStream(location);
-		return StringUtils.trimAllWhitespace(IOUtils.toString(input));
+		String configuracao = ResourceFileUtils.read(AUTUACAO_RESOURCE);			
+		indexadorRestAdapter.criarIndice(INDICE, configuracao);
 	}
 	
 }

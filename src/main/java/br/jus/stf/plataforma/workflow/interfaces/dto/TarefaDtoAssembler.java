@@ -1,8 +1,8 @@
 package br.jus.stf.plataforma.workflow.interfaces.dto;
 
-import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.workflow.domain.model.Metadado;
 import br.jus.stf.plataforma.workflow.domain.model.Tarefa;
 
 /**
@@ -15,11 +15,13 @@ import br.jus.stf.plataforma.workflow.domain.model.Tarefa;
 public class TarefaDtoAssembler {
 
 	public TarefaDto toDto(Tarefa tarefa) {
-		Task task = tarefa.definicao();
 		Long id = tarefa.id().toLong();
-		Long processo = Long.parseLong(task.getProcessInstanceId());
-		Long idInformacao = (Long) task.getProcessVariables().get("informacao");
-		return new TarefaDto(id, task.getTaskDefinitionKey(), task.getName(), processo, idInformacao);
+		Long processo = tarefa.processo().toLong();
+		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), processo, toDto(tarefa.metadado()), tarefa.metadado().tipoInformacao());
+	}
+	
+	private MetadadoDto toDto(Metadado metadado) {
+		return new MetadadoDto(metadado.informacao(), metadado.tipoInformacao(), metadado.status());
 	}
 
 }

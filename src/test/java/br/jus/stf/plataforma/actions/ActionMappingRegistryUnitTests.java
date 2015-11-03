@@ -2,7 +2,7 @@ package br.jus.stf.plataforma.actions;
 
 import org.junit.Test;
 
-import br.jus.stf.plataforma.actions.service.ActionMappingRegistry;
+import br.jus.stf.plataforma.shared.actions.service.ActionMappingRegistry;
 
 public class ActionMappingRegistryUnitTests {
 

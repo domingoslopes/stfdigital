@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.h2.tools.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -20,6 +21,12 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @Configuration
 //@Profile(Profiles.DESENVOLVIMENTO)
 public class PersistenceMemoryConfiguration {
+	
+	@Value("${H2.web.port}")
+	private String webPort;
+	
+	@Value("${H2.tcp.port}")
+	private String tcpPort;
 	
 	@Bean(name = "dataSource")
 	public DataSource dataSource() throws Exception {
@@ -47,13 +54,13 @@ public class PersistenceMemoryConfiguration {
 	
 	@Bean(initMethod = "start", destroyMethod = "stop")
 	public Server h2WebServer() throws SQLException {
-		return Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8090");	
+		return Server.createWebServer("-web", "-webAllowOthers", "-webPort", webPort);	
 	}
 	
 	@Bean(initMethod = "start", destroyMethod = "stop")
 	@DependsOn("h2WebServer")
 	public Server h2Server(Server h2WebServer) throws SQLException {
-		return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "8092");
+		return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", tcpPort);
 	}
 	
 }

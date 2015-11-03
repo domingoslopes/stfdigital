@@ -54,7 +54,7 @@ public class CorsFilter extends OncePerRequestFilter {
     /**
      * Todos os métodos abaixo são suportados. Uma requisição com método fora dessa lista será rejeitada.
      */
-    public static final String ALLOWED_METHODS = "GET,POST,HEAD,OPTIONS";
+    public static final String ALLOWED_METHODS = "GET,POST,PUT,HEAD,OPTIONS";
     
     /**
      * Apenas os headers abaixo são suportados. Uma requisição com um header fora dessa lista será rejeitada.
