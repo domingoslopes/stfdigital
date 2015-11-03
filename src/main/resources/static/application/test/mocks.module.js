@@ -142,19 +142,9 @@
 			return [200, orgaos, {}];
 		});
 		
-		$httpBackend.whenGET(properties.apiUrl + '/orgaos').respond(function(method, url, data, headers){
-			console.log('Recebendo orgãos:', method, url, data, headers);
-			return [200, orgaos, {}];
-		});
-		
 		$httpBackend.whenGET(properties.apiUrl + '/ministros').respond(function(method, url, data, headers){
 			console.log('Recebendo ministros:', method, url, data, headers);
 			return [200, ministros, {}];
-		});
-		
-		$httpBackend.whenGET(properties.apiUrl + '/orgaos').respond(function(method, url, data, headers){
-			console.log('Recebendo orgãos:', method, url, data, headers);
-			return [200, orgaos, {}];
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/peticoes/2').respond(function(method, url, data, headers){
