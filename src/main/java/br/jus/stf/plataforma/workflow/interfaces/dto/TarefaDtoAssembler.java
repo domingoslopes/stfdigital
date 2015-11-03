@@ -17,7 +17,7 @@ public class TarefaDtoAssembler {
 	public TarefaDto toDto(Tarefa tarefa) {
 		Long id = tarefa.id().toLong();
 		Long processo = tarefa.processo().toLong();
-		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), processo, toDto(tarefa.metadado()));
+		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), processo, toDto(tarefa.metadado()), tarefa.metadado().tipoInformacao());
 	}
 	
 	private MetadadoDto toDto(Metadado metadado) {
