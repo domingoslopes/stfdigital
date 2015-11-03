@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.commands;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,6 +23,9 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "Identificador da classe processual sugerida pelo peticionador", required=true)
 	private String classeId;
 	
+	@ApiModelProperty(value = "Identificador do Órgão para o qual o seu representante está peticionando, se for o caso", required=false)
+	private Long orgaoId;
+	
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
 	private List<String> partesPoloAtivo;
@@ -30,8 +34,9 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
 	private List<String> partesPoloPassivo;
 	
-	@ApiModelProperty(value = "A lista de identificadores dos documentos que serão anexados pelo peticionador", required=true)
-	private List<String> documentos;
+	@NotEmpty
+	@ApiModelProperty(value = "A lista de identificadores das peças que serão anexados pelo peticionador", required=true)
+	private List<Map<String, String>> pecas;
 
 	public void setClasseId(String classeId) {
 		this.classeId = classeId;
@@ -39,6 +44,14 @@ public class RegistrarPeticaoCommand {
 
 	public String getClasseId() {
 		return classeId;
+	}
+	
+	public void setOrgaoId(Long orgaoId) {
+		this.orgaoId = orgaoId;
+	}
+	
+	public Long getOrgaoId() {
+		return orgaoId;
 	}
 	
 	public void setPartesPoloAtivo(List<String> partesPoloAtivo) {
@@ -57,12 +70,12 @@ public class RegistrarPeticaoCommand {
 		return partesPoloPassivo;
 	}
 	
-	public void setDocumentos(List<String> documentos) {
-		this.documentos = documentos;
+	public void setPecas(List<Map<String, String>> pecas) {
+		this.pecas = pecas;
 	}
 	
-	public List<String> getDocumentos() {
-		return documentos;
+	public List<Map<String, String>> getPecas() {
+		return pecas;
 	}
 	
 	@Override

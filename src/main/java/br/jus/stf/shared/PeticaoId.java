@@ -20,6 +20,10 @@ public class PeticaoId implements ValueObject<PeticaoId> {
 	@Column(name = "SEQ_PETICAO", nullable = false)
 	private Long sequencial;
 
+	PeticaoId() {
+
+	}
+	
 	public PeticaoId(final Long sequencial) {
 		Validate.notNull(sequencial, "peticaoId.sequencial.required");
 		
@@ -55,12 +59,6 @@ public class PeticaoId implements ValueObject<PeticaoId> {
 	@Override
 	public boolean sameValueAs(final PeticaoId other){
 		return other != null && this.sequencial.equals(other.sequencial);
-	}
-	
-	//Hibernate
-	
-	PeticaoId() {
-		
 	}
 
 }

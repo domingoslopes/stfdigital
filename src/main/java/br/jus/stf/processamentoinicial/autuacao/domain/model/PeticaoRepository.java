@@ -16,17 +16,10 @@ public interface PeticaoRepository {
 	/**
 	 * 
 	 * @param id
-	 * @return peticao
-	 */
-	public Peticao findOne(PeticaoId id);
-	
-	/**
-	 * 
-	 * @param id
 	 * @param clazz tipo de retorno
 	 * @return peticao
 	 */
-	public <T> T findOne(PeticaoId id, Class<T> clazz);
+	public <T extends Peticao> T findOne(PeticaoId id);
 
 	/**
 	 * @param specification
@@ -39,7 +32,7 @@ public interface PeticaoRepository {
 	 * @param peticao
 	 * @return o id da peticao
 	 */
-	public Peticao save(Peticao peticao);
+	public <T extends Peticao> T save(Peticao peticao);
 	
 	/**
 	 * Gera o próximo id da petição
@@ -55,4 +48,25 @@ public interface PeticaoRepository {
 	 */
 	public Long nextNumero();
 	
+	/**
+	 * @para id
+	 * @return o tipo de peça
+	 */
+	public TipoPeca findOneTipoPeca(Long id);
+	
+	/**
+	 * @return a lista de tipos de peças
+	 */
+	public List<TipoPeca> findAllTipoPeca();
+	
+	/**
+	 * @para id
+	 * @return o órgao
+	 */
+	public Orgao findOneOrgao(Long id);
+	
+	/**
+	 * @return a lista de órgãos
+	 */
+	public List<Orgao> findAllOrgao();
 }

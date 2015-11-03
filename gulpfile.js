@@ -14,12 +14,14 @@ var karmaConfig = require('./build/karma.config.js');
 var protractorConfig = require('./build/protractor.config.js');
 var gulp = require('gulp');
 var bower = require('gulp-bower');
+var shell = require('gulp-shell');
 var gulpNgConfig = require('gulp-ng-config');
 var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var modRewrite = require('connect-modrewrite');
+var historyApiFallback = require('connect-history-api-fallback');
 var pkg = require('./package');
 var karma = require('karma').server;
 var del = require('del');
@@ -153,8 +155,17 @@ gulp.task('html', function() {
 		}));
 });
 
+gulp.task('js-doc', shell.task([
+	'jsdoc ' + 
+	'-c node_modules/angular-jsdoc/common/conf.json ' +
+	'-t node_modules/angular-jsdoc/angular-template ' +
+	'-d docs ' +
+	'./README.md ' +
+	'-r ' + config.base + '/application'
+]));
+
 /** 
- * Copia os arquivos da pasta 'assets' para a basta 'dist'
+ * Copia os arquivos da pasta 'assets' para a basta 'dist'ls
  */
 gulp.task('copy:assets', function() {
 	return gulp.src(config.assets, {
@@ -250,7 +261,7 @@ gulp.task('serve', ['build'], function() {
 		logPrefix: pkg.name,
 		server: {
 			baseDir : config.base,
-			middleware: [modRewrite(config.rewritePattern)],
+			middleware: [historyApiFallback()],
 			port : 3000
 		}
 	});
@@ -269,8 +280,7 @@ gulp.task('serve:dist', ['build:dist'], function() {
 	browserSync({
 		notify: false,
 		server: {
-			baseDir : config.dist,
-			middleware: [modRewrite(config.rewritePattern)]
+			baseDir : config.dist
 		}
 	});
 });

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
@@ -35,15 +37,24 @@ public class ProcessoFactory {
 		partesProcesso.addAll(coletarPartes(peticao.partesPoloAtivo()));
 		partesProcesso.addAll(coletarPartes(peticao.partesPoloPassivo()));
 		
+		Set<PecaProcesso> pecasProcesso = new HashSet<PecaProcesso>();
+		pecasProcesso.addAll(coletarPecas(peticao.pecas()));
+		
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(classe);
 		
-		return new Processo(id, classe, numero, relator, peticao.id(), partesProcesso, peticao.documentos());
+		return new Processo(id, classe, numero, relator, peticao.id(), partesProcesso, pecasProcesso);
 	}
 
 	private static Set<ParteProcesso> coletarPartes(Set<Parte> partesPeticao) {
 		return partesPeticao.stream()
 			.map(parte -> new ParteProcesso(parte.pessoaId(), parte.polo()))
+			.collect(Collectors.toSet());
+	}
+	
+	private static Set<PecaProcesso> coletarPecas(Set<Peca> pecasPeticao) {
+		return pecasPeticao.stream()
+			.map(peca -> new PecaProcesso(peca.documento(), peca.tipo(), peca.descricao()))
 			.collect(Collectors.toSet());
 	}
 	

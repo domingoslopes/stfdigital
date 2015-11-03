@@ -22,6 +22,10 @@
 	
 	var principalPage;
 	
+	var pos;
+	
+	var peticaoId;
+	
 	describe('Autuação de Petições Físicas Originárias:', function() {
 		
 		beforeEach(function() {
@@ -31,9 +35,10 @@
 		it('Deveria navegar para a página de envio de petições físicas', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
+			principalPage.login('recebedor');
 			
 			// Iniciando o Processo de Remessa Físca
-			principalPage.iniciarProcessoFisico();
+			principalPage.iniciarProcesso('link_registrar_peticao_fisica');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
@@ -58,14 +63,20 @@
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		   expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #7');
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #' + peticaoId);
+		    });
+		    
 		});
 		
 
 		it('Deveria pré-atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/preautuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/preautuacao/);
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
@@ -83,7 +94,7 @@
 		it('Deveria atuar como válida a petição física recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -97,14 +108,20 @@
 		    
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
-		    expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #7');
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
+		    });
+		    
 		});
 		
 		it('Deveria distribuir a petição física autuada', function() {
 			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/7\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
