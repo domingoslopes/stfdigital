@@ -1,0 +1,55 @@
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+        "nGram_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20,
+          "token_chars": ["letter", "digit", "punctuation", "symbol"]
+        }
+      },
+      "analyzer": {
+        "nGram_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [ "lowercase", "asciifolding", "nGram_filter" ]
+        },
+        "whitespace_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [ "lowercase", "asciifolding" ]
+        },
+        "keyword_analyzer": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": [ "lowercase" ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "Pessoa": {
+      "_all": {
+          "index_analyzer": "nGram_analyzer",
+          "search_analyzer": "whitespace_analyzer"
+      },
+      "dynamic": false,
+      "properties": {
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed",
+          	  "include_in_all": false
+            }
+          }
+        },
+        "nome": {
+          "type": "string",
+          "analyzer": "keyword_analyzer"
+        }
+      }
+    }
+  }
+}

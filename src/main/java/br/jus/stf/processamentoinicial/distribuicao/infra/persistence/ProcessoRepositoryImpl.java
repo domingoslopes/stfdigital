@@ -38,8 +38,8 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Processo save(Processo processo) {
-		return super.save(processo);
+	public <T extends Processo> T save(Processo processo) {
+		return (T) super.save(processo);
 	}
 	
 	@Override

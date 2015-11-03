@@ -14,18 +14,55 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel("Commando para pesquisar objetos nos índices")
 public class PesquisarCommand {
 
-	@ApiModelProperty(value = "Índices para pesquisa", required = false)
+	@ApiModelProperty("Os campos a serem retornados")
+	private String[] campos;
+	
+	@ApiModelProperty("Índices para pesquisa")
+	private String[] tipos;
+	
+	@ApiModelProperty(value = "Índices para pesquisa", required = true)
 	private String[] indices;
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Filtros com campos e valores para realizar pesquisa", required = true)
 	private Map<String, String> filtros;
 	
-	@ApiModelProperty(value = "Os campos a serem retornados", required = false)
-	private String[] campos;
+	@ApiModelProperty("Campo para ordenar pesquisa")
+	private Map<String, String> ordenadores;
 	
-	@ApiModelProperty(value = "Campo para ordenar pesquisa", required = false)
-	private String ordenador;
+	@ApiModelProperty("Página requisitada da pesquisa paginada")
+	private Integer pagina = 0;
+	
+	@ApiModelProperty("Tamanho da pesquisa paginada")
+	private Integer tamanho = 15;
+
+	/**
+	 * @return the campos
+	 */
+	public String[] getCampos() {
+		return campos;
+	}
+	
+	/**
+	 * @param campos the campos to set
+	 */
+	public void setCampos(String[] campos) {
+		this.campos = campos;
+	}
+	
+	/**
+	 * @return the tipos
+	 */
+	public String[] getTipos() {
+		return tipos;
+	}
+	
+	/**
+	 * @param tipos the tipos to set
+	 */
+	public void setTipos(String[] tipos) {
+		this.tipos = tipos;
+	}
 	
 	/**
 	 * @return the indices
@@ -54,32 +91,47 @@ public class PesquisarCommand {
 	public void setFiltros(Map<String, String> filtros) {
 		this.filtros = filtros;
 	}
-	
+
 	/**
-	 * @return the campos
+	 * @return the ordenadores
 	 */
-	public String[] getCampos() {
-		return campos;
-	}
-	
-	/**
-	 * @param campos the campos to set
-	 */
-	public void setCampos(String[] campos) {
-		this.campos = campos;
+	public Map<String, String> getOrdenadores() {
+		return ordenadores;
 	}
 
 	/**
-	 * @return the ordenador
+	 * @param ordenadores the ordenadores to set
 	 */
-	public String getOrdenador() {
-		return ordenador;
+	public void setOrdenadores(Map<String, String> ordenadores) {
+		this.ordenadores = ordenadores;
 	}
 
 	/**
-	 * @param ordenador the ordenador to set
+	 * @return the pagina
 	 */
-	public void setOrdenador(String ordenador) {
-		this.ordenador = ordenador;
+	public Integer getPagina() {
+		return pagina;
 	}
+
+	/**
+	 * @param pagina the pagina to set
+	 */
+	public void setPagina(Integer pagina) {
+		this.pagina = pagina;
+	}
+
+	/**
+	 * @return the tamanho
+	 */
+	public Integer getTamanho() {
+		return tamanho;
+	}
+
+	/**
+	 * @param tamanho the tamanho to set
+	 */
+	public void setTamanho(Integer tamanho) {
+		this.tamanho = tamanho;
+	}
+
 }
