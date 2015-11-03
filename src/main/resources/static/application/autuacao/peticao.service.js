@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.factory('PeticaoService', function($http, properties) {
+	angular.plataforma.factory('PeticaoService', function($http, $q, properties) {
 		return {
 			listar : function() {
 				return $http.get(properties.apiUrl + '/peticoes');
@@ -39,6 +39,13 @@
 			
 			registrar : function(registrarCommand){
 				return $http.post(properties.apiUrl + '/peticoes/fisicas', registrarCommand);
+			},
+			
+			listarTipoPecas : function() {
+				return $q(function(resolve, reject) {
+					var tipoPecas = [{id : 1, descricao : "Petição Inicial"}, {id : 2 , descricao: "Ato coator"}, {id: 3, descricao: "Documentos Comprobatórios"}];
+					resolve(tipoPecas);
+				});
 			}
 		};
 	});

@@ -17,13 +17,16 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel("Comando de indexação de objetos")
 public class IndexarCommand {
 	
+	@ApiModelProperty(value = "Id do objeto")
+	private String id;
+	
 	@ApiModelProperty(value = "Tipo do objeto", required = true)
 	@NotBlank
 	private String tipo;
 	
-	@ApiModelProperty(value = "Id do objeto", required = true)
+	@ApiModelProperty(value = "Índice para indexar", required = true)
 	@NotBlank
-	private String id;
+	private String indice;
 	
 	@ApiModelProperty(value = "Objeto a ser indexado", required = true)
 	@NotNull
@@ -33,10 +36,25 @@ public class IndexarCommand {
 		
 	}
 	
-	public IndexarCommand(final String tipo, final String id, final JsonNode objeto) {		
-		this.tipo = tipo;
+	public IndexarCommand(final String id, final String tipo, final String indice, final JsonNode objeto) {		
 		this.id = id;
+		this.tipo = tipo;
+		this.indice = indice;
 		this.objeto = objeto;
+	}
+	
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	/**
@@ -54,17 +72,17 @@ public class IndexarCommand {
 	}
 
 	/**
-	 * @return the id
+	 * @return the indice
 	 */
-	public String getId() {
-		return id;
+	public String getIndice() {
+		return indice;
 	}
-	
+
 	/**
-	 * @param id the id to set
+	 * @param indice the indice to set
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public void setIndice(String indice) {
+		this.indice = indice;
 	}
 
 	/**

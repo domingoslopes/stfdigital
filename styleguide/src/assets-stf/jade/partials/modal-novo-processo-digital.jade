@@ -1,0 +1,220 @@
+button.uk-modal-close.uk-close.stf-close.md-color-white(type='button')
+
+.uk-modal-header.stf-modal-header.stf-modal-header-primary
+  i.material-icons.stf-modal-header-icon.uk-border-circle.uk-margin-right.z-depth-1.md-bg-grey-50.md-color-stf-primary &#xE145;
+  span.stf-modal-header-subheading Registrar Recebimento
+  span.stf-modal-header-heading Novo Processo Digital
+
+form
+  .uk-grid
+    .uk-width-1-1.uk-width-large-3-5
+      .z-depth-1.stf-padding
+        label.uk-form-label(for='classe-processo') Sugerir uma classe
+        select.selectize-dropdown-below.classe-processo(name='classe-processo')
+
+        .z-depth-1.stf-padding.uk-margin-top
+          .uk-grid
+            .uk-width-1-2
+              span Polo Ativo
+            .uk-width-1-2
+              span Polo Passivo
+
+          .uk-grid
+            .uk-width-1-2
+              .uk-grid
+                .ul-width-1-2
+                  input.md-input(name='polo_ativo[]', value='João Silva')
+                .ul-width-1-2
+                  span.uk-badge.uk-badge-success.uk-margin-top 
+                    | João Silva
+                    a.uk-vertical-align-middle.uk-margin-small-left(href="javascript:void(0)")
+                      i.material-icons.md-color-red-500 &#xE5CD;
+
+              .uk-grid
+                .ul-width-1-2
+                  input.md-input(name='polo_ativo[]')
+                .ul-width-1-2
+                  button.md-btn.md-btn-stf-primary.stf-btn-xsmall.uk-text-small.uk-margin-small-top(onclick='return false;')
+                    i.material-icons.md-color-grey-50 &#xE145;
+
+            .uk-width-1-2
+              .uk-grid
+                .ul-width-1-2
+                  input.md-input(name='polo_ativo[]', value='José Alves')
+                .ul-width-1-2
+                  span.uk-badge.uk-badge-warning.uk-margin-top 
+                    | José Alves
+                    a.uk-vertical-align-middle.uk-margin-small-left(href="javascript:void(0)")
+                      i.material-icons.md-color-red-500 &#xE5CD;
+
+              .uk-grid
+                .ul-width-1-2
+                  input.md-input(name='polo_ativo[]')
+                .ul-width-1-2
+                  button.md-btn.md-btn-stf-primary.stf-btn-xsmall.uk-text-small.uk-margin-small-top(onclick='return false;')
+                    i.material-icons.md-color-grey-50 &#xE145;
+
+        .uk-width-1-1.stf-padding-top
+          .uk-file-upload.md-bg-grey-200#file_upload-drop
+            .uk-text Arraste e solte um arquivo para enviar
+            .uk-text-muted.uk-text-small.uk-margin-small-bottom ou
+            .uk-form-file.md-btn
+              | Escolha um arquivo
+              input#file_upload-select(type="file")
+
+        .uk-progress.uk-hidden#file_upload-progressbar
+          .uk-progress-bar(style='width:0') 0%
+
+    .uk-width-2-5
+      .card-processo.card-processo-desabilitado
+        .uk-grid
+          .uk-width-1-1.card-processo-titulo
+            h2 Novo Processo
+
+        .card-processo-grid
+          .card-processo-grid-item-vazio Não foi sugerida uma classe ainda
+          .card-processo-grid-item-vazio Não foram informadas partes ainda
+          .card-processo-grid-item-vazio Não há arquivos anexados ainda
+
+      .card-processo
+        .uk-grid
+          .uk-width-1-1.card-processo-titulo
+            h2 Novo Processo
+
+        .card-processo-grid
+            .card-processo-grid-titulo Classe Sugerida
+            .card-processo-grid-descricao HC - Habeas Corpus
+            .card-processo-grid-titulo Partes
+            .card-processo-grid-descricao
+              span.uk-badge.uk-badge-success.uk-margin-small-top.uk-margin-small-right João Silva
+              span.uk-badge.uk-badge-warning.uk-margin-small-top.uk-margin-small-right José Alves
+            .card-processo-grid-titulo Anexos
+            .card-processo-grid-descricao
+              span.uk-badge.uk-margin-small-top.uk-margin-small-right doc1.pdf
+              span.uk-badge.uk-margin-small-top.uk-margin-small-right doc2.doc
+              span.uk-badge.uk-margin-small-top.uk-margin-small-right doc3.docx
+
+      .uk-width-1-1.uk-text-center.uk-margin-top
+        button.md-btn.md-btn-success.uk-margin-small-bottom Registrar Processo Digital
+
+    .uk-width-1-1
+      hr.stf-modal-separator
+      
+      span
+        a(href="#") 6 pessoas 
+        | comentaram isso.
+
+      hr.stf-modal-separator
+
+      .stf-comment-list
+        .stf-comment-item
+          img.stf-comment-item-avatar(src='assets/img/avatars/leandro.png', alt='')
+          .stf-comment-item-content
+            a.stf-comment-item-author(href='#') João da Silva 
+            span Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rhoncus purus rhoncus congue placerat. Integer euismod luctus massa, at condimentum lorem porta eu.
+
+            .stf-comment-item-actions
+              a(href="#") Responder
+              span.uk-text-muted 
+                | 9 mins ao 
+                strong Registrar recebimento de Novo Processo Digital
+
+        .stf-comment-item.uk-margin-top.uk-flex
+          img.stf-comment-item-avatar.stf-comment-item-avatar-large.uk-flex-item-none(src='assets/img/avatars/leandro.png', alt='')
+
+          .stf-comment-item-content.uk-flex-item-auto
+            input.stf-comment-item-comment(name='comentario', placeholder='Escreva um comentário...')
+
+  // @TODO: Esse trecho deve ser executado pelo controller do Angular
+  script.
+    document.onready = (function() {
+      // file upload
+      var progressbar = $("#file_upload-progressbar"),
+          bar         = progressbar.find('.uk-progress-bar'),
+          settings    = {
+            action: '/', // upload url
+            method: 'GET',
+            allow : '*.(jpg|jpeg|gif|png)', // allow only images
+
+            loadstart: function() {
+              bar.css("width", "0%").text("0%");
+              progressbar.removeClass("uk-hidden");
+            },
+
+            progress: function(percent) {
+              percent = Math.ceil(percent);
+              bar.css("width", percent+"%").text(percent+"%");
+            },
+
+            allcomplete: function(response) {
+              bar.css("width", "100%").text("100%");
+
+              setTimeout(function(){
+                progressbar.addClass("uk-hidden");
+              }, 250);
+            }
+          };
+
+      var select = UIkit.uploadSelect($("#file_upload-select"), settings),
+          drop   = UIkit.uploadDrop($("#file_upload-drop"), settings);
+
+      $(".classe-processo").selectize({
+          persist: false,
+          maxItems: 1,
+          valueField: 'sigla',
+          labelField: 'nome',
+          searchField: ['sigla', 'nome'],
+          options: [
+            {sigla: 'AC',   nome: 'AÇÃO CAUTELAR'},
+            {sigla: 'ACO',  nome: 'AÇÃO CÍVEL ORIGINÁRIA'},
+            {sigla: 'ADC',  nome: 'AÇÃO DECLARATÓRIA DE CONSTITUCIONALIDADE'},
+            {sigla: 'ADI',  nome: 'AÇÃO DIRETA DE INCONSTITUCIONALIDADE'},
+            {sigla: 'ADO',  nome: 'AÇÃO DIRETA DE INCONSTITUCIONALIDADE POR OMISSÃO'},
+            {sigla: 'ADPF', nome: 'ARGÜIÇÃO DE DESCUMPRIMENTO DE PRECEITO FUNDAMENTAL'},
+            {sigla: 'AI',   nome: 'AGRAVO DE INSTRUMENTO'},
+            {sigla: 'AImp', nome: 'ARGÜIÇÃO DE IMPEDIMENTO'},
+            {sigla: 'AO',   nome: 'AÇÃO ORIGINÁRIA'},
+            {sigla: 'AOE',  nome: 'AÇÃO ORIGINÁRIA ESPECIAL'},
+            {sigla: 'AP',   nome: 'AÇÃO PENAL'},
+            {sigla: 'AR',   nome: 'AÇÃO RESCISÓRIA'},
+            {sigla: 'ARE',  nome: 'RECURSO EXTRAORDINÁRIO COM AGRAVO'},
+            {sigla: 'AS',   nome: 'ARGÜIÇÃO DE SUSPEIÇÃO'},
+            {sigla: 'CC',   nome: 'CONFLITO DE COMPETÊNCIA'},
+            {sigla: 'Cm',   nome: 'COMUNICAÇÃO'},
+            {sigla: 'EI',   nome: 'EXCEÇÃO DE INCOMPETÊNCIA'},
+            {sigla: 'EL',   nome: 'EXCEÇÃO DE LITISPENDÊNCIA'},
+            {sigla: 'EP',   nome: 'EXECUÇÃO PENAL'},
+            {sigla: 'Ext',  nome: 'EXTRADIÇÃO'},
+            {sigla: 'HC',   nome: 'HABEAS CORPUS'},
+            {sigla: 'HD',   nome: 'HABEAS DATA'},
+            {sigla: 'IF',   nome: 'INTERVENÇÃO FEDERAL'},
+            {sigla: 'Inq',  nome: 'INQUÉRITO'},
+            {sigla: 'MI',   nome: 'MANDADO DE INJUNÇÃO'},
+            {sigla: 'MS',   nome: 'MANDADO DE SEGURANÇA'},
+            {sigla: 'OACO', nome: 'OPOSIÇÃO EM AÇÃO CIVIL ORIGINÁRIA'},
+            {sigla: 'Pet',  nome: 'PETIÇÃO'},
+            {sigla: 'PPE',  nome: 'PRISÃO PREVENTIVA PARA EXTRADIÇÃO'},
+            {sigla: 'PSV',  nome: 'PROPOSTA DE SÚMULA VINCULANTE'},
+            {sigla: 'RC',   nome: 'RECURSO CRIME'},
+            {sigla: 'Rcl',  nome: 'RECLAMAÇÃO'},
+            {sigla: 'RE',   nome: 'RECURSO EXTRAORDINÁRIO'},
+            {sigla: 'RHC',  nome: 'RECURSO ORDINÁRIO EM HABEAS CORPUS'},
+            {sigla: 'RHD',  nome: 'RECURSO ORDINÁRIO EM HABEAS DATA'},
+            {sigla: 'RMI',  nome: 'RECURSO ORDINÁRIO EM MANDADO DE INJUNÇÃO'},
+            {sigla: 'RMS',  nome: 'RECURSO ORD. EM MANDADO DE SEGURANÇA'},
+            {sigla: 'RvC',  nome: 'REVISÃO CRIMINAL'},
+            {sigla: 'SEC',  nome: 'SENTENÇA ESTRANGEIRA CONTESTADA'},
+            {sigla: 'SL',   nome: 'SUSPENSÃO DE LIMINAR'},
+            {sigla: 'SS',   nome: 'SUSPENSÃO DE SEGURANÇA'},
+            {sigla: 'STA',  nome: 'SUSPENSÃO DE TUTELA ANTECIPADA'},
+          ],
+          render: {
+            item: function(item, escape) {
+              return '<div><span class="processo-sigla">' + escape(item.sigla) + '</span> - <span class="processo-classe">' + escape(item.nome) + '</span></div>';
+            },
+            option: function(item, escape) {
+              return '<div><span class="processo-sigla">' + escape(item.sigla) + '</span> - <span class="processo-classe">' + escape(item.nome) + '</span></div>';
+            }
+          }
+        });
+    });

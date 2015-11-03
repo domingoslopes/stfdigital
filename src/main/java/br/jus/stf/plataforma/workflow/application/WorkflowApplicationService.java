@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.jus.stf.plataforma.workflow.domain.model.Metadado;
 import br.jus.stf.plataforma.workflow.domain.model.ProcessoWokflowRepository;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
@@ -26,13 +27,23 @@ public class WorkflowApplicationService {
 	/**
 	 * Inicia uma nova instância do processo
 	 * 
-	 * @param informacao o ID da informação relacionada ao processo de trabalho
-	 * @param mensagem Mensagem que inicia um processo
-	 * @param status Status inicial do processo
+	 * @param chave Chave que inicia um processo
+	 * @param metadado Metadado do objeto alvo do processo
 	 * @return Identificador da instância do processo.
 	 */
-	public ProcessoWorkflowId iniciar(Long informacao, String mensagem, String status) {
-		return processoWorkflowRepository.criar(informacao, mensagem, status);
+	public ProcessoWorkflowId iniciar(String chave, Metadado metadado) {
+		return processoWorkflowRepository.criar(chave, metadado);
+	}
+	
+	/**
+	 * Inicia uma nova instância do processo por mensagem
+	 * 
+	 * @param mensagem
+	 * @param metadado
+	 * @return
+	 */
+	public ProcessoWorkflowId iniciarPorMensagem(String mensagem, Metadado metadado) {
+		return processoWorkflowRepository.criarPorMensagem(mensagem, metadado);
 	}
 	
 	/**

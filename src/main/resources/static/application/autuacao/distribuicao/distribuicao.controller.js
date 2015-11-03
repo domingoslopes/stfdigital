@@ -25,7 +25,7 @@
 			
 			PeticaoService.distribuir($scope.idPeticao, command).success(function(data) {
 				$state.go('dashboard');
-				messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
+				//messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
 			}).error(function(data, status) {
 				if (status === 400) {
 					messages.error('A Petição <b>não pode ser registrada</b> porque ela não está válida.');
