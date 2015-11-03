@@ -34,7 +34,7 @@ public class AuthoritiesMockFilter extends OncePerRequestFilter {
 		Optional<String> papel = Optional.ofNullable(request.getHeader("papel"));
 		
 		if (papel.isPresent()) {
-			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken("anonymousUser", "anonymousUser", Arrays.asList(new SimpleGrantedAuthority(papel.get())));
+			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(papel.get(), papel.get(), Arrays.asList(new SimpleGrantedAuthority(papel.get())));
 	
 	        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
 	        SecurityContextHolder.getContext().setAuthentication(authentication);

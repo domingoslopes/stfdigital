@@ -30,7 +30,7 @@ public interface ProcessoRepository {
 	 * 
 	 * @param processo
 	 */
-	public Processo save(Processo processo);
+	public <T extends Processo> T save(Processo processo);
 	
 	/**
 	 * Gera o próximo id do processo

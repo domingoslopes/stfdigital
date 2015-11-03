@@ -30,8 +30,8 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Pessoa save(Pessoa pessoa) {
-		return super.save(pessoa);
+	public <T extends Pessoa> T save(Pessoa pessoa) {
+		return (T) super.save(pessoa);
 	}
 
 	@Override

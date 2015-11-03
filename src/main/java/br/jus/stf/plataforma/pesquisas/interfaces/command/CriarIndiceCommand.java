@@ -12,7 +12,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @author Lucas.Rodrigues
  *
  */
-@ApiModel("Comando de criação de índice")
+@ApiModel("Comando de criação de índice e atualização de mapeamentos")
 public class CriarIndiceCommand {
 	
 	@ApiModelProperty(value = "Índice a ser criado", required = true)

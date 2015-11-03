@@ -7,7 +7,6 @@ import reactor.bus.Event;
 import reactor.bus.EventBus;
 import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationEvent;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 
 /**
  * Classe que implementa a publicação de eventos de petição
@@ -23,16 +22,9 @@ public class PeticaoApplicationEventImpl implements PeticaoApplicationEvent {
 	
 	@Override
 	public void peticaoRecebida(Peticao peticao) {
-		notificar(Event.wrap(peticao));
-	}
-
-	@Override
-	public void processoDistribuido(Processo processo) {
-		notificar(Event.wrap(processo));
-	}
-	
-	private void notificar(Event<?> evento) {
-		eventBus.notify("indexadorEventBus", evento);
+		PeticaoRecebida evento = new PeticaoRecebida(peticao);
+		eventBus.notify("indexadorEventBus", Event.wrap(evento));
+		eventBus.notify("notificadorEventBus", Event.wrap(evento));
 	}
 
 }

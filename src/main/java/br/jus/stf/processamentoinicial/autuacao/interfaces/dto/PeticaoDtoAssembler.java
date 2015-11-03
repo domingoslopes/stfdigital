@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
@@ -15,6 +16,9 @@ import br.jus.stf.shared.ClasseId;
 
 @Component
 public class PeticaoDtoAssembler {
+	
+	@Autowired
+	private PecaDtoAssembler pecaDtoAssembler;
 		
 	/**
 	 * Constrói um dto com as propriedades gerais da petição
@@ -49,7 +53,7 @@ public class PeticaoDtoAssembler {
 		String classe = (classeId.isPresent())? classeId.get().toString():null;
 		List<Long> partesPoloAtivo = new LinkedList<Long>();
 		List<Long> partesPoloPassivo = new LinkedList<Long>();
-		List<Long> documentos = new LinkedList<Long>();
+		List<PecaDto> pecas = new LinkedList<PecaDto>();
 		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
 		
 		peticao.partesPoloAtivo().forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
@@ -59,12 +63,12 @@ public class PeticaoDtoAssembler {
 		partes.put("Polo Ativo", partesPoloAtivo);
 		partes.put("Polo Passivo", partesPoloPassivo);
 		
-		peticao.documentos().forEach(documento -> documentos.add(documento.toLong()));
+		peticao.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
 		
 		if (isFisica) {
-			return new PeticaoFisicaDto(id, numero, ano, classe, partes, documentos);
+			return new PeticaoFisicaDto(id, numero, ano, classe, partes, pecas);
 		} else {
-			return new PeticaoDto(id, numero, ano, classe, partes, documentos);
+			return new PeticaoDto(id, numero, ano, classe, partes, pecas);
 		}
 
 	}
