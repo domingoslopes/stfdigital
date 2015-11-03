@@ -1,6 +1,8 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -90,4 +92,11 @@ public class PeticaoRestResource {
 		peticaoServiceFacade.devolver(id, TipoDevolucao.valueOf(command.getTipoDevolucao()), command.getNumeroOficio());
 	}
 
+    @ApiOperation(value = "Retorna as partes de uma petição", hidden = true)
+	@RequestMapping(value = "/{id}/partes", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public Map<String, List<Long>> consultarPartes(@PathVariable Long id) {
+		PeticaoDto peticao = this.peticaoServiceFacade.consultar(id);
+		return peticao.getPartes();
+	}
 }
