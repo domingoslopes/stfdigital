@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import br.jus.stf.processamentoinicial.autuacao.infra.IndexadorRestAdapter;
+import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 
 /**
  * @author Tomas.Godoi

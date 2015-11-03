@@ -27,8 +27,7 @@
 			
 			$httpBackend.flush();
 		}));
-
-
+		
 		it('Deveria carregar a lista de orgão no escopo do controlador', function() {
 			expect(scope.orgaos.length).toEqual(3);
 		});

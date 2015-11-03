@@ -37,9 +37,9 @@ public class PeticaoFisica extends Peticao {
 
 	}
 	
-	public PeticaoFisica(final PeticaoId id, final Long numero, final Integer volumes, 
+	public PeticaoFisica(final PeticaoId id, final Long numero, final String usuarioCadastramento, final Integer volumes, 
 			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex) {
-		super(id, numero);
+		super(id, numero, usuarioCadastramento);
 		
 		Validate.isTrue(volumes != null && volumes > 0, "peticaoFisica.volumes.maiorQueZero");
 		Validate.isTrue(apensos != null && apensos >= 0, "peticaoFisica.apensos.maiorIgualAZero");

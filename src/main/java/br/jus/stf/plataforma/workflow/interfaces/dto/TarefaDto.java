@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.workflow.interfaces.dto;
 
+
 /**
  * @author Rodrigo Barreiros
  * 
@@ -11,39 +12,40 @@ public class TarefaDto {
 	private Long id;
 	private String nome;
 	private String descricao;
-	private Long idProcesso;
-	private Long idInformacao;
+	private Long processoWorkflow;
+	private MetadadoDto metadado;
+	private String tipoInformacao;
 
-	public TarefaDto(Long id, String nome, String descricao, Long idProcesso, Long idInformacao) {
+	public TarefaDto(Long id, String nome, String descricao, Long processoWorkflow, MetadadoDto metadado, String tipoInformacao) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.idProcesso = idProcesso;
-		this.idInformacao = idInformacao;
+		this.processoWorkflow = processoWorkflow;
+		this.metadado = metadado;
+		this.tipoInformacao = tipoInformacao;
 	}
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public String getNome() {
-		return nome;
+		return this.nome;
 	}
 	
 	public String getDescricao() {
-		return descricao;
+		return this.descricao;
 	}
 	
-	public void setIdProcesso(Long idProcesso) {
-		this.idProcesso = idProcesso;
+	public Long getProcessoWorkflow() {
+		return this.processoWorkflow;
 	}
 	
-	public Long getIdProcesso() {
-		return this.idProcesso;
-	}
-	
-	public Long getIdInformacao() {
-		return idInformacao;
+	public MetadadoDto getMetadado() {
+		return this.metadado;
 	}
 
+	public String getTipoInformacao() {
+		return this.tipoInformacao;
+	}
 }
