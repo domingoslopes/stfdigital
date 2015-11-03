@@ -70,12 +70,7 @@ public class PeticaoApplicationService {
 	 * @return Id da petição eletrônica registrada.
 	 */
 	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas, Optional<Long> orgaoId) {
-		PeticaoEletronica peticao;
-		if (orgaoId.isPresent()) {
-			peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId.get());
-		} else {
-			peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas);
-		}
+		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
