@@ -30,6 +30,9 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 		mapeamentoPapelDashboard.put("autuador", buildDashboardFromDashlets("minhas-tarefas"));
 		mapeamentoPapelDashboard.put("distribuidor", buildDashboardFromDashlets("minhas-tarefas"));
 		mapeamentoPapelDashboard.put("recebedor", buildDashboardFromDashlets("minhas-tarefas"));
+		mapeamentoPapelDashboard.put("cartoraria", buildDashboardFromDashlets("minhas-tarefas"));
+		mapeamentoPapelDashboard.put("representante", buildDashboardFromDashlets("minhas-tarefas"));
+		mapeamentoPapelDashboard.put("gestor-autuacao", buildDashboardFromDashlets("dashlet-grafico"));
 	}
 
 	private static Dashboard buildDashboardFromDashlets(String... dashletsNames) {
