@@ -1,7 +1,11 @@
 package br.jus.stf.processamentoinicial.distribuicao.application;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
@@ -32,6 +36,14 @@ public class ProcessoApplicationEventIntegrationTests extends AbstractIntegratio
 	
 	@Autowired
 	private ProcessoRepository processoRepository;
+	
+	@Before
+	public void setUp() {
+		Authentication auth = Mockito.mock(Authentication.class);
+		
+		Mockito.when(auth.getPrincipal()).thenReturn("PETICIONADOR");
+		SecurityContextHolder.getContext().setAuthentication(auth);
+	}
 	
 	@Test
 	public void processoDistribuidoEvent() {
