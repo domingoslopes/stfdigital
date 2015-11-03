@@ -11,7 +11,6 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -26,7 +25,6 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  * @since 1.0.0
  * @since 17.06.2015
  */
-@Ignore
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
 	private String peticaoValidaParaAutuacao;
@@ -120,6 +118,10 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		//Realiza a distribuição.
 		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+		
+		//Recupera as partes da petição.
+		this.mockMvc.perform(get("/api/peticoes/" + peticaoId + "/partes").contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk()).andExpect(jsonPath("$[0].PoloAtivo").value("[5, 6]"));
 		
 		//TODO: verificar, pois falha de forma intermitente ao executar todos os testes
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
