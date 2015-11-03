@@ -15,6 +15,8 @@
 		browser.get('/');
 		this.conteudo = element(by.css('body'));
 		
+		this.titleGestaoAutuacao = element(by.id('gestaoAutuacaoId'));
+
 		this.iniciarProcesso = function (idIcon) {
 			browser.actions().mouseMove(element(by.css('i.pg-home'))).perform();
 			var elem = element(by.id(idIcon));
@@ -34,10 +36,16 @@
 			return element.all(by.repeater('tarefa in tarefas'));
 		};
 		
+		this.peticoes = function () {
+			return element.all(by.repeater('peticao in peticoes'));
+		};
+		
 		this.login = function (papel) {
 		    element(by.id('papeisButton')).click();
 		    
 		    element(by.id(papel)).click();
+		    
+		    this.txtPapel = element(by.id(papel)).getAttribute("id");
 		    
 		    // O login pode levar algum tempo, já que recarrega toda a página.
 		    // Para garantir que o login ocorreu completamente, nós esperamos ele redirecionar
@@ -48,6 +56,13 @@
 				});
 			}, 10000);
 		};
+		
+		this.dashletMinhasTarefas = element(by.className('dashlet1')); 
+			
+		
+/*		this.usuarioLogado = function(){
+			return element(by.id')
+		}*/
 		
 	};
 
