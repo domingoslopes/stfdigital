@@ -76,6 +76,14 @@
           "type": "string",
           "index": "not_analyzed"
         },
+        "dataCadastramento": {        
+          "type": "date",
+          "index": "not_analyzed"
+        },
+        "usuarioCadastramento": {        
+          "type": "string",
+          "analyzer": "keyword_analyzer"
+        },
         "partes": {
           "properties": {
           	"sequencial" : {
@@ -182,6 +190,14 @@
         "motivoRejeicao": {        
           "type": "string",
           "index": "not_analyzed"
+        },
+        "dataCadastramento": {        
+          "type": "date",
+          "index": "not_analyzed"
+        },
+        "usuarioCadastramento": {        
+          "type": "string",
+          "analyzer": "keyword_analyzer"
         },
         "partes": {
           "properties": {

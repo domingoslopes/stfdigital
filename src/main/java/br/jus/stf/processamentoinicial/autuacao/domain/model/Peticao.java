@@ -2,6 +2,7 @@ package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -79,6 +80,12 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
 	private Set<ProcessoWorkflowId> processosWorkflow = new TreeSet<ProcessoWorkflowId>((p1, p2) -> p1.toLong().compareTo(p2.toLong()));
 	
+	@Column(name = "DAT_CADASTRAMENTO")
+	private Date dataCadastramento;
+	
+	@Column(name = "SIG_USUARIO_CADASTRAMENTO")
+	private String usuarioCadastramento;
+		
 	@Transient
 	private String identificacao;
 
@@ -86,19 +93,30 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 
 	}
 	
-	public Peticao(final PeticaoId id, final Long numero) {
+	public Peticao(final PeticaoId id, final Long numero, final String usuarioCadastramento) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
+		Validate.notBlank(usuarioCadastramento, "peticao.usuarioCadastramento.required");
 		
 		this.id = id;
 		this.numero = numero;
 		this.ano = Calendar.getInstance().get(Calendar.YEAR);
 		this.identificacao = montarIdentificacao();
+		this.dataCadastramento = new Date();
+		this.usuarioCadastramento = usuarioCadastramento;
 	}
 
 	@Override
 	public PeticaoId id() {
 		return this.id;
+	}
+	
+	public String usuarioCadastramento() {
+		return usuarioCadastramento;
+	}
+
+	public Date dataCadastramento() {
+		return dataCadastramento;
 	}
 	
 	public Long numero() {
