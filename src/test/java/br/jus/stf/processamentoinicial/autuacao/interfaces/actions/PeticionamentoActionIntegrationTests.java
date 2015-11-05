@@ -32,7 +32,6 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  * 
  * @since 17.09.2015
  */
-@Ignore
 public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTests {
 	
 	private String peticaoValidaParaAutuacao;
@@ -121,7 +120,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     	setAuthenticationAuthorities("peticionador");
     	
     	//Envia a petição eletrônica.
-    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").contentType(MediaType.APPLICATION_JSON)
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").header("papel", "peticionador").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -151,6 +150,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		setAuthenticationAuthorities(new String[] {});
     }
 	
+    @Ignore
     @Test
     public void executarAcaoRegistroPeticaoFisica() throws Exception {
     	
@@ -158,11 +158,11 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     	setAuthenticationAuthorities("recebedor");
     	
     	//Envia a petição eletrônica.
-    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_fisica/execute").contentType(MediaType.APPLICATION_JSON)
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_fisica/execute").header("papel", "recebedor").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "pre-autuador")).andExpect(status().isOk())
+		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "preautuador")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].descricao", is("Pré-Autuar Processo")));
     	
 		setAuthenticationAuthorities("preautuador");
@@ -205,7 +205,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     	setAuthenticationAuthorities("peticionador");
     	
     	//Envia a petição eletrônica.
-    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").contentType(MediaType.APPLICATION_JSON)
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar_peticao_eletronica/execute").header("papel", "peticionador").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
