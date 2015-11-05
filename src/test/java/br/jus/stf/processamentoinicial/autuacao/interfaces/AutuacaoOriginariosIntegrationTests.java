@@ -119,10 +119,9 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
 		
-		//TODO: verificar, pois falha de forma intermitente ao executar todos os testes
-		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
-//		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
-//			.andExpect(jsonPath("$", Matchers.empty()));
+		//Recupera as partes da petição.
+		this.mockMvc.perform(get("/api/peticoes/" + peticaoId + "/partes").contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk()).andExpect(jsonPath("$.PoloAtivo").isArray());
 	}
 	
 	@Test
