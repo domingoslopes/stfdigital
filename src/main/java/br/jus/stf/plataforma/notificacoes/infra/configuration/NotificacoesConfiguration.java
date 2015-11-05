@@ -15,6 +15,7 @@ import br.jus.stf.plataforma.shared.util.ResourceFileUtils;
 import com.icegreen.greenmail.store.FolderException;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
+import com.icegreen.greenmail.util.ServerSetupTest;
 
 /**
  * @author Lucas.Rodrigues
@@ -38,7 +39,7 @@ public class NotificacoesConfiguration {
 	
 	@Bean(initMethod = "start", destroyMethod = "stop")
 	public GreenMail greenMail() throws FolderException {
-		return new GreenMail(ServerSetup.SMTP);
+		return new GreenMail(ServerSetupTest.ALL);
 	}
 	
 	@Bean
