@@ -22,13 +22,16 @@ import br.jus.stf.plataforma.shared.settings.Profiles;
 public abstract class AbstractIntegrationTests {
 
 	@Autowired
+	private AuthoritiesMockFilter authoritiesMockFilter;  
+
+	@Autowired
 	private WebApplicationContext wac;
 
 	protected MockMvc mockMvc;
 
 	@Before
 	public void setup() {
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).addFilter(new AuthoritiesMockFilter()).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).addFilters(authoritiesMockFilter).build();
 	}
 	
 }
