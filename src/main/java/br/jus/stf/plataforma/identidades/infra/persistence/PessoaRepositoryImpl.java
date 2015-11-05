@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.identidades.infra.persistence;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -39,6 +40,16 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 		Query query = entityManager.createNativeQuery("SELECT CORPORATIVO.SEQ_PESSOA.NEXTVAL FROM DUAL");
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new PessoaId(sequencial);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pessoa> findByNomeContaining(String nome) {
+		Query query = entityManager.createQuery("SELECT p FROM Pessoa p WHERE UPPER(p.nome) LIKE :nome");
+		
+		query.setParameter("nome", "%" + nome.trim().toUpperCase() + "%");
+		
+		return query.getResultList();
 	}
 
 }
