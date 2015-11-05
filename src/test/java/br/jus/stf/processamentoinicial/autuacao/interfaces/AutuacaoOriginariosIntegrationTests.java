@@ -10,8 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -26,7 +26,6 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  * @since 1.0.0
  * @since 17.06.2015
  */
-@Ignore
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
 
 	private String peticaoValidaParaAutuacao;
@@ -102,7 +101,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		String peticaoId = "";
 				
 		//Envia a petição eletrônica
-		peticaoId = this.mockMvc.perform(post("/api/peticoes/").contentType(MediaType.APPLICATION_JSON)
+		peticaoId = this.mockMvc.perform(post("/api/peticoes/").header("papel", "peticionador").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -110,7 +109,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
 		
 		//Realiza a autuação.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").header("papel", "autuador").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoValidaParaAutuacao)).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
@@ -118,13 +117,12 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Distribuir Processo")));
 		
 		//Realiza a distribuição.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").header("papel", "distribuidor").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
 		
-		//TODO: verificar, pois falha de forma intermitente ao executar todos os testes
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
-//		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
-//			.andExpect(jsonPath("$", Matchers.empty()));
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$", Matchers.empty()));
 	}
 	
 	@Test
@@ -133,7 +131,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		String peticaoId = "";
 		
 		//Registra a petição física.
-		peticaoId = this.mockMvc.perform(post("/api/peticoes/fisicas").contentType(MediaType.APPLICATION_JSON)
+		peticaoId = this.mockMvc.perform(post("/api/peticoes/fisicas").header("papel", "recebedor").contentType(MediaType.APPLICATION_JSON)
 			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do préautuador.
@@ -141,7 +139,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Pré-Autuar Processo")));
 		
 		//Faz a préautuação da petição registrada.
-		this.mockMvc.perform(post("/api/peticoes/fisicas/" + peticaoId + "/preautuar").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/fisicas/" + peticaoId + "/preautuar").header("papel", "preautuador").contentType(MediaType.APPLICATION_JSON)
 				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -149,7 +147,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
 		
 		//Realiza a autuação da petição préautuada.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").header("papel", "autuador").contentType(MediaType.APPLICATION_JSON)
 				.content(this.peticaoValidaParaAutuacao)).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
@@ -157,13 +155,12 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Distribuir Processo")));
 		
 		//Realiza a distribuição.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").header("papel", "distribuidor").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
 		
-		//TODO: verificar, pois falha de forma intermitente ao executar todos os testes
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
-//		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
-//			.andExpect(jsonPath("$", Matchers.empty()));
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$", Matchers.empty()));
 	}
 	
 	@Test
@@ -172,7 +169,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		String peticaoId = "";
 		
 		//Envia a petição eletrônica
-		peticaoId = this.mockMvc.perform(post("/api/peticoes/").contentType(MediaType.APPLICATION_JSON)
+		peticaoId = this.mockMvc.perform(post("/api/peticoes/").header("papel", "peticionador").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -180,12 +177,11 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
 		
 		//Realiza a autuação.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").header("papel", "autuador").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoInvalidaParaAutuacao)).andExpect(status().isOk());
 		
-		//TODO: verificar, pois falha de forma intermitente ao executar todos os testes
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
-//		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "devolvedor")).andExpect(status().isOk())
-//			.andExpect(jsonPath("$", Matchers.empty()));
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "devolvedor")).andExpect(status().isOk())
+			.andExpect(jsonPath("$", Matchers.empty()));
 	}
 }

@@ -9,6 +9,7 @@ import br.jus.stf.plataforma.dashboards.DashboardIntegrationTests;
 import br.jus.stf.plataforma.documentos.DocumentoIntegrationTests;
 import br.jus.stf.plataforma.pesquisas.PesquisaIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.AutuacaoOriginariosIntegrationTests;
+import br.jus.stf.processamentoinicial.autuacao.interfaces.actions.PeticionamentoActionIntegrationTests;
 import br.jus.stf.processamentoinicial.distribuicao.application.ProcessoApplicationEventIntegrationTests;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.ConsultaProcessosIntegrationTests;
 
@@ -22,7 +23,8 @@ import br.jus.stf.processamentoinicial.distribuicao.interfaces.ConsultaProcessos
 	AcoesIntegrationTests.class,
 	ProcessoApplicationEventIntegrationTests.class,
 	AcoesIntegrationTests.class,
-	DashboardIntegrationTests.class
+	DashboardIntegrationTests.class,
+	PeticionamentoActionIntegrationTests.class
 })
 public class IntegrationTestingSuite {
 
