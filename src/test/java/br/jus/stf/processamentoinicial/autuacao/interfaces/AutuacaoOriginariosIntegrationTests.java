@@ -27,7 +27,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  * @since 17.06.2015
  */
 public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTests {
-
+	
 	private String peticaoValidaParaAutuacao;
 	private String peticaoAutuadaParaDistribuicao;
 	private String peticaoEletronica;
@@ -109,7 +109,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
 		
 		//Realiza a autuação.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").header("papel", "autuador").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoValidaParaAutuacao)).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
@@ -117,7 +117,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Distribuir Processo")));
 		
 		//Realiza a distribuição.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").header("papel", "distribuidor").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
@@ -139,7 +139,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Pré-Autuar Processo")));
 		
 		//Faz a préautuação da petição registrada.
-		this.mockMvc.perform(post("/api/peticoes/fisicas/" + peticaoId + "/preautuar").header("papel", "preautuador").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/fisicas/" + peticaoId + "/preautuar").contentType(MediaType.APPLICATION_JSON)
 				.content(peticaoFisicaParaPreautuacao.toString())).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -147,7 +147,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
 		
 		//Realiza a autuação da petição préautuada.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").header("papel", "autuador").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").contentType(MediaType.APPLICATION_JSON)
 				.content(this.peticaoValidaParaAutuacao)).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
@@ -155,7 +155,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Distribuir Processo")));
 		
 		//Realiza a distribuição.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").header("papel", "distribuidor").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/distribuir").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoAutuadaParaDistribuicao)).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
@@ -177,7 +177,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
 		
 		//Realiza a autuação.
-		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").header("papel", "autuador").contentType(MediaType.APPLICATION_JSON)
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/autuar").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoInvalidaParaAutuacao)).andExpect(status().isOk());
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
