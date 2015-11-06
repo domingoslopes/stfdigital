@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +29,6 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 	@Autowired
 	private TaskService taskService;
 
-	@Autowired
-	private RuntimeService runtimeService;
-
 	@Override
 	public List<Tarefa> listar(String papel) {
 		return taskService.createTaskQuery().taskCandidateGroup(papel).includeProcessVariables().list()
@@ -42,9 +38,10 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 	}
 
 	@Override
-	public void completar(Tarefa tarefa, String status) {
+	public void completar(Tarefa tarefa, Metadado metadado) {
 		Map<String, Object> variaveis = new HashMap<String, Object>();
-		variaveis.put("status", status);
+		variaveis.put("status", metadado.status());
+		Optional.ofNullable(metadado.descricao()).ifPresent(d -> variaveis.put("descricao", d));
 		taskService.complete(tarefa.id().toString(), variaveis);
 	}
 

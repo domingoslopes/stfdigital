@@ -145,5 +145,4 @@ public class PeticaoServiceFacade {
 		return (T) Optional.ofNullable(peticaoRepository.findOne(id))
 					.orElseThrow(IllegalArgumentException::new);
 	}
-	
 }

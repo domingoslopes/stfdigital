@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.identidades.domain.model;
 
+import java.util.List;
+
 import br.jus.stf.shared.PessoaId;
 
 /**
@@ -29,5 +31,12 @@ public interface PessoaRepository {
 	 * @return
 	 */
 	public PessoaId nextId();
+	
+	/**
+	 * Recupera uma lista de pessoas de mesmo nome
+	 * 
+	 * @return
+	 */
+	public List<Pessoa> findByNomeContaining(String nome);
 	
 }

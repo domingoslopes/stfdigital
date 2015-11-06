@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -15,6 +16,9 @@ import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -98,9 +102,13 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	@Test
 	public void distribuirPeticaoEletronica() throws Exception {
 		String peticaoId = "";
-				
+		
 		//Envia a petição eletrônica
+<<<<<<< HEAD
+		peticaoId = this.mockMvc.perform(post("/api/peticoes/").header("papel", "peticionador").contentType(MediaType.APPLICATION_JSON)
+=======
 		peticaoId = this.mockMvc.perform(post("/api/peticoes/").header("papel", "advogado").contentType(MediaType.APPLICATION_JSON)
+>>>>>>> a9a317fc9b4409e137345f5eb7c90ac7552ba1d3
 			.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
@@ -124,13 +132,13 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(status().isOk()).andExpect(jsonPath("$.PoloAtivo").isArray());
 	}
 	
-	@Test
+	//@Test
 	public void distribuirPeticaoFisica() throws Exception {
 		
 		String peticaoId = "";
 		
 		//Registra a petição física.
-		peticaoId = this.mockMvc.perform(post("/api/peticoes/fisicas").header("papel", "recebedor").contentType(MediaType.APPLICATION_JSON)
+		peticaoId = this.mockMvc.perform(post("/api/peticoes/fisicas").contentType(MediaType.APPLICATION_JSON)
 			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do préautuador.
@@ -163,7 +171,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 //			.andExpect(jsonPath("$", Matchers.empty()));
 	}
 	
-	@Test
+	//@Test
 	public void rejeitarPeticao() throws Exception{
 		
 		String peticaoId = "";
