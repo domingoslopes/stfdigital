@@ -2,12 +2,12 @@ package br.jus.stf.plataforma.workflow.infra.persistence;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -30,9 +30,6 @@ public class ProcessoWorkflowRepositoryImpl extends SimpleJpaRepository<Processo
 
 	@Autowired
 	private RuntimeService runtimeService;
-
-	@Autowired
-	private TaskService taskService;
 
 	@Autowired
 	private EntityManager entityManager;
@@ -78,13 +75,15 @@ public class ProcessoWorkflowRepositoryImpl extends SimpleJpaRepository<Processo
 		variaveis.put("status", metadado.status());
 		variaveis.put("informacao", metadado.informacao());
 		variaveis.put("tipoInformacao", metadado.tipoInformacao());
+		variaveis.put("descricao", metadado.descricao());
 		return variaveis;
 	}
 
 	@Override
-	public void sinalizar(String sinal, String status) {
+	public void sinalizar(String sinal, Metadado metadado) {
 		Map<String, Object> variaveis = new HashMap<String, Object>();
-		variaveis.put("status", status);
+		variaveis.put("status", metadado.status());
+		Optional.ofNullable(metadado.descricao()).ifPresent(d -> variaveis.put("descricao", d));
 		runtimeService.signalEventReceived(sinal, variaveis);
 	}
 	

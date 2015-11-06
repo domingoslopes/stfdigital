@@ -28,14 +28,14 @@ public class WorkflowServiceFacade {
 	@Autowired
 	private ProcessoDtoAssembler processoDtoAssembler;
 	
-	public Long iniciar(String chave, Long informacao, String tipoInformacao, String status) {
-		Metadado metadado = new Metadado(informacao, tipoInformacao, status);
+	public Long iniciar(String chave, Long informacao, String tipoInformacao, String status, String descricao) {
+		Metadado metadado = new Metadado(informacao, tipoInformacao, status, descricao);
 		ProcessoWorkflowId id = processoApplicationService.iniciar(chave, metadado);
 		return id.toLong();
 	}
 	
-	public Long iniciarPorMensagem(String mensagem, Long informacao, String tipoInformacao, String status) {
-		Metadado metadado = new Metadado(informacao, tipoInformacao, status);
+	public Long iniciarPorMensagem(String mensagem, Long informacao, String tipoInformacao, String status, String descricao) {
+		Metadado metadado = new Metadado(informacao, tipoInformacao, status, descricao);
 		ProcessoWorkflowId id = processoApplicationService.iniciarPorMensagem(mensagem, metadado);
 		return id.toLong();
 	}
@@ -45,10 +45,11 @@ public class WorkflowServiceFacade {
 		return Optional.ofNullable(processoWorkflowRepository.findOne(processoId)).map(processoDtoAssembler::toDto).orElseThrow(IllegalArgumentException::new);
 	}
 	
-	public void sinalizar(Long id, String sinal, String status) {
+	public void sinalizar(Long id, String sinal, String status, String descricao) {
+		Metadado metadado = new Metadado(status, descricao);
 		ProcessoWorkflowId processoId = new ProcessoWorkflowId(id);
 		ProcessoWorkflow processo = Optional.ofNullable(processoWorkflowRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
-		processoApplicationService.sinalizar(processo , sinal, status);
+		processoApplicationService.sinalizar(processo , sinal, metadado);
 	}
 	
 }

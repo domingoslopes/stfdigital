@@ -17,9 +17,9 @@ public interface TarefaRepository {
 	 * Completa uma tarefa informando um status
 	 * 
 	 * @param tarefa
-	 * @param status
+	 * @param metadado
 	 */
-	void completar(Tarefa tarefa, String status);
+	void completar(Tarefa tarefa, Metadado metadado);
 
 	/**
 	 * Lista as tarefas de um papel
