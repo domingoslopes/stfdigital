@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.workflow.application.TarefaApplicationService;
+import br.jus.stf.plataforma.workflow.domain.model.Metadado;
 import br.jus.stf.plataforma.workflow.domain.model.Tarefa;
 import br.jus.stf.plataforma.workflow.domain.model.TarefaRepository;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
@@ -37,11 +38,12 @@ public class TarefaServiceFacade {
         		.collect(Collectors.toList());
 	}
 	
-	public void completar(Long id, String status) {
+	public void completar(Long id, String status, String descricao) {
+		Metadado metadado = new Metadado(status, descricao);
 		TarefaId tarefaId = new TarefaId(id);
 		Tarefa tarefa = Optional.ofNullable(tarefaRepository.consultar(tarefaId))
 							.orElseThrow(IllegalArgumentException::new);
-        tarefaApplicationService.completar(tarefa, status);
+        tarefaApplicationService.completar(tarefa, metadado);
 	}
 	
 	public TarefaDto consultar(Long id) {

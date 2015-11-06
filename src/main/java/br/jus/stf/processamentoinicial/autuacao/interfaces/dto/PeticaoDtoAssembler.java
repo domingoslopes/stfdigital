@@ -60,8 +60,8 @@ public class PeticaoDtoAssembler {
 		
 		peticao.partesPoloPassivo().forEach(parte -> partesPoloPassivo.add(parte.pessoaId().toLong()));
 		
-		partes.put("Polo Ativo", partesPoloAtivo);
-		partes.put("Polo Passivo", partesPoloPassivo);
+		partes.put("PoloAtivo", partesPoloAtivo);
+		partes.put("PoloPassivo", partesPoloPassivo);
 		
 		peticao.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
 		
