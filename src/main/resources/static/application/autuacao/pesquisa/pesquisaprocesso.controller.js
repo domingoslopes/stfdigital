@@ -14,6 +14,7 @@
 		$scope.ministro = null;
 		$scope.pessoa = null;
 		$scope.classe = null;
+		$scope.peticao = null;
 		$scope.resultados = [];
 		
 		MinistroService.listar().success(function(ministros) {

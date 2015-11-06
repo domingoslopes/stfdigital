@@ -57,7 +57,11 @@
 			}, 10000);
 		};
 		
-		this.dashletMinhasTarefas = element(by.className('dashlet1')); 
+		this.dashletMinhasTarefas = element.all(by.css('.dashlet'))
+				.all(by.cssContainingText('.panel-title', 'Minhas Tarefas'));
+		
+		this.dashletMinhasPeticoes = element.all(by.css('.dashlet'))
+			.all(by.cssContainingText('.panel-title', 'Minhas Petições'));
 			
 		
 /*		this.usuarioLogado = function(){

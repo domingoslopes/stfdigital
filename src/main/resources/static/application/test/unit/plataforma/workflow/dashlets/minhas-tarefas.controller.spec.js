@@ -11,22 +11,28 @@
 	describe('Dashlet Minhas Tarefas: Controller', function() {
 		var controller;
 		var scope;
+		var fakePesquisaService;
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, $window, properties, TarefaService) {
+		beforeEach(inject(function($rootScope, $controller, $http, $window, $q, properties, TarefaService, PesquisaService) {
 			$window.sessionStorage.papel = JSON.stringify('recebedor');
 			scope = $rootScope.$new();
-			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([{descricao : 'Petição #00001'}, {descricao : 'Petição #00002'}]);
+			
+			fakePesquisaService = {
+				pesquisar : function(){}
+			}
+			
+			spyOn(fakePesquisaService, 'pesquisar').and.returnValue($q.when({tarefas: [{descricao : 'Petição #00001', metadado : {informacao : }}, {descricao : 'Petição #00002'}]}));
 			
 			controller = $controller('MinhasTarefasDashletController', {
 				$scope : scope,
+				PesquisaService : fakePesquisaService
 			});
 			
-			$httpBackend.flush();
 		}));
 
-		it('Deveria instanciar o controlador do dashlet de minhas tarefas', function() {
+/*		it('Deveria instanciar o controlador do dashlet de minhas tarefas', function() {
 			expect(controller).not.toEqual(null);
 		});
 
@@ -36,5 +42,27 @@
 			expect(scope.tarefas[1].descricao).toEqual('Petição #00002');
 			expect(scope.tarefas.length).toEqual(2);
 		});
+		*/
+		
+		
+		
+		it('Deveria instanciar o controlador do dashlet de minhas tarefas', function() {
+			expect(controller).not.toEqual(null);
+		});
+
+		it('Deveria carregar a lista de petições no escopo do controlador', function() {
+			scope.$apply();
+			expect(fakePesquisaService.pesquisar).toHaveBeenCalledWith({
+				filtros: { 'id.sequencial' : metadado.informacao },
+				indices: ['autuacao', 'distribuicao'],
+				campos : ['identificacao']
+				//tipos : [metadado.tipoInformacao]
+			});
+			expect(scope.tarefas[0].descricao).toEqual('Petição #00001');
+			expect(scope.tarefas[1].descricao).toEqual('Petição #00002');
+			expect(scope.tarefas.length).toEqual(2);
+		});
+		
+		
 	});
 })();
