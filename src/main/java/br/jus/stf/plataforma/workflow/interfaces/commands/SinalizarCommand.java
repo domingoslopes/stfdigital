@@ -15,6 +15,8 @@ public class SinalizarCommand {
 	
 	@NotBlank
 	private String status;
+	
+	private String descricao;
 
 	public void setSinal(String sinal) {
 		this.sinal = sinal;
@@ -30,6 +32,14 @@ public class SinalizarCommand {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 }

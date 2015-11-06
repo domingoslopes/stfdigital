@@ -20,9 +20,38 @@ public class PeticaoApplicationEventImpl implements PeticaoApplicationEvent {
 	@Autowired
 	private EventBus eventBus;
 	
+	/**
+	 * Notifica interessados sobre o recebimento de uma petição.
+	 * 
+	 * @param peticao Dados da petição.
+	 */
 	@Override
 	public void peticaoRecebida(Peticao peticao) {
 		PeticaoRecebida evento = new PeticaoRecebida(peticao);
+		eventBus.notify("indexadorEventBus", Event.wrap(evento));
+		eventBus.notify("notificadorEventBus", Event.wrap(evento));
+	}
+	
+	/**
+	 * Notifica interessados sobre a remessa inválida de uma petição.
+	 * 
+	 * @param peticao Dados da petição.
+	 */
+	@Override
+	public void remessaInvalida(Peticao peticao) {
+		RemessaInvalida evento = new RemessaInvalida(peticao);
+		eventBus.notify("indexadorEventBus", Event.wrap(evento));
+		eventBus.notify("notificadorEventBus", Event.wrap(evento));
+	}
+	
+	/**
+	 * Notifica interessados sobre a rejeição de uma petição.
+	 * 
+	 * @param peticao Dados da petição.
+	 */
+	@Override
+	public void peticaoRejeitada(Peticao peticao){
+		PeticaoRejeitada evento = new PeticaoRejeitada(peticao);
 		eventBus.notify("indexadorEventBus", Event.wrap(evento));
 		eventBus.notify("notificadorEventBus", Event.wrap(evento));
 	}
