@@ -17,15 +17,25 @@ public class Metadado implements ValueObject<Metadado>{
 	private String tipoInformacao;
 	private Object informacao;
 	private String status;
+	private String descricao;
 	
-	public Metadado(Object informacao, String tipoInformacao, String status) {
+	public Metadado(Object informacao, String tipoInformacao, String status, String descricao) {
 		Validate.notNull(informacao, "metadado.informacao.required");
-		Validate.notBlank(tipoInformacao, "metadado.informacao.required");
-		Validate.notBlank(status, "metadado.informacao.required");
+		Validate.notBlank(tipoInformacao, "metadado.tipoInformacao.required");
+		Validate.notBlank(status, "metadado.status.required");
+		Validate.notNull(descricao, "metadado.descricao.required");
 		
 		this.informacao = informacao;
 		this.tipoInformacao = tipoInformacao;
 		this.status = status;
+		this.descricao = descricao;
+	}
+	
+	public Metadado(String status, String descricao) {
+		Validate.notBlank(status, "metadado.status.required");
+		
+		this.status = status;
+		this.descricao = descricao;
 	}
 	
 	public Object informacao() {
@@ -40,11 +50,16 @@ public class Metadado implements ValueObject<Metadado>{
 		return status;
 	}
 	
+	public String descricao() {
+		return descricao;
+	}
+	
 	public static Metadado converte(Map<String, Object> variaveis) {
 		Object informacao = variaveis.get("informacao");
 		String tipoInformacao = (String) variaveis.get("tipoInformacao");
 		String status = (String) variaveis.get("status");
-		return new Metadado(informacao, tipoInformacao, status);
+		String descricao = (String) variaveis.get("descricao");
+		return new Metadado(informacao, tipoInformacao, status, descricao);
 	}
 
 	@Override
