@@ -130,7 +130,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		String peticaoId = "";
 		
 		//Registra a petição física.
-		peticaoId = this.mockMvc.perform(post("/api/peticoes/fisicas").contentType(MediaType.APPLICATION_JSON)
+		peticaoId = this.mockMvc.perform(post("/api/peticoes/fisicas").header("papel", "recebedor").contentType(MediaType.APPLICATION_JSON)
 			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do préautuador.

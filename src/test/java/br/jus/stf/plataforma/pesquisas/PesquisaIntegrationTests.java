@@ -13,38 +13,18 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
-import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
-import br.jus.stf.processamentoinicial.distribuicao.application.ProcessoApplicationService;
-import br.jus.stf.shared.ClasseId;
-import br.jus.stf.shared.DocumentoId;
-import br.jus.stf.shared.MinistroId;
-import br.jus.stf.shared.PessoaId;
 
 /**
  * @author Lucas Rodrigues
  */
 public class PesquisaIntegrationTests extends AbstractIntegrationTests {
-	
-	@Autowired
-	private PeticaoFactory peticaoFactory;
-
-	@Autowired
-	private PeticaoApplicationService peticaoApplicationService;
-
-	@Autowired
-	private ProcessoApplicationService processoApplicationService;
 
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
@@ -62,20 +42,24 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 
 	@Test
 	public void pesquisar() throws Exception {
-		PeticaoFisica peticao = peticaoApplicationService.registrar(1, 1, FormaRecebimento.SEDEX, "123");
-		
-		peticao.preautuar(new ClasseId("HC"));
-		peticao.aceitar(new ClasseId("HC"));
-		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
-		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
-		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
-		processoApplicationService.distribuir(peticao, new MinistroId(1L));
-		elasticsearchTemplate.refresh("distribuicao", true);
+		String jsonProcesso = "{\"id\":{\"sequencial\":123},\"classe\":{\"sigla\":\"HC\"},\"numero\":123456,\"identificacao\":\"HC123456\"}";
 
-		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"distribuicao\"], \"filtros\": {\"classe.sigla\": \"HC\"}, \"campos\": [\"classe.sigla\"] }"))
+		IndexQuery query = new IndexQueryBuilder()
+				.withIndexName("teste-distribuicao")
+				.withType("Processo")
+				.withSource(jsonProcesso)
+				.withId("123")
+				.build();
+		elasticsearchTemplate.index(query);
+		
+		elasticsearchTemplate.refresh("teste-distribuicao", true);
+
+		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": \"HC\"}, \"campos\": [\"classe.sigla\"] }"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].tipo", is("Processo")))
 				.andExpect(jsonPath("$[0].objeto['classe.sigla']", is("HC")));
+		
+		elasticsearchTemplate.deleteIndex("teste-distribuicao");
 	}
 
 }
