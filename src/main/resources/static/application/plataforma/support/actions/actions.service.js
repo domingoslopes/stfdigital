@@ -55,7 +55,7 @@
 				var idsByContext = {};
 				var context = '';
 				
-				return deferred.then(function(actions) {
+				return deferred.promise.then(function(actions) {
 					//carrega as ações permitidas localmente e carrega em outro array
 					//as ações para serem verificados no servidor
 					angular.forEach(actions, function(action, id) {
