@@ -65,6 +65,10 @@
 		
 		var peticoes = [];
 		
+		var dashletsPeticionador = ['minhas-tarefas', 'minhas-peticoes'];
+		var dashletsRecebedor = ['minhas-tarefas', 'minhas-peticoes'];
+		var dashletsRepresentante = ['minhas-tarefas', 'minhas-peticoes'];
+		
 		$httpBackend.whenPOST(properties.apiUrl + '/peticoes').respond(function(method, url, data, headers){
 			console.log('Enviando peticao eletronica:', method, url, data, headers);
 			tarefas.push({id: '2', nome : 'autuacao', descricao : 'Autuar Processo'});
@@ -155,6 +159,21 @@
 		$httpBackend.whenGET(properties.apiUrl + '/tiporecebimentos').respond(function(method, url, data, headers){
 			console.log('Tipo de recebimento da peticao:', method, url, data, headers);
 			return [200, tipoRecebimentos, {}];
+		});
+		
+		$httpBackend.whenGET(properties.apiUrl + '/dashboards/padrao', {papel: 'peticionador'}).respond(function(method, url, data, headers){
+			console.log('Recuperando as dashlets do papel selecionado:', method, url, data, headers);
+			return [200, dashletsPeticionador, {}];
+		});
+		
+		$httpBackend.whenGET(properties.apiUrl + '/dashboards/padrao', {papel: 'recebedor'}).respond(function(method, url, data, headers){
+			console.log('Recuperando as dashlets do papel selecionado:', method, url, data, headers);
+			return [200, dashletsRecebedor, {}];
+		});
+		
+		$httpBackend.whenGET(properties.apiUrl + '/dashboards/padrao', {papel:'representante'}).respond(function(method, url, data, headers){
+			console.log('Recuperando as dashlets do papel selecionado:', method, url, data, headers);
+			return [200, dashletsRepresentante, {}];
 		});
 		  
 		$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond(function(method,url,data, headers) {

@@ -47,7 +47,7 @@ public class TarefaRestResource {
 		if (!result.isEmpty()) {
 			throw new IllegalArgumentException(result.toString());
 		}
-    	tarefaServiceFacade.completar(id, command.getStatus());
+    	tarefaServiceFacade.completar(id, command.getStatus(), command.getDescricao());
 	}
 	
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

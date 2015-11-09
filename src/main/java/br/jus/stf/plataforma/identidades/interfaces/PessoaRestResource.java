@@ -1,12 +1,11 @@
 package br.jus.stf.plataforma.identidades.interfaces;
 
 import java.util.List;
-import java.util.Set;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +28,6 @@ public class PessoaRestResource {
 	@Autowired
 	private PessoaServiceFacade pessoaServiceFacade;
 	
-	@Autowired
-	private Validator validator;
-	
 	/**
 	 * Retorna os ids na mesma ordem de envio dos nomes
 	 * 
@@ -39,11 +35,9 @@ public class PessoaRestResource {
 	 * @return
 	 */
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	//TODO: Substituir a validação pelo @Valid e BindingResult
-	public List<PessoaDto> cadastrar(@RequestBody CadastrarPessoasCommand command) {
-		Set<ConstraintViolation<CadastrarPessoasCommand>> result = validator.validate(command);
-		if (!result.isEmpty()) {
-			throw new IllegalArgumentException(result.toString());
+	public List<PessoaDto> cadastrar(@RequestBody @Valid CadastrarPessoasCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		return pessoaServiceFacade.cadastrarPessoas(command.getNomes());
 	}

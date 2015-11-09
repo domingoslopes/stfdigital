@@ -1,8 +1,5 @@
 package br.jus.stf.processamentoinicial.autuacao.infra.configuration;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
