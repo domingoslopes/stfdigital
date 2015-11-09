@@ -21,7 +21,7 @@ public class TarefaDtoAssembler {
 	}
 	
 	private MetadadoDto toDto(Metadado metadado) {
-		return new MetadadoDto(metadado.informacao(), metadado.tipoInformacao(), metadado.status());
+		return new MetadadoDto(metadado.informacao(), metadado.tipoInformacao(), metadado.status(), metadado.descricao());
 	}
 
 }

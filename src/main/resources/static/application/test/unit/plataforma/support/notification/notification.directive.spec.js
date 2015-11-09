@@ -13,10 +13,15 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(_$compile_, _$rootScope_) {
+		beforeEach(inject(function(_$compile_, _$rootScope_, NotificationService) {
 			$compile = _$compile_;
 			$rootScope = _$rootScope_;
 			scope = $rootScope.$new();
+			NotificationService = {
+				registrarNotificacao : function() {},
+				listarLidas : function() { return {} },
+				listarNaoLidas: function () { return {}},
+				marcarComoLida : function (){return {} }};
 		}));
 		
 		it('Deveria compilar a diretiva', function() {

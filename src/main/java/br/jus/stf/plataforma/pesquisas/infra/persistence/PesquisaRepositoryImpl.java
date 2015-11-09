@@ -5,12 +5,15 @@ import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
 import static org.elasticsearch.search.sort.SortOrder.ASC;
 import static org.elasticsearch.search.sort.SortOrder.DESC;
 
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
+import java.util.Arrays;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
@@ -25,9 +28,11 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Repository;
 
+
 import br.jus.stf.plataforma.pesquisas.domain.model.query.Pesquisa;
 import br.jus.stf.plataforma.pesquisas.domain.model.query.PesquisaRepository;
 import br.jus.stf.plataforma.pesquisas.domain.model.query.Resultado;
+
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -82,10 +87,20 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 	 * @param filtros
 	 * @return uma query baseada nos filtros
 	 */
-	private BoolQueryBuilder buildFiltros(Map<String, String> filtros) {
+	private BoolQueryBuilder buildFiltros(Map<String, String[]> filtros) {
 		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-		filtros.keySet().forEach(campo -> 
-			boolQuery.must(QueryBuilders.matchQuery(campo, filtros.get(campo)).operator(Operator.AND)));
+		filtros.keySet().forEach(campo -> {
+			Optional<String[]> filtro = Optional.ofNullable(filtros.get(campo));
+			if (filtro.isPresent()) {
+				if (filtro.get().length > 1) {
+					boolQuery.must(QueryBuilders.termsQuery(campo, filtro.get()));
+				} else {
+					boolQuery.must(QueryBuilders.matchQuery(campo, filtro.get()[0]).operator(Operator.AND));
+				}
+			} else {
+				boolQuery.must(QueryBuilders.matchQuery(campo, null).operator(Operator.AND));
+			}
+		});
 		return boolQuery;
 	}
 	
@@ -95,10 +110,11 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 	 * @param filtros
 	 * @return uma query baseada nos filtros
 	 */
-	private BoolQueryBuilder buildSuggestionFiltros(Map<String, String> filtros) {
+	private BoolQueryBuilder buildSuggestionFiltros(Map<String, String[]> filtros) {
 		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 		filtros.keySet().forEach(campo -> 
-			boolQuery.must(QueryBuilders.prefixQuery(campo, filtros.get(campo))));
+			Arrays.asList(filtros.get(campo)).forEach(filtro -> 
+				boolQuery.must(QueryBuilders.prefixQuery(campo, filtro))));
 		return boolQuery;
 	}
 	

@@ -41,14 +41,14 @@ public class WorkflowRestResource {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long iniciar(@RequestBody IniciarProcessoCommand command) {
 		validate(command);
-		return processoServiceFacade.iniciar(command.getMensagem(), command.getInformacao(), command.getTipoInformacao(), command.getStatus());
+		return processoServiceFacade.iniciar(command.getMensagem(), command.getInformacao(), command.getTipoInformacao(), command.getStatus(), command.getDescricao());
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Long iniciarPorMensagem(@RequestBody IniciarProcessoCommand command) {
 		validate(command);
-		return processoServiceFacade.iniciarPorMensagem(command.getMensagem(), command.getInformacao(), command.getTipoInformacao(), command.getStatus());
+		return processoServiceFacade.iniciarPorMensagem(command.getMensagem(), command.getInformacao(), command.getTipoInformacao(), command.getStatus(), command.getDescricao());
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -60,7 +60,7 @@ public class WorkflowRestResource {
     @RequestMapping(value = "/{id}/sinalizar", method = RequestMethod.PUT)
 	public void sinalizar(@PathVariable("id") Long id, @RequestBody SinalizarCommand command) {
     	validate(command);
-		processoServiceFacade.sinalizar(id, command.getSinal(), command.getStatus());
+		processoServiceFacade.sinalizar(id, command.getSinal(), command.getStatus(), command.getDescricao());
 	}
     
 	private void validate(Object object) {

@@ -50,12 +50,11 @@ public class WorkflowApplicationService {
 	 * Emite um sinal para um processo e atualiza seu status
 	 * 
 	 * @param id
-	 * @param sinal
-	 * @param status
+	 * @param metadado
 	 */
-	public void sinalizar(ProcessoWorkflow processo, String sinal, String status){
-		processoWorkflowRepository.sinalizar(sinal, status);
-		processoWorkflowRepository.updateStatus(processo.id(), status);
+	public void sinalizar(ProcessoWorkflow processo, String sinal, Metadado metadado){
+		processoWorkflowRepository.sinalizar(sinal, metadado);
+		processoWorkflowRepository.updateStatus(processo.id(), metadado.status());
 	}
 	
 }
