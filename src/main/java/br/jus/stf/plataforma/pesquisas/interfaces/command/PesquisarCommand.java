@@ -25,7 +25,7 @@ public class PesquisarCommand {
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Filtros com campos e valores para realizar pesquisa", required = true)
-	private Map<String, String> filtros;
+	private Map<String, String[]> filtros;
 	
 	@ApiModelProperty("Campo para ordenar pesquisa")
 	private Map<String, String> ordenadores;
@@ -81,14 +81,14 @@ public class PesquisarCommand {
 	/**
 	 * @return the filtros
 	 */
-	public Map<String, String> getFiltros() {
+	public Map<String, String[]> getFiltros() {
 		return filtros;
 	}
 	
 	/**
 	 * @param filtros the filtros to set
 	 */
-	public void setFiltros(Map<String, String> filtros) {
+	public void setFiltros(Map<String, String[]> filtros) {
 		this.filtros = filtros;
 	}
 
