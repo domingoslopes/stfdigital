@@ -45,7 +45,7 @@ public class PesquisaServiceFacade {
 	 * @return uma lista de dtos com o resultado
 	 */
 	public List<ResultadoDto> pesquisar(String[] campos, String[] tipos, String[] indices, 
-			Map<String, String> filtros, Map<String, String> ordenadores) {
+			Map<String, String[]> filtros, Map<String, String> ordenadores) {
 		Pesquisa pesquisa = new Pesquisa(indices, filtros)
 			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores);
 		return resultadoDtoAssembler.toDto(pesquisaRepository.pesquisar(pesquisa, null));
@@ -64,7 +64,7 @@ public class PesquisaServiceFacade {
 	 * @return uma lista de dtos com o resultado e informações de paginação
 	 */
 	public PagedResources<Resource<ResultadoDto>> pesquisarPaginado(String[] campos, String[] tipos, String[] indices, 
-			Map<String, String> filtros, Map<String, String> ordenadores, Integer pagina, Integer tamanho) {
+			Map<String, String[]> filtros, Map<String, String> ordenadores, Integer pagina, Integer tamanho) {
 		Pageable paginacao = new PageRequest(pagina, tamanho);
 		Pesquisa pesquisa = new Pesquisa(indices, filtros)
 			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores);
@@ -84,7 +84,7 @@ public class PesquisaServiceFacade {
 	 * @return uma lista de dtos com o resultado
 	 */
 	public List<ResultadoDto> sugerir(String[] campos, String[] tipos, String[] indices, 
-			Map<String, String> filtros, Map<String, String> ordenadores) {
+			Map<String, String[]> filtros, Map<String, String> ordenadores) {
 		Pesquisa pesquisa = new Pesquisa(indices, filtros)
 			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores);
 		return resultadoDtoAssembler.toDto(pesquisaRepository.sugerir(pesquisa));

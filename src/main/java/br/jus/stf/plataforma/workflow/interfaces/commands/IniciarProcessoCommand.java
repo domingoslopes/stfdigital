@@ -24,15 +24,9 @@ public class IniciarProcessoCommand {
 	
 	@NotBlank
 	private String status;
-		
-	public IniciarProcessoCommand(Long informacao, String tipoInformacao, String mensagem) {
-		this.informacao = informacao;
-		this.tipoInformacao = tipoInformacao;
-		this.mensagem = mensagem;
-	}
 	
-	public IniciarProcessoCommand() {
-	}
+	@NotNull
+	private String descricao;
 
 	/**
 	 * @param mensagem
@@ -76,6 +70,14 @@ public class IniciarProcessoCommand {
 	 */
 	public String getStatus() {
 		return this.status;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 }
