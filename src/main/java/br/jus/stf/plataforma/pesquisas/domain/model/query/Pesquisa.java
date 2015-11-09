@@ -41,7 +41,7 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 	private String[] indices;
 	
 	@Field(type = Nested, store = true, index = no)
-	private Map<String, String> filtros = new HashMap<String, String>();
+	private Map<String, String[]> filtros = new HashMap<String, String[]>();
 	
 	@Field(type = Nested, store = true, index = no)
 	private Map<String, String> ordenadores = new HashMap<String, String>(0);
@@ -52,7 +52,7 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 	@Field(type = String, index = not_analyzed)
 	private String papel;
 	
-	public Pesquisa(final String[] indices, final Map<String, String> filtros) {
+	public Pesquisa(final String[] indices, final Map<String, String[]> filtros) {
 		Validate.notEmpty(indices, "pesquisa.indices.required");
 		Validate.notEmpty(filtros, "pesquisa.filtros.required");
 		
@@ -77,7 +77,7 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 		return indices;
 	}
 	
-	public Map<String, String> filtros() {
+	public Map<String, String[]> filtros() {
 		return filtros;
 	}
 	
