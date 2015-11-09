@@ -28,6 +28,8 @@ module.exports = {
 	    baseDir + '/vendor/d3/d3.js',
 	    baseDir + '/vendor/nvd3/build/nv.d3.js',
 	    baseDir + '/vendor/angular-nvd3/dist/angular-nvd3.js',
+	    baseDir + '/vendor/sockjs/sockjs.js',
+	    baseDir + '/vendor/stomp-websocket/lib/stomp.js',	    
 		baseDir + '/application/plataforma/**/*.module.js', 
 		baseDir + '/application/plataforma/**/*.js', 
 		baseDir + '/application/autuacao/**/*.js', 
@@ -42,7 +44,7 @@ module.exports = {
 		'karma-chrome-launcher', 
 		'karma-phantomjs-launcher',
 		'karma-jasmine', 
-		'karma-coverage', 
+		//'karma-coverage', 
 		'karma-html-reporter',
 		'karma-mocha-reporter' 
 	],

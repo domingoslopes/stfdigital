@@ -34,9 +34,9 @@ public interface ProcessoWokflowRepository {
 	 * Emite um sinal para um processo
 	 * 
 	 * @param sinal
-	 * @param status
+	 * @param metadado
 	 */
-	void sinalizar(String sinal, String status);
+	void sinalizar(String sinal, Metadado metadado);
 
 	/**
 	 * Consulta um processo pelo id

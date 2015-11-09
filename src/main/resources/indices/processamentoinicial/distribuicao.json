@@ -68,6 +68,14 @@
             }
           }
         },
+        "peticao": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }             
+        },
         "partes": {
           "properties": {
           	"sequencial": {

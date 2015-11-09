@@ -34,6 +34,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setStatus(PeticaoStatus.A_AUTUAR.toString());
 		command.setInformacao(peticaoEletronica.id().toLong());
 		command.setTipoInformacao(peticaoEletronica.getClass().getSimpleName());
+		command.setDescricao(peticaoEletronica.identificacao());
 		
 		Long id = processoRestService.iniciar(command);
 		peticaoEletronica.associarProcessoWorkflow(new ProcessoWorkflowId(id));
@@ -46,6 +47,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setStatus(PeticaoStatus.A_PREAUTUAR.toString());
 		command.setInformacao(peticaoFisica.id().toLong());
 		command.setTipoInformacao(peticaoFisica.getClass().getSimpleName());
+		command.setDescricao(peticaoFisica.identificacao());
 		
 		Long id = processoRestService.iniciarPorMensagem(command);
 		peticaoFisica.associarProcessoWorkflow(new ProcessoWorkflowId(id));

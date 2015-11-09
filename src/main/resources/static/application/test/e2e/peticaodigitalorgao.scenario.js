@@ -36,6 +36,7 @@
 			// Verificando se a Home Page tem conteúdo...
 			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
 			
+			
 			// Iniciando o Processo de Autuação...
 			principalPage.iniciarProcesso('link_registrar_peticao_eletronica_orgao');
 			
@@ -65,6 +66,10 @@
 			peticionamentoPage.registrar();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
+			
+			expect(principalPage.dashletMinhasPeticoes.count()).toEqual(1);
 			
 			principalPage.login('autuador');
 			

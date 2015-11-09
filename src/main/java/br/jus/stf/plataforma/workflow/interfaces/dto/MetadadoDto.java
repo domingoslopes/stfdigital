@@ -9,11 +9,13 @@ public class MetadadoDto {
 	private Object informacao;
 	private String tipoInformacao;
 	private String status;
+	private String descricao;
 	
-	public MetadadoDto(Object informacao, String tipoInformacao, String status) {
+	public MetadadoDto(Object informacao, String tipoInformacao, String status, String descricao) {
 		this.informacao = informacao;
 		this.tipoInformacao = tipoInformacao;
 		this.status = status;
+		this.descricao = descricao;
 	}
 
 	public Object getInformacao() {
@@ -27,5 +29,9 @@ public class MetadadoDto {
 	public String getStatus() {
 		return status;
 	}	
+	
+	public String getDescricao(){
+		return descricao;
+	}
 	
 }

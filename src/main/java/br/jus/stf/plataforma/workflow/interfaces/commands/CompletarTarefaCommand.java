@@ -11,6 +11,8 @@ public class CompletarTarefaCommand {
 	@NotBlank
 	private String status;
 	
+	private String descricao;
+	
 	/**
 	 * @param status
 	 */
@@ -23,6 +25,20 @@ public class CompletarTarefaCommand {
 	 */
 	public String getStatus() {
 		return this.status;
+	}
+
+	/**
+	 * @return the descricao
+	 */
+	public String getDescricao() {
+		return descricao;
+	}
+
+	/**
+	 * @param descricao the descricao to set
+	 */
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 	
 }

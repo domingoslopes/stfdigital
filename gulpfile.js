@@ -42,7 +42,7 @@ gulp.task('tdd', function(cb) {
 	karma.start(_.assign({}, karmaConfig, {
 		singleRun: false,
 		action: 'watch',
-		browsers: ['PhantomJS']
+		browsers: ['Chrome']
 	}), cb);
 });
 

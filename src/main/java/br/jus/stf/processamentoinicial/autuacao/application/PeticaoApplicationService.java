@@ -125,6 +125,7 @@ public class PeticaoApplicationService {
 		} else {
 			peticao.rejeitar(motivoRejeicao);
 			processoAdapter.rejeitarAutuacao(peticao);
+			this.peticaoApplicationEvent.peticaoRejeitada(peticao);
 		}
 		peticaoRepository.save(peticao);
 	}
@@ -149,6 +150,9 @@ public class PeticaoApplicationService {
 		
 		// Passo 04: Completando a tarefa no BPM...
 		tarefaAdapter.completarDevolucao(peticao);
+		
+		//Passo 05: Gera o evento de peticao inválida.
+		this.peticaoApplicationEvent.remessaInvalida(peticao);
 	}
 	
 }
