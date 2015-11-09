@@ -76,7 +76,7 @@
 			
 	    	this.indices = ['notificacao']; 
 	        this.tipos = ['Notificacao'];
-	    	this.filtros = {'notificado' : papel, 'lida' : lida};
+	    	this.filtros = {'notificado' : [papel], 'lida' : [lida]};
 	        this.ordenadores = {'dataCriacao' : 'DESC'};
 		};
 		

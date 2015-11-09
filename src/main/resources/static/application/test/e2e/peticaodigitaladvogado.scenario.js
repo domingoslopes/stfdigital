@@ -68,10 +68,16 @@
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
+			//expect(principalPage.peticoes().count()).toEqual(1);
+			
+			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
+			
+			expect(principalPage.dashletMinhasPeticoes.count()).toEqual(1);
+			
 			principalPage.login('autuador');
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
-		    
+		    		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
@@ -85,8 +91,6 @@
 		it('Deveria atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 		    
-		    var urlExpressao = 
-
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
@@ -124,6 +128,26 @@
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 		}); 
+		
+		
+		it('Deveria exibir os dashlets do papel gestor-autuacao', function(){
+			
+			principalPage.login('gestor-autuacao');
+			
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			expect(browser.isElementPresent(principalPage.titleGestaoAutuacao)).toBe(true)
+		});
+		
+		it ('Deveria exibir a dashlet do papel cartorária', function(){
+			
+			principalPage.login('cartoraria');
+			
+			//expect(principalPage.txtPapel).toEqual('cartoraria');
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			expect(browser.isElementPresent(principalPage.dashletMinhasTarefas)).toBe(true);
+		});
 		
 
 

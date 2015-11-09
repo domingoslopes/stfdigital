@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
 import br.jus.stf.plataforma.identidades.domain.model.PessoaRepository;
-import br.jus.stf.shared.PessoaId;
 
 /**
  * @author Rodrigo Barreiros
@@ -33,14 +32,24 @@ public class PessoaApplicationService {
 	 */
 	public List<Pessoa> cadastrarPessoas(List<String> pessoas) {
 		return pessoas.stream()
-				.map(nome -> {
-					PessoaId id = pessoaRepository.nextId();
-					Pessoa pessoa = new Pessoa(id, nome);
-					pessoaRepository.save(pessoa);
-					pessoaApplicationEvent.pessoaCadastrada(pessoa);
-					return pessoa;
+				.map(pessoa -> {
+					return carregarPessoa(pessoa);
 				})
 				.collect(Collectors.toList());
+	}
+	
+	private Pessoa carregarPessoa(String nome) {
+		List<Pessoa> pessoas = pessoaRepository.findByNomeContaining(nome);
+		
+		if (pessoas.isEmpty()) {
+			Pessoa pessoa = new Pessoa(pessoaRepository.nextId(), nome);
+
+			pessoaRepository.save(pessoa);
+			pessoaApplicationEvent.pessoaCadastrada(pessoa);
+			return pessoa;
+		}
+		
+		return pessoas.get(0);
 	}
 
 }

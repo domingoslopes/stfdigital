@@ -138,6 +138,9 @@
 		DashletsProvider.dashlet('minhas-peticoes', {
 			view: 'application/autuacao/peticionamento/dashlets/peticoes.tpl.html',
 			controller: 'MinhasPeticoesDashletController'
+		}).dashlet('gestao-autuacao', {
+			view: 'application/autuacao/gestao/dashlets/gestao-autuacao.tpl.html',
+			controller: 'GestaoAutuacaoDashletController'
 		}).dashlet('peticoes-para-preautuar', {
 			view: 'application/autuacao/preautuacao/dashlets/peticoes-preautuar.tpl.html',
 			controller: 'MinhasPeticoesParaAutuarDashletController'
