@@ -53,7 +53,7 @@
 		it('Deveria carregar a lista de petições no escopo do controlador', function() {
 			scope.$apply();
 			expect(fakePesquisaService.pesquisar).toHaveBeenCalledWith({
-				filtros: { 'id.sequencial' : metadado.informacao },
+				filtros: { 'id.sequencial' : [metadado.informacao] },
 				indices: ['autuacao', 'distribuicao'],
 				campos : ['identificacao']
 				//tipos : [metadado.tipoInformacao]
