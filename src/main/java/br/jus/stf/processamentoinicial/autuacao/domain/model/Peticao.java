@@ -234,7 +234,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notNull(relator, "peticao.ministroRelator.required");
 		Validate.notNull(this.classeProcessual, "peticao.distribuir.classeProcessual.invalid");
 		
-		return ProcessoFactory.criarProcesso(classeProcessual, relator, this);
+		return ProcessoFactory.criarProcesso(this.classeProcessual, relator, this.partes, this.pecas, this.id);
 	}
 
 	public Set<ProcessoWorkflowId> processosWorkflow() {

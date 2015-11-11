@@ -10,20 +10,27 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces.dto;
  */
 public class PecaDto {
 
-	private String tipo;
+	private Long tipoId;
+	
+	private String tipoNome;
 	
 	private String descricao;
 	
 	private Long documentoId;
 	
-	public PecaDto(String tipo, String descricao, Long documentoId) {
-		this.tipo = tipo;
+	public PecaDto(Long tipoId, String tipoNome, String descricao, Long documentoId) {
+		this.tipoId = tipoId;
+		this.tipoNome = tipoNome;
 		this.descricao = descricao;
 		this.documentoId = documentoId;
 	}
 	
-	public String getTipo() {
-		return tipo;
+	public Long getTipoId() {
+		return tipoId;
+	}
+	
+	public String getTipoNome() {
+		return tipoNome;
 	}
 	
 	public String getDescricao() {
