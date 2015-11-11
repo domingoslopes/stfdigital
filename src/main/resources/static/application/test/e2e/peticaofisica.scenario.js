@@ -127,8 +127,6 @@
 			
 			distribuicaoPage.selecionar('Min. Roberto Barroso');
 			
-			distribuicaoPage.selecionarPrimeiraParte();
-			
 			distribuicaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
