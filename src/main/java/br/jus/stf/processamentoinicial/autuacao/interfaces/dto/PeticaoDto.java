@@ -33,17 +33,21 @@ public class PeticaoDto {
 	@ApiModelProperty(value = "A lista de peças anexadas pelo peticionador")
 	private List<PecaDto> pecas;
 	
+	@ApiModelProperty(value = "")
+	private Long processoWorkflowId;
+	
 	PeticaoDto() {
 		
 	}
 	
-	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas) {
+	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas, Long processoWorkflowId) {
 		this.id = id;
 		this.numero = numero;
 		this.ano = ano;
 		this.classe = classe;
 		this.partes = partes;
 		this.pecas = pecas;
+		this.processoWorkflowId = processoWorkflowId;
 	}
 	
 	public Long getId() {
@@ -68,6 +72,10 @@ public class PeticaoDto {
 	
 	public List<PecaDto> getPecas() {
 		return pecas;
+	}
+	
+	public Long getProcessoWorkflowId() {
+		return processoWorkflowId;
 	}
 	
 }
