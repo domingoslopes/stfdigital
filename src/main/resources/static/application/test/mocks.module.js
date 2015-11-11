@@ -143,7 +143,7 @@
 		});
 		
 		
-		var commandPartes = {indices: ['pessoa'], campos: ['id.sequencial', 'nome'], ordenadores: {'nome' : 'ASC'}, filtros = { 'id.sequencial': [1,2] }};
+		var commandPartes = {indices: ['pessoa'], campos: ['id.sequencial', 'nome'], ordenadores: {'nome' : 'ASC'}, filtros : { 'id.sequencial': [1,2] }};
 		$httpBackend.whenPOST(properties.apiUrl + '/pesquisas', commandPartes).respond(function(method, url, data, headers){
 			console.log('Pesquisa de partes:', method, url, data, headers);
 			var partesPesquisa = [];
