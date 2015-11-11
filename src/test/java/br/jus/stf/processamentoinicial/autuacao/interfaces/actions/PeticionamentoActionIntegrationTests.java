@@ -55,8 +55,10 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		//Cria um objeto para ser usado no processo de distribuição de uma petição.
 		StringBuilder peticaoAutuadaParaDistribuicao =  new StringBuilder();
 		peticaoAutuadaParaDistribuicao.append("{\"resources\": ");
-		peticaoAutuadaParaDistribuicao.append("[{\"peticaoId\": @,");
-		peticaoAutuadaParaDistribuicao.append("\"ministroId\":36}]}");
+		peticaoAutuadaParaDistribuicao.append("[{\"tipoDistribuicao\":\"PREVENCAO\",");
+		peticaoAutuadaParaDistribuicao.append("\"peticaoId\": @,");
+		peticaoAutuadaParaDistribuicao.append("\"justificativa\":\"Recurso do processo prevento.\",");
+		peticaoAutuadaParaDistribuicao.append("\"processosPreventos\":[1]}]}");
 		this.peticaoAutuadaParaDistribuicao = peticaoAutuadaParaDistribuicao.toString();
 		
 		//Envia um documento para que seja obtido o seu ID. Este será usado para simular o teste de envio de uma petição eletrônica.
@@ -140,8 +142,8 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		setAuthenticationAuthorities("distribuidor");
 		
 		//Realiza a distribuição.
-		super.mockMvc.perform(post("/api/actions/distribuir_peticao/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+		super.mockMvc.perform(post("/api/actions/distribuir_peticao/execute").header("papel", "distribuidor").contentType(MediaType.APPLICATION_JSON)
+			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)));
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())
@@ -189,7 +191,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir_peticao/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(36)));
+			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)));
 		
 		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "autuador")).andExpect(status().isOk())

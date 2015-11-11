@@ -16,7 +16,7 @@ import br.jus.stf.shared.ProcessoWorkflowId;
  * @since 1.0.0
  * @since 26.06.2015
  */
-@Component
+@Component("peticaoTarefaRestAdapter")
 public class TarefaRestAdapter implements TarefaAdapter {
 
 	@Autowired
