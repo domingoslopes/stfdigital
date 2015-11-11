@@ -7,13 +7,42 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, messages, properties, $state, PeticaoService) {
+	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, messages, properties, $state, PeticaoService, PesquisaService) {
 		
 		$scope.idPeticao = $stateParams.idTarefa;
 		
 		$scope.ministros = data.data;
 		
 		$scope.relator = '';
+		
+		$scope.partes = [];
+
+		var partesPeticao = {};
+		
+		var peticao;
+		
+		var commandPartesPeticao;
+		
+		PeticaoService.consultarPartes($scope.idPeticao).success(function(partesP) {
+			partesPeticao = partesP;
+			commandPartesPeticao = new PartesPeticaoCommand(partesPeticao);
+			
+			PesquisaService.pesquisar(commandPartesPeticao).then(function(resultados) {
+				$scope.partes = resultados.data;
+			}, function(resultados, status) {
+				messages.error('Ocorreu um erro e a pesquisa não pode ser realizada!');
+			});
+		});
+		
+		$scope.consultaProcesso = function(IdPessoa){
+			var commandProcessosPessoa = new ProcessosPessoaCommand(idPessoa);
+			PesquisaService.pesquisar(commandProcessosPessoa).then(function(processos){
+				$scope.processosParte = processos.data;
+			}, function(processos,status){
+				messages.error('Ocorreu um erro e a pesquisa de processsos da parte não pode ser realizada!');
+			});
+		};
+		
 		
 		$scope.finalizar = function() {
 			if ($scope.relator.length === 0) {
@@ -40,6 +69,20 @@
     		
     		return dto;
     	}
+    	
+    	function PartesPeticaoCommand(partesPeticao){
+    		var dto = {};
+    		var idsPartes = [];
+    		
+    		idsPartes = partesPeticao.PoloAtivo.concat(partesPeticao.PoloPassivo);
+    		
+    		dto.indices = ['pessoa'];
+    		dto.campos = ['id.sequencial', 'nome'];
+    		dto.ordenadores = {'nome' : 'ASC'};
+    		dto.filtros = { 'id.sequencial': idsPartes };
+
+    		return dto;
+    	};
     	
 	});
 	

@@ -40,7 +40,7 @@
 		it('Deveria carregar a lista de petições no escopo do controlador', function() {
 			scope.$apply();
 			expect(fakePesquisaService.pesquisar).toHaveBeenCalledWith({
-				filtros: {usuarioCadastramento: "peticionador"},
+				filtros: {usuarioCadastramento: ["peticionador"]},
 				indices: ["autuacao"],
 				campos : ['identificacao', 'dataCadastramento', 'classeProcessual.sigla', 'numero', 'classeSugerida.sigla'],
 				ordenadores: {identificacao: "ASC"}});
