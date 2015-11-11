@@ -13,17 +13,43 @@
 	</div>
 	<div class="container-fluid container-fixed-lg">
         <form name="taskForm" ng-submit="finalizar()" novalidate>
-            <div class="card share" data-social="item" style="width: 100%">
-                <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-                <div class="card-header clearfix">
-                    <h5>Ministro Relator</h5>
-                    <h6>Para qual ministro você deseja distribuir esse processo? ({{relator}})</h6>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title=""
+							data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Ministro Relator</h5>
+                    		<h6>Para qual ministro você deseja distribuir esse processo? ({{relator}})</h6>
+						</div>
+                		<div class="card-description">
+		                    <select ui-select2 id="relator" ng-model="relator" data-placeholder="Selecione o Relator" style="width: 250px;">
+		                        <option value=""></option>
+		                        <option ng-repeat="ministro in ministros" value="{{ministro.codigo}}">{{ministro.nome}}</option>
+		                    </select>
+                		</div>
+                	</div>
                 </div>
-                <div class="card-description">
-                    <select ui-select2 id="relator" ng-model="relator" data-placeholder="Selecione o Relator" style="width: 250px;">
-                        <option value=""></option>
-                        <option ng-repeat="ministro in ministros" value="{{ministro.codigo}}">{{ministro.nome}}</option>
-                    </select>
+                <div class="col-md-6" ng-show="partes.length > 0">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title=""
+							data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Partes</h5>
+                    		<h6>Todas as partes envolvidas na petição</h6>
+						</div>
+                		<div class="card-description">
+		                   <table class="table table-condensed table-hover">
+								<tbody>
+									<tr ng-repeat="parte in partes">
+										<td class="font-montserrat fs-12 col-lg-12">
+											<a onclick="consultaProcesso({idParte: parte.id})">{{parte.objeto.nome}}</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+                		</div>
+                	</div>
                 </div>
 			</div>
             <p>
