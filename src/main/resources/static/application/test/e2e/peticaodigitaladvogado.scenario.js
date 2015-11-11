@@ -107,7 +107,7 @@
 			
 		    principalPage.login('distribuidor');
 		    
-		    expect(principalPage.tarefas().count()).toEqual(2);
+		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
