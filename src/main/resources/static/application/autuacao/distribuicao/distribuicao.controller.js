@@ -29,15 +29,22 @@
 		
 		var commandPartesPeticao;
 		
+		
 		PeticaoService.consultarPartes($scope.idPeticao).success(function(partesP) {
 			partesPeticao = partesP;
-			commandPartesPeticao = new PartesPeticaoCommand(partesPeticao);
 			
-			PesquisaService.pesquisar(commandPartesPeticao).then(function(resultados) {
-				$scope.partes = resultados.data;
-			}, function(resultados, status) {
-				messages.error('Ocorreu um erro e a pesquisa não pode ser realizada!');
-			});
+			var idsPartes = partesPeticao.PoloAtivo.concat(partesPeticao.PoloPassivo);
+			
+			if (idsPartes.length > 0){
+				commandPartesPeticao = new PartesPeticaoCommand(idsPartes);
+				
+				PesquisaService.pesquisar(commandPartesPeticao).then(function(resultados) {
+					$scope.partes = resultados.data;
+				}, function(resultados, status) {
+					messages.error('Ocorreu um erro e a pesquisa não pode ser realizada!');
+				});	
+			}
+			
 		});
 		
 		$scope.consultarProcesso = function(idPessoa, nomeParte){
@@ -77,11 +84,8 @@
     		return dto;
     	}
     	
-    	function PartesPeticaoCommand(partesPeticao){
+    	function PartesPeticaoCommand(idsPartes){
     		var dto = {};
-    		var idsPartes = [];
-    		
-    		idsPartes = partesPeticao.PoloAtivo.concat(partesPeticao.PoloPassivo);
     		
     		dto.indices = ['pessoa'];
     		dto.campos = ['id.sequencial', 'nome'];
