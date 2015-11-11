@@ -52,17 +52,17 @@
     		dto.filtros = {};
     		
     		if (angular.isNumber($scope.numero)) {
-    			dto.filtros.numero = $scope.numero;
+    			dto.filtros.numero = [$scope.numero];
     		}
     		var codigo = parseInt($scope.ministro);
      		if (isFinite(codigo)) {
-    			dto.filtros['relator.codigo'] = codigo;
+    			dto.filtros['relator.codigo'] = [codigo];
     		}
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {
-    			dto.filtros['classe.sigla'] = $scope.classe;
+    			dto.filtros['classe.sigla'] = [$scope.classe];
     		}
     		if (angular.isObject($scope.pessoa)) {
-    			dto.filtros['partes.pessoaId.sequencial'] = $scope.pessoa.id;
+    			dto.filtros['partes.pessoaId.sequencial'] = [$scope.pessoa.id];
     		}
     		return dto;
     	}

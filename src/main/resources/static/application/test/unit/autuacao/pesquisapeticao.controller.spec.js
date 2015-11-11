@@ -46,7 +46,7 @@
 			var command = { 
 				indices : ['autuacao'],
 				ordenadores : {'identificacao' : 'ASC'},
-				filtros : {'classeSugerida.sigla' : scope.classe}
+				filtros : {'classeSugerida.sigla' : [scope.classe]}
 			};
 			spyOn(pesquisaService, 'pesquisar').and.callFake(function() {
 				return { then : function(cb) {return cb({data : ['teste']}); } };
