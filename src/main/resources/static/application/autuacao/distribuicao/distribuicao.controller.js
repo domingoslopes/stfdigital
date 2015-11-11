@@ -84,6 +84,20 @@
     		return dto;
     	};
     	
+    	function PartesPeticaoCommand(partesPeticao){
+    		var dto = {};
+    		var idsPartes = [];
+    		
+    		idsPartes = partesPeticao.PoloAtivo.concat(partesPeticao.PoloPassivo);
+    		
+    		dto.indices = ['pessoa'];
+    		dto.campos = ['id.sequencial', 'nome'];
+    		dto.ordenadores = {'nome' : 'ASC'};
+    		dto.filtros = { 'id.sequencial': idsPartes };
+
+    		return dto;
+    	};
+    	
 	});
 	
 })();
