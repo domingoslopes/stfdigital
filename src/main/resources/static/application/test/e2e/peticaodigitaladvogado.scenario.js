@@ -107,7 +107,7 @@
 			
 		    principalPage.login('distribuidor');
 		    
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toEqual(2);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -123,6 +123,8 @@
 			var distribuicaoPage = new DistribuicaoPage();
 			
 			distribuicaoPage.selecionar('Min. Roberto Barroso');
+			
+			distribuicaoPage.selecionarPrimeiraParte();
 			
 			distribuicaoPage.finalizar();
 		    

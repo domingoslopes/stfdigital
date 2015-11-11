@@ -154,13 +154,13 @@
 			return [200, partesPesquisa, {}];
 		});
 		
-		var commandPartesProcessos = {indices: ['distribuicao'], campos: ['processo.id.sequencial', 'processo.identificacao'], 
-			ordenadores: {'peticao.sequencial' : 'ASC'}, filtros: {'processo.partes.sequencial' : 1}};
+		var commandPartesProcessos = {indices: ['distribuicao'], campos: ['id.sequencial', 'identificacao'], 
+			ordenadores: {'id.sequencial' : 'ASC'}, filtros: {'partes.pessoaId.sequencial' : 1}};
 		$httpBackend.whenPOST(properties.apiUrl + '/pesquisas', commandPartesProcessos).respond(function(method, url, data, headers){
 			console.log('Pesquisa dos processos da parte:', method, url, data, headers);
 			var processosDaParte = [];
-			var processo1 = {id: 1, objeto: {identificacao: 'ADI/01'};
-			var processo2 = {id: 2, objeto: {identificacao: 'HC/1000'};
+			var processo1 = {id: 1, objeto: {identificacao: 'ADI/01'}};
+			var processo2 = {id: 2, objeto: {identificacao: 'HC/1000'}};
 			processosDaParte.push(processo1);
 			processosDaParte.push(processo2);
 			return [200, processosDaParte, {}];

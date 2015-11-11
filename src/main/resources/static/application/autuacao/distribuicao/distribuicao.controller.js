@@ -16,10 +16,16 @@
 		$scope.relator = '';
 		
 		$scope.partes = [];
+		
+		$scope.processosParte = [];
+		
+		$scope.nomeParteRelacionada = '';
 
 		var partesPeticao = {};
 		
 		var peticao;
+		
+		//var idPessoa;
 		
 		var commandPartesPeticao;
 		
@@ -34,8 +40,9 @@
 			});
 		});
 		
-		$scope.consultaProcesso = function(IdPessoa){
-			var commandProcessosPessoa = new ProcessosPessoaCommand(idPessoa);
+		$scope.consultarProcesso = function(idPessoa, nomeParte){
+			$scope.nomeParteRelacionada = nomeParte;
+			var commandProcessosPessoa = new ProcessosDaParteCommand(idPessoa);
 			PesquisaService.pesquisar(commandProcessosPessoa).then(function(processos){
 				$scope.processosParte = processos.data;
 			}, function(processos,status){
@@ -84,16 +91,13 @@
     		return dto;
     	};
     	
-    	function PartesPeticaoCommand(partesPeticao){
+    	function ProcessosDaParteCommand(idPessoa){
     		var dto = {};
-    		var idsPartes = [];
     		
-    		idsPartes = partesPeticao.PoloAtivo.concat(partesPeticao.PoloPassivo);
-    		
-    		dto.indices = ['pessoa'];
-    		dto.campos = ['id.sequencial', 'nome'];
-    		dto.ordenadores = {'nome' : 'ASC'};
-    		dto.filtros = { 'id.sequencial': idsPartes };
+    		dto.indices = ['distribuicao'];
+    		dto.campos = ['id.sequencial', 'identificacao'];
+    		dto.ordenadores = {'id.sequencial' : 'ASC'};
+    		dto.filtros = { 'partes.pessoaId.sequencial': [idPessoa] };
 
     		return dto;
     	};
