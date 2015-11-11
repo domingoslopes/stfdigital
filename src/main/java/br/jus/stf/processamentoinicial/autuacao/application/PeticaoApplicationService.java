@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
@@ -45,6 +46,7 @@ public class PeticaoApplicationService {
 	private WorkflowAdapter processoAdapter;
 	
 	@Autowired
+	@Qualifier("peticaoTarefaRestAdapter")
 	private TarefaAdapter tarefaAdapter;
 	
 	@Autowired
