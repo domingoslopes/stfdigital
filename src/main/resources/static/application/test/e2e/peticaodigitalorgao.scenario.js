@@ -51,9 +51,9 @@
 			
 			peticionamentoPage.classificarOrgao('Procuradoria-Geral');
 			
-			peticionamentoPage.partePoloAtivo('Pedro de Souza');
+			peticionamentoPage.partePoloAtivo('João da Silva');
 		    
-			peticionamentoPage.partePoloPassivo('Ana de Souza');
+			peticionamentoPage.partePoloPassivo('Maria da Silva');
 			
 			peticionamentoPage.uploadPecas();
 			
@@ -120,6 +120,8 @@
 			var distribuicaoPage = new DistribuicaoPage();
 			
 			distribuicaoPage.selecionar('Min. Roberto Barroso');
+			
+			distribuicaoPage.selecionarPrimeiraParte();
 			
 			distribuicaoPage.finalizar();
 		    
