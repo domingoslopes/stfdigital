@@ -20,7 +20,7 @@ alter table autuacao.peticao_documento add constraint FK_PETICAO_PEDO foreign ke
 alter table autuacao.peticao_parte add constraint FK_PETICAO_PEPA foreign key (seq_peticao) references AUTUACAO.peticao;
 alter table autuacao.processo_documento add constraint FK_PROCESSO_PRDO foreign key (seq_processo) references AUTUACAO.processo;
 alter table autuacao.processo_parte add constraint FK_PROCESSO_PRPA foreign key (seq_processo) references AUTUACAO.processo;
-alter table plataforma.process_instance_peticao add constraint FK_PETICAO_PEPI foreign key (seq_peticao) references AUTUACAO.peticao;
+alter table plataforma.process_instance_peticao add constraint FK_PETICAO_PRIP foreign key (seq_peticao) references AUTUACAO.peticao;
 
 create sequence autuacao.SEQ_MINISTRO increment by 1 start with 1 nomaxvalue minvalue 1 nocycle nocache;
 create sequence autuacao.SEQ_PETICAO increment by 1 start with 1 nomaxvalue minvalue 1 nocycle nocache;
