@@ -122,6 +122,7 @@ public class PeticaoApplicationService {
 		if (peticaoValida) {
 			peticao.aceitar(classe);
 			tarefaAdapter.completarAutuacao(peticao);
+			this.peticaoApplicationEvent.peticaoAutuada(peticao);
 		} else {
 			peticao.rejeitar(motivoRejeicao);
 			processoAdapter.rejeitarAutuacao(peticao);
