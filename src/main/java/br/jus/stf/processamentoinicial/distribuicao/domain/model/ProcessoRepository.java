@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.ProcessoId;
 
 /**
@@ -46,5 +47,13 @@ public interface ProcessoRepository {
 	 * @return o número
 	 */
 	public Long nextNumero(ClasseId classe);
+	
+	/**
+	 * Recupera a lista de processos cuja PessoaId atua como parte
+	 * 
+	 * @param pessoaId
+	 * @return a lista de processos
+	 */
+	public List<Processo> findByPessoaInPartes(PessoaId pessoaId);
 
 }
