@@ -68,8 +68,16 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
 	private Set<Peca> pecas = new LinkedHashSet<Peca>(0); // Para utilizar TreeSet Peca deve implementar Comparable
 	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Distribuicao.class)
+	@JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", nullable = false)
+	private Set<Distribuicao> distribuicoes = new HashSet<Distribuicao>(0);
+	
 	@Transient
 	private String identificacao;
+	
+	Processo() {
+
+	}
 
 	/**
 	 * @param classe
@@ -128,12 +136,26 @@ public class Processo implements Entity<Processo, ProcessoId> {
 		  .collect(Collectors.toSet()));
 	}
 	
+	public Set<Distribuicao> distribuicoes() {
+		return Collections.unmodifiableSet(this.distribuicoes);
+	}
+	
+	/**
+	 * 
+	 * @param distribuicao
+	 */
+	public boolean associarDistribuicao(final Distribuicao distribuicao){
+		Validate.notNull(distribuicao, "processo.distribuicao.required");
+		
+		return this.distribuicoes.add(distribuicao);
+	}
+	
 	/**
 	 * 
 	 * @param parte
 	 */
 	public boolean adicionarParte(final Parte parte){
-		Validate.notNull(parte, "peticao.parte.required");
+		Validate.notNull(parte, "processo.parte.required");
 		
 		return this.partes.add(parte);
 	}
@@ -143,7 +165,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * @param parte
 	 */
 	public boolean removerParte(final Parte parte){
-		Validate.notNull(parte, "peticao.parte.required");
+		Validate.notNull(parte, "processo.parte.required");
 		
 		return this.partes.remove(parte);
 	}
@@ -153,7 +175,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * @param peca
 	 */
 	public boolean adicionarPeca(final Peca peca){
-		Validate.notNull(peca, "peticao.peca.required");
+		Validate.notNull(peca, "processo.peca.required");
 	
 		return this.pecas.add(peca);
 	}
@@ -163,7 +185,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * @param peca
 	 */
 	public boolean removerPeca(final Peca peca){
-		Validate.notNull(peca, "peticao.peca.required");
+		Validate.notNull(peca, "processo.peca.required");
 	
 		return this.pecas.remove(peca);
 	}
@@ -202,12 +224,6 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	private String montarIdentificacao() {
 		return new StringBuilder()
 			.append(classe.toString()).append(" ").append(numero).toString();
-	}
-	
-	// Hibernate
-	
-	Processo() {
-
 	}
 
 }

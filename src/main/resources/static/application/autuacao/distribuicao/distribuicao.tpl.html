@@ -43,7 +43,7 @@
 								<tbody>
 									<tr ng-repeat="parte in partes">
 										<td class="font-montserrat fs-12 col-lg-12">
-											<a onclick="consultaProcesso({idParte: parte.id})">{{parte.objeto.nome}}</a>
+											<a ng-click="consultarProcesso(parte.id, parte.objeto.nome)">{{parte.objeto.nome}}</a>
 										</td>
 									</tr>
 								</tbody>
@@ -52,6 +52,29 @@
                 	</div>
                 </div>
 			</div>
+			<div class="row" ng-show="processosParte.length > 0">
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title=""
+							data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Processos relacionados da parte "{{nomeParteRelacionada}}"</h5>
+                    		<h6>Processos relacionada de acordo com a parte selecionada</h6>
+						</div>
+                		<div class="card-description">
+		                    <table class="table table-condensed table-hover">
+								<tbody>
+									<tr ng-repeat="processo in processosParte">
+										<td class="font-montserrat fs-12 col-lg-12">
+											<a>{{processo.objeto.identificacao}}</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+                		</div>
+                	</div>
+                </div>
+             </div>
             <p>
                 <input id="finalizar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Distribuir">
             </p>
