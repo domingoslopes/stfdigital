@@ -35,6 +35,9 @@ public class PesquisarCommand {
 	
 	@ApiModelProperty("Tamanho da pesquisa paginada")
 	private Integer tamanho = 15;
+	
+	@ApiModelProperty("Campo para agregação.")
+	private String campoAgregacao;
 
 	/**
 	 * @return the campos
@@ -134,4 +137,10 @@ public class PesquisarCommand {
 		this.tamanho = tamanho;
 	}
 
+	/**
+	 * @return o campo
+	 */
+	public String getCampoAgregacao() {
+		return this.campoAgregacao;
+	}
 }
