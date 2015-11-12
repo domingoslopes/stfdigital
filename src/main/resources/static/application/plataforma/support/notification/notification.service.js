@@ -6,8 +6,8 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma.service('NotificationService', ['$http', '$q', '$window', '$rootScope', '$filter', 'properties', 'PesquisaService', 
-	                                                   function($http, $q, $window, $rootScope, $filter, properties, PesquisaService) {
+	angular.plataforma.service('NotificationService', ['$http', '$q', '$window', '$rootScope', '$filter', 'properties', 'PesquisaService', '$cookies', 
+	                                                   function($http, $q, $window, $rootScope, $filter, properties, PesquisaService, $cookies) {
 		
 		var socket = new SockJS(properties.apiUrl + '/ws/notificacoes');
 		var client = Stomp.over(socket);
@@ -72,7 +72,7 @@
 		};
 		
 		var PesquisarCommand = function(lida) {
-			var papel = connHeaders().papel;
+			var papel = connHeaders().login;
 			
 	    	this.indices = ['notificacao']; 
 	        this.tipos = ['Notificacao'];
@@ -118,9 +118,8 @@
 		var connHeaders = function() {
 			var papel = JSON.parse($window.sessionStorage.papel).nome;
 			return {
-				login : papel,
-				password : papel,
-				papel : papel
+				'login' : papel,
+				'X-XSRF-TOKEN' : $cookies.get('XSRF-TOKEN') 
 			};
 		};
 		

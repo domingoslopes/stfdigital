@@ -159,8 +159,8 @@
 		$httpBackend.whenPOST(properties.apiUrl + '/pesquisas', commandPartesProcessos).respond(function(method, url, data, headers){
 			console.log('Pesquisa dos processos da parte:', method, url, data, headers);
 			var processosDaParte = [];
-			var processo1 = {id: 1, objeto: {identificacao: 'ADI/01'};
-			var processo2 = {id: 2, objeto: {identificacao: 'HC/1000'};
+			var processo1 = {id: 1, objeto: {identificacao: 'ADI/01'}};
+			var processo2 = {id: 2, objeto: {identificacao: 'HC/1000'}};
 			processosDaParte.push(processo1);
 			processosDaParte.push(processo2);
 			return [200, processosDaParte, {}];
