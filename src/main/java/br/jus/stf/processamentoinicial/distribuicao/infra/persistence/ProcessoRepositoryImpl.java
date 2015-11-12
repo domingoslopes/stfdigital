@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.infra.persistence;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.ProcessoId;
 
 /**
@@ -52,6 +54,15 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 			
 			return proximoNumero;	
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Processo> findByPessoaInPartes(PessoaId pessoaId) {
+		Query query = entityManager.createQuery("SELECT proc FROM Processo proc INNER JOIN proc.partes part WITH part.pessoaId = :pessoaId");
+		query.setParameter("pessoaId", pessoaId);
+		
+		return query.getResultList();
 	}
 	
 }

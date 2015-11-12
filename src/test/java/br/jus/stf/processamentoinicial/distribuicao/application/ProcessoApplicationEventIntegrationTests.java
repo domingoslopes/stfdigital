@@ -1,5 +1,8 @@
 package br.jus.stf.processamentoinicial.distribuicao.application;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -9,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
@@ -51,8 +55,14 @@ public class ProcessoApplicationEventIntegrationTests extends AbstractIntegratio
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
 		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
+		
 		new ProcessoFactory(processoRepository);
-		Processo processo = ProcessoFactory.criarProcesso(new ClasseId("HC"), new MinistroId(1L), peticao);
+		Set<Parte> partes = new HashSet<Parte>(0);
+		
+		partes.addAll(peticao.partesPoloAtivo());
+		partes.addAll(peticao.partesPoloPassivo());
+		
+		Processo processo = ProcessoFactory.criarProcesso(new ClasseId("HC"), new MinistroId(1L), partes, peticao.pecas(), peticao.id());
 		processoApplicationEvent.processoDistribuido(processo);
 	}
 	

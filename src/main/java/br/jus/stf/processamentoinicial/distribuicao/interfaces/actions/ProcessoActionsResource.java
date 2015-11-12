@@ -16,7 +16,8 @@ public class ProcessoActionsResource {
 	
 	@ActionMapping(id = "DISTRIBUIR_PETICAO", name = "DistribuirPeticao", neededAuthorities = {"distribuidor"})
 	public ProcessoDto distribuir(DistribuirPeticaoCommand command) {
-		return processoServiceFacade.distribuir(command.getPeticaoId(), command.getMinistroId());
+		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), command.getPeticaoId(), command.getJustificativa(),
+				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
 
 }

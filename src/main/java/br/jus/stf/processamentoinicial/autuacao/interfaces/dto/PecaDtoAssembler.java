@@ -23,7 +23,7 @@ public class PecaDtoAssembler {
 	 * @return o dto resultado
 	 */
 	public PecaDto toDto(Peca peca) {
-		return new PecaDto(peca.tipo().nome(), peca.descricao(), peca.documento().toLong());
+		return new PecaDto(peca.tipo().toLong(), peca.tipo().nome(), peca.descricao(), peca.documento().toLong());
 	}
 	
 }
