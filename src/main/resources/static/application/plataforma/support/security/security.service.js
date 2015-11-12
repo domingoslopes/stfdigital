@@ -7,19 +7,21 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.factory('SecurityService', function() {
+	angular.plataforma.factory('SecurityService', function($http, properties) {
 		return {
 			papeis : function() {
-				return [
-					{nome : 'peticionador'}, 
-					{nome : 'representante'},
-					{nome : 'recebedor'},
-					{nome : 'preautuador'},
-					{nome : 'cartoraria'},
-					{nome : 'autuador'}, 
-					{nome : 'distribuidor'},
-					{nome : 'gestor-autuacao'}
-				];
+				var resultado = [];
+				$.ajax({
+					url: properties.apiUrl + '/usuario',
+				    async: false,
+				    success: function(data) {
+				    	resultado.push({nome : data.name});
+				    }
+				});
+				return resultado;
+			},
+			logout : function() {
+				return $http.post('/logout');
 			}
 		};
 	});

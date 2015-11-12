@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('SecurityController', function ($state, $scope, $log, $window, SecurityService) {
+	angular.plataforma.controller('SecurityController', function ($state, $scope, $log, $window, SecurityService, properties, $rootScope) {
 		
 		var selecionarPapel = function(papel) {
 			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
@@ -17,18 +17,26 @@
 		
 		$scope.papeis = SecurityService.papeis();
 		
+		var papel = JSON.parse($window.sessionStorage.getItem('papel'));
+				
+		if (papel === null) {
+			selecionarPapel($scope.papeis[0]);
+		} else {
+			selecionarPapel(papel);
+		}
+		
 		$scope.ativar = function(papel) {
 			selecionarPapel(papel);
 			$window.location.href = '/';
 		};
 		
-		var papel = JSON.parse($window.sessionStorage.getItem('papel'));
+		$scope.logout = function() {
+			SecurityService.logout()
+				.then(function() {
+					$window.location.href = '/login';
+				});
+		};
 		
-		if (papel === null) {
-			selecionarPapel($scope.papeis[0]);
-		} else {
-			selecionarPapel(papel);
-		}	
 	});
 	
 })();

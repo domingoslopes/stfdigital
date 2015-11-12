@@ -148,8 +148,8 @@
                         </div>
                     </a>
                 </li>
-                <li class="bg-master-lighter hide">
-                  <a href="#" class="clearfix">
+                <li class="bg-master-lighter">
+                  <a href="#" ng-click="logout()" class="clearfix">
                     <span class="pull-left">Logout</span>
                     <span class="pull-right"><i class="pg-power"></i></span>
                   </a>
@@ -213,6 +213,7 @@
 	<script type="text/javascript" src="vendor/angular/angular.js"></script>
 	<script type="text/javascript" src="vendor/angular-ui-router/release/angular-ui-router.js"></script>
 	<script type="text/javascript" src="vendor/ui-router-extras/release/ct-ui-router-extras.js"></script>
+	<script type="text/javascript" src="vendor/angular-cookies/angular-cookies.js"></script>
 	<script type="text/javascript" src="vendor/angular-mocks/angular-mocks.js"></script>
     <script type="text/javascript" src="vendor/select2/select2.js"></script>
     <script type="text/javascript" src="vendor/select2/select2_locale_pt-BR.js"></script>
@@ -243,7 +244,8 @@
     <script type="text/javascript" src="application/plataforma/support/error-handling/error-handler.interceptor.js"></script>
     <script type="text/javascript" src="application/plataforma/support/messaging/messages.util.js"></script>
     <script type="text/javascript" src="application/plataforma/support/security/security.controller.js"></script>    
-    <script type="text/javascript" src="application/plataforma/support/security/security.service.js"></script>    
+    <script type="text/javascript" src="application/plataforma/support/security/security.service.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/security/security.interceptor.js"></script> 
     <script type="text/javascript" src="application/plataforma/support/actions/actions.service.js"></script>
     <script type="text/javascript" src="application/plataforma/support/actions/actions.directive.js"></script>
     <script type="text/javascript" src="application/plataforma/support/actions/modal.controller.js"></script>
