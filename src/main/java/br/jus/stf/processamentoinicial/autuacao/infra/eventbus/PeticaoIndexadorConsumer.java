@@ -35,9 +35,11 @@ public class PeticaoIndexadorConsumer implements Consumer<Event<PeticaoRecebida>
 	
 	@Override
 	public void accept(Event<PeticaoRecebida> event) {
+		
 		Peticao peticao = event.getData().peticao();
+		
 		try {
-			indexadorRestAdapter.indexar(AutuacaoConfiguration.INDICE, peticao);
+			this.indexadorRestAdapter.indexar(AutuacaoConfiguration.INDICE, peticao);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
