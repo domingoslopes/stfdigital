@@ -28,6 +28,10 @@
 			element(by.repeater('parte in partes').row(0)).element(by.css('a')).click();
 		}
 		
+		this.selecionarPrimeiroProcessoDaParte = function(){
+			element(by.repeater('processo in processosParte').row(0)).element(by.css('a')).click();
+		}
+		
 	};
 
 	module.exports = DistribuicaoPage;
