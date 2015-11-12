@@ -53,7 +53,11 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		elasticsearchTemplate.index(query);
 		
 		elasticsearchTemplate.refresh("teste-distribuicao", true);
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> 5c832ee459cec621020caaa6b8c4ded9f4da3eda
 		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": [\"HC\"]}, \"campos\": [\"classe.sigla\"] }"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].tipo", is("Processo")))

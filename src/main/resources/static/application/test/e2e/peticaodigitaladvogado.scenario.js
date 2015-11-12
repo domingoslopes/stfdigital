@@ -124,6 +124,8 @@
 			
 			distribuicaoPage.selecionar('Min. Roberto Barroso');
 			
+			distribuicaoPage.selecionarPrimeiraParte();
+			
 			distribuicaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
@@ -146,7 +148,7 @@
 			//expect(principalPage.txtPapel).toEqual('cartoraria');
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(browser.isElementPresent(principalPage.dashletMinhasTarefas)).toBe(true);
+			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
 		});
 		
 
