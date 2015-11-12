@@ -1,0 +1,32 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "keyword_analyzer": {
+          "type": "custom",
+          "tokenizer": "keyword",
+          "filter": [ "lowercase" ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "QuantidadeAtuacoes": {
+      "dynamic": false,
+      "properties": {
+        "identificadorPeticao": {
+          "type": "string",
+          "analyzer": "keyword_analyzer"
+        },
+        "classeProcessual": {
+           "type": "string",
+           "index": "not_analyzed"
+        },
+        "mesAutuacao": {
+          "type": "long",
+          "index": "not_analyzed"
+        }        
+      }
+    }
+  }
+}
