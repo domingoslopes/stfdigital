@@ -1,7 +1,7 @@
 {
   "development": {
     "properties": {
-        "apiUrl": "http://localhost:8080/api"
+        "apiUrl": "/api"
     }
   },
   "production": {
