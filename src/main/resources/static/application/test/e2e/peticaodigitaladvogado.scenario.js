@@ -148,7 +148,7 @@
 			//expect(principalPage.txtPapel).toEqual('cartoraria');
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(browser.isElementPresent(principalPage.dashletMinhasTarefas)).toBe(true);
+			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
 		});
 		
 
