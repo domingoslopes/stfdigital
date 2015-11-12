@@ -2,26 +2,28 @@ package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
-public enum TipoDistribuicao implements ValueObject<TipoDistribuicao> {
+/**
+ * @author Rafael Alencar
+ *
+ */
+public enum ProcessoSituacao implements ValueObject<ProcessoSituacao> {
 	
-	COMUM,
-	PREVENCAO;
+	DISTRIBUIDO;
 	
 	@Override
 	public String toString() {
 		String tipo = null;
 		
 		switch(this) {
-			case COMUM: tipo = "Comum"; break;
-			case PREVENCAO:	tipo = "Prevenção Relator/Sucessor"; break;
+			case DISTRIBUIDO: tipo = "Distribuído"; break;
 			default: break;
 		}
 		return tipo;
 	}
 	
 	@Override
-	public boolean sameValueAs(final TipoDistribuicao other) {
+	public boolean sameValueAs(final ProcessoSituacao other) {
 		return this.equals(other);
 	}
-
+	
 }

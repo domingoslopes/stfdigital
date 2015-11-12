@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -77,6 +79,9 @@ public class DistribuicaoComumUnitTests {
 		
 		Assert.assertTrue(ministrosCanditatos.contains(relator));
 		Assert.assertFalse(ministrosImpedidos.contains(relator));
+		
+		verify(mockProcessoRepository, times(1)).nextId();
+		verify(mockProcessoRepository, times(1)).nextNumero(new ClasseId("ADI"));
 	}
 	
 }
