@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -65,6 +67,10 @@ public class DistribuicaoPrevencaoUnitTests {
 		Distribuicao distribuicao = new DistribuicaoPrevencao(parametros);
 		
 		Assert.assertEquals(mockProcesso.relator(), distribuicao.executar().relator());
+		
+		verify(mockProcessoRepository, times(1)).nextId();
+		verify(mockProcessoRepository, times(1)).nextNumero(new ClasseId("ADI"));
+		verify(mockProcesso, times(4)).relator();
 	}
 	
 }
