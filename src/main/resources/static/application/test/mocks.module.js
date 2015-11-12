@@ -65,6 +65,8 @@
 		
 		var peticoes = [];
 		
+		var partes = {'Passivo' : [{id : 1, nome : 'Joao Fulano Silva'}], 'Ativo' : [{id: 2, nome: 'José da Silva Fulano'}, {id: 3, nome: 'Fulano da Silva'}]} 
+			
 		var dashletsPeticionador = ['minhas-tarefas', 'minhas-peticoes'];
 		var dashletsRecebedor = ['minhas-tarefas', 'minhas-peticoes'];
 		var dashletsRepresentante = ['minhas-tarefas', 'minhas-peticoes'];
@@ -128,6 +130,65 @@
 			return [200, {classe: peticao.classe, numero: peticao.id, relator: peticao.ministro}, {}];
 		});
 		
+		
+		var commandPeticoes = {indices: ['autuacao'], campos: ['identificacao', 'dataCadastramento'], ordenadores: {'peticao.sequencial' : 'ASC'}, filtros: ['peticionador']};
+		$httpBackend.whenPOST(properties.apiUrl + '/pesquisas', commandPeticoes).respond(function(method, url, data, headers){
+			console.log('Pesquisa de peticao:', method, url, data, headers);
+			var peticoesPesquisa = [];
+			var peticao1 = {id: 1, objeto: {identificacao: '01/2015', dataCadastramento: '01-01-2011'}, processo: 'ADI/01'};
+			var peticao2 = {id: 2, objeto: {identificacao: '02/2015', dataCadastramento: '02-02-2012'}, processo: 'HC/1000'};
+			peticoesPesquisa.push(peticao1);
+			peticoesPesquisa.push(peticao2);
+			return [200, peticoesPesquisa, {}];
+		});
+		
+		
+		var commandPartes = {indices: ['pessoa'], campos: ['id.sequencial', 'nome'], ordenadores: {'nome' : 'ASC'}, filtros : { 'id.sequencial': [1,2] }};
+		$httpBackend.whenPOST(properties.apiUrl + '/pesquisas', commandPartes).respond(function(method, url, data, headers){
+			console.log('Pesquisa de partes:', method, url, data, headers);
+			var partesPesquisa = [];
+			var parte1 = {id: 1, objeto: {nome: 'Lucas Mariano'}};
+			var parte2 = {id: 2, objeto: {nome: 'Rodrigo Barreiros'}};
+			partesPesquisa.push(parte1);
+			partesPesquisa.push(parte2);
+			return [200, partesPesquisa, {}];
+		});
+		
+		var commandPartesProcessos = {indices: ['distribuicao'], campos: ['id.sequencial', 'identificacao'], 
+			ordenadores: {'id.sequencial' : 'ASC'}, filtros: {'partes.pessoaId.sequencial' : 1}};
+		$httpBackend.whenPOST(properties.apiUrl + '/pesquisas', commandPartesProcessos).respond(function(method, url, data, headers){
+			console.log('Pesquisa dos processos da parte:', method, url, data, headers);
+			var processosDaParte = [];
+			var processo1 = {id: 1, objeto: {identificacao: 'ADI/01'}};
+			var processo2 = {id: 2, objeto: {identificacao: 'HC/1000'}};
+			processosDaParte.push(processo1);
+			processosDaParte.push(processo2);
+			return [200, processosDaParte, {}];
+		});
+		
+		$httpBackend.whenPOST(properties.apiUrl + '/actions/isallowed').respond(function(method,url,data) {
+			console.log("Recuperando as ações verificadas");
+			var actions = ["dummy_action"];
+			return [200, actions, {}];
+		});
+		
+		$httpBackend.whenPOST(properties.apiUrl + '/actions/dummy_action/isallowed').respond(function(method,url,data) {
+			console.log("Verificando uma ação");
+			return [200, true, {}];
+		});
+		
+		$httpBackend.whenPOST(properties.apiUrl + '/actions/dummy_action/execute').respond(function(method,url,data) {
+			console.log("Executando uma ação");
+			return [200, "Ação executada!", {}];
+		});
+		
+		$httpBackend.whenPOST(properties.apiUrl + '/actions/registrar_peticao/execute').respond(function(method,url,data) {
+			console.log("Executando uma ação");
+			return [200, "2345/2015", {}];
+		});
+		
+//------------------------------------------------- WHENGET's -------------------------------------------------		
+		
 		$httpBackend.whenGET(properties.apiUrl + '/peticoes').respond(function(method, url, data, headers){
 			console.log('Recebendo peticoes:', method, url, data, headers);
 			angular.forEach(peticoes, function(peticao) {
@@ -149,6 +210,11 @@
 		$httpBackend.whenGET(properties.apiUrl + '/ministros').respond(function(method, url, data, headers){
 			console.log('Recebendo ministros:', method, url, data, headers);
 			return [200, ministros, {}];
+		});
+		
+		$httpBackend.whenGET(properties.apiUrl + '/2/partes').respond(function(method, url, data, headers){
+			console.log('Recebendo lista de partes da petição:', method, url, data, headers);
+			return [200, partes, {}];
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/peticoes/2').respond(function(method, url, data, headers){
@@ -189,27 +255,7 @@
 			return [200, actions, {}];
 		});
 		
-		$httpBackend.whenPOST(properties.apiUrl + '/actions/isallowed').respond(function(method,url,data) {
-			console.log("Recuperando as ações verificadas");
-			var actions = ["dummy_action"];
-			return [200, actions, {}];
-		});
-		
-		$httpBackend.whenPOST(properties.apiUrl + '/actions/dummy_action/isallowed').respond(function(method,url,data) {
-			console.log("Verificando uma ação");
-			return [200, true, {}];
-		});
-		
-		$httpBackend.whenPOST(properties.apiUrl + '/actions/dummy_action/execute').respond(function(method,url,data) {
-			console.log("Executando uma ação");
-			return [200, "Ação executada!", {}];
-		});
-		
-		$httpBackend.whenPOST(properties.apiUrl + '/actions/registrar_peticao/execute').respond(function(method,url,data) {
-			console.log("Executando uma ação");
-			return [200, "2345/2015", {}];
-		});
-		
+
 		var limparListaPeticoes = function(peticao){
 			peticoes = [];
 			peticoes.push(peticao);
