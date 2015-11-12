@@ -122,6 +122,10 @@
 	        }
           }
         },
+        "situacao": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
         "distribuicoes": {
           "properties": {
             "sequencial": {
