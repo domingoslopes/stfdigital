@@ -23,7 +23,8 @@
 					<td class="font-montserrat fs-12 col-lg-12"><a
 						ui-sref="detalhe({idPeticao: peticao.id})">{{peticao.objeto.identificacao}}</a>
 					</td>
-					<td class="font-montserrat fs-12 col-lg-12">{{peticao.objeto.dataCadastramento}} </td>
+					<td class="font-montserrat fs-12 col-lg-12">{{peticao.objeto.dataCadastramento | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+					<td class="font-montserrat fs-12 col-lg-12">{{peticao.processo}}</td>
 				</tr>
 			</tbody>
 		</table>

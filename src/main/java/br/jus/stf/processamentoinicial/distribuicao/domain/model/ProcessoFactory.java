@@ -14,6 +14,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
+import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 
 /**
@@ -32,18 +33,17 @@ public class ProcessoFactory {
 		processoRepository = repository;
 	}
 	
-	public static Processo criarProcesso(ClasseId classe, MinistroId relator, Peticao peticao) {
+	public static Processo criarProcesso(ClasseId classe, MinistroId relator, Set<Parte> partes, Set<Peca> pecas, PeticaoId peticaoId) {
 		Set<ParteProcesso> partesProcesso = new HashSet<ParteProcesso>();
-		partesProcesso.addAll(coletarPartes(peticao.partesPoloAtivo()));
-		partesProcesso.addAll(coletarPartes(peticao.partesPoloPassivo()));
+		partesProcesso.addAll(coletarPartes(partes));
 		
 		Set<PecaProcesso> pecasProcesso = new HashSet<PecaProcesso>();
-		pecasProcesso.addAll(coletarPecas(peticao.pecas()));
+		pecasProcesso.addAll(coletarPecas(pecas));
 		
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(classe);
 		
-		return new Processo(id, classe, numero, relator, peticao.id(), partesProcesso, pecasProcesso);
+		return new Processo(id, classe, numero, relator, peticaoId, partesProcesso, pecasProcesso, ProcessoSituacao.DISTRIBUIDO);
 	}
 
 	private static Set<ParteProcesso> coletarPartes(Set<Parte> partesPeticao) {
