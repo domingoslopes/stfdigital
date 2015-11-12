@@ -259,10 +259,16 @@ gulp.task('serve', ['build'], function() {
 	browserSync({
 		notify: false,
 		logPrefix: pkg.name,
-		server: {
+		/*server: {
 			baseDir : config.base,
 			middleware: [historyApiFallback()],
 			port : 3000
+		},*/
+		startPath: "/login",
+		proxy: {
+			target: "http://localhost:8080",
+			//middleware: [historyApiFallback()],
+			ws: true
 		}
 	});
 	
