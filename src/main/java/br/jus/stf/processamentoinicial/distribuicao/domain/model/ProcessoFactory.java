@@ -43,7 +43,7 @@ public class ProcessoFactory {
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(classe);
 		
-		return new Processo(id, classe, numero, relator, peticaoId, partesProcesso, pecasProcesso);
+		return new Processo(id, classe, numero, relator, peticaoId, partesProcesso, pecasProcesso, ProcessoSituacao.DISTRIBUIDO);
 	}
 
 	private static Set<ParteProcesso> coletarPartes(Set<Parte> partesPeticao) {
