@@ -51,9 +51,9 @@
 			
 			peticionamentoPage.classificarOrgao('Procuradoria-Geral');
 			
-			peticionamentoPage.partePoloAtivo('Pedro de Souza');
+			peticionamentoPage.partePoloAtivo('João da Silva');
 		    
-			peticionamentoPage.partePoloPassivo('Ana de Souza');
+			peticionamentoPage.partePoloPassivo('Maria da Silva');
 			
 			peticionamentoPage.uploadPecas();
 			
@@ -109,7 +109,7 @@
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
+		    	peticaoId = text.substr(pos, text.length); 
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
 			
@@ -120,6 +120,11 @@
 			var distribuicaoPage = new DistribuicaoPage();
 			
 			distribuicaoPage.selecionar('Min. Roberto Barroso');
+			
+			//seleciona a primeira parte 
+			distribuicaoPage.selecionarPrimeiraParte();
+			
+			distribuicaoPage.selecionarPrimeiroProcessoDaParte();
 			
 			distribuicaoPage.finalizar();
 		    
