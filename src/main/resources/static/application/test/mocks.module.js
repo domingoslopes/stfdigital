@@ -65,7 +65,7 @@
 		
 		var peticoes = [];
 		
-		var partes = {'Passivo' : [{id : 1, nome : 'Joao Fulano Silva'}], 'Ativo' : [{id: 2, nome: 'José da Silva Fulano'}, {id: 3, nome: 'Fulano da Silva'}]} 
+		var partes = {'Passivo' : [{id : 1, nome : 'Joao Fulano Silva'}], 'Ativo' : [{id: 2, nome: 'José da Silva Fulano'}, {id: 3, nome: 'Fulano da Silva'}]}; 
 			
 		var dashletsPeticionador = ['minhas-tarefas', 'minhas-peticoes'];
 		var dashletsRecebedor = ['minhas-tarefas', 'minhas-peticoes'];
