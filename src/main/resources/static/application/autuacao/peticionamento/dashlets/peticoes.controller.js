@@ -33,7 +33,7 @@
     		};
 
     		return dto;
-    	};
+    	}
     	
     	function PesquisarProcessosCommand(peticoes){
     		var dto = {};
@@ -49,7 +49,7 @@
     		dto.filtros = { 'peticao.sequencial': idsPeticoes };
 
     		return dto;
-    	};
+    	}
     	
     	function pesquisarProcessos(peticoes) {
 			if (!angular.isArray(peticoes) || $scope.peticoes.length === 0) {
@@ -66,7 +66,7 @@
 					});
 				});
 			});
-    	};
+    	}
     	
     	pesquisar();
 

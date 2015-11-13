@@ -87,7 +87,7 @@
 		};
 		
 		var pararNotificacoes = function() {
-			if (connected && subscription != null) {
+			if (connected && subscription !== null) {
 				subscription.unsubscribe();
 			}
 		};
@@ -132,6 +132,7 @@
                 timeout: 6000,
                 type: "info"
             }).show();
-		}
+		};
+		
 	}]);
 })();
