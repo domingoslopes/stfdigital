@@ -28,22 +28,31 @@
 			scope: {
 			leftListRowsModel: '=leftListRows',
 				rightListRowsModel: '=rightListRows',
+				
+				displayFn: '&',
 		
 				listWidth: '@listWidth',//optional, empty by default
 				listHeight: '@listHeight',//optional, empty by default
 				showMoveAllButtons : '@' //optional, true by default
 			},
-			link: function (scope) {
+			link: function (scope, element, attrs) {
 		
 				function initializeRowLists() {
-					scope.leftListRows = scope.leftListRowsModel.map(function (element, index) {
+					scope.leftListRows = scope.leftListRowsModel.map(function(element, index) {
 						return new ListEntry(index, element);
 					});
-					scope.rightListRows = scope.rightListRowsModel.map(function (element, index) {
+					scope.rightListRows = scope.rightListRowsModel.map(function(element, index) {
 						return new ListEntry(index, element);
 					});
 				}
 		
+				scope.display = function(obj) {
+					if (attrs.displayFn) {						
+						return scope.displayFn({data: obj});
+					} else {
+						return obj;
+					}
+				};
 		
 				scope.listCss = {};
 		
