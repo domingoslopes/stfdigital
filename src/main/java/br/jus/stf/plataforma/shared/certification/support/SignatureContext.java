@@ -8,7 +8,7 @@ import java.util.UUID;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
-public final class ContextoAssinatura implements Serializable {
+public final class SignatureContext implements Serializable {
 
 	private static final long serialVersionUID = -4801807132705368529L;
 
@@ -22,7 +22,7 @@ public final class ContextoAssinatura implements Serializable {
 	private int tamanhoEstimado;
 	private Collection<byte[]> crls;
 
-	public ContextoAssinatura(String idDocumento) {
+	public SignatureContext(String idDocumento) {
 		this.idDocumento = idDocumento;
 		this.idContexto = gerarIdContexto(this.idDocumento);
 	}
