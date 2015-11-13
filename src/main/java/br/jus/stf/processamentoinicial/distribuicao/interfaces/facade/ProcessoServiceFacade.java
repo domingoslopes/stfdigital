@@ -1,19 +1,23 @@
 package br.jus.stf.processamentoinicial.distribuicao.interfaces.facade;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
+import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.distribuicao.application.ProcessoApplicationService;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.ParametroDistribuicao;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.processamentoinicial.distribuicao.infra.PeticaoRestAdapter;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.shared.MinistroId;
-import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 
 @Component
@@ -27,10 +31,9 @@ public class ProcessoServiceFacade {
 	
 	@Autowired
 	private ProcessoRepository processoRepository;
-
-	// TODO: Remover essa dependência com o módulo de petições
+	
 	@Autowired
-	private PeticaoRepository peticaoRepository;
+	private PeticaoRestAdapter peticaoRestAdapter;
 
 	/**
 	 * Consulta um processo judicial, dado o seu identificador primário
@@ -47,16 +50,44 @@ public class ProcessoServiceFacade {
 	/**
 	 * Distribui um processo para um ministro relator.
 	 * 
+	 * @param tipoDistribuicao Tipo de distribuição.
 	 * @param peticaoId Id da petição.
-	 * @param ministroId Id do Ministro Relator.
+	 * @param classeProcessual Classe do processo.
+	 * @param justificativa Justificativa da distribuição.
+	 * @param ministrosCandidatos Lista de possíveis relatores.
+	 * @param ministrosImpedidos Lista de ministros impedidos.
+	 * @param processosPreventos Lista de processos preventos.
 	 */
-	public ProcessoDto distribuir(Long peticaoId, Long ministroId) {
-		MinistroId ministro = new MinistroId(ministroId);
-		PeticaoId id = new PeticaoId(peticaoId);
-		Peticao peticao = Optional.ofNullable((Peticao) peticaoRepository.findOne(id))
-								  .orElseThrow(IllegalArgumentException::new);
-		Processo processo = processoApplicationService.distribuir(peticao, ministro);
+	public ProcessoDto distribuir(String tipoDistribuicao, Long peticaoId, String justificativa,
+			Set<Long> ministrosCandidatos, Set<Long> ministrosImpedidos, Set<Long> processosPreventos) {
+		Peticao peticao = peticaoRestAdapter.consultar(peticaoId);
+		String usuarioCadastramento = SecurityContextUtil.getNomeUsuario();
+		TipoDistribuicao tipo = TipoDistribuicao.valueOf(tipoDistribuicao); 
+		ParametroDistribuicao parametroDistribuicao = new ParametroDistribuicao(peticao, justificativa, usuarioCadastramento,
+				this.carregarMinistros(ministrosCandidatos), this.carregarMinistros(ministrosImpedidos), this.carregarProcessos(processosPreventos));
+		Processo processo = processoApplicationService.distribuir(tipo, parametroDistribuicao);
+		
 		return processoDtoAssembler.toDto(processo);
+	}
+	
+	private Set<MinistroId> carregarMinistros(Set<Long> listaMinistros) {
+		if (!Optional.ofNullable(listaMinistros).isPresent()) {
+			return null;
+		}
+		
+		return listaMinistros.stream()
+				.map(id -> new MinistroId(id))
+				.collect(Collectors.toSet());
+	}
+	
+	private Set<Processo> carregarProcessos(Set<Long> listaProcessos) {
+		if (!Optional.ofNullable(listaProcessos).isPresent()) {
+			return null;
+		}
+
+		return listaProcessos.stream()
+				.map(id -> processoRepository.findOne(new ProcessoId(id)))
+				.collect(Collectors.toSet());
 	}
 
 }
