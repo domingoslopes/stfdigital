@@ -23,7 +23,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
 import br.jus.stf.plataforma.shared.certification.support.AssinadorPorPartes;
-import br.jus.stf.plataforma.shared.certification.support.ContextoAssinatura;
+import br.jus.stf.plataforma.shared.certification.support.SignatureContext;
 import br.jus.stf.plataforma.shared.certification.support.SHA256DetachedAssinadorPorPartes;
 
 public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemoTest {
@@ -32,7 +32,7 @@ public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemo
 	private Certificate[] cadeia;
 	private byte[] pdf;
 	private String reason;
-	private ContextoAssinatura ca;
+	private SignatureContext ca;
 	private PrivateKey key;
 	private CRL[] crls;
 
@@ -43,7 +43,7 @@ public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemo
 		cadeia = recuperarCadeia();
 		pdf = getPdf();
 		reason = "RAZAO";
-		ca = new ContextoAssinatura("12345");
+		ca = new SignatureContext("12345");
 		key = AssinaturaTestUtil.getPrivateKeyPessoa001();
 		crls = AssinaturaTestUtil.getCrls();
 
