@@ -54,7 +54,7 @@
 			dto.campoAgregacao = "classeProcessual";
 			
     		return dto;
-    	};
+    	}
 		
 	});
 
