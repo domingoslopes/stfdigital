@@ -19,9 +19,9 @@
 			scope = $rootScope.$new();
 			NotificationService = {
 				registrarNotificacao : function() {},
-				listarLidas : function() { return {} },
-				listarNaoLidas: function () { return {}},
-				marcarComoLida : function (){return {} }};
+				listarLidas : function() { return {}; },
+				listarNaoLidas: function () { return {}; },
+				marcarComoLida : function (){return {}; } };
 		}));
 		
 		it('Deveria compilar a diretiva', function() {
