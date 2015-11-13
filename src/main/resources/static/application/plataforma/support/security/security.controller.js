@@ -13,7 +13,7 @@
 			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
 			$scope.papelAtivo = papel;
 			$state.go('dashboard', {}, {reload: true});
-		}
+		};
 		
 		$scope.papeis = SecurityService.papeis();
 		
@@ -28,7 +28,8 @@
 			selecionarPapel($scope.papeis[0]);
 		} else {
 			selecionarPapel(papel);
-		}	
+		}
+		
 	});
 	
 })();

@@ -45,10 +45,10 @@ public class RequestMonitorFilter extends OncePerRequestFilter {
         	
         	requestMonitor.monitor(monitoredRequest);
         } else {
-            request.getRequestDispatcher("/").forward(request, response);
+            filterChain.doFilter(request, response);
         }
     }
-
+	
 	/**
 	 * Vericar se a URL de uma dada requisição se encaixa no padrão das URL's dos recursos dinâmicos.
 	 * 
