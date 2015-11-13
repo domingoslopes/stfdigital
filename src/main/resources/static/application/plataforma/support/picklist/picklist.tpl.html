@@ -5,10 +5,8 @@
 
     <!--unselected data-->
     <div class="col-xs-5">
-      <input placeholder="Search" type="text" class="form-control" ng-model="leftFilter"
-             style="width: 75%;margin-bottom: 10px;"/>
       <select multiple ng-multiple="true" ng-model="leftSelected"
-              ng-options="r.data for r in leftListRows | filter:{data:leftFilter}"
+              ng-options="r as display(r.data) for r in leftListRows"
               style="overflow: auto;" ng-style="listCss"></select>
     </div>
 
@@ -31,11 +29,8 @@
 
     <!--selected data-->
     <div class="col-xs-5">
-      <input placeholder="Search" type="text" class="form-control" ng-model="rightFilter"
-             style="width: 75%;margin-bottom: 10px;"/>
-
       <select multiple="multiple" ng-model="rightSelected"
-              ng-options="r.data for r in rightListRows | filter:{data:rightFilter}"
+              ng-options="r as display(r.data) for r in rightListRows"
               style="overflow: auto;" ng-style="listCss"></select>
 
     </div>
