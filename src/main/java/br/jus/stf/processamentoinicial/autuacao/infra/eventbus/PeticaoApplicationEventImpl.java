@@ -9,7 +9,7 @@ import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationEv
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 
 /**
- * Classe que implementa a publicação de eventos de petição
+ * Classe que implementa a publicação de eventos de petição.
  * 
  * @author Lucas.Rodrigues
  *
@@ -33,27 +33,36 @@ public class PeticaoApplicationEventImpl implements PeticaoApplicationEvent {
 	}
 	
 	/**
-	 * Notifica interessados sobre a remessa inválida de uma petição.
+	 * Evento usado para notifica interessados sobre a remessa inválida de uma petição.
 	 * 
 	 * @param peticao Dados da petição.
 	 */
 	@Override
 	public void remessaInvalida(Peticao peticao) {
 		RemessaInvalida evento = new RemessaInvalida(peticao);
-		eventBus.notify("indexadorEventBus", Event.wrap(evento));
 		eventBus.notify("notificadorEventBus", Event.wrap(evento));
 	}
 	
 	/**
-	 * Notifica interessados sobre a rejeição de uma petição.
+	 * Evento usado para notificar interessados sobre a rejeição de uma petição.
 	 * 
 	 * @param peticao Dados da petição.
 	 */
 	@Override
 	public void peticaoRejeitada(Peticao peticao){
 		PeticaoRejeitada evento = new PeticaoRejeitada(peticao);
-		eventBus.notify("indexadorEventBus", Event.wrap(evento));
 		eventBus.notify("notificadorEventBus", Event.wrap(evento));
+	}
+
+	/**
+	 * Evento utilizado para notificar o(s) interessado(s) acerda da autuação de uma petição.
+	 * 
+	 * @param peticao Dados da petição autuada.
+	 */
+	@Override
+	public void peticaoAutuada(Peticao peticao) {
+		PeticaoAutuada evento = new PeticaoAutuada(peticao);
+		eventBus.notify("indicadorEventBus", Event.wrap(evento));
 	}
 
 }
