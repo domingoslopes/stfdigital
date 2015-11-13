@@ -13,7 +13,7 @@ public enum TipoDistribuicao implements ValueObject<TipoDistribuicao> {
 		
 		switch(this) {
 			case COMUM: tipo = "Comum"; break;
-			case PREVENCAO:	tipo = "Prevenção Relator/Sucessor"; break;
+			case PREVENCAO:	tipo = "Prevenção"; break;
 			default: break;
 		}
 		return tipo;
