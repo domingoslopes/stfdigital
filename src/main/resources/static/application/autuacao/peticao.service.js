@@ -42,7 +42,11 @@
 					var tipoPecas = [{id : 1, descricao : "Petição Inicial"}, {id : 2 , descricao: "Ato coator"}, {id: 3, descricao: "Documentos Comprobatórios"}];
 					resolve(tipoPecas);
 				});
-			}
+			},
+			
+			consultarPartes : function(idPeticao) {
+				return $http.get(properties.apiUrl + '/peticoes/' + idPeticao +  '/partes');
+			},
 		};
 	});
 	

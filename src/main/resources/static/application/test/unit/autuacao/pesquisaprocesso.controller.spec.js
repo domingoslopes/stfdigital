@@ -46,7 +46,7 @@
 			var command = { 
 				indices : ['distribuicao'],
 				ordenadores : {'identificacao' : 'ASC'},
-				filtros : {'relator.codigo' : scope.ministro}
+				filtros : {'relator.codigo' : [scope.ministro]}
 			};
 			spyOn(pesquisaService, 'pesquisar').and.callFake(function() {
 				return { then : function(cb) {return cb({data : ['teste']}); } };

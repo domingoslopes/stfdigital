@@ -46,16 +46,16 @@
     		dto.filtros = {};
     		
     		if (angular.isNumber($scope.numero)) {
-    			dto.filtros.numero = $scope.numero;
+    			dto.filtros.numero = [$scope.numero];
     		}
     		if (angular.isNumber($scope.ano)) {
-    			dto.filtros.ano = $scope.ano;
+    			dto.filtros.ano = [$scope.ano];
     		}
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {
-    			dto.filtros['classeSugerida.sigla'] = $scope.classe;
+    			dto.filtros['classeSugerida.sigla'] = [$scope.classe];
     		}
     		if (angular.isObject($scope.pessoa)) {
-    			dto.filtros['partes.pessoaId.sequencial'] = $scope.pessoa.id;
+    			dto.filtros['partes.pessoaId.sequencial'] = [$scope.pessoa.id];
     		}
     		return dto;
     	}
