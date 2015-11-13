@@ -39,6 +39,7 @@ public class DistribuicaoComum extends Distribuicao {
 		
 		Validate.notEmpty(parametroDistribuicao.ministrosCanditatos(), "distribuicao.ministrosCanditatos.required");
 		Validate.notEmpty(parametroDistribuicao.ministrosImpedidos(), "distribuicao.ministrosImpedidos.required");
+		Validate.isTrue(this.validarListasMinistros(parametroDistribuicao.ministrosCanditatos(), parametroDistribuicao.ministrosImpedidos()), "distribuicao.listasMinistros.invalid");
 		
 		this.ministrosCanditatos = parametroDistribuicao.ministrosCanditatos();
 		this.ministrosImpedidos = parametroDistribuicao.ministrosImpedidos();
@@ -62,6 +63,17 @@ public class DistribuicaoComum extends Distribuicao {
 		int indice = new Random().nextInt(ministrosCanditatos.size());
 		
 		return (MinistroId)ministrosCanditatos.toArray()[indice];
+	}
+	
+	private boolean validarListasMinistros(Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos) {
+		Set<MinistroId> intersecaoCandidatoImpedido = new HashSet<MinistroId>(ministrosCanditatos);
+		Set<MinistroId> intersecaoImpedidoCandidato = new HashSet<MinistroId>(ministrosImpedidos);
+		
+		intersecaoCandidatoImpedido.retainAll(ministrosImpedidos);
+		intersecaoImpedidoCandidato.retainAll(ministrosCandidatos);
+		
+		return intersecaoCandidatoImpedido.isEmpty() &&
+				intersecaoImpedidoCandidato.isEmpty();
 	}
 	
 }
