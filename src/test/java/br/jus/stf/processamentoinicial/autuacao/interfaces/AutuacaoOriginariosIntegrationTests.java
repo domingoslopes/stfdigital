@@ -47,7 +47,6 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		StringBuilder peticaoAutuadaParaDistribuicao =  new StringBuilder();
 		peticaoAutuadaParaDistribuicao.append("{\"tipoDistribuicao\":\"COMUM\",");
 		peticaoAutuadaParaDistribuicao.append("\"peticaoId\": @,");
-		peticaoAutuadaParaDistribuicao.append("\"justificativa\":\"Sorteio aleatório.\",");
 		peticaoAutuadaParaDistribuicao.append("\"ministrosCandidatos\":[36],");
 		peticaoAutuadaParaDistribuicao.append("\"ministrosImpedidos\":[46,47,1,42,28,44,49,45,30,48]}");
 		this.peticaoAutuadaParaDistribuicao = peticaoAutuadaParaDistribuicao.toString();
