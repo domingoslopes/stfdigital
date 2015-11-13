@@ -49,12 +49,35 @@
         	var documento = recuperarDocumentoPorItem(fileItem);
         	documento.documentoTemporario = response;
         	
-        	preSign();
+        	preSign(documento.documentoTemporario);
         };
 		
-        function preSign() {
+        function PreAssinarCommand(tempDocId, certificate) {
+        	this.tempDocId = tempDocId;
+        	this.certificate = certificate;
+        }
+        
+        function preSign(docId) {
         	AssinaturaService.requestUserCertificate().then(function(certificate) {
+        		var command = new PreAssinarCommand(docId, certificate.hex)
+        		console.log(command);
+        		AssinaturaService.preSign(command).then(function(preSignatureDto) {
+        			sign(certificate, preSignatureDto);
+        		}, function(error) {
+        			
+        		});
+        	}, function(error) {
         		
+        	});
+        }
+        
+        function sign(certificate, preSignatureDto) {
+        	AssinaturaService.sign(certificate, preSignatureDto.hash, preSignatureDto.hashType).then(function(signature) {
+        		AssinaturaService.postSign(preSignatureDto.signatureContextId, signature).then(function() {
+        			
+        		}, function(error) {
+        			
+        		});
         	}, function(error) {
         		
         	});
