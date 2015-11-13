@@ -52,6 +52,9 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 	@Field(type = String, index = not_analyzed)
 	private String papel;
 	
+	@Field(type = String, index = not_analyzed)
+	private String campoAgregacao;
+	
 	public Pesquisa(final String[] indices, final Map<String, String[]> filtros) {
 		Validate.notEmpty(indices, "pesquisa.indices.required");
 		Validate.notEmpty(filtros, "pesquisa.filtros.required");
@@ -106,6 +109,15 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 	
 	public void paraPapel(String papel) {
 		this.papel = papel;
+	}
+	
+	public Pesquisa agregadoPeloCampo(String campoAgregacao) {
+		this.campoAgregacao = campoAgregacao;
+		return this;
+	}
+	
+	public String campoAgregacao(){
+		return this.campoAgregacao;
 	}
 
 	@Override
