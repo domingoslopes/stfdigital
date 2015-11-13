@@ -2,10 +2,13 @@ package br.jus.stf.plataforma.shared.certification.service;
 
 import java.io.InputStream;
 
+import org.springframework.stereotype.Service;
+
 import br.jus.stf.plataforma.shared.certification.support.AssinadorPorPartes;
 import br.jus.stf.plataforma.shared.certification.support.PreAssinaturaDto;
 import br.jus.stf.plataforma.shared.certification.support.SHA256DetachedAssinadorPorPartes;
 
+@Service
 public class AssinaturaService {
 
 	public PreAssinaturaDto preSign(InputStream documento) {
