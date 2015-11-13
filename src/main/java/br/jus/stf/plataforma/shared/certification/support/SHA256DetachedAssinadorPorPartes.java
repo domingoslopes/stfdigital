@@ -119,7 +119,7 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 			byte hash[] = messageDigest.digest();
 			return hash;
 		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Algoritmo de hash SHA-256 n�o encontrado.", e);
+			throw new RuntimeException("Algoritmo de hash SHA-256 não encontrado.", e);
 		}
 	}
 

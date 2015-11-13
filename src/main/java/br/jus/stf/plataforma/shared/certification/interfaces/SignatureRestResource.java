@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.AssinarCommand;
+import br.jus.stf.plataforma.shared.certification.interfaces.commands.PreSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.service.SignatureService;
 
@@ -35,8 +36,8 @@ public class SignatureRestResource {
 	@ApiOperation("Gera o hash do documento a ser assinado.")
 	@RequestMapping(value = "/pre-sign", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public PreSignatureDto preSign(@RequestParam("file") MultipartFile file) throws IOException {
-		return signatureService.preSign(file.getInputStream());
+	public PreSignatureDto preSign(@RequestBody PreSignCommand command) throws IOException {
+		return signatureService.preSign(command.getTempDocId(), command.getCertificate());
 	}
 	
 	@ApiOperation("Assina efetivamente o documento.")
