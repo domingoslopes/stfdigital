@@ -34,12 +34,12 @@ public abstract class AssinadorPorPartes {
 		this.hasOCSP = false;
 	}
 
-	protected abstract byte[] preGerarHashes(Certificate[] cadeia, CRL[] crls, ContextoAssinatura ca, PdfStamper stamper, PdfSignatureAppearance appearance)
+	protected abstract byte[] preGerarHashes(Certificate[] cadeia, CRL[] crls, SignatureContext ca, PdfStamper stamper, PdfSignatureAppearance appearance)
 			throws IOException, DocumentException, AssinaturaExternaException;
 
 	public abstract byte[] prepararHashParaAssinaturaExterna(byte[] dataToSign);
 
-	public byte[] preAssinar(Certificate[] cadeia, CRL[] crls, byte[] pdf, String reason, ContextoAssinatura ca) throws AssinaturaExternaException {
+	public byte[] preAssinar(Certificate[] cadeia, CRL[] crls, byte[] pdf, String reason, SignatureContext ca) throws AssinaturaExternaException {
 		try {
 			PdfReader reader = new PdfReader(pdf);
 			File arquivoTemporario = criaArquivoTemporarioParaPdfAssinado(ca);
@@ -61,10 +61,10 @@ public abstract class AssinadorPorPartes {
 		}
 	}
 
-	protected abstract void posAssinarImpl(ContextoAssinatura ca, PdfSignatureAppearance appearance, byte[] primeiroHash, String assinatura)
+	protected abstract void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, String assinatura)
 			throws AssinaturaExternaException;
 
-	public byte[] posAssinar(ContextoAssinatura ca, String assinatura) throws AssinaturaExternaException {
+	public byte[] posAssinar(SignatureContext ca, String assinatura) throws AssinaturaExternaException {
 		InputStream is = null;
 		try {
 			PdfSignatureAppearance appearance = ca.getAppearance();
@@ -130,7 +130,7 @@ public abstract class AssinadorPorPartes {
 		return dataEscolhida.toString().compareTo(dataAssinatura.toString()) < 0;
 	}
 
-	private File criaArquivoTemporarioParaPdfAssinado(ContextoAssinatura ca) throws AssinaturaExternaException {
+	private File criaArquivoTemporarioParaPdfAssinado(SignatureContext ca) throws AssinaturaExternaException {
 		try {
 			File arquivoTemporario = File.createTempFile(ca.getIdContexto(), EXTENSAO_PDF);
 			return arquivoTemporario;

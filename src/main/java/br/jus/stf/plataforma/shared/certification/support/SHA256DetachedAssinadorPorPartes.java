@@ -39,7 +39,7 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 	}
 
 	@Override
-	protected byte[] preGerarHashes(Certificate[] cadeia, CRL[] crls, ContextoAssinatura ca, PdfStamper stamper, PdfSignatureAppearance appearance)
+	protected byte[] preGerarHashes(Certificate[] cadeia, CRL[] crls, SignatureContext ca, PdfStamper stamper, PdfSignatureAppearance appearance)
 			throws AssinaturaExternaException {
 		try {
 			int tamanhoEstimado = calcularTamanhoEstimado(crls);
@@ -124,7 +124,7 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 	}
 
 	@Override
-	protected void posAssinarImpl(ContextoAssinatura ca, PdfSignatureAppearance appearance, byte[] primeiroHash, String assinatura)
+	protected void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, String assinatura)
 			throws AssinaturaExternaException {
 		try {
 			int tamanhoEstimado = ca.getTamanhoEstimado();

@@ -6,10 +6,12 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('AssinadorPdfDashletController', ['$scope', 'FileUploader', 'properties', 'AssinaturaService', function($scope, FileUploader, properties, AssinaturaService) {
+	angular.autuacao.controller('AssinadorPdfDashletController', ['$scope', 'FileUploader', 'properties', 'AssinaturaService', function($scope, FileUploader, properties, AssinaturaService) {
+		
+		$scope.documentos = [];
 		
 		var uploader = $scope.uploader = new FileUploader({
-            url: properties.apiUrl + '/documentos/upload',
+            url: properties.apiUrl + '/certification/upload-to-sign',
             formData: [{name: "file"}],
             filters: [{
 		    	name: 'arquivos-pdf',
@@ -25,7 +27,7 @@
 		    	name: 'tamanho-maximo',
 		    	fn: function(file) {
 		    		if (file.size / 1024 / 1024 > 100) {
-		    			messages.error('Não foi possível anexar o arquivo "' + file.name + '". <br />O tamanho do arquivo excede 10mb.');
+		    			messages.error('Não foi possível anexar o arquivo "' + file.name + '". <br />O tamanho do arquivo excede 100mb.');
 		    			return false;
 		    		}
 		    		return true;
@@ -33,6 +35,41 @@
 		    }]
         });
 		
+		uploader.onAfterAddingFile = function(fileItem) {
+            var documento = {
+				fileItem : fileItem,
+				documentoTemporario : null,
+				tipo : null
+            };
+            $scope.documentos.push(documento);
+			fileItem.upload();
+		};
+		
+        uploader.onCompleteItem = function(fileItem, response) {
+        	var documento = recuperarDocumentoPorItem(fileItem);
+        	documento.documentoTemporario = response;
+        	
+        	preSign();
+        };
+		
+        function preSign() {
+        	AssinaturaService.requestUserCertificate().then(function(certificate) {
+        		
+        	}, function(error) {
+        		
+        	});
+        }
+        
+        function recuperarDocumentoPorItem(item) {
+			var d = null;
+			angular.forEach($scope.documentos, function(documento) {
+				if (documento.fileItem == item) {
+					d = documento;
+				}
+			});
+			return d;
+		}
+        
 	}]);
 	
 })();
