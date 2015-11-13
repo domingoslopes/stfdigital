@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.resources.commands;
+package br.jus.stf.plataforma.shared.certification.interfaces.commands;
 
 public class AssinarCommand {
 

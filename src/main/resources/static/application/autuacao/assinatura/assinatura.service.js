@@ -7,7 +7,18 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('AssinaturaService', ['$http', function($http) {
+	angular.autuacao.service('AssinaturaService', ['$http', '$q', function($http, $q) {
+		var crypto = hwcrypto;
+		
+		this.requestUserCertificate = function() {
+			return $q(function(resolve, reject) {
+				crypto.getCertificate({lang: 'en'}).then(function(response) {
+					console.log(response);
+				}, function(err) {
+					console.log(err);
+				});
+			});
+		};
 		
 	}]);
 	
