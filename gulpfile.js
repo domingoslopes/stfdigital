@@ -259,6 +259,7 @@ gulp.task('serve', ['build'], function() {
 	browserSync({
 		notify: false,
 		logPrefix: pkg.name,
+		https: true,
 		server: {
 			baseDir : config.base,
 			middleware: [historyApiFallback()],

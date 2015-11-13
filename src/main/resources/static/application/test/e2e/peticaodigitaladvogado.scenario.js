@@ -138,7 +138,7 @@
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(browser.isElementPresent(principalPage.titleGestaoAutuacao)).toBe(true)
+			expect(browser.isElementPresent(principalPage.titleGestaoAutuacao)).toBe(true);
 		});
 		
 		it ('Deveria exibir a dashlet do papel cartorária', function(){
