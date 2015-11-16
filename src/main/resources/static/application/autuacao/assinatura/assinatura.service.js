@@ -10,11 +10,8 @@
 	angular.autuacao.service('AssinaturaService', ['properties', '$http', '$q', function(properties, $http, $q) {
 		var crypto = hwcrypto;
 		
-		if (crypto.use('auto')) {
-			console.log('backend detectado com sucesso');
-		}
-		
 		this.requestUserCertificate = function() {
+			crypto.use('auto');
 			return $q(function(resolve, reject) {
 				crypto.getCertificate({lang: 'en'}).then(function(response) {
 					console.log(response);
