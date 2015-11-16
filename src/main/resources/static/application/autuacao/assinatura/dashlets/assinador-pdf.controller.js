@@ -45,13 +45,19 @@
 			fileItem.upload();
 		};
 		
+		var signingCertificate;
+		
         uploader.onCompleteItem = function(fileItem, response) {
         	var documento = recuperarDocumentoPorItem(fileItem);
         	documento.documentoTemporario = response;
         	
-        	preSign(documento.documentoTemporario);
+        	sign(documento.documentoTemporario);
         };
-		
+
+        function sign(docId) {
+        	
+        }
+        
         function PreAssinarCommand(tempDocId, certificate) {
         	this.tempDocId = tempDocId;
         	this.certificate = certificate;
@@ -73,11 +79,12 @@
         
         function sign(certificate, preSignatureDto) {
         	AssinaturaService.sign(certificate, preSignatureDto.hash, preSignatureDto.hashType).then(function(signature) {
-        		AssinaturaService.postSign(preSignatureDto.signatureContextId, signature).then(function() {
-        			
-        		}, function(error) {
-        			
-        		});
+        		AssinaturaService.sign(certificate, preSignatureDto.hash, preSignatureDto.hashType);
+//        		AssinaturaService.postSign(preSignatureDto.signatureContextId, signature).then(function() {
+//        			
+//        		}, function(error) {
+//        			
+//        		});
         	}, function(error) {
         		
         	});
