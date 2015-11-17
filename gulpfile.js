@@ -259,7 +259,7 @@ gulp.task('serve', ['build'], function() {
 	browserSync({
 		notify: false,
 		logPrefix: pkg.name,
-		https: true,
+//		https: true,
 		/*server: {
 			baseDir : config.base,
 			middleware: [historyApiFallback()],
@@ -267,7 +267,7 @@ gulp.task('serve', ['build'], function() {
 		},*/
 		startPath: "/login",
 		proxy: {
-			target: "http://localhost:8080",
+			target: "https://localhost:8443",
 			//middleware: [historyApiFallback()],
 			ws: true
 		}
