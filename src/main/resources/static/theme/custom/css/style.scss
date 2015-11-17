@@ -62,3 +62,7 @@ body {
 	overflow: auto;
 	max-height: 500px;
 }
+
+#ministros-impedidos [left-list-rows] select[multiple] {
+	height : 203px !important;
+}

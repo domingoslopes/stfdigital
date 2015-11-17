@@ -19,18 +19,20 @@
 						<div class="circle" data-toggle="tooltip" title=""
 							data-container="body" data-original-title="Label"></div>
 						<div class="card-header clearfix">
-							<h5>Ministro Relator</h5>
-                    		<h6>Para qual ministro você deseja distribuir esse processo? ({{relator}})</h6>
+							<h5>Tipo de distribuição</h5>
+                    		<h6>Qual o tipo de distribuição será atribuída para a petição</h6>
 						</div>
                 		<div class="card-description">
-		                    <select ui-select2 id="relator" ng-model="relator" data-placeholder="Selecione o Relator" style="width: 250px;">
-		                        <option value=""></option>
-		                        <option ng-repeat="ministro in ministros" value="{{ministro.codigo}}">{{ministro.nome}}</option>
+		                    <select ui-select2 id="tipoDistribuicao" ng-model="tipoDistribuicao" data-placeholder="Selecione o tipo de distribuição" style="width: 250px;" 
+		                    	ng-change="verificaImpedimentoMinistro(tipoDistribuicao)">
+			                        <option value=""></option>
+			                        <option ng-repeat="tipo in tiposDistribuicao" value="{{tipo.id}}" >{{tipo.nome}}</option>
 		                    </select>
                 		</div>
                 	</div>
                 </div>
-                <div class="col-md-6" ng-show="partes.length > 0">
+                
+                <div class="col-md-6" ng-show="partes.length > 0 && exibePesquisaProcessoPrevencao == true">
 					<div class="card share" data-social="item" style="width: 100%">
 						<div class="circle" data-toggle="tooltip" title=""
 							data-container="body" data-original-title="Label"></div>
@@ -39,42 +41,104 @@
                     		<h6>Todas as partes envolvidas na petição</h6>
 						</div>
                 		<div class="card-description">
-		                   <table class="table table-condensed table-hover">
-								<tbody>
-									<tr ng-repeat="parte in partes">
-										<td class="font-montserrat fs-12 col-lg-12">
-											<a ng-click="consultarProcesso(parte.id, parte.objeto.nome)">{{parte.objeto.nome}}</a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+		                  	<div class="dd">
+		                  		<ol class="dd-list">
+		                  			<li class="dd-item" ng-repeat="parte in partes">
+		                  				<div class="dd-handle">
+			                  				<a ng-click="consultarProcesso(parte)">{{parte.objeto.nome}}</a>
+		                  				</div>
+		                  				<ol class="dd-list">
+		                  					<li class="dd-item" ng-repeat="processoP in parte.processosParte">
+		                  						<div class="dd-handle">
+					                  				<a ng-click="adicionarProcessoPreventoLista(processoP)">{{processoP.objeto.identificacao}}</a>
+				                  				</div>
+		                  					</li>
+		                  				</ol>
+		                  			</li>		             
+		                  		</ol>
+		                  	</div>
                 		</div>
                 	</div>
                 </div>
+  			</div>	
+			<div class="row">
+                
+  				<div class="col-md-6">
+	  				<div id="ministros-impedidos" ng-show="exibePainelMinistroImpedimento == true">
+	               		<div class="card share" data-social="item" style="width: 100%">
+							<div class="circle" data-toggle="tooltip" title=""
+								data-container="body" data-original-title="Label"></div>
+							<div class="card-header clearfix">
+								<h5>Ministros Impedidos</h5>
+	                    		<h6>Selecione os ministros impedidos</h6>
+							</div>
+	                		<div class="card-description">
+	  							<picklist left-list-rows="ministrosCandidados" display-fn="formatarNomeMinistro(data)" right-list-rows="ministrosImpedidos" list-width="200" show-move-all-buttons/>
+	  						</div>
+	  					</div>
+	  				</div>
+  					<div ng-show="exibePesquisaProcessoPrevencao == true">
+	               		<div class="card share" data-social="item" style="width: 100%">
+							<div class="circle" data-toggle="tooltip" title=""
+								data-container="body" data-original-title="Label"></div>
+							<div class="card-header clearfix">
+								<h5>Pesquisa de processos para prevenção</h5>
+	                    		<h6>Selecione aqui os processos que serão anexados a petição para prevenção</h6>
+							</div>
+	                		<div class="card-description">
+								<div class="form-group form-group-default">
+									<pesquisa id="processo" modelo="processo" configuracao="pesquisaProcesso" class="full-width"/>
+								</div>
+	  						</div>
+	  					</div>
+	  				</div>
+  				</div>
+  				<div class="col-md-6">
+	  				<div ng-show="processosPreventos.length > 0 && exibePesquisaProcessoPrevencao == true">
+						<div class="card share" data-social="item" style="width: 100%">
+							<div class="circle" data-toggle="tooltip" title=""
+								data-container="body" data-original-title="Label"></div>
+							<div class="card-header clearfix">
+								<h5>Processos relacionados para prevenção</h5>
+	                    		<h6>Lista de processos adicionados que farão parte da prevenção</h6>
+							</div>
+	                		<div class="card-description">
+			                    <table class="table table-condensed table-hover">
+									<tbody>
+										<tr ng-repeat="processo in processosPreventos">
+											<td>
+												<b>{{processo.objeto.identificacao}}</b>
+											</td>
+											<td>
+												<a title="Remover processo" id= "btnRemoveProcesso" data-placement="top" class="close" ng-click="removerProcessoPreventoLista($index)">
+			                                        <span class="glyphicon glyphicon-trash"></span>
+			                                    </a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+	                		</div>
+	                	</div>
+	                </div>
+	            </div>
 			</div>
-			<div class="row" ng-show="processosParte.length > 0">
-				<div class="col-md-6">
+			<div class="row" ng-show="exibePesquisaProcessoPrevencao == true || exibePainelMinistroImpedimento == true">
+				<div class="col-md-12">
 					<div class="card share" data-social="item" style="width: 100%">
 						<div class="circle" data-toggle="tooltip" title=""
 							data-container="body" data-original-title="Label"></div>
 						<div class="card-header clearfix">
-							<h5>Processos relacionados da parte "{{nomeParteRelacionada}}"</h5>
-                    		<h6>Processos relacionada de acordo com a parte selecionada</h6>
+							<h5>Justificativa</h5>
+                    		<h6>Digite uma justificativa caso seja necessário</h6>
 						</div>
                 		<div class="card-description">
-		                    <table class="table table-condensed table-hover">
-								<tbody>
-									<tr ng-repeat="processo in processosParte">
-										<td class="font-montserrat fs-12 col-lg-12">
-											<a>{{processo.objeto.identificacao}}</a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-                		</div>
-                	</div>
-                </div>
-             </div>
+							<div class="form-group form-group-default">
+								<textarea class="form-control" rows="12" ng-model="justificativa" autofocus></textarea> 
+							</div>
+  						</div>
+  					</div>
+				</div>
+			</div>
             <p>
                 <input id="finalizar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Distribuir">
             </p>
