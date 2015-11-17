@@ -20,7 +20,7 @@
 		client.heartbeat.incoming = 25000;
 		
 		socket.onheartbeat = function() {
-			$http.get(properties.apiUrl + '/info');
+			$http.get(properties.apiUrl + '/management/info');
 		};
 		
 		this.registrarNotificacao = function(cb) {
