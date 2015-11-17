@@ -5,20 +5,20 @@ import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
 import static org.elasticsearch.search.sort.SortOrder.ASC;
 import static org.elasticsearch.search.sort.SortOrder.DESC;
 
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
-import java.util.Arrays;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -28,11 +28,9 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Repository;
 
-
 import br.jus.stf.plataforma.pesquisas.domain.model.query.Pesquisa;
 import br.jus.stf.plataforma.pesquisas.domain.model.query.PesquisaRepository;
 import br.jus.stf.plataforma.pesquisas.domain.model.query.Resultado;
-
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -60,7 +58,7 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 		Optional.ofNullable(pageable).ifPresent(builder::withPageable);
 		return executeQuery(builder.build());
 	}
-
+	
 	/**
 	 * Monta um query com base na pesquisa
 	 * 
@@ -72,6 +70,10 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 		builder.withFields(pesquisa.campos());
 		builder.withTypes(pesquisa.tipos());
 		builder.withIndices(pesquisa.indices());
+		
+		if (pesquisa.campoAgregacao() != null)
+			builder.addAggregation(AggregationBuilders.terms("aggs").field(pesquisa.campoAgregacao()).size(20));
+		
 		builder.withSearchType(DFS_QUERY_THEN_FETCH);
 		Map<String, String> ordenadores = pesquisa.ordenadores();
 		ordenadores.keySet().forEach(ordenador -> {
@@ -125,7 +127,16 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 	 * @return o resultado
 	 */
 	private List<Resultado> executeQuery(NativeSearchQuery query) {
-		return elasticsearchTemplate.query(query, new ResultadoPesquisa());
+		
+		List<Resultado> resultado = null;
+		
+		if (query.getAggregations() == null){
+			resultado = elasticsearchTemplate.query(query, new ResultadoPesquisa());
+		} else {
+			resultado = elasticsearchTemplate.query(query, new ResultadoPesquisaAgregada());
+		}
+
+		return resultado;
 	}
 	
 	/**
@@ -142,6 +153,28 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
+			return documentos;
+		}
+	}
+	
+	private final class ResultadoPesquisaAgregada implements ResultsExtractor<List<Resultado>> {
+		@Override
+		public List<Resultado> extract(SearchResponse response) {
+			List<Resultado> documentos = new ArrayList<Resultado>();
+						
+			try {
+				Terms aggs = response.getAggregations().get("aggs"); 
+				
+				for (Terms.Bucket bucket : aggs.getBuckets()) {
+					Map<String, Object> campos = new LinkedHashMap<String, Object>();
+					campos.put(bucket.getKey(), bucket.getDocCount());
+					
+					documentos.add(new Resultado("1", "ValoresAgregados", campos));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			return documentos;
 		}
 	}

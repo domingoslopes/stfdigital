@@ -23,24 +23,16 @@ public class DistribuirPeticaoCommand {
 	@ApiModelProperty(value = "Id da petição distribuída.", required=true)
 	private Long peticaoId;
 	
-	@NotNull
-	@ApiModelProperty(value = "A sigla indicando a classe processual.", required=true)
-	private String classeProcessual;
-	
-	@NotNull
-	@ApiModelProperty(value = "Uma justificativa para distribuição.", required=true)
+	@ApiModelProperty(value = "Uma justificativa para distribuição.")
 	private String justificativa;
 	
-	@NotNull
-	@ApiModelProperty(value = "Lista dos ministros candidatos à relatoria.", required=true)
+	@ApiModelProperty(value = "Lista dos ministros candidatos à relatoria.")
 	private Set<Long> ministrosCandidatos;
 	
-	@NotNull
-	@ApiModelProperty(value = "Lista dos ministros impedidos de relatar o processo.", required=true)
+	@ApiModelProperty(value = "Lista dos ministros impedidos de relatar o processo.")
 	private Set<Long> ministrosImpedidos;
 	
-	@NotNull
-	@ApiModelProperty(value = "Lista dos processos que embasam a prevenção.", required=true)
+	@ApiModelProperty(value = "Lista dos processos que embasam a prevenção.")
 	private Set<Long> processosPreventos;
 
 	public String getTipoDistribuicao() {
@@ -49,10 +41,6 @@ public class DistribuirPeticaoCommand {
 	
 	public Long getPeticaoId() {
 		return this.peticaoId;
-	}
-	
-	public String getClasseProcessual() {
-		return this.classeProcessual;
 	}
 	
 	public String getJustificativa() {

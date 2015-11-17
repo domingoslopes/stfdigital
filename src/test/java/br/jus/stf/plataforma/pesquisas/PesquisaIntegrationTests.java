@@ -43,7 +43,7 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 	@Test
 	public void pesquisar() throws Exception {
 		String jsonProcesso = "{\"id\":{\"sequencial\":123},\"classe\":{\"sigla\":\"HC\"},\"numero\":123456,\"identificacao\":\"HC123456\"}";
-
+		
 		IndexQuery query = new IndexQueryBuilder()
 				.withIndexName("teste-distribuicao")
 				.withType("Processo")
@@ -54,12 +54,54 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		
 		elasticsearchTemplate.refresh("teste-distribuicao", true);
 
-		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": \"HC\"}, \"campos\": [\"classe.sigla\"] }"))
+		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": [\"HC\"]}, \"campos\": [\"classe.sigla\"] }"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].tipo", is("Processo")))
-				.andExpect(jsonPath("$[0].objeto['classe.sigla']", is("HC")));
+ 				.andExpect(jsonPath("$[0].objeto['classe.sigla']", is("HC")));
 		
 		elasticsearchTemplate.deleteIndex("teste-distribuicao");
 	}
 
+	@Test
+	public void pesquisarComAgregacao() throws Exception {
+		
+		String jsonProcessoAutuado1 = "{\"identificadorPeticao\":\"123/2015\",\"classeProcessual\":\"ADI\",\"mesAutuacao\":5}";
+		String jsonProcessoAutuado2 = "{\"identificadorPeticao\":\"456/2015\",\"classeProcessual\":\"ADI\",\"mesAutuacao\":5}";
+		String jsonProcessoAutuado3 = "{\"identificadorPeticao\":\"789/2015\",\"classeProcessual\":\"HC\",\"mesAutuacao\":5}";
+
+		IndexQuery query1 = new IndexQueryBuilder()
+				.withIndexName("quantidade-autuacoes")
+				.withType("QuantidadeAtuacoes")
+				.withSource(jsonProcessoAutuado1)
+				.withId("123")
+				.build();
+		elasticsearchTemplate.index(query1);
+		elasticsearchTemplate.refresh("quantidade-autuacoes", true);
+		
+		IndexQuery query2 = new IndexQueryBuilder()
+		.withIndexName("quantidade-autuacoes")
+			.withType("QuantidadeAtuacoes")
+			.withSource(jsonProcessoAutuado2)
+			.withId("456")
+			.build();
+		elasticsearchTemplate.index(query2);
+		elasticsearchTemplate.refresh("quantidade-autuacoes", true);
+		
+		IndexQuery query3 = new IndexQueryBuilder()
+		.withIndexName("quantidade-autuacoes")
+			.withType("QuantidadeAtuacoes")
+			.withSource(jsonProcessoAutuado3)
+			.withId("789")
+			.build();
+		elasticsearchTemplate.index(query3);
+		elasticsearchTemplate.refresh("quantidade-autuacoes", true);
+		
+		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"quantidade-autuacoes\"], \"filtros\": {\"mesAutuacao\": [5]}, \"campos\": [\"classeProcessual\"], \"campoAgregacao\": \"classeProcessual\" }"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].tipo", is("ValoresAgregados")))
+			.andExpect(jsonPath("$[0].objeto['ADI']", is(2)))
+			.andExpect(jsonPath("$[1].objeto['HC']", is(1)));
+
+		elasticsearchTemplate.deleteIndex("quantidade-autuacoes");
+	}
 }

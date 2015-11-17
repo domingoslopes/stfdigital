@@ -12,6 +12,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -72,6 +74,10 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	@JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", nullable = false)
 	private Set<Distribuicao> distribuicoes = new HashSet<Distribuicao>(0);
 	
+	@Column(name = "TIP_SITUACAO")
+	@Enumerated(EnumType.STRING)
+	private ProcessoSituacao situacao;
+	
 	@Transient
 	private String identificacao;
 	
@@ -87,12 +93,13 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Processo(final ProcessoId id, final ClasseId classe, final Long numero, final MinistroId relator, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas) {
+	public Processo(final ProcessoId id, final ClasseId classe, final Long numero, final MinistroId relator, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao) {
 		Validate.notNull(id, "processo.id.required");
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(relator, "processo.relator.required");
 		Validate.notNull(peticao, "processo.peticao.required");
+		Validate.notNull(situacao, "processo.situacao.required");
 		
 		this.id = id;
 		this.classe = classe;
@@ -102,6 +109,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 		this.partes.addAll(partes);
 		this.pecas.addAll(pecas);
 		this.identificacao = montarIdentificacao();
+		this.situacao = situacao;
 	}
 
 	public ProcessoId id() {
@@ -138,6 +146,10 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	
 	public Set<Distribuicao> distribuicoes() {
 		return Collections.unmodifiableSet(this.distribuicoes);
+	}
+	
+	public ProcessoSituacao situacao() {
+		return this.situacao;
 	}
 	
 	/**

@@ -45,9 +45,9 @@ public class PesquisaServiceFacade {
 	 * @return uma lista de dtos com o resultado
 	 */
 	public List<ResultadoDto> pesquisar(String[] campos, String[] tipos, String[] indices, 
-			Map<String, String[]> filtros, Map<String, String> ordenadores) {
+			Map<String, String[]> filtros, Map<String, String> ordenadores, String campoAgregacao) {
 		Pesquisa pesquisa = new Pesquisa(indices, filtros)
-			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores);
+			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores).agregadoPeloCampo(campoAgregacao);
 		return resultadoDtoAssembler.toDto(pesquisaRepository.pesquisar(pesquisa, null));
 	}
 	
