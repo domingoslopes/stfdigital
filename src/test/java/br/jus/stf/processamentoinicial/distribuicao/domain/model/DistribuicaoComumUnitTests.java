@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
@@ -61,6 +63,67 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(47L));
 		ministrosImpedidos.add(new MinistroId(1L));
 		
+		PeticaoFisica peticao = preparaPeticao();
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next());
+		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
+		Distribuicao distribuicao = new DistribuicaoComum(parametros);
+		MinistroId relator = distribuicao.executar().relator();
+		
+		Assert.assertTrue(ministrosCanditatos.contains(relator));
+		Assert.assertFalse(ministrosImpedidos.contains(relator));
+		
+		verify(mockProcessoRepository, times(1)).nextId();
+		verify(mockProcessoRepository, times(1)).nextNumero(new ClasseId("ADI"));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void tentaDistribuirComIntersecaoEntreListasMinistros() {
+		Set<MinistroId> ministrosCanditatos = new HashSet<MinistroId>();
+		
+		ministrosCanditatos.add(new MinistroId(42L));
+		ministrosCanditatos.add(new MinistroId(28L));
+		ministrosCanditatos.add(new MinistroId(44L));
+		ministrosCanditatos.add(new MinistroId(49L));
+		ministrosCanditatos.add(new MinistroId(36L));
+		ministrosCanditatos.add(new MinistroId(45L));
+		ministrosCanditatos.add(new MinistroId(30L));
+		ministrosCanditatos.add(new MinistroId(48L));
+		
+		Set<MinistroId> ministrosImpedidos = new HashSet<MinistroId>();
+		
+		ministrosImpedidos.add(new MinistroId(46L));
+		ministrosImpedidos.add(new MinistroId(47L));
+		ministrosImpedidos.add(new MinistroId(48L));
+		
+		PeticaoFisica peticao = preparaPeticao();
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next());
+		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
+		new DistribuicaoComum(parametros);
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void tentaDistribuirComMinistrosImpedidosNulo() {
+		Set<MinistroId> ministrosCanditatos = new HashSet<MinistroId>();
+		
+		ministrosCanditatos.add(new MinistroId(42L));
+		ministrosCanditatos.add(new MinistroId(28L));
+		ministrosCanditatos.add(new MinistroId(44L));
+		ministrosCanditatos.add(new MinistroId(49L));
+		ministrosCanditatos.add(new MinistroId(36L));
+		ministrosCanditatos.add(new MinistroId(45L));
+		ministrosCanditatos.add(new MinistroId(30L));
+		ministrosCanditatos.add(new MinistroId(48L));
+		ministrosCanditatos.add(new MinistroId(46L));
+		ministrosCanditatos.add(new MinistroId(47L));
+		ministrosCanditatos.add(new MinistroId(1L));
+		
+		PeticaoFisica peticao = preparaPeticao();
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next());
+		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, null, null);
+		new DistribuicaoComum(parametros);
+	}
+
+	private PeticaoFisica preparaPeticao() {
 		PeticaoFisica peticao = new PeticaoFisica(new PeticaoId(1L), 1L, "DISTRIBUIDOR", 1, 1, FormaRecebimento.SEDEX, "BR123456789AD");
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
 		
@@ -69,14 +132,7 @@ public class DistribuicaoComumUnitTests {
 		peticao.preautuar(new ClasseId("ADI"));
 		peticao.aceitar(new ClasseId("ADI"));
 		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(1L));
-		
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
-		Distribuicao distribuicao = new DistribuicaoComum(parametros);
-		MinistroId relator = distribuicao.executar().relator();
-		
-		Assert.assertTrue(ministrosCanditatos.contains(relator));
-		Assert.assertFalse(ministrosImpedidos.contains(relator));
+		return peticao;
 	}
 	
 }

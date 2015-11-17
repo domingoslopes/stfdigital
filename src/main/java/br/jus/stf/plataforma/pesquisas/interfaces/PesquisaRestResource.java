@@ -35,10 +35,12 @@ public class PesquisaRestResource {
 	@ApiOperation("Pesquisa genérica de objetos indexados")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public List<ResultadoDto> pesquisar(@RequestBody @Valid PesquisarCommand command, BindingResult result) {
+		
 		if (result.hasErrors()) {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
-		return pesquisaServiceFacade.pesquisar(command.getCampos(), command.getTipos(), command.getIndices(), command.getFiltros(), command.getOrdenadores());
+		
+		return pesquisaServiceFacade.pesquisar(command.getCampos(), command.getTipos(), command.getIndices(), command.getFiltros(), command.getOrdenadores(), command.getCampoAgregacao());
 	}
 	
 	@ApiOperation("Pesquisa genérica de objetos indexados")
