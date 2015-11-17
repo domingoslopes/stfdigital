@@ -260,10 +260,16 @@ gulp.task('serve', ['build'], function() {
 		notify: false,
 		logPrefix: pkg.name,
 		https: true,
-		server: {
+		/*server: {
 			baseDir : config.base,
 			middleware: [historyApiFallback()],
 			port : 3000
+		},*/
+		startPath: "/login",
+		proxy: {
+			target: "http://localhost:8080",
+			//middleware: [historyApiFallback()],
+			ws: true
 		}
 	});
 	
