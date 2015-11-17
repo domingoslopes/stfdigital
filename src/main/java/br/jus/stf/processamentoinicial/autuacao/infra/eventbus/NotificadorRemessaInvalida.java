@@ -47,7 +47,7 @@ public class NotificadorRemessaInvalida implements Consumer<Event<RemessaInvalid
 			NotificarCommand command = this.criarCommand(peticao);
 			this.notificacaoRestResource.notificar(command, new BeanPropertyBindingResult(command, "notificarCommand"));
 		} catch (Exception e) {
-			throw new RuntimeException("Erro ao enviar notificação.");
+			throw e;
 		}
 	}
 

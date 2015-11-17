@@ -23,7 +23,6 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -54,9 +53,6 @@ public class PeticaoApplicationService {
 	
 	@Autowired
 	private PeticaoApplicationEvent peticaoApplicationEvent;
-	
-	@Autowired
-	private ProcessoRepository processoRepository;
 	
 	@Autowired
 	private DocumentoAdapter documentoAdapter;
