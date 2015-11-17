@@ -9,14 +9,15 @@
 	'use strict';
 
 	angular.element(document).ready(function() {
-		// Para rodar a aplicação sem acesso ao backend, altere o valor abaixo de 'app' para 'appDev'
 		angular.bootstrap(document, ['app']);
 	});
 
-	angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'angularFileUpload'])
+	angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'properties', 'ui.select2', 'ngSanitize', 'ngCookies', 'angularFileUpload'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
+		$httpProvider.interceptors.push('security-interceptor');
 		$httpProvider.interceptors.push('error-handler');
+		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 		$urlRouterProvider.otherwise('/dashboard');
 		$locationProvider.html5Mode(true);
 		$logProvider.debugEnabled(true);

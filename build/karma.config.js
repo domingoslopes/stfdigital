@@ -16,6 +16,7 @@ module.exports = {
 	files : [
 	 	baseDir + '/vendor/jquery/dist/jquery.js',
 		baseDir + '/vendor/angular/angular.js',
+		baseDir + '/vendor/angular-cookies/angular-cookies.js',
 		baseDir + '/vendor/angular-mocks/angular-mocks.js',
 		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
 		baseDir + '/vendor/angular-ui-router/release/angular-ui-router.js',

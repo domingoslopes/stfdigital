@@ -38,7 +38,7 @@ public class DistribuicaoComum extends Distribuicao {
 		super(parametroDistribuicao);
 		
 		Validate.notEmpty(parametroDistribuicao.ministrosCanditatos(), "distribuicao.ministrosCanditatos.required");
-		Validate.notEmpty(parametroDistribuicao.ministrosImpedidos(), "distribuicao.ministrosImpedidos.required");
+		Validate.notNull(parametroDistribuicao.ministrosImpedidos(), "distribuicao.ministrosImpedidos.required");
 		Validate.isTrue(this.validarListasMinistros(parametroDistribuicao.ministrosCanditatos(), parametroDistribuicao.ministrosImpedidos()), "distribuicao.listasMinistros.invalid");
 		
 		this.ministrosCanditatos = parametroDistribuicao.ministrosCanditatos();
