@@ -20,22 +20,37 @@
 	
 	var PreautuacaoPage = require('./pages/preautuacao.page');
 	
+	var LoginPage = require('./pages/login.page');
+	
 	var principalPage;
+	
+	var loginPage;
 	
 	var pos;
 	
 	var peticaoId;
+	
+	var login = function(user) {
+		browser.ignoreSynchronization = true;
+		if (!loginPage) loginPage = new LoginPage();
+		loginPage.login(user);
+		expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+		browser.ignoreSynchronization = false;
+	};
 	
 	describe('Autuação de Petições Físicas Originárias:', function() {
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
 		});
+		
+		it('Deveria logar como recebedor', function() {
+			login('recebedor');
+		});
 
 		it('Deveria navegar para a página de envio de petições físicas', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
-			principalPage.login('recebedor');
 			
 			// Iniciando o Processo de Remessa Físca
 			principalPage.iniciarProcesso('link_registrar_peticao_fisica');
@@ -59,7 +74,15 @@
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			principalPage.login('preautuador');
+			loginPage.logout();
+		    
+		});
+		
+		it('Deveria logar como preautuador', function() {
+			login('preautuador');
+		});
+
+		it('Deveria pré-atuar como válida a petição recebida', function() {
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
@@ -70,10 +93,6 @@
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #' + peticaoId);
 		    });
 		    
-		});
-		
-
-		it('Deveria pré-atuar como válida a petição recebida', function() {
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/preautuacao/);
@@ -84,11 +103,12 @@
 			
 			preautuacaoPage.finalizar();
 			
-			//Seta o papel autuador
-			principalPage.login('autuador');
-			
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			loginPage.logout();
 		    
+		});
+		
+		it('Deveria logar como autuador', function() {
+			login('autuador');
 		});
 		
 		it('Deveria atuar como válida a petição física recebida', function() {
@@ -104,8 +124,15 @@
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-		    principalPage.login('distribuidor');
-		    
+		    loginPage.logout();
+		});
+		
+		it('Deveria logar como distribuidor', function() {
+			login('distribuidor');
+		});
+		
+		it('Deveria distribuir a petição física autuada', function() {
+			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
@@ -114,10 +141,6 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-		    
-		});
-		
-		it('Deveria distribuir a petição física autuada', function() {
 			
 		    principalPage.executarTarefa();
 
@@ -131,8 +154,7 @@
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			//Seta o papel recebedor
-			principalPage.login('recebedor');
+			loginPage.logout();
 		}); 
 		
 	});

@@ -15,6 +15,13 @@
 		var subscription = null;
 		var callbackRegistrarNotificacao;
 		
+		client.heartbeat.outgoing = 25000;
+		client.heartbeat.incoming = 25000;
+		
+		socket.onheartbeat = function() {
+			$http.get(properties.apiUrl + '/info');
+		};
+		
 		this.registrarNotificacao = function(cb) {
 			callbackRegistrarNotificacao = cb;
 			conectar();
@@ -87,7 +94,7 @@
 		};
 		
 		var pararNotificacoes = function() {
-			if (connected && subscription != null) {
+			if (connected && subscription !== null) {
 				subscription.unsubscribe();
 			}
 		};
@@ -131,6 +138,6 @@
                 timeout: 6000,
                 type: "info"
             }).show();
-		}
+		};
 	}]);
 })();

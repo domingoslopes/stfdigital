@@ -16,22 +16,37 @@
 	
 	var DistribuicaoPage = require('./pages/distribuicao.page');
 	
+	var LoginPage = require('./pages/login.page');
+	
 	var principalPage;
+	
+	var loginPage;
 	
 	var pos;
 	
 	var peticaoId;
 	
+	var login = function(user) {
+		browser.ignoreSynchronization = true;
+		if (!loginPage) loginPage = new LoginPage();
+		loginPage.login(user);
+		expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+		browser.ignoreSynchronization = false;
+	};
+		
 	describe('Autuação de Petições Digitais Originárias por Órgãos:', function() {
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
 		});
+		
+		it('Deveria logar como representante', function() {
+			login('representante');
+		});
 
 		it('Deveria navegar para a página de envio de petições digitais por órgãos', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
-			principalPage.login('representante');
 			
 			// Verificando se a Home Page tem conteúdo...
 			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
@@ -71,7 +86,14 @@
 			
 			expect(principalPage.dashletMinhasPeticoes.count()).toEqual(1);
 			
-			principalPage.login('autuador');
+		    loginPage.logout();
+		});
+		
+		it('Deveria logar como autuador', function() {
+			login('autuador');
+		});
+		
+		it('Deveria atuar como válida a petição recebida com órgão', function() {
 			
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
@@ -81,11 +103,7 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #' + peticaoId);
 		    });
-		    
-		});
-		
-
-		it('Deveria atuar como válida a petição recebida com órgão', function() {
+			
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
@@ -97,13 +115,16 @@
 			autuacaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-		    
+			
+		    loginPage.logout();
+		});
+		
+		it('Deveria logar como distribuidor', function() {
+			login('distribuidor');
 		});
 
 		it('Deveria distribuir a petição autuada com órgão', function() {
-			
-		    principalPage.login('distribuidor');
-		    
+					    
 		    expect(principalPage.tarefas().count()).toEqual(1);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
@@ -129,6 +150,8 @@
 			distribuicaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			loginPage.logout();
 		}); 
 
 	});
