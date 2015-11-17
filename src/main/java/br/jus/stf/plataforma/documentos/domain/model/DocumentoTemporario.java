@@ -19,7 +19,6 @@ import br.jus.stf.shared.stereotype.ValueObject;
  */
 public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 
-	private static final long serialVersionUID = -3725370010702512231L;
 	private static String FILE_NAME_PREFFIX = "_DocTemp_";
 	
 	private Long tamanho;
@@ -38,7 +37,7 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 			tempFile = File.createTempFile(FILE_NAME_PREFFIX, extractExtension(file.getOriginalFilename()));
 			file.transferTo(tempFile);
 		} catch (IllegalStateException | IOException e) {
-			throw new RuntimeException(e);
+			throw new DocumentoTempRuntimeException(e);		
 		}
 		return tempFile;
 	}
@@ -87,8 +86,13 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 		
 		DocumentoTemporario other = (DocumentoTemporario) obj;
 		return sameValueAs(other);

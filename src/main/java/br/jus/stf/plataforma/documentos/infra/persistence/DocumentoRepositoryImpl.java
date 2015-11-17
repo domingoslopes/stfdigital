@@ -56,7 +56,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 					.addCriteria(Criteria.where("_id").is(new ObjectId(documento.numeroConteudo()))));
 			
 			return gridFile.getInputStream();
-		} catch (Throwable t) {
+		} catch (Exception t) {
 			throw new RuntimeException("Não foi possível carregar o stream do arquivo ", t);
 		}
 	}
