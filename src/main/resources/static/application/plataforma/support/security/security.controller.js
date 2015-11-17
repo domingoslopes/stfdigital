@@ -16,14 +16,7 @@
 		}
 		
 		$scope.papeis = SecurityService.papeis();
-		
-		var papel = JSON.parse($window.sessionStorage.getItem('papel'));
-				
-		if (papel === null) {
-			selecionarPapel($scope.papeis[0]);
-		} else {
-			selecionarPapel(papel);
-		}
+		selecionarPapel($scope.papeis[0]);
 		
 		$scope.ativar = function(papel) {
 			selecionarPapel(papel);
