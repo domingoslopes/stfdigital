@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 /**
  * Classe utilitária com informações do contexto de segurança
@@ -28,7 +29,7 @@ public class SecurityContextUtil {
 	 */
 	public static String getNomeUsuario() {
 		return Optional.ofNullable(getAutenticacao())
-				.map(auth -> (String) auth.getPrincipal())
+				.map(auth -> ((User) auth.getPrincipal()).getUsername())
 				.orElse(null);
 	}
 	
