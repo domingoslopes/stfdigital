@@ -1,19 +1,27 @@
 /**
  * @author Tomas.Godoi
+ * @author Lucas.Rodrigues
  * 
  * @since 1.0.0
  */
 (function() {
 	'use strict';
 	
-	angular.plataforma.service('NotificationService', ['$http', '$q', '$window', '$rootScope', '$filter', 'properties', 'PesquisaService', 
-	                                                   function($http, $q, $window, $rootScope, $filter, properties, PesquisaService) {
+	angular.plataforma.service('NotificationService', ['$http', '$q', '$window', '$rootScope', '$filter', 'properties', 'PesquisaService', '$cookies', 
+	                                                   function($http, $q, $window, $rootScope, $filter, properties, PesquisaService, $cookies) {
 		
 		var socket = new SockJS(properties.apiUrl + '/ws/notificacoes');
 		var client = Stomp.over(socket);
 		var connected = false;
 		var subscription = null;
 		var callbackRegistrarNotificacao;
+		
+		client.heartbeat.outgoing = 25000;
+		client.heartbeat.incoming = 25000;
+		
+		socket.onheartbeat = function() {
+			$http.get(properties.apiUrl + '/info');
+		};
 		
 		this.registrarNotificacao = function(cb) {
 			callbackRegistrarNotificacao = cb;
@@ -72,7 +80,7 @@
 		};
 		
 		var PesquisarCommand = function(lida) {
-			var papel = connHeaders().papel;
+			var papel = connHeaders().login;
 			
 	    	this.indices = ['notificacao']; 
 	        this.tipos = ['Notificacao'];
@@ -118,9 +126,8 @@
 		var connHeaders = function() {
 			var papel = JSON.parse($window.sessionStorage.papel).nome;
 			return {
-				login : papel,
-				password : papel,
-				papel : papel
+				'login' : papel,
+				'X-XSRF-TOKEN' : $cookies.get('XSRF-TOKEN') 
 			};
 		};
 		
@@ -133,6 +140,5 @@
                 type: "info"
             }).show();
 		};
-		
 	}]);
 })();

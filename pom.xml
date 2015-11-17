@@ -28,8 +28,8 @@
         <sonar-jacoco-listeners.version>2.1</sonar-jacoco-listeners.version>
         <frontend-maven-plugin.version>0.0.25</frontend-maven-plugin.version>
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
-        <node.version>v5.0.0</node.version>
-        <npm.version>3.3.6</npm.version>
+        <node.version>v0.12.4</node.version>
+        <npm.version>1.4.9</npm.version>
         <bouncycastle.version>1.53</bouncycastle.version>
         <jacoco-maven-plugin.version>0.7.5.201505241946</jacoco-maven-plugin.version>
         <scm.git>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</scm.git>
@@ -52,17 +52,13 @@
             <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-        </dependency>		
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-messaging</artifactId>
-		</dependency>
+		</dependency>		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-actuator</artifactId>
@@ -86,7 +82,7 @@
         <dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-		</dependency>
+		</dependency>		
         <dependency>
             <groupId>com.mangofactory</groupId>
             <artifactId>swagger-springmvc</artifactId>
@@ -95,7 +91,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-        </dependency>
+        </dependency>        
         <dependency>
         	<groupId>org.flywaydb</groupId>
         	<artifactId>flyway-core</artifactId>
@@ -180,7 +176,7 @@
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-bom</artifactId>
 				<version>${spring-security.version}</version>
-			</dependency>
+			</dependency>			
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jpa</artifactId>
