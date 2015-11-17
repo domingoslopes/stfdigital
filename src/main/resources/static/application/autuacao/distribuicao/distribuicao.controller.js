@@ -196,7 +196,7 @@
     		dto.filtros = { 'id.sequencial': idsPartes };
 
     		return dto;
-    	};
+    	}
     	
     	function ProcessosDaParteCommand(idPessoa){
     		var dto = {};
@@ -207,7 +207,7 @@
     		dto.filtros = { 'partes.pessoaId.sequencial': [idPessoa] };
 
     		return dto;
-    	};
+    	}
     	
 	});
 	
