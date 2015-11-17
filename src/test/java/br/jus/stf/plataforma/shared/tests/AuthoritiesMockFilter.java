@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.security;
+package br.jus.stf.plataforma.shared.tests;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * Criado provisoriamente para viabilizar o funcionamento básico dos Mecanismo de Workflow e do Mecanismo de Ações, que
  * demandam a presença do papel do usuário para filtrar tarefas e ações, respectivamente.
  * 
- * [TODO] Remover essa classe substituindo pelo Mecanismo de Segurança
+ * [TODO] Remover essa classe substituindo pelo Mecanismo de SeguranÃ§a
  * 
  * @author Rodrigo Barreiros
  * 

@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $state, messages, properties, $log, $window,PeticaoService, FileUploader, PecaService) {
+	angular.autuacao.controller('PeticionamentoController', function (data, $scope, $state, messages, properties, $log, $window, $cookies,PeticaoService, FileUploader, PecaService) {
 		$scope.child = {};
 		$scope.classes = data.data;
 		$scope.classe = '';
@@ -21,6 +21,7 @@
 		
 		var uploader = $scope.uploader = new FileUploader({
             url: properties.apiUrl + '/documentos/upload',
+            headers : {'X-XSRF-TOKEN': $cookies.get('XSRF-TOKEN')},
             formData: [{name: "file"}],
             filters: [{
 		    	name: 'arquivos-pdf',

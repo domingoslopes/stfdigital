@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import br.jus.stf.plataforma.shared.bootstrap.ApplicationContextInitializer;
-import br.jus.stf.plataforma.shared.security.AuthoritiesMockFilter;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 
 @RunWith(SpringJUnit4ClassRunner.class)
