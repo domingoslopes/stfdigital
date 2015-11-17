@@ -20,10 +20,9 @@
 			scope = $rootScope.$new();
 			
 			fakePesquisaService = {
-					pesquisar: function(){
-						
-					}
-			}
+				pesquisar: function(){
+				}
+			};
 			
 			spyOn(fakePesquisaService, 'pesquisar').and.returnValue($q.when({data:[{descricao : 'Petição #00001'},{descricao : 'Petição #00002'}]}));
 			

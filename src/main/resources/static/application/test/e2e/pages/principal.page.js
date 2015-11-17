@@ -12,7 +12,7 @@
 	'use strict';
 
 	var PrincipalPage = function () {
-		browser.get('/');
+
 		this.conteudo = element(by.css('body'));
 		
 		this.titleGestaoAutuacao = element(by.id('gestaoAutuacaoId'));
@@ -40,34 +40,11 @@
 			return element.all(by.repeater('peticao in peticoes'));
 		};
 		
-		this.login = function (papel) {
-		    element(by.id('papeisButton')).click();
-		    
-		    element(by.id(papel)).click();
-		    
-		    this.txtPapel = element(by.id(papel)).getAttribute("id");
-		    
-		    // O login pode levar algum tempo, já que recarrega toda a página.
-		    // Para garantir que o login ocorreu completamente, nós esperamos ele redirecionar
-		    // para o dashboard e só retornamos quando ele validar a URL.
-			return browser.driver.wait(function() {
-				return browser.driver.getCurrentUrl().then(function(url) {
-					return /dashboard/.test(url);
-				});
-			}, 10000);
-		};
-		
 		this.dashletMinhasTarefas = element.all(by.css('.dashlet'))
 				.all(by.cssContainingText('.panel-title', 'Minhas Tarefas'));
 		
 		this.dashletMinhasPeticoes = element.all(by.css('.dashlet'))
 			.all(by.cssContainingText('.panel-title', 'Minhas Petições'));
-			
-		
-/*		this.usuarioLogado = function(){
-			return element(by.id')
-		}*/
-		
 	};
 
 	module.exports = PrincipalPage;
