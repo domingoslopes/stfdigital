@@ -1,5 +1,6 @@
 /**
  * @author Tomas.Godoi
+ * @author Lucas.Rodrigues
  * 
  * @since 1.0.0
  */
