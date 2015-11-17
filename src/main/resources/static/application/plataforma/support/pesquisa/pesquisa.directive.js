@@ -99,7 +99,7 @@
 			            		pesquisa.tamanho = 15;
 			            	}
 		            		angular.forEach(filtros, function(filtro) {
-		            			pesquisa.filtros[filtro] = term.toLowerCase();
+		            			pesquisa.filtros[filtro] = [term.toLowerCase()];
 		            		});
 			            	return JSON.stringify(pesquisa);
 			            },
@@ -129,6 +129,12 @@
 					scope.modelo = angular.isDefined(e.added) ? e.added : null;
 					scope.$apply();
 				});
+				
+				scope.$watch('modelo', function(novoValor){
+					if (!novoValor){
+						$(elem).select2('val','');
+					}
+				})
 			}
 		};
 	}]);
