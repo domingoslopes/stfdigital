@@ -12,10 +12,12 @@
 		angular.bootstrap(document, ['appDev']);
 	});
 
-	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'angularFileUpload', 'mocks'])
+	angular.module('appDev', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'templates', 'properties', 'ui.select2', 'ngSanitize', 'ngCookies', 'angularFileUpload', 'mocks'])
 
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
+		$httpProvider.interceptors.push('security-interceptor');
 		$httpProvider.interceptors.push('error-handler');
+		$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 		//$urlRouterProvider.otherwise('/dashboard');
 		$locationProvider.html5Mode({
 			enabled: true,
