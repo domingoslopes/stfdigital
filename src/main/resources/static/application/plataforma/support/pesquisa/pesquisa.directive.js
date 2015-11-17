@@ -99,7 +99,7 @@
 			            		pesquisa.tamanho = 15;
 			            	}
 		            		angular.forEach(filtros, function(filtro) {
-		            			pesquisa.filtros[filtro] = term.toLowerCase();
+		            			pesquisa.filtros[filtro] = [term.toLowerCase()];
 		            		});
 			            	return JSON.stringify(pesquisa);
 			            },
