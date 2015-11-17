@@ -30,4 +30,11 @@ public interface PeticaoApplicationEvent {
 	 */
 	public void peticaoRejeitada(Peticao peticao);
 	
+	/**
+	 * Notifica interessados sobre a autuação de uma petição.
+	 * 
+	 * @param peticao Dados da petição.
+	 */
+	public void peticaoAutuada(Peticao peticao);
+	
 }
