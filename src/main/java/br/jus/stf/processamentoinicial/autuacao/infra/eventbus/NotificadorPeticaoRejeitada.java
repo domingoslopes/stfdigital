@@ -17,9 +17,10 @@ import reactor.bus.EventBus;
 import reactor.fn.Consumer;
 
 /**
- * Evento usado para notificar usuário(s) sobre a rejeição de uma petição.
+ * Notifica os usuário(s) sobre a rejeição de uma petição.
  * 
  * @author Anderson.Araujo
+ * @since 05.11.2015
  *
  */
 public class NotificadorPeticaoRejeitada implements Consumer<Event<PeticaoRejeitada>>, InitializingBean {

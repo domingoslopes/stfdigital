@@ -44,7 +44,7 @@ public class ProcessoRepositoryUnitTests {
 		partes.add(new ParteProcesso(new PessoaId(2L), TipoPolo.POLO_PASSIVO));
 
 		pecas = new LinkedHashSet<PecaProcesso>(0);
-		pecas.add(new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L,	"Petição inicial"), "Petição inicial"));
+		pecas.add(new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial"));
 		
 		Processo processo = processo();
 		List<Processo> processos = new ArrayList<Processo>();
@@ -60,7 +60,7 @@ public class ProcessoRepositoryUnitTests {
 	}
 
 	private Processo processo() {
-		return new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas);
+		return new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
 	}
 	
 	@Test
