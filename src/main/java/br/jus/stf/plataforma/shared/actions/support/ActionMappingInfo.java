@@ -146,7 +146,7 @@ public class ActionMappingInfo {
 	@JsonView(ActionView.class)
 	@JsonGetter("hasConditionHandlers")
 	public boolean hasConditionHandlers() {
-		return actionHandlersInfo.isEmpty();
+		return !actionHandlersInfo.isEmpty();
 	}
 		
 	/**
