@@ -52,12 +52,14 @@ public class HashGeneratorUtils {
     }
  
     private static String convertByteArrayToHexString(byte[] arrayBytes) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
+        
         for (int i = 0; i < arrayBytes.length; i++) {
-            stringBuffer.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16)
+        	stringBuilder.append(Integer.toString((arrayBytes[i] & 0xff) + 0x100, 16)
                     .substring(1));
         }
-        return stringBuffer.toString();
+        
+        return stringBuilder.toString();
     }
     
     private static String hashFile(File file, String algorithm)
