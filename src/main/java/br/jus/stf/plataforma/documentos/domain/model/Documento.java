@@ -18,15 +18,15 @@ import br.jus.stf.shared.stereotype.Entity;
 @Table(name = "DOCUMENTO", schema = "CORPORATIVO")
 public class Documento implements Entity<Documento, DocumentoId> {
 
-	Documento() {
-
-	}
-
 	@EmbeddedId
 	private DocumentoId id;
 	
 	@Column(name = "NUM_CONTEUDO", nullable = false)	
 	private String numeroConteudo;
+	
+	Documento() {
+
+	}
 
 	public Documento(final DocumentoId id, final String numeroConteudo) {
 		Validate.notNull(id, "documento.id.required");
@@ -55,8 +55,13 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	
 	@Override
 	public boolean equals(final Object o){
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 	
 		Documento other = (Documento) o;
 		return sameIdentityAs(other);

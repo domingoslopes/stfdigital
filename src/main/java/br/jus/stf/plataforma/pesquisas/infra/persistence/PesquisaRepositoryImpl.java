@@ -77,7 +77,7 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 		builder.withSearchType(DFS_QUERY_THEN_FETCH);
 		Map<String, String> ordenadores = pesquisa.ordenadores();
 		ordenadores.keySet().forEach(ordenador -> {
-			SortOrder sentido = (DESC.toString().equalsIgnoreCase(ordenadores.get(ordenador))) ? DESC : ASC;
+			SortOrder sentido = DESC.toString().equalsIgnoreCase(ordenadores.get(ordenador)) ? DESC : ASC;
 			builder.withSort(fieldSort(ordenador).order(sentido));
 		});
 		return builder;
@@ -151,7 +151,7 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 					documentos.add(coletarResultado(hit));
 				}
 			} catch (JsonProcessingException e) {
-				e.printStackTrace();
+				throw new RuntimeException(e.getMessage());
 			}
 			return documentos;
 		}
@@ -172,7 +172,7 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 					documentos.add(new Resultado("1", "ValoresAgregados", campos));
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw e;
 			}
 			
 			return documentos;
