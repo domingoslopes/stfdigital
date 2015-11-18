@@ -151,7 +151,7 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 					documentos.add(coletarResultado(hit));
 				}
 			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e.getMessage());
+				throw new RuntimeException(e);
 			}
 			return documentos;
 		}
