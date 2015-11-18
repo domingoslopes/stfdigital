@@ -45,7 +45,7 @@ public class ActivitiConfiguration {
 	}
 
 	private Resource[] getResources(String locationPattern) throws IOException {
-		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();;
+		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 		return resolver.getResources(locationPattern);
 	}
 
