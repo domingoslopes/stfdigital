@@ -98,7 +98,7 @@ public class PeticaoApplicationService {
 	 * @param motivoDevolucao 
 	 * @param peticaoValida 
 	 */
-	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
+	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida) {
 		if (peticaoValida) {
 			tarefaAdapter.completarPreautuacao(peticao);
 		} else {
