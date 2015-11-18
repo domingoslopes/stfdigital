@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.User;
  */
 public class SecurityContextUtil {
 
+	private SecurityContextUtil(){
+		
+	}
 	
 	/**
 	 * @return a autenticação
