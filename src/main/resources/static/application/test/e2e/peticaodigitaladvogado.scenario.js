@@ -105,7 +105,7 @@
 
 		it('Deveria distribuir a petição autuada', function() {
 					    
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toEqual(2);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -114,17 +114,9 @@
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
 			
-		    principalPage.executarTarefa();
-
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
-
-			var distribuicaoPage = new DistribuicaoPage();
-			
-			distribuicaoPage.selecionar('Min. Roberto Barroso');
-			
-			distribuicaoPage.selecionarPrimeiraParte();
-			
-			distribuicaoPage.finalizar();
+		    distribuir('COMUM');
+		    
+		    distribuir('PREVENCAO');
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
@@ -187,7 +179,41 @@
 			autuacaoPage.classificar('AP');
 			
 			autuacaoPage.finalizar();
-		    
+		}
+		
+		var distribuir = function(tipoDistribuicao){
+			
+		    principalPage.executarTarefa();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
+
+			var distribuicaoPage = new DistribuicaoPage();
+			
+			distribuicaoPage.selecionarTipoDistribuicao(tipoDistribuicao);
+			
+			if (tipoDistribuicao == 'COMUM'){
+				
+				distribuicaoPage.criarListaDeMinistrosImpedidos();
+				
+				//verifica se a lista de ministros impedidos possui ao menos um ministro
+				expect(distribuicaoPage.listaMinistrosImpedidos().count()).toEqual(1);
+				
+			}else if (tipoDistribuicao == 'Prevencao'){
+				
+				distribuicaoPage.selecionarPrimeiraParte();
+				
+				distribuicaoPage.selecionarPrimeiroProcessoDaParte();
+				
+				//verifica se a lista de processos preventos possui ao menos um processo
+				expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
+			}
+			
+			
+			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao ' + tipoDistribuicao);
+			
+		//	distribuicaoPage.selecionarPrimeiraParte();
+			
+			distribuicaoPage.finalizar();
 		}
 		
 	});
