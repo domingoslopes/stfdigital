@@ -135,7 +135,7 @@ public class ActionMappingRegistry implements InitializingBean {
 			return ResourcesMode.None;
 		} else if (method.getParameterCount() == 1) {
 			Class<?> clazz = method.getParameterTypes()[0];
-			return (Collection.class.isAssignableFrom(clazz)) ? 
+			return Collection.class.isAssignableFrom(clazz) ? 
 					ResourcesMode.Many : ResourcesMode.One;
 		}
 		throw new IllegalArgumentException("O mecanismo permite no máximo 1 parâmetro");

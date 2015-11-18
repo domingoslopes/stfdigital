@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.documentos.infra.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,11 +20,21 @@ import com.mongodb.MongoClient;
 @Profile(Profiles.PRODUCAO)
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
+	@Value(value = "${mongo.ip}")
+	private String ipMongo;
+	
 	@Bean
-	public GridFsTemplate gridFsTemplate() throws Exception {
-		GridFsTemplate gridTemplate = new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
+	public GridFsTemplate gridFsTemplate() {
 		
-		return gridTemplate;
+		GridFsTemplate gridFsTemplate = null;
+		
+		try {
+			gridFsTemplate = new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		
+		return gridFsTemplate;
 	}
 
 	@Override
@@ -34,9 +45,7 @@ public class MongoConfiguration extends AbstractMongoConfiguration {
 	@Override
 	@Bean
 	public Mongo mongo() throws Exception {
-		Mongo mongo = new MongoClient("127.0.0.1");
-
-		return mongo;
+		return new MongoClient(ipMongo);
 	}
 
 }

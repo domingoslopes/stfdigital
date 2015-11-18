@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import br.jus.stf.plataforma.notificacoes.application.NotificacaoApplicationService;
 import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoId;
 import br.jus.stf.plataforma.notificacoes.domain.model.TipoNotificacao;
-import br.jus.stf.plataforma.notificacoes.interfaces.dto.NotificacaoDtoAssembler;
 
 /**
  * @author Lucas.Rodrigues
@@ -21,9 +20,6 @@ public class NotificacaoServiceFacade {
 
 	@Autowired
 	private NotificacaoApplicationService notificacaoApplicationService;
-	
-	@Autowired
-	private NotificacaoDtoAssembler notificacaoDtoAssembler;
 	
 	/**
 	 * Marca as notificações como lidas
