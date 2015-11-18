@@ -27,6 +27,7 @@ public class Documento implements Entity<Documento, String> {
 		this.objeto = objeto;
 	}
 	
+	@Override
 	public String id() {
 		return id;
 	}
@@ -53,8 +54,13 @@ public class Documento implements Entity<Documento, String> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 		
 		Documento other = (Documento) obj;
 		return sameIdentityAs(other);

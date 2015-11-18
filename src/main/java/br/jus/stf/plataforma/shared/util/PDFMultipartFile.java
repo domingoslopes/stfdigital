@@ -28,7 +28,7 @@ public class PDFMultipartFile implements MultipartFile {
 		Validate.notBlank(nome, "Nome não pode ser nulo ou vazio!");
 		
 		this.nome = nome;
-		this.conteudo = (conteudo != null ? conteudo : new byte[0]);
+		this.conteudo = conteudo != null ? conteudo : new byte[0];
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class PDFMultipartFile implements MultipartFile {
 
 	@Override
 	public boolean isEmpty() {
-		return (this.conteudo.length == 0);
+		return this.conteudo.length == 0;
 	}
 
 	@Override
