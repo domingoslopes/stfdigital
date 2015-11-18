@@ -63,31 +63,14 @@
 		});
 
 		it('Deveria enviar uma nova petição digital', function() {
-			var peticionamentoPage = new PeticionamentoPage();
 			
-			peticionamentoPage.classificarClasse('AP');
+			peticionar('RE');
 			
-			peticionamentoPage.partePoloAtivo('João da Silva');
-		    
-			peticionamentoPage.partePoloPassivo('Maria da Silva');
+			principalPage = new PrincipalPage();
 			
-			peticionamentoPage.uploadPecas();
+			principalPage.iniciarProcesso('link_registrar_peticao_eletronica');
 			
-			peticionamentoPage.removePecas();
-			
-			peticionamentoPage.uploadPecas();
-			
-			peticionamentoPage.selecionarTipoPeca('Ato coator');
-		    
-			peticionamentoPage.registrar();
-			
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
-			//expect(principalPage.peticoes().count()).toEqual(1);
-			
-			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
-			
-			expect(principalPage.dashletMinhasPeticoes.count()).toEqual(1);
+			peticionar('AP');
 			
 			loginPage.logout();
 		});
@@ -98,7 +81,7 @@
 		
 		it('Deveria atuar como válida a petição recebida', function() {
 			
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toEqual(2);
 		    		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -106,17 +89,11 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #' + peticaoId);
 		    });
-			
-		    principalPage.executarTarefa();
 		    
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
-		    
-			var autuacaoPage = new AutuacaoPage();
+			autuar();
 			
-			autuacaoPage.classificar('AP');
+			autuar();
 			
-			autuacaoPage.finalizar();
-		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
 			loginPage.logout();
@@ -170,6 +147,48 @@
 		it ('Deveria exibir a dashlet do papel cartorária', function(){			
 			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
 		});
+		
+		
+		var peticionar = function(siglaClasse){
+			
+			var peticionamentoPage = new PeticionamentoPage();
+			
+			peticionamentoPage.classificarClasse(siglaClasse);
+			
+			peticionamentoPage.partePoloAtivo('João da Silva');
+		    
+			peticionamentoPage.partePoloPassivo('Maria da Silva');
+			
+			peticionamentoPage.uploadPecas();
+			
+			peticionamentoPage.removePecas();
+			
+			peticionamentoPage.uploadPecas();
+			
+			peticionamentoPage.selecionarTipoPeca('Ato coator');
+		    
+			peticionamentoPage.registrar();
+			
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
+			
+			expect(principalPage.dashletMinhasPeticoes.count()).toEqual(1);
+		}
+		
+		var autuar = function(){
+
+			principalPage.executarTarefa();
+		    
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
+			
+			var autuacaoPage = new AutuacaoPage();
+			
+			autuacaoPage.classificar('AP');
+			
+			autuacaoPage.finalizar();
+		    
+		}
 		
 	});
 })();
