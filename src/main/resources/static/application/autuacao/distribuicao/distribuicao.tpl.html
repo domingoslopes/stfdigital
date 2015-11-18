@@ -23,7 +23,7 @@
                     		<h6>Qual o tipo de distribuição será atribuída para a petição</h6>
 						</div>
                 		<div class="card-description">
-		                    <select ui-select2 id="tipoDistribuicao" ng-model="tipoDistribuicao" data-placeholder="Selecione o tipo de distribuição" style="width: 250px;" 
+		                    <select ui-select2 id="tipoDistribuicaoId" ng-model="tipoDistribuicao" data-placeholder="Selecione o tipo de distribuição" style="width: 250px;" 
 		                    	ng-change="verificaImpedimentoMinistro(tipoDistribuicao)">
 			                        <option value=""></option>
 			                        <option ng-repeat="tipo in tiposDistribuicao" value="{{tipo.id}}" >{{tipo.nome}}</option>
