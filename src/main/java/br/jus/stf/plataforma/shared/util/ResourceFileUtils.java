@@ -12,6 +12,10 @@ import org.springframework.util.StringUtils;
  */
 public class ResourceFileUtils {
 
+	private ResourceFileUtils(){
+		
+	}
+	
 	/**
 	 * Retorna uma string do conteúdo do arquivo
 	 * 
