@@ -49,8 +49,13 @@ public class ProcessoId implements ValueObject<ProcessoId> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj){
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 		
 		ProcessoId other = (ProcessoId) obj;
 		return sameValueAs(other);

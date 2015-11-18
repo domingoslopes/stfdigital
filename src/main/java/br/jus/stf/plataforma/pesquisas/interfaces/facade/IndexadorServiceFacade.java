@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.DocumentoRepository;
 import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,9 +25,6 @@ public class IndexadorServiceFacade {
 	
 	@Autowired
 	private IndexadorApplicationService indexadorApplicationService;
-	
-	@Autowired
-	private DocumentoRepository documentoRepository;
 	
 	private ObjectMapper objectMapper = new ObjectMapper();
 
