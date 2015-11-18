@@ -47,9 +47,4 @@ public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 		return factory.newMongo();
 	}
 	
-	@PreDestroy
-	private void shutdown() {
-		factory.shutdown();
-	}
-
 }
