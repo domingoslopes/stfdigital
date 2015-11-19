@@ -7,9 +7,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PermissaoUnitTests {
+public class PermissaoGrupoUnitTests {
 	
-	private Usuario usuario;
+	private Grupo grupo;
 	
 	@Before
 	public void setUp() {
@@ -31,12 +31,12 @@ public class PermissaoUnitTests {
 		permissoes.add(criarPeca);
 		permissoes.add(pesquisarPessoa);
 		
-		usuario = new Usuario(1L, "Rafael E F Alencar", "rafael.alencar", "03627575423", "rafael.alencar@stf.jus.br", "(61) 8246-8181");
-		usuario.atribuirPermissoes(permissoes);
+		grupo = new Grupo(1L, "STI", TipoGrupo.SETOR);
+		grupo.atribuirPermissoes(permissoes);
 	}
 	
 	@Test
-	public void consumidorPossuiAcessoNoRecurso() {
+	public void grupoPossuiAcessoNoRecurso() {
 		TipoInformacao peticao = new TipoInformacao(1L, "Petição");
 		TipoSegmento peticaoEletronica = new TipoSegmento(1L, "Petição Eletrônica");
 		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao, peticaoEletronica);
@@ -54,11 +54,11 @@ public class PermissaoUnitTests {
 		
 		Recurso autuar = new Recurso("Autuar", TipoRecurso.ACAO, permissoes);
 		
-		Assert.assertTrue(usuario.possuiAcessoNo(autuar));
+		Assert.assertTrue(grupo.possuiAcessoNo(autuar));
 	}
 	
 	@Test
-	public void consumidorNaoPossuiAcessoNoRecurso() {
+	public void grupoNaoPossuiAcessoNoRecurso() {
 		TipoInformacao peticao = new TipoInformacao(1L, "Petição");
 		TipoSegmento peticaoEletronica = new TipoSegmento(1L, "Petição Eletrônica");
 		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao, peticaoEletronica);
@@ -72,7 +72,7 @@ public class PermissaoUnitTests {
 		
 		Recurso distribuir = new Recurso("Distribuir", TipoRecurso.ACAO, permissoes);
 		
-		Assert.assertFalse(usuario.possuiAcessoNo(distribuir));
+		Assert.assertFalse(grupo.possuiAcessoNo(distribuir));
 	}
 
 }
