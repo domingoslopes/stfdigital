@@ -2,8 +2,8 @@ package br.jus.stf.plataforma.shared.certification.support;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
 import org.apache.commons.codec.binary.Base64;
@@ -15,12 +15,12 @@ public abstract class AbstractAssinaturaDemoTest {
 	protected final String NOME_PDF_DE_TESTE_001 = "pdf-de-teste-001";
 	protected final String PDF_DE_TESTE_001 = NOME_PDF_DE_TESTE_001 + ".pdf";
 
-	protected Certificate[] recuperarCadeia() throws CertificateException {
-		Certificate[] cadeia = new Certificate[4];
-		cadeia[0] = AssinaturaTestUtil.getCertificatePessoa001();
-		cadeia[1] = AssinaturaTestUtil.getCertificateACEmissora();
-		cadeia[2] = AssinaturaTestUtil.getCertificateACIntermediaria();
-		cadeia[3] = AssinaturaTestUtil.getCertificateACRaiz();
+	protected X509Certificate[] recuperarCadeia() throws CertificateException {
+		X509Certificate[] cadeia = new X509Certificate[4];
+		cadeia[0] = (X509Certificate)AssinaturaTestUtil.getCertificatePessoa001();
+		cadeia[1] = (X509Certificate)AssinaturaTestUtil.getCertificateACEmissora();
+		cadeia[2] = (X509Certificate)AssinaturaTestUtil.getCertificateACIntermediaria();
+		cadeia[3] = (X509Certificate)AssinaturaTestUtil.getCertificateACRaiz();
 		return cadeia;
 	}
 

@@ -2,13 +2,15 @@ package br.jus.stf.plataforma.shared.certification.support.pki;
 
 import org.apache.commons.lang.Validate;
 
-public class CustomPKI {
+import br.jus.stf.plataforma.shared.certification.Pki;
 
-	private CustomPKIStore rootCA;
-	private CustomPKIStore intermediateCA;
-	private CustomPKIStore finalUser;
+public class CustomPki implements Pki {
 
-	public CustomPKI(CustomPKIStore rootCA, CustomPKIStore intermediateCA, CustomPKIStore finalUser) {
+	private CustomPkiStore rootCA;
+	private CustomPkiStore intermediateCA;
+	private CustomPkiStore finalUser;
+
+	public CustomPki(CustomPkiStore rootCA, CustomPkiStore intermediateCA, CustomPkiStore finalUser) {
 		Validate.notNull(rootCA, "RootCA é obrigatório");
 		Validate.notNull(intermediateCA, "IntermediateCA é obrigatório");
 		Validate.notNull(intermediateCA, "FinalUser é obrigatório");
@@ -18,15 +20,15 @@ public class CustomPKI {
 		this.finalUser = finalUser;
 	}
 
-	public CustomPKIStore rootCA() {
+	public CustomPkiStore rootCA() {
 		return rootCA;
 	}
 
-	public CustomPKIStore intermediateCA() {
+	public CustomPkiStore intermediateCA() {
 		return intermediateCA;
 	}
 
-	public CustomPKIStore finalUser() {
+	public CustomPkiStore finalUser() {
 		return finalUser;
 	}
 	

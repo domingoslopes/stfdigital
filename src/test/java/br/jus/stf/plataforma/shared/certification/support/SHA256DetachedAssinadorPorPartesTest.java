@@ -9,7 +9,7 @@ import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.CRL;
-import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -22,14 +22,13 @@ import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
-import br.jus.stf.plataforma.shared.certification.support.AssinadorPorPartes;
-import br.jus.stf.plataforma.shared.certification.support.SignatureContext;
-import br.jus.stf.plataforma.shared.certification.support.SHA256DetachedAssinadorPorPartes;
+import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
+import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
 
 public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemoTest {
 
 	private AssinadorPorPartes app;
-	private Certificate[] cadeia;
+	private X509Certificate[] cadeia;
 	private byte[] pdf;
 	private String reason;
 	private SignatureContext ca;
@@ -43,7 +42,7 @@ public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemo
 		cadeia = recuperarCadeia();
 		pdf = getPdf();
 		reason = "RAZAO";
-		ca = new SignatureContext("12345");
+		ca = new SignatureContext(new SignatureContextId("12345"));
 		key = AssinaturaTestUtil.getPrivateKeyPessoa001();
 		crls = AssinaturaTestUtil.getCrls();
 
@@ -56,21 +55,23 @@ public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemo
 		return pdf;
 	}
 
-	private String assinar(byte[] dataToSign) throws GeneralSecurityException {
+	private HashSignature assinar(byte[] dataToSign) throws GeneralSecurityException {
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initSign(key);
 		signature.update(dataToSign);
 
 		byte[] signed = signature.sign();
 
-		return new String(Base64.encode(signed));
+		return new HashSignature(signed);
 	}
 
 	@Test
 	public void testGerarPdfAssinado() throws Exception {
 		app = new SHA256DetachedAssinadorPorPartes(false);
-		byte[] dataToSign = app.preAssinar(cadeia, crls, pdf, reason, ca);
-		String assinatura = assinar(dataToSign);
+		ca.registerCertificateChain(cadeia);
+		ca.registerCrls(crls);
+		byte[] dataToSign = app.preAssinar(ca);
+		HashSignature assinatura = assinar(dataToSign);
 		byte[] pdfAssinado = app.posAssinar(ca, assinatura);
 
 		validarPdf(pdfAssinado);
