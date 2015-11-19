@@ -27,6 +27,10 @@ public class TipoInformacao implements ValueObject<TipoInformacao> {
 	@Column(name = "NOM_TIPO_INFORMACAO", nullable = false)
 	private String nome;
 	
+	TipoInformacao() {
+		
+	}
+	
 	public TipoInformacao(final Long sequencial, final String nome) {
 		Validate.notNull(sequencial, "tipoInformacao.sequencial.required");
 		Validate.notBlank(nome, "tipoInformacao.nome.required");

@@ -1,36 +1,38 @@
 package br.jus.stf.plataforma.acessos.domain.model;
 
+import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
+import org.hibernate.validator.constraints.Email;
 
 import br.jus.stf.shared.stereotype.Entity;
 
 @javax.persistence.Entity
 @Table(name = "USUARIO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_USUARIO"}))
-@AttributeOverride(name = "nome", column = @Column(name="NOM_USUARIO", nullable = false))
-@AssociationOverride(name = "permissoes",
-	joinTable = @JoinTable(name = "PERMISSAO_USUARIO",
-					joinColumns = @JoinColumn(name="SEQ_USUARIO")))
-public class Usuario extends Principal implements Entity<Usuario, Long> {
+public class Usuario implements Entity<Usuario, Long>, Principal {
 	
 	@Id
 	@Column(name = "SEQ_USUARIO")
 	@SequenceGenerator(name = "USUARIOID", sequenceName = "PLATAFORMA.SEQ_USUARIO", allocationSize = 1)
 	@GeneratedValue(generator = "USUARIOID", strategy = GenerationType.SEQUENCE)
 	private Long sequencial;
+	
+	@Column(name = "NOM_USUARIO", nullable = false)
+	private String nome;
 	
 	@Column(name = "SIG_USUARIO", nullable = false)
 	private String login;
@@ -41,21 +43,33 @@ public class Usuario extends Principal implements Entity<Usuario, Long> {
 	@Column(name = "COD_OAB")
 	private String oab;
 	
+	@Email
 	@Column(name = "DSC_EMAIL", nullable = false)
 	private String email;
 	
 	@Column(name = "DSC_TELEFONE", nullable = false)
 	private String telefone;
 	
-	public Usuario(final Long sequencial, final String nome, final String login, final String cpf, final String email, final String telefone) {
-		super(nome);
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinTable(name = "PERMISSAO_USUARIO", schema = "PLATAFORMA",
+		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
+	private Set<Permissao> permissoes;
+	
+	Usuario() {
 		
+	}
+	
+	public Usuario(final Long sequencial, final String nome, final String login, final String cpf, final String email, final String telefone) {
 		Validate.notNull(sequencial, "usuario.sequencial.required");
+		Validate.notBlank(nome, "usuario.nome.required");
 		Validate.notBlank(login, "usuario.login.required");
 		Validate.notBlank(cpf, "usuario.cpf.required");
 		Validate.notBlank(email, "usuario.email.required");
 		Validate.notBlank(telefone, "usuario.telefone.required");
 		
+		this.sequencial = sequencial;
+		this.nome = nome;
 		this.login = login;
 		this.cpf = cpf;
 		this.email = email;
@@ -68,6 +82,14 @@ public class Usuario extends Principal implements Entity<Usuario, Long> {
 		Validate.notBlank(oab, "usuario.oab.required");
 		
 		this.oab = oab;
+	}
+	
+	public String tipoPeticionador() {
+		return Optional.ofNullable(oab).isPresent() ? "Advogado" : "Cidadão";
+	}
+	
+	public String nome() {
+		return nome;
 	}
 	
 	public String login() {
@@ -88,6 +110,17 @@ public class Usuario extends Principal implements Entity<Usuario, Long> {
 	
 	public String telefone() {
 		return telefone;
+	}
+	
+	@Override
+	public Set<Permissao> permissoes() {
+		return permissoes;
+	}
+	
+	public void atribuirPermissoes(final Set<Permissao> permissoes) {
+		Validate.notEmpty(permissoes, "usuario.permissoes.required");
+		
+		this.permissoes = permissoes;
 	}
 	
 	@Override

@@ -36,6 +36,10 @@ public class Permissao implements ValueObject<Permissao> {
 	@Enumerated(EnumType.STRING)
 	private TipoPermissao tipoPermissao;
 	
+	Permissao() {
+		
+	}
+	
 	public Permissao(final Long sequencial, final Segmento segmento, final TipoPermissao tipoPermissao) {
 		Validate.notNull(sequencial, "permissao.sequencial.required");
 		Validate.notNull(segmento, "permissao.segmento.required");
