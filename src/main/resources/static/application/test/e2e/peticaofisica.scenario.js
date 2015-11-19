@@ -141,19 +141,25 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-			
+		    
+		    
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
-			distribuicaoPage.selecionar('Min. Roberto Barroso');
+			distribuicaoPage.selecionarTipoDistribuicao('PREVENCAO');
+			
+			distribuicaoPage.adicionarProcessoSuggestion('AP 1');
+				
+			//verifica se a lista de processos preventos possui ao menos um processo
+			expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
+			
+			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao');
 			
 			distribuicaoPage.finalizar();
 		    
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
 			loginPage.logout();
 		}); 
 		
