@@ -33,7 +33,7 @@
 	 * Ex. de uso: 
 	 * <pesquisa configuracao="{...}" />
 	 */
-	angular.plataforma.directive('pesquisa', ['properties', function (properties, $cookies) {
+	angular.plataforma.directive('pesquisa', ['properties', '$cookies', function (properties, $cookies) {
 		return {
 			restrict : 'E',
 			scope : {
