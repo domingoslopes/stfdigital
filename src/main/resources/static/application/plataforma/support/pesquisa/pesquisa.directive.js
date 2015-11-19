@@ -33,7 +33,7 @@
 	 * Ex. de uso: 
 	 * <pesquisa configuracao="{...}" />
 	 */
-	angular.plataforma.directive('pesquisa', ['properties', function (properties) {
+	angular.plataforma.directive('pesquisa', ['properties', function (properties, $cookies) {
 		return {
 			restrict : 'E',
 			scope : {
@@ -86,6 +86,7 @@
 			            },
 			            dataType: 'json',
 			            type: "POST",
+			            headers: {'X-XSRF-TOKEN' : $cookies.get('XSRF-TOKEN')},
 			            data: function (term, page) {
 			            	var pesquisa = {
 			            		'indices': indices, 
