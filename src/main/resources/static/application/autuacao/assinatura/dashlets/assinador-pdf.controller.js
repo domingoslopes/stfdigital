@@ -41,8 +41,7 @@
 		uploader.onAfterAddingFile = function(fileItem) {
             var documento = {
 				fileItem : fileItem,
-				documentoTemporario : null,
-				tipo : null
+				signedDocument : null
             };
             $scope.documentos.push(documento);
             
@@ -55,6 +54,7 @@
             });
             signingTracker.onSigningCompleted(function(signedDocument) {
             	console.log(signedDocument);
+            	documento.signedDocument = signedDocument;
             });
             signingTracker.onErrorCallback(function(error) {
             	console.log('controller-error-callback');

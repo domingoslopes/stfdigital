@@ -66,22 +66,25 @@ public abstract class AssinadorPorPartes {
 	protected abstract void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, HashSignature assinatura)
 			throws AssinaturaExternaException;
 
-	public byte[] posAssinar(SignatureContext ca, HashSignature assinatura) throws AssinaturaExternaException {
+	public void posAssinar(SignatureContext ca, HashSignature assinatura) throws AssinaturaExternaException {
 		InputStream is = null;
-		try {
+//		try {
 			PdfSignatureAppearance appearance = ca.getAppearance();
 			byte primeiroHash[] = ca.getPrimeiroHash();
 
 			posAssinarImpl(ca, appearance, primeiroHash, assinatura);
-			is = new FileInputStream(appearance.getTempFile());
-			byte[] pdfAssinado = IOUtils.toByteArray(is);
+//			is = new FileInputStream(appearance.getTempFile());
+//			byte[] pdfAssinado = IOUtils.toByteArray(is);
 
-			return pdfAssinado;
-		} catch (IOException e) {
-			throw new AssinaturaExternaException("Erro ao finalizar montagem do PDF.", e);
-		} finally {
+//			return pdfAssinado;
+			
+			String signedFilePath = appearance.getTempFile().getAbsolutePath();
+			ca.setSignedFilePath(signedFilePath);
+//		} catch (IOException e) {
+//			throw new AssinaturaExternaException("Erro ao finalizar montagem do PDF.", e);
+		/*} finally {
 			IOUtils.closeQuietly(is);
-		}
+		}*/
 	}
 
 	/**

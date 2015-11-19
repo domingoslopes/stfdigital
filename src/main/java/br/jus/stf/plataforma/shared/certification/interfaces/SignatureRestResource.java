@@ -1,27 +1,31 @@
 package br.jus.stf.plataforma.shared.certification.interfaces;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.cert.X509Certificate;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.plataforma.shared.certification.PkiType;
+import br.jus.stf.plataforma.shared.certification.interfaces.commands.PostSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PreSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PrepareCommand;
-import br.jus.stf.plataforma.shared.certification.interfaces.commands.PostSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.ContextIdDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.service.SignatureService;
@@ -65,14 +69,21 @@ public class SignatureRestResource {
 	@ApiOperation("Assina efetivamente o documento.")
 	@RequestMapping(value = "/post-sign", method = RequestMethod.POST)
 	public void postSign(@RequestBody PostSignCommand command) throws AssinaturaExternaException {
-		SignedDocument signedDocument = signatureService.postSign(new SignatureContextId(command.getContextId()), new HashSignature(command.getSignatureAsHex()));
-		
+		signatureService.postSign(new SignatureContextId(command.getContextId()), new HashSignature(command.getSignatureAsHex()));
 	}
 
 	@ApiOperation("Recupera o documento assinado.")
-	@RequestMapping(value = "/download-signed/{contextId}/{documentId}")
-	public void downloadSigned() {
+	@RequestMapping(value = "/download-signed/{contextId}")
+	public void downloadSigned(@PathVariable("contextId") String contextId, HttpServletResponse response) throws IOException {
+		SignedDocument signedDocument = signatureService.recoverSignedDocument(new SignatureContextId(contextId));
+		InputStream is = new ByteArrayInputStream(signedDocument.asBytes());
 		
+		response.setHeader("Content-disposition", "attachment; filename=" + contextId + ".pdf");
+		response.setContentType("application/pdf");
+		response.setHeader("Content-Length", String.valueOf(is.available()));
+		
+		IOUtils.copy(is, response.getOutputStream());
+		response.flushBuffer();
 	}
 	
 }

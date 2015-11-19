@@ -30,6 +30,8 @@ public final class SignatureContext implements Serializable {
 
 	private CRL[] crlsObj;
 
+	private String signedFilePath;
+
 	public SignatureContext(SignatureContextId id) {
 		this.id = id;
 	}
@@ -120,6 +122,14 @@ public final class SignatureContext implements Serializable {
 
 	public void registerCrls(CRL[] crls) {
 		this.crlsObj = crls;
+	}
+
+	public void setSignedFilePath(String signedFilePath) {
+		this.signedFilePath = signedFilePath;
+	}
+	
+	public String signedFilePath() {
+		return signedFilePath;
 	}
 	
 }
