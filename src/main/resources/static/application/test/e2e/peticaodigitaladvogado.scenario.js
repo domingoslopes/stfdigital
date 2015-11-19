@@ -198,7 +198,7 @@
 				//verifica se a lista de ministros impedidos possui ao menos um ministro
 				expect(distribuicaoPage.listaMinistrosImpedidos().count()).toEqual(1);
 				
-			}else if (tipoDistribuicao == 'Prevencao'){
+			}else if (tipoDistribuicao == 'PREVENCAO'){
 				
 				distribuicaoPage.selecionarPrimeiraParte();
 				
@@ -210,8 +210,6 @@
 			
 			
 			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao ' + tipoDistribuicao);
-			
-		//	distribuicaoPage.selecionarPrimeiraParte();
 			
 			distribuicaoPage.finalizar();
 		}
