@@ -42,18 +42,22 @@
 		};
 		
 		this.selecionarPrimeiraParte = function(){
-			browser.debugger();
-			element(by.repeater('parte in partes').row(0)).element(by.css('a[ng-click="consultarProcesso(parte)"]')).click();
-			browser.waitForAngular();
+			element.all(by.repeater('parte in partes')).get(0).element(by.css('a[ng-click="consultarProcesso(parte)"]')).click();
 		};
 		
 		this.selecionarPrimeiroProcessoDaParte = function(){
-			element(by.repeater('processo in parte.processosParte').row(0)).element(by.css('a[adicionarProcessoPreventoLista(processoP)"]')).click();
+			element.all(by.repeater('processoP in parte.processosParte')).get(0).element(by.css('a[ng-click="adicionarProcessoPreventoLista(processoP)"]')).click();
 		};
 		
 		this.listaProcessosPreventos = function(){
-			return element.all(by.repeater('processoP in processosPreventos'));
+			return element.all(by.repeater('processo in processosPreventos'));
 		};
+		
+		this.adicionarProcessoSuggestion = function(siglaNumeroProcesso){
+			utils.select('div#s2id_processo', siglaNumeroProcesso);
+			 browser.sleep(2000);
+			browser.waitForAngular();
+		}
 		
 		this.finalizar = function() {
 			element(by.id('finalizar')).click();
