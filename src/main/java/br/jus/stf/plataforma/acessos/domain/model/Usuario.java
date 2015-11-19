@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.acessos.domain.model;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -55,6 +56,18 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
 	private Set<Permissao> permissoes;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinTable(name = "PAPEL_USUARIO", schema = "PLATAFORMA",
+		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false))
+	private Set<Papel> papeis;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinTable(name = "GRUPO_USUARIO", schema = "PLATAFORMA",
+		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false))
+	private Set<Grupo> grupos;
 	
 	Usuario() {
 		
@@ -112,11 +125,36 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		return telefone;
 	}
 	
-	@Override
-	public Set<Permissao> permissoes() {
-		return permissoes;
+	public Set<Papel> papeis() {
+		return Collections.unmodifiableSet(papeis);
 	}
 	
+	public void atribuirPapeis(final Set<Papel> papeis) {
+		Validate.notEmpty(papeis, "usuario.papeis.required");
+		
+		this.papeis = papeis;
+		
+		papeis.forEach(papel -> permissoes.addAll(papel.permissoes()));
+	}
+	
+	public Set<Grupo> grupos() {
+		return Collections.unmodifiableSet(grupos);
+	}
+	
+	public void atribuirGrupos(final Set<Grupo> grupos) {
+		Validate.notEmpty(grupos, "usuario.grupos.required");
+		
+		this.grupos = grupos;
+		
+		grupos.forEach(grupo -> permissoes.addAll(grupo.permissoes()));
+	}
+	
+	@Override
+	public Set<Permissao> permissoes() {
+		return Collections.unmodifiableSet(permissoes);
+	}
+	
+	@Override
 	public void atribuirPermissoes(final Set<Permissao> permissoes) {
 		Validate.notEmpty(permissoes, "usuario.permissoes.required");
 		
