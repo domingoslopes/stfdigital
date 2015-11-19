@@ -54,7 +54,9 @@
 		};
 		
 		this.adicionarProcessoSuggestion = function(siglaNumeroProcesso){
-			element(by.id('processo')).sendKeys(siglaNumeroProcesso);
+			utils.select('div#s2id_processo', siglaNumeroProcesso);
+			 browser.sleep(2000);
+			browser.waitForAngular();
 		}
 		
 		this.finalizar = function() {
