@@ -76,7 +76,7 @@
 			return $q(function(resolve, reject) {
 				$http.post(properties.apiUrl + '/certification/signature/post-sign', command).success(function(dto) {
 					console.log(dto);
-					resolve(dto);
+					resolve({'downloadUrl': properties.apiUrl + '/certification/signature/download-signed/' + resolvedObject.injectedContextId});
 				}).error(function(error) {
 					console.log(error);
 					reject(error);
@@ -157,7 +157,7 @@
 					.then(preSign)
 					.then(injectCertificate).then(sign)
 					.then(injectContextId).then(postSign)
-//					.then(postSign);
+					.then(callSigningCompletedCallback)
 					.catch(function(error) {
 						console.log('catch');
 						console.log(error);

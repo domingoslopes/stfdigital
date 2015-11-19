@@ -1,7 +1,11 @@
 package br.jus.stf.plataforma.shared.certification.service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.cert.X509Certificate;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,11 +61,24 @@ public class SignatureService {
 		return new PreSignature(new AuthenticatedAttributes(auth), new HashToSign(hash), HashType.SHA256);
 	}
 
-	public SignedDocument postSign(SignatureContextId contextId, HashSignature signature) throws AssinaturaExternaException {
+	public void postSign(SignatureContextId contextId, HashSignature signature) throws AssinaturaExternaException {
 		SignatureContext context = contextManager.recoverSignatureContext(contextId);
 		AssinadorPorPartes app = new SHA256DetachedAssinadorPorPartes(false);
-		byte[] pdf = app.posAssinar(context, signature);
-		return new SignedDocument(pdf);
+		app.posAssinar(context, signature);
+	}
+	
+	public SignedDocument recoverSignedDocument(SignatureContextId contextId) {
+		SignatureContext context = contextManager.recoverSignatureContext(contextId);
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream(new File(context.signedFilePath()));
+			byte[] signedDocumentBytes = IOUtils.toByteArray(is);
+			return new SignedDocument(signedDocumentBytes);
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao recuperar documento assinado.", e);
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
 	}
 
 }
