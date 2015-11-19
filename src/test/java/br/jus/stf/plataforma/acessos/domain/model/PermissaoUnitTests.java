@@ -3,22 +3,11 @@ package br.jus.stf.plataforma.acessos.domain.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
-
-public class PermissaoUnitTests extends AbstractIntegrationTests {
-	
-	@Autowired
-	private EntityManager em;
-	
-	@Autowired
-	private UsuarioRepository pr;
+public class PermissaoUnitTests {
 	
 	private Usuario usuario;
 	
@@ -64,7 +53,7 @@ public class PermissaoUnitTests extends AbstractIntegrationTests {
 		permissoes.add(criarPeca);
 		
 		Recurso autuar = new Recurso("Autuar", TipoRecurso.ACAO, permissoes);
-		pr.save(usuario);
+		
 		Assert.assertTrue(usuario.possuiAcessoNo(autuar));
 	}
 	
