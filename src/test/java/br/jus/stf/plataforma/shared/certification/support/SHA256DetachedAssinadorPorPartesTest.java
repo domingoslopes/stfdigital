@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.shared.certification.support;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -24,6 +26,7 @@ import com.itextpdf.text.pdf.security.PdfPKCS7;
 
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
+import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
 
 public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemoTest {
 
@@ -72,9 +75,19 @@ public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemo
 		ca.registerCrls(crls);
 		byte[] dataToSign = app.preAssinar(ca);
 		HashSignature assinatura = assinar(dataToSign);
-		byte[] pdfAssinado = app.posAssinar(ca, assinatura);
-
-		validarPdf(pdfAssinado);
+		app.posAssinar(ca, assinatura);
+		
+		FileInputStream is = null;
+		try {
+			is = new FileInputStream(new File(ca.signedFilePath()));
+			byte[] pdfAssinado = IOUtils.toByteArray(is);
+			validarPdf(pdfAssinado);
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao recuperar documento assinado.", e);
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
+		
 	}
 
 	private void validarPdf(byte[] pdfAssinado) throws IOException, NoSuchAlgorithmException {

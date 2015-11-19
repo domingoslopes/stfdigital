@@ -10,8 +10,38 @@
 			</ul>
 		</div>
 	</div>
-	<div class="auto-overflow widget-11-2-table">
-		<input  id="idSelectFileAssinador" type="file" name="file" nv-file-select="" uploader="uploader" /><br/>
+	<div class="panel-body">
+		<div class="row">
+			<input  id="idSelectFileAssinador" type="file" name="file" nv-file-select="" uploader="uploader" multiple=""/><br/>
+		</div>
+		<div class="row">
+			<table class="table">
+				<thead>
+				    <tr>
+				        <th width="50%">Título</th>
+				        <th ng-show="uploader.isHTML5">Tamanho</th>
+				        <th ng-show="uploader.isHTML5">Progresso</th>
+				        <th>Ações</th>
+				    </tr>
+				</thead>
+				<tbody>
+				    <tr ng-repeat="documento in documentos">
+				    	<td class="force-pointer"><strong>{{ documento.fileItem.file.name }}</strong></td>
+				        <td ng-show="uploader.isHTML5" nowrap>{{ documento.fileItem.file.size/1024/1024|number:2 }} MB</td>
+				        <td ng-show="uploader.isHTML5">
+				            <div class="progress" style="margin-bottom: 0;">
+						        <div class="progress-bar" role="progressbar" ng-style="{ 'width': documento.fileItem.progress + '%' }"></div>
+						    </div>
+						</td>
+                       <td nowrap>
+                           <a  ng-click="visualizar(documento)" data-placement="top" ng-disabled="!documento.fileItem.isUploading">
+                              	<i class="glyphicon glyphicon-eye-open"></i>
+                           </a>
+                       </td>
+                   </tr>
+               </tbody>
+           </table>
+		</div>
 	</div>
 </div>
 <!-- END WIDGET -->

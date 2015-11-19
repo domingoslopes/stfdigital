@@ -71,14 +71,17 @@ public class SignatureServiceTest extends AbstractCertificationTest {
 		HashSignature signature = sign(preSignature, finalUser.keyPair().getPrivate());
 
 		// Passo 5 - Server-side: Pós-assinar, gerando o documento
-		SignedDocument signedDocument = signatureService.postSign(contextId, signature);
+		signatureService.postSign(contextId, signature);
+		
+		// Passo 6 - Server-side: Recuperar o documento assinado
+		SignedDocument signedDocument = signatureService.recoverSignedDocument(contextId);
 		Assert.assertNotNull(signedDocument);
 	}
 
 	private HashSignature sign(PreSignature preSignature, PrivateKey key) throws Exception {
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initSign(key);
-		signature.update(preSignature.hash().hashAsBytes());
+		signature.update(preSignature.auth().authAsBytes());
 
 		byte[] signed = signature.sign();
 
