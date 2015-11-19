@@ -31,11 +31,7 @@ public class PessoaApplicationService {
 	 * @return
 	 */
 	public List<Pessoa> cadastrarPessoas(List<String> pessoas) {
-		return pessoas.stream()
-				.map(pessoa -> {
-					return carregarPessoa(pessoa);
-				})
-				.collect(Collectors.toList());
+		return pessoas.stream().map(pessoa -> carregarPessoa(pessoa)).collect(Collectors.toList());
 	}
 	
 	private Pessoa carregarPessoa(String nome) {
