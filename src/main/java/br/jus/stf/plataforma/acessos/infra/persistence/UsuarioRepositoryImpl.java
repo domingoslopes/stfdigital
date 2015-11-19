@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.acessos.domain.model.Permissao;
+import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.Segmento;
 import br.jus.stf.plataforma.acessos.domain.model.TipoInformacao;
 import br.jus.stf.plataforma.acessos.domain.model.TipoSegmento;
@@ -82,6 +84,40 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	@Override
 	public List<Segmento> findAllSegmento() {
 		Query query = entityManager.createQuery("SELECT segmento FROM Segmento segmento ORDER BY segmento.nome");
+		
+		return query.getResultList();
+	}
+	
+	@Override
+	public Recurso findOneRecurso(Long sequencial) {
+		Query query = entityManager.createQuery("SELECT recurso FROM Recurso recurso WHERE recurso.sequencial = :id");
+		query.setParameter("id", sequencial);
+		
+		return (Recurso)query.getSingleResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Recurso> findAllRecurso() {
+		Query query = entityManager.createQuery("SELECT recurso FROM Recurso recurso ORDER BY recurso.nome");
+		
+		return query.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Permissao> findByPermissaoUsuario(String login) {
+		Query query = entityManager.createQuery("SELECT perm FROM Usuario usua INNER JOIN usua.permissoes perm WITH usua.login = :login");
+		query.setParameter("login", login);
+		
+		return query.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Permissao> findByPermissaoRecurso(Long sequencial) {
+		Query query = entityManager.createQuery("SELECT perm FROM Recurso recu INNER JOIN recu.permissoesExigidas perm WITH recu.sequencial = :id");
+		query.setParameter("id", sequencial);
 		
 		return query.getResultList();
 	}

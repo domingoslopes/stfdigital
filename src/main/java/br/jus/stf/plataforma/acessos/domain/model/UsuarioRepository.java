@@ -20,6 +20,14 @@ public interface UsuarioRepository {
 	
 	public Segmento findOneSegmento(Long sequencial);
 	
+	public List<Recurso> findAllRecurso();
+	
+	public Recurso findOneRecurso(Long sequencial);
+	
 	public List<Segmento> findAllSegmento();
+	
+	public List<Permissao> findByPermissaoUsuario(String login);
+	
+	public List<Permissao> findByPermissaoRecurso(Long sequencial);
 
 }

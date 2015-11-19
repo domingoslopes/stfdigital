@@ -37,6 +37,10 @@ public class Segmento implements ValueObject<Segmento> {
 	@JoinColumn(name = "SEQ_TIPO_SEGMENTO", referencedColumnName = "SEQ_TIPO_SEGMENTO")
 	private TipoSegmento tipoSegmento;
 	
+	Segmento() {
+		
+	}
+	
 	public Segmento(final Long sequencial, final String nome, final TipoInformacao tipoInformacao) {
 		Validate.notNull(sequencial, "segmento.sequencial.required");
 		Validate.notBlank(nome, "segmento.nome.required");
