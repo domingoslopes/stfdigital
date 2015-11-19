@@ -17,8 +17,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
-
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfDate;
 import com.itextpdf.text.pdf.PdfDictionary;
@@ -31,6 +29,8 @@ import com.itextpdf.text.pdf.security.DigestAlgorithms;
 import com.itextpdf.text.pdf.security.ExternalDigest;
 import com.itextpdf.text.pdf.security.MakeSignature.CryptoStandard;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
+
+import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
 
 public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 
@@ -124,12 +124,12 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 	}
 
 	@Override
-	protected void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, String assinatura)
+	protected void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, HashSignature assinatura)
 			throws AssinaturaExternaException {
 		try {
 			int tamanhoEstimado = ca.getTamanhoEstimado();
 			PdfPKCS7 sgnNew = ca.getPdfPKCS7();
-			sgnNew.setExternalDigest(Base64.decodeBase64(assinatura.getBytes()), null, "RSA");
+			sgnNew.setExternalDigest(assinatura.signatureAsBytes(), null, "RSA");
 
 //			TSAClient tsaClient = getTSAClient();
 			Collection<byte[]> crls = ca.getCrls();

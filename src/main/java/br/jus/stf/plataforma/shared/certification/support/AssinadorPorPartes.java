@@ -22,6 +22,8 @@ import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfString;
 
+import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
+
 public abstract class AssinadorPorPartes {
 
 	private static final String EXTENSAO_PDF = ".pdf";
@@ -39,9 +41,9 @@ public abstract class AssinadorPorPartes {
 
 	public abstract byte[] prepararHashParaAssinaturaExterna(byte[] dataToSign);
 
-	public byte[] preAssinar(Certificate[] cadeia, CRL[] crls, byte[] pdf, String reason, SignatureContext ca) throws AssinaturaExternaException {
+	public byte[] preAssinar(SignatureContext ca) throws AssinaturaExternaException {
 		try {
-			PdfReader reader = new PdfReader(pdf);
+			PdfReader reader = new PdfReader(ca.getPdfPath());
 			File arquivoTemporario = criaArquivoTemporarioParaPdfAssinado(ca);
 
 			PdfStamper stamper = PdfStamper.createSignature(reader, null, '\0', arquivoTemporario);
@@ -49,9 +51,9 @@ public abstract class AssinadorPorPartes {
 
 			appearance.setSignDate(Calendar.getInstance());
 			
-			appearance.setReason(reason);
+			appearance.setReason(ca.reason());
 
-			byte[] hashParaAssinar = preGerarHashes(cadeia, crls, ca, stamper, appearance);
+			byte[] hashParaAssinar = preGerarHashes(ca.certificateChain(), ca.crls(), ca, stamper, appearance);
 
 			return hashParaAssinar;
 		} catch (IOException e) {
@@ -61,10 +63,10 @@ public abstract class AssinadorPorPartes {
 		}
 	}
 
-	protected abstract void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, String assinatura)
+	protected abstract void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, HashSignature assinatura)
 			throws AssinaturaExternaException;
 
-	public byte[] posAssinar(SignatureContext ca, String assinatura) throws AssinaturaExternaException {
+	public byte[] posAssinar(SignatureContext ca, HashSignature assinatura) throws AssinaturaExternaException {
 		InputStream is = null;
 		try {
 			PdfSignatureAppearance appearance = ca.getAppearance();
@@ -132,7 +134,7 @@ public abstract class AssinadorPorPartes {
 
 	private File criaArquivoTemporarioParaPdfAssinado(SignatureContext ca) throws AssinaturaExternaException {
 		try {
-			File arquivoTemporario = File.createTempFile(ca.getIdContexto(), EXTENSAO_PDF);
+			File arquivoTemporario = File.createTempFile(ca.signatureContextId().id(), EXTENSAO_PDF);
 			return arquivoTemporario;
 		} catch (IOException e) {
 			throw new AssinaturaExternaException("Eror ao criar arquivo tempor�rio para assinatura.", e);

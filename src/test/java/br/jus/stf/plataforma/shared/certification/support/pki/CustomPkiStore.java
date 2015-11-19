@@ -5,12 +5,12 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.lang.Validate;
 
-public class CustomPKIStore {
+public class CustomPkiStore {
 
 	private KeyPair keyPair;
 	private X509Certificate certificate;
 
-	public CustomPKIStore(KeyPair keyPair, X509Certificate certificate) {
+	public CustomPkiStore(KeyPair keyPair, X509Certificate certificate) {
 		Validate.notNull(keyPair, "KeyPair é obrigatório.");
 		Validate.notNull(certificate, "Certificate é obrigatório.");
 
