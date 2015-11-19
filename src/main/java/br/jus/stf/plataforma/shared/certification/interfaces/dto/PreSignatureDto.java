@@ -1,20 +1,11 @@
 package br.jus.stf.plataforma.shared.certification.interfaces.dto;
 
-import br.jus.stf.plataforma.shared.certification.support.HashType;
+import br.jus.stf.plataforma.shared.certification.signature.PreSignature;
 
 public class PreSignatureDto {
 
-	private String signatureContextId;
 	private String hash;
-	private HashType hashType;
-
-	public String getSignatureContextId() {
-		return signatureContextId;
-	}
-
-	public void setSignatureContextId(String signatureContextId) {
-		this.signatureContextId = signatureContextId;
-	}
+	private String hashType;
 
 	public String getHash() {
 		return hash;
@@ -24,12 +15,19 @@ public class PreSignatureDto {
 		this.hash = hash;
 	}
 
-	public HashType getHashType() {
+	public String getHashType() {
 		return hashType;
 	}
 
-	public void setHashType(HashType hashType) {
+	public void setHashType(String hashType) {
 		this.hashType = hashType;
+	}
+
+	public static PreSignatureDto from(PreSignature preSignature) {
+		PreSignatureDto dto = new PreSignatureDto();
+		dto.setHash(preSignature.hash().hashAsHex());
+		dto.setHashType(preSignature.hashType().toString());
+		return dto;
 	}
 
 }
