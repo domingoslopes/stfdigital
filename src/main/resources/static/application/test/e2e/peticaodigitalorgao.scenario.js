@@ -133,19 +133,21 @@
 		    	peticaoId = text.substr(pos, text.length); 
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-			
+		    
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
-			distribuicaoPage.selecionar('Min. Roberto Barroso');
+			distribuicaoPage.selecionarTipoDistribuicao('COMUM');
 			
-			//seleciona a primeira parte 
-			distribuicaoPage.selecionarPrimeiraParte();
+			distribuicaoPage.criarListaDeMinistrosImpedidos();
 			
-			distribuicaoPage.selecionarPrimeiroProcessoDaParte();
+			//verifica se a lista de ministros impedidos possui ao menos um ministro
+			expect(distribuicaoPage.listaMinistrosImpedidos().count()).toEqual(1);
+			
+			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao ' + tipoDistribuicao);
 			
 			distribuicaoPage.finalizar();
 		    
