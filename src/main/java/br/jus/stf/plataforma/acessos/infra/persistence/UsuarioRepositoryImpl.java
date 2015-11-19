@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.acessos.domain.model.Grupo;
+import br.jus.stf.plataforma.acessos.domain.model.Papel;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
 import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.Segmento;
@@ -38,6 +40,38 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	@Override
 	public Usuario save(Usuario principal) {
 		return super.save(principal);
+	}
+	
+	@Override
+	public Papel findOnePapel(Long sequencial) {
+		Query query = entityManager.createQuery("SELECT papel FROM Papel papel WHERE papel.sequencial = :id");
+		query.setParameter("id", sequencial);
+		
+		return (Papel)query.getSingleResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Papel> findAllPapel() {
+		Query query = entityManager.createQuery("SELECT papel FROM Papel papel ORDER BY papel.nome");
+		
+		return query.getResultList();
+	}
+
+	@Override
+	public Grupo findOneGrupo(Long sequencial) {
+		Query query = entityManager.createQuery("SELECT grupo FROM Grupo grupo WHERE grupo.sequencial = :id");
+		query.setParameter("id", sequencial);
+		
+		return (Grupo)query.getSingleResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Grupo> findAllGrupo() {
+		Query query = entityManager.createQuery("SELECT grupo FROM Grupo grupo ORDER BY grupo.nome");
+		
+		return query.getResultList();
 	}
 	
 	@Override
@@ -117,6 +151,24 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	@Override
 	public List<Permissao> findByPermissaoRecurso(Long sequencial) {
 		Query query = entityManager.createQuery("SELECT perm FROM Recurso recu INNER JOIN recu.permissoesExigidas perm WITH recu.sequencial = :id");
+		query.setParameter("id", sequencial);
+		
+		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Permissao> findByPermissaoPapel(Long sequencial) {
+		Query query = entityManager.createQuery("SELECT perm FROM Papel pape INNER JOIN pape.permissoes perm WITH pape.sequencial = :id");
+		query.setParameter("id", sequencial);
+		
+		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Permissao> findByPermissaoGrupo(Long sequencial) {
+		Query query = entityManager.createQuery("SELECT perm FROM Grupo grup INNER JOIN grup.permissoes perm WITH grup.sequencial = :id");
 		query.setParameter("id", sequencial);
 		
 		return query.getResultList();
