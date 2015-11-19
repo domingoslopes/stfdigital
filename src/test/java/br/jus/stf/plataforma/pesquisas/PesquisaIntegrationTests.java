@@ -5,19 +5,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -28,17 +21,6 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
-
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	@Before
-	public void setUp() {
-		Authentication auth = Mockito.mock(Authentication.class);
-		
-		Mockito.when(auth.getPrincipal()).thenReturn("PETICIONADOR");
-		SecurityContextHolder.getContext().setAuthentication(auth);
-	}
 
 	@Test
 	public void pesquisar() throws Exception {
@@ -54,7 +36,10 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		
 		elasticsearchTemplate.refresh("teste-distribuicao", true);
 
-		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": [\"HC\"]}, \"campos\": [\"classe.sigla\"] }"))
+		mockMvc.perform(post("/api/pesquisas")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": [\"HC\"]}, \"campos\": [\"classe.sigla\"] }")
+					.header("papel", "peticionador"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].tipo", is("Processo")))
  				.andExpect(jsonPath("$[0].objeto['classe.sigla']", is("HC")));
@@ -96,7 +81,10 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		elasticsearchTemplate.index(query3);
 		elasticsearchTemplate.refresh("quantidade-autuacoes", true);
 		
-		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"quantidade-autuacoes\"], \"filtros\": {\"mesAutuacao\": [5]}, \"campos\": [\"classeProcessual\"], \"campoAgregacao\": \"classeProcessual\" }"))
+		mockMvc.perform(post("/api/pesquisas")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"indices\": [\"quantidade-autuacoes\"], \"filtros\": {\"mesAutuacao\": [5]}, \"campos\": [\"classeProcessual\"], \"campoAgregacao\": \"classeProcessual\" }")
+				.header("papel", "peticionador"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].tipo", is("ValoresAgregados")))
 			.andExpect(jsonPath("$[0].objeto['ADI']", is(2)))
