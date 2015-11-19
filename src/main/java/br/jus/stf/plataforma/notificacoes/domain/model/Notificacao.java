@@ -75,8 +75,14 @@ public class Notificacao implements Entity<Notificacao, NotificacaoId> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
 		Notificacao other = (Notificacao) obj;
 		return sameIdentityAs(other);
 	}

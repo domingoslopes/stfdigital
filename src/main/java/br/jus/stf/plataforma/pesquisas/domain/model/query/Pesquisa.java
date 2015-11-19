@@ -68,6 +68,10 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 		return id;
 	}
 	
+	public String nome(){
+		return this.nome;
+	}
+	
 	public String[] campos() {
 		return campos;
 	}
@@ -130,8 +134,13 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 		
 		Pesquisa other = (Pesquisa) obj;
 		return sameIdentityAs(other);
