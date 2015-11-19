@@ -25,7 +25,7 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomPKIService {
+public class CustomPkiService {
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -33,23 +33,23 @@ public class CustomPKIService {
 		customPKI = generateCustomPKI();
 	}
 
-	private CustomPKI customPKI;
+	private CustomPki customPKI;
 	
-	public CustomPKI customPKI() {
+	public CustomPki customPKI() {
 		return customPKI;
 	}
 	
 	private String randomUnit = "";
 	
-	private CustomPKI generateCustomPKI() throws Exception {
+	private CustomPki generateCustomPKI() throws Exception {
 		randomUnit = RandomStringUtils.randomAlphanumeric(5).toUpperCase();
-		CustomPKIStore rootCA = generateRootCA();
-		CustomPKIStore intermediateCA = generateIntermediateCA(rootCA);
-		CustomPKIStore finalUser = generateFinalUser(intermediateCA);
-		return new CustomPKI(rootCA, intermediateCA, finalUser);
+		CustomPkiStore rootCA = generateRootCA();
+		CustomPkiStore intermediateCA = generateIntermediateCA(rootCA);
+		CustomPkiStore finalUser = generateFinalUser(intermediateCA);
+		return new CustomPki(rootCA, intermediateCA, finalUser);
 	}
 
-	private CustomPKIStore generateRootCA() throws Exception {
+	private CustomPkiStore generateRootCA() throws Exception {
 		KeyPair kp = generateKeyPair(4096);
 
 		PublicKey publicKey = kp.getPublic();
@@ -57,7 +57,7 @@ public class CustomPKIService {
 
 		String random = RandomStringUtils.randomAlphanumeric(5).toUpperCase();
 
-		String issuer = "CN = ROOT CA CUSTOM " + random + " v1 OU = UNIT " + randomUnit + " O = STF C = BR";
+		String issuer = "CN = ROOT CA CUSTOM " + random + " v1, OU = UNIT " + randomUnit + ", O = STF, C = BR";
 		String subject = issuer; // Auto assinado.
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
@@ -71,16 +71,16 @@ public class CustomPKIService {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
 
-		return new CustomPKIStore(kp, certificate);
+		return new CustomPkiStore(kp, certificate);
 	}
 
-	private CustomPKIStore generateIntermediateCA(CustomPKIStore ca) throws Exception {
+	private CustomPkiStore generateIntermediateCA(CustomPkiStore ca) throws Exception {
 		KeyPair kp = generateKeyPair(4096);
 
 		PublicKey publicKey = kp.getPublic();
 
 		String random = RandomStringUtils.randomAlphanumeric(5).toUpperCase();
-		String subject = "CN = INT CA CUSTOM " + random + " v1 OU = UNIT " + randomUnit + " O = STF C = BR";
+		String subject = "CN = INT CA CUSTOM " + random + " v1, OU = UNIT " + randomUnit + ", O = STF, C = BR";
 
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
@@ -101,16 +101,16 @@ public class CustomPKIService {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
 
-		return new CustomPKIStore(kp, certificate);
+		return new CustomPkiStore(kp, certificate);
 	}
 	
-	private CustomPKIStore generateFinalUser(CustomPKIStore ca) throws Exception {
+	private CustomPkiStore generateFinalUser(CustomPkiStore ca) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
 		PublicKey publicKey = kp.getPublic();
 
 		String random = RandomStringUtils.randomAlphabetic(5).toUpperCase();
-		String subject = "CN = FULANO DA SILVA " + random + " v1 OU = UNIT " + randomUnit + " O = STF C = BR";
+		String subject = "CN = FULANO DA SILVA " + random + ", OU = UNIT " + randomUnit + ", O = STF, C = BR";
 
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
@@ -130,7 +130,7 @@ public class CustomPKIService {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
 
-		return new CustomPKIStore(kp, certificate);
+		return new CustomPkiStore(kp, certificate);
 	}
 	
 	private KeyPair generateKeyPair(int keySize) throws Exception {

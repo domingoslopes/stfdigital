@@ -4,7 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("br.jus.stf.plataforma.shared.certification.support")
+@ComponentScan("br.jus.stf.plataforma.shared.certification")
 public class CertificationTestConfiguration {
 
 }

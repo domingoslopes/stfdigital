@@ -1,6 +1,9 @@
-package br.jus.stf.plataforma.shared.certification.support;
+package br.jus.stf.plataforma.shared.certification.signature;
 
 import java.io.Serializable;
+import java.security.cert.CRL;
+import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.UUID;
@@ -11,9 +14,10 @@ import com.itextpdf.text.pdf.security.PdfPKCS7;
 public final class SignatureContext implements Serializable {
 
 	private static final long serialVersionUID = -4801807132705368529L;
-
-	private final String idContexto;
-	private final String idDocumento;
+	
+	private final SignatureContextId id;
+	
+	private String idDocumento;
 	private PdfSignatureAppearance appearance;
 	private byte primeiroHash[];
 	private String pdfPath;
@@ -22,19 +26,16 @@ public final class SignatureContext implements Serializable {
 	private int tamanhoEstimado;
 	private Collection<byte[]> crls;
 
-	public SignatureContext(String idDocumento) {
-		this.idDocumento = idDocumento;
-		this.idContexto = gerarIdContexto(this.idDocumento);
-	}
-	
-	private String gerarIdContexto(String idDocumento) {
-		String uniqueID = UUID.randomUUID().toString();
-		String id = uniqueID + "#" + idDocumento;
-		return id;
+	private X509Certificate[] certificateChain;
+
+	private CRL[] crlsObj;
+
+	public SignatureContext(SignatureContextId id) {
+		this.id = id;
 	}
 
-	public String getIdContexto() {
-		return idContexto;
+	public SignatureContextId signatureContextId() {
+		return id;
 	}
 
 	public String getIdDocumento() {
@@ -95,6 +96,30 @@ public final class SignatureContext implements Serializable {
 
 	public void setCrls(Collection<byte[]> crls) {
 		this.crls = crls;
+	}
+
+	public void attachDocumentToSign(TempDocument tempDocument) {
+		pdfPath = tempDocument.tempPath();
+	}
+
+	public String reason() {
+		return "REASON";
+	}
+
+	public Certificate[] certificateChain() {
+		return certificateChain;
+	}
+
+	public CRL[] crls() {
+		return new CRL[]{};
+	}
+
+	public void registerCertificateChain(X509Certificate[] chain) {
+		certificateChain = chain;
+	}
+
+	public void registerCrls(CRL[] crls) {
+		this.crlsObj = crls;
 	}
 	
 }

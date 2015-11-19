@@ -6,12 +6,13 @@
 (function() {
 	'use strict';
 
-	angular.autuacao.controller('AssinadorPdfDashletController', ['$scope', 'FileUploader', 'properties', 'AssinaturaService', function($scope, FileUploader, properties, AssinaturaService) {
+	angular.autuacao.controller('AssinadorPdfDashletController', ['$scope', '$cookies', 'FileUploader', 'properties', 'SignatureService', function($scope, $cookies, FileUploader, properties, SignatureService) {
 		
 		$scope.documentos = [];
 		
 		var uploader = $scope.uploader = new FileUploader({
-            url: properties.apiUrl + '/certification/upload-to-sign',
+            url: properties.apiUrl + '/certification/signature/upload-to-sign',
+            headers : {'X-XSRF-TOKEN': $cookies.get('XSRF-TOKEN')},
             formData: [{name: "file"}],
             filters: [{
 		    	name: 'arquivos-pdf',
@@ -35,6 +36,8 @@
 		    }]
         });
 		
+		var signingTracker;
+		
 		uploader.onAfterAddingFile = function(fileItem) {
             var documento = {
 				fileItem : fileItem,
@@ -42,53 +45,30 @@
 				tipo : null
             };
             $scope.documentos.push(documento);
-			fileItem.upload();
+            
+            signingTracker = SignatureService.signWithExternalUpload();
+            signingTracker.onContextCreated(function(contextId) {
+            	console.log('controller-contextId');
+            	console.log(contextId);
+            	fileItem.headers['Signature-Context-Id'] = contextId;
+            	fileItem.upload();
+            });
+            signingTracker.onSigningCompleted(function(signedDocument) {
+            	console.log(signedDocument);
+            });
+            signingTracker.onErrorCallback(function(error) {
+            	console.log('controller-error-callback');
+            	console.log(error);
+            });
+            signingTracker.start();
 		};
-		
-		var signingCertificate;
 		
         uploader.onCompleteItem = function(fileItem, response) {
         	var documento = recuperarDocumentoPorItem(fileItem);
         	documento.documentoTemporario = response;
         	
-        	sign(documento.documentoTemporario);
+        	signingTracker.triggerFileUploaded();
         };
-
-        function sign(docId) {
-        	
-        }
-        
-        function PreAssinarCommand(tempDocId, certificate) {
-        	this.tempDocId = tempDocId;
-        	this.certificate = certificate;
-        }
-        
-        function preSign(docId) {
-        	AssinaturaService.requestUserCertificate().then(function(certificate) {
-        		var command = new PreAssinarCommand(docId, certificate.hex)
-        		console.log(command);
-        		AssinaturaService.preSign(command).then(function(preSignatureDto) {
-        			sign(certificate, preSignatureDto);
-        		}, function(error) {
-        			
-        		});
-        	}, function(error) {
-        		
-        	});
-        }
-        
-        function sign(certificate, preSignatureDto) {
-        	AssinaturaService.sign(certificate, preSignatureDto.hash, preSignatureDto.hashType).then(function(signature) {
-        		AssinaturaService.sign(certificate, preSignatureDto.hash, preSignatureDto.hashType);
-//        		AssinaturaService.postSign(preSignatureDto.signatureContextId, signature).then(function() {
-//        			
-//        		}, function(error) {
-//        			
-//        		});
-        	}, function(error) {
-        		
-        	});
-        }
         
         function recuperarDocumentoPorItem(item) {
 			var d = null;

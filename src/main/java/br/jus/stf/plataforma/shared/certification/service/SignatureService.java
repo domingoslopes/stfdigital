@@ -1,44 +1,67 @@
 package br.jus.stf.plataforma.shared.certification.service;
 
-import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 
-import org.apache.commons.codec.binary.Hex;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
-import br.jus.stf.plataforma.shared.certification.support.DocumentToSign;
+import br.jus.stf.plataforma.shared.certification.Pki;
+import br.jus.stf.plataforma.shared.certification.signature.PreSignature;
+import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
+import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
+import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.signature.StreamedDocument;
+import br.jus.stf.plataforma.shared.certification.signature.TempDocument;
+import br.jus.stf.plataforma.shared.certification.support.AssinadorPorPartes;
+import br.jus.stf.plataforma.shared.certification.support.AssinaturaExternaException;
+import br.jus.stf.plataforma.shared.certification.support.AuthenticatedAttributes;
+import br.jus.stf.plataforma.shared.certification.support.HashSignature;
+import br.jus.stf.plataforma.shared.certification.support.HashToSign;
+import br.jus.stf.plataforma.shared.certification.support.HashType;
+import br.jus.stf.plataforma.shared.certification.support.SHA256DetachedAssinadorPorPartes;
 
 @Service
 public class SignatureService {
-	
-	public String storeToSign(InputStream stream) {
-		DocumentToSign document = new DocumentToSign(stream);
-		return document.tempId();
-	}
 
-	public PreSignatureDto preSign(String tempDocId, String certificateAsHex) {
-		byte[] hash = aplicarHashSHA256(new String(tempDocId + certificateAsHex).getBytes());
-		PreSignatureDto dto = new PreSignatureDto();
-		dto.setHash(Hex.encodeHexString(hash));
-		return dto;
-	}
+	@Autowired
+	private SignatureContextManager contextManager;
 
-	private byte[] aplicarHashSHA256(byte[] arr) {
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-			messageDigest.update(arr);
-			byte hash[] = messageDigest.digest();
-			return hash;
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Algoritmo de hash SHA-256 não encontrado.", e);
+	@Autowired
+	private ValidationService validationService;
+
+	/**
+	 * Recebe o certificado que vai assinar um documento, permitindo a criação
+	 * de um contexto de assinatura.
+	 * 
+	 * @param certificate
+	 * @return
+	 */
+	public SignatureContextId prepareToSign(X509Certificate certificate, Pki pki) {
+		if (validationService.validate(certificate, pki)) {
+			return contextManager.generateSignatureContext(new X509Certificate[] { certificate });
+		} else {
+			return null;
 		}
 	}
-	
-	public void postSign(String contextId, String signature) {
-		
+
+	public void attachToSign(SignatureContextId contextId, StreamedDocument document) {
+		SignatureContext context = contextManager.recoverSignatureContext(contextId);
+		context.attachDocumentToSign(new TempDocument(document));
 	}
 
-	
+	public PreSignature preSign(SignatureContextId contextId) throws AssinaturaExternaException {
+		SignatureContext context = contextManager.recoverSignatureContext(contextId);
+		AssinadorPorPartes app = new SHA256DetachedAssinadorPorPartes(false);
+		byte[] auth = app.preAssinar(context);
+		byte[] hash = app.prepararHashParaAssinaturaExterna(auth);
+		return new PreSignature(new AuthenticatedAttributes(auth), new HashToSign(hash), HashType.SHA256);
+	}
+
+	public SignedDocument postSign(SignatureContextId contextId, HashSignature signature) throws AssinaturaExternaException {
+		SignatureContext context = contextManager.recoverSignatureContext(contextId);
+		AssinadorPorPartes app = new SHA256DetachedAssinadorPorPartes(false);
+		byte[] pdf = app.posAssinar(context, signature);
+		return new SignedDocument(pdf);
+	}
+
 }
