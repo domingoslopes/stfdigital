@@ -68,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     	InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> builder = auth.inMemoryAuthentication();
-    	Arrays.asList(USUARIOS).forEach(u -> builder.withUser(u).password("123").roles(u, "servidor"));
+    	Arrays.asList(USUARIOS).forEach(u -> builder.withUser(u).password("123").authorities(u, "servidor"));
     }
   
 	private CsrfTokenRepository csrfTokenRepository() {

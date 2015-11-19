@@ -256,20 +256,22 @@ gulp.task('serve:tdd', function(cb) {
  * todos navegadores abertos.
  */
 gulp.task('serve', ['build'], function() {
-	browserSync({
+	var bs = browserSync({
 		notify: false,
 		logPrefix: pkg.name,
-		/*server: {
-			baseDir : config.base,
-			middleware: [historyApiFallback()],
-			port : 3000
-		},*/
 		startPath: "/login",
 		proxy: {
-			target: "http://localhost:8080",
-			//middleware: [historyApiFallback()],
+			target: "https://localhost:8443",
 			ws: true
-		}
+		},
+		rewriteRules: [
+           {
+               match: /api\/ws/,
+               fn: function (match) {
+                   return 'https://localhost:8443/api/ws';
+               }
+           }
+		]
 	});
 	
 	gulp.watch(config.index, reload);
