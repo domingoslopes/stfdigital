@@ -149,25 +149,14 @@
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
-			distribuicaoPage.selecionarTipoDistribuicao(tipoDistribuicao);
+			distribuicaoPage.selecionarTipoDistribuicao('PREVENCAO');
 			
-			if (tipoDistribuicao == 'COMUM'){
+			distribuicaoPage.adicionarProcessoSuggestion('AP 1');
 				
-				distribuicaoPage.criarListaDeMinistrosImpedidos();
-				
-				//verifica se a lista de ministros impedidos possui ao menos um ministro
-				expect(distribuicaoPage.listaMinistrosImpedidos().count()).toEqual(1);
-				
-			}else if (tipoDistribuicao == 'PREVENCAO'){
-				
-				distribuicaoPage.adicionarProcessoSuggestion('AP 1');
-				
-				//verifica se a lista de processos preventos possui ao menos um processo
-				expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
-			}
+			//verifica se a lista de processos preventos possui ao menos um processo
+			expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
 			
-			
-			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao ' + tipoDistribuicao);
+			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao');
 			
 			distribuicaoPage.finalizar();
 		    

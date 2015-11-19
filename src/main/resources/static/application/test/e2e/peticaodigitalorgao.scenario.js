@@ -147,7 +147,7 @@
 			//verifica se a lista de ministros impedidos possui ao menos um ministro
 			expect(distribuicaoPage.listaMinistrosImpedidos().count()).toEqual(1);
 			
-			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao ' + tipoDistribuicao);
+			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao COMUM');
 			
 			distribuicaoPage.finalizar();
 		    
