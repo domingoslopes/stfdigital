@@ -2,8 +2,6 @@ package br.jus.stf.plataforma.documentos.infra.configuration;
 
 import java.io.IOException;
 
-import javax.annotation.PreDestroy;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,9 +45,4 @@ public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 		return factory.newMongo();
 	}
 	
-	@PreDestroy
-	private void shutdown() {
-		factory.shutdown();
-	}
-
 }

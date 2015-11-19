@@ -146,7 +146,7 @@ public class ActionMappingInfo {
 	@JsonView(ActionView.class)
 	@JsonGetter("hasConditionHandlers")
 	public boolean hasConditionHandlers() {
-		return actionHandlersInfo.size() > 0;
+		return !actionHandlersInfo.isEmpty();
 	}
 		
 	/**
@@ -160,12 +160,12 @@ public class ActionMappingInfo {
 			return resourcesMode.equals(ResourcesMode.None);
 		}
 		
-		int size = ((Collection<?>) resources).size();
+		int size = resources.size();
+		
 		if (size == 0) {
 			return resourcesMode.equals(ResourcesMode.None);
 		} else if (size == 1) {
-			return (resourcesMode.equals(ResourcesMode.One) ||
-					resourcesMode.equals(ResourcesMode.Many));
+			return resourcesMode.equals(ResourcesMode.One) || resourcesMode.equals(ResourcesMode.Many);
 		}
 		return resourcesMode.equals(ResourcesMode.Many);
 	}

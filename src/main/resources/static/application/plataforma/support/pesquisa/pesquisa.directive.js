@@ -129,6 +129,12 @@
 					scope.modelo = angular.isDefined(e.added) ? e.added : null;
 					scope.$apply();
 				});
+				
+				scope.$watch('modelo', function(novoValor){
+					if (!novoValor){
+						$(elem).select2('val','');
+					}
+				})
 			}
 		};
 	}]);
