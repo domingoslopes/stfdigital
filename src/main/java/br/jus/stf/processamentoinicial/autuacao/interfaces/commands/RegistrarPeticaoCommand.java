@@ -38,40 +38,20 @@ public class RegistrarPeticaoCommand {
 	@ApiModelProperty(value = "A lista de identificadores das peças que serão anexados pelo peticionador", required=true)
 	private List<Map<String, String>> pecas;
 
-	public void setClasseId(String classeId) {
-		this.classeId = classeId;
-	}
-
 	public String getClasseId() {
 		return classeId;
-	}
-	
-	public void setOrgaoId(Long orgaoId) {
-		this.orgaoId = orgaoId;
 	}
 	
 	public Long getOrgaoId() {
 		return orgaoId;
 	}
 	
-	public void setPartesPoloAtivo(List<String> partesPoloAtivo) {
-		this.partesPoloAtivo = partesPoloAtivo;
-	}
-	
 	public List<String> getPartesPoloAtivo() {
 		return partesPoloAtivo;
 	}
 	
-	public void setPartesPoloPassivo(List<String> partesPoloPassivo) {
-		this.partesPoloPassivo = partesPoloPassivo;
-	}
-	
 	public List<String> getPartesPoloPassivo() {
 		return partesPoloPassivo;
-	}
-	
-	public void setPecas(List<Map<String, String>> pecas) {
-		this.pecas = pecas;
 	}
 	
 	public List<Map<String, String>> getPecas() {

@@ -56,19 +56,19 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 	@JoinTable(name = "PERMISSAO_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
-	private Set<Permissao> permissoes;
+	private Set<Permissao> permissoes = new HashSet<Permissao>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PAPEL_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false))
-	private Set<Papel> papeis;
+	private Set<Papel> papeis = new HashSet<Papel>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "GRUPO_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false))
-	private Set<Grupo> grupos;
+	private Set<Grupo> grupos = new HashSet<Grupo>(0);
 	
 	Usuario() {
 		
@@ -133,7 +133,13 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 	public void atribuirPapeis(final Set<Papel> papeis) {
 		Validate.notEmpty(papeis, "usuario.papeis.required");
 		
-		this.papeis = papeis;
+		this.papeis.addAll(papeis);
+	}
+	
+	public void removerPapeis(final Set<Papel> papeis) {
+		Validate.notEmpty(papeis, "usuario.papeis.required");
+		
+		this.papeis.removeAll(papeis);
 	}
 	
 	public Set<Grupo> grupos() {
@@ -143,7 +149,13 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 	public void atribuirGrupos(final Set<Grupo> grupos) {
 		Validate.notEmpty(grupos, "usuario.grupos.required");
 		
-		this.grupos = grupos;
+		this.grupos.addAll(grupos);
+	}
+	
+	public void removerGrupos(final Set<Grupo> grupos) {
+		Validate.notEmpty(grupos, "usuario.grupos.required");
+		
+		this.grupos.removeAll(grupos);
 	}
 	
 	@Override
@@ -161,7 +173,14 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 	public void atribuirPermissoes(final Set<Permissao> permissoes) {
 		Validate.notEmpty(permissoes, "usuario.permissoes.required");
 		
-		this.permissoes = permissoes;
+		this.permissoes.addAll(permissoes);
+	}
+	
+	@Override
+	public void removerPermissoes(Set<Permissao> permissoes) {
+		Validate.notEmpty(permissoes, "usuario.permissoes.required");
+		
+		this.permissoes.removeAll(permissoes);
 	}
 	
 	@Override
@@ -185,12 +204,12 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Usuario other = (Usuario) obj;
-		return sameIdentityAs(other);
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameIdentityAs(Usuario other) {
-		return other != null && sequencial.equals(other.sequencial);
+		return other != null && login.equals(other.login);
 	}
-
+	
 }
