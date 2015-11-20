@@ -10,14 +10,18 @@
 	angular.autuacao.service('SignatureService', ['properties', '$http', '$q', function(properties, $http, $q) {
 		var crypto = hwcrypto;
 		
-		var requestUserCertificate = function() {
+		var requestUserCertificate = function(alreadySelectedCertificate) {
 			console.log('requestUserCertificate');
 			return $q(function(resolve, reject) {
-				crypto.getCertificate({lang: 'en'}).then(function(response) {
-					resolve(response);
-				}, function(err) {
-					reject(err);
-				});
+				if (!alreadySelectedCertificate) {
+					crypto.getCertificate({lang: 'en'}).then(function(response) {
+						resolve(response);
+					}, function(err) {
+						reject(err);
+					});
+				} else {
+					resolve(alreadySelectedCertificate);
+				}
 			});
 		};
 
@@ -84,15 +88,14 @@
 			});
 		};
 		
-		function SigningTracker() {
+		var SignerWithUpload = function(collectCertificate, injectCertificate, injectAlreadySelectedCertificate) {
 			var self = this;
 			
 			var contextId;
-			var certificate;
 			
 			var contextCreatedCallback;
 			var signingCompletedCallback;
-			
+
 			var errorCallback;
 			
 			var documentUploadDeferred;
@@ -133,16 +136,6 @@
 				}
 			};
 			
-			var collectCertificate = function(cert) {
-				certificate = cert;
-				return $q.when(certificate);
-			};
-			
-			var injectCertificate = function(resolvedObject) {
-				resolvedObject['injectedCertificate'] = certificate;
-				return $q.when(resolvedObject);
-			};
-			
 			var injectContextId = function(resolvedObject) {
 				resolvedObject['injectedContextId'] = contextId;
 				return $q.when(resolvedObject);
@@ -150,7 +143,7 @@
 			
 			this.start = function() {
 				if (crypto.use('auto')) {
-					$q.when()
+					$q.when().then(injectAlreadySelectedCertificate) // Injeta o certificado se já tiver sido selecionado.
 					.then(requestUserCertificate).then(collectCertificate)
 					.then(prepare)
 					.then(callContextCreatedCallback)
@@ -167,10 +160,56 @@
 					console.log('Nenhuma implementação encontrada.')
 				}
 			};
-		}
+		};
 		
-		this.signWithExternalUpload = function() {
-			return new SigningTracker();
+		var SigningTrackerWithUpload = function() {
+			var certificate;
+			
+			var collectCertificate = function(cert) {
+				if (!certificate) {
+					certificate = cert;
+					deferredRequestingFirstCertificate.resolve();
+				}
+				return $q.when(certificate)
+			};
+			
+			var injectCertificate = function(resolvedObject) {
+				resolvedObject['injectedCertificate'] = certificate;
+				return $q.when(resolvedObject);
+			};
+			
+			var deferredRequestingFirstCertificate;
+			
+			var injectAlreadySelectedCertificate = function() {
+				return $q(function(resolve) {
+					if (certificate) {
+						console.log('existing-certificate');
+						resolve(certificate);
+					} else if (!deferredRequestingFirstCertificate) {
+						console.log('creating-deferred');
+						deferredRequestingFirstCertificate = $q.defer();
+						resolve();
+					} else {
+						console.log('else');
+						deferredRequestingFirstCertificate.promise.then(function() {
+							console.log('resolvedFirstCertificate');
+							resolve(certificate);
+						});
+					}
+				});
+			};
+			
+			this.newSigner = function() {
+				return new SignerWithUpload(collectCertificate, injectCertificate, injectAlreadySelectedCertificate);
+			}
+		};
+		
+		this.signerWithExternalUpload = function() {
+			return new SigningTrackerWithUpload();
+		};
+		
+		this.signerWithExistingDocument = function(documentId) {
+			
 		};
 		
 	}]);

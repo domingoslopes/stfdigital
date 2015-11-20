@@ -36,38 +36,42 @@
 		    }]
         });
 		
-		var signingTracker;
+		var signingTracker = SignatureService.signerWithExternalUpload();
 		
 		uploader.onAfterAddingFile = function(fileItem) {
+			var signer = signingTracker.newSigner();
+			
             var documento = {
-				fileItem : fileItem,
-				signedDocument : null
+				"fileItem" : fileItem,
+				"signedDocument" : null,
+				"signer" : signer
             };
             $scope.documentos.push(documento);
-            
-            signingTracker = SignatureService.signWithExternalUpload();
-            signingTracker.onContextCreated(function(contextId) {
+                        
+            signer.onContextCreated(function(contextId) {
             	console.log('controller-contextId');
             	console.log(contextId);
             	fileItem.headers['Signature-Context-Id'] = contextId;
             	fileItem.upload();
             });
-            signingTracker.onSigningCompleted(function(signedDocument) {
+            signer.onSigningCompleted(function(signedDocument) {
             	console.log(signedDocument);
             	documento.signedDocument = signedDocument;
             });
-            signingTracker.onErrorCallback(function(error) {
+            signer.onErrorCallback(function(error) {
             	console.log('controller-error-callback');
             	console.log(error);
             });
-            signingTracker.start();
+            signer.start();
 		};
 		
         uploader.onCompleteItem = function(fileItem, response) {
         	var documento = recuperarDocumentoPorItem(fileItem);
         	documento.documentoTemporario = response;
         	
-        	signingTracker.triggerFileUploaded();
+        	var signer = documento.signer;
+        	
+        	signer.triggerFileUploaded();
         };
         
         function recuperarDocumentoPorItem(item) {
