@@ -14,16 +14,15 @@ public class PermissaoGrupoUnitTests {
 	@Before
 	public void setUp() {
 		TipoInformacao peticao = new TipoInformacao(1L, "Petição");
-		TipoSegmento peticaoEletronica = new TipoSegmento(1L, "Petição Eletrônica");
-		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao, peticaoEletronica);
-		Permissao criarPeticaoEletronica = new Permissao(1L, peticionamentoEletronico, TipoPermissao.CRIAR);
+		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao);
+		Permissao criarPeticaoEletronica = new Permissao(1L, TipoPermissao.CRIAR, peticionamentoEletronico);
 		TipoInformacao pessoa = new TipoInformacao(2L, "Pessoa");
 		Segmento cadastramentoPessoa = new Segmento(2L, "Cadastramento de pessoa", pessoa);
-		Segmento inclusaoPeca = new Segmento(3L, "Inclusão de peça", peticao, peticaoEletronica);
-		Permissao criarPeca = new Permissao(3L , inclusaoPeca, TipoPermissao.VISUALIZAR);
+		Segmento inclusaoPeca = new Segmento(3L, "Inclusão de peça", peticao);
+		Permissao criarPeca = new Permissao(3L, TipoPermissao.VISUALIZAR, inclusaoPeca);
 		Segmento pesquisaPessoa = new Segmento(4L, "Pesquisa de pessoa", pessoa);
-		Permissao pesquisarPessoa = new Permissao(5L, pesquisaPessoa, TipoPermissao.PESQUISAR);
-		Permissao criarPessoa = new Permissao(2L, cadastramentoPessoa, TipoPermissao.CRIAR);
+		Permissao pesquisarPessoa = new Permissao(5L, TipoPermissao.PESQUISAR, pesquisaPessoa);
+		Permissao criarPessoa = new Permissao(2L, TipoPermissao.CRIAR, cadastramentoPessoa);
 		Set<Permissao> permissoes = new HashSet<Permissao>();
 		
 		permissoes.add(criarPeticaoEletronica);
@@ -38,14 +37,13 @@ public class PermissaoGrupoUnitTests {
 	@Test
 	public void grupoPossuiAcessoNoRecurso() {
 		TipoInformacao peticao = new TipoInformacao(1L, "Petição");
-		TipoSegmento peticaoEletronica = new TipoSegmento(1L, "Petição Eletrônica");
-		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao, peticaoEletronica);
-		Permissao criarPeticaoEletronica = new Permissao(1L, peticionamentoEletronico, TipoPermissao.CRIAR);
+		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao);
+		Permissao criarPeticaoEletronica = new Permissao(1L, TipoPermissao.CRIAR, peticionamentoEletronico);
 		TipoInformacao pessoa = new TipoInformacao(2L, "Pessoa");
 		Segmento cadastramentoPessoa = new Segmento(2L, "Cadastramento de pessoa", pessoa);
-		Permissao criarPessoa = new Permissao(2L, cadastramentoPessoa, TipoPermissao.CRIAR);		
-		Segmento inclusaoPeca = new Segmento(3L, "Inclusão de peça", peticao, peticaoEletronica);
-		Permissao criarPeca = new Permissao(3L, inclusaoPeca, TipoPermissao.VISUALIZAR);
+		Permissao criarPessoa = new Permissao(2L, TipoPermissao.CRIAR, cadastramentoPessoa);		
+		Segmento inclusaoPeca = new Segmento(3L, "Inclusão de peça", peticao);
+		Permissao criarPeca = new Permissao(3L, TipoPermissao.VISUALIZAR, inclusaoPeca);
 		Set<Permissao> permissoes = new HashSet<Permissao>();
 		
 		permissoes.add(criarPeticaoEletronica);
@@ -60,10 +58,9 @@ public class PermissaoGrupoUnitTests {
 	@Test
 	public void grupoNaoPossuiAcessoNoRecurso() {
 		TipoInformacao peticao = new TipoInformacao(1L, "Petição");
-		TipoSegmento peticaoEletronica = new TipoSegmento(1L, "Petição Eletrônica");
-		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao, peticaoEletronica);
-		Permissao alterarPeticaoEletronica = new Permissao(4L, peticionamentoEletronico, TipoPermissao.ALTERAR);
-		Permissao pesquisarPeticaoEletronica = new Permissao(5L, peticionamentoEletronico, TipoPermissao.PESQUISAR);
+		Segmento peticionamentoEletronico = new Segmento(1L, "Peticionamento eletrônico", peticao);
+		Permissao alterarPeticaoEletronica = new Permissao(4L, TipoPermissao.ALTERAR, peticionamentoEletronico);
+		Permissao pesquisarPeticaoEletronica = new Permissao(5L, TipoPermissao.PESQUISAR, peticionamentoEletronico);
 		Set<Permissao> permissoes = new HashSet<Permissao>();
 		
 		permissoes.add(alterarPeticaoEletronica);

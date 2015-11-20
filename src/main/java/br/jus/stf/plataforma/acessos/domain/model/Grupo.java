@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.acessos.domain.model;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -46,7 +47,7 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 	@JoinTable(name = "PERMISSAO_GRUPO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
-	private Set<Permissao> permissoes;
+	private Set<Permissao> permissoes = new HashSet<Permissao>(0);
 	
 	Grupo() {
 		
@@ -83,7 +84,14 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 	public void atribuirPermissoes(Set<Permissao> permissoes) {
 		Validate.notEmpty(permissoes, "papel.permissoes.required");
 		
-		this.permissoes = permissoes;
+		this.permissoes.addAll(permissoes);
+	}
+	
+	@Override
+	public void removerPermissoes(Set<Permissao> permissoes) {
+		Validate.notEmpty(permissoes, "papel.permissoes.required");
+		
+		this.permissoes.removeAll(permissoes);
 	}
 	
 	@Override
@@ -102,12 +110,14 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Grupo other = (Grupo) obj;
-		return sameValueAs(other);
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
-	public boolean sameValueAs(Grupo other) {
-		return other != null && sequencial.equals(other.sequencial);
+	public boolean sameValueAs(final Grupo other) {
+		return other != null
+				&& nome.equals(other.nome)
+				&& tipo.equals(other.tipo);
 	}
 
 }
