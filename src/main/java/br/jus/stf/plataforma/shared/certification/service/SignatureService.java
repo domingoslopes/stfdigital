@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.shared.certification.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +24,8 @@ import br.jus.stf.plataforma.shared.certification.support.HashSignature;
 import br.jus.stf.plataforma.shared.certification.support.HashToSign;
 import br.jus.stf.plataforma.shared.certification.support.HashType;
 import br.jus.stf.plataforma.shared.certification.support.SHA256DetachedAssinadorPorPartes;
+import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 @Service
 public class SignatureService {
@@ -32,6 +35,9 @@ public class SignatureService {
 
 	@Autowired
 	private ValidationService validationService;
+	
+	@Autowired
+	private DocumentAdapter documentAdapter;
 
 	/**
 	 * Recebe o certificado que vai assinar um documento, permitindo a criação
@@ -53,6 +59,15 @@ public class SignatureService {
 		context.attachDocumentToSign(new TempDocument(document));
 	}
 
+	public void provideToSign(SignatureContextId contextId, Long documentId) {
+		try {
+			byte[] document = documentAdapter.retrieve(new DocumentoId(documentId));
+			attachToSign(contextId, new StreamedDocument(new ByteArrayInputStream(document)));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao recuperar documento.", e);
+		}
+	}
+	
 	public PreSignature preSign(SignatureContextId contextId) throws AssinaturaExternaException {
 		SignatureContext context = contextManager.recoverSignatureContext(contextId);
 		AssinadorPorPartes app = new SHA256DetachedAssinadorPorPartes(false);
@@ -79,6 +94,13 @@ public class SignatureService {
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
+	}
+
+	public DocumentoId saveSigned(SignatureContextId signatureContextId) {
+		SignedDocument signedDocument = recoverSignedDocument(signatureContextId);
+		DocumentoTemporarioId tempDocId = documentAdapter.upload(signatureContextId.id(), signedDocument.asBytes());
+		DocumentoId docId = documentAdapter.save(tempDocId);
+		return docId;
 	}
 
 }
