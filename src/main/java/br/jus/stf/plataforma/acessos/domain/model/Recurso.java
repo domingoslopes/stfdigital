@@ -32,7 +32,7 @@ public class Recurso implements ValueObject<Recurso> {
 	@Column(name = "SEQ_RECURSO")
 	@SequenceGenerator(name = "RECURSOID", sequenceName = "PLATAFORMA.SEQ_RECURSO", allocationSize = 1)
 	@GeneratedValue(generator = "RECURSOID", strategy=GenerationType.SEQUENCE)
-	private Long sequencia;
+	private Long sequencial;
 	
 	@Column(name = "NOM_RECURSO", nullable = false)
 	private String nome;
