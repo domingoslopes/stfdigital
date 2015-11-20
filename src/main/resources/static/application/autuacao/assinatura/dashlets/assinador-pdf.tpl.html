@@ -34,7 +34,7 @@
 						    </div>
 						</td>
                        <td nowrap>
-                           <a  ng-click="visualizar(documento)" data-placement="top" ng-disabled="!documento.fileItem.isUploading">
+                           <a ng-show="documento.signedDocument" ng-href="{{documento.signedDocument.downloadUrl}}" target="_blank">
                               	<i class="glyphicon glyphicon-eye-open"></i>
                            </a>
                        </td>
