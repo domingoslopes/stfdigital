@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.jus.stf.plataforma.shared.actions.resources.commands.ResourcesCommand;
 import br.jus.stf.plataforma.shared.actions.resources.commands.VerifyActionsCommand;
 import br.jus.stf.plataforma.shared.actions.service.ActionService;
-import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
-import br.jus.stf.plataforma.shared.actions.support.ActionView;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -35,17 +32,20 @@ public class ActionRestResource {
 	@Autowired
 	private ActionService actionService;
 	
+	@Autowired
+	private ActionDtoAssembler actionDtoAssembler;
+	
     /**
      * Lista todas as ações registradas pelo módulo
      * @return as ações
      */
     @ApiOperation(value = "Lista as ações de um determinado contexto.")
-    @JsonView(ActionView.class)
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<ActionMappingInfo> list() {
+	public List<ActionDto> list() {
 
     	return actionService.listActions()
     			.stream()
+    			.map(actionInfo -> actionDtoAssembler.toDto(actionInfo))
 				.sorted((a1, a2) -> a1.getDescription().compareTo(a2.getDescription()))
 				.collect(Collectors.toList());
 	}

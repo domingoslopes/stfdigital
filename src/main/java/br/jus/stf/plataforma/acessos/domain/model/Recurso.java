@@ -1,11 +1,11 @@
 package br.jus.stf.plataforma.acessos.domain.model;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -17,16 +17,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.shared.stereotype.ValueObject;
+import br.jus.stf.shared.stereotype.Entity;
 
-@Entity
-@Table(name = "RECURSO", schema = "PLATAFORMA")
-public class Recurso implements ValueObject<Recurso> {
-	
-	private static final long serialVersionUID = 1L;
+@javax.persistence.Entity
+@Table(name = "RECURSO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_RECURSO", "TIP_RECURSO"}))
+public class Recurso implements Entity<Recurso, Long> {
 	
 	@Id
 	@Column(name = "SEQ_RECURSO")
@@ -45,16 +44,27 @@ public class Recurso implements ValueObject<Recurso> {
 	@JoinTable(name = "PERMISSAO_RECURSO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
-	private Set<Permissao> permissoesExigidas;
+	private Set<Permissao> permissoesExigidas = new HashSet<Permissao>(0);
 	
-	public Recurso(String nome, TipoRecurso tipoRecurso, Set<Permissao> permissoesExigidas) {
+	Recurso() {
+		
+	}
+	
+	public Recurso(final Long sequencial, String nome, TipoRecurso tipoRecurso, Set<Permissao> permissoesExigidas) {
+		Validate.notNull(sequencial, "recurso.sequencial.required");		
 		Validate.notBlank(nome, "recurso.nome.required");
 		Validate.notNull(tipoRecurso, "recurso.tipoRecurso.required");
 		Validate.notEmpty(permissoesExigidas, "recurso.permissoesExigidas.required");
 		
+		this.sequencial = sequencial;
 		this.nome = nome;
 		this.tipoRecurso = tipoRecurso;
 		this.permissoesExigidas = permissoesExigidas;
+	}
+	
+	@Override
+	public Long id() {
+		return sequencial;
 	}
 	
 	public String nome() {
@@ -74,8 +84,7 @@ public class Recurso implements ValueObject<Recurso> {
 		final int prime = 31;
 		int result = 1;
 		
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((permissoesExigidas == null) ? 0 : permissoesExigidas.hashCode());
+		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
 		
 		return result;
 	}
@@ -86,13 +95,14 @@ public class Recurso implements ValueObject<Recurso> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Recurso other = (Recurso) obj;
-		return sameValueAs(other);
+		return sequencial.equals(other.sequencial);
 	}
 	
 	@Override
-	public boolean sameValueAs(Recurso other) {
-		return other != null && nome.equals(other.nome)
-				&& permissoesExigidas.equals(other.permissoesExigidas);
+	public boolean sameIdentityAs(final Recurso other) {
+		return other != null
+				&& nome.equals(other.nome)
+				&& tipoRecurso.equals(other.tipoRecurso);
 	}
 
 }

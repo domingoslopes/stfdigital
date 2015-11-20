@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('ActionService', ['$q', '$http', '$templateCache', '$window', 'properties', function($q, $http, $templateCache, $window, properties) {
+	angular.plataforma.service('ActionService', ['$q', '$http', '$templateCache', 'SecurityService', 'properties', function($q, $http, $templateCache, SecurityService, properties) {
 
 		var ACTION_NOTLOADED_EXCEPTION = "A ação não foi carregada: ";
 		var ARRAY_EXCEPTION = "Os recursos devem estar em um array!";
@@ -202,8 +202,8 @@
 			if (action.neededAuthorities.length === 0) {
 				return true;
 			}
-			var role = JSON.parse($window.sessionStorage.getItem('papel'));
-			return action.neededAuthorities.indexOf(role.nome) != -1;
+			var authorities = SecurityService.user().authorities;
+			return containsAll(action.neededAuthorities, authorities);
 		};
 		
 		/**
@@ -221,6 +221,16 @@
 					!that.isValidResources(action, resources) ||
 					!hasNeededAuthorities(action)) {
 				return false;
+			}
+			return true;
+		};
+		
+		/**
+		 * Verifica se um array está contido em outro
+		 */
+		var containsAll = function(needles, haystack){ 
+			for(var i = 0 , len = needles.length; i < len; i++){
+				if ($.grep(haystack, function(e){ return e.authority == needles[i].authority; }).length === 0) return false;
 			}
 			return true;
 		};

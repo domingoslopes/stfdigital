@@ -14,7 +14,7 @@ public class WebSocketSecurityConfiguration extends AbstractSecurityWebSocketMes
     @Override
     protected void configureInbound(MessageSecurityMetadataSourceRegistry messages) {
         messages.nullDestMatcher().authenticated()
-        		.simpSubscribeDestMatchers("/user/**").hasAuthority("servidor")
+        		.simpSubscribeDestMatchers("/user/**").hasAuthority("VISUALIZAR_NOTIFICACAO")
                 .anyMessage().denyAll();
 
     }

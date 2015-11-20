@@ -7,21 +7,11 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('SecurityController', function ($state, $scope, $log, $window, SecurityService, properties, $rootScope) {
+	angular.plataforma.controller('SecurityController', function ($state, $scope, $window, SecurityService) {
 		
-		var selecionarPapel = function(papel) {
-			$window.sessionStorage.setItem('papel', JSON.stringify(papel));
-			$scope.papelAtivo = papel;
-			$state.go('dashboard', {}, {reload: true});
-		};
+		$scope.user = SecurityService.user();
 		
-		$scope.papeis = SecurityService.papeis();
-		selecionarPapel($scope.papeis[0]);
-		
-		$scope.ativar = function(papel) {
-			selecionarPapel(papel);
-			$window.location.href = '/';
-		};
+		$state.go('dashboard', {}, {reload: true});
 		
 		$scope.logout = function() {
 			SecurityService.logout()

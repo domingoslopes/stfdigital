@@ -5,7 +5,7 @@ import br.jus.stf.shared.stereotype.ValueObject;
 public enum TipoRecurso implements ValueObject<TipoRecurso>{
 	
 	ACAO("Ação"),
-	DASHBOARD("Dashboard"),
+	DASHLET("Dashlet"),
 	NOTIFICACAO("Notificação"),
 	PESQUISA("Pesquisa"),
 	TAREFA("Tarefa");

@@ -8,6 +8,8 @@ public interface UsuarioRepository {
 	
 	public <T extends Usuario> T findOne(Long sequencial);
 	
+	public <T extends Usuario> T findOne(String login);
+	
 	public <T extends Usuario> T save(Usuario principal);
 	
 	public Papel findOnePapel(Long sequencial);
@@ -22,15 +24,11 @@ public interface UsuarioRepository {
 	
 	public List<TipoInformacao> findAllTipoInformacao();
 	
-	public TipoSegmento findOneTipoSegmento(Long sequencial);
-	
-	public List<TipoSegmento> findAllTipoSegmento();
-	
 	public Segmento findOneSegmento(Long sequencial);
 	
 	public List<Segmento> findAllSegmento();
 	
-	public Recurso findOneRecurso(Long sequencial);
+	public Recurso findOneRecurso(String nome, TipoRecurso tipoRecurso);
 	
 	public List<Recurso> findAllRecurso();
 	

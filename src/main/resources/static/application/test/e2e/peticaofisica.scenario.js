@@ -62,13 +62,13 @@
 		it('Deveria registrar uma petição física', function(){
 			var registroPage = new RegistroPage();
 			
-			registroPage.qtdVolumes(2);
+			registroPage.preencherQtdVolumes(2);
 			
-			registroPage.qtdApensos(2);
+			registroPage.preencherQtdApensos(2);
 			
 			registroPage.classificarTipoRecebimento('Sedex');
 			
-			registroPage.numSedex(2);
+			registroPage.preencherNumeroSedex(2);
 			
 			registroPage.registrar();
 			
@@ -84,7 +84,7 @@
 
 		it('Deveria pré-atuar como válida a petição recebida', function() {
 			
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -118,7 +118,7 @@
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
-			autuacaoPage.classificar('AP');
+			autuacaoPage.classificar('MS');
 			
 			autuacaoPage.finalizar();
 		    
@@ -133,7 +133,7 @@
 		
 		it('Deveria distribuir a petição física autuada', function() {
 			
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");

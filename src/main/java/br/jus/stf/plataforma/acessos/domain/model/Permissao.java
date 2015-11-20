@@ -11,13 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "PERMISSAO", schema = "PLATAFORMA")
+@Table(name = "PERMISSAO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_SEGMENTO", "TIP_PERMISSAO"}))
 public class Permissao implements ValueObject<Permissao> {
 	
 	private static final long serialVersionUID = 1L;
@@ -28,30 +29,52 @@ public class Permissao implements ValueObject<Permissao> {
 	@GeneratedValue(generator = "PERMISSAOID", strategy=GenerationType.SEQUENCE)
 	private Long sequencial;
 	
-	@ManyToOne
-	@JoinColumn(name = "SEQ_SEGMENTO", referencedColumnName = "SEQ_SEGMENTO", nullable = false)
-	private Segmento segmento;
-	
 	@Column(name = "TIP_PERMISSAO", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private TipoPermissao tipoPermissao;
 	
+	@ManyToOne
+	@JoinColumn(name = "SEQ_SEGMENTO", referencedColumnName = "SEQ_SEGMENTO")
+	private Segmento segmento;
+	
+	@ManyToOne
+	@JoinColumn(name = "SEQ_TIPO_INFORMACAO", referencedColumnName = "SEQ_TIPO_INFORMACAO", nullable = false)
+	private TipoInformacao tipoInformacao;
+	
 	Permissao() {
 		
 	}
-	
-	public Permissao(final Long sequencial, final Segmento segmento, final TipoPermissao tipoPermissao) {
+
+	private Permissao(final Long sequencial, final TipoPermissao tipoPermissao) {
 		Validate.notNull(sequencial, "permissao.sequencial.required");
-		Validate.notNull(segmento, "permissao.segmento.required");
 		Validate.notNull(tipoPermissao, "permissao.tipoPermissao.required");
 		
 		this.sequencial = sequencial;
-		this.segmento = segmento;
 		this.tipoPermissao = tipoPermissao;
+	}
+	
+	public Permissao(final Long sequencial, final TipoPermissao tipoPermissao, final TipoInformacao tipoInformacao) {
+		this(sequencial, tipoPermissao);
+		Validate.notNull(tipoInformacao, "permissao.tipoInformacao.required");
+
+		this.tipoInformacao = tipoInformacao;
+	}
+	
+	public Permissao(final Long sequencial, final TipoPermissao tipoPermissao, final Segmento segmento) {
+		this(sequencial, tipoPermissao);
+		Validate.notNull(segmento, "permissao.segmento.required");
+		Validate.notNull(segmento.tipoInformacao(), "permissao.tipoInformacao.required");
+		
+		this.segmento = segmento;
+		this.tipoInformacao = segmento.tipoInformacao();
 	}
 	
 	public Long toLong() {
 		return sequencial;
+	}
+	
+	public TipoInformacao tipoInformacao() {
+		return tipoInformacao;
 	}
 	
 	public Segmento segmento() {
@@ -78,12 +101,15 @@ public class Permissao implements ValueObject<Permissao> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Permissao other = (Permissao) obj;
-		return sameValueAs(other);
+		return sequencial.equals(other.sequencial);
 	}
 	
 	@Override
-	public boolean sameValueAs(Permissao other) {
-		return other != null && sequencial.equals(other.sequencial);
+	public boolean sameValueAs(final Permissao other) {
+		return other != null
+				&& tipoInformacao.equals(tipoInformacao)
+				&& tipoPermissao.equals(other.tipoPermissao)
+				&& ((segmento == null && other.segmento == null) || segmento.equals(other.segmento));
 	}
 
 }
