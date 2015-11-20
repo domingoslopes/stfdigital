@@ -14,7 +14,7 @@ public class ProcessoActionsResource {
 	@Autowired
 	private ProcessoServiceFacade processoServiceFacade;
 	
-	@ActionMapping(id = "DISTRIBUIR_PETICAO", name = "DistribuirPeticao", neededAuthorities = {"distribuidor"})
+	@ActionMapping(id = "DISTRIBUIR-PROCESSO", name = "Distribuir Processo")
 	public ProcessoDto distribuir(DistribuirPeticaoCommand command) {
 		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), command.getPeticaoId(), command.getJustificativa(),
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
