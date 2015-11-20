@@ -19,6 +19,8 @@ import br.jus.stf.shared.stereotype.ValueObject;
  */
 public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 
+	private static final long serialVersionUID = 1L;
+
 	private static String FILE_NAME_PREFFIX = "_DocTemp_";
 	
 	private Long tamanho;
