@@ -26,8 +26,10 @@ import br.jus.stf.plataforma.shared.certification.PkiType;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PostSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PreSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PrepareCommand;
+import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.ContextIdDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
+import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
 import br.jus.stf.plataforma.shared.certification.service.SignatureService;
 import br.jus.stf.plataforma.shared.certification.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
@@ -36,6 +38,7 @@ import br.jus.stf.plataforma.shared.certification.signature.StreamedDocument;
 import br.jus.stf.plataforma.shared.certification.support.AssinaturaExternaException;
 import br.jus.stf.plataforma.shared.certification.support.HashSignature;
 import br.jus.stf.plataforma.shared.certification.util.CertificationUtil;
+import br.jus.stf.shared.DocumentoId;
 
 @RestController
 @RequestMapping("/api/certification/signature")
@@ -55,8 +58,15 @@ public class SignatureRestResource {
 
 	@ApiOperation("Faz o upload do arquivo para assinatura.")
 	@RequestMapping(value = "/upload-to-sign", method = RequestMethod.POST)
-	public void uploadToSign(@RequestHeader("Signature-Context-Id") String contextId, @RequestParam("file") MultipartFile file) throws IOException {
+	public void uploadToSign(@RequestHeader("Signature-Context-Id") String contextId,
+			@RequestParam("file") MultipartFile file) throws IOException {
 		signatureService.attachToSign(new SignatureContextId(contextId), new StreamedDocument(file.getInputStream()));
+	}
+
+	@ApiOperation("Fornece um arquivo já existente no servidor para assinatura.")
+	@RequestMapping(value = "/provide-to-sign", method = RequestMethod.POST)
+	public void provideToSign(@RequestBody ProvideToSignCommand command) {
+		signatureService.provideToSign(new SignatureContextId(command.getContextId()), command.getDocumentId());
 	}
 
 	@ApiOperation("Gera o hash do documento a ser assinado.")
@@ -69,21 +79,30 @@ public class SignatureRestResource {
 	@ApiOperation("Assina efetivamente o documento.")
 	@RequestMapping(value = "/post-sign", method = RequestMethod.POST)
 	public void postSign(@RequestBody PostSignCommand command) throws AssinaturaExternaException {
-		signatureService.postSign(new SignatureContextId(command.getContextId()), new HashSignature(command.getSignatureAsHex()));
+		signatureService.postSign(new SignatureContextId(command.getContextId()),
+				new HashSignature(command.getSignatureAsHex()));
 	}
 
 	@ApiOperation("Recupera o documento assinado.")
 	@RequestMapping(value = "/download-signed/{contextId}")
-	public void downloadSigned(@PathVariable("contextId") String contextId, HttpServletResponse response) throws IOException {
+	public void downloadSigned(@PathVariable("contextId") String contextId, HttpServletResponse response)
+			throws IOException {
 		SignedDocument signedDocument = signatureService.recoverSignedDocument(new SignatureContextId(contextId));
 		InputStream is = new ByteArrayInputStream(signedDocument.asBytes());
-		
+
 		response.setHeader("Content-disposition", "attachment; filename=" + contextId + ".pdf");
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Length", String.valueOf(is.available()));
-		
+
 		IOUtils.copy(is, response.getOutputStream());
 		response.flushBuffer();
 	}
-	
+
+	@ApiOperation("Salva o documento assinado no contexto de documentos.")
+	@RequestMapping(value = "/save-signed/{contextId}")
+	public SignedDocumentDto saveSigned(@PathVariable("contextId") String contextId) throws IOException {
+		DocumentoId documentId = signatureService.saveSigned(new SignatureContextId(contextId));
+		return new SignedDocumentDto(documentId.toLong());
+	}
+
 }
