@@ -7,13 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "TIPO_INFORMACAO", schema = "PLATAFORMA")
+@Table(name = "TIPO_INFORMACAO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_TIPO_INFORMACAO"}))
 public class TipoInformacao implements ValueObject<TipoInformacao> {
 	
 	private static final long serialVersionUID = 1L;
