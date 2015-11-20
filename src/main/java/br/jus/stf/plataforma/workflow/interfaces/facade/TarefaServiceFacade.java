@@ -32,8 +32,8 @@ public class TarefaServiceFacade {
     @Autowired 
     private TarefaApplicationService tarefaApplicationService;
     
-	public List<TarefaDto> tarefas(String papel) {    	
-        return tarefaRepository.listar(papel).stream()
+	public List<TarefaDto> tarefas() {    	
+        return tarefaRepository.listar().stream()
         		.map(tarefa -> tarefaDtoAssembler.toDto(tarefa))
         		.collect(Collectors.toList());
 	}

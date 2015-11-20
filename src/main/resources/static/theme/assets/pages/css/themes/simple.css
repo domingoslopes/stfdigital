@@ -3592,7 +3592,7 @@ body.menu-pin > .pgn-wrapper[data-position="bottom"] {
 }
 .pgn-wrapper {
   position: fixed;
-  z-index: 1000;
+  z-index: 500;
 }
 .pgn-wrapper[data-position$='-left'] {
   left: 30px;
@@ -3913,7 +3913,7 @@ body > .pgn-wrapper[data-position^='top-'] {
   margin-top: -4px;
 }
 body > .pgn-wrapper {
-  z-index: 900;
+  z-index: 500;
 }
 @media (max-width: 979px) {
   body > .pgn-wrapper[data-position="top"] {

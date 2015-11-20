@@ -14,7 +14,7 @@ import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoEmailService;
  *
  */
 @Component
-public class NotificacaoEmailServiceImpl implements NotificacaoEmailService {
+public class NotificacaoEmailServiceImpl extends NotificacaoServiceImpl implements NotificacaoEmailService {
 
 	private static final String ASSUNTO = "STF - Notificação";
 	

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.shared.stereotype.Entity;
@@ -33,7 +34,7 @@ public class Notificacao implements Entity<Notificacao, NotificacaoId> {
 		this.notificado = notificado;
 		
 		this.dataCriacao = new Date();
-		this.notificante = SecurityContextUtil.getNomeUsuario();
+		this.notificante = SecurityContextUtil.getUsername();
 	}
 
 	@Override
@@ -67,10 +68,7 @@ public class Notificacao implements Entity<Notificacao, NotificacaoId> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
 	@Override

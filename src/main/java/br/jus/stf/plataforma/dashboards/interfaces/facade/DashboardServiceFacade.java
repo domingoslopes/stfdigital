@@ -23,8 +23,8 @@ public class DashboardServiceFacade {
 	@Autowired
 	private DashboardDtoAssembler dashboardDtoAssembler;
 
-	public DashboardDto recuperarPadrao(String papel) {
-		Dashboard dashboard = dashboardRepository.consultarPadraoDoPapel(papel);
+	public DashboardDto recuperarPadrao() {
+		Dashboard dashboard = dashboardRepository.consultarPadrao();
 		return dashboardDtoAssembler.toDto(dashboard);
 	}
 

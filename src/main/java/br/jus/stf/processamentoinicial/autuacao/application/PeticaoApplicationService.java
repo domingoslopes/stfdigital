@@ -94,14 +94,15 @@ public class PeticaoApplicationService {
 	 * Realiza a preautuação de uma petição física.
 	 * 
 	 * @param peticao Dados da petição física.
-	 * @param classeSugerida
-	 * @param motivoDevolucao 
-	 * @param peticaoValida 
+	 * @param classeSugerida Classe processual sugerida.
+	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
+	 * @param peticaoValida Indica se a petição é valida ou inválida.
 	 */
-	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida) {
+	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
 		if (peticaoValida) {
 			tarefaAdapter.completarPreautuacao(peticao);
 		} else {
+			peticao.devolver(motivoDevolucao);
 			processoAdapter.devolver(peticao);
 		}
 		peticao.preautuar(classeSugerida);

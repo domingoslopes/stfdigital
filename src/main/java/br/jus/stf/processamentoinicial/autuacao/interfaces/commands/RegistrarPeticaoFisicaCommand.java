@@ -48,32 +48,16 @@ public class RegistrarPeticaoFisicaCommand {
 		return formaRecebimento;
 	}
 
-	public void setFormaRecebimento(String formaRecebimento) {
-		this.formaRecebimento = formaRecebimento;
-	}
-
 	public int getQuantidadeVolumes() {
 		return quantidadeVolumes;
-	}
-
-	public void setQuantidadeVolumes(int quantidadeVolumes) {
-		this.quantidadeVolumes = quantidadeVolumes;
 	}
 
 	public int getQuantidadeApensos() {
 		return quantidadeApensos;
 	}
 
-	public void setQuantidadeApensos(int quantidadeApensos) {
-		this.quantidadeApensos = quantidadeApensos;
-	}
-
 	public String getNumeroSedex() {
 		return numeroSedex;
-	}
-
-	public void setNumeroSedex(String numeroSedex) {
-		this.numeroSedex = numeroSedex;
 	}
 	
 }
