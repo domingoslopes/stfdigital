@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.plataforma.shared.certification.AbstractCertificationTest;
 import br.jus.stf.plataforma.shared.certification.Pki;
+import br.jus.stf.plataforma.shared.certification.application.ValidationApplicationService;
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiService;
 
 public class ValidationServiceTest extends AbstractCertificationTest {
@@ -16,7 +17,7 @@ public class ValidationServiceTest extends AbstractCertificationTest {
 	private CustomPkiService customPkiService;
 
 	@Autowired
-	private ValidationService validationService;
+	private ValidationApplicationService validationService;
 
 	@Test
 	public void testValidate() {

@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 
 import br.jus.stf.plataforma.shared.certification.AbstractCertificationTest;
+import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
+import br.jus.stf.plataforma.shared.certification.application.SignatureContextManager;
 import br.jus.stf.plataforma.shared.certification.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
 import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
@@ -38,7 +40,7 @@ public class SignatureServiceTest extends AbstractCertificationTest {
 
 	@InjectMocks
 	@Autowired
-	private SignatureService signatureService;
+	private SignatureApplicationService signatureService;
 
 	private HttpSession session;
 
@@ -46,7 +48,7 @@ public class SignatureServiceTest extends AbstractCertificationTest {
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		session = new MockHttpSession();
-		Mockito.doReturn(session).when(signatureConextManager).getSession();
+		Mockito.doReturn(session).when(signatureConextManager).session();
 	}
 
 	@Test
