@@ -50,9 +50,8 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 			String key = classe.toString();
 			Query query = entityManager.createNativeQuery("SELECT NVL(MAX(num_processo), 0) FROM autuacao.processo WHERE sig_classe = :classe");
 			Long ultimoNumero = ((BigInteger) query.setParameter("classe", key).getSingleResult()).longValue();
-			Long proximoNumero = ultimoNumero + 1;
 			
-			return proximoNumero;	
+			return ultimoNumero + 1;
 		}
 	}
 	
