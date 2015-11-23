@@ -64,12 +64,14 @@ public class TipoSegmento implements ValueObject<TipoSegmento> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		TipoSegmento other = (TipoSegmento) obj;
-		return sameValueAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameValueAs(TipoSegmento other) {
-		return other != null && sequencial.equals(other.sequencial);
+		return other != null
+				&& nome.equals(other.nome);
 	}
 
 }
