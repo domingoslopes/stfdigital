@@ -4,8 +4,10 @@ import br.jus.stf.shared.stereotype.ValueObject;
 
 public enum TipoGrupo implements ValueObject<TipoGrupo> {
 	
-	SETOR("Setor"),
-	EXTERNO("Externo");
+	ADVOGADO("Advogado"),
+	CIDADAO("Cidadão"),
+	ORGAO("Órgão"),
+	SETOR("Setor");
 	
 	private String descricao;
 	

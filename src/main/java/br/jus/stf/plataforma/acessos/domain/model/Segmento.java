@@ -92,12 +92,16 @@ public class Segmento implements ValueObject<Segmento> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Segmento other = (Segmento) obj;
-		return sameValueAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameValueAs(final Segmento other) {
-		return other != null && sequencial.equals(other.sequencial);
+		return other != null
+				&& nome.equals(other.nome)
+				&& tipoInformacao.equals(other.tipoInformacao)
+				&& (tipoSegmento == null || tipoSegmento.equals(other.tipoSegmento));
 	}
 	
 

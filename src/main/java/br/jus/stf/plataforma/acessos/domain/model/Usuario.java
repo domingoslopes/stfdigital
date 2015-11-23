@@ -185,12 +185,14 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Usuario other = (Usuario) obj;
-		return sameIdentityAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameIdentityAs(Usuario other) {
-		return other != null && sequencial.equals(other.sequencial);
+		return other != null
+				&& login.equals(other.login);
 	}
 
 }

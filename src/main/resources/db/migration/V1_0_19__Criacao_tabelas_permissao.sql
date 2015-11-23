@@ -21,6 +21,7 @@ alter table plataforma.tipo_segmento add constraint FK_TIPO_SEGMENTO_SEGM foreig
 create table plataforma.permissao (seq_permissao bigint not null, seq_segmento bigint not null, tip_permissao varchar2(20), constraint pk_permissao primary key (seq_permissao));
 alter table plataforma.permissao add constraint uk_seq_segmento_perm unique(seq_segmento, tip_permissao);
 alter table plataforma.segmento add constraint FK_SEGMENTO_PERM foreign key (seq_segmento) references plataforma.segmento;
+alter table plataforma.permissao add constraint ck_tip_permissao_perm check (tip_permissao in ('ALTERAR', 'CRIAR', 'EXCLUIR', 'EXECUTAR', 'IMPRIMIR', 'PESQUISAR', 'VISUALIZAR'));
 
 create table plataforma.usuario (seq_usuario bigint not null, nom_usuario varchar2(100) not null, sig_usuario varchar2(30) not null, cod_cpf varchar2(11) not null, cod_oab varchar2(20), dsc_email varchar2(50) not null, dsc_telefone varchar2(14), constraint pk_usuario primary key (seq_usuario));
 alter table plataforma.usuario add constraint uk_sig_usuario_usua unique(sig_usuario);
@@ -31,6 +32,7 @@ alter table plataforma.permissao_usuario add constraint FK_PERMISSAO_PEUS foreig
 
 create table plataforma.recurso (seq_recurso bigint not null, nom_recurso varchar2(50) not null, tip_recurso varchar2(20) not null, constraint pk_recurso primary key (seq_recurso));
 alter table plataforma.recurso add constraint uk_nom_recurso_recu unique(nom_recurso, tip_recurso);
+alter table plataforma.recurso add constraint ck_tip_recurso_recu check (tip_recurso in ('ACAO', 'DASHBOARD', 'NOTIFICACAO', 'PESQUISA', 'TAREFA'));
 
 create table plataforma.permissao_recurso (seq_permissao bigint not null, seq_recurso bigint not null, constraint pk_permissao_recurso primary key (seq_permissao, seq_recurso));
 alter table plataforma.permissao_recurso add constraint FK_RECURSO_PERE foreign key (seq_recurso) references plataforma.recurso;
@@ -38,6 +40,7 @@ alter table plataforma.permissao_recurso add constraint FK_PERMISSAO_PERE foreig
 
 create table plataforma.grupo (seq_grupo bigint not null, nom_grupo varchar2(100) not null, tip_grupo varchar2(20) not null, constraint pk_grupo primary key (seq_grupo));
 alter table plataforma.grupo add constraint uk_nom_grupo_grup unique(nom_grupo, tip_grupo);
+alter table plataforma.grupo add constraint ck_tip_grupo_grup check (tip_grupo in ('ADVOGADO', 'CIDADAO', 'ORGAO', 'SETOR'));
 
 create table plataforma.permissao_grupo (seq_permissao bigint not null, seq_grupo bigint not null, constraint pk_permissao_grupo primary key (seq_permissao, seq_grupo));
 alter table plataforma.permissao_grupo add constraint FK_GRUPO_PEGR foreign key (seq_grupo) references plataforma.grupo;
