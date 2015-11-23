@@ -5,13 +5,13 @@
 
     <!--unselected data-->
     <div class="col-xs-5">
-      <select multiple ng-multiple="true" ng-model="leftSelected"
+      <select multiple ng-multiple="true" ng-model="leftSelected" 
               ng-options="r as display(r.data) for r in leftListRows"
               style="overflow: auto;" ng-style="listCss"></select>
     </div>
 
     <!--navigation buttons-->
-    <div class="col-xs-1 v-center">
+    <div class="col-xs-2 v-center">
         <button style="display: block;" type="button" class="btn btn-default" ng-click="moveRightSelected()">
           <span class="glyphicon glyphicon-forward"></span>
         </button>
