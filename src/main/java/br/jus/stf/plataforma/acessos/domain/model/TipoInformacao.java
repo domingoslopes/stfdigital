@@ -64,12 +64,14 @@ public class TipoInformacao implements ValueObject<TipoInformacao> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		TipoInformacao other = (TipoInformacao) obj;
-		return sameValueAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameValueAs(final TipoInformacao other) {
-		return other != null && sequencial.equals(other.sequencial);
+		return other != null
+				&& nome.equals(other.nome);
 	}
 
 }
