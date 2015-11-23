@@ -1,16 +1,16 @@
-package br.jus.stf.plataforma.shared.certification.service;
+package br.jus.stf.plataforma.shared.certification.application;
 
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.Pki;
 import br.jus.stf.plataforma.shared.certification.validation.CertificateValidationException;
 
-@Service
-public class ValidationService {
+@Component
+public class ValidationApplicationService {
 
 	public boolean validate(X509Certificate certificate, Pki pki) {
 		try {

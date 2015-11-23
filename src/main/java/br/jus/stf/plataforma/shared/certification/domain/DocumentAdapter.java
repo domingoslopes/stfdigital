@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.service;
+package br.jus.stf.plataforma.shared.certification.domain;
 
 import java.io.IOException;
 

@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.plataforma.shared.certification.PkiType;
+import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PostSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PreSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PrepareCommand;
@@ -30,7 +31,6 @@ import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToS
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.ContextIdDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
-import br.jus.stf.plataforma.shared.certification.service.SignatureService;
 import br.jus.stf.plataforma.shared.certification.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
 import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
@@ -45,7 +45,7 @@ import br.jus.stf.shared.DocumentoId;
 public class SignatureRestResource {
 
 	@Autowired
-	private SignatureService signatureService;
+	private SignatureApplicationService signatureService;
 
 	@ApiOperation("Cria um novo contexto de assinatura com o certificado.")
 	@RequestMapping(value = "/prepare", method = RequestMethod.POST)
