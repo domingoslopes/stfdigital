@@ -1,4 +1,6 @@
-CREATE TABLE plataforma.usuario ();
+create sequence plataforma.seq_usuario increment by 1 start with 1 nomaxvalue minvalue 1 nocycle nocache;
+create table plataforma.usuario (seq_usuario bigint not null, nom_usuario varchar2(100) not null, sig_usuario varchar2(30) not null, cod_cpf varchar2(11) not null, cod_oab varchar2(20), dsc_email varchar2(50) not null, dsc_telefone varchar2(14), constraint pk_usuario primary key (seq_usuario));
+alter table plataforma.usuario add constraint uk_sig_usuario_usua unique(sig_usuario);
 
 INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, dsc_email, dsc_telefone) values (plataforma.seq_usuario.nextval, 'TOMÁS DA SILVA MARTINS DE GODOI', 'TOMAS.GODOI', '03231056101', 'tomas.godoi@stf.jus.br', '(61)3217-3000');
 
