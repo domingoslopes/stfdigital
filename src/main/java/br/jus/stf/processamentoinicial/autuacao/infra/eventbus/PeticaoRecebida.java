@@ -8,7 +8,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
  */
 public class PeticaoRecebida {
 
-	public Peticao peticao;
+	private Peticao peticao;
 	
 	public PeticaoRecebida(Peticao peticao) {
 		this.peticao = peticao;
