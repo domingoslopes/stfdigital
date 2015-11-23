@@ -28,6 +28,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
@@ -224,6 +225,17 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	
 		this.motivoRejeicao = motivoRejeicao;
 	}
+	
+	/**
+	 * Registra o motivo da devolução de uma petição
+	 * 
+	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
+	 */
+	public void devolver(final String motivoDevolucao) {
+		Validate.notBlank(motivoDevolucao, "peticao.motivoRejeicao.required");
+			
+		this.motivoRejeicao = motivoDevolucao;
+	}
 
 	/**
 	 * @param ministroRelator
@@ -270,18 +282,21 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return new HashCodeBuilder().append(id).hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || !(obj instanceof Peticao)) return false;
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || !(obj instanceof Peticao)) {
+			return false;
+		}
 		
 		Peticao other = (Peticao) obj;
+		
 		return sameIdentityAs(other);
 	}
 

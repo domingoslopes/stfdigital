@@ -8,7 +8,6 @@ import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
@@ -58,8 +57,7 @@ public class PersistenceMemoryConfiguration {
 	}
 	
 	@Bean(initMethod = "start", destroyMethod = "stop")
-	@DependsOn("h2WebServer")
-	public Server h2Server(Server h2WebServer) throws SQLException {
+	public Server h2Server() throws SQLException {
 		return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", tcpPort);
 	}
 	

@@ -21,6 +21,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
@@ -112,6 +113,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 		this.situacao = situacao;
 	}
 
+	@Override
 	public ProcessoId id() {
 		return this.id;
 	}
@@ -213,16 +215,18 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 		
 		Processo other = (Processo) obj;
 		return sameIdentityAs(other);
