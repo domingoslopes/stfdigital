@@ -1,7 +1,3 @@
-create sequence plataforma.seq_usuario increment by 1 start with 1 nomaxvalue minvalue 1 nocycle nocache;
-create table plataforma.usuario (seq_usuario bigint not null, nom_usuario varchar2(100) not null, sig_usuario varchar2(30) not null, cod_cpf varchar2(11) not null, cod_oab varchar2(20), dsc_email varchar2(50) not null, dsc_telefone varchar2(14), constraint pk_usuario primary key (seq_usuario));
-alter table plataforma.usuario add constraint uk_sig_usuario_usua unique(sig_usuario);
-
 INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, dsc_email, dsc_telefone) values (plataforma.seq_usuario.nextval, 'TOMÁS DA SILVA MARTINS DE GODOI', 'TOMAS.GODOI', '03231056101', 'tomas.godoi@stf.jus.br', '(61)3217-3000');
 
 INSERT INTO plataforma.certificado_digital (SEQ_CERTIFICADO_DIGITAL, DSC_CERTIFICADO_DIGITAL, COD_SERIAL, TXT_CERTIFICADO_DIGITAL, DAT_VALIDADE_INICIAL, DAT_VALIDADE_FINAL, SEQ_CERTIFICADO_EMISSOR, TIP_CERTIFICADO_DIGITAL) VALUES (plataforma.seq_certificado_digital.nextval, 'cn=AC CAIXA-JUS v2 ou=Autoridade Certificadora da Justica - AC-JUS o=ICP-Brasil c=BR', '1', FILE_READ('classpath:assinador/certificados/raiz/acrb-v2.cer'), parsedatetime('21/06/2010 17:04:57','dd/MM/yyyy hh:mm:ss'), parsedatetime('21/06/2023 17:04:57','dd/MM/yyyy hh:mm:ss'), plataforma.seq_certificado_digital.currval, 'R');
