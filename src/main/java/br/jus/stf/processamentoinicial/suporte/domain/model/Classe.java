@@ -5,6 +5,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.stereotype.Entity;
@@ -18,16 +19,16 @@ import br.jus.stf.shared.stereotype.Entity;
 @Table(name = "CLASSE", schema = "AUTUACAO")
 public class Classe implements Entity<Classe, ClasseId> {
 
-	Classe() {
-
-	}
-	
 	@EmbeddedId
 	private ClasseId sigla;
 	
 	@Column(name = "NOM_CLASSE", nullable = false)
 	private String nome;
 
+	Classe() {
+
+	}
+	
 	public Classe(final ClasseId sigla, final String nome){
 		Validate.notNull(sigla, "classe.sigla.required");
 		Validate.notBlank(nome, "classe.nome.required");
@@ -47,16 +48,19 @@ public class Classe implements Entity<Classe, ClasseId> {
 	
 	@Override
 	public int hashCode(){
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((sigla == null) ? 0 : sigla.hashCode());
-		return result;
+		return new HashCodeBuilder().append(sigla).hashCode();
 	}
 	
 	@Override
 	public boolean equals(final Object o){
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		
+		if (this == o) {
+			return true;
+		}
+		
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 	
 		Classe other = (Classe) o;
 		return sameIdentityAs(other);

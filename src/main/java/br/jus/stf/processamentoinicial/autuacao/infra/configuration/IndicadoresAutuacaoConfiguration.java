@@ -21,8 +21,8 @@ public class IndicadoresAutuacaoConfiguration {
 	/**
 	 * Adotou-se, para o nome do índice, o mesmo nome do arquivo .json.
 	 */
-	public final static String INDICE = "quantidade-autuacoes";
-	private final static String INDICADORES_AUTUACAO_RESOURCES = "/indices/processamentoinicial/quantidade-autuacoes.json";
+	private static final String INDICADORES_AUTUACAO_RESOURCES = "/indices/processamentoinicial/quantidade-autuacoes.json";
+	public static final String INDICE = "quantidade-autuacoes";
 	
 	@Autowired
 	private IndexadorRestAdapter indexadorRestAdapter;

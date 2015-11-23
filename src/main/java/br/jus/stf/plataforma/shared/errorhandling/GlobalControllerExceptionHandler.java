@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 class GlobalControllerExceptionHandler {
 	
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
     
     /**
      * Captura as exceções lançadas para indicar parâmetros ilegais e retorna
@@ -30,7 +30,7 @@ class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleInvalids(IllegalArgumentException exception) {
-    	logger.error(exception.getClass().getName(), exception);
+    	LOGGER.error(exception.getClass().getName(), exception);
     }
     
     /**
@@ -43,7 +43,7 @@ class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public void handle(Exception exception) {
-    	logger.error(exception.getClass().getName(), exception);
+    	LOGGER.error(exception.getClass().getName(), exception);
     }
     
 }
