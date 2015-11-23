@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.service;
+package br.jus.stf.plataforma.shared.certification.application;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -8,9 +8,10 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
 import br.jus.stf.plataforma.shared.certification.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
@@ -27,14 +28,14 @@ import br.jus.stf.plataforma.shared.certification.support.SHA256DetachedAssinado
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
-@Service
-public class SignatureService {
+@Component
+public class SignatureApplicationService {
 
 	@Autowired
 	private SignatureContextManager contextManager;
 
 	@Autowired
-	private ValidationService validationService;
+	private ValidationApplicationService validationService;
 	
 	@Autowired
 	private DocumentAdapter documentAdapter;

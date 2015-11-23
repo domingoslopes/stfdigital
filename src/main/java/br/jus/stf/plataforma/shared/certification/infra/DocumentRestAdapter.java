@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
-import br.jus.stf.plataforma.shared.certification.service.DocumentAdapter;
+import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
