@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +22,7 @@ public class DistribuicaoPrevencao extends Distribuicao {
 
 	private static final long serialVersionUID = 1L;
 	
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "DISTRIBUICAO_PROC_PREVENTO", schema = "AUTUACAO",
 		joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
@@ -62,5 +63,5 @@ public class DistribuicaoPrevencao extends Distribuicao {
 			.filter(processo -> relator.sameValueAs(processo.relator()))
 			.count() == processosPreventos.size();
 	}
-	
+		
 }

@@ -35,7 +35,7 @@ public class ProcessoRestResource {
 	@ApiOperation("Conclui a distribuição de uma determinada petição")
 	@RequestMapping(value = "/peticoes/{id}/distribuir", method = RequestMethod.POST)
 	public ProcessoDto distribuir(@PathVariable Long id, @RequestBody DistribuirPeticaoCommand command) {
-		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), command.getPeticaoId(), command.getJustificativa(),
+		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), id, command.getJustificativa(),
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
 
