@@ -26,8 +26,7 @@ public class DashboardRestResource {
 	@ApiOperation("Recupera o dashboard padrão para o papel recebido")
 	@RequestMapping(value = "/padrao", method = RequestMethod.GET)
 	public DashboardDto recuperarPadrao(@RequestHeader("papel") String papel) {
-		DashboardDto dashboard = dashboardServiceFacade.recuperarPadrao(papel);
-		return dashboard;
+		return dashboardServiceFacade.recuperarPadrao(papel);
 	}
 
 }

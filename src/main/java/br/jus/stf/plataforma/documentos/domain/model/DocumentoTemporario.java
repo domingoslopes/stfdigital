@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.shared.util.HashGeneratorUtils;
@@ -18,6 +19,8 @@ import br.jus.stf.shared.stereotype.ValueObject;
  * @author Lucas Rodrigues
  */
 public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
+
+	private static final long serialVersionUID = -3725370010702512231L;
 
 	private static String FILE_NAME_PREFFIX = "_DocTemp_";
 	
@@ -76,12 +79,8 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
 		String hashFile = HashGeneratorUtils.generateSHA256(this.arquivo);
-		
-		result = prime * result + ((hashFile == null) ? 0 : hashFile.hashCode());
-		return result;
+		return new HashCodeBuilder().append(hashFile).hashCode();
 	}
 
 	@Override
