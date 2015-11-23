@@ -19,7 +19,7 @@ import org.springframework.mock.web.MockHttpSession;
 import br.jus.stf.plataforma.shared.certification.AbstractCertificationTest;
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
 import br.jus.stf.plataforma.shared.certification.application.SignatureContextManager;
-import br.jus.stf.plataforma.shared.certification.signature.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
 import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.signature.StreamedDocument;
