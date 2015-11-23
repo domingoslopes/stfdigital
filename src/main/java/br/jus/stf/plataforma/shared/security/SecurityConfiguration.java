@@ -43,9 +43,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
   	@Override
   	public void configure(HttpSecurity http) throws Exception {
+  		
+  		final String LOGIN = "/login";
+  		
   		http.csrf().disable();
   		http.formLogin()
-  				.loginPage("/login").defaultSuccessUrl("/", true).permitAll().and()
+  				.loginPage(LOGIN).defaultSuccessUrl("/", true).permitAll().and()
   			.logout()
   				.logoutUrl("/logout").deleteCookies("JSESSIONID").permitAll().and()
   			.authorizeRequests()
@@ -54,10 +57,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   				.csrfTokenRepository(csrfTokenRepository()).and()
   			.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
   			.exceptionHandling()
-  				.authenticationEntryPoint(new SecurityAuthenticationEntryPoint("/login"))
-  				.accessDeniedPage("/login").and()
+  				.authenticationEntryPoint(new SecurityAuthenticationEntryPoint(LOGIN))
+  				.accessDeniedPage(LOGIN).and()
   			.sessionManagement()
-  				.maximumSessions(1).expiredUrl("/login").sessionRegistry(sessionRegistry());
+  				.maximumSessions(1).expiredUrl(LOGIN).sessionRegistry(sessionRegistry());
   	}
   	
   	@Override
@@ -68,7 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     	InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> builder = auth.inMemoryAuthentication();
-    	Arrays.asList(USUARIOS).forEach(u -> builder.withUser(u).password("123").roles(u, "servidor"));
+    	Arrays.asList(USUARIOS).forEach(u -> builder.withUser(u).password("123").authorities(u, "servidor"));
     }
   
 	private CsrfTokenRepository csrfTokenRepository() {

@@ -25,8 +25,6 @@ public class Peticao implements ValueObject<Peticao> {
 	public Peticao(final PeticaoId id, final ClasseId classeProcessual, final Set<Parte> partes, final Set<Peca> pecas, final ProcessoWorkflowId processoWorkflowId) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
-		//Validate.notEmpty(partes, "peticao.partes.required");
-		//Validate.notEmpty(pecas, "peticao.pecas.required");
 		Validate.notNull(processoWorkflowId, "peticao.processoWorkflowId.required");
 		
 		this.id = id;
