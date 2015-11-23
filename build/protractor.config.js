@@ -28,7 +28,7 @@ exports.config = {
 	    '-browserTimeout=60' 
 	],
 	
-	baseUrl : 'http://127.0.0.1:' + port,
+	baseUrl : 'https://127.0.0.1:' + port,
 	
 	onPrepare: function() {
 		browser.driver.manage().window().maximize();
