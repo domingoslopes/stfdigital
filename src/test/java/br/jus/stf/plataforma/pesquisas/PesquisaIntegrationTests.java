@@ -2,22 +2,16 @@ package br.jus.stf.plataforma.pesquisas;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -28,17 +22,6 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
-
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	@Before
-	public void setUp() {
-		Authentication auth = Mockito.mock(Authentication.class);
-		
-		Mockito.when(auth.getPrincipal()).thenReturn("PETICIONADOR");
-		SecurityContextHolder.getContext().setAuthentication(auth);
-	}
 
 	@Test
 	public void pesquisar() throws Exception {
@@ -54,7 +37,10 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		
 		elasticsearchTemplate.refresh("teste-distribuicao", true);
 
-		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": [\"HC\"]}, \"campos\": [\"classe.sigla\"] }"))
+		mockMvc.perform(post("/api/pesquisas")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"indices\": [\"teste-distribuicao\"], \"filtros\": {\"classe.sigla\": [\"HC\"]}, \"campos\": [\"classe.sigla\"] }")
+					.header("papel", "peticionador"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].tipo", is("Processo")))
  				.andExpect(jsonPath("$[0].objeto['classe.sigla']", is("HC")));
@@ -70,38 +56,42 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 		String jsonProcessoAutuado3 = "{\"identificadorPeticao\":\"789/2015\",\"classeProcessual\":\"HC\",\"mesAutuacao\":5}";
 
 		IndexQuery query1 = new IndexQueryBuilder()
-				.withIndexName("quantidade-autuacoes")
+				.withIndexName("teste-quantidade-autuacoes")
 				.withType("QuantidadeAtuacoes")
 				.withSource(jsonProcessoAutuado1)
 				.withId("123")
 				.build();
 		elasticsearchTemplate.index(query1);
-		elasticsearchTemplate.refresh("quantidade-autuacoes", true);
+		elasticsearchTemplate.refresh("teste-quantidade-autuacoes", true);
 		
 		IndexQuery query2 = new IndexQueryBuilder()
-		.withIndexName("quantidade-autuacoes")
+		.withIndexName("teste-quantidade-autuacoes")
 			.withType("QuantidadeAtuacoes")
 			.withSource(jsonProcessoAutuado2)
 			.withId("456")
 			.build();
 		elasticsearchTemplate.index(query2);
-		elasticsearchTemplate.refresh("quantidade-autuacoes", true);
+		elasticsearchTemplate.refresh("teste-quantidade-autuacoes", true);
 		
 		IndexQuery query3 = new IndexQueryBuilder()
-		.withIndexName("quantidade-autuacoes")
+		.withIndexName("teste-quantidade-autuacoes")
 			.withType("QuantidadeAtuacoes")
 			.withSource(jsonProcessoAutuado3)
 			.withId("789")
 			.build();
 		elasticsearchTemplate.index(query3);
-		elasticsearchTemplate.refresh("quantidade-autuacoes", true);
+		elasticsearchTemplate.refresh("teste-quantidade-autuacoes", true);
 		
-		mockMvc.perform(post("/api/pesquisas").contentType(MediaType.APPLICATION_JSON).content("{\"indices\": [\"quantidade-autuacoes\"], \"filtros\": {\"mesAutuacao\": [5]}, \"campos\": [\"classeProcessual\"], \"campoAgregacao\": \"classeProcessual\" }"))
+		mockMvc.perform(post("/api/pesquisas")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"indices\": [\"teste-quantidade-autuacoes\"], \"filtros\": {\"mesAutuacao\": [5]}, \"campos\": [\"classeProcessual\"], \"campoAgregacao\": \"classeProcessual\" }")
+				.header("papel", "peticionador"))
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].tipo", is("ValoresAgregados")))
-			.andExpect(jsonPath("$[0].objeto['ADI']", is(2)))
-			.andExpect(jsonPath("$[1].objeto['HC']", is(1)));
+			.andExpect(jsonPath("$[0].objeto['adi']", is(2)))
+			.andExpect(jsonPath("$[1].objeto['hc']", is(1)));
 
-		elasticsearchTemplate.deleteIndex("quantidade-autuacoes");
+		elasticsearchTemplate.deleteIndex("teste-quantidade-autuacoes");
 	}
 }
