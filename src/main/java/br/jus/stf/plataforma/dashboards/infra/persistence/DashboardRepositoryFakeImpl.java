@@ -24,10 +24,11 @@ public class DashboardRepositoryFakeImpl implements DashboardRepository {
 
 	private static final String MINHAS_TAREFAS = "minhas-tarefas";
 	private static final String MINHAS_PETICOES = "minhas-peticoes";
+	private static final String ASSINADOR_PDF = "assinador-pdf";
 	private static final Map<String, Dashboard> mapeamentoPapelDashboard = new HashMap<>();
 
 	static {
-		mapeamentoPapelDashboard.put("peticionador", buildDashboardFromDashlets(MINHAS_TAREFAS, MINHAS_PETICOES));
+		mapeamentoPapelDashboard.put("peticionador", buildDashboardFromDashlets(ASSINADOR_PDF, MINHAS_TAREFAS, MINHAS_PETICOES));
 		mapeamentoPapelDashboard.put("preautuador", buildDashboardFromDashlets(MINHAS_TAREFAS));
 		mapeamentoPapelDashboard.put("autuador", buildDashboardFromDashlets(MINHAS_TAREFAS));
 		mapeamentoPapelDashboard.put("distribuidor", buildDashboardFromDashlets(MINHAS_TAREFAS));
