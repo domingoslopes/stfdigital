@@ -56,7 +56,7 @@ public class RequestMonitorFilter extends OncePerRequestFilter {
 	 * @return true, se a requisição bate com algum padrão de URL, false, caso contrário
 	 */
 	private boolean isDynamicResource(HttpServletRequest request) {
-		return DYNAMIC_RESOURCES.matches(request) && !request.getMethod().equals("OPTIONS");
+		return DYNAMIC_RESOURCES.matches(request) && !"OPTIONS".equals(request.getMethod());
 	}
 	
 }

@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.stereotype.ValueObject;
@@ -39,17 +40,18 @@ public class PecaTemporaria implements ValueObject<PecaTemporaria> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((documentoTemporario == null) ? 0 : documentoTemporario.hashCode());
-		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
-		return result;
+		return new HashCodeBuilder().append(documentoTemporario).append(tipo).hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || !(obj instanceof PecaTemporaria)) return false;
+	    if (this == obj) {
+	    	return true;
+	    }
+	    
+	    if (obj == null || !(obj instanceof PecaTemporaria)) {
+	    	return false;
+	    }
 	    
 	    final PecaTemporaria other = (PecaTemporaria) obj;
 	    return sameValueAs(other);

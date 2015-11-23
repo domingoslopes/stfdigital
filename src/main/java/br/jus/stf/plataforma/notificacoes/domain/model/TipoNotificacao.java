@@ -19,7 +19,7 @@ public enum TipoNotificacao implements ValueObject<TipoNotificacao> {
 	
 	public Class<? extends NotificacaoService> strategy() {
 		return clazz;
-	};
+	}
 
 	@Override
 	public boolean sameValueAs(final TipoNotificacao other) {
