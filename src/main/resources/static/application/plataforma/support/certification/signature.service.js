@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.autuacao.service('SignatureService', ['properties', '$http', '$q', function(properties, $http, $q) {
+	angular.plataforma.service('SignatureService', ['properties', '$http', '$q', function(properties, $http, $q) {
 		var crypto = hwcrypto;
 		
 		var requestUserCertificate = function(alreadySelectedCertificate) {
