@@ -27,11 +27,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Component
 public class RequestTraceReporter {
-
-	private final static Logger LOGGER = LoggerFactory.getLogger(RequestTraceReporter.class);
 	
 	@Autowired
 	private IndexadorRestResource indexadorRestResource;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(RequestTraceReporter.class);
 	
 	/**
 	 * Registra as informações de tracing encapuladas no objeto do tipo {@link RequestTrace} no Elasticsearch. Utiliza a mesma

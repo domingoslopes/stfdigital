@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
  */
 public class MonitoredRequest {
 	
-	private final static Logger LOGGER = LoggerFactory.getLogger(MonitoredRequest.class);
-	
 	private HttpServletRequest request;
 
 	private HttpServletResponse response;
@@ -35,6 +33,8 @@ public class MonitoredRequest {
 	private FilterChain filterChain;
 	
 	private long startTime;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MonitoredRequest.class);
 
 	/**
 	 * Cria uma nova instância para uma requisição que deverá ser monitorada.
@@ -95,7 +95,7 @@ public class MonitoredRequest {
 	public String exception() {
         Optional<Throwable> causa = ofNullable((Throwable) request.getAttribute(EXCEPTION_ATTRIBUTE));
         
-        return (causa.isPresent())? ExceptionUtils.getFullStackTrace(causa.get()):"";
+        return causa.isPresent()? ExceptionUtils.getFullStackTrace(causa.get()):"";
 	}
 
 	/**

@@ -23,7 +23,6 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -54,9 +53,6 @@ public class PeticaoApplicationService {
 	
 	@Autowired
 	private PeticaoApplicationEvent peticaoApplicationEvent;
-	
-	@Autowired
-	private ProcessoRepository processoRepository;
 	
 	@Autowired
 	private DocumentoAdapter documentoAdapter;
@@ -98,16 +94,18 @@ public class PeticaoApplicationService {
 	 * Realiza a preautuação de uma petição física.
 	 * 
 	 * @param peticao Dados da petição física.
-	 * @param classeSugerida
-	 * @param motivoDevolucao 
-	 * @param peticaoValida 
+	 * @param classeSugerida Classe processual sugerida.
+	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
+	 * @param peticaoValida Indica se a petição é valida ou inválida.
 	 */
 	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
 		if (peticaoValida) {
 			tarefaAdapter.completarPreautuacao(peticao);
 		} else {
+			peticao.devolver(motivoDevolucao);
 			processoAdapter.devolver(peticao);
 		}
+		
 		peticao.preautuar(classeSugerida);
 		peticaoRepository.save(peticao);
 	}

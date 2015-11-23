@@ -4,6 +4,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import br.jus.stf.plataforma.acessos.domain.model.PermissaoGrupoUnitTests;
+import br.jus.stf.plataforma.acessos.domain.model.PermissaoPapelUnitTests;
+import br.jus.stf.plataforma.acessos.domain.model.PermissaoUsuarioUnitTests;
 import br.jus.stf.plataforma.actions.ActionMappingInfoUnitTests;
 import br.jus.stf.plataforma.actions.ActionMappingRegistryUnitTests;
 import br.jus.stf.plataforma.actions.ActionServiceUnitTests;
@@ -70,7 +73,10 @@ import br.jus.stf.shared.TarefaIdUnitTests;
 	ProcessoUnitTests.class,
 	ProcessoRepositoryUnitTests.class,
 	DistribuicaoComumUnitTests.class,
-	DistribuicaoPrevencaoUnitTests.class
+	DistribuicaoPrevencaoUnitTests.class,
+	PermissaoUsuarioUnitTests.class,
+	PermissaoGrupoUnitTests.class,
+	PermissaoPapelUnitTests.class
 })
 public class UnitTestingSuite {
 
