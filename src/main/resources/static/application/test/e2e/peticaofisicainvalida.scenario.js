@@ -16,8 +16,6 @@
 	
 	var AutuacaoPage = require('./pages/autuacao.page');
 	
-	var DistribuicaoPage = require('./pages/distribuicao.page');
-	
 	var PreautuacaoPage = require('./pages/preautuacao.page');
 	
 	var LoginPage = require('./pages/login.page');
@@ -38,7 +36,7 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Autuação de Petições Físicas Originárias:', function() {
+	describe('Autuação de Petições Físicas Originárias (teste do fluxo de peticoes inválidas):', function() {
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
@@ -47,8 +45,8 @@
 		it('Deveria logar como recebedor', function() {
 			login('recebedor');
 		});
-
-		it('Deveria navegar para a página de envio de petições físicas', function() {
+		
+		it('Deveria navegar para a página de envio de petições físicas (teste do fluxo de peticoes inválidas)', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
 			
@@ -59,7 +57,7 @@
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
 		});
 		
-		it('Deveria registrar uma petição física', function(){
+		it('Deveria registrar uma petição física (teste do fluxo de peticoes inválidas)', function(){
 			var registroPage = new RegistroPage();
 			
 			registroPage.preencherQtdVolumes(2);
@@ -75,14 +73,13 @@
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
 			loginPage.logout();
-		    
 		});
 		
 		it('Deveria logar como preautuador', function() {
 			login('preautuador');
 		});
 
-		it('Deveria pré-atuar como válida a petição recebida', function() {
+		it('Deveria pré-atuar como válida a petição recebida (teste do fluxo de peticoes inválidas)', function() {
 			
 		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
@@ -111,7 +108,7 @@
 			login('autuador');
 		});
 		
-		it('Deveria atuar como válida a petição física recebida', function() {
+		it('Deveria atuar como invalida a petição física recebida', function() {
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
@@ -120,48 +117,17 @@
 			
 			autuacaoPage.classificar('AP');
 			
+			//seta o radio "inválida" 
+			autuacaoPage.invalidarPeticaoRadio()
+			
+			autuacaoPage.preencherMotivoInvalida();
+			
 			autuacaoPage.finalizar();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
 		    loginPage.logout();
-		});
-		
-		it('Deveria logar como distribuidor', function() {
-			login('distribuidor');
-		});
-		
-		it('Deveria distribuir a petição física autuada', function() {
-			
-		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
-		    
-		    principalPage.tarefas().get(0).getText().then(function(text) {
-		    	pos = text.search("#");
-		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
-		    });
-		    
-		    
-		    principalPage.executarTarefa();
-
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
-
-			var distribuicaoPage = new DistribuicaoPage();
-			
-			distribuicaoPage.selecionarTipoDistribuicao('PREVENCAO');
-			
-			distribuicaoPage.adicionarProcessoSuggestion('AP 1');
-				
-			//verifica se a lista de processos preventos possui ao menos um processo
-			expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
-			
-			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao');
-			
-			distribuicaoPage.finalizar();
-		    
-			loginPage.logout();
-		}); 
+		})
 		
 	});
 })();
