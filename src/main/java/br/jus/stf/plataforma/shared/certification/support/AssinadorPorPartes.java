@@ -37,11 +37,11 @@ public abstract class AssinadorPorPartes {
 	}
 
 	protected abstract byte[] preGerarHashes(Certificate[] cadeia, CRL[] crls, SignatureContext ca, PdfStamper stamper, PdfSignatureAppearance appearance)
-			throws IOException, DocumentException, AssinaturaExternaException;
+			throws IOException, DocumentException, SignatureException;
 
 	public abstract byte[] prepararHashParaAssinaturaExterna(byte[] dataToSign);
 
-	public byte[] preAssinar(SignatureContext ca) throws AssinaturaExternaException {
+	public byte[] preAssinar(SignatureContext ca) throws SignatureException {
 		try {
 			PdfReader reader = new PdfReader(ca.getPdfPath());
 			File arquivoTemporario = criaArquivoTemporarioParaPdfAssinado(ca);
@@ -57,16 +57,16 @@ public abstract class AssinadorPorPartes {
 
 			return hashParaAssinar;
 		} catch (IOException e) {
-			throw new AssinaturaExternaException("Erro ao ler PDF.", e);
+			throw new SignatureException("Erro ao ler PDF.", e);
 		} catch (DocumentException e) {
-			throw new AssinaturaExternaException("Erro ao carregar PDF.", e);
+			throw new SignatureException("Erro ao carregar PDF.", e);
 		}
 	}
 
 	protected abstract void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, HashSignature assinatura)
-			throws AssinaturaExternaException;
+			throws SignatureException;
 
-	public void posAssinar(SignatureContext ca, HashSignature assinatura) throws AssinaturaExternaException {
+	public void posAssinar(SignatureContext ca, HashSignature assinatura) throws SignatureException {
 		InputStream is = null;
 //		try {
 			PdfSignatureAppearance appearance = ca.getAppearance();
@@ -94,7 +94,7 @@ public abstract class AssinadorPorPartes {
 	 * @return
 	 * @throws AssinadorException
 	 */
-	public byte[] extrairAssinatura(byte[] pdfAssinado) throws AssinaturaExternaException {
+	public byte[] extrairAssinatura(byte[] pdfAssinado) throws SignatureException {
 		try {
 			AcroFields campos = new PdfReader(pdfAssinado).getAcroFields();
 			byte[] assinatura = identificaAssinaturaMaisRecente(campos);
@@ -103,7 +103,7 @@ public abstract class AssinadorPorPartes {
 			}
 			return assinatura;
 		} catch (Exception e) {
-			throw new AssinaturaExternaException("Erro ao extrair assinatura do PDF assinado.", e);
+			throw new SignatureException("Erro ao extrair assinatura do PDF assinado.", e);
 		}
 	}
 
@@ -135,12 +135,12 @@ public abstract class AssinadorPorPartes {
 		return dataEscolhida.toString().compareTo(dataAssinatura.toString()) < 0;
 	}
 
-	private File criaArquivoTemporarioParaPdfAssinado(SignatureContext ca) throws AssinaturaExternaException {
+	private File criaArquivoTemporarioParaPdfAssinado(SignatureContext ca) throws SignatureException {
 		try {
 			File arquivoTemporario = File.createTempFile(ca.signatureContextId().id(), EXTENSAO_PDF);
 			return arquivoTemporario;
 		} catch (IOException e) {
-			throw new AssinaturaExternaException("Eror ao criar arquivo tempor�rio para assinatura.", e);
+			throw new SignatureException("Eror ao criar arquivo tempor�rio para assinatura.", e);
 		}
 	}
 

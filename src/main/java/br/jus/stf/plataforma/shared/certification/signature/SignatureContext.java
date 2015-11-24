@@ -15,7 +15,7 @@ public final class SignatureContext implements Serializable {
 
 	private static final long serialVersionUID = -4801807132705368529L;
 	
-	private final SignatureContextId id;
+	private final DocumentSignerId id;
 	
 	private String idDocumento;
 	private PdfSignatureAppearance appearance;
@@ -32,11 +32,11 @@ public final class SignatureContext implements Serializable {
 
 	private String signedFilePath;
 
-	public SignatureContext(SignatureContextId id) {
+	public SignatureContext(DocumentSignerId id) {
 		this.id = id;
 	}
 
-	public SignatureContextId signatureContextId() {
+	public DocumentSignerId signatureContextId() {
 		return id;
 	}
 

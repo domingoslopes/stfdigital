@@ -18,9 +18,9 @@ import org.springframework.mock.web.MockHttpSession;
 
 import br.jus.stf.plataforma.shared.certification.AbstractCertificationTest;
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
-import br.jus.stf.plataforma.shared.certification.application.SignatureContextManager;
+import br.jus.stf.plataforma.shared.certification.application.DocumentSignerRepository;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
-import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
+import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.signature.StreamedDocument;
 import br.jus.stf.plataforma.shared.certification.support.HashSignature;
@@ -33,7 +33,7 @@ public class SignatureServiceTest extends AbstractCertificationTest {
 	private static final String PDF_DE_TESTE = "pdf-de-teste-001.pdf";
 
 	@Spy
-	private SignatureContextManager signatureConextManager;
+	private DocumentSignerRepository signatureConextManager;
 
 	@Autowired
 	private CustomPkiService customPKIService;
@@ -53,7 +53,7 @@ public class SignatureServiceTest extends AbstractCertificationTest {
 
 	@Test
 	public void testSign() throws Exception {
-		SignatureContextId contextId;
+		DocumentSignerId contextId;
 
 		CustomPkiStore finalUser = customPKIService.customPKI().finalUser();
 
