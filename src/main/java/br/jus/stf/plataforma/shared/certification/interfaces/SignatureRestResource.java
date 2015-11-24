@@ -32,10 +32,10 @@ import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToS
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.ContextIdDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
-import br.jus.stf.plataforma.shared.certification.signature.SignatureContextId;
+import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.signature.StreamedDocument;
-import br.jus.stf.plataforma.shared.certification.support.AssinaturaExternaException;
+import br.jus.stf.plataforma.shared.certification.support.SignatureException;
 import br.jus.stf.plataforma.shared.certification.support.HashSignature;
 import br.jus.stf.plataforma.shared.certification.util.CertificationUtil;
 import br.jus.stf.shared.DocumentoId;
@@ -45,14 +45,14 @@ import br.jus.stf.shared.DocumentoId;
 public class SignatureRestResource {
 
 	@Autowired
-	private SignatureApplicationService signatureService;
+	private SignatureApplicationService signatureApplicationService;
 
 	@ApiOperation("Cria um novo contexto de assinatura com o certificado.")
 	@RequestMapping(value = "/prepare", method = RequestMethod.POST)
 	public ContextIdDto prepare(@RequestBody PrepareCommand command) throws DecoderException {
 		X509Certificate certificate = CertificationUtil
 				.bytesToCertificate(Hex.decodeHex(command.getCertificateAsHex().toCharArray()));
-		SignatureContextId contextId = signatureService.prepareToSign(certificate, PkiType.ICP_BRASIL.instance());
+		DocumentSignerId contextId = signatureApplicationService.prepareToSign(certificate, PkiType.ICP_BRASIL.instance());
 		return new ContextIdDto(contextId.id());
 	}
 
@@ -60,26 +60,26 @@ public class SignatureRestResource {
 	@RequestMapping(value = "/upload-to-sign", method = RequestMethod.POST)
 	public void uploadToSign(@RequestHeader("Signature-Context-Id") String contextId,
 			@RequestParam("file") MultipartFile file) throws IOException {
-		signatureService.attachToSign(new SignatureContextId(contextId), new StreamedDocument(file.getInputStream()));
+		signatureApplicationService.attachToSign(new DocumentSignerId(contextId), new StreamedDocument(file.getInputStream()));
 	}
 
 	@ApiOperation("Fornece um arquivo já existente no servidor para assinatura.")
 	@RequestMapping(value = "/provide-to-sign", method = RequestMethod.POST)
 	public void provideToSign(@RequestBody ProvideToSignCommand command) {
-		signatureService.provideToSign(new SignatureContextId(command.getContextId()), command.getDocumentId());
+		signatureApplicationService.provideToSign(new DocumentSignerId(command.getContextId()), command.getDocumentId());
 	}
 
 	@ApiOperation("Gera o hash do documento a ser assinado.")
 	@RequestMapping(value = "/pre-sign", method = RequestMethod.POST)
-	public PreSignatureDto preSign(@RequestBody PreSignCommand command) throws AssinaturaExternaException {
-		PreSignature preSignature = signatureService.preSign(new SignatureContextId(command.getContextId()));
+	public PreSignatureDto preSign(@RequestBody PreSignCommand command) throws SignatureException {
+		PreSignature preSignature = signatureApplicationService.preSign(new DocumentSignerId(command.getContextId()));
 		return PreSignatureDto.from(preSignature);
 	}
 
 	@ApiOperation("Assina efetivamente o documento.")
 	@RequestMapping(value = "/post-sign", method = RequestMethod.POST)
-	public void postSign(@RequestBody PostSignCommand command) throws AssinaturaExternaException {
-		signatureService.postSign(new SignatureContextId(command.getContextId()),
+	public void postSign(@RequestBody PostSignCommand command) throws SignatureException {
+		signatureApplicationService.postSign(new DocumentSignerId(command.getContextId()),
 				new HashSignature(command.getSignatureAsHex()));
 	}
 
@@ -87,7 +87,7 @@ public class SignatureRestResource {
 	@RequestMapping(value = "/download-signed/{contextId}")
 	public void downloadSigned(@PathVariable("contextId") String contextId, HttpServletResponse response)
 			throws IOException {
-		SignedDocument signedDocument = signatureService.recoverSignedDocument(new SignatureContextId(contextId));
+		SignedDocument signedDocument = signatureApplicationService.recoverSignedDocument(new DocumentSignerId(contextId));
 		InputStream is = new ByteArrayInputStream(signedDocument.asBytes());
 
 		response.setHeader("Content-disposition", "attachment; filename=" + contextId + ".pdf");
@@ -101,7 +101,7 @@ public class SignatureRestResource {
 	@ApiOperation("Salva o documento assinado no contexto de documentos.")
 	@RequestMapping(value = "/save-signed/{contextId}")
 	public SignedDocumentDto saveSigned(@PathVariable("contextId") String contextId) throws IOException {
-		DocumentoId documentId = signatureService.saveSigned(new SignatureContextId(contextId));
+		DocumentoId documentId = signatureApplicationService.saveSigned(new DocumentSignerId(contextId));
 		return new SignedDocumentDto(documentId.toLong());
 	}
 

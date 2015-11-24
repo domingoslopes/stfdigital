@@ -40,7 +40,7 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 
 	@Override
 	protected byte[] preGerarHashes(Certificate[] cadeia, CRL[] crls, SignatureContext ca, PdfStamper stamper, PdfSignatureAppearance appearance)
-			throws AssinaturaExternaException {
+			throws SignatureException {
 		try {
 			int tamanhoEstimado = calcularTamanhoEstimado(crls);
 
@@ -96,19 +96,19 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 
 			return authAttrs;
 		} catch (IOException e) {
-			throw new AssinaturaExternaException("Erro ler pré-assinatura do PDF..", e);
+			throw new SignatureException("Erro ler pré-assinatura do PDF..", e);
 		} catch (DocumentException e) {
-			throw new AssinaturaExternaException("Erro ao inciar assinatura do PDF.", e);
+			throw new SignatureException("Erro ao inciar assinatura do PDF.", e);
 		} catch (NoSuchAlgorithmException e) {
-			throw new AssinaturaExternaException("Erro ao calcular hash do PDF.", e);
+			throw new SignatureException("Erro ao calcular hash do PDF.", e);
 		} catch (InvalidKeyException e) {
-			throw new AssinaturaExternaException("Erro gerar assinatura PKCS7. Chave não encontrada.", e);
+			throw new SignatureException("Erro gerar assinatura PKCS7. Chave não encontrada.", e);
 		} catch (NoSuchProviderException e) {
-			throw new AssinaturaExternaException("Erro gerar assinatura PKCS7. Provedor não encontrado.", e);
+			throw new SignatureException("Erro gerar assinatura PKCS7. Provedor não encontrado.", e);
 		} catch (CRLException e) {
-			throw new AssinaturaExternaException("Erro ao estimar tamanho da assinatura.", e);
+			throw new SignatureException("Erro ao estimar tamanho da assinatura.", e);
 		} catch (GeneralSecurityException e) {
-			throw new AssinaturaExternaException("Erro genérico de segurança.", e);
+			throw new SignatureException("Erro genérico de segurança.", e);
 		}
 	}
 
@@ -125,7 +125,7 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 
 	@Override
 	protected void posAssinarImpl(SignatureContext ca, PdfSignatureAppearance appearance, byte[] primeiroHash, HashSignature assinatura)
-			throws AssinaturaExternaException {
+			throws SignatureException {
 		try {
 			int tamanhoEstimado = ca.getTamanhoEstimado();
 			PdfPKCS7 sgnNew = ca.getPdfPKCS7();
@@ -143,9 +143,9 @@ public class SHA256DetachedAssinadorPorPartes extends AssinadorPorPartes {
 
 			appearance.close(dic2);
 		} catch (IOException e) {
-			throw new AssinaturaExternaException("Erro ao finalizar montagem do PDF.", e);
+			throw new SignatureException("Erro ao finalizar montagem do PDF.", e);
 		} catch (DocumentException e) {
-			throw new AssinaturaExternaException("Erro ao fechar PDF assinado.", e);
+			throw new SignatureException("Erro ao fechar PDF assinado.", e);
 		}
 	}
 

@@ -1,15 +1,10 @@
 package br.jus.stf.plataforma.shared.certification;
 
-import br.jus.stf.plataforma.shared.certification.pki.IcpBrasilPki;
+import br.jus.stf.plataforma.shared.certification.pki.RepositoryBasedPki;
 
 public enum PkiType {
 
-	ICP_BRASIL("icp-brasil") {
-		@Override
-		protected Pki createPki() {
-			return new IcpBrasilPki();
-		}
-	};
+	ICP_BRASIL("icp-brasil"), ICP_PLATAFORMA("icp-plataforma");
 
 	private String id;
 	private Pki pki;
@@ -19,7 +14,9 @@ public enum PkiType {
 		this.pki = createPki();
 	}
 
-	protected abstract Pki createPki();
+	private Pki createPki() {
+		return new RepositoryBasedPki(id);
+	}
 
 	public Pki instance() {
 		return pki;

@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.application;
+package br.jus.stf.plataforma.shared.certification.domain.service;
 
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
@@ -10,7 +10,7 @@ import br.jus.stf.plataforma.shared.certification.Pki;
 import br.jus.stf.plataforma.shared.certification.validation.CertificateValidationException;
 
 @Component
-public class ValidationApplicationService {
+public class ValidationService {
 
 	public boolean validate(X509Certificate certificate, Pki pki) {
 		try {

@@ -2,11 +2,11 @@ package br.jus.stf.plataforma.shared.certification.signature;
 
 import org.apache.commons.lang3.Validate;
 
-public class SignatureContextId {
+public class DocumentSignerId {
 
 	private final String id;
 	
-	public SignatureContextId(String id) {
+	public DocumentSignerId(String id) {
 		Validate.notEmpty(id);
 		
 		this.id = id;
