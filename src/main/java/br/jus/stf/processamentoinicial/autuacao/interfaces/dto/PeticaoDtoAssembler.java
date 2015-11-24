@@ -50,7 +50,7 @@ public class PeticaoDtoAssembler {
 		Long numero = peticao.numero();
 		Short ano = peticao.ano();
 		Optional<ClasseId> classeId = Optional.ofNullable(Optional.ofNullable(peticao.classeProcessual()).orElse(peticao.classeSugerida()));
-		String classe = (classeId.isPresent())? classeId.get().toString():null;
+		String classe = classeId.isPresent() ? classeId.get().toString() : null;
 		List<Long> partesPoloAtivo = new LinkedList<Long>();
 		List<Long> partesPoloPassivo = new LinkedList<Long>();
 		List<PecaDto> pecas = new LinkedList<PecaDto>();
