@@ -14,11 +14,9 @@
 	
 	var RegistroPage = require('./pages/registro.page');
 	
-	var AutuacaoPage = require('./pages/autuacao.page');
-	
-	var DistribuicaoPage = require('./pages/distribuicao.page');
-	
 	var PreautuacaoPage = require('./pages/preautuacao.page');
+	
+	var DevolucaoPage = require('./pages/devolucao.page')
 	
 	var LoginPage = require('./pages/login.page');
 	
@@ -38,7 +36,7 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Autuação de Petições Físicas Originárias:', function() {
+	describe('Autuação de Petições Físicas Originárias (teste do fluxo de peticao devolvida):', function() {
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
@@ -47,7 +45,7 @@
 		it('Deveria logar como recebedor', function() {
 			login('recebedor');
 		});
-
+		
 		it('Deveria navegar para a página de envio de petições físicas', function() {
 			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
 			principalPage = new PrincipalPage();
@@ -59,16 +57,16 @@
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
 		});
 		
-		it('Deveria registrar uma petição física', function(){
+		it('Deveria registrar uma petição física (fluxo de peticao devolvida', function(){
 			var registroPage = new RegistroPage();
 			
-			registroPage.preencherQtdVolumes(2);
+			registroPage.preencherQtdVolumes(10);
 			
-			registroPage.preencherQtdApensos(2);
+			registroPage.preencherQtdApensos(10);
 			
 			registroPage.classificarTipoRecebimento('Sedex');
 			
-			registroPage.preencherNumeroSedex(2);
+			registroPage.preencherNumeroSedex(10);
 			
 			registroPage.registrar();
 			
@@ -82,7 +80,7 @@
 			login('preautuador');
 		});
 
-		it('Deveria pré-atuar como válida a petição recebida', function() {
+		it('Deveria pré-atuar como INDEVIDA a petição recebida', function() {
 			
 		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
@@ -101,67 +99,38 @@
 			
 			preautuacaoPage.classificar('AP');
 			
+			//seta a peticao como indevida
+			preautuacaoPage.invalidarPeticaoRadio()
+			
+			preautuacaoPage.preencherMotivoIndevida();
+			
 			preautuacaoPage.finalizar();
 			
 			loginPage.logout();
 		    
 		});
 		
-		it('Deveria logar como autuador', function() {
-			login('autuador');
+		it('Deveria logar como cartoraria', function() {
+			login('cartoraria');
 		});
 		
-		it('Deveria atuar como válida a petição física recebida', function() {
+		it('Deveria registrar a motivação da devolução', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/devolucao/);
 		    
-			var autuacaoPage = new AutuacaoPage();
+			var devolucaoPage = new DevolucaoPage();
 			
-			autuacaoPage.classificar('AP');
+			devolucaoPage.classificar('Transitado');
 			
-			autuacaoPage.finalizar();
+			devolucaoPage.registrarNumeroOficio();
+			
+			devolucaoPage.finalizar();
 		    
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			expect(browser.getCurrentUrl()).toMatch(/\/detalhe\/peticao\/\d+/);
 			
 		    loginPage.logout();
 		});
-		
-		it('Deveria logar como distribuidor', function() {
-			login('distribuidor');
-		});
-		
-		it('Deveria distribuir a petição física autuada', function() {
-			
-		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
-		    
-		    principalPage.tarefas().get(0).getText().then(function(text) {
-		    	pos = text.search("#");
-		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
-		    });
-		    
-		    
-		    principalPage.executarTarefa();
-
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
-
-			var distribuicaoPage = new DistribuicaoPage();
-			
-			distribuicaoPage.selecionarTipoDistribuicao('PREVENCAO');
-			
-			distribuicaoPage.adicionarProcessoSuggestion('AP 1');
-				
-			//verifica se a lista de processos preventos possui ao menos um processo
-			expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
-			
-			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao');
-			
-			distribuicaoPage.finalizar();
-		    
-			loginPage.logout();
-		}); 
 		
 	});
 })();
