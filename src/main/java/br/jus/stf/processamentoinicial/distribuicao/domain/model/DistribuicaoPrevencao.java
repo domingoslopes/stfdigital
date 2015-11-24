@@ -63,5 +63,5 @@ public class DistribuicaoPrevencao extends Distribuicao {
 			.filter(processo -> relator.sameValueAs(processo.relator()))
 			.count() == processosPreventos.size();
 	}
-	
+		
 }

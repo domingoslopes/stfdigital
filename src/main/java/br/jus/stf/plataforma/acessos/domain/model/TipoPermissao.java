@@ -4,13 +4,13 @@ import br.jus.stf.shared.stereotype.ValueObject;
 
 public enum TipoPermissao implements ValueObject<TipoPermissao>{
 	
-	CRIAR("Criar"),
 	ALTERAR("Alterar"),
+	CRIAR("Criar"),
 	EXCLUIR("Excluir"),
-	PESQUISAR("Pesquisar"),
-	VISUALIZAR("Visualiazar"),
+	EXECUTAR("Executar"),
 	IMPRIMIR("Imprimir"),
-	EXECUTAR("Executar");
+	PESQUISAR("Pesquisar"),
+	VISUALIZAR("Visualizar");
 	
 	private String descricao;
 	

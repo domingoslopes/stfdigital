@@ -12,10 +12,15 @@ public enum TipoDistribuicao implements ValueObject<TipoDistribuicao> {
 		String tipo = null;
 		
 		switch(this) {
-			case COMUM: tipo = "Comum"; break;
-			case PREVENCAO:	tipo = "Prevenção"; break;
+			case COMUM: 
+				tipo = "Comum"; 
+				break;
+			case PREVENCAO:	
+				tipo = "Prevenção"; 
+				break;
 			default: break;
 		}
+		
 		return tipo;
 	}
 	

@@ -118,7 +118,7 @@
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
-			autuacaoPage.classificar('AP');
+			autuacaoPage.classificar('MS');
 			
 			autuacaoPage.finalizar();
 		    

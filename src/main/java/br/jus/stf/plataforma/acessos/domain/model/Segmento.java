@@ -9,13 +9,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "SEGMENTO", schema = "PLATAFORMA")
+@Table(name = "SEGMENTO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_SEGMENTO", "SEQ_TIPO_INFORMACAO", "SEQ_TIPO_SEGMENTO"}))
 public class Segmento implements ValueObject<Segmento> {
 	
 	private static final long serialVersionUID = 1L;
@@ -91,12 +92,16 @@ public class Segmento implements ValueObject<Segmento> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Segmento other = (Segmento) obj;
-		return sameValueAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameValueAs(final Segmento other) {
-		return other != null && sequencial.equals(other.sequencial);
+		return other != null
+				&& nome.equals(other.nome)
+				&& tipoInformacao.equals(other.tipoInformacao)
+				&& (tipoSegmento == null || tipoSegmento.equals(other.tipoSegmento));
 	}
 	
 
