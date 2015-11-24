@@ -9,12 +9,14 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
 
+import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
 import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningStrategy;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
 import br.jus.stf.plataforma.shared.certification.support.HashSignature;
-import br.jus.stf.plataforma.shared.certification.support.SignatureException;
+import br.jus.stf.plataforma.shared.certification.support.SigningException;
 
 public class ITextPDFSigningStrategy implements PDFSigningStrategy {
 
@@ -23,12 +25,19 @@ public class ITextPDFSigningStrategy implements PDFSigningStrategy {
 
 	private ITextPDFSignatureFinisher finisher;
 	
+	private PDFSigningSpecification spec;
+	
 	public ITextPDFSigningStrategy(ITextPDFSignatureFinisher finisher) {
 		this.finisher = finisher;
 	}
 	
 	@Override
-	public PreSignature preSign(SigningDocument document, PDFSigningSpecification spec) throws SignatureException {
+	public void prepareStrategyWith(PDFSigningSpecification spec) {
+		this.spec = spec;
+	}
+	
+	@Override
+	public PreSignature preSign(SigningDocument document, CertificateValidation certificateValidation) throws SigningException {
 		try {
 			PdfReader reader = new PdfReader(document.stream());
 			File tempFile = createPDFTempFile();
@@ -40,25 +49,25 @@ public class ITextPDFSigningStrategy implements PDFSigningStrategy {
 
 			appearance.setReason(spec.reason());
 
-			return finisher.finishPreSignature(spec, appearance);
+			return finisher.finishPreSignature(spec, certificateValidation, appearance);
 		} catch (IOException e) {
-			throw new SignatureException("Erro ao ler PDF.", e);
+			throw new SigningException("Erro ao ler PDF.", e);
 		} catch (DocumentException e) {
-			throw new SignatureException("Erro ao carregar PDF.", e);
+			throw new SigningException("Erro ao carregar PDF.", e);
 		}
 	}
 
 	@Override
-	public SigningDocument postSign(HashSignature signature) {
+	public SignedDocument postSign(HashSignature signature, CertificateValidation certificateValidation) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private File createPDFTempFile() throws SignatureException {
+	private File createPDFTempFile() throws SigningException {
 		try {
 			return File.createTempFile(TEMP_FILE_PREFIX, PDF_EXTENSION);
 		} catch (IOException e) {
-			throw new SignatureException("Eror ao criar arquivo temporário para assinatura.", e);
+			throw new SigningException("Eror ao criar arquivo temporário para assinatura.", e);
 		}
 	}
 

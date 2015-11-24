@@ -6,18 +6,19 @@ import java.security.cert.X509Certificate;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.shared.certification.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 import br.jus.stf.plataforma.shared.certification.validation.CertificateValidationException;
 
 @Component
-public class ValidationService {
+public class CertificateValidationService {
 
-	public boolean validate(X509Certificate certificate, Pki pki) {
+	public CertificateValidation validate(X509Certificate certificate, Pki pki) {
 		try {
 			verifyNotExpired(certificate);
-			return true;
+//			return true;
 		} catch (CertificateValidationException e) {
-			return false;
+//			return false;
 		}
 	}
 

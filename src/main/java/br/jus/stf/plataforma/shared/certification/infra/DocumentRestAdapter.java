@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.shared.certification.infra;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -13,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
+import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -24,15 +27,15 @@ public class DocumentRestAdapter implements DocumentAdapter {
 	private DocumentoRestResource docRestResource;
 
 	@Override
-	public byte[] retrieve(DocumentoId id) throws IOException {
+	public SigningDocument retrieve(DocumentoId id) throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		docRestResource.recuperar(id.toLong(), response);
-		return response.getContentAsByteArray();
+		return new PdfTempDocument(new ByteArrayInputStream(response.getContentAsByteArray()));
 	}
 
 	@Override
-	public DocumentoTemporarioId upload(String name, byte[] document) {
-		MultipartFile file = new PDFMultipartFile(name, document);
+	public DocumentoTemporarioId upload(String name, SignedDocument document) {
+		MultipartFile file = new PDFMultipartFile(name, document.bytes());
 		return new DocumentoTemporarioId(docRestResource.upload(file));
 	}
 
