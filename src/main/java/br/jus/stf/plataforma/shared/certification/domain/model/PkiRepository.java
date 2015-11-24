@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.shared.certification.domain.model;
 
-public interface SignCommand {
+public interface PkiRepository {
 
+	Pki findOne(PkiId id);
+	
 }

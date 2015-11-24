@@ -12,12 +12,12 @@ import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignature
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSigner;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerFactory;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerRepository;
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.service.CertificateValidationService;
+import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
 import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.support.HashSignature;
 import br.jus.stf.plataforma.shared.certification.support.SigningException;
@@ -31,7 +31,7 @@ public class SignatureApplicationService {
 	private DocumentSignerRepository documentSignerRepository;
 
 	@Autowired
-	private CertificateValidationService certificateValidationService;
+	private PkiService certificateValidationService;
 
 	@Autowired
 	private DocumentAdapter documentAdapter;
@@ -44,13 +44,13 @@ public class SignatureApplicationService {
 	 * de um assinador de documentos.
 	 * 
 	 * @param certificate
-	 * @param pki
+	 * @param pkiId
 	 * @param spec
 	 * @return
 	 */
-	public DocumentSignerId prepareToSign(X509Certificate certificate, Pki pki, SigningSpecification spec)
+	public DocumentSignerId prepareToSign(X509Certificate certificate, PkiId pkiId, SigningSpecification spec)
 			throws SigningException {
-		CertificateValidation validation = certificateValidationService.validate(certificate, pki);
+		CertificateValidation validation = certificateValidationService.validate(certificate, pkiId);
 		if (validation.valid()) {
 			DocumentSigner signer = signerFactory.create(documentSignerRepository.nextId(), spec, validation);
 			documentSignerRepository.save(signer);
