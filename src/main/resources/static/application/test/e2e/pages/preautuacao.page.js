@@ -23,6 +23,15 @@
 			element(by.id('finalizar')).click();
 		};
 		
+		preautuacao.invalidarPeticaoRadio = function(){
+			element(by.css('label[for=no]')).click();
+			browser.waitForAngular();
+		};
+		
+		preautuacao.preencherMotivoIndevida = function(){
+			element(by.model('preautuacao.motivo')).sendKeys('Peticao indevida');
+		};
+		
 	};
 
 	module.exports = PreautuacaoPage;
