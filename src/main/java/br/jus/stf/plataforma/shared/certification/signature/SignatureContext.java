@@ -11,6 +11,8 @@ import java.util.UUID;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
+import br.jus.stf.plataforma.shared.certification.infra.PdfTempDocument;
+
 public final class SignatureContext implements Serializable {
 
 	private static final long serialVersionUID = -4801807132705368529L;
@@ -100,7 +102,7 @@ public final class SignatureContext implements Serializable {
 		this.crls = crls;
 	}
 
-	public void attachDocumentToSign(TempDocument tempDocument) {
+	public void attachDocumentToSign(PdfTempDocument tempDocument) {
 		pdfPath = tempDocument.tempPath();
 	}
 

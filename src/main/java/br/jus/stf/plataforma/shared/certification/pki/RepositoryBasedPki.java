@@ -1,6 +1,8 @@
 package br.jus.stf.plataforma.shared.certification.pki;
 
-import br.jus.stf.plataforma.shared.certification.Pki;
+import java.security.cert.X509Certificate;
+
+import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 
 public class RepositoryBasedPki implements Pki {
 
@@ -12,6 +14,18 @@ public class RepositoryBasedPki implements Pki {
 
 	public String id() {
 		return id;
+	}
+
+	@Override
+	public boolean belongsToPki(X509Certificate certificate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public X509Certificate[] certificateChainOf(X509Certificate certificate) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
