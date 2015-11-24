@@ -52,7 +52,7 @@ public class PermissaoGrupoUnitTests {
 		permissoes.add(criarPessoa);
 		permissoes.add(criarPeca);
 		
-		Recurso autuar = new Recurso("Autuar", TipoRecurso.ACAO, permissoes);
+		Recurso autuar = new Recurso(2L, "Autuar", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertTrue(grupo.possuiAcessoNo(autuar));
 	}
@@ -70,7 +70,7 @@ public class PermissaoGrupoUnitTests {
 		permissoes.add(pesquisarPeticaoEletronica);
 		
 		
-		Recurso distribuir = new Recurso("Distribuir", TipoRecurso.ACAO, permissoes);
+		Recurso distribuir = new Recurso(1L, "Distribuir", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertFalse(grupo.possuiAcessoNo(distribuir));
 	}
