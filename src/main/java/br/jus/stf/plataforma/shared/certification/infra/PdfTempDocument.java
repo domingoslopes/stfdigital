@@ -1,24 +1,24 @@
-package br.jus.stf.plataforma.shared.certification.signature;
+package br.jus.stf.plataforma.shared.certification.infra;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Validate;
 
-public class TempDocument {
+import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+
+public class PdfTempDocument implements SigningDocument {
 
 	private static final String FILE_NAME_PREFFIX = "_DocToSignTemp_";
 	private static final String FILE_NAME_EXTENSION = ".pdf";
 
 	private File file;
 
-	public TempDocument(StreamedDocument documentToSign) {
-		this(documentToSign.documentStream());
-	}
-
-	public TempDocument(InputStream stream) {
+	public PdfTempDocument(InputStream stream) {
 		Validate.notNull(stream);
 
 		file = createTempFile(stream);
@@ -38,9 +38,18 @@ public class TempDocument {
 	public String tempId() {
 		return file.getName();
 	}
-	
+
 	public String tempPath() {
 		return file.getAbsolutePath();
+	}
+
+	@Override
+	public InputStream stream() {
+		try {
+			return new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			throw new IllegalStateException("Erro ao abrir pdf temporário para assinatura.", e);
+		}
 	}
 
 }
