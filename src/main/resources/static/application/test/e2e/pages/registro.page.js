@@ -18,15 +18,15 @@
 			utils.select('div#s2id_tipoRecebimento', sigla);
 		};
 		
-		this.qtdVolumes = function(qtd) {
+		this.preencherQtdVolumes = function(qtd) {
 		    element(by.id('qtdVolumes')).sendKeys(qtd);
 		};
 		
-		this.qtdApensos = function(qtd) {
+		this.preencherQtdApensos = function(qtd) {
 		    element(by.id('qtdApensos')).sendKeys(qtd);
 		};
 		
-		this.numSedex = function(qtd){
+		this.preencherNumeroSedex = function(qtd){
 			element(by.id('numSedex')).sendKeys(qtd);
 		};
 		

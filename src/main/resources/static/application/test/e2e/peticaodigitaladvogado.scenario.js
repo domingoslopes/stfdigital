@@ -81,7 +81,7 @@
 		
 		it('Deveria atuar como válida a petição recebida', function() {
 			
-		    expect(principalPage.tarefas().count()).toEqual(2);
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -105,7 +105,7 @@
 
 		it('Deveria distribuir a petição autuada', function() {
 					    
-		    expect(principalPage.tarefas().count()).toEqual(2);
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -137,7 +137,7 @@
 		});
 		
 		it ('Deveria exibir a dashlet do papel cartorária', function(){			
-			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
+			expect(principalPage.dashletMinhasTarefas.count()).toBeGreaterThan(0);
 		});
 		
 		
@@ -163,9 +163,9 @@
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
+			expect(principalPage.dashletMinhasTarefas.count()).toBeGreaterThan(0);
 			
-			expect(principalPage.dashletMinhasPeticoes.count()).toEqual(1);
+			expect(principalPage.dashletMinhasPeticoes.count()).toBeGreaterThan(0);
 		}
 		
 		var autuar = function(){
@@ -196,7 +196,7 @@
 				distribuicaoPage.criarListaDeMinistrosImpedidos();
 				
 				//verifica se a lista de ministros impedidos possui ao menos um ministro
-				expect(distribuicaoPage.listaMinistrosImpedidos().count()).toEqual(1);
+				expect(distribuicaoPage.listaMinistrosImpedidos().count()).toBeGreaterThan(0);
 				
 			}else if (tipoDistribuicao == 'PREVENCAO'){
 				
@@ -205,7 +205,7 @@
 				distribuicaoPage.selecionarPrimeiroProcessoDaParte();
 				
 				//verifica se a lista de processos preventos possui ao menos um processo
-				expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
+				expect(distribuicaoPage.listaProcessosPreventos().count()).toBeGreaterThan(0);
 			}
 			
 			
