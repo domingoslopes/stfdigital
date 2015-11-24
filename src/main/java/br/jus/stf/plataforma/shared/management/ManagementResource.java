@@ -29,10 +29,13 @@ public class ManagementResource {
 					Thread.sleep(500L);
 				}
 				catch (InterruptedException ex) {
+					throw new RuntimeException(ex);
 				}
+				
 				context.close();
 			}
 		}).start();
+		
 		return "Turning off application!";
 	}
 	

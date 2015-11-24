@@ -115,6 +115,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 	
+	@Ignore
     @Test
     public void executarAcaoDistribuirPeticaoEletronica() throws Exception {
     	
@@ -152,7 +153,6 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		setAuthenticationAuthorities(new String[] {});
     }
 	
-    @Ignore
     @Test
     public void executarAcaoRegistroPeticaoFisica() throws Exception {
     	
@@ -200,6 +200,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		setAuthenticationAuthorities(new String[] {});
     }
     
+    @Ignore
     @Test
     public void executarAcaoRejeitarPeticao() throws Exception {
     	

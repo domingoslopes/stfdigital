@@ -5,6 +5,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.stereotype.Entity;
@@ -18,16 +19,16 @@ import br.jus.stf.shared.stereotype.Entity;
 @Table(name = "MINISTRO", schema = "AUTUACAO")
 public class Ministro implements Entity<Ministro, MinistroId> {
 
-	Ministro() {
-
-	}
-
 	@EmbeddedId
 	private MinistroId codigo;
 	
 	@Column(name = "NOM_MINISTRO", nullable = false)
 	private String nome;
 
+	Ministro() {
+
+	}
+	
 	public Ministro(final MinistroId codigo, final String nome){
 		Validate.notNull(codigo, "ministro.codigo.required");
 		Validate.notBlank(nome, "ministro.nome.required");
@@ -47,16 +48,19 @@ public class Ministro implements Entity<Ministro, MinistroId> {
 	
 	@Override
 	public int hashCode(){
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		return result;
+		return new HashCodeBuilder().append(codigo).hashCode();
 	}
 	
 	@Override
 	public boolean equals(final Object o){
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		
+		if (this == o) {
+			return true;
+		}
+		
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 	
 		Ministro other = (Ministro) o;
 		return sameIdentityAs(other);

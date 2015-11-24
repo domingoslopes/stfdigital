@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.stereotype.ValueObject;
@@ -51,17 +52,19 @@ public abstract class Parte implements ValueObject<Parte> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((pessoaId == null) ? 0 : pessoaId.hashCode());
-		result = prime * result + ((polo == null) ? 0 : polo.hashCode());
-		return result;
+		return new HashCodeBuilder().append(pessoaId).append(polo).hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || !(obj instanceof Parte)) return false;
+	    
+		if (this == obj) {
+			return true;
+		}
+		
+	    if (obj == null || !(obj instanceof Parte)) {
+	    	return false;
+	    }
 	    
 	    final Parte other = (Parte) obj;
 	    return sameValueAs(other);

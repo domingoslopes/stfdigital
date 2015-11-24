@@ -24,8 +24,9 @@ public class SecurityAuthenticationEntryPoint extends LoginUrlAuthenticationEntr
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
 			throws IOException, ServletException {
 		
-		String xrequestedWith = ((HttpServletRequest) request).getHeader("X-Requested-With");
-		if (xrequestedWith != null && xrequestedWith.equals("XMLHttpRequest") && authException != null) {
+		String xrequestedWith = request.getHeader("X-Requested-With");
+		
+		if (xrequestedWith != null && "XMLHttpRequest".equals(xrequestedWith) && authException != null) {
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		} else {
 			super.commence(request, response, authException);

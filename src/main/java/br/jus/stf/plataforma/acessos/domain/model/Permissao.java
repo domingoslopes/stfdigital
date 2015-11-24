@@ -11,13 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "PERMISSAO", schema = "PLATAFORMA")
+@Table(name = "PERMISSAO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_SEGMENTO", "TIP_PERMISSAO"}))
 public class Permissao implements ValueObject<Permissao> {
 	
 	private static final long serialVersionUID = 1L;
@@ -34,20 +35,20 @@ public class Permissao implements ValueObject<Permissao> {
 	
 	@Column(name = "TIP_PERMISSAO", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private TipoPermissao tipoPermissao;
+	private TipoPermissao tipo;
 	
 	Permissao() {
 		
 	}
 	
-	public Permissao(final Long sequencial, final Segmento segmento, final TipoPermissao tipoPermissao) {
+	public Permissao(final Long sequencial, final Segmento segmento, final TipoPermissao tipo) {
 		Validate.notNull(sequencial, "permissao.sequencial.required");
 		Validate.notNull(segmento, "permissao.segmento.required");
-		Validate.notNull(tipoPermissao, "permissao.tipoPermissao.required");
+		Validate.notNull(tipo, "permissao.tipo.required");
 		
 		this.sequencial = sequencial;
 		this.segmento = segmento;
-		this.tipoPermissao = tipoPermissao;
+		this.tipo = tipo;
 	}
 	
 	public Long toLong() {
@@ -58,8 +59,8 @@ public class Permissao implements ValueObject<Permissao> {
 		return segmento;
 	}
 	
-	public TipoPermissao tipoPermissao() {
-		return tipoPermissao;
+	public TipoPermissao tipo() {
+		return tipo;
 	}
 	
 	@Override
@@ -78,12 +79,15 @@ public class Permissao implements ValueObject<Permissao> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Permissao other = (Permissao) obj;
-		return sameValueAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 	
 	@Override
-	public boolean sameValueAs(Permissao other) {
-		return other != null && sequencial.equals(other.sequencial);
+	public boolean sameValueAs(final Permissao other) {
+		return other != null
+				&& segmento.equals(other.segmento)
+				&& tipo.equals(other.tipo);
 	}
 
 }
