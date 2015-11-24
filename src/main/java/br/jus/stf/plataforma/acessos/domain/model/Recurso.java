@@ -6,7 +6,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -22,13 +21,11 @@ import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.shared.stereotype.ValueObject;
+import br.jus.stf.shared.stereotype.Entity;
 
-@Entity
+@javax.persistence.Entity
 @Table(name = "RECURSO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_RECURSO", "TIP_RECURSO"}))
-public class Recurso implements ValueObject<Recurso> {
-	
-	private static final long serialVersionUID = 1L;
+public class Recurso implements Entity<Recurso, Long> {
 	
 	@Id
 	@Column(name = "SEQ_RECURSO")
@@ -41,7 +38,7 @@ public class Recurso implements ValueObject<Recurso> {
 	
 	@Column(name = "TIP_RECURSO", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private TipoRecurso tipoRecurso;
+	private TipoRecurso tipo;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_RECURSO", schema = "PLATAFORMA",
@@ -49,13 +46,15 @@ public class Recurso implements ValueObject<Recurso> {
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
 	private Set<Permissao> permissoesExigidas = new HashSet<Permissao>(0);
 	
-	public Recurso(String nome, TipoRecurso tipoRecurso, Set<Permissao> permissoesExigidas) {
+	public Recurso(final Long sequencial, final String nome, final TipoRecurso tipo, final Set<Permissao> permissoesExigidas) {
+		Validate.notNull(sequencial, "recurso.sequencial.required");
 		Validate.notBlank(nome, "recurso.nome.required");
-		Validate.notNull(tipoRecurso, "recurso.tipoRecurso.required");
+		Validate.notNull(tipo, "recurso.tipo.required");
 		Validate.notEmpty(permissoesExigidas, "recurso.permissoesExigidas.required");
 		
+		this.sequencial = sequencial;
 		this.nome = nome;
-		this.tipoRecurso = tipoRecurso;
+		this.tipo = tipo;
 		this.permissoesExigidas = permissoesExigidas;
 	}
 	
@@ -63,8 +62,8 @@ public class Recurso implements ValueObject<Recurso> {
 		return nome;
 	}
 	
-	public TipoRecurso tipoRecurso() {
-		return tipoRecurso;
+	public TipoRecurso tipo() {
+		return tipo;
 	}
 	
 	public Set<Permissao> permissoesExigidas() {
@@ -92,10 +91,15 @@ public class Recurso implements ValueObject<Recurso> {
 	}
 	
 	@Override
-	public boolean sameValueAs(final Recurso other) {
+	public boolean sameIdentityAs(final Recurso other) {
 		return other != null
 				&& nome.equals(other.nome)
-				&& tipoRecurso.equals(other.tipoRecurso);
+				&& tipo.equals(other.tipo);
+	}
+
+	@Override
+	public Long id() {
+		return sequencial;
 	}
 
 }
