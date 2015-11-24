@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.acessos.domain.model;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -133,8 +134,6 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		Validate.notEmpty(papeis, "usuario.papeis.required");
 		
 		this.papeis = papeis;
-		
-		papeis.forEach(papel -> permissoes.addAll(papel.permissoes()));
 	}
 	
 	public Set<Grupo> grupos() {
@@ -145,13 +144,17 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		Validate.notEmpty(grupos, "usuario.grupos.required");
 		
 		this.grupos = grupos;
-		
-		grupos.forEach(grupo -> permissoes.addAll(grupo.permissoes()));
 	}
 	
 	@Override
 	public Set<Permissao> permissoes() {
-		return Collections.unmodifiableSet(permissoes);
+		Set<Permissao> permissoesCompletas = new HashSet<Permissao>();
+		
+		Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papeis -> permissoesCompletas.addAll(papeis.permissoes())));
+		Optional.ofNullable(grupos).ifPresent(g -> g.forEach(grupo -> permissoesCompletas.addAll(grupo.permissoes())));
+		Optional.ofNullable(permissoes).ifPresent(p -> permissoesCompletas.addAll(p));
+		
+		return Collections.unmodifiableSet(permissoesCompletas);
 	}
 	
 	@Override
@@ -182,12 +185,14 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Usuario other = (Usuario) obj;
-		return sameIdentityAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameIdentityAs(Usuario other) {
-		return other != null && sequencial.equals(other.sequencial);
+		return other != null
+				&& login.equals(other.login);
 	}
 
 }

@@ -75,7 +75,7 @@ public class PeticaoRestResource {
 	@RequestMapping(value = "/fisicas/{id}/preautuar", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void preautuar(@PathVariable Long id, @RequestBody PreautuarPeticaoFisicaCommand command) {
-		peticaoServiceFacade.preautuar(id, command.getClasseId(), command.isValida()); 
+		peticaoServiceFacade.preautuar(id, command.getClasseId(), command.isValida(), command.getMotivo()); 
 	}
 
     @ApiOperation("Conclui a autuação de uma determinada petição")

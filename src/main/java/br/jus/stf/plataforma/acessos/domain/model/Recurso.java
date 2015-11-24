@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.acessos.domain.model;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,13 +18,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "RECURSO", schema = "PLATAFORMA")
+@Table(name = "RECURSO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_RECURSO", "TIP_RECURSO"}))
 public class Recurso implements ValueObject<Recurso> {
 	
 	private static final long serialVersionUID = 1L;
@@ -32,7 +34,7 @@ public class Recurso implements ValueObject<Recurso> {
 	@Column(name = "SEQ_RECURSO")
 	@SequenceGenerator(name = "RECURSOID", sequenceName = "PLATAFORMA.SEQ_RECURSO", allocationSize = 1)
 	@GeneratedValue(generator = "RECURSOID", strategy=GenerationType.SEQUENCE)
-	private Long sequencia;
+	private Long sequencial;
 	
 	@Column(name = "NOM_RECURSO", nullable = false)
 	private String nome;
@@ -45,7 +47,7 @@ public class Recurso implements ValueObject<Recurso> {
 	@JoinTable(name = "PERMISSAO_RECURSO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
-	private Set<Permissao> permissoesExigidas;
+	private Set<Permissao> permissoesExigidas = new HashSet<Permissao>(0);
 	
 	public Recurso(String nome, TipoRecurso tipoRecurso, Set<Permissao> permissoesExigidas) {
 		Validate.notBlank(nome, "recurso.nome.required");
@@ -74,8 +76,7 @@ public class Recurso implements ValueObject<Recurso> {
 		final int prime = 31;
 		int result = 1;
 		
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((permissoesExigidas == null) ? 0 : permissoesExigidas.hashCode());
+		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
 		
 		return result;
 	}
@@ -86,13 +87,15 @@ public class Recurso implements ValueObject<Recurso> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Recurso other = (Recurso) obj;
-		return sameValueAs(other);
+		
+		return sequencial.equals(other.sequencial);
 	}
 	
 	@Override
-	public boolean sameValueAs(Recurso other) {
-		return other != null && nome.equals(other.nome)
-				&& permissoesExigidas.equals(other.permissoesExigidas);
+	public boolean sameValueAs(final Recurso other) {
+		return other != null
+				&& nome.equals(other.nome)
+				&& tipoRecurso.equals(other.tipoRecurso);
 	}
 
 }

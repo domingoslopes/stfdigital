@@ -75,7 +75,7 @@ public class PeticaoFisica extends Peticao {
 		
 		super.sugerirClasse(classeSugerida);
 	}
-	
+		
 	@Override
 	public boolean hasRepresentacao() {
 		return false;
