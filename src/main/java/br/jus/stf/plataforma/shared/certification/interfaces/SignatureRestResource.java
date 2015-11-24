@@ -25,8 +25,8 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
 import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.Pkis;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
@@ -38,7 +38,6 @@ import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToS
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignerIdDto;
-import br.jus.stf.plataforma.shared.certification.pki.CompositePki;
 import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.support.HashSignature;
 import br.jus.stf.plataforma.shared.certification.support.SigningException;
@@ -64,12 +63,12 @@ public class SignatureRestResource {
 		// Constrói uma especificação de assinatura de PDF.
 		SigningSpecification spec = new PDFSigningSpecificationBuilder().pkcs7Dettached().reason(SIGNING_REASON)
 				.hashAlgorithm(HashType.SHA256).build();
-		DocumentSignerId signerId = signatureApplicationService.prepareToSign(certificate, pki(), spec);
+		DocumentSignerId signerId = signatureApplicationService.prepareToSign(certificate, pkis(), spec);
 		return new SignerIdDto(signerId.id());
 	}
 
-	private Pki pki() {
-		return new CompositePki(PkiType.ICP_BRASIL.instance(), PkiType.ICP_PLATAFORMA.instance());
+	private Pkis pkis() {
+		return new Pkis(PkiType.ICP_BRASIL, PkiType.ICP_PLATAFORMA);
 	}
 
 	@ApiOperation("Faz o upload do arquivo para assinatura.")
