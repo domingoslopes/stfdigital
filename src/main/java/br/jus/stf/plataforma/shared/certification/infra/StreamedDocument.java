@@ -1,10 +1,12 @@
-package br.jus.stf.plataforma.shared.certification.signature;
+package br.jus.stf.plataforma.shared.certification.infra;
 
 import java.io.InputStream;
 
 import org.apache.commons.lang3.Validate;
 
-public class StreamedDocument {
+import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+
+public class StreamedDocument implements SigningDocument {
 
 	private InputStream documentStream;
 	
@@ -14,7 +16,8 @@ public class StreamedDocument {
 		this.documentStream = documentStream;
 	}
 
-	public InputStream documentStream() {
+	@Override
+	public InputStream stream() {
 		return documentStream;
 	}
 	

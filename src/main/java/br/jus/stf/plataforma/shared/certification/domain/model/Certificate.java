@@ -18,8 +18,7 @@ public class Certificate implements Entity<Certificate, CertificateId> {
 	
 	@Override
 	public CertificateId id() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override

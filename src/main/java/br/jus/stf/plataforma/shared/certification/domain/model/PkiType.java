@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification;
+package br.jus.stf.plataforma.shared.certification.domain.model;
 
 import br.jus.stf.plataforma.shared.certification.pki.RepositoryBasedPki;
 

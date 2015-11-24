@@ -1,9 +1,18 @@
 package br.jus.stf.plataforma.shared.certification.domain.model;
 
-import java.security.cert.X509CRL;
-import java.security.cert.X509Certificate;
-
 public class PDFSigningSpecification implements SigningSpecification {
+
+	private PDFSigningStrategy strategy;
+	private String reason;
+	private HashType hashType;
+
+	public PDFSigningSpecification(PDFSigningStrategy strategy, String reason, HashType hashType) {
+		this.strategy = strategy;
+		this.reason = reason;
+		this.hashType = hashType;
+
+		this.strategy.prepareStrategyWith(this);
+	}
 
 	@Override
 	public DocumentType documentType() {
@@ -11,27 +20,16 @@ public class PDFSigningSpecification implements SigningSpecification {
 	}
 
 	@Override
-	public SigningStrategy strategy() {
-		// TODO Auto-generated method stub
-		return null;
+	public PDFSigningStrategy strategy() {
+		return strategy;
 	}
 
 	public String reason() {
-		// TODO Auto-generated method stub
-		return null;
+		return reason;
 	}
 
-	public X509CRL[] crls() {
-		return null;
-	}
-
-	public String hashAlgorithmName() {
-		return "SHA-256";
-	}
-
-	public X509Certificate[] certificateChain() {
-		// TODO Auto-generated method stub
-		return null;
+	public HashType hashType() {
+		return hashType;
 	}
 
 }
