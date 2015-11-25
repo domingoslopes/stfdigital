@@ -25,8 +25,8 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
 import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
+import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
-import br.jus.stf.plataforma.shared.certification.domain.model.Pkis;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
@@ -67,8 +67,8 @@ public class SignatureRestResource {
 		return new SignerIdDto(signerId.id());
 	}
 
-	private Pkis pkis() {
-		return new Pkis(PkiType.ICP_BRASIL, PkiType.ICP_PLATAFORMA);
+	private PkiIds pkis() {
+		return new PkiIds(PkiType.ICP_BRASIL.id(), PkiType.ICP_PLATAFORMA.id());
 	}
 
 	@ApiOperation("Faz o upload do arquivo para assinatura.")
@@ -82,21 +82,21 @@ public class SignatureRestResource {
 	@ApiOperation("Fornece um arquivo já existente no servidor para assinatura.")
 	@RequestMapping(value = "/provide-to-sign", method = RequestMethod.POST)
 	public void provideToSign(@RequestBody ProvideToSignCommand command) throws SigningException {
-		signatureApplicationService.provideToSign(new DocumentSignerId(command.getContextId()),
+		signatureApplicationService.provideToSign(new DocumentSignerId(command.getSignerId()),
 				command.getDocumentId());
 	}
 
 	@ApiOperation("Gera o hash do documento a ser assinado.")
 	@RequestMapping(value = "/pre-sign", method = RequestMethod.POST)
 	public PreSignatureDto preSign(@RequestBody PreSignCommand command) throws SigningException {
-		PreSignature preSignature = signatureApplicationService.preSign(new DocumentSignerId(command.getContextId()));
+		PreSignature preSignature = signatureApplicationService.preSign(new DocumentSignerId(command.getSignerId()));
 		return PreSignatureDto.from(preSignature);
 	}
 
 	@ApiOperation("Assina efetivamente o documento.")
 	@RequestMapping(value = "/post-sign", method = RequestMethod.POST)
 	public void postSign(@RequestBody PostSignCommand command) throws SigningException {
-		signatureApplicationService.postSign(new DocumentSignerId(command.getContextId()),
+		signatureApplicationService.postSign(new DocumentSignerId(command.getSignerId()),
 				new HashSignature(command.getSignatureAsHex()));
 	}
 
@@ -106,7 +106,7 @@ public class SignatureRestResource {
 			throws IOException {
 		SignedDocument signedDocument = signatureApplicationService
 				.recoverSignedDocument(new DocumentSignerId(contextId));
-		InputStream is = new ByteArrayInputStream(signedDocument.asBytes());
+		InputStream is = signedDocument.stream();
 
 		response.setHeader("Content-disposition", "attachment; filename=" + contextId + ".pdf");
 		response.setContentType("application/pdf");

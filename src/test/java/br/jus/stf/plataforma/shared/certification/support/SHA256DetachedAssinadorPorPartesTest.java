@@ -15,7 +15,6 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.util.encoders.Base64;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +23,8 @@ import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
-import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
 import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.signature.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.signature.SignatureContext;
 
 public class SHA256DetachedAssinadorPorPartesTest extends AbstractAssinaturaDemoTest {
 

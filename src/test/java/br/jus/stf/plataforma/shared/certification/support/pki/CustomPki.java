@@ -2,9 +2,7 @@ package br.jus.stf.plataforma.shared.certification.support.pki;
 
 import org.apache.commons.lang.Validate;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
-
-public class CustomPki implements Pki {
+public class CustomPki {
 
 	private CustomPkiStore rootCA;
 	private CustomPkiStore intermediateCA;
