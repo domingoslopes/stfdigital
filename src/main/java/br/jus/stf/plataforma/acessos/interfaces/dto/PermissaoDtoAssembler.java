@@ -15,7 +15,7 @@ public class PermissaoDtoAssembler {
 
 	public PermissaoDto toDto(Permissao permissao) {
 		StringBuilder sb = new StringBuilder()
-			.append(permissao.tipoPermissao().name())
+			.append(permissao.tipo().name())
 			.append("_")
 			.append(permissao.tipoInformacao().nome());
 		Optional.ofNullable(permissao.segmento())

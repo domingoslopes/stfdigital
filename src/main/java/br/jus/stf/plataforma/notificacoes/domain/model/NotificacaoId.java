@@ -3,6 +3,7 @@ package br.jus.stf.plataforma.notificacoes.domain.model;
 import java.util.UUID;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
@@ -29,17 +30,20 @@ public class NotificacaoId implements ValueObject<NotificacaoId> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((uuid == null) ? 0 : uuid.hashCode());
-		return result;
+		return new HashCodeBuilder().append(uuid).hashCode();
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+		
 		NotificacaoId other = (NotificacaoId) obj;
 		return sameValueAs(other);
 	}

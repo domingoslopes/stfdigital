@@ -28,10 +28,6 @@ public interface UsuarioRepository {
 	
 	public List<Segmento> findAllSegmento();
 	
-	public Recurso findOneRecurso(String nome, TipoRecurso tipoRecurso);
-	
-	public List<Recurso> findAllRecurso();
-	
 	public List<Permissao> findByPermissaoUsuario(String login);
 	
 	public List<Permissao> findByPermissaoRecurso(Long sequencial);
