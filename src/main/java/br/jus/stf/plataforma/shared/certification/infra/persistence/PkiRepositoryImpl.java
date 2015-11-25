@@ -10,13 +10,13 @@ import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.shared.certification.domain.CertificationUtil;
 import br.jus.stf.plataforma.shared.certification.domain.model.Certificate;
 import br.jus.stf.plataforma.shared.certification.domain.model.CertificateType;
 import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
-import br.jus.stf.plataforma.shared.certification.util.CertificationUtil;
 
 @Repository
 public class PkiRepositoryImpl implements PkiRepository {

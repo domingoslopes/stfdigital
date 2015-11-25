@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
+import br.jus.stf.plataforma.shared.certification.domain.CertificationUtil;
 import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
@@ -40,7 +41,6 @@ import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToS
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignerDto;
-import br.jus.stf.plataforma.shared.certification.util.CertificationUtil;
 import br.jus.stf.shared.DocumentoId;
 
 /**
