@@ -1,16 +1,11 @@
 package br.jus.stf.plataforma.shared.certification.support.generators;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.security.KeyStore;
-import java.security.cert.Certificate;
 
 import org.apache.commons.io.FileUtils;
 
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiGenerator;
-import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiStore;
 import br.jus.stf.plataforma.shared.certification.support.pki.NCustomPki;
 
 public class IcpBrasilLikePkiGenerator {
@@ -45,7 +40,7 @@ public class IcpBrasilLikePkiGenerator {
 			System.out.println(customPki);
 			File privateDir = new File(pkiCandidateDir.getPath() + "/private");
 			if (privateDir.mkdir()) {
-				storeOnDisk(customPki, privateDir.getPath() + "/keystore.p12");
+				GeneratorUtil.storeOnDisk(customPki, privateDir.getPath() + "/keystore.p12");
 				createFirstSerial(privateDir.getPath() + "/nextSerial");
 			} else {
 				System.err.println("Erro ao criar diretório privado da pki.");
@@ -57,26 +52,8 @@ public class IcpBrasilLikePkiGenerator {
 		}
 	}
 
-	private static void storeOnDisk(NCustomPki customPki, String keystorePath) throws Exception {
-		KeyStore pkcs12Store = KeyStore.getInstance("PKCS12");
-		pkcs12Store.load(null, null);
-		pkcs12Store.setKeyEntry("root", customPki.rootCA().keyPair().getPrivate(), "changeit".toCharArray(),
-				new Certificate[] { customPki.rootCA().certificate() });
-		int i = 1;
-		for (CustomPkiStore store : customPki.intermediateCAs()) {
-			pkcs12Store.setKeyEntry("ca" + i, store.keyPair().getPrivate(), "changeit".toCharArray(),
-					new Certificate[] { store.certificate() });
-			i++;
-		}
-
-		OutputStream outputStream = new FileOutputStream(keystorePath);
-		pkcs12Store.store(outputStream, "changeit".toCharArray());
-		outputStream.flush();
-		outputStream.close();
-	}
-
 	private static void createFirstSerial(String path) throws IOException {
 		FileUtils.writeStringToFile(new File(path), "1");
 	}
-	
+
 }
