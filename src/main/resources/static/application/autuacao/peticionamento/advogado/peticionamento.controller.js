@@ -10,6 +10,7 @@
 	angular.autuacao.controller('PeticionamentoAdvogadoController', function ($scope, $state, messages, PeticaoService) {
 
 		$scope.$parent.child = $scope;
+		$scope.idPeticao;
 		
 		$scope.validar = function() {
 			if ($scope.classe.length === 0) {
@@ -24,6 +25,8 @@
 			
 			PeticaoService.peticionar(command).success(function(data) {
 				$state.go('dashboard');
+				$scope.idPeticao = data;
+				$scope.$parent.idPeticao = data;
 				messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
 			}).error(function(data, status) {
 				if (status === 400) {
@@ -31,5 +34,7 @@
 				}
 			});
 		};
+		
+		
 	});	
 })();

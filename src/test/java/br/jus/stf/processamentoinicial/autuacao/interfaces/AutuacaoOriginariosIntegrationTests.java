@@ -32,7 +32,9 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String peticaoEletronica;
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
+	private String peticaoFisicaInvalidaParaPreautuacao;
 	private String peticaoInvalidaParaAutuacao;
+	private String peticaoFisicaParaDevolucao;
 	
 	@Before
 	public void criarObjetosJSON() throws UnsupportedEncodingException, Exception{
@@ -90,12 +92,25 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoFisicaParaPreautuacao.append("\"motivo\":\"\"}");
 		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
+		//Cria um objeto contendo os dados de uma petição física a ser devolvida.
+		StringBuilder peticaoFisicaInvalidaParaPreautuacao =  new StringBuilder();
+		peticaoFisicaInvalidaParaPreautuacao.append("{\"classeId\":\"ADI\",");
+		peticaoFisicaInvalidaParaPreautuacao.append("\"valida\":false,");
+		peticaoFisicaInvalidaParaPreautuacao.append("\"motivo\":\"Pq sim\"}");
+		this.peticaoFisicaInvalidaParaPreautuacao = peticaoFisicaInvalidaParaPreautuacao.toString();
+		
 		//Cria um objeto para ser usado no processo de rejeição de uma petição.
 		StringBuilder peticaoInValidaParaAutuacao =  new StringBuilder();
 		peticaoInValidaParaAutuacao.append("{\"classeId\":\"ADI\",");
 		peticaoInValidaParaAutuacao.append("\"valida\":false,");
 		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}");
 		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
+		
+		//Cria um objeto para ser usado no processo de devolução de uma petição física.
+		StringBuilder peticaoFisicaParaDevolucao =  new StringBuilder();
+		peticaoFisicaParaDevolucao.append("{\"numeroOficio\":1234,");
+		peticaoFisicaParaDevolucao.append("\"tipoDevolucao\":\"REMESSA_INDEVIDA\"}");
+		this.peticaoFisicaParaDevolucao = peticaoFisicaParaDevolucao.toString();
 	}
 	
 	@Test
@@ -190,4 +205,36 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "devolvedor")).andExpect(status().isOk())
 			.andExpect((jsonPath("$").doesNotExist()));
 	}
+	
+	@Test
+	public void devolverPeticao() throws Exception{
+		
+		String peticaoId = "";
+		
+		//Registra a petição física.
+		peticaoId = this.mockMvc.perform(post("/api/peticoes/fisicas").header("papel", "recebedor").contentType(MediaType.APPLICATION_JSON)
+			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		
+		//Recupera a(s) tarefa(s) do préautuador.
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "preautuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].descricao", is("Pré-Autuar Processo")));
+		
+		//Faz a préautuação da petição registrada.
+		this.mockMvc.perform(post("/api/peticoes/fisicas/" + peticaoId + "/preautuar").contentType(MediaType.APPLICATION_JSON)
+				.content(this.peticaoFisicaInvalidaParaPreautuacao.toString())).andExpect(status().isOk());
+		
+		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "cartoraria")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("devolucao")));
+		
+		//Devolve a petição.
+		this.mockMvc.perform(post("/api/peticoes/" + peticaoId + "/devolver").contentType(MediaType.APPLICATION_JSON)
+				.content(this.peticaoFisicaParaDevolucao.toString())).andExpect(status().isOk());
+		
+		//Tenta recuperar as tarefas do autuador. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("papel", "devolvedor")).andExpect(status().isOk())
+			.andExpect((jsonPath("$").doesNotExist()));
+		
+	}
+	
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -126,10 +127,7 @@ public class Pesquisa implements Entity<Pesquisa, String> {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
 	@Override

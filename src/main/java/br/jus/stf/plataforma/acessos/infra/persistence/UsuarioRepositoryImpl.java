@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -18,10 +17,8 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.plataforma.acessos.domain.model.Grupo;
 import br.jus.stf.plataforma.acessos.domain.model.Papel;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
-import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.Segmento;
 import br.jus.stf.plataforma.acessos.domain.model.TipoInformacao;
-import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
 
@@ -106,24 +103,6 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	@Override
 	public List<Segmento> findAllSegmento() {
 		Query query = entityManager.createQuery("SELECT segmento FROM Segmento segmento ORDER BY segmento.nome");
-		
-		return query.getResultList();
-	}
-	
-	@Override
-	public Recurso findOneRecurso(String nome, TipoRecurso tipoRecurso) {
-		TypedQuery<Recurso> query = entityManager.createQuery("SELECT recurso FROM Recurso recurso WHERE recurso.nome = :nome AND recurso.tipoRecurso = :tipoRecurso", Recurso.class);
-		query.setParameter("nome", nome);
-		query.setParameter("tipoRecurso", tipoRecurso);
-		
-		List<Recurso> recursos = query.getResultList();
-		return recursos.isEmpty() ? null : recursos.get(0);
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Recurso> findAllRecurso() {
-		Query query = entityManager.createQuery("SELECT recurso FROM Recurso recurso ORDER BY recurso.nome");
 		
 		return query.getResultList();
 	}

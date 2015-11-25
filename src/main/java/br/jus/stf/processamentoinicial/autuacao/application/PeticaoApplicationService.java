@@ -105,6 +105,7 @@ public class PeticaoApplicationService {
 			peticao.devolver(motivoDevolucao);
 			processoAdapter.devolver(peticao);
 		}
+		
 		peticao.preautuar(classeSugerida);
 		peticaoRepository.save(peticao);
 	}

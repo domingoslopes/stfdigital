@@ -61,10 +61,10 @@ public class PeticaoEletronica extends Peticao {
 	public Orgao orgaoRepresentado() {
 		return this.orgaoRepresentado;
 	}
-
+	
 	@Override
 	public boolean hasRepresentacao() {
-		return (this.orgaoRepresentado != null);
+		return this.orgaoRepresentado != null;
 	}
 
 }

@@ -38,7 +38,7 @@ public class Recurso implements Entity<Recurso, Long> {
 	
 	@Column(name = "TIP_RECURSO", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private TipoRecurso tipoRecurso;
+	private TipoRecurso tipo;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_RECURSO", schema = "PLATAFORMA",
@@ -50,15 +50,15 @@ public class Recurso implements Entity<Recurso, Long> {
 		
 	}
 	
-	public Recurso(final Long sequencial, String nome, TipoRecurso tipoRecurso, Set<Permissao> permissoesExigidas) {
-		Validate.notNull(sequencial, "recurso.sequencial.required");		
+	public Recurso(final Long sequencial, final String nome, final TipoRecurso tipo, final Set<Permissao> permissoesExigidas) {
+		Validate.notNull(sequencial, "recurso.sequencial.required");
 		Validate.notBlank(nome, "recurso.nome.required");
-		Validate.notNull(tipoRecurso, "recurso.tipoRecurso.required");
+		Validate.notNull(tipo, "recurso.tipo.required");
 		Validate.notEmpty(permissoesExigidas, "recurso.permissoesExigidas.required");
 		
 		this.sequencial = sequencial;
 		this.nome = nome;
-		this.tipoRecurso = tipoRecurso;
+		this.tipo = tipo;
 		this.permissoesExigidas = permissoesExigidas;
 	}
 	
@@ -71,8 +71,8 @@ public class Recurso implements Entity<Recurso, Long> {
 		return nome;
 	}
 	
-	public TipoRecurso tipoRecurso() {
-		return tipoRecurso;
+	public TipoRecurso tipo() {
+		return tipo;
 	}
 	
 	public Set<Permissao> permissoesExigidas() {
@@ -102,7 +102,7 @@ public class Recurso implements Entity<Recurso, Long> {
 	public boolean sameIdentityAs(final Recurso other) {
 		return other != null
 				&& nome.equals(other.nome)
-				&& tipoRecurso.equals(other.tipoRecurso);
+				&& tipo.equals(other.tipo);
 	}
 
 }
