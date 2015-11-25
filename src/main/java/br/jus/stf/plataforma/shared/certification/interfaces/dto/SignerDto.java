@@ -1,10 +1,10 @@
 package br.jus.stf.plataforma.shared.certification.interfaces.dto;
 
-public class SignerIdDto {
+public class SignerDto {
 
 	private String signerId;
 
-	public SignerIdDto(String signerId) {
+	public SignerDto(String signerId) {
 		this.signerId = signerId;
 	}
 
