@@ -94,7 +94,7 @@
         <dependency>
         	<groupId>org.flywaydb</groupId>
         	<artifactId>flyway-core</artifactId>
-        </dependency>
+        </dependency>      
 		<dependency>
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-bus</artifactId>

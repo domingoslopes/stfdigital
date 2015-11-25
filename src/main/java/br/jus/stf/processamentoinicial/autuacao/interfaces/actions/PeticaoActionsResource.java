@@ -35,7 +35,7 @@ public class PeticaoActionsResource {
 	
 	@ActionMapping(id = "PREAUTUAR-PETICAO-FISICA", name = "Preautuar Petição Física")
 	public void preautuar(PreautuarPeticaoFisicaCommand command) {
-		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo()); 
+		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo());
 	}
 	
 	@ActionMapping(id = "AUTUAR-PETICAO", name = "Autuar Petição")

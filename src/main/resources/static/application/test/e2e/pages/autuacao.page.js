@@ -18,6 +18,15 @@
 			utils.select('div#s2id_classe', sigla);
 		};
 		
+		this.invalidarPeticaoRadio = function(){
+			element(by.css('label[for=no]')).click();
+			browser.waitForAngular();
+		};
+
+		this.preencherMotivoInvalida = function(){
+			element(by.model('autuacao.motivo')).sendKeys('Peticao inválida');
+		};
+		
 		this.finalizar = function() {
 			element(by.id('botaoAutuar')).click();
 		};

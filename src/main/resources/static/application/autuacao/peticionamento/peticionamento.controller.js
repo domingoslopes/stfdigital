@@ -17,6 +17,7 @@
 		$scope.poloAtivoController = new PartesController($scope.partesPoloAtivo);
 		$scope.poloPassivoController = new PartesController($scope.partesPoloPassivo);
 		$scope.pecas = [];
+		$scope.idPeticao;
 		
 		
 		var uploader = $scope.uploader = new FileUploader({

@@ -20,7 +20,11 @@ import br.jus.stf.shared.stereotype.ValueObject;
  */
 public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 
+<<<<<<< HEAD
 	private static final long serialVersionUID = -3725370010702512231L;
+=======
+	private static final long serialVersionUID = 1L;
+>>>>>>> 9b1cf4fcab835c5089fb2b251e3415ccb92cf00e
 
 	private static String FILE_NAME_PREFFIX = "_DocTemp_";
 	

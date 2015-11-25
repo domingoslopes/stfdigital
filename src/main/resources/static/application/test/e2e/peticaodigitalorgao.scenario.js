@@ -53,7 +53,7 @@
 			
 			
 			// Iniciando o Processo de Autuação...
-			principalPage.iniciarProcesso('link_registrar_peticao_eletronica_orgao');
+			principalPage.iniciarProcesso('link_registrar-peticao-eletronica-orgao');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/orgao/);
@@ -82,9 +82,7 @@
 
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.dashletMinhasTarefas.count()).toEqual(1);
-			
-			expect(principalPage.dashletMinhasPeticoes.count()).toEqual(1);
+			expect(principalPage.dashletMinhasPeticoes.count()).toBeGreaterThan(0);
 			
 		    loginPage.logout();
 		});
@@ -95,7 +93,7 @@
 		
 		it('Deveria atuar como válida a petição recebida com órgão', function() {
 			
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
@@ -125,7 +123,7 @@
 
 		it('Deveria distribuir a petição autuada com órgão', function() {
 					    
-		    expect(principalPage.tarefas().count()).toEqual(1);
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");

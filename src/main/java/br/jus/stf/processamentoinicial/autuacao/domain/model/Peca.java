@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.stereotype.ValueObject;
@@ -57,17 +58,18 @@ public abstract class Peca implements ValueObject<Peca> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((documento == null) ? 0 : documento.hashCode());
-		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
-		return result;
+		return new HashCodeBuilder().append(documento).append(tipo).hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || !(obj instanceof Peca)) return false;
+	    if (this == obj) {
+	    	return true;
+	    }
+	    
+	    if (obj == null || !(obj instanceof Peca)) {
+	    	return false;
+	    }
 	    
 	    final Peca other = (Peca) obj;
 	    return sameValueAs(other);

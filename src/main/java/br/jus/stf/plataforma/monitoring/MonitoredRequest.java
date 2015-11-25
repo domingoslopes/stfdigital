@@ -34,7 +34,7 @@ public class MonitoredRequest {
 	
 	private long startTime;
 	
-	private final static Logger LOGGER = LoggerFactory.getLogger(MonitoredRequest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MonitoredRequest.class);
 
 	/**
 	 * Cria uma nova instância para uma requisição que deverá ser monitorada.

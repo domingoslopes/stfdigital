@@ -5,6 +5,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.stereotype.Entity;
@@ -47,10 +48,7 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	
 	@Override
 	public int hashCode(){
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
+		return new HashCodeBuilder().append(id).toHashCode();
 	}
 	
 	@Override
