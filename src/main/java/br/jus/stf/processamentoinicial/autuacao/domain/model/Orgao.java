@@ -9,6 +9,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
@@ -52,16 +53,18 @@ public class Orgao implements ValueObject<Orgao> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
-		return result;
+		return new HashCodeBuilder().append(sequencial).toHashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || !(obj instanceof Orgao)) return false;
+	    if (this == obj) {
+	    	return true;
+	    }
+	    
+	    if (obj == null || !(obj instanceof Orgao)) {
+	    	return false;
+	    }
 	    
 	    final Orgao other = (Orgao) obj;
 	    return sameValueAs(other);

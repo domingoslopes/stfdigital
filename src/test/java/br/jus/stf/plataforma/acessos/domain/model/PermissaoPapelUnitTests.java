@@ -50,7 +50,7 @@ public class PermissaoPapelUnitTests {
 		permissoes.add(criarPessoa);
 		permissoes.add(criarPeca);
 		
-		Recurso autuar = new Recurso("Autuar", TipoRecurso.ACAO, permissoes);
+		Recurso autuar = new Recurso(2L, "Autuar", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertTrue(papel.possuiAcessoNo(autuar));
 	}
@@ -67,7 +67,7 @@ public class PermissaoPapelUnitTests {
 		permissoes.add(pesquisarPeticaoEletronica);
 		
 		
-		Recurso distribuir = new Recurso("Distribuir", TipoRecurso.ACAO, permissoes);
+		Recurso distribuir = new Recurso(1L, "Distribuir", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertFalse(papel.possuiAcessoNo(distribuir));
 	}

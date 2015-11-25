@@ -50,7 +50,7 @@ public class PermissaoUsuarioUnitTests {
 		permissoes.add(criarPessoa);
 		permissoes.add(criarPeca);
 		
-		Recurso autuar = new Recurso("Autuar", TipoRecurso.ACAO, permissoes);
+		Recurso autuar = new Recurso(2L, "Autuar", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertTrue(usuario.possuiAcessoNo(autuar));
 	}
@@ -67,7 +67,7 @@ public class PermissaoUsuarioUnitTests {
 		permissoes.add(pesquisarPeticaoEletronica);
 		
 		
-		Recurso distribuir = new Recurso("Distribuir", TipoRecurso.ACAO, permissoes);
+		Recurso distribuir = new Recurso(1L, "Distribuir", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertFalse(usuario.possuiAcessoNo(distribuir));
 	}
@@ -90,7 +90,7 @@ public class PermissaoUsuarioUnitTests {
 		distribuidor.atribuirPermissoes(permissoes);
 		usuario.atribuirPapeis(papeis);
 		
-		Recurso distribuir = new Recurso("Distribuir", TipoRecurso.ACAO, permissoes);
+		Recurso distribuir = new Recurso(1L, "Distribuir", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertTrue(usuario.possuiAcessoNo(distribuir));
 	}
@@ -106,14 +106,14 @@ public class PermissaoUsuarioUnitTests {
 		permissoes.add(alterarPeticaoEletronica);
 		permissoes.add(pesquisarPeticaoEletronica);
 		
-		Grupo agu = new Grupo(1L, "AGU", TipoGrupo.EXTERNO);
+		Grupo agu = new Grupo(1L, "AGU", TipoGrupo.ORGAO_CONVENIADO);
 		Set<Grupo> grupos = new HashSet<Grupo>();
 		
 		grupos.add(agu);
 		agu.atribuirPermissoes(permissoes);
 		usuario.atribuirGrupos(grupos);
 		
-		Recurso distribuir = new Recurso("Distribuir", TipoRecurso.ACAO, permissoes);
+		Recurso distribuir = new Recurso(1L, "Distribuir", TipoRecurso.ACAO, permissoes);
 		
 		Assert.assertTrue(usuario.possuiAcessoNo(distribuir));
 	}

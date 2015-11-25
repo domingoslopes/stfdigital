@@ -15,7 +15,9 @@ public enum ProcessoSituacao implements ValueObject<ProcessoSituacao> {
 		String tipo = null;
 		
 		switch(this) {
-			case DISTRIBUIDO: tipo = "Distribuído"; break;
+			case DISTRIBUIDO: 
+				tipo = "Distribuído"; 
+				break;
 			default: break;
 		}
 		return tipo;
