@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.signature;
+package br.jus.stf.plataforma.shared.certification.domain.model;
 
 import org.apache.commons.lang3.Validate;
 

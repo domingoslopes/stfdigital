@@ -12,15 +12,15 @@ import com.itextpdf.text.pdf.PdfStamper;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningStrategy;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
 import br.jus.stf.plataforma.shared.certification.infra.PdfTempDocument;
 import br.jus.stf.plataforma.shared.certification.infra.PdfTempSignedDocument;
-import br.jus.stf.plataforma.shared.certification.support.HashSignature;
-import br.jus.stf.plataforma.shared.certification.support.SigningException;
 
 public class ITextPDFSigningStrategy implements PDFSigningStrategy {
 

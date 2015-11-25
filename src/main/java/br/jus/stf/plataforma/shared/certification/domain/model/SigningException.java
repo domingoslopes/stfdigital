@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.support;
+package br.jus.stf.plataforma.shared.certification.domain.model;
 
 public class SigningException extends Exception {
 

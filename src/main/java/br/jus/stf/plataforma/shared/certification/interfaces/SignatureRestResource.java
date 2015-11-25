@@ -23,11 +23,14 @@ import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
 import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
+import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
+import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.infra.PdfTempDocument;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PostSignCommand;
@@ -37,9 +40,6 @@ import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToS
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignerDto;
-import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.support.HashSignature;
-import br.jus.stf.plataforma.shared.certification.support.SigningException;
 import br.jus.stf.plataforma.shared.certification.util.CertificationUtil;
 import br.jus.stf.shared.DocumentoId;
 
