@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.util;
+package br.jus.stf.plataforma.shared.certification.domain;
 
 import java.io.ByteArrayInputStream;
 import java.security.cert.CertificateException;
