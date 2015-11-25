@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.shared.certification.interfaces;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.cert.X509Certificate;
@@ -37,13 +36,19 @@ import br.jus.stf.plataforma.shared.certification.interfaces.commands.PrepareCom
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
-import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignerIdDto;
+import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignerDto;
 import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.support.HashSignature;
 import br.jus.stf.plataforma.shared.certification.support.SigningException;
 import br.jus.stf.plataforma.shared.certification.util.CertificationUtil;
 import br.jus.stf.shared.DocumentoId;
 
+/**
+ * Serviços REST para a assinatura de documentos.
+ * 
+ * @author Tomas.Godoi
+ *
+ */
 @RestController
 @RequestMapping("/api/certification/signature")
 public class SignatureRestResource {
@@ -55,7 +60,7 @@ public class SignatureRestResource {
 
 	@ApiOperation("Cria um novo contexto de assinatura com o certificado.")
 	@RequestMapping(value = "/prepare", method = RequestMethod.POST)
-	public SignerIdDto prepare(@RequestBody PrepareCommand command) throws DecoderException, SigningException {
+	public SignerDto prepare(@RequestBody PrepareCommand command) throws DecoderException, SigningException {
 		// Converte o certificado recebido para o objeto da classe
 		// X509Certificate.
 		X509Certificate certificate = CertificationUtil
@@ -63,8 +68,9 @@ public class SignatureRestResource {
 		// Constrói uma especificação de assinatura de PDF.
 		SigningSpecification spec = new PDFSigningSpecificationBuilder().pkcs7Dettached().reason(SIGNING_REASON)
 				.hashAlgorithm(HashType.SHA256).build();
+		// Prepara uma assinador de documentos.
 		DocumentSignerId signerId = signatureApplicationService.prepareToSign(certificate, pkis(), spec);
-		return new SignerIdDto(signerId.id());
+		return new SignerDto(signerId.id());
 	}
 
 	private PkiIds pkis() {
@@ -82,8 +88,7 @@ public class SignatureRestResource {
 	@ApiOperation("Fornece um arquivo já existente no servidor para assinatura.")
 	@RequestMapping(value = "/provide-to-sign", method = RequestMethod.POST)
 	public void provideToSign(@RequestBody ProvideToSignCommand command) throws SigningException {
-		signatureApplicationService.provideToSign(new DocumentSignerId(command.getSignerId()),
-				command.getDocumentId());
+		signatureApplicationService.provideToSign(new DocumentSignerId(command.getSignerId()), command.getDocumentId());
 	}
 
 	@ApiOperation("Gera o hash do documento a ser assinado.")
