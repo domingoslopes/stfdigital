@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.support;
+package br.jus.stf.plataforma.shared.certification.domain.model;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;

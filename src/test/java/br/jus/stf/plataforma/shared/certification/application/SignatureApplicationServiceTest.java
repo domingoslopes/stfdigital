@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 
 import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
+import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
+import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
@@ -25,8 +27,6 @@ import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.infra.StreamedDocument;
 import br.jus.stf.plataforma.shared.certification.infra.session.SessionDocumentSignerRepository;
-import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.support.HashSignature;
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiService;
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiStore;
 import br.jus.stf.plataforma.shared.certification.support.util.SignatureTestUtil;

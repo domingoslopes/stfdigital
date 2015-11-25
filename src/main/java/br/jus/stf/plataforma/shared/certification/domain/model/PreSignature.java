@@ -4,7 +4,6 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import br.jus.stf.plataforma.shared.certification.support.AuthenticatedAttributes;
 import br.jus.stf.shared.stereotype.ValueObject;
 
 /**

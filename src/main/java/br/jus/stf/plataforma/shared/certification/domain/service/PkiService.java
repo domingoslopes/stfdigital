@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidationException;
 import br.jus.stf.plataforma.shared.certification.domain.model.CompositePki;
 import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
-import br.jus.stf.plataforma.shared.certification.validation.CertificateValidationException;
 
 @Component
 public class PkiService {
