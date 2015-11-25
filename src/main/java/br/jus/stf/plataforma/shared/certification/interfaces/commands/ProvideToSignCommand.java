@@ -2,15 +2,15 @@ package br.jus.stf.plataforma.shared.certification.interfaces.commands;
 
 public class ProvideToSignCommand {
 
-	private String contextId;
+	private String signerId;
 	private Long documentId;
 
-	public String getContextId() {
-		return contextId;
+	public String getSignerId() {
+		return signerId;
 	}
 
-	public void setContextId(String contextId) {
-		this.contextId = contextId;
+	public void setSignerId(String signerId) {
+		this.signerId = signerId;
 	}
 
 	public Long getDocumentId() {

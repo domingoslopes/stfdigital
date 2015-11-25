@@ -8,14 +8,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.Certificate;
 import br.jus.stf.plataforma.shared.certification.domain.model.CertificateType;
 import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
+import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
 import br.jus.stf.plataforma.shared.certification.util.CertificationUtil;
 
+@Repository
 public class PkiRepositoryImpl implements PkiRepository {
 
 	@Autowired
@@ -24,7 +27,7 @@ public class PkiRepositoryImpl implements PkiRepository {
 	@Override
 	public Pki findOne(PkiId pkiId) {
 		TypedQuery<Certificate> query = entityManager.createQuery("from Certificate c where c.pki = :pki", Certificate.class);
-		query.setParameter("pki", pkiId.id());
+		query.setParameter("pki", PkiType.valueOf(pkiId.id()));
 		List<Certificate> certificates = query.getResultList();
 		List<X509Certificate> rootCerts = new ArrayList<>();
 		List<X509Certificate> intermediateCerts = new ArrayList<>();
@@ -37,6 +40,15 @@ public class PkiRepositoryImpl implements PkiRepository {
 		}
 		Pki pki = new Pki(pkiId, rootCerts, intermediateCerts);
 		return pki;
+	}
+
+	@Override
+	public Pki[] findAll(PkiId[] ids) {
+		List<Pki> pkis = new ArrayList<>();
+		for (PkiId id : ids) {
+			pkis.add(findOne(id));
+		}
+		return pkis.toArray(new Pki[0]);
 	}
 
 	

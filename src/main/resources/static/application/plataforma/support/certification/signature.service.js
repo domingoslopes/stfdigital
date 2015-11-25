@@ -42,11 +42,11 @@
 			});
 		};
 		
-		var PreSignCommand = function(contextId) {
-			this.contextId = contextId;
+		var PreSignCommand = function(signerId) {
+			this.signerId = signerId;
 		};
-		var preSign = function(contextId) {
-			var command = new PreSignCommand(contextId);
+		var preSign = function(signerId) {
+			var command = new PreSignCommand(signerId);
 			return $q(function(resolve, reject) {
 				$http.post(properties.apiUrl + '/certification/signature/pre-sign', command).success(function(dto) {
 					console.log(dto);
@@ -71,16 +71,16 @@
 			});
 		};
 		
-		var PostSignCommand = function(contextId, signature) {
-			this.contextId = contextId;
+		var PostSignCommand = function(signerId, signature) {
+			this.signerId = signerId;
 			this.signatureAsHex = signature;
 		};
 		var postSign = function(resolvedObject) {
-			var command = new PostSignCommand(resolvedObject.injectedContextId, resolvedObject.signature);
+			var command = new PostSignCommand(resolvedObject.injectedSignerId, resolvedObject.signature);
 			return $q(function(resolve, reject) {
 				$http.post(properties.apiUrl + '/certification/signature/post-sign', command).success(function(dto) {
 					console.log(dto);
-					resolve({'downloadUrl': properties.apiUrl + '/certification/signature/download-signed/' + resolvedObject.injectedContextId});
+					resolve({'downloadUrl': properties.apiUrl + '/certification/signature/download-signed/' + resolvedObject.injectedSignerId});
 				}).error(function(error) {
 					console.log(error);
 					reject(error);
@@ -91,17 +91,17 @@
 		var SignerWithUpload = function(collectCertificate, injectCertificate, injectAlreadySelectedCertificate) {
 			var self = this;
 			
-			var contextId;
+			var signerId;
 			
-			var contextCreatedCallback;
+			var signerCreatedCallback;
 			var signingCompletedCallback;
 
 			var errorCallback;
 			
 			var documentUploadDeferred;
 			
-			this.onContextCreated = function(callback) {
-				contextCreatedCallback = callback;
+			this.onSignerCreated = function(callback) {
+				signerCreatedCallback = callback;
 			};
 			
 			this.onSigningCompleted = function(callback) {
@@ -115,17 +115,17 @@
 			this.triggerFileUploaded = function() {
 				console.log('triggerFileUpload');
 				if (documentUploadDeferred) {
-					documentUploadDeferred.resolve(contextId);
+					documentUploadDeferred.resolve(signerId);
 				}
 			};
 			
-			var callContextCreatedCallback = function(ci) {
-				contextId = ci.contextId;
+			var callSignerCreatedCallback = function(ci) {
+				signerId = ci.signerId;
 				documentUploadDeferred = $q.defer();
-				if (contextCreatedCallback) {
-					contextCreatedCallback(contextId);
+				if (signerCreatedCallback) {
+					signerCreatedCallback(signerId);
 				} else {
-					documentUploadDeferred.reject('Callback ContextCreated não definido.')
+					documentUploadDeferred.reject('Callback SignerCreated não definido.')
 				}
 				return documentUploadDeferred.promise;
 			};
@@ -136,8 +136,8 @@
 				}
 			};
 			
-			var injectContextId = function(resolvedObject) {
-				resolvedObject['injectedContextId'] = contextId;
+			var injectSignerId = function(resolvedObject) {
+				resolvedObject['injectedSignerId'] = signerId;
 				return $q.when(resolvedObject);
 			};
 			
@@ -146,10 +146,10 @@
 					$q.when().then(injectAlreadySelectedCertificate) // Injeta o certificado se já tiver sido selecionado.
 					.then(requestUserCertificate).then(collectCertificate)
 					.then(prepare)
-					.then(callContextCreatedCallback)
+					.then(callSignerCreatedCallback)
 					.then(preSign)
 					.then(injectCertificate).then(sign)
-					.then(injectContextId).then(postSign)
+					.then(injectSignerId).then(postSign)
 					.then(callSigningCompletedCallback)
 					.catch(function(error) {
 						console.log('catch');
@@ -174,6 +174,8 @@
 			};
 			
 			var injectCertificate = function(resolvedObject) {
+				console.log('injectCertificate');
+				console.log(resolvedObject);
 				resolvedObject['injectedCertificate'] = certificate;
 				return $q.when(resolvedObject);
 			};
