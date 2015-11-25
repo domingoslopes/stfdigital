@@ -40,8 +40,8 @@ public class AcessosRestResource {
 	}
 	
 	@RequestMapping("/recursos/permissoes")
-	public Set<PermissaoDto> permissoes(@RequestParam("nome") String nome, @RequestParam("tipoRecurso") String tipoRecurso) {
-		return acessosApplicationService.carregarPermissoesRecurso(nome, tipoRecurso).stream()
+	public Set<PermissaoDto> permissoes(@RequestParam("nome") String nome, @RequestParam("tipo") String tipo) {
+		return acessosApplicationService.carregarPermissoesRecurso(nome, tipo).stream()
 				.map(permissao -> permissaoDtoAssembler.toDto(permissao))
 				.collect(Collectors.toSet());
 	}

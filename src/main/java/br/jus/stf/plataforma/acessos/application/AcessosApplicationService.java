@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
+import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
@@ -26,13 +27,16 @@ public class AcessosApplicationService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
+	@Autowired
+	private RecursoRepository recursoRepository;
+	
 	public Set<Permissao> carregarPermissoesUsuario(String login) {
 		Usuario usuario = usuarioRepository.findOne(login);
 		return usuario.permissoes();
 	}
 	
-	public Set<Permissao> carregarPermissoesRecurso(String nome, String tipoRecurso) {
-		return Optional.ofNullable(usuarioRepository.findOneRecurso(nome, TipoRecurso.valueOf(tipoRecurso)))
+	public Set<Permissao> carregarPermissoesRecurso(String nome, String tipo) {
+		return Optional.ofNullable(recursoRepository.findOne(nome, TipoRecurso.valueOf(tipo)))
 			.map(recurso -> recurso.permissoesExigidas()).orElse(Collections.emptySet());
 	}
 	

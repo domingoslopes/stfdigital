@@ -57,9 +57,8 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 			Integer key = Calendar.getInstance().get(Calendar.YEAR);
 			Query query = entityManager.createNativeQuery("SELECT NVL(MAX(num_peticao), 0) FROM autuacao.peticao WHERE num_ano_peticao = :anoPeticao");
 			Long ultimoNumero = ((BigInteger) query.setParameter("anoPeticao", key).getSingleResult()).longValue();
-			Long proximoNumero = ultimoNumero + 1;
 			
-			return proximoNumero;
+			return ultimoNumero + 1;
 		}
 	}
 	

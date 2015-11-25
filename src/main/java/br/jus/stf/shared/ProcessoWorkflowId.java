@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
@@ -40,16 +41,18 @@ public class ProcessoWorkflowId implements ValueObject<ProcessoWorkflowId> {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
-		return result;
+		return new HashCodeBuilder().append(sequencial).toHashCode();
 	}
 	
 	@Override
 	public boolean equals(final Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 	
 		ProcessoWorkflowId other = (ProcessoWorkflowId) obj;
 		return sameValueAs(other);

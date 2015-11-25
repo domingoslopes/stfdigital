@@ -64,6 +64,14 @@
 			element(by.id('botaoPeticionar')).click();
 		};
 		
+		this.registrarValorPeticao = function(){
+			var elm = element(by.model("idPeticao"));
+			elm.getAttribute('value').then(function (value) {
+				console.log(value);
+			   return value
+			});
+		};
+		
 	};
 
 	module.exports = PeticionamentoPage;

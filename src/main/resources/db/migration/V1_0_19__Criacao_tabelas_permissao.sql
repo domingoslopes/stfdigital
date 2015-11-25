@@ -14,7 +14,7 @@ alter table plataforma.segmento add constraint uk_segm_nom_segmento unique(nom_s
 alter table plataforma.segmento add constraint FK_TIPO_INFORMACAO_SEGM foreign key (seq_tipo_informacao) references plataforma.tipo_informacao;
 
 create table plataforma.permissao (seq_permissao bigint not null, seq_tipo_informacao bigint not null, seq_segmento bigint, tip_permissao varchar2(20) not null, constraint pk_permissao primary key (seq_permissao));
-alter table plataforma.permissao add constraint uk_perm_seq_segmento unique(seq_segmento, tip_permissao);
+alter table plataforma.permissao add constraint uk_perm_seq_tipo_informacao unique(seq_tipo_informacao, seq_segmento, tip_permissao);
 alter table plataforma.permissao add constraint FK_TIPO_INFORMACAO_PERM foreign key (seq_tipo_informacao) references plataforma.tipo_informacao;
 alter table plataforma.permissao add constraint FK_SEGMENTO_PERM foreign key (seq_segmento) references plataforma.segmento;
 alter table plataforma.permissao add constraint ck_perm_tip_permissao check (tip_permissao in ('ALTERAR', 'CRIAR', 'EXCLUIR', 'EXECUTAR', 'IMPRIMIR', 'PESQUISAR', 'VISUALIZAR'));
@@ -28,7 +28,7 @@ alter table plataforma.permissao_usuario add constraint FK_PERMISSAO_PEUS foreig
 
 create table plataforma.recurso (seq_recurso bigint not null, nom_recurso varchar2(50) not null, tip_recurso varchar2(20) not null, constraint pk_recurso primary key (seq_recurso));
 alter table plataforma.recurso add constraint uk_recu_nom_recurso unique(nom_recurso, tip_recurso);
-alter table plataforma.recurso add constraint ck_recu_tip_recurso check (tip_recurso in ('ACAO', 'DASHBOARD', 'NOTIFICACAO', 'PESQUISA', 'TAREFA'));
+alter table plataforma.recurso add constraint ck_recu_tip_recurso check (tip_recurso in ('ACAO', 'DASHLET', 'NOTIFICACAO', 'PESQUISA', 'TAREFA'));
 
 create table plataforma.permissao_recurso (seq_permissao bigint not null, seq_recurso bigint not null, constraint pk_permissao_recurso primary key (seq_permissao, seq_recurso));
 alter table plataforma.permissao_recurso add constraint FK_RECURSO_PERE foreign key (seq_recurso) references plataforma.recurso;

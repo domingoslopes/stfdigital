@@ -18,7 +18,7 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "PERMISSAO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_SEGMENTO", "TIP_PERMISSAO"}))
+@Table(name = "PERMISSAO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_TIPO_INFORMACAO", "SEQ_SEGMENTO", "TIP_PERMISSAO"}))
 public class Permissao implements ValueObject<Permissao> {
 	
 	private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class Permissao implements ValueObject<Permissao> {
 	
 	@Column(name = "TIP_PERMISSAO", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private TipoPermissao tipoPermissao;
+	private TipoPermissao tipo;
 	
 	@ManyToOne
 	@JoinColumn(name = "SEQ_SEGMENTO", referencedColumnName = "SEQ_SEGMENTO")
@@ -45,12 +45,12 @@ public class Permissao implements ValueObject<Permissao> {
 		
 	}
 
-	private Permissao(final Long sequencial, final TipoPermissao tipoPermissao) {
+	private Permissao(final Long sequencial, final TipoPermissao tipo) {
 		Validate.notNull(sequencial, "permissao.sequencial.required");
-		Validate.notNull(tipoPermissao, "permissao.tipoPermissao.required");
+		Validate.notNull(tipo, "permissao.tipo.required");
 		
 		this.sequencial = sequencial;
-		this.tipoPermissao = tipoPermissao;
+		this.tipo = tipo;
 	}
 	
 	public Permissao(final Long sequencial, final TipoPermissao tipoPermissao, final TipoInformacao tipoInformacao) {
@@ -81,8 +81,8 @@ public class Permissao implements ValueObject<Permissao> {
 		return segmento;
 	}
 	
-	public TipoPermissao tipoPermissao() {
-		return tipoPermissao;
+	public TipoPermissao tipo() {
+		return tipo;
 	}
 	
 	@Override
@@ -108,7 +108,7 @@ public class Permissao implements ValueObject<Permissao> {
 	public boolean sameValueAs(final Permissao other) {
 		return other != null
 				&& tipoInformacao.equals(tipoInformacao)
-				&& tipoPermissao.equals(other.tipoPermissao)
+				&& tipo.equals(other.tipo)
 				&& ((segmento == null && other.segmento == null) || segmento.equals(other.segmento));
 	}
 
