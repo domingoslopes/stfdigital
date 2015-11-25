@@ -3,10 +3,10 @@ package br.jus.stf.plataforma.shared.certification.infra.itext;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
-import br.jus.stf.plataforma.shared.certification.support.HashSignature;
-import br.jus.stf.plataforma.shared.certification.support.SigningException;
+import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
 
 public interface ITextPDFSignatureFinisher {
 

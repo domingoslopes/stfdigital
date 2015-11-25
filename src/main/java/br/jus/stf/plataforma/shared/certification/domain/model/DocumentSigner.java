@@ -1,9 +1,5 @@
 package br.jus.stf.plataforma.shared.certification.domain.model;
 
-import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.support.HashSignature;
-import br.jus.stf.plataforma.shared.certification.support.SigningException;
-
 public class DocumentSigner {
 
 	private DocumentSignerId id;

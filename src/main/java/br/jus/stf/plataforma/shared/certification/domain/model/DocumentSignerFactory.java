@@ -2,8 +2,6 @@ package br.jus.stf.plataforma.shared.certification.domain.model;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
-
 @Component
 public class DocumentSignerFactory {
 
