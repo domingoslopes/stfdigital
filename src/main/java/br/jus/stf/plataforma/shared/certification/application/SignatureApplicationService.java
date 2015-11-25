@@ -11,16 +11,16 @@ import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValida
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSigner;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerFactory;
+import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerRepository;
+import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
-import br.jus.stf.plataforma.shared.certification.signature.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.support.HashSignature;
-import br.jus.stf.plataforma.shared.certification.support.SigningException;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 

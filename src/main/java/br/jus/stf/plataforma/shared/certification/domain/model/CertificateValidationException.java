@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.validation;
+package br.jus.stf.plataforma.shared.certification.domain.model;
 
 public class CertificateValidationException extends Exception {
 
