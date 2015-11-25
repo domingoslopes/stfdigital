@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
@@ -95,13 +94,12 @@ public class CustomPkiGenerator {
 		return new CustomPkiStore(kp, certificate);
 	}
 
-	private CustomPkiStore generateFinalUser(CustomPkiStore ca) throws Exception {
+	public CustomPkiStore generateFinalUser(CustomPkiStore ca, String cn) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
 		PublicKey publicKey = kp.getPublic();
 
-		String random = RandomStringUtils.randomAlphabetic(5).toUpperCase();
-		String subject = "CN = " + random + ", OU = STF DIGITAL, O = STF, C = BR";
+		String subject = "CN = " + cn + ", OU = STF DIGITAL, O = STF, C = BR";
 
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
