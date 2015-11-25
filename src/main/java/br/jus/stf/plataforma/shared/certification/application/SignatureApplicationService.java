@@ -12,7 +12,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignature
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSigner;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerFactory;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerRepository;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
+import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
@@ -48,9 +48,9 @@ public class SignatureApplicationService {
 	 * @param spec
 	 * @return
 	 */
-	public DocumentSignerId prepareToSign(X509Certificate certificate, PkiId pkiId, SigningSpecification spec)
+	public DocumentSignerId prepareToSign(X509Certificate certificate, PkiIds pkiIds, SigningSpecification spec)
 			throws SigningException {
-		CertificateValidation validation = certificateValidationService.validate(certificate, pkiId);
+		CertificateValidation validation = certificateValidationService.validate(certificate, pkiIds);
 		if (validation.valid()) {
 			DocumentSigner signer = signerFactory.create(documentSignerRepository.nextId(), spec, validation);
 			documentSignerRepository.save(signer);
@@ -60,15 +60,15 @@ public class SignatureApplicationService {
 		}
 	}
 
-	public void attachToSign(DocumentSignerId contextId, SigningDocument document) throws SigningException {
-		DocumentSigner signer = documentSignerRepository.findOne(contextId);
+	public void attachToSign(DocumentSignerId signerId, SigningDocument document) throws SigningException {
+		DocumentSigner signer = documentSignerRepository.findOne(signerId);
 		signer.attachDocumentToSign(document);
 	}
 
-	public void provideToSign(DocumentSignerId contextId, Long documentId) throws SigningException {
+	public void provideToSign(DocumentSignerId signerId, Long documentId) throws SigningException {
 		try {
 			SigningDocument document = documentAdapter.retrieve(new DocumentoId(documentId));
-			attachToSign(contextId, document);
+			attachToSign(signerId, document);
 		} catch (IOException e) {
 			throw new RuntimeException("Erro ao recuperar documento.", e);
 		}
@@ -80,8 +80,8 @@ public class SignatureApplicationService {
 		return preSignature;
 	}
 
-	public DocumentSignature postSign(DocumentSignerId contextId, HashSignature signature) throws SigningException {
-		DocumentSigner signer = documentSignerRepository.findOne(contextId);
+	public DocumentSignature postSign(DocumentSignerId signerId, HashSignature signature) throws SigningException {
+		DocumentSigner signer = documentSignerRepository.findOne(signerId);
 		DocumentSignature documentSignature = signer.postSign(signature);
 		return documentSignature;
 	}
@@ -92,9 +92,9 @@ public class SignatureApplicationService {
 		return document;
 	}
 
-	public DocumentoId saveSigned(DocumentSignerId signatureContextId) {
-		SignedDocument signedDocument = recoverSignedDocument(signatureContextId);
-		DocumentoTemporarioId tempDocId = documentAdapter.upload(signatureContextId.id(), signedDocument);
+	public DocumentoId saveSigned(DocumentSignerId signerId) {
+		SignedDocument signedDocument = recoverSignedDocument(signerId);
+		DocumentoTemporarioId tempDocId = documentAdapter.upload(signerId.id(), signedDocument);
 		DocumentoId docId = documentAdapter.save(tempDocId);
 		return docId;
 	}

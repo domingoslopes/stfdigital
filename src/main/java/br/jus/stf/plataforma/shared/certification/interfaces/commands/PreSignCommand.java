@@ -2,14 +2,14 @@ package br.jus.stf.plataforma.shared.certification.interfaces.commands;
 
 public class PreSignCommand {
 
-	private String contextId;
+	private String signerId;
 
-	public String getContextId() {
-		return contextId;
+	public String getSignerId() {
+		return signerId;
 	}
 
-	public void setContextId(String contextId) {
-		this.contextId = contextId;
+	public void setSignerId(String signerId) {
+		this.signerId = signerId;
 	}
 
 }
