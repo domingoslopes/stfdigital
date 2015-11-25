@@ -17,7 +17,7 @@ public class PdfTempDocument implements SigningDocument {
 	private static final String FILE_NAME_EXTENSION = ".pdf";
 
 	private File file;
-
+	
 	public PdfTempDocument(InputStream stream) {
 		Validate.notNull(stream);
 

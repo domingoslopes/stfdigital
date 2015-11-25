@@ -4,29 +4,36 @@ import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.CompositePki;
 import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
+import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
 import br.jus.stf.plataforma.shared.certification.validation.CertificateValidationException;
 
 @Component
 public class PkiService {
 
+	@Autowired
 	private PkiRepository pkiRepository;
 	
-	public CertificateValidation validate(X509Certificate certificate, PkiId pkiId) {
-		Pki pki = pkiRepository.findOne(pkiId);
-		if (pki.belongsToPki(certificate)) {
-			X509Certificate[] chain = pki.certificateChainOf(certificate);
-		}
+	public CertificateValidation validate(X509Certificate certificate, PkiIds pkiIds) {
 		try {
 			verifyNotExpired(certificate);
-			return null;
+			
+			Pki[] pkis = pkiRepository.findAll(pkiIds.ids());
+			CompositePki pki = new CompositePki(pkis);
+			if (pki.belongsToPki(certificate)) {
+				X509Certificate[] chain = pki.certificateChainOf(certificate);
+				return new CertificateValidation(chain, true);
+			} else {
+				return new CertificateValidation(new X509Certificate[] { certificate }, false);
+			}
 		} catch (CertificateValidationException e) {
-			return null;
+			return new CertificateValidation(new X509Certificate[] { certificate }, false);
 		}
 	}
 

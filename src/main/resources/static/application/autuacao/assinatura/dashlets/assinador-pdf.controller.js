@@ -48,10 +48,10 @@
             };
             $scope.documentos.push(documento);
                         
-            signer.onContextCreated(function(contextId) {
-            	console.log('controller-contextId');
-            	console.log(contextId);
-            	fileItem.headers['Signature-Context-Id'] = contextId;
+            signer.onSignerCreated(function(signerId) {
+            	console.log('controller-signerId');
+            	console.log(signerId);
+            	fileItem.headers['Signer-Id'] = signerId;
             	fileItem.upload();
             });
             signer.onSigningCompleted(function(signedDocument) {
