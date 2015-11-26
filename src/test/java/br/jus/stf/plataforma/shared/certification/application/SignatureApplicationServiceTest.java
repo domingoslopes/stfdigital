@@ -26,9 +26,9 @@ import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.infra.StreamedDocument;
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 import br.jus.stf.plataforma.shared.certification.infra.session.SessionDocumentSignerRepository;
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiService;
-import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiStore;
 import br.jus.stf.plataforma.shared.certification.support.util.SignatureTestUtil;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -61,7 +61,7 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 	public void testSign() throws Exception {
 		DocumentSignerId signerId;
 
-		CustomPkiStore finalUser = customPKIService.customPKI().finalUser();
+		CustomKeyStore finalUser = customPKIService.customPKI().finalUser();
 
 		// Passo 1 - Server-side: Criar um contexto de assinatura a partir do
 		// SignatureService.

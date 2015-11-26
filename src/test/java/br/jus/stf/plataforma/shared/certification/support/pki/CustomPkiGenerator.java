@@ -30,6 +30,8 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
+
 public class CustomPkiGenerator {
 
 	private static final String PROVIDER = "BC";
@@ -39,20 +41,20 @@ public class CustomPkiGenerator {
 	}
 
 	public NCustomPki generateCustomPKI(String rootCN, String... intermediateCNs) throws Exception {
-		CustomPkiStore rootCA = generateRootCA(rootCN);
-		CustomPkiStore store = rootCA;
+		CustomKeyStore rootCA = generateRootCA(rootCN);
+		CustomKeyStore store = rootCA;
 
-		List<CustomPkiStore> intermediateCAs = new ArrayList<>();
+		List<CustomKeyStore> intermediateCAs = new ArrayList<>();
 
 		for (String cn : intermediateCNs) {
 			store = generateIntermediateCA(store, cn);
 			intermediateCAs.add(store);
 		}
 
-		return new NCustomPki(rootCA, intermediateCAs.toArray(new CustomPkiStore[0]));
+		return new NCustomPki(rootCA, intermediateCAs.toArray(new CustomKeyStore[0]));
 	}
 
-	private CustomPkiStore generateRootCA(String rootCN) throws Exception {
+	private CustomKeyStore generateRootCA(String rootCN) throws Exception {
 		KeyPair kp = generateKeyPair(4096);
 
 		PublicKey publicKey = kp.getPublic();
@@ -83,10 +85,10 @@ public class CustomPkiGenerator {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
 
-		return new CustomPkiStore(kp, certificate);
+		return new CustomKeyStore(kp, certificate);
 	}
 
-	private CustomPkiStore generateIntermediateCA(CustomPkiStore ca, String cn) throws Exception {
+	private CustomKeyStore generateIntermediateCA(CustomKeyStore ca, String cn) throws Exception {
 		KeyPair kp = generateKeyPair(4096);
 
 		PublicKey publicKey = kp.getPublic();
@@ -115,10 +117,10 @@ public class CustomPkiGenerator {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
 
-		return new CustomPkiStore(kp, certificate);
+		return new CustomKeyStore(kp, certificate);
 	}
 
-	public CustomPkiStore generateFinalUser(CustomPkiStore ca, String cn, String email,
+	public CustomKeyStore generateFinalUser(CustomKeyStore ca, String cn, String email,
 			IcpBrasilDadosPessoaFisica dadosPf) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
@@ -165,7 +167,7 @@ public class CustomPkiGenerator {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
 
-		return new CustomPkiStore(kp, certificate);
+		return new CustomKeyStore(kp, certificate);
 	}
 
 	private KeyPair generateKeyPair(int keySize) throws Exception {
