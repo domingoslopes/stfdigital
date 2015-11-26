@@ -111,7 +111,7 @@ public class PermissaoUsuarioUnitTests {
 		permissoes.add(alterarPeticaoEletronica);
 		permissoes.add(pesquisarPeticaoEletronica);
 		
-		Grupo agu = new Grupo(1L, "AGU", TipoGrupo.ORGAO);
+		Grupo agu = new Grupo(1L, "AGU", TipoGrupo.ORGAO_CONVENIADO);
 		Set<Grupo> grupos = new HashSet<Grupo>();
 		
 		grupos.add(agu);
