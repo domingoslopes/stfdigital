@@ -24,6 +24,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
+
 @Component
 public class CustomPkiService {
 
@@ -43,13 +45,13 @@ public class CustomPkiService {
 	
 	private CustomPki generateCustomPKI() throws Exception {
 		randomUnit = RandomStringUtils.randomAlphanumeric(5).toUpperCase();
-		CustomPkiStore rootCA = generateRootCA();
-		CustomPkiStore intermediateCA = generateIntermediateCA(rootCA);
-		CustomPkiStore finalUser = generateFinalUser(intermediateCA);
+		CustomKeyStore rootCA = generateRootCA();
+		CustomKeyStore intermediateCA = generateIntermediateCA(rootCA);
+		CustomKeyStore finalUser = generateFinalUser(intermediateCA);
 		return new CustomPki(rootCA, intermediateCA, finalUser);
 	}
 
-	private CustomPkiStore generateRootCA() throws Exception {
+	private CustomKeyStore generateRootCA() throws Exception {
 		KeyPair kp = generateKeyPair(4096);
 
 		PublicKey publicKey = kp.getPublic();
@@ -71,10 +73,10 @@ public class CustomPkiService {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
 
-		return new CustomPkiStore(kp, certificate);
+		return new CustomKeyStore(kp, certificate);
 	}
 
-	private CustomPkiStore generateIntermediateCA(CustomPkiStore ca) throws Exception {
+	private CustomKeyStore generateIntermediateCA(CustomKeyStore ca) throws Exception {
 		KeyPair kp = generateKeyPair(4096);
 
 		PublicKey publicKey = kp.getPublic();
@@ -101,10 +103,10 @@ public class CustomPkiService {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
 
-		return new CustomPkiStore(kp, certificate);
+		return new CustomKeyStore(kp, certificate);
 	}
 	
-	private CustomPkiStore generateFinalUser(CustomPkiStore ca) throws Exception {
+	private CustomKeyStore generateFinalUser(CustomKeyStore ca) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
 		PublicKey publicKey = kp.getPublic();
@@ -130,7 +132,7 @@ public class CustomPkiService {
 
 		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
 
-		return new CustomPkiStore(kp, certificate);
+		return new CustomKeyStore(kp, certificate);
 	}
 	
 	private KeyPair generateKeyPair(int keySize) throws Exception {
