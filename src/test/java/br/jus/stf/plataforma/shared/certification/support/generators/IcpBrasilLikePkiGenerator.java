@@ -41,6 +41,7 @@ public class IcpBrasilLikePkiGenerator {
 			File privateDir = new File(pkiCandidateDir.getPath() + "/private");
 			if (privateDir.mkdir()) {
 				GeneratorUtil.storeOnDisk(customPki, privateDir.getPath() + "/keystore.p12");
+				GeneratorUtil.storeCertificatesOnDisk(customPki, privateDir.getPath());
 				createFirstSerial(privateDir.getPath() + "/nextSerial");
 			} else {
 				System.err.println("Erro ao criar diretório privado da pki.");

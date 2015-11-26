@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiGenerator;
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiStore;
+import br.jus.stf.plataforma.shared.certification.support.pki.IcpBrasilDadosPessoaFisica;
 
 public class PlataformaCertificateGenerator {
 
@@ -20,18 +21,26 @@ public class PlataformaCertificateGenerator {
 	private static final String PKIS_DIR = "/certification/pkis/";
 
 	/**
-	 * <pki-name> <person-name> <person-cpf>
+	 * Os parâmetros para a main são:
+	 * 
+	 * <pki-name> <person-name> <person-cpf> <person-email>
+	 * 
+	 * Por exemplo:
+	 * 
+	 * "icp-plataforma" "JOAO DA SILVA" "57153200380"
+	 * "joao.silva@stfdigital.stf.jus.br"
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		if (args.length != 3) {
+		if (args.length != 4) {
 			System.err.println("Informe exatamente três parâmetros: <pki-name> <person-name> <person-cpf>");
 			System.exit(1);
 		}
 		String pkiName = args[0];
 		String personName = args[1];
 		String personCPF = args[2];
+		String personEmail = args[3];
 
 		String pkiPath = RESOURCES_DIR + PKIS_DIR + "/" + pkiName;
 		if (new File(pkiPath).exists()) {
@@ -40,7 +49,10 @@ public class PlataformaCertificateGenerator {
 
 			CustomPkiStore ca = getPkiStore(keystorePath);
 			CustomPkiGenerator generator = new CustomPkiGenerator();
-			CustomPkiStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF);
+
+			IcpBrasilDadosPessoaFisica dadosPf = new IcpBrasilDadosPessoaFisica(null, personCPF, null, null);
+
+			CustomPkiStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF, personEmail, dadosPf);
 
 			String certificatePath = pkiPath + "/certs";
 			File dirPath = new File(certificatePath);
@@ -50,7 +62,8 @@ public class PlataformaCertificateGenerator {
 					System.exit(1);
 				}
 			}
-			GeneratorUtil.storeOnDisk(finalUser, certificatePath + "/" + personCPF + ".p12");
+			GeneratorUtil.storeKeystoreOnDisk(finalUser, certificatePath + "/" + personCPF + ".p12");
+			GeneratorUtil.storeCertificateOnDisk(finalUser, certificatePath + "/" + personCPF + ".cer");
 			incrementeSerial(pkiPrivatePath + "/nextSerial");
 		} else {
 			System.err.println("Pki " + pkiName + " não encontrada.");
