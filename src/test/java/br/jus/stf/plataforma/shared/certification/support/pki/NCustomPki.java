@@ -2,12 +2,14 @@ package br.jus.stf.plataforma.shared.certification.support.pki;
 
 import org.apache.commons.lang.Validate;
 
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
+
 public class NCustomPki {
 
-	private CustomPkiStore rootCA;
-	private CustomPkiStore[] intermediateCAs;
+	private CustomKeyStore rootCA;
+	private CustomKeyStore[] intermediateCAs;
 
-	public NCustomPki(CustomPkiStore rootCA, CustomPkiStore... intermediateCAs) {
+	public NCustomPki(CustomKeyStore rootCA, CustomKeyStore... intermediateCAs) {
 		Validate.notNull(rootCA, "RootCA é obrigatório");
 		Validate.notNull(intermediateCAs, "IntermediateCA é obrigatório");
 
@@ -15,11 +17,11 @@ public class NCustomPki {
 		this.intermediateCAs = intermediateCAs;
 	}
 
-	public CustomPkiStore rootCA() {
+	public CustomKeyStore rootCA() {
 		return rootCA;
 	}
 
-	public CustomPkiStore[] intermediateCAs() {
+	public CustomKeyStore[] intermediateCAs() {
 		return intermediateCAs;
 	}
 
@@ -29,7 +31,7 @@ public class NCustomPki {
 		sb.append("### Root CA ###");
 		sb.append(rootCA.certificate().toString()).append("\n\n");
 
-		for (CustomPkiStore ca : intermediateCAs) {
+		for (CustomKeyStore ca : intermediateCAs) {
 			sb.append("### Intermediate CA ###");
 			sb.append(ca.certificate().toString()).append("\n\n");
 		}

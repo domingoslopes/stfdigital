@@ -11,8 +11,8 @@ import java.util.Enumeration;
 
 import org.apache.commons.io.FileUtils;
 
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiGenerator;
-import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiStore;
 import br.jus.stf.plataforma.shared.certification.support.pki.IcpBrasilDadosPessoaFisica;
 
 public class PlataformaCertificateGenerator {
@@ -47,12 +47,12 @@ public class PlataformaCertificateGenerator {
 			String pkiPrivatePath = pkiPath + "/private/";
 			String keystorePath = pkiPrivatePath + "/keystore.p12";
 
-			CustomPkiStore ca = getPkiStore(keystorePath);
+			CustomKeyStore ca = getPkiStore(keystorePath);
 			CustomPkiGenerator generator = new CustomPkiGenerator();
 
 			IcpBrasilDadosPessoaFisica dadosPf = new IcpBrasilDadosPessoaFisica(null, personCPF, null, null);
 
-			CustomPkiStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF, personEmail, dadosPf);
+			CustomKeyStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF, personEmail, dadosPf);
 
 			String certificatePath = pkiPath + "/certs";
 			File dirPath = new File(certificatePath);
@@ -72,7 +72,7 @@ public class PlataformaCertificateGenerator {
 
 	}
 
-	private static CustomPkiStore getPkiStore(String keystorePath) throws Exception {
+	private static CustomKeyStore getPkiStore(String keystorePath) throws Exception {
 		KeyStore pkcs12Store = KeyStore.getInstance("PKCS12");
 		FileInputStream fis = new FileInputStream(keystorePath);
 		pkcs12Store.load(fis, "changeit".toCharArray());
@@ -93,7 +93,7 @@ public class PlataformaCertificateGenerator {
 		String caAlias = "ca" + lastCaNumber;
 		PrivateKey key = (PrivateKey) pkcs12Store.getKey(caAlias, "changeit".toCharArray());
 		X509Certificate certificate = (X509Certificate) pkcs12Store.getCertificate(caAlias);
-		CustomPkiStore store = new CustomPkiStore(new KeyPair(certificate.getPublicKey(), key), certificate);
+		CustomKeyStore store = new CustomKeyStore(new KeyPair(certificate.getPublicKey(), key), certificate);
 		return store;
 	}
 

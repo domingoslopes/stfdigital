@@ -11,7 +11,7 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.io.FileUtils;
 
-import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiStore;
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 import br.jus.stf.plataforma.shared.certification.support.pki.NCustomPki;
 
 public class GeneratorUtil {
@@ -26,7 +26,7 @@ public class GeneratorUtil {
 		pkcs12Store.setKeyEntry("root", customPki.rootCA().keyPair().getPrivate(), "changeit".toCharArray(),
 				new Certificate[] { customPki.rootCA().certificate() });
 		int i = 1;
-		for (CustomPkiStore store : customPki.intermediateCAs()) {
+		for (CustomKeyStore store : customPki.intermediateCAs()) {
 			pkcs12Store.setKeyEntry("ca" + i, store.keyPair().getPrivate(), "changeit".toCharArray(),
 					new Certificate[] { store.certificate() });
 			i++;
@@ -38,7 +38,7 @@ public class GeneratorUtil {
 		outputStream.close();
 	}
 
-	public static void storeKeystoreOnDisk(CustomPkiStore store, String keystorePath) throws Exception {
+	public static void storeKeystoreOnDisk(CustomKeyStore store, String keystorePath) throws Exception {
 		KeyStore pkcs12Store = KeyStore.getInstance("PKCS12");
 		pkcs12Store.load(null, null);
 		pkcs12Store.setKeyEntry("user", store.keyPair().getPrivate(), "changeit".toCharArray(),
@@ -50,7 +50,7 @@ public class GeneratorUtil {
 		outputStream.close();
 	}
 
-	public static void storeCertificateOnDisk(CustomPkiStore store, String certificatePath) throws CertificateEncodingException, IOException {
+	public static void storeCertificateOnDisk(CustomKeyStore store, String certificatePath) throws CertificateEncodingException, IOException {
 		X509Certificate certificate = store.certificate();
 		FileUtils.writeByteArrayToFile(new File(certificatePath), certificate.getEncoded());
 	}
@@ -58,7 +58,7 @@ public class GeneratorUtil {
 	public static void storeCertificatesOnDisk(NCustomPki customPki, String path) throws CertificateEncodingException, IOException {
 		storeCertificateOnDisk(customPki.rootCA(), path + "/root.cer");
 		int i = 1;
-		for (CustomPkiStore store : customPki.intermediateCAs()) {
+		for (CustomKeyStore store : customPki.intermediateCAs()) {
 			storeCertificateOnDisk(store, path + "/ca" + i + ".cer");
 			i++;
 		}
