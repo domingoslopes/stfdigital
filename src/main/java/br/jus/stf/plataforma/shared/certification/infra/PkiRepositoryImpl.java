@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.infra.persistence;
+package br.jus.stf.plataforma.shared.certification.infra;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -17,6 +17,8 @@ import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.ValidationOnlyPki;
+import br.jus.stf.plataforma.shared.certification.infra.pki.PlataformaPki;
 
 @Repository
 public class PkiRepositoryImpl implements PkiRepository {
@@ -24,8 +26,13 @@ public class PkiRepositoryImpl implements PkiRepository {
 	@Autowired
 	private EntityManager entityManager;
 	
+	private PlataformaPki plataformaPkiInstance;
+	
 	@Override
 	public Pki findOne(PkiId pkiId) {
+		if (isPlataformaPki(pkiId)) {
+			plataformaPkiInstance();
+		}
 		TypedQuery<Certificate> query = entityManager.createQuery("from Certificate c where c.pki = :pki", Certificate.class);
 		query.setParameter("pki", PkiType.valueOf(pkiId.id()));
 		List<Certificate> certificates = query.getResultList();
@@ -38,8 +45,19 @@ public class PkiRepositoryImpl implements PkiRepository {
 				intermediateCerts.add(CertificationUtil.bytesToCertificate(c.content()));
 			}
 		}
-		Pki pki = new Pki(pkiId, rootCerts, intermediateCerts);
+		ValidationOnlyPki pki = new ValidationOnlyPki(pkiId, rootCerts, intermediateCerts);
 		return pki;
+	}
+
+	private PlataformaPki plataformaPkiInstance() {
+		if (plataformaPkiInstance == null) {
+			plataformaPkiInstance = new PlataformaPki();
+		}
+		return plataformaPkiInstance;
+	}
+
+	private boolean isPlataformaPki(PkiId pkiId) {
+		return pkiId.equals(PkiType.ICP_PLATAFORMA.id());
 	}
 
 	@Override
@@ -48,7 +66,7 @@ public class PkiRepositoryImpl implements PkiRepository {
 		for (PkiId id : ids) {
 			pkis.add(findOne(id));
 		}
-		return pkis.toArray(new Pki[0]);
+		return pkis.toArray(new ValidationOnlyPki[0]);
 	}
 
 	

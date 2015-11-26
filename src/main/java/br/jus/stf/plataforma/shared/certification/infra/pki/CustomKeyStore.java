@@ -1,16 +1,16 @@
-package br.jus.stf.plataforma.shared.certification.support.pki;
+package br.jus.stf.plataforma.shared.certification.infra.pki;
 
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
 
 import org.apache.commons.lang.Validate;
 
-public class CustomPkiStore {
+public class CustomKeyStore {
 
 	private KeyPair keyPair;
 	private X509Certificate certificate;
 
-	public CustomPkiStore(KeyPair keyPair, X509Certificate certificate) {
+	public CustomKeyStore(KeyPair keyPair, X509Certificate certificate) {
 		Validate.notNull(keyPair, "KeyPair é obrigatório.");
 		Validate.notNull(certificate, "Certificate é obrigatório.");
 
