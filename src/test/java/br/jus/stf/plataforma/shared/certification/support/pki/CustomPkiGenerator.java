@@ -7,13 +7,26 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.cert.X509Certificate;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.bouncycastle.asn1.ASN1Encodable;
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.DERIA5String;
+import org.bouncycastle.asn1.DEROctetString;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.asn1.DERTaggedObject;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.ExtendedKeyUsage;
 import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
+import org.bouncycastle.asn1.x509.KeyPurposeId;
+import org.bouncycastle.asn1.x509.KeyUsage;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -24,6 +37,8 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
 public class CustomPkiGenerator {
 
+	private static final String PROVIDER = "BC";
+	
 	static {
 		Security.addProvider(new BouncyCastleProvider());
 	}
@@ -48,7 +63,7 @@ public class CustomPkiGenerator {
 		PublicKey publicKey = kp.getPublic();
 		PrivateKey privateKey = kp.getPrivate();
 
-		String issuer = "CN = " + rootCN + ", OU = STF DIGITAL, O = STF, C = BR";
+		String issuer = "C = BR, O = STF, OU = STF DIGITAL, CN = " + rootCN;
 		String subject = issuer; // Auto assinado.
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
@@ -57,10 +72,23 @@ public class CustomPkiGenerator {
 		X509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(new X500Name(issuer), serial, notBefore,
 				notAfter, new X500Name(subject), publicKey);
 
-		X509CertificateHolder holder = builder
-				.build(new JcaContentSignerBuilder("SHA512WithRSA").setProvider("BC").build(privateKey));
+		JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
 
-		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
+		builder.addExtension(Extension.authorityKeyIdentifier, false,
+				extUtils.createAuthorityKeyIdentifier(publicKey));
+		
+		builder.addExtension(Extension.subjectKeyIdentifier, false, extUtils.createSubjectKeyIdentifier(publicKey));
+		
+		builder.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
+		
+		KeyUsage keyUsage = new KeyUsage(
+				KeyUsage.keyCertSign | KeyUsage.cRLSign );
+		builder.addExtension(Extension.keyUsage, true, keyUsage);
+		
+		X509CertificateHolder holder = builder
+				.build(new JcaContentSignerBuilder("SHA512WithRSA").setProvider(PROVIDER).build(privateKey));
+
+		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
 
 		return new CustomPkiStore(kp, certificate);
 	}
@@ -70,36 +98,40 @@ public class CustomPkiGenerator {
 
 		PublicKey publicKey = kp.getPublic();
 
-		String subject = "CN = " + cn + ", OU = STF DIGITAL, O = STF, C = BR";
+		String subject = "C = BR, O = STF, OU = STF DIGITAL, CN = " + cn;
 
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
-		Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * 5));
+		Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * 10));
 
 		X509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(ca.certificate(), serial, notBefore,
 				notAfter, new X500Name(subject), publicKey);
 
 		JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
 
-		builder.addExtension(Extension.subjectKeyIdentifier, false, extUtils.createSubjectKeyIdentifier(publicKey));
 		builder.addExtension(Extension.authorityKeyIdentifier, false,
-				extUtils.createAuthorityKeyIdentifier(ca.certificate()));
-		builder.addExtension(Extension.basicConstraints, true, new BasicConstraints(0));
+				extUtils.createAuthorityKeyIdentifier(ca.certificate().getPublicKey()));
+		builder.addExtension(Extension.subjectKeyIdentifier, false, extUtils.createSubjectKeyIdentifier(publicKey));
+		builder.addExtension(Extension.basicConstraints, true, new BasicConstraints(true));
+
+		KeyUsage keyUsage = new KeyUsage(
+				KeyUsage.keyCertSign | KeyUsage.cRLSign );
+		builder.addExtension(Extension.keyUsage, true, keyUsage);
 
 		X509CertificateHolder holder = builder
-				.build(new JcaContentSignerBuilder("SHA512WithRSA").setProvider("BC").build(ca.keyPair().getPrivate()));
+				.build(new JcaContentSignerBuilder("SHA512WithRSA").setProvider(PROVIDER).build(ca.keyPair().getPrivate()));
 
-		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
+		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
 
 		return new CustomPkiStore(kp, certificate);
 	}
 
-	public CustomPkiStore generateFinalUser(CustomPkiStore ca, String cn) throws Exception {
+	public CustomPkiStore generateFinalUser(CustomPkiStore ca, String cn, String email, IcpBrasilDadosPessoaFisica dadosPf) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
 		PublicKey publicKey = kp.getPublic();
 
-		String subject = "CN = " + cn + ", OU = STF DIGITAL, O = STF, C = BR";
+		String subject = "C = BR, O = STF, OU = STF DIGITAL, CN = " + cn;
 
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
@@ -112,12 +144,36 @@ public class CustomPkiGenerator {
 
 		builder.addExtension(Extension.subjectKeyIdentifier, false, extUtils.createSubjectKeyIdentifier(publicKey));
 		builder.addExtension(Extension.authorityKeyIdentifier, false,
-				extUtils.createAuthorityKeyIdentifier(ca.certificate()));
+				extUtils.createAuthorityKeyIdentifier(ca.certificate().getPublicKey()));
+
+		ExtendedKeyUsage extKeyUsage = new ExtendedKeyUsage(new KeyPurposeId[] { KeyPurposeId.id_kp_clientAuth,
+				KeyPurposeId.id_kp_emailProtection, KeyPurposeId.id_kp_smartcardlogon });
+		builder.addExtension(Extension.extendedKeyUsage, false, extKeyUsage);
+
+		KeyUsage keyUsage = new KeyUsage(
+				KeyUsage.digitalSignature | KeyUsage.nonRepudiation | KeyUsage.keyEncipherment);
+		builder.addExtension(Extension.keyUsage, true, keyUsage);
+
+		GeneralName[] genNames = new GeneralName[4];
+		genNames[0] = new GeneralName(GeneralName.rfc822Name, new DERIA5String(email));
+
+		DERSequence zero = new DERSequence(new ASN1Encodable[] { new ASN1ObjectIdentifier("2.16.76.1.3.6"),
+				new DERTaggedObject(true, 0, new DEROctetString("000000000000".getBytes())) });
+		genNames[1] = new GeneralName(GeneralName.otherName, zero);
+
+		DERSequence tituloEleitor = new DERSequence(new ASN1Encodable[] { new ASN1ObjectIdentifier("2.16.76.1.3.5"),
+				new DERTaggedObject(true, 0, new DEROctetString("0579766210740050273BRASILIADF".getBytes())) });
+		genNames[2] = new GeneralName(GeneralName.otherName, tituloEleitor);
+
+		DERSequence extra = new DERSequence(new ASN1Encodable[] { dadosPf.identifier(), dadosPf.asn1Object() });
+		genNames[3] = new GeneralName(GeneralName.otherName, extra);
+
+		builder.addExtension(Extension.subjectAlternativeName, false, new GeneralNames(genNames));
 
 		X509CertificateHolder holder = builder
-				.build(new JcaContentSignerBuilder("SHA256WithRSA").setProvider("BC").build(ca.keyPair().getPrivate()));
+				.build(new JcaContentSignerBuilder("SHA256WithRSA").setProvider(PROVIDER).build(ca.keyPair().getPrivate()));
 
-		X509Certificate certificate = new JcaX509CertificateConverter().setProvider("BC").getCertificate(holder);
+		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
 
 		return new CustomPkiStore(kp, certificate);
 	}
