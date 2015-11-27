@@ -12,7 +12,7 @@ import java.security.cert.X509Certificate;
 import org.apache.commons.io.FileUtils;
 
 import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
-import br.jus.stf.plataforma.shared.certification.support.pki.NCustomPki;
+import br.jus.stf.plataforma.shared.certification.support.pki.CustomPki;
 
 public class GeneratorUtil {
 
@@ -20,7 +20,7 @@ public class GeneratorUtil {
 
 	}
 
-	public static void storeOnDisk(NCustomPki customPki, String keystorePath) throws Exception {
+	public static void storeOnDisk(CustomPki customPki, String keystorePath) throws Exception {
 		KeyStore pkcs12Store = KeyStore.getInstance("PKCS12");
 		pkcs12Store.load(null, null);
 		pkcs12Store.setKeyEntry("root", customPki.rootCA().keyPair().getPrivate(), "changeit".toCharArray(),
@@ -56,7 +56,7 @@ public class GeneratorUtil {
 		FileUtils.writeByteArrayToFile(new File(certificatePath), certificate.getEncoded());
 	}
 
-	public static void storeCertificatesOnDisk(NCustomPki customPki, String path)
+	public static void storeCertificatesOnDisk(CustomPki customPki, String path)
 			throws CertificateEncodingException, IOException {
 		storeCertificateOnDisk(customPki.rootCA(), path + "/root.cer");
 		int i = 1;

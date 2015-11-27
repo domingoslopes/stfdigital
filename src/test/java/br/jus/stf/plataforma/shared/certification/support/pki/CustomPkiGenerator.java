@@ -40,7 +40,7 @@ public class CustomPkiGenerator {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
-	public NCustomPki generateCustomPKI(String rootCN, String... intermediateCNs) throws Exception {
+	public CustomPki generateCustomPKI(String rootCN, String... intermediateCNs) throws Exception {
 		CustomKeyStore rootCA = generateRootCA(rootCN);
 		CustomKeyStore store = rootCA;
 
@@ -51,7 +51,7 @@ public class CustomPkiGenerator {
 			intermediateCAs.add(store);
 		}
 
-		return new NCustomPki(rootCA, intermediateCAs.toArray(new CustomKeyStore[0]));
+		return new CustomPki(rootCA, intermediateCAs.toArray(new CustomKeyStore[0]));
 	}
 
 	private CustomKeyStore generateRootCA(String rootCN) throws Exception {

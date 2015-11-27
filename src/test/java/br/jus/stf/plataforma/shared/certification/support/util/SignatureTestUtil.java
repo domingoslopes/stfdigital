@@ -9,7 +9,7 @@ public class SignatureTestUtil {
 	}
 
 	private static InputStream getInputStreamFromClasspath(String fileName) {
-		return SignatureTestUtil.class.getClassLoader().getResourceAsStream("assinador/" + fileName);
+		return SignatureTestUtil.class.getClassLoader().getResourceAsStream("certification/" + fileName);
 	}
 
 }
