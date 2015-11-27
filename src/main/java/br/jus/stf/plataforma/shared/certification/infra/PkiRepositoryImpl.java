@@ -25,13 +25,14 @@ public class PkiRepositoryImpl implements PkiRepository {
 
 	@Autowired
 	private EntityManager entityManager;
-	
+
 	@Override
 	public Pki findOne(PkiId pkiId) {
 		if (isPlataformaPki(pkiId)) {
 			return PlataformaPki.instance();
 		}
-		TypedQuery<Certificate> query = entityManager.createQuery("from Certificate c where c.pki = :pki", Certificate.class);
+		TypedQuery<Certificate> query = entityManager.createQuery("from Certificate c where c.pki = :pki",
+				Certificate.class);
 		query.setParameter("pki", PkiType.valueOf(pkiId.id()));
 		List<Certificate> certificates = query.getResultList();
 		List<X509Certificate> rootCerts = new ArrayList<>();
@@ -46,7 +47,7 @@ public class PkiRepositoryImpl implements PkiRepository {
 		ValidationOnlyPki pki = new ValidationOnlyPki(pkiId, rootCerts, intermediateCerts);
 		return pki;
 	}
-	
+
 	private boolean isPlataformaPki(PkiId pkiId) {
 		return pkiId.equals(PkiType.ICP_PLATAFORMA.id());
 	}
@@ -60,6 +61,4 @@ public class PkiRepositoryImpl implements PkiRepository {
 		return pkis.toArray(new Pki[0]);
 	}
 
-	
-	
 }

@@ -17,10 +17,10 @@ public abstract class AbstractAssinaturaDemoTest {
 
 	protected X509Certificate[] recuperarCadeia() throws CertificateException {
 		X509Certificate[] cadeia = new X509Certificate[4];
-		cadeia[0] = (X509Certificate)AssinaturaTestUtil.getCertificatePessoa001();
-		cadeia[1] = (X509Certificate)AssinaturaTestUtil.getCertificateACEmissora();
-		cadeia[2] = (X509Certificate)AssinaturaTestUtil.getCertificateACIntermediaria();
-		cadeia[3] = (X509Certificate)AssinaturaTestUtil.getCertificateACRaiz();
+		cadeia[0] = (X509Certificate) AssinaturaTestUtil.getCertificatePessoa001();
+		cadeia[1] = (X509Certificate) AssinaturaTestUtil.getCertificateACEmissora();
+		cadeia[2] = (X509Certificate) AssinaturaTestUtil.getCertificateACIntermediaria();
+		cadeia[3] = (X509Certificate) AssinaturaTestUtil.getCertificateACRaiz();
 		return cadeia;
 	}
 

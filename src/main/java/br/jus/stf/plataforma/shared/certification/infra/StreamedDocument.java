@@ -9,10 +9,10 @@ import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
 public class StreamedDocument implements SigningDocument {
 
 	private InputStream documentStream;
-	
+
 	public StreamedDocument(InputStream documentStream) {
 		Validate.notNull(documentStream);
-		
+
 		this.documentStream = documentStream;
 	}
 
@@ -20,5 +20,5 @@ public class StreamedDocument implements SigningDocument {
 	public InputStream stream() {
 		return documentStream;
 	}
-	
+
 }

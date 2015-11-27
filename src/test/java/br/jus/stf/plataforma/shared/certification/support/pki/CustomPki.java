@@ -31,20 +31,20 @@ public class CustomPki {
 	public CustomKeyStore finalUser() {
 		return finalUser;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("### Root CA ###");
 		sb.append(rootCA.certificate().toString()).append("\n\n");
-		
+
 		sb.append("### Intermediate CA ###");
 		sb.append(intermediateCA.certificate().toString()).append("\n\n");
-		
+
 		sb.append("### Final User ###");
 		sb.append(finalUser.certificate().toString()).append("\n\n");
-		
+
 		return sb.toString();
 	}
-	
+
 }

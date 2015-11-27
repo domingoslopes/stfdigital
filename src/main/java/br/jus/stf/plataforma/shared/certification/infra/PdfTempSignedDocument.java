@@ -20,7 +20,7 @@ public class PdfTempSignedDocument implements SignedDocument {
 		this.file = file;
 		this.signature = signature;
 	}
-	
+
 	@Override
 	public InputStream stream() {
 		try {

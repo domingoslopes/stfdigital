@@ -36,13 +36,13 @@ public class CustomPkiService {
 	}
 
 	private CustomPki customPKI;
-	
+
 	public CustomPki customPKI() {
 		return customPKI;
 	}
-	
+
 	private String randomUnit = "";
-	
+
 	private CustomPki generateCustomPKI() throws Exception {
 		randomUnit = RandomStringUtils.randomAlphanumeric(5).toUpperCase();
 		CustomKeyStore rootCA = generateRootCA();
@@ -105,7 +105,7 @@ public class CustomPkiService {
 
 		return new CustomKeyStore(kp, certificate);
 	}
-	
+
 	private CustomKeyStore generateFinalUser(CustomKeyStore ca) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
@@ -117,16 +117,16 @@ public class CustomPkiService {
 		BigInteger serial = BigInteger.valueOf(1L);
 		Date notBefore = new Date(System.currentTimeMillis());
 		Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * 1));
-		
+
 		X509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(ca.certificate(), serial, notBefore,
 				notAfter, new X500Name(subject), publicKey);
-		
+
 		JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
 
 		builder.addExtension(Extension.subjectKeyIdentifier, false, extUtils.createSubjectKeyIdentifier(publicKey));
 		builder.addExtension(Extension.authorityKeyIdentifier, false,
 				extUtils.createAuthorityKeyIdentifier(ca.certificate()));
-		
+
 		X509CertificateHolder holder = builder
 				.build(new JcaContentSignerBuilder("SHA256WithRSA").setProvider("BC").build(ca.keyPair().getPrivate()));
 
@@ -134,11 +134,11 @@ public class CustomPkiService {
 
 		return new CustomKeyStore(kp, certificate);
 	}
-	
+
 	private KeyPair generateKeyPair(int keySize) throws Exception {
 		KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
 		kpg.initialize(keySize);
-		
+
 		KeyPair kp = kpg.generateKeyPair();
 		return kp;
 	}

@@ -36,7 +36,6 @@ public class PKCS7DettachedITextPDFSignatureFinisher implements ITextPDFSignatur
 
 	private byte[] firstHash;
 	private PdfPKCS7 pdfPKCS7;
-	private Calendar signDate;
 	private int estimatedSize;
 
 	@Override
@@ -74,12 +73,10 @@ public class PKCS7DettachedITextPDFSignatureFinisher implements ITextPDFSignatur
 
 			this.firstHash = primeiroHash;
 			this.pdfPKCS7 = sgnNew;
-			this.signDate = cal;
 			this.estimatedSize = estimatedSize;
 
 			return new PreSignature(new AuthenticatedAttributes(authAttrs),
-					new HashToSign(ITextPDFSignatureUtil.applyHash(authAttrs, spec.hashType())),
-					spec.hashType());
+					new HashToSign(ITextPDFSignatureUtil.applyHash(authAttrs, spec.hashType())), spec.hashType());
 		} catch (IOException e) {
 			throw new SigningException("Erro ler pré-assinatura do PDF..", e);
 		} catch (DocumentException e) {
@@ -105,7 +102,7 @@ public class PKCS7DettachedITextPDFSignatureFinisher implements ITextPDFSignatur
 			sgnNew.setExternalDigest(signature.signatureAsBytes(), null, "RSA");
 
 			Collection<byte[]> crls = ITextPDFSignatureUtil.crlsToByteCollection(certificateValidation.crls());
-			
+
 			byte[] encodedSig = sgnNew.getEncodedPKCS7(firstHash, null, null, crls, CryptoStandard.CMS);
 			byte[] paddedSig = new byte[estimatedSize];
 			System.arraycopy(encodedSig, 0, paddedSig, 0, encodedSig.length);
