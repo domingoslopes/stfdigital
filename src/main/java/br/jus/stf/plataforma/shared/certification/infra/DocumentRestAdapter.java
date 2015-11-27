@@ -45,8 +45,7 @@ public class DocumentRestAdapter implements DocumentAdapter {
 		command.setDocumentos(Arrays.asList(tempDocument));
 		LinkedHashSet<DocumentoId> docs = docRestResource.salvar(command).stream()
 				.map(dto -> new DocumentoId(dto.getDocumentoId()))
-				.collect(Collectors.toCollection(
-						() -> new LinkedHashSet<DocumentoId>()));
+				.collect(Collectors.toCollection(() -> new LinkedHashSet<DocumentoId>()));
 		return docs.iterator().next();
 	}
 

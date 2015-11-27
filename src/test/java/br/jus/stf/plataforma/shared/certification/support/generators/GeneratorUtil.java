@@ -50,12 +50,14 @@ public class GeneratorUtil {
 		outputStream.close();
 	}
 
-	public static void storeCertificateOnDisk(CustomKeyStore store, String certificatePath) throws CertificateEncodingException, IOException {
+	public static void storeCertificateOnDisk(CustomKeyStore store, String certificatePath)
+			throws CertificateEncodingException, IOException {
 		X509Certificate certificate = store.certificate();
 		FileUtils.writeByteArrayToFile(new File(certificatePath), certificate.getEncoded());
 	}
 
-	public static void storeCertificatesOnDisk(NCustomPki customPki, String path) throws CertificateEncodingException, IOException {
+	public static void storeCertificatesOnDisk(NCustomPki customPki, String path)
+			throws CertificateEncodingException, IOException {
 		storeCertificateOnDisk(customPki.rootCA(), path + "/root.cer");
 		int i = 1;
 		for (CustomKeyStore store : customPki.intermediateCAs()) {
