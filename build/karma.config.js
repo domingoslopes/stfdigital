@@ -45,7 +45,7 @@ module.exports = {
 		'karma-chrome-launcher', 
 		'karma-phantomjs-launcher',
 		'karma-jasmine', 
-		//'karma-coverage', 
+		'karma-coverage',
 		'karma-html-reporter',
 		'karma-mocha-reporter' 
 	],
