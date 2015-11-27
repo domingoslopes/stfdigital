@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
@@ -26,6 +25,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
 import br.jus.stf.plataforma.shared.certification.infra.PkiRepositoryImpl;
 import br.jus.stf.plataforma.shared.certification.infra.StreamedDocument;
 import br.jus.stf.plataforma.shared.certification.infra.pki.UnitTestingPki;
@@ -49,13 +49,17 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 
 	@InjectMocks
 	@Autowired
+	private PkiService pkiService;
+
+	@InjectMocks
+	@Autowired
 	private SignatureApplicationService signatureService;
 
 	@Autowired
 	private PDFSigningSpecificationBuilder specBuilder;
 
 	private HttpSession session;
-	
+
 	private UnitTestingPki unitTestingPki;
 
 	@Before
@@ -63,10 +67,10 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 		MockitoAnnotations.initMocks(this);
 		session = new MockHttpSession();
 		Mockito.doReturn(session).when(documentSignerRepository).session();
-		
+
 		unitTestingPki = UnitTestingPki.instance();
-		
-		Mockito.doReturn(unitTestingPki).when(pkiRepository).findOne(Matchers.any());
+
+		Mockito.doReturn(unitTestingPki).when(pkiRepository).findOne(new PkiId(UNIT_TESTING_PKI));
 	}
 
 	@Test
