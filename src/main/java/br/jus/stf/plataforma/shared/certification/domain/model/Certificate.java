@@ -4,23 +4,30 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.jus.stf.shared.stereotype.Entity;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-@javax.persistence.Entity
+import br.jus.stf.shared.stereotype.ValueObject;
+
+@Entity
 @Table(name = "CERTIFICADO_DIGITAL", schema = "PLATAFORMA")
-public class Certificate implements Entity<Certificate, CertificateId> {
+public class Certificate implements ValueObject<Certificate> {
 
-	@EmbeddedId
-	private CertificateId id;
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name = "SEQ_CERTIFICADO_DIGITAL", nullable = false)
+	private Long sequencial;
 
 	@Column(name = "COD_SERIAL", length = 60)
 	private String serial;
@@ -58,11 +65,10 @@ public class Certificate implements Entity<Certificate, CertificateId> {
 
 	}
 
-	@Override
-	public CertificateId id() {
-		return id;
+	public Long sequencial() {
+		return sequencial;
 	}
-	
+
 	public String serial() {
 		return serial;
 	}
@@ -100,9 +106,25 @@ public class Certificate implements Entity<Certificate, CertificateId> {
 	}
 
 	@Override
-	public boolean sameIdentityAs(Certificate other) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean sameValueAs(Certificate other) {
+		return other != null && new EqualsBuilder().append(sequencial, other.sequencial).isEquals();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || getClass() != obj.getClass())
+			return false;
+
+		Certificate tObj = (Certificate) obj;
+
+		return sameValueAs(tObj);
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(sequencial).toHashCode();
 	}
 
 }
