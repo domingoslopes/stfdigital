@@ -4,4 +4,4 @@ create table plataforma.certificado_digital (SEQ_CERTIFICADO_DIGITAL bigint not 
 alter table plataforma.certificado_digital add constraint uk_cod_serial_cedi unique(cod_serial, seq_certificado_emissor);
 alter table plataforma.certificado_digital add constraint FK_usuario_cedi foreign key (seq_usuario) references plataforma.usuario;
 alter table plataforma.certificado_digital add constraint ck_tip_certificado_digital_cedi check (tip_certificado_digital in ('A', 'F', 'R'));
-alter table plataforma.certificado_digital add constraint ck_tip_pki_cedi check (tip_pki in ('ICP_BRASIL', 'ICP_PLATAFORMA'));
+alter table plataforma.certificado_digital add constraint ck_tip_pki_cedi check (tip_pki in ('ICP_BRASIL'));
