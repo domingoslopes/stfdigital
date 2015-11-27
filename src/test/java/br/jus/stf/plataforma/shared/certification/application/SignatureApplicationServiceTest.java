@@ -28,8 +28,8 @@ import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecificat
 import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
 import br.jus.stf.plataforma.shared.certification.infra.PkiRepositoryImpl;
 import br.jus.stf.plataforma.shared.certification.infra.StreamedDocument;
-import br.jus.stf.plataforma.shared.certification.infra.pki.UnitTestingPki;
 import br.jus.stf.plataforma.shared.certification.infra.session.SessionDocumentSignerRepository;
+import br.jus.stf.plataforma.shared.certification.support.pki.UnitTestingPki;
 import br.jus.stf.plataforma.shared.certification.support.util.SignatureTestUtil;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 

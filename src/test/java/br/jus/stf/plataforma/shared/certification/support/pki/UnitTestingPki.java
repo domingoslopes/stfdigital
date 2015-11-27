@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.infra.pki;
+package br.jus.stf.plataforma.shared.certification.support.pki;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -8,9 +8,7 @@ import java.util.stream.Collectors;
 import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.ValidationOnlyPki;
-import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiGenerator;
-import br.jus.stf.plataforma.shared.certification.support.pki.IcpBrasilDadosPessoaFisica;
-import br.jus.stf.plataforma.shared.certification.support.pki.CustomPki;
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 
 public class UnitTestingPki implements Pki {
 
