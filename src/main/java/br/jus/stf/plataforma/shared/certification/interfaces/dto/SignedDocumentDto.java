@@ -8,10 +8,10 @@ public class SignedDocumentDto {
 
 	public SignedDocumentDto(Long id) {
 		Validate.notNull(id);
-		
+
 		documentId = id;
 	}
-	
+
 	public Long getDocumentId() {
 		return documentId;
 	}

@@ -2,7 +2,6 @@ package br.jus.stf.plataforma.shared.certification.infra.itext;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 
 import com.itextpdf.text.DocumentException;
@@ -19,7 +18,6 @@ import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
-import br.jus.stf.plataforma.shared.certification.infra.PdfTempDocument;
 import br.jus.stf.plataforma.shared.certification.infra.PdfTempSignedDocument;
 
 public class ITextPDFSigningStrategy implements PDFSigningStrategy {
@@ -65,11 +63,12 @@ public class ITextPDFSigningStrategy implements PDFSigningStrategy {
 	}
 
 	@Override
-	public SignedDocument postSign(HashSignature signature, CertificateValidation certificateValidation) throws SigningException {
+	public SignedDocument postSign(HashSignature signature, CertificateValidation certificateValidation)
+			throws SigningException {
 		finisher.finishPostSignature(spec, certificateValidation, appearance, signature);
 
 		SignedDocument document = new PdfTempSignedDocument(appearance.getTempFile(), new DocumentSignature());
-		
+
 		return document;
 	}
 
