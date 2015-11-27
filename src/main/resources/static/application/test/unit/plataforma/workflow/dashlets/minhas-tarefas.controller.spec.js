@@ -23,7 +23,7 @@
 				pesquisar : function(){}
 			}
 			
-			spyOn(fakePesquisaService, 'pesquisar').and.returnValue($q.when({tarefas: [{descricao : 'Petição #00001', metadado : {informacao : }}, {descricao : 'Petição #00002'}]}));
+			spyOn(fakePesquisaService, 'pesquisar').and.returnValue($q.when({tarefas: [{descricao : 'Petição #00001', metadado : {informacao : ''}}, {descricao : 'Petição #00002'}]}));
 			
 			controller = $controller('MinhasTarefasDashletController', {
 				$scope : scope,
