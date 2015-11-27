@@ -7,29 +7,22 @@ import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 public class CustomPki {
 
 	private CustomKeyStore rootCA;
-	private CustomKeyStore intermediateCA;
-	private CustomKeyStore finalUser;
+	private CustomKeyStore[] intermediateCAs;
 
-	public CustomPki(CustomKeyStore rootCA, CustomKeyStore intermediateCA, CustomKeyStore finalUser) {
+	public CustomPki(CustomKeyStore rootCA, CustomKeyStore... intermediateCAs) {
 		Validate.notNull(rootCA, "RootCA é obrigatório");
-		Validate.notNull(intermediateCA, "IntermediateCA é obrigatório");
-		Validate.notNull(intermediateCA, "FinalUser é obrigatório");
+		Validate.notNull(intermediateCAs, "IntermediateCA é obrigatório");
 
 		this.rootCA = rootCA;
-		this.intermediateCA = intermediateCA;
-		this.finalUser = finalUser;
+		this.intermediateCAs = intermediateCAs;
 	}
 
 	public CustomKeyStore rootCA() {
 		return rootCA;
 	}
 
-	public CustomKeyStore intermediateCA() {
-		return intermediateCA;
-	}
-
-	public CustomKeyStore finalUser() {
-		return finalUser;
+	public CustomKeyStore[] intermediateCAs() {
+		return intermediateCAs;
 	}
 
 	@Override
@@ -38,11 +31,10 @@ public class CustomPki {
 		sb.append("### Root CA ###");
 		sb.append(rootCA.certificate().toString()).append("\n\n");
 
-		sb.append("### Intermediate CA ###");
-		sb.append(intermediateCA.certificate().toString()).append("\n\n");
-
-		sb.append("### Final User ###");
-		sb.append(finalUser.certificate().toString()).append("\n\n");
+		for (CustomKeyStore ca : intermediateCAs) {
+			sb.append("### Intermediate CA ###");
+			sb.append(ca.certificate().toString()).append("\n\n");
+		}
 
 		return sb.toString();
 	}
