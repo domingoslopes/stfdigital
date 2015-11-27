@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.shared.management;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jmx.support.ConnectorServerFactoryBean;
 import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
@@ -10,7 +11,8 @@ import org.springframework.remoting.rmi.RmiRegistryFactoryBean;
  * @author Lucas.Rodrigues
  *
  */
-public class JMXConfiguration {
+@Configuration
+public class JMXRMIConfiguration {
 	
     @Value("${jmx.rmi.host:localhost}")
     private String rmiHost;
