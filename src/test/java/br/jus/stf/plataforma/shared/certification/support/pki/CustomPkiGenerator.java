@@ -120,7 +120,7 @@ public class CustomPkiGenerator {
 		return new CustomKeyStore(kp, certificate);
 	}
 
-	public CustomKeyStore generateFinalUser(CustomKeyStore ca, String cn, String email,
+	public CustomKeyStore generateFinalUser(CustomKeyStore ca, String cn, int intSerial, String email,
 			IcpBrasilDadosPessoaFisica dadosPf) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
@@ -128,7 +128,7 @@ public class CustomPkiGenerator {
 
 		String subject = "C = BR, O = STF, OU = STF DIGITAL, CN = " + cn;
 
-		BigInteger serial = BigInteger.valueOf(1L);
+		BigInteger serial = BigInteger.valueOf(intSerial);
 		Date notBefore = new Date(System.currentTimeMillis());
 		Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * 1));
 

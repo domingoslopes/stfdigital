@@ -36,6 +36,6 @@ public class SessionDocumentSignerRepository implements DocumentSignerRepository
 	}
 
 	public DocumentSignerId nextId() {
-		return new DocumentSignerId(UUID.randomUUID().toString().toUpperCase());
+		return new DocumentSignerId(UUID.randomUUID().toString());
 	}
 }

@@ -52,7 +52,9 @@ public class PlataformaCertificateGenerator {
 
 			IcpBrasilDadosPessoaFisica dadosPf = new IcpBrasilDadosPessoaFisica(null, personCPF, null, null);
 
-			CustomKeyStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF, personEmail, dadosPf);
+			int serial = recoverSerial(pkiPrivatePath + "/nextSerial");
+			
+			CustomKeyStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF, serial, personEmail, dadosPf);
 
 			String certificatePath = pkiPath + "/certs";
 			File dirPath = new File(certificatePath);
@@ -70,6 +72,10 @@ public class PlataformaCertificateGenerator {
 			System.exit(1);
 		}
 
+	}
+
+	private static int recoverSerial(String path) throws Exception {
+		return Integer.parseInt(FileUtils.readFileToString(new File(path)));
 	}
 
 	private static CustomKeyStore getPkiStore(String keystorePath) throws Exception {
