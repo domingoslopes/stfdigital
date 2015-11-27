@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiGenerator;
-import br.jus.stf.plataforma.shared.certification.support.pki.NCustomPki;
+import br.jus.stf.plataforma.shared.certification.support.pki.CustomPki;
 
 public class IcpBrasilLikePkiGenerator {
 
@@ -35,7 +35,7 @@ public class IcpBrasilLikePkiGenerator {
 		String rootCN = "Autoridade Certificadora Raiz da Plataforma STF Digital v1";
 		String[] intermediate = new String[] { "AC Intermediaria 1 da Plataforma STF Digital v1",
 				"AC Intermediaria 2 da Plataforma STF Digital v1" };
-		NCustomPki customPki = pkiGenerator.generateCustomPKI(rootCN, intermediate);
+		CustomPki customPki = pkiGenerator.generateCustomPKI(rootCN, intermediate);
 		if (pkiCandidateDir.mkdir()) {
 			System.out.println(customPki);
 			File privateDir = new File(pkiCandidateDir.getPath() + "/private");

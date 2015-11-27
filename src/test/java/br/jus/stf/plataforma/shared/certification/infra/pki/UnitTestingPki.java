@@ -10,7 +10,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.ValidationOnlyPki;
 import br.jus.stf.plataforma.shared.certification.support.pki.CustomPkiGenerator;
 import br.jus.stf.plataforma.shared.certification.support.pki.IcpBrasilDadosPessoaFisica;
-import br.jus.stf.plataforma.shared.certification.support.pki.NCustomPki;
+import br.jus.stf.plataforma.shared.certification.support.pki.CustomPki;
 
 public class UnitTestingPki implements Pki {
 
@@ -29,7 +29,7 @@ public class UnitTestingPki implements Pki {
 			String[] intermediate = new String[] { "AC Intermediaria 1 Teste Unitario STF Digital v1",
 					"AC Intermediaria 2 Teste Unitario STF Digital v1" };
 
-			NCustomPki customPki = pkiGenerator.generateCustomPKI(rootCN, intermediate);
+			CustomPki customPki = pkiGenerator.generateCustomPKI(rootCN, intermediate);
 			rootStore = customPki.rootCA();
 			intermediateStores = Arrays.asList(customPki.intermediateCAs());
 
