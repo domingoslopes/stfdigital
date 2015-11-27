@@ -57,6 +57,9 @@ public class SignatureRestResource {
 
 	@Autowired
 	private SignatureApplicationService signatureApplicationService;
+	
+	@Autowired
+	private PDFSigningSpecificationBuilder specBuilder;
 
 	@ApiOperation("Cria um novo contexto de assinatura com o certificado.")
 	@RequestMapping(value = "/prepare", method = RequestMethod.POST)
@@ -66,7 +69,7 @@ public class SignatureRestResource {
 		X509Certificate certificate = CertificationUtil
 				.bytesToCertificate(Hex.decodeHex(command.getCertificateAsHex().toCharArray()));
 		// Constrói uma especificação de assinatura de PDF.
-		SigningSpecification spec = new PDFSigningSpecificationBuilder().pkcs7Dettached().reason(SIGNING_REASON)
+		SigningSpecification spec = specBuilder.pkcs7Dettached().reason(SIGNING_REASON)
 				.hashAlgorithm(HashType.SHA256).build();
 		// Prepara uma assinador de documentos.
 		DocumentSignerId signerId = signatureApplicationService.prepareToSign(certificate, pkis(), spec);
