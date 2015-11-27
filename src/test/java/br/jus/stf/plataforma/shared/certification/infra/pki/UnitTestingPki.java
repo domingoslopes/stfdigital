@@ -36,8 +36,9 @@ public class UnitTestingPki implements Pki {
 			String cpf = "43848071207";
 			IcpBrasilDadosPessoaFisica dadosPf = new IcpBrasilDadosPessoaFisica(null, "43848071207", null, null);
 
-			finalUserStore = pkiGenerator.generateFinalUser(intermediateStores.get(intermediateStores.size() - 1), "TESTE UNITARIO" + ":" + cpf, 1, "teste.unitario@stfdigital.stf.jus.br", dadosPf);
-			
+			finalUserStore = pkiGenerator.generateFinalUser(intermediateStores.get(intermediateStores.size() - 1),
+					"TESTE UNITARIO" + ":" + cpf, 1, "teste.unitario@stfdigital.stf.jus.br", dadosPf);
+
 			pki = new ValidationOnlyPki(new PkiId("ICP_PLATAFORMA"), Arrays.asList(rootStore.certificate()),
 					intermediateStores.stream().map(s -> s.certificate()).collect(Collectors.toList()));
 		} catch (Exception e) {
@@ -63,9 +64,9 @@ public class UnitTestingPki implements Pki {
 	public X509Certificate[] certificateChainOf(X509Certificate certificate) {
 		return pki.certificateChainOf(certificate);
 	}
-	
+
 	public CustomKeyStore finalUserStore() {
 		return finalUserStore;
 	}
-	
+
 }

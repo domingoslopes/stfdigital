@@ -48,7 +48,7 @@ public class AssinaturaTestUtil {
 			throw new RuntimeException("Arquivo de CRL n�o encontrado.");
 		}
 	}
-	
+
 	private static PrivateKey getPrivateKeyFromFile(String fileName, char[] certPassword, char[] keyPassword) {
 		try {
 			KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -110,5 +110,5 @@ public class AssinaturaTestUtil {
 			throw new RuntimeException("Erro ao recuperar CRL.", e);
 		}
 	}
-	
+
 }
