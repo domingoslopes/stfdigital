@@ -45,7 +45,7 @@ module.exports = {
 		'karma-chrome-launcher', 
 		'karma-phantomjs-launcher',
 		'karma-jasmine', 
-		'karma-coverage',
+		/*'karma-coverage',*/ // Comentado para facilitar o debug
 		'karma-html-reporter',
 		'karma-mocha-reporter' 
 	],
@@ -54,7 +54,7 @@ module.exports = {
 		'**/src/main/resources/static/application/**/*.js' : 'coverage'
 	},
 
-	reporters : [ 'mocha', 'html', 'coverage' ],
+	reporters : [ 'mocha', 'html'/*, 'coverage'*/ ],
 
 	coverageReporter : {
 		type : 'html',
