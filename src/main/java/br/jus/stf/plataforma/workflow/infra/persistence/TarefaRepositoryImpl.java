@@ -1,9 +1,11 @@
 package br.jus.stf.plataforma.workflow.infra.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.activiti.engine.TaskService;
@@ -11,6 +13,8 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
+import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.plataforma.workflow.domain.model.Metadado;
 import br.jus.stf.plataforma.workflow.domain.model.Tarefa;
 import br.jus.stf.plataforma.workflow.domain.model.TarefaRepository;
@@ -27,11 +31,15 @@ import br.jus.stf.shared.TarefaId;
 public class TarefaRepositoryImpl implements TarefaRepository {
 
 	@Autowired
+	private AcessosRestAdapter acessosRestAdapter;
+	
+	@Autowired
 	private TaskService taskService;
 
 	@Override
-	public List<Tarefa> listar(String papel) {
-		return taskService.createTaskQuery().taskCandidateGroup(papel).includeProcessVariables().list()
+	public List<Tarefa> listar() {
+		Set<String> papeis = acessosRestAdapter.carregarPapeisUsuario(SecurityContextUtil.getUsername());
+		return taskService.createTaskQuery().taskCandidateGroupIn(new ArrayList<String>(papeis)).includeProcessVariables().list()
 				.stream()
 				.map(task -> newTarefa(task))
 				.collect(Collectors.toList());

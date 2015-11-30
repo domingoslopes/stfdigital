@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.notificacoes.infra.eventbus;
 
+import java.util.List;
+
 import br.jus.stf.plataforma.notificacoes.domain.model.Notificacao;
 
 /**
@@ -8,14 +10,14 @@ import br.jus.stf.plataforma.notificacoes.domain.model.Notificacao;
  */
 public class NotificacaoEnviada {
 	
-	private Notificacao notificacao;
+	private List<Notificacao> notificacoes;
 	
-	public NotificacaoEnviada(Notificacao notificacao) {
-		this.notificacao = notificacao;
+	public NotificacaoEnviada(List<Notificacao> notificacoes) {
+		this.notificacoes = notificacoes;
 	}
 	
-	public Notificacao notificacao() {
-		return notificacao;
+	public List<Notificacao> notificacoes() {
+		return notificacoes;
 	}
 
 }

@@ -16,9 +16,8 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, $window, properties, MinistroService) {
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, properties, MinistroService) {
 			scope = $rootScope.$new();
-			$window.sessionStorage.papel = JSON.stringify('distribuidor');
 			$httpBackend.expectGET(properties.apiUrl + '/ministros').respond([{id : 42, nome: 'Min. Cármen Lúcia'}, {id : 44, nome: 'Min. Dias Toffoli'}]);
 
 			MinistroService.listar().success(function(result) {

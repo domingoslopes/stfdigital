@@ -7,8 +7,8 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma.service('NotificationService', ['$http', '$q', '$window', '$rootScope', '$filter', 'properties', 'PesquisaService', '$cookies', 
-	                                                   function($http, $q, $window, $rootScope, $filter, properties, PesquisaService, $cookies) {
+	angular.plataforma.service('NotificationService', ['$http', '$q', '$rootScope', '$filter', 'properties', 'PesquisaService', '$cookies', 'SecurityService', 
+	                                                   function($http, $q, $rootScope, $filter, properties, PesquisaService, $cookies, SecurityService) {
 		
 		var socket = new SockJS(properties.apiUrl + '/ws/notificacoes');
 		var client = Stomp.over(socket);
@@ -124,9 +124,8 @@
 		};
 		
 		var connHeaders = function() {
-			var papel = JSON.parse($window.sessionStorage.papel).nome;
 			return {
-				'login' : papel,
+				'login' : SecurityService.user().name,
 				'X-XSRF-TOKEN' : $cookies.get('XSRF-TOKEN') 
 			};
 		};
