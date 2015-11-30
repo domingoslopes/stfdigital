@@ -13,15 +13,21 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(_$compile_, _$rootScope_, NotificationService) {
-			$compile = _$compile_;
-			$rootScope = _$rootScope_;
-			scope = $rootScope.$new();
-			NotificationService = {
+		beforeEach(module(function($provide) {
+			var NotificationService = {
 				registrarNotificacao : function() {},
 				listarLidas : function() { return {}; },
 				listarNaoLidas: function () { return {}; },
-				marcarComoLida : function (){return {}; } };
+				marcarComoLida : function (){return {}; }
+			};
+			$provide.value('NotificationService', NotificationService);
+		}));
+		
+		beforeEach(inject(function(_$compile_, _$rootScope_, SecurityService) {
+			SecurityService.mockUser({name: 'peticionador'});
+			$compile = _$compile_;
+			$rootScope = _$rootScope_;
+			scope = $rootScope.$new();
 		}));
 		
 		it('Deveria compilar a diretiva', function() {

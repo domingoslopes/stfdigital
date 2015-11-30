@@ -11,58 +11,32 @@
 	describe('Dashlet Minhas Tarefas: Controller', function() {
 		var controller;
 		var scope;
-		var fakePesquisaService;
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $http, $window, $q, properties, TarefaService, PesquisaService) {
-			$window.sessionStorage.papel = JSON.stringify('recebedor');
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, properties) {
 			scope = $rootScope.$new();
-			
-			fakePesquisaService = {
-				pesquisar : function(){}
-			}
-			
-			spyOn(fakePesquisaService, 'pesquisar').and.returnValue($q.when({tarefas: [{descricao : 'Petição #00001', metadado : {informacao : }}, {descricao : 'Petição #00002'}]}));
+			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([
+				{"id":1,"nome":"autuacao","descricao":"Autuar Processo","processoWorkflow":6,"metadado":{"informacao":6,"tipoInformacao":"PeticaoEletronica","status":"A_AUTUAR","descricao":"6/2015"},"tipoInformacao":"PeticaoEletronica"},
+				{"id":2,"nome":"autuacao","descricao":"Autuar Processo","processoWorkflow":7,"metadado":{"informacao":7,"tipoInformacao":"PeticaoEletronica","status":"A_AUTUAR","descricao":"7/2015"},"tipoInformacao":"PeticaoEletronica"}
+			]);
 			
 			controller = $controller('MinhasTarefasDashletController', {
 				$scope : scope,
-				PesquisaService : fakePesquisaService
 			});
 			
+			$httpBackend.flush();
 		}));
 
-/*		it('Deveria instanciar o controlador do dashlet de minhas tarefas', function() {
-			expect(controller).not.toEqual(null);
-		});
-
-		it('Deveria carregar a lista de petições no escopo do controlador', function() {
-			scope.$apply();
-			expect(scope.tarefas[0].descricao).toEqual('Petição #00001');
-			expect(scope.tarefas[1].descricao).toEqual('Petição #00002');
-			expect(scope.tarefas.length).toEqual(2);
-		});
-		*/
-		
-		
-		
 		it('Deveria instanciar o controlador do dashlet de minhas tarefas', function() {
 			expect(controller).not.toEqual(null);
 		});
 
 		it('Deveria carregar a lista de petições no escopo do controlador', function() {
 			scope.$apply();
-			expect(fakePesquisaService.pesquisar).toHaveBeenCalledWith({
-				filtros: { 'id.sequencial' : [metadado.informacao] },
-				indices: ['autuacao', 'distribuicao'],
-				campos : ['identificacao']
-				//tipos : [metadado.tipoInformacao]
-			});
-			expect(scope.tarefas[0].descricao).toEqual('Petição #00001');
-			expect(scope.tarefas[1].descricao).toEqual('Petição #00002');
+			expect(scope.tarefas[0].metadado.descricao).toEqual('6/2015');
+			expect(scope.tarefas[1].metadado.descricao).toEqual('7/2015');
 			expect(scope.tarefas.length).toEqual(2);
 		});
-		
-		
 	});
 })();

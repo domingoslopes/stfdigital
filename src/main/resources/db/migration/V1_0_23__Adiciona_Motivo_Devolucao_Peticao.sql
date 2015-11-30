@@ -1,0 +1,1 @@
+alter table autuacao.peticao add column dsc_motivo_devolucao varchar2(2000);

@@ -3,15 +3,18 @@ package br.jus.stf.plataforma.acessos.infra.persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.acessos.domain.model.Permissao;
 import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
+import br.jus.stf.shared.RecursoId;
 
 @Repository
 public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, Long> implements RecursoRepository {
@@ -34,7 +37,7 @@ public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, Long> im
 		TypedQuery<Recurso> query = entityManager.createQuery("SELECT recurso FROM Recurso recurso WHERE recurso.nome = :nome AND recurso.tipo = :tipo", Recurso.class);
 		query.setParameter("nome", nome);
 		query.setParameter("tipo", tipo);
-		
+
 		return query.getSingleResult();
 	}
 	
@@ -49,6 +52,15 @@ public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, Long> im
 	@Override
 	public Recurso save(Recurso recurso) {
 		return super.save(recurso);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Permissao> findPermissaoByRecurso(RecursoId id) {
+		Query query = entityManager.createQuery("SELECT perm FROM Recurso recu INNER JOIN recu.permissoesExigidas perm WITH recu.id = :id");
+		query.setParameter("id", id);
+		
+		return query.getResultList();
 	}
 
 }
