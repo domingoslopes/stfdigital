@@ -1,21 +1,37 @@
 package br.jus.stf.plataforma.acessos.domain.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Rafael Esdras
+ *
+ */
 public interface Principal {
 
+	/**
+	 * @return
+	 */
 	public Set<Permissao> permissoes();
 	
+	/**
+	 * @param permissoes
+	 */
 	public void atribuirPermissoes(final Set<Permissao> permissoes);
 	
+	/**
+	 * @param permissoes
+	 */
+	public void removerPermissoes(final Set<Permissao> permissoes);
+	
+	/**
+	 * @param recurso
+	 * @return
+	 */
 	public default boolean possuiAcessoNo(Recurso recurso) {
-		Set<Permissao> intersecao = new HashSet<Permissao>(permissoes());
-		Set<Permissao> permissoesExigidas = recurso.permissoesExigidas();
-		
-		intersecao.retainAll(permissoesExigidas);
-		
-		return permissoesExigidas.equals(intersecao);
+		if (recurso.permissoesExigidas().isEmpty()) {
+			return true;
+		}
+		return permissoes().containsAll(recurso.permissoesExigidas());
 	}
 	
 }

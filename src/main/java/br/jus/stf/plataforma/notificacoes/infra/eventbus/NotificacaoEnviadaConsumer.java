@@ -2,6 +2,8 @@ package br.jus.stf.plataforma.notificacoes.infra.eventbus;
 
 import static reactor.bus.selector.Selectors.$;
 
+import java.util.List;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -12,6 +14,9 @@ import reactor.bus.EventBus;
 import reactor.fn.Consumer;
 import br.jus.stf.plataforma.notificacoes.domain.model.Notificacao;
 import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoService;
+import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoUIService;
+import br.jus.stf.plataforma.notificacoes.domain.model.TipoNotificacao;
+import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 
 /**
  * Consumidor de eventos de aplicação para enviar para indexação
@@ -28,6 +33,9 @@ public class NotificacaoEnviadaConsumer implements Consumer<Event<NotificacaoEnv
 	@Autowired
 	private ApplicationContext applicationContext;
 	
+	@Autowired
+	private NotificacaoUIService notificacaoUIService;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		eventBus.on($("indexadorEventBus"), this);
@@ -35,10 +43,19 @@ public class NotificacaoEnviadaConsumer implements Consumer<Event<NotificacaoEnv
 	
 	@Override
 	public void accept(Event<NotificacaoEnviada> event) {
-		Notificacao notificacao = event.getData().notificacao();
+		List<Notificacao> notificacoes = event.getData().notificacoes();
 		try {
-			NotificacaoService notificacaoService = applicationContext.getBean(notificacao.tipo().strategy());
-			notificacaoService.emitir(notificacao);
+			TipoNotificacao tipo = notificacoes.get(0).tipo();
+			NotificacaoService notificacaoService = applicationContext.getBean(tipo.strategy());
+			if (notificacaoService.permitidoEmitir()) {
+				for (Notificacao notificacao : notificacoes) {
+					notificacaoService.emitir(notificacao);
+				}
+			} else {
+				String msg = "Usuário sem permissões para emitir notificações de " + tipo.name();
+				Notificacao notificacaoErro = new Notificacao(TipoNotificacao.UI, msg, SecurityContextUtil.getUsername());
+				notificacaoUIService.emitir(notificacaoErro);
+			}			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

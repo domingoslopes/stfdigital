@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.notificacoes.infra.eventbus;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +24,8 @@ public class NotificacaoApplicationEventImpl implements NotificacaoApplicationEv
 	private EventBus eventBus;
 	
 	@Override
-	public void notificacaoEnviada(Notificacao notificacao) {
-		eventBus.notify("indexadorEventBus", Event.wrap(new NotificacaoEnviada(notificacao)));
+	public void notificacaoEnviada(List<Notificacao> notificacoes) {
+		eventBus.notify("indexadorEventBus", Event.wrap(new NotificacaoEnviada(notificacoes)));
 	}
 
 	@Override

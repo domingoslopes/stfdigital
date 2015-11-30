@@ -46,6 +46,10 @@ public class Recurso implements Entity<Recurso, Long> {
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
 	private Set<Permissao> permissoesExigidas = new HashSet<Permissao>(0);
 	
+	Recurso() {
+		
+	}
+	
 	public Recurso(final Long sequencial, final String nome, final TipoRecurso tipo, final Set<Permissao> permissoesExigidas) {
 		Validate.notNull(sequencial, "recurso.sequencial.required");
 		Validate.notBlank(nome, "recurso.nome.required");
@@ -56,6 +60,11 @@ public class Recurso implements Entity<Recurso, Long> {
 		this.nome = nome;
 		this.tipo = tipo;
 		this.permissoesExigidas = permissoesExigidas;
+	}
+	
+	@Override
+	public Long id() {
+		return sequencial;
 	}
 	
 	public String nome() {
@@ -86,7 +95,6 @@ public class Recurso implements Entity<Recurso, Long> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Recurso other = (Recurso) obj;
-		
 		return sequencial.equals(other.sequencial);
 	}
 	
@@ -95,11 +103,6 @@ public class Recurso implements Entity<Recurso, Long> {
 		return other != null
 				&& nome.equals(other.nome)
 				&& tipo.equals(other.tipo);
-	}
-
-	@Override
-	public Long id() {
-		return sequencial;
 	}
 
 }
