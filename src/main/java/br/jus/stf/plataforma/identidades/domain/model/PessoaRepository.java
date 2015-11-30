@@ -39,4 +39,13 @@ public interface PessoaRepository {
 	 */
 	public List<Pessoa> findByNomeContaining(String nome);
 	
+	/**
+	 * Recupera uma pessoa de acordo com o CPF informado.
+	 * 
+	 * @param cpf Nº do CPF da pessoa.
+	 * 
+	 * @return Dados da pessoa.
+	 */
+	public Pessoa findByCpf(String cpf);
+	
 }

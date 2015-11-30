@@ -78,7 +78,7 @@ public class AcessosRestResource {
 		Usuario usuario = this.acessosApplicationService.recuperarInformacoesUsuario(login);
 		Set<PapelDto> papeis = usuario.papeis().stream().map(papel -> this.papelDtoAssembler.toDto(papel)).collect(Collectors.toSet());
 		
-		return this.usuarioDtoAssembler.toDto(usuario.nome(), "", papeis, authorities);
+		return this.usuarioDtoAssembler.toDto(usuario.pessoa().nome(), "", papeis, authorities);
 	}
 	
 }
