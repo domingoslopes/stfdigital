@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('security-interceptor', function ($window, $cookies) {
+	angular.plataforma.service('security-interceptor', function ($q, $window, $cookies) {
 		
 	    this.request = function(config) { 
 	        var csrf_token = $cookies.get('XSRF-TOKEN');
@@ -21,7 +21,7 @@
 	        if (response.status == 401 || response.status == 403) {
 	        	$window.location.href = '/login';
 	        }
-	        return response;
+	        return $q.reject(response);
 	    };
 	});
 	

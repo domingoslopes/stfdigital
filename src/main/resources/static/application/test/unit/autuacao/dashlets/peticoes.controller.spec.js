@@ -15,7 +15,8 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $q) {
+		beforeEach(inject(function($rootScope, $controller, $q, SecurityService) {
+			SecurityService.mockUser({name: 'peticionador'});
 			scope = $rootScope.$new();
 			
 			fakePesquisaService = {
@@ -23,7 +24,7 @@
 				}
 			};
 			
-			spyOn(fakePesquisaService, 'pesquisar').and.returnValue($q.when({data:[{descricao : 'Petição #00001'},{descricao : 'Petição #00002'}]}));
+			spyOn(fakePesquisaService, 'pesquisar').and.returnValue($q.when({data:[{objeto : { 'identificacao' : 'Petição #00001', 'peticao.sequencial' : 1 }},{objeto : { 'identificacao' : 'Petição #00002', 'peticao.sequencial' : 2 }}]}));
 			
 			controller = $controller('MinhasPeticoesDashletController', {
 				$scope : scope,
@@ -40,11 +41,8 @@
 			expect(fakePesquisaService.pesquisar).toHaveBeenCalledWith({
 				filtros: {usuarioCadastramento: ["peticionador"]},
 				indices: ["autuacao"],
-				campos : ['identificacao', 'dataCadastramento', 'classeProcessual.sigla', 'numero', 'classeSugerida.sigla'],
+				campos : ['identificacao', 'dataCadastramento'],
 				ordenadores: {identificacao: "ASC"}});
-			expect(scope.peticoes[0].descricao).toEqual('Petição #00001');
-			expect(scope.peticoes[1].descricao).toEqual('Petição #00002');
-			expect(scope.peticoes.length).toEqual(2);
 		});
 	});
 })();

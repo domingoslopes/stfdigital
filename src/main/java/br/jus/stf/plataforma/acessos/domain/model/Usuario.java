@@ -7,50 +7,35 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
-import org.hibernate.validator.constraints.Email;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
+import br.jus.stf.shared.UsuarioId;
 import br.jus.stf.shared.stereotype.Entity;
 
 @javax.persistence.Entity
 @Table(name = "USUARIO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"SIG_USUARIO"}))
-public class Usuario implements Entity<Usuario, Long>, Principal {
+public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	
-	@Id
-	@Column(name = "SEQ_USUARIO")
-	@SequenceGenerator(name = "USUARIOID", sequenceName = "PLATAFORMA.SEQ_USUARIO", allocationSize = 1)
-	@GeneratedValue(generator = "USUARIOID", strategy = GenerationType.SEQUENCE)
-	private Long sequencial;
+	@EmbeddedId
+	private UsuarioId id;
 	
-	@Column(name = "NOM_USUARIO", nullable = false)
-	private String nome;
+	@ManyToOne
+	@JoinColumn(name = "SEQ_PESSOA", nullable = false)
+	private Pessoa pessoa;
 	
 	@Column(name = "SIG_USUARIO", nullable = false)
 	private String login;
-	
-	@Column(name = "COD_CPF", nullable = false)
-	private String cpf;
-	
-	@Column(name = "COD_OAB")
-	private String oab;
-	
-	@Email
-	@Column(name = "DSC_EMAIL", nullable = false)
-	private String email;
-	
-	@Column(name = "DSC_TELEFONE", nullable = false)
-	private String telefone;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_USUARIO", schema = "PLATAFORMA",
@@ -74,56 +59,22 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		
 	}
 	
-	public Usuario(final Long sequencial, final String nome, final String login, final String cpf, final String email, final String telefone) {
-		Validate.notNull(sequencial, "usuario.sequencial.required");
-		Validate.notBlank(nome, "usuario.nome.required");
+	public Usuario(final UsuarioId id, final Pessoa pessoa, final String login) {
+		Validate.notNull(id, "usuario.id.required");
+		Validate.notNull(pessoa, "usuario.pessoa.required");
 		Validate.notBlank(login, "usuario.login.required");
-		Validate.notBlank(cpf, "usuario.cpf.required");
-		Validate.notBlank(email, "usuario.email.required");
-		Validate.notBlank(telefone, "usuario.telefone.required");
 		
-		this.sequencial = sequencial;
-		this.nome = nome;
+		this.id = id;
+		this.pessoa = pessoa;
 		this.login = login;
-		this.cpf = cpf;
-		this.email = email;
-		this.telefone = telefone;
 	}
 	
-	public Usuario(final Long sequencial, final String nome, final Set<Permissao> permissoes, final String login, final String cpf, final String oab, final String email, final String telefone) {
-		this(sequencial, nome, login, cpf, email, telefone);
-		
-		Validate.notBlank(oab, "usuario.oab.required");
-		
-		this.oab = oab;
-	}
-	
-	public String tipoPeticionador() {
-		return Optional.ofNullable(oab).isPresent() ? "Advogado" : "Cidadão";
-	}
-	
-	public String nome() {
-		return nome;
+	public Pessoa pessoa() {
+		return pessoa;
 	}
 	
 	public String login() {
 		return login;
-	}
-	
-	public String cpf() {
-		return cpf;
-	}
-	
-	public String oab() {
-		return oab;
-	}
-	
-	public String email() {
-		return email;
-	}
-	
-	public String telefone() {
-		return telefone;
 	}
 	
 	public Set<Papel> papeis() {
@@ -184,18 +135,13 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 	}
 	
 	@Override
-	public Long id() {
-		return sequencial;
+	public UsuarioId id() {
+		return id;
 	}
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		
-		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
-		
-		return result;
+		return new HashCodeBuilder().append(id).hashCode();
 	}
 	
 	@Override
@@ -204,12 +150,13 @@ public class Usuario implements Entity<Usuario, Long>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Usuario other = (Usuario) obj;
-		return sequencial.equals(other.sequencial);
+		return sameIdentityAs(other);
 	}
 
 	@Override
 	public boolean sameIdentityAs(Usuario other) {
-		return other != null && login.equals(other.login);
+		return other != null
+				&& id.equals(other.id);
 	}
 	
 }
