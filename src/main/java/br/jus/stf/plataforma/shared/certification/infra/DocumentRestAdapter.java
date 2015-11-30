@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
+import br.jus.stf.plataforma.shared.certification.domain.PdfTempDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
