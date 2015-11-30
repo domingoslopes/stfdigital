@@ -2,13 +2,14 @@ package br.jus.stf.plataforma.shared.actions.support;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
-
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonView;
 
 /**
  * Armazena as metainformações definidas na anotação {@link ActionMapping}.
@@ -18,22 +19,13 @@ import com.fasterxml.jackson.annotation.JsonView;
  */
 public class ActionMappingInfo {
 
-	@JsonView(ActionView.class)
 	private String id;
-	
-	@JsonView(ActionView.class)
 	private String description;
-	
 	private Class<?> controllerClass;
 	private String methodName;
 	private Class<?> resourcesClass;
-	
-	@JsonView(ActionView.class)
 	private ResourcesMode resourcesMode;
-	
-	@JsonView(ActionView.class)
-	private List<String> neededAuthorities = new ArrayList<String>();
-	
+	private Set<GrantedAuthority> neededAuthorities = new HashSet<GrantedAuthority>();
 	private List<ActionConditionHandlerInfo> actionHandlersInfo = new ArrayList<ActionConditionHandlerInfo>(0);
 	
 	/**
@@ -119,11 +111,11 @@ public class ActionMappingInfo {
 	public void setResourcesMode(ResourcesMode resourcesMode) {
 		this.resourcesMode = resourcesMode;
 	}
-
+	
 	/**
 	 * @return the neededAuthorities
 	 */
-	public List<String> getNeededAuthorities() {
+	public Set<GrantedAuthority> getNeededAuthorities() {
 		return neededAuthorities;
 	}
 
@@ -132,21 +124,6 @@ public class ActionMappingInfo {
 	 */
 	public List<ActionConditionHandlerInfo> getActionHandlersInfo() {
 		return actionHandlersInfo;
-	}
-	
-	@JsonView(ActionView.class)
-	@JsonGetter("resourcesType")
-	public String getResourcesType() {
-		if (resourcesClass == null) {
-			return "";
-		}
-		return resourcesClass.getSimpleName();
-	}
-	
-	@JsonView(ActionView.class)
-	@JsonGetter("hasConditionHandlers")
-	public boolean hasConditionHandlers() {
-		return !actionHandlersInfo.isEmpty();
 	}
 		
 	/**
@@ -176,11 +153,7 @@ public class ActionMappingInfo {
 	 * @return
 	 */
 	public boolean hasNeededAuthorities() {
-		if (neededAuthorities.isEmpty()) {
-			return true;
-		}
-		List<String> autorizacoes = SecurityContextUtil.getAutorizacoes();
-		return autorizacoes.containsAll(neededAuthorities);
+		return SecurityContextUtil.userContainsAll(neededAuthorities);
 	}
 
 }

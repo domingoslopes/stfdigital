@@ -16,7 +16,7 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "SEGMENTO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_SEGMENTO", "SEQ_TIPO_INFORMACAO", "SEQ_TIPO_SEGMENTO"}))
+@Table(name = "SEGMENTO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_SEGMENTO", "SEQ_TIPO_INFORMACAO"}))
 public class Segmento implements ValueObject<Segmento> {
 	
 	private static final long serialVersionUID = 1L;
@@ -34,10 +34,6 @@ public class Segmento implements ValueObject<Segmento> {
 	@JoinColumn(name = "SEQ_TIPO_INFORMACAO", referencedColumnName = "SEQ_TIPO_INFORMACAO", nullable = false)
 	private TipoInformacao tipoInformacao;
 	
-	@ManyToOne
-	@JoinColumn(name = "SEQ_TIPO_SEGMENTO", referencedColumnName = "SEQ_TIPO_SEGMENTO")
-	private TipoSegmento tipoSegmento;
-	
 	Segmento() {
 		
 	}
@@ -52,14 +48,6 @@ public class Segmento implements ValueObject<Segmento> {
 		this.tipoInformacao = tipoInformacao;
 	}
 	
-	public Segmento(final Long sequencial, final String nome, final TipoInformacao tipoInformacao, final TipoSegmento tipoSegmento) {
-		this(sequencial, nome, tipoInformacao);
-		
-		Validate.notNull(tipoSegmento, "segmento.tipoSegmento.required");
-		
-		this.tipoSegmento = tipoSegmento;
-	}
-	
 	public Long toLong() {
 		return sequencial;
 	}
@@ -70,10 +58,6 @@ public class Segmento implements ValueObject<Segmento> {
 	
 	public TipoInformacao tipoInformacao() {
 		return tipoInformacao;
-	}
-	
-	public TipoSegmento tipoSegmento() {
-		return tipoSegmento;
 	}
 	
 	@Override
@@ -92,7 +76,6 @@ public class Segmento implements ValueObject<Segmento> {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Segmento other = (Segmento) obj;
-		
 		return sequencial.equals(other.sequencial);
 	}
 
@@ -100,9 +83,7 @@ public class Segmento implements ValueObject<Segmento> {
 	public boolean sameValueAs(final Segmento other) {
 		return other != null
 				&& nome.equals(other.nome)
-				&& tipoInformacao.equals(other.tipoInformacao)
-				&& (tipoSegmento == null || tipoSegmento.equals(other.tipoSegmento));
-	}
-	
+				&& tipoInformacao.equals(other.tipoInformacao);
+	}	
 
 }

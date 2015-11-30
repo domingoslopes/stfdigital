@@ -51,7 +51,7 @@
 			principalPage = new PrincipalPage();
 			
 			// Iniciando o Processo de Remessa Físca
-			principalPage.iniciarProcesso('link_registrar_peticao_fisica');
+			principalPage.iniciarProcesso('link_registrar-peticao-fisica');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);

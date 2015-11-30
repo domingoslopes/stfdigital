@@ -1,13 +1,11 @@
 package br.jus.stf.plataforma.shared.security;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,8 +26,9 @@ import br.jus.stf.plataforma.shared.web.CsrfHeaderFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-	private static final String[] USUARIOS = new String[] {"peticionador", "recebedor", "representante", "autuador", "preautuador", "distribuidor", "cartoraria", "gestor-autuacao"};
+	
+	@Autowired
+	private AuthenticationProvider authenticationProvider;
 	
 	@Bean
 	public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
@@ -70,8 +69,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   	
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    	InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder> builder = auth.inMemoryAuthentication();
-    	Arrays.asList(USUARIOS).forEach(u -> builder.withUser(u).password("123").authorities(u, "servidor"));
+    	auth.authenticationProvider(authenticationProvider);
     }
   
 	private CsrfTokenRepository csrfTokenRepository() {

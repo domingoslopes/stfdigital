@@ -4,18 +4,21 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.acessos.domain.model.Grupo;
 import br.jus.stf.plataforma.acessos.domain.model.Papel;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
-import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.Segmento;
 import br.jus.stf.plataforma.acessos.domain.model.TipoInformacao;
-import br.jus.stf.plataforma.acessos.domain.model.TipoSegmento;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
 
@@ -35,6 +38,16 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	public Usuario findOne(Long sequencial) {
 		return super.findOne(sequencial);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Usuario findOne(String login) {
+		return super.findOne(new Specification<Usuario>(){
+			@Override
+			public Predicate toPredicate(Root<Usuario> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				return cb.equal(root.get("login"), login);
+			}} );
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -44,10 +57,7 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	
 	@Override
 	public Papel findOnePapel(Long sequencial) {
-		Query query = entityManager.createQuery("SELECT papel FROM Papel papel WHERE papel.sequencial = :id");
-		query.setParameter("id", sequencial);
-		
-		return (Papel)query.getSingleResult();
+		return entityManager.find(Papel.class, sequencial);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -60,10 +70,7 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 
 	@Override
 	public Grupo findOneGrupo(Long sequencial) {
-		Query query = entityManager.createQuery("SELECT grupo FROM Grupo grupo WHERE grupo.sequencial = :id");
-		query.setParameter("id", sequencial);
-		
-		return (Grupo)query.getSingleResult();
+		return entityManager.find(Grupo.class, sequencial);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -76,10 +83,7 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	
 	@Override
 	public TipoInformacao findOneTipoInformacao(Long sequencial) {
-		Query query = entityManager.createQuery("SELECT tipo FROM TipoInformacao tipo WHERE tipo.sequencial = :id");
-		query.setParameter("id", sequencial);
-		
-		return (TipoInformacao)query.getSingleResult();
+		return entityManager.find(TipoInformacao.class, sequencial);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -91,49 +95,14 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	}
 	
 	@Override
-	public TipoSegmento findOneTipoSegmento(Long sequencial) {
-		Query query = entityManager.createQuery("SELECT tipo FROM TipoSegmento tipo WHERE tipo.sequencial = :id");
-		query.setParameter("id", sequencial);
-		
-		return (TipoSegmento)query.getSingleResult();
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<TipoSegmento> findAllTipoSegmento() {
-		Query query = entityManager.createQuery("SELECT tipo FROM Tipo tipo ORDER BY tipo.nome");
-		
-		return query.getResultList();
-	}
-	
-	@Override
 	public Segmento findOneSegmento(Long sequencial) {
-		Query query = entityManager.createQuery("SELECT segmento FROM Segmento segmento WHERE segmento.sequencial = :id");
-		query.setParameter("id", sequencial);
-		
-		return (Segmento)query.getSingleResult();
+		return entityManager.find(Segmento.class, sequencial);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Segmento> findAllSegmento() {
 		Query query = entityManager.createQuery("SELECT segmento FROM Segmento segmento ORDER BY segmento.nome");
-		
-		return query.getResultList();
-	}
-	
-	@Override
-	public Recurso findOneRecurso(Long sequencial) {
-		Query query = entityManager.createQuery("SELECT recurso FROM Recurso recurso WHERE recurso.sequencial = :id");
-		query.setParameter("id", sequencial);
-		
-		return (Recurso)query.getSingleResult();
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Recurso> findAllRecurso() {
-		Query query = entityManager.createQuery("SELECT recurso FROM Recurso recurso ORDER BY recurso.nome");
 		
 		return query.getResultList();
 	}

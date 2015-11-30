@@ -15,8 +15,7 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $window, $q) {
-			$window.sessionStorage.setItem('papel', JSON.stringify({nome: 'peticionador'}));
+		beforeEach(inject(function($rootScope, $controller, $q) {
 			scope = $rootScope.$new();
 			
 			fakePesquisaService = {
