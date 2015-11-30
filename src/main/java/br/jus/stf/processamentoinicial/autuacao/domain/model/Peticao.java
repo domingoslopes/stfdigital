@@ -69,6 +69,9 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@Column(name = "DSC_MOTIVO_REJEICAO")
 	private String motivoRejeicao;
 	
+	@Column(name = "DSC_MOTIVO_DEVOLUCAO")
+	private String motivoDevolucao;
+	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PartePeticao.class)
 	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
 	private Set<Parte> partes = new HashSet<Parte>(0);
@@ -202,6 +205,10 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public String motivoRejeicao() {
 		return this.motivoRejeicao;
 	}
+	
+	public String motivoDevolucao() {
+		return this.motivoDevolucao;
+	}
 
 	/**
 	 * 
@@ -232,9 +239,9 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
 	 */
 	public void devolver(final String motivoDevolucao) {
-		Validate.notBlank(motivoDevolucao, "peticao.motivoRejeicao.required");
+		Validate.notBlank(motivoDevolucao, "peticao.motivoDevolucao.required");
 			
-		this.motivoRejeicao = motivoDevolucao;
+		this.motivoDevolucao = motivoDevolucao;
 	}
 
 	/**

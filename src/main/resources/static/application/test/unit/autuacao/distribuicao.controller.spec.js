@@ -16,15 +16,10 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $http, properties, MinistroService) {
+		beforeEach(inject(function($rootScope, $controller, MinistroService) {
 			scope = $rootScope.$new();
-			$httpBackend.expectGET(properties.apiUrl + '/ministros').respond([{id : 42, nome: 'Min. Cármen Lúcia'}, {id : 44, nome: 'Min. Dias Toffoli'}]);
+			fakeData = [{id : 42, nome: 'Min. Cármen Lúcia'}, {id : 44, nome: 'Min. Dias Toffoli'}];
 
-			MinistroService.listar().success(function(result) {
-				fakeData = result;
-			});
-			
-			$httpBackend.flush();
 			stateParams = {idTarefa: 1};
 			
 			controller = $controller('DistribuicaoController', {
@@ -41,9 +36,9 @@
 		});
 		
 		it('Deveria carregar a lista de ministros no escopo do controlador', function() {
-			expect(scope.ministros[0].nome).toEqual('Min. Cármen Lúcia');
-			expect(scope.ministros[1].nome).toEqual('Min. Dias Toffoli');
-			expect(scope.ministros.length).toEqual(2);
+			expect(scope.ministrosCandidados[0].nome).toEqual('Min. Cármen Lúcia');
+			expect(scope.ministrosCandidados[1].nome).toEqual('Min. Dias Toffoli');
+			expect(scope.ministrosCandidados.length).toEqual(2);
 		});
 		
 	});

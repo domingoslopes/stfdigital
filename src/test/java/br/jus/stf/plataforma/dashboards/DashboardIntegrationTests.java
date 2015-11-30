@@ -19,28 +19,28 @@ public class DashboardIntegrationTests extends AbstractIntegrationTests {
 
 	@Test
 	public void recuperarDashboardPadrao() throws Exception {
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "peticionador")).andExpect(status().isOk())
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "peticionador")).andExpect(status().isOk())
+				.andExpect(jsonPath("$.dashlets[0]", is("minhas-peticoes")));
+
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "preautuador")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
 
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "preautuador")).andExpect(status().isOk())
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "autuador")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
 
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "autuador")).andExpect(status().isOk())
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "distribuidor")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
 
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "distribuidor")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
-
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "recebedor")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "recebedor")).andExpect(status().isOk())
+				.andExpect(jsonPath("$.dashlets[0]", is("minhas-peticoes")));
 		
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "cartoraria")).andExpect(status().isOk())
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "cartoraria")).andExpect(status().isOk())
 		.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
 		
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "representante")).andExpect(status().isOk())
-		.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "representante")).andExpect(status().isOk())
+		.andExpect(jsonPath("$.dashlets[0]", is("minhas-peticoes")));
 		
-		mockMvc.perform(get("/api/dashboards/padrao").header("papel", "gestor-autuacao")).andExpect(status().isOk())
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "gestor-autuacao")).andExpect(status().isOk())
 		.andExpect(jsonPath("$.dashlets[0]", is("grafico-gestao")));
 	}
 
