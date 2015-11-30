@@ -16,8 +16,7 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, $httpBackend, $window, $log, properties) {
-			$window.sessionStorage.papel = JSON.stringify('recebedor');
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, $log, properties) {
 			
 			$httpBackend.expectGET(properties.apiUrl + '/tiporecebimentos').respond([{sigla : '2', nome: 'Sedex'}, {sigla : '3', nome: 'Malote'}]);
 			$httpBackend.expectGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);

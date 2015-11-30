@@ -56,7 +56,7 @@
 			expect(browser.isElementPresent(principalPage.conteudo)).toBe(true);
 			
 			// Iniciando o Processo de Autuação...
-			principalPage.iniciarProcesso('link_registrar_peticao_eletronica');
+			principalPage.iniciarProcesso('link_registrar-peticao-eletronica');
 			
 			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao/);
@@ -68,7 +68,7 @@
 			
 			principalPage = new PrincipalPage();
 			
-			principalPage.iniciarProcesso('link_registrar_peticao_eletronica');
+			principalPage.iniciarProcesso('link_registrar-peticao-eletronica');
 			
 			peticionar('AP');
 			
@@ -162,8 +162,6 @@
 			peticionamentoPage.registrar();
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
-			expect(principalPage.dashletMinhasTarefas.count()).toBeGreaterThan(0);
 			
 			expect(principalPage.dashletMinhasPeticoes.count()).toBeGreaterThan(0);
 		}

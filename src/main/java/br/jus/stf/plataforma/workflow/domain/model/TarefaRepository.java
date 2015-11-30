@@ -27,7 +27,7 @@ public interface TarefaRepository {
 	 * @param papel
 	 * @return
 	 */
-	List<Tarefa> listar(String papel);
+	List<Tarefa> listar();
 	
 	/**
 	 * Consulta uma tarefa

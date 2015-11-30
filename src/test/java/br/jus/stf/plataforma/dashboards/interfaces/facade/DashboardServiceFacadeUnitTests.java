@@ -43,9 +43,9 @@ public class DashboardServiceFacadeUnitTests {
 	@Test
 	public void recuperarPadrao() throws Exception {
 		Dashboard fakeDashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02")));
-		Mockito.when(dashboardRepository.consultarPadraoDoPapel("papel")).thenReturn(fakeDashboard);
+		Mockito.when(dashboardRepository.consultarPadrao()).thenReturn(fakeDashboard);
 
-		DashboardDto dashboard = dashboardServiceFacade.recuperarPadrao("papel");
+		DashboardDto dashboard = dashboardServiceFacade.recuperarPadrao();
 		Assert.assertArrayEquals(new String[] { "dashlet-01", "dashlet-02" }, dashboard.getDashlets().toArray());
 	}
 

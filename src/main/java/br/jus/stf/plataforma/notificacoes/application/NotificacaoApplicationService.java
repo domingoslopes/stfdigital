@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.notificacoes.application;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,11 @@ public class NotificacaoApplicationService {
 	}
 
 	public void notificar(final TipoNotificacao tipo, final String mensagem, final List<String> notificados) {
-		notificados.forEach(notificado -> {
-			Notificacao notificacao = new Notificacao(tipo, mensagem, notificado);
-			notificacaoApplicationEvent.notificacaoEnviada(notificacao);
-		});
+		List<Notificacao> notificacoes = new ArrayList<Notificacao>();
+		notificados.stream()
+			.map(notificado -> new Notificacao(tipo, mensagem, notificado))
+			.forEach(notificacoes::add);
+		notificacaoApplicationEvent.notificacaoEnviada(notificacoes);
 	}
 	
 }
