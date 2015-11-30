@@ -21,6 +21,7 @@ import br.jus.stf.plataforma.shared.actions.handler.ActionConditionHandler;
 import br.jus.stf.plataforma.shared.actions.support.ActionConditionHandlerInfo;
 import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
 import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
+import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
 
 /**
  * Registro que fornece as ações definidas. O registro é realizado na inicialização do bean
@@ -32,6 +33,9 @@ import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
  */
 @Component
 public class ActionMappingRegistry implements InitializingBean {
+	
+	@Autowired
+	private AcessosRestAdapter acessosRestAdapter;
 
 	/**
 	 * Armazena uma lista ordenada de todas ações definidas para a entidade (resourceClass) em questão.
@@ -111,9 +115,9 @@ public class ActionMappingRegistry implements InitializingBean {
 				info.setControllerClass(controllerClass);
 				info.setMethodName(method.getName());
 				info.setResourcesClass(getResourcesClass(method));
-				info.setResourcesMode(getResourcesMode(method));
+				info.setResourcesMode(getResourcesMode(method)); 
 				info.getNeededAuthorities().addAll(
-						Arrays.asList(actionMapping.neededAuthorities()));
+						acessosRestAdapter.carregarPermissoesRecurso(actionMapping.id(), "ACAO"));
 				
 			} else if (handlers.containsKey(annotation.annotationType())) {
 				info.getActionHandlersInfo().add(
@@ -125,7 +129,7 @@ public class ActionMappingRegistry implements InitializingBean {
 	}
 	
 	/**
-	 * Verifica qual o modo de recuros a partir do p
+	 * Verifica qual o modo de recursos
 	 * 
 	 * @param method
 	 * @return

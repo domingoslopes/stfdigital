@@ -17,7 +17,7 @@ import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
  *
  */
 @Component
-public class NotificacaoUIServiceImpl implements NotificacaoUIService {
+public class NotificacaoUIServiceImpl extends NotificacaoServiceImpl implements NotificacaoUIService {
 
 	private static final String DESTINO = "/notificacoes"; 
 	

@@ -33,11 +33,4 @@ public @interface ActionMapping {
      */
     String name();
     
-	/**
-	 * Os identificadores dos perfis de acesso para validação de segurança 
-	 * 
-	 @return os perfis de segurança
-	 */
-    String[] neededAuthorities() default {};
-    
 }

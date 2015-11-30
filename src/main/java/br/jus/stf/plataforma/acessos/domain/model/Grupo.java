@@ -84,7 +84,14 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 	public void atribuirPermissoes(Set<Permissao> permissoes) {
 		Validate.notEmpty(permissoes, "papel.permissoes.required");
 		
-		this.permissoes = permissoes;
+		this.permissoes.addAll(permissoes);
+	}
+	
+	@Override
+	public void removerPermissoes(Set<Permissao> permissoes) {
+		Validate.notEmpty(permissoes, "papel.permissoes.required");
+		
+		this.permissoes.removeAll(permissoes);
 	}
 	
 	@Override
@@ -103,7 +110,6 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Grupo other = (Grupo) obj;
-		
 		return sequencial.equals(other.sequencial);
 	}
 
