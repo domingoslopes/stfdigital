@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.stf.plataforma.identidades.application.AssociadoApplicationService;
 import br.jus.stf.plataforma.identidades.interfaces.commands.AssociadoCommand;
-import br.jus.stf.plataforma.identidades.interfaces.facade.AssociadoServiceFacade;
 
 /**
  * API responsável por operações relacioandas aos associados de órgãos.
@@ -24,7 +24,7 @@ import br.jus.stf.plataforma.identidades.interfaces.facade.AssociadoServiceFacad
 public class AssociadoRestResource {
 	
 	@Autowired
-	private AssociadoServiceFacade associadoServiceFacade;
+	private AssociadoApplicationService associadoApplicationService;
 	
 	/**
 	 * Cadastra um novo associado a  um detrrminado órgão.
@@ -36,6 +36,6 @@ public class AssociadoRestResource {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		
-		this.associadoServiceFacade.cadastrarAssociado(command.getIdOrgao(), command.getCPF(), command.getNome(), command.getTipoAssociacao(), command.getCargo());
+		this.associadoApplicationService.cadastrar(command.getIdOrgao(), command.getCPF(), command.getNome(), command.getTipoAssociacao(), command.getCargo());
 	}
 }
