@@ -6,33 +6,26 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import br.jus.stf.shared.stereotype.ValueObject;
+import br.jus.stf.shared.PapelId;
 
 @Entity
 @Table(name = "PAPEL", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_PAPEL"}))
-public class Papel implements ValueObject<Papel>, Principal {
+public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId>, Principal {
 	
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@Column(name = "SEQ_PAPEL")
-	@SequenceGenerator(name = "PAPELID", sequenceName = "PLATAFORMA.SEQ_PAPEL", allocationSize = 1)
-	@GeneratedValue(generator = "PAPELID", strategy = GenerationType.SEQUENCE)
-	private Long sequencial;
+	@EmbeddedId
+	private PapelId id;
 	
 	@Column(name = "NOM_PAPEL", nullable = false)
 	private String nome;
@@ -47,20 +40,21 @@ public class Papel implements ValueObject<Papel>, Principal {
 		
 	}
 	
-	public Papel(final Long sequencial, final String nome) {
-		Validate.notNull(sequencial, "papel.sequencial.required");
+	public Papel(final PapelId id, final String nome) {
+		Validate.notNull(id, "papel.id.required");
 		Validate.notBlank(nome, "papel.nome.required");
 		
-		this.sequencial = sequencial;
+		this.id = id;
 		this.nome = nome;
-	}
-	
-	public Long toLong() {
-		return sequencial;
 	}
 	
 	public String nome() {
 		return nome;
+	}
+	
+	@Override
+	public PapelId id() {
+		return id;
 	}
 
 	@Override
@@ -84,12 +78,7 @@ public class Papel implements ValueObject<Papel>, Principal {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		
-		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
-		
-		return result;
+		return new HashCodeBuilder().append(id).hashCode();
 	}
 	
 	@Override
@@ -98,12 +87,13 @@ public class Papel implements ValueObject<Papel>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Papel other = (Papel) obj;
-		return other != null && sequencial.equals(other.sequencial);
+		return sameIdentityAs(other);
 	}
 
 	@Override
-	public boolean sameValueAs(final Papel other) {
-		return other != null && nome.equals(other.nome);
+	public boolean sameIdentityAs(final Papel other) {
+		return other != null
+				&& id.sameValueAs(other.id);
 	}
 
 }
