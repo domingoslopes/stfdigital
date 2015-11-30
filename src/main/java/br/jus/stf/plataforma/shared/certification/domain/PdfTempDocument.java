@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.infra;
+package br.jus.stf.plataforma.shared.certification.domain;
 
 import java.io.File;
 import java.io.FileInputStream;
