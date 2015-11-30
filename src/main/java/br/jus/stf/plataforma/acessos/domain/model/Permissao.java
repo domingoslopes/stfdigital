@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
@@ -63,10 +64,10 @@ public class Permissao implements ValueObject<Permissao> {
 	public Permissao(final Long sequencial, final TipoPermissao tipoPermissao, final Segmento segmento) {
 		this(sequencial, tipoPermissao);
 		Validate.notNull(segmento, "permissao.segmento.required");
-		Validate.notNull(segmento.tipoInformacao(), "permissao.tipoInformacao.required");
+		Validate.notNull(segmento.tipo(), "permissao.tipoInformacao.required");
 		
 		this.segmento = segmento;
-		this.tipoInformacao = segmento.tipoInformacao();
+		this.tipoInformacao = segmento.tipo();
 	}
 	
 	public Long toLong() {
@@ -87,12 +88,7 @@ public class Permissao implements ValueObject<Permissao> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		
-		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
-		
-		return result;
+		return new HashCodeBuilder().append(segmento).hashCode();
 	}
 	
 	@Override

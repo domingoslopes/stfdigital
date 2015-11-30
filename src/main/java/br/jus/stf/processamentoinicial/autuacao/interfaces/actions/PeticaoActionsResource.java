@@ -44,7 +44,7 @@ public class PeticaoActionsResource {
 	}
 	
 	@ActionMapping(id = "DEVOLVER-PETICAO", name = "Devolver Petição")
-	public void autuar(DevolverPeticaoCommand command) {
+	public void devolver(DevolverPeticaoCommand command) {
 		TipoDevolucao tipoDevolucao = TipoDevolucao.valueOf(command.getTipoDevolucao());
 		peticaoServiceFacade.devolver(command.getPeticaoId(), tipoDevolucao, command.getNumeroOficio()); 
 	}
