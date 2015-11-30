@@ -36,7 +36,7 @@ alter table plataforma.permissao_recurso add constraint FK_PERMISSAO_PERE foreig
 
 create table plataforma.grupo (seq_grupo bigint not null, nom_grupo varchar2(100) not null, tip_grupo varchar2(20) not null, constraint pk_grupo primary key (seq_grupo));
 alter table plataforma.grupo add constraint uk_grup_nom_grupo unique(nom_grupo, tip_grupo);
-alter table plataforma.grupo add constraint ck_grup_tip_grupo check (tip_grupo in ('ADVOGADO', 'CIDADAO', 'ORGAO', 'SETOR'));
+alter table plataforma.grupo add constraint ck_grup_tip_grupo check (tip_grupo in ('COMISSAO', 'CONFIGURACAO', 'GRUPO_TRABALHO', 'ORGAO_CONVENIADO', 'SETOR', 'TRIBUNAL'));
 
 create table plataforma.permissao_grupo (seq_permissao bigint not null, seq_grupo bigint not null, constraint pk_permissao_grupo primary key (seq_permissao, seq_grupo));
 alter table plataforma.permissao_grupo add constraint FK_GRUPO_PEGR foreign key (seq_grupo) references plataforma.grupo;
