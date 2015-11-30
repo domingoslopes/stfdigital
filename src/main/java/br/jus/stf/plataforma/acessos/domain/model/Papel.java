@@ -72,7 +72,14 @@ public class Papel implements ValueObject<Papel>, Principal {
 	public void atribuirPermissoes(Set<Permissao> permissoes) {
 		Validate.notEmpty(permissoes, "papel.permissoes.required");
 		
-		this.permissoes = permissoes;
+		this.permissoes.addAll(permissoes);
+	}
+	
+	@Override
+	public void removerPermissoes(Set<Permissao> permissoes) {
+		Validate.notEmpty(permissoes, "papel.permissoes.required");
+		
+		this.permissoes.removeAll(permissoes);
 	}
 	
 	@Override
@@ -91,14 +98,12 @@ public class Papel implements ValueObject<Papel>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Papel other = (Papel) obj;
-		
 		return other != null && sequencial.equals(other.sequencial);
 	}
 
 	@Override
 	public boolean sameValueAs(final Papel other) {
-		return other != null
-				&& nome.equals(other.nome);
+		return other != null && nome.equals(other.nome);
 	}
 
 }

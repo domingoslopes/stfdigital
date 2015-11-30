@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('MinhasPeticoesDashletController', ['$scope', 'PesquisaService', '$window', function($scope, PesquisaService, $window) {
+	angular.autuacao.controller('MinhasPeticoesDashletController', ['$scope', 'PesquisaService', 'SecurityService', function($scope, PesquisaService, SecurityService) {
 		$scope.peticoes = [];
 		
 		var pesquisar = function() {
@@ -29,7 +29,7 @@
     		dto.campos = ['identificacao', 'dataCadastramento'];
     		dto.ordenadores = {'identificacao' : 'ASC'};
     		dto.filtros = {
-    			'usuarioCadastramento': [JSON.parse($window.sessionStorage.papel).nome]
+    			'usuarioCadastramento': [SecurityService.user().name]
     		};
 
     		return dto;

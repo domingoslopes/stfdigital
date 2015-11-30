@@ -66,9 +66,9 @@
             </a>
             <span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
           </li>
-          <li action-menu id="registrar_peticao_fisica" title="Novo Item" details="Petição Física" state="registro" resources="[{}]"></li>
-          <li action-menu id="registrar_peticao_eletronica" title="Novo Item" details="Petição Digital" state="peticionamento.advogado" resources="[{}]"></li>
-          <li action-menu id="registrar_peticao_eletronica_orgao" title="Novo Item" details="Petição Órgão" state="peticionamento.orgao" resources="[{}]"></li>
+          <li action-menu id="registrar-peticao-fisica" title="Novo Item" details="Petição Física" state="registro" resources="[{}]"></li>
+          <li action-menu id="registrar-peticao-eletronica" title="Novo Item" details="Petição Digital" state="peticionamento.advogado" resources="[{}]"></li>
+          <li action-menu id="registrar-peticao-eletronica-orgao" title="Novo Item" details="Petição Órgão" state="peticionamento.orgao" resources="[{}]"></li>
         </ul>
         <div class="clearfix"></div>
       </div>
@@ -127,7 +127,7 @@
           <!-- START User Info-->
           <div class="visible-lg visible-md m-t-10">
             <div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
-              <span class="semi-bold" data-ng-bind="papelAtivo.nome"></span>
+              <span class="semi-bold" data-ng-bind="user.name"></span>
             </div>
             <div class="dropdown pull-right">
               <button id="papeisButton" class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -136,19 +136,6 @@
             </span>
               </button>
               <ul class="dropdown-menu profile-dropdown" role="menu">
-                <li ng-repeat="papel in papeis">
-                    <a id="{{papel.nome}}" ng-click="ativar(papel)">
-                        <div ng-switch="papelAtivo == papel">
-                            <div ng-switch-when="true">
-		                        <i class="fa fa-check" ng-show="papelAtivo == papel"></i>
-		                        <span>{{papel.nome}}</span>
-	                        </div>
-	                        <div ng-switch-when="false">
-                                <span style="margin-left: 17px">{{papel.nome}}</span>
-	                        </div>
-                        </div>
-                    </a>
-                </li>
                 <li class="bg-master-lighter">
                   <a id="logout" href="#" ng-click="logout()" class="clearfix">
                     <span class="pull-left">Logout</span>

@@ -8,7 +8,6 @@ import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,8 +36,8 @@ public class TarefaRestResource {
     
     @ApiOperation(value = "Lista todas as tarefas associadas ao papel do usuário corrente")
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<TarefaDto> tarefas(@RequestHeader("papel") String papel) {    	
-        return tarefaServiceFacade.tarefas(papel);
+	public List<TarefaDto> tarefas() {    	
+        return tarefaServiceFacade.tarefas();
 	}
 	
     @RequestMapping(value = "/{id}/completar", method = RequestMethod.PUT)

@@ -24,10 +24,9 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($compile, $rootScope, $state, $window, $q, ActionService) {
+		beforeEach(inject(function($compile, $rootScope, $state, $q, ActionService) {
 			scope = $rootScope.$new();
 			scope.resources = resources;
-			$window.sessionStorage.setItem('papel', JSON.stringify({nome : "peticionador"}));
 			element = angular.element('<actions resources="resources" type="DummyObj" />');
 			ActionService.list = function () {
 				return $q(function(res, rej) {
@@ -57,10 +56,9 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($compile, $rootScope, $state, $q, $window, ActionService) {
+		beforeEach(inject(function($compile, $rootScope, $state, $q, ActionService) {
 			scope = $rootScope.$new();
 			scope.resources = resources;
-			$window.sessionStorage.setItem('papel', JSON.stringify({nome : "peticionador"}));
 			element = angular.element('<action id="dummy_action" resources="resources" />');
 			template = $compile(element)(scope);
 			actionService = ActionService;

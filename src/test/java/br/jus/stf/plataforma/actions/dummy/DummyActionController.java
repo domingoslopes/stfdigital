@@ -18,8 +18,7 @@ public class DummyActionController {
 
 	}
 	
-	@ActionMapping(id = "DO_NOTHING_LONG", name = "Do Nothing Long",
-			neededAuthorities = "RESTRICT_ACTION")
+	@ActionMapping(id = "DO_NOTHING_LONG", name = "Do Nothing Long")
 	public void doNothing(Long resource) {
 
 	}
