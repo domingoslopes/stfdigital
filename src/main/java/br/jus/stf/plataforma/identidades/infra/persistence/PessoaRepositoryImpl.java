@@ -51,5 +51,22 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 		
 		return query.getResultList();
 	}
+	
+	/**
+	 * Recupera uma pessoa de acordo com o CPF informado.
+	 * 
+	 * @param cpf Nº do CPF da pessoa.
+	 * 
+	 * @return Dados da pessoa.
+	 */
+
+	@Override
+	public Pessoa findByCpf(String cpf) {
+		
+		Query query = entityManager.createQuery("SELECT p FROM Pessoa p WHERE p.cpf = :cpf");
+		query.setParameter("cpf", cpf.trim());
+		
+		return (Pessoa)query.getSingleResult();
+	}
 
 }
