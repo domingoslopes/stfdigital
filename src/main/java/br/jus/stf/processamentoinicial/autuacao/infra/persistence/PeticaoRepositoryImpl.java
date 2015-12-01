@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.identidades.domain.model.TipoAssociado;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 
 /**
@@ -90,6 +92,16 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	@Override
 	public List<Orgao> findAllOrgao() {
 		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao ORDER BY orgao.nome");
+		
+		return query.getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Orgao> findOrgaoByPessoaRepresentante(PessoaId id){
+		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo = :tipo AND asso.pessoa.id = :id) ORDER BY orgao.nome");
+		query.setParameter("tipo", TipoAssociado.REPRESENTANTE);
+		query.setParameter("id", id);
 		
 		return query.getResultList();
 	}
