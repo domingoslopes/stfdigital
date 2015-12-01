@@ -26,7 +26,7 @@ public class AssociadoCommand {
 	@ApiModelProperty(value = "Tipo de associação.", required=true)
 	private String tipoAssociacao;
 	
-	@ApiModelProperty(value ="Cargo do associado.")
+	@ApiModelProperty(value ="Cargo do associado.", required=false)
 	private String cargo;
 
 	public Long getIdOrgao() {
