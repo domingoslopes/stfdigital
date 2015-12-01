@@ -7,7 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,9 +28,9 @@ public class DocumentRestAdapter implements DocumentAdapter {
 
 	@Override
 	public SigningDocument retrieve(DocumentoId id) throws IOException {
-		MockHttpServletResponse response = new MockHttpServletResponse();
+		IntegrationServletResponse response = new IntegrationServletResponse();
 		docRestResource.recuperar(id.toLong(), response);
-		return new PdfTempDocument(new ByteArrayInputStream(response.getContentAsByteArray()));
+		return new PdfTempDocument(new ByteArrayInputStream(response.getBytes()));
 	}
 
 	@Override
