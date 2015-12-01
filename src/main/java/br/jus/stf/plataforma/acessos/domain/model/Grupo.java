@@ -6,35 +6,28 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import br.jus.stf.shared.stereotype.ValueObject;
+import br.jus.stf.shared.GrupoId;
 
 @Entity
 @Table(name = "GRUPO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_GRUPO", "TIP_GRUPO"}))
-public class Grupo implements ValueObject<Grupo>, Principal {
+public class Grupo implements br.jus.stf.shared.stereotype.Entity<Grupo, GrupoId>, Principal {
 	
-	private static final long serialVersionUID = 1L;
-
-	@Id
-	@Column(name = "SEQ_GRUPO")
-	@SequenceGenerator(name = "GRUPOID", sequenceName = "PLATAFORMA.SEQ_GRUPO", allocationSize = 1)
-	@GeneratedValue(generator = "GRUPOID", strategy = GenerationType.SEQUENCE)
-	private Long sequencial;
+	@EmbeddedId
+	private GrupoId id;
 	
 	@Column(name = "NOM_GRUPO", nullable = false)
 	private String nome;
@@ -53,20 +46,16 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 		
 	}
 	
-	public Grupo(final Long sequencial, final String nome, final TipoGrupo tipo) {
-		Validate.notNull(sequencial, "grupo.sequencial.required");
+	public Grupo(final GrupoId id, final String nome, final TipoGrupo tipo) {
+		Validate.notNull(id, "grupo.id.required");
 		Validate.notBlank(nome, "grupo.nome.required");
 		Validate.notNull(tipo, "grupo.tipo.required");
 		
-		this.sequencial = sequencial;
+		this.id = id;
 		this.nome = nome;
 		this.tipo = tipo;
 	}
 
-	public Long toLong() {
-		return sequencial;
-	}
-	
 	public String nome() {
 		return nome;
 	}
@@ -76,32 +65,32 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 	}
 	
 	@Override
+	public GrupoId id() {
+		return id;
+	}
+	
+	@Override
 	public Set<Permissao> permissoes() {
 		return Collections.unmodifiableSet(permissoes);
 	}
 
 	@Override
 	public void atribuirPermissoes(Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "papel.permissoes.required");
+		Validate.notEmpty(permissoes, "grupo.permissoes.required");
 		
 		this.permissoes.addAll(permissoes);
 	}
 	
 	@Override
 	public void removerPermissoes(Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "papel.permissoes.required");
+		Validate.notEmpty(permissoes, "grupo.permissoes.required");
 		
 		this.permissoes.removeAll(permissoes);
 	}
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		
-		result = prime * result + ((sequencial == null) ? 0 : sequencial.hashCode());
-		
-		return result;
+		return new HashCodeBuilder().append(id).hashCode();
 	}
 	
 	@Override
@@ -110,14 +99,13 @@ public class Grupo implements ValueObject<Grupo>, Principal {
 		if (obj == null || getClass() != obj.getClass()) return false;
 	
 		Grupo other = (Grupo) obj;
-		return sequencial.equals(other.sequencial);
+		return sameIdentityAs(other);
 	}
 
 	@Override
-	public boolean sameValueAs(final Grupo other) {
+	public boolean sameIdentityAs(final Grupo other) {
 		return other != null
-				&& nome.equals(other.nome)
-				&& tipo.equals(other.tipo);
+				&& id.sameValueAs(other.id);
 	}
 
 }
