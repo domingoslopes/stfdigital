@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,9 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Pessoa> T save(Pessoa pessoa) {
-		return (T) super.save(pessoa);
+		Pessoa p = super.save(pessoa);
+		this.entityManager.flush();
+		return (T) p;
 	}
 
 	@Override
@@ -66,7 +69,12 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 		Query query = entityManager.createQuery("SELECT p FROM Pessoa p WHERE p.cpf = :cpf");
 		query.setParameter("cpf", cpf.trim());
 		
-		return (Pessoa)query.getSingleResult();
+		try{
+			return (Pessoa)query.getSingleResult();
+		}
+		catch(NoResultException e){
+			return null;
+		}
 	}
 
 }
