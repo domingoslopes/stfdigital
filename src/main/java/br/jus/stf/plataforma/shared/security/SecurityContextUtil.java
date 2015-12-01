@@ -1,8 +1,9 @@
 package br.jus.stf.plataforma.shared.security;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,11 +41,10 @@ public class SecurityContextUtil {
 	/**
 	 * @return as autorizações
 	 */
-	@SuppressWarnings("unchecked")
-	public static Collection<GrantedAuthority> getAuthorities() {
-		return (Collection<GrantedAuthority>) Optional.ofNullable(getAuthentication())
-				.map(auth -> auth.getAuthorities())
-				.orElse(Collections.emptyList());
+	public static Set<GrantedAuthority> getAuthorities() {
+		return Optional.ofNullable(getAuthentication())
+				.map(auth -> new HashSet<GrantedAuthority>(auth.getAuthorities()))
+				.orElse(new HashSet<GrantedAuthority>(0));
 	}
 	
 	/**
