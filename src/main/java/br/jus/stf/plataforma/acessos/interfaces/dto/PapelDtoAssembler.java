@@ -3,6 +3,8 @@
  */
 package br.jus.stf.plataforma.acessos.interfaces.dto;
 
+import org.springframework.stereotype.Component;
+
 import br.jus.stf.plataforma.acessos.domain.model.Papel;
 
 /**
@@ -12,6 +14,7 @@ import br.jus.stf.plataforma.acessos.domain.model.Papel;
  * @since 30.11.2015
  *
  */
+@Component
 public class PapelDtoAssembler {
 	
 	public PapelDto toDto(Papel papel) {

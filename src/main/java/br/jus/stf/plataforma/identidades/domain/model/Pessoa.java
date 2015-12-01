@@ -51,6 +51,16 @@ public class Pessoa implements Entity<Pessoa, PessoaId> {
 		this.nome = nome;
 	}
 	
+	public Pessoa(final PessoaId id, final String nome, final String cpf){
+		this(id, nome);
+		
+		Validate.notBlank(cpf, "pessoa.cpf.required");
+				
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+	}
+	
 	public Pessoa(final PessoaId id, final String nome, final String cpf, final String email, final String telefone){
 		this(id, nome);
 		
