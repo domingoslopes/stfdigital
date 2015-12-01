@@ -12,6 +12,7 @@
 	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
 		$stateProvider.state('peticionamento', {
 			url: '/peticao',
+			abstract: true,
 			views: {
 				'@': {
 					templateUrl: 'application/autuacao/peticionamento/peticionamento.tpl.html',
@@ -24,6 +25,7 @@
 				}
 			}
 		}).state('peticionamento.advogado', {
+			url: '/advogado',
 			views: {
 				'@peticionamento': {
 					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
