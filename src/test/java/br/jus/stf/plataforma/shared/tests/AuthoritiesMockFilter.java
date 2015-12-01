@@ -1,22 +1,23 @@
 package br.jus.stf.plataforma.shared.tests;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
 
 /**
  * Criado provisoriamente para viabilizar o funcionamento básico dos Mecanismo de Workflow e do Mecanismo de Ações, que
@@ -31,15 +32,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 @Component
 public class AuthoritiesMockFilter extends OncePerRequestFilter {
+	
+	@Autowired
+	AcessosRestAdapter acessoAdapter;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		Optional<String> papel = Optional.ofNullable(request.getHeader("papel"));
+		Optional<String> login = Optional.ofNullable(request.getHeader("login"));
 		
-		if (papel.isPresent()) {
-			List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_" + papel.get()));
-			User principal = new User(papel.get(), "N/A", authorities);
-			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(papel.get(), principal, authorities);
+		if (login.isPresent()) {
+			Set<GrantedAuthority> authorities = acessoAdapter.carregarPermissoesUsuario(login.get());
+			User principal = new User(login.get(), "N/A", authorities);
+			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(login.get(), principal, authorities);
 	
 	        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
