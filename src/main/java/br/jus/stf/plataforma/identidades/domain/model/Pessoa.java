@@ -6,6 +6,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.Email;
 
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.stereotype.Entity;
@@ -24,6 +25,19 @@ public class Pessoa implements Entity<Pessoa, PessoaId> {
 	
 	@Column(name = "NOM_PESSOA", nullable = false)
 	private String nome;
+	
+	@Column(name = "COD_CPF")
+	private String cpf;
+	
+	@Column(name = "COD_OAB")
+	private String oab;
+	
+	@Email
+	@Column(name = "DSC_EMAIL")
+	private String email;
+	
+	@Column(name = "DSC_TELEFONE")
+	private String telefone;
 
 	Pessoa() {
 
@@ -35,6 +49,28 @@ public class Pessoa implements Entity<Pessoa, PessoaId> {
 		
 		this.id = id;
 		this.nome = nome;
+	}
+	
+	public Pessoa(final PessoaId id, final String nome, final String cpf, final String email, final String telefone){
+		this(id, nome);
+		
+		Validate.notBlank(cpf, "pessoa.cpf.required");
+		Validate.notBlank(email, "pessoa.email.required");
+		Validate.notBlank(telefone, "pessoa.telefone.required");
+		
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.email = email;
+		this.telefone = telefone;
+	}
+	
+	public Pessoa(final PessoaId id, final String nome, final String cpf, final String oab, final String email, final String telefone){
+		this(id, nome, cpf, email, telefone);
+		
+		Validate.notBlank(oab, "pessoa.oab.required");
+		
+		this.oab = oab;
 	}
 
 	@Override
