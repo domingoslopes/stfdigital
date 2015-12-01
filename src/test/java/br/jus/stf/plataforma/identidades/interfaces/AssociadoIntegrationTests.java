@@ -20,19 +20,30 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  */
 public class AssociadoIntegrationTests extends AbstractIntegrationTests {
 	
-	private String dadosAssociadoParaCadastro;
+	private String dadosAssociadoComCargoParaCadastro;
+	private String dadosAssociadoSemCargoParaCadastro;
 	
 	@Before
 	public void criarObjetosJSON() throws UnsupportedEncodingException, Exception{
 		
-		StringBuilder dadosAssociadoParaCadastro = new StringBuilder();
-		dadosAssociadoParaCadastro.append("{\"idOrgao\":1, \"cpf\":\"00011188545\",\"nome\":\"FULANO DA SILVA\",\"tipoAssociacao\":\"Gestor\",\"cargo\":\"Analista\"}");
-		this.dadosAssociadoParaCadastro = dadosAssociadoParaCadastro.toString();
+		StringBuilder dadosAssociadoComCargoParaCadastro = new StringBuilder();
+		dadosAssociadoComCargoParaCadastro.append("{\"idOrgao\":1, \"cpf\":\"54218811806\",\"nome\":\"FULANO SAYAJIN\",\"tipoAssociacao\":\"Gestor\",\"cargo\":\"Analista\"}");
+		this.dadosAssociadoComCargoParaCadastro = dadosAssociadoComCargoParaCadastro.toString();
+		
+		StringBuilder dadosAssociadoSemCargoParaCadastro = new StringBuilder();
+		dadosAssociadoSemCargoParaCadastro.append("{\"idOrgao\":1, \"cpf\":\"55448211780\",\"nome\":\"CICRANO POLICARBONATO\",\"tipoAssociacao\":\"Representante\",\"cargo\":\"\"}");
+		this.dadosAssociadoSemCargoParaCadastro = dadosAssociadoSemCargoParaCadastro.toString();
 	}
 	
 	@Test
-	public void cadastrarAssociado() throws Exception {
-		super.mockMvc.perform(post("/api/associado/").header("papel", "Gestor-cadastro").contentType(MediaType.APPLICATION_JSON)
-				.content(this.dadosAssociadoParaCadastro)).andExpect(status().isOk());
+	public void cadastrarAssociadoComCargo() throws Exception {
+		super.mockMvc.perform(post("/api/associado/").header("papel", "gestor-cadastro").contentType(MediaType.APPLICATION_JSON)
+				.content(this.dadosAssociadoComCargoParaCadastro)).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void cadastrarAssociadoSemCargo() throws Exception {
+		super.mockMvc.perform(post("/api/associado/").header("papel", "gestor-cadastro").contentType(MediaType.APPLICATION_JSON)
+				.content(this.dadosAssociadoSemCargoParaCadastro)).andExpect(status().isOk());
 	}
 }
