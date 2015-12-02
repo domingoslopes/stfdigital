@@ -15,7 +15,6 @@ import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
-import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDto;
 
 /**
  * @author Lucas.Rodrigues
