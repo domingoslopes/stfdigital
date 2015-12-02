@@ -135,14 +135,7 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	}
 	
 	public String setor(){
-		
-		String nome = "";
-		Optional<Grupo> gru = this.grupos.stream().filter(g -> g.tipo() == TipoGrupo.SETOR).findAny();
-				
-		if (gru.isPresent())
-			nome = gru.get().nome();
-		
-		return nome;
+		return this.grupos.stream().filter(g -> g.tipo() == TipoGrupo.SETOR).findFirst().map(g -> g.nome()).orElse("");
 	}
 	
 	@Override
