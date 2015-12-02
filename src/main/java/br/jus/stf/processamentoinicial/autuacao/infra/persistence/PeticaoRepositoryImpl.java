@@ -99,9 +99,9 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Orgao> findOrgaoByRepresentacao(PessoaId id){
+	public List<Orgao> findOrgaoByTipoAssociacao(PessoaId id, TipoAssociado... tipos){
 		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo IN :tipos AND asso.pessoa.id = :id) ORDER BY orgao.nome");
-		query.setParameter("tipos", Arrays.asList(TipoAssociado.GESTOR, TipoAssociado.REPRESENTANTE));
+		query.setParameter("tipos", Arrays.asList(tipos));
 		query.setParameter("id", id);
 		
 		return query.getResultList();
