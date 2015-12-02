@@ -17,7 +17,6 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
-import br.jus.stf.shared.stereotype.ValueObject;
 
 /**
  * @author Rafael.Alencar
@@ -25,10 +24,8 @@ import br.jus.stf.shared.stereotype.ValueObject;
  */
 @Entity
 @Table(name = "ASSOCIADO", schema = "CORPORATIVO", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_PESSOA", "SEQ_ORGAO"}))
-public class Associado implements ValueObject<Associado> {
+public class Associado implements br.jus.stf.shared.stereotype.Entity<Associado, Long> {
 
-	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@Column(name = "SEQ_ASSOCIADO")
 	@SequenceGenerator(name = "ASSOCIADOID", sequenceName = "CORPORATIVO.SEQ_ASSOCIADO", allocationSize = 1)
@@ -50,7 +47,8 @@ public class Associado implements ValueObject<Associado> {
 	@Column(name = "DSC_CARGO_FUNCAO")
 	private String cargoFuncao;
 
-	public Associado(final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo) {
+	public Associado(final Long sequencial, final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo) {
+		Validate.notNull(sequencial, "associado.sequencial.required");
 		Validate.notNull(pessoa, "associado.pessoa.required");
 		Validate.notNull(orgao, "associado.orgao.required");
 		Validate.notNull(tipo, "associado.tipo.required");
@@ -60,8 +58,8 @@ public class Associado implements ValueObject<Associado> {
 		this.tipo = tipo;
 	}
 	
-	public Associado(final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo, final String cargoFuncao) {
-		this(pessoa, orgao, tipo);
+	public Associado(final Long sequencial, final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo, final String cargoFuncao) {
+		this(sequencial, pessoa, orgao, tipo);
 		
 		Validate.notBlank(cargoFuncao, "associado.cargoFuncao.required");
 
@@ -95,6 +93,11 @@ public class Associado implements ValueObject<Associado> {
 	public String cargoFuncao() {
 		return cargoFuncao;
 	}
+	
+	@Override
+	public Long id() {
+		return sequencial;
+	}
 
 	@Override
 	public int hashCode() {
@@ -114,11 +117,11 @@ public class Associado implements ValueObject<Associado> {
 
 		Associado other = (Associado) obj;
 
-		return sameValueAs(other);
+		return sameIdentityAs(other);
 	}
 
 	@Override
-	public boolean sameValueAs(Associado other) {
+	public boolean sameIdentityAs(Associado other) {
 		return other != null && pessoa.sameIdentityAs(other.pessoa)
 				&& orgao.sameValueAs(other.orgao)
 				&& tipo.sameValueAs(other.tipo);
