@@ -96,7 +96,6 @@ INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (7, 7);
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (7, 15);
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (8, 9);
 
-
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (1, 'REGISTRAR-PETICAO-ELETRONICA', 'ACAO');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (2, 'REGISTRAR-PETICAO-FISICA', 'ACAO');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (3, 'REGISTRAR-PETICAO-ELETRONICA-ORGAO', 'ACAO');
