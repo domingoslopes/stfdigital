@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.infra.persistence;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -98,9 +99,9 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Orgao> findOrgaoByPessoaRepresentante(PessoaId id){
-		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo = :tipo AND asso.pessoa.id = :id) ORDER BY orgao.nome");
-		query.setParameter("tipo", TipoAssociado.REPRESENTANTE);
+	public List<Orgao> findOrgaoByRepresentacao(PessoaId id){
+		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo IN :tipos AND asso.pessoa.id = :id) ORDER BY orgao.nome");
+		query.setParameter("tipos", Arrays.asList(TipoAssociado.GESTOR, TipoAssociado.REPRESENTANTE));
 		query.setParameter("id", id);
 		
 		return query.getResultList();
