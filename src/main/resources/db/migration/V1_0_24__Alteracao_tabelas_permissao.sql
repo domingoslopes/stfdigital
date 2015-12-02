@@ -7,6 +7,7 @@ insert into corporativo.pessoa (seq_pessoa, nom_pessoa, cod_cpf, cod_oab, dsc_em
 select corporativo.seq_pessoa.nextval, u.nom_usuario, u.cod_cpf, u.cod_oab, u.dsc_email, u.dsc_telefone from plataforma.usuario u;
 
 alter table plataforma.usuario add column seq_pessoa bigint;
+alter table plataforma.usuario drop column nom_usuario;
 alter table plataforma.usuario drop column cod_cpf;
 alter table plataforma.usuario drop column cod_oab;
 alter table plataforma.usuario drop column dsc_email;
