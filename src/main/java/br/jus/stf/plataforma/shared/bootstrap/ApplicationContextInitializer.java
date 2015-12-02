@@ -3,6 +3,7 @@ package br.jus.stf.plataforma.shared.bootstrap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -14,7 +15,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
  * @since 17.06.2015
  */
 @SpringBootApplication
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = ElasticsearchAutoConfiguration.class)
 @ComponentScan("br.jus.stf")
 public class ApplicationContextInitializer {
     
