@@ -67,12 +67,12 @@ public interface PeticaoRepository {
 	public Orgao findOneOrgao(Long id);
 	
 	/**
+	 * @return a lista de órgãos visíveis pela pessoa do associado
+	 */
+	public List<Orgao> findOrgaoByRepresentacao(PessoaId id);
+	
+	/**
 	 * @return a lista de órgãos
 	 */
 	public List<Orgao> findAllOrgao();
-	
-	/**
-	 * @return a lista de órgãos visíveis pelo Associado
-	 */
-	public List<Orgao> findOrgaoByPessoaRepresentante(PessoaId id);
 }
