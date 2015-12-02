@@ -4,9 +4,9 @@ INSERT INTO corporativo.pessoa (seq_pessoa, nom_pessoa, cod_cpf, cod_oab, dsc_em
 
 INSERT INTO plataforma.usuario (seq_usuario, sig_usuario, seq_pessoa) VALUES (plataforma.seq_usuario.nextval, 'gestor-recebimento', corporativo.seq_pessoa.currval);
 
-INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 11);
+INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 9);
 
-INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (11, 11);
+INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (11, 9);
 
 INSERT INTO plataforma.segmento (seq_segmento, nom_segmento, seq_tipo_informacao) VALUES (11, 'ASSINATURA', 5);
 
