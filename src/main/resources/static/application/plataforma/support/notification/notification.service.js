@@ -80,11 +80,11 @@
 		};
 		
 		var PesquisarCommand = function(lida) {
-			var papel = connHeaders().login;
+			var login = connHeaders().login;
 			
 	    	this.indices = ['notificacao']; 
 	        this.tipos = ['Notificacao'];
-	    	this.filtros = {'notificado' : [papel], 'lida' : [lida]};
+	    	this.filtros = {'notificado' : [login], 'lida' : [lida]};
 	        this.ordenadores = {'dataCriacao' : 'DESC'};
 		};
 		
@@ -125,7 +125,7 @@
 		
 		var connHeaders = function() {
 			return {
-				'login' : SecurityService.user().name,
+				'login' : SecurityService.user().login,
 				'X-XSRF-TOKEN' : $cookies.get('XSRF-TOKEN') 
 			};
 		};
