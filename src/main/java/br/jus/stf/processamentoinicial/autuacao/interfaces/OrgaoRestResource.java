@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.plataforma.acessos.application.AcessosApplicationService;
+import br.jus.stf.plataforma.identidades.domain.model.TipoAssociado;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.OrgaoDto;
@@ -33,9 +34,9 @@ public class OrgaoRestResource {
 	private PeticaoRepository peticaoRepository;
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<OrgaoDto> listar() {
+	public List<OrgaoDto> listarRepresentados() {
 		PessoaId id = acessoApplicationService.recuperarInformacoesUsuario(SecurityContextUtil.getUsername()).pessoa().id();
-		return peticaoRepository.findOrgaoByRepresentacao(id).stream().map(orgao -> orgaoDtoAssembler.toDto(orgao)).collect(Collectors.toList());
+		return peticaoRepository.findOrgaoByTipoAssociacao(id, TipoAssociado.GESTOR, TipoAssociado.REPRESENTANTE).stream().map(orgao -> orgaoDtoAssembler.toDto(orgao)).collect(Collectors.toList());
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
