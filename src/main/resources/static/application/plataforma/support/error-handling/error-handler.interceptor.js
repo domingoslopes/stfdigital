@@ -24,7 +24,7 @@
 			responseError : function(rejection) {
 				$log.debug('Response Error: ', rejection);
 				if (rejection.status === 500) {
-					$injector.get('$state').go('erro');
+					$injector.get('$state').go('root.erro');
 				}
 				if (rejection.status === 0) {
 					return;
