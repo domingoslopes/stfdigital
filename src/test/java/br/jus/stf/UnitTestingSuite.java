@@ -14,6 +14,7 @@ import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDtoAssemblerUnit
 import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacadeUnitTests;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporarioUnitTests;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoUnitTests;
+import br.jus.stf.plataforma.identidades.domain.model.AssociadoUnitTests;
 import br.jus.stf.plataforma.identidades.domain.model.PessoaUnitTests;
 import br.jus.stf.plataforma.shared.web.CorsFilterUnitTests;
 import br.jus.stf.plataforma.shared.web.Html5FilterUnitTests;
@@ -76,7 +77,8 @@ import br.jus.stf.shared.TarefaIdUnitTests;
 	DistribuicaoPrevencaoUnitTests.class,
 	PermissaoUsuarioUnitTests.class,
 	PermissaoGrupoUnitTests.class,
-	PermissaoPapelUnitTests.class
+	PermissaoPapelUnitTests.class,
+	AssociadoUnitTests.class
 })
 public class UnitTestingSuite {
 

@@ -4,12 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -28,8 +25,6 @@ public class Associado implements br.jus.stf.shared.stereotype.Entity<Associado,
 
 	@Id
 	@Column(name = "SEQ_ASSOCIADO")
-	@SequenceGenerator(name = "ASSOCIADOID", sequenceName = "CORPORATIVO.SEQ_ASSOCIADO", allocationSize = 1)
-	@GeneratedValue(generator = "ASSOCIADOID", strategy=GenerationType.SEQUENCE)
 	private Long sequencial;
 
 	@ManyToOne
@@ -53,6 +48,7 @@ public class Associado implements br.jus.stf.shared.stereotype.Entity<Associado,
 		Validate.notNull(orgao, "associado.orgao.required");
 		Validate.notNull(tipo, "associado.tipo.required");
 
+		this.sequencial = sequencial;
 		this.pessoa = pessoa;
 		this.orgao = orgao;
 		this.tipo = tipo;
@@ -101,7 +97,7 @@ public class Associado implements br.jus.stf.shared.stereotype.Entity<Associado,
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(pessoa).append(orgao).append(tipo)
+		return new HashCodeBuilder().append(sequencial)
 				.hashCode();
 	}
 
@@ -122,9 +118,7 @@ public class Associado implements br.jus.stf.shared.stereotype.Entity<Associado,
 
 	@Override
 	public boolean sameIdentityAs(Associado other) {
-		return other != null && pessoa.sameIdentityAs(other.pessoa)
-				&& orgao.sameValueAs(other.orgao)
-				&& tipo.sameValueAs(other.tipo);
+		return other != null && sequencial.equals(other.sequencial);
 	}
 
 }
