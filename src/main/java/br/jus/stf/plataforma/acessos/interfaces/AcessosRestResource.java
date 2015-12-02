@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.plataforma.acessos.application.AcessosApplicationService;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
-import br.jus.stf.plataforma.acessos.interfaces.dto.PapelDto;
-import br.jus.stf.plataforma.acessos.interfaces.dto.PapelDtoAssembler;
 import br.jus.stf.plataforma.acessos.interfaces.dto.PermissaoDto;
 import br.jus.stf.plataforma.acessos.interfaces.dto.PermissaoDtoAssembler;
 import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDto;
@@ -36,14 +34,6 @@ public class AcessosRestResource {
 	
 	@Autowired
 	private UsuarioDtoAssembler usuarioDtoAssembler;
-	
-	@Autowired
-	private PapelDtoAssembler papelDtoAssembler; 
-
-	/*@RequestMapping("/usuario")
-	public Principal usuario(Principal usuario) {
-		return usuario;
-	}*/
 	
 	@RequestMapping("/usuarios/permissoes")
 	public Set<PermissaoDto> permissoes(@RequestParam("login") String login) {
@@ -74,11 +64,10 @@ public class AcessosRestResource {
 	public UsuarioDto recuperarInformacoes() {
 		
 		String login = SecurityContextUtil.getUsername();
-		Set<GrantedAuthority> authorities = SecurityContextUtil.getAuthorities().stream().collect(Collectors.toSet());
+		Set<GrantedAuthority> authorities = SecurityContextUtil.getAuthorities();
 		Usuario usuario = this.acessosApplicationService.recuperarInformacoesUsuario(login);
-		Set<PapelDto> papeis = usuario.papeis().stream().map(papel -> this.papelDtoAssembler.toDto(papel)).collect(Collectors.toSet());
 		
-		return this.usuarioDtoAssembler.toDto(usuario.pessoa().nome(), usuario.setor(), papeis, authorities);
+		return this.usuarioDtoAssembler.toDto(usuario, authorities);
 	}
 	
 }
