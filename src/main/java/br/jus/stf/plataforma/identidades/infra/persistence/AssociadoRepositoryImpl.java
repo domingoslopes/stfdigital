@@ -16,12 +16,9 @@ import br.jus.stf.plataforma.identidades.domain.model.AssociadoRepository;
 @Repository
 public class AssociadoRepositoryImpl extends SimpleJpaRepository<Associado, Long> implements AssociadoRepository {
 
-	private EntityManager entityManager;
-	
 	@Autowired
 	public AssociadoRepositoryImpl(EntityManager entityManager) {
 		super(Associado.class, entityManager);
-		this.entityManager = entityManager;
 	}
 	
 	@Override
@@ -32,11 +29,7 @@ public class AssociadoRepositoryImpl extends SimpleJpaRepository<Associado, Long
 	@SuppressWarnings("unchecked")
 	@Override
 	public Associado save(Associado associado) {
-		
-		Associado novoAssociado = super.save(associado); 
-		this.entityManager.flush();
-		
-		return novoAssociado;
+		return super.save(associado); 
 	}
 
 }

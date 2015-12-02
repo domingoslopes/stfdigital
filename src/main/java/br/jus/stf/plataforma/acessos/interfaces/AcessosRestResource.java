@@ -74,11 +74,11 @@ public class AcessosRestResource {
 	public UsuarioDto recuperarInformacoes() {
 		
 		String login = SecurityContextUtil.getUsername();
-		Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) SecurityContextUtil.getAuthorities();
+		Set<GrantedAuthority> authorities = SecurityContextUtil.getAuthorities().stream().collect(Collectors.toSet());
 		Usuario usuario = this.acessosApplicationService.recuperarInformacoesUsuario(login);
 		Set<PapelDto> papeis = usuario.papeis().stream().map(papel -> this.papelDtoAssembler.toDto(papel)).collect(Collectors.toSet());
 		
-		return this.usuarioDtoAssembler.toDto(usuario.pessoa().nome(), "", papeis, authorities);
+		return this.usuarioDtoAssembler.toDto(usuario.pessoa().nome(), usuario.setor(), papeis, authorities);
 	}
 	
 }

@@ -134,6 +134,17 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		this.permissoes.removeAll(permissoes);
 	}
 	
+	public String setor(){
+		
+		String nome = "";
+		Optional<Grupo> gru = this.grupos.stream().filter(g -> g.tipo() == TipoGrupo.SETOR).findAny();
+				
+		if (gru.isPresent())
+			nome = gru.get().nome();
+		
+		return nome;
+	}
+	
 	@Override
 	public UsuarioId id() {
 		return id;
