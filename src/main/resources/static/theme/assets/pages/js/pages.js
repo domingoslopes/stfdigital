@@ -1753,8 +1753,9 @@
          }
 
 
-         this.$element.bind('mouseenter mouseleave', sidebarMouseEnter);
-         this.$pageContainer.bind('mouseover', sidebarMouseLeave);
+         //this.$element.bind('mouseenter mouseleave', sidebarMouseEnter);
+         //this.$pageContainer.bind('mouseover', sidebarMouseLeave);
+         this.$element.hover(sidebarMouseEnter, sidebarMouseLeave);
 
      }
 
