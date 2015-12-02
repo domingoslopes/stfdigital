@@ -17,6 +17,6 @@ import org.springframework.stereotype.Component;
 public class UsuarioDtoAssembler {
 	
 	public UsuarioDto toDto(String nome, String setor, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {		
-		return new UsuarioDto(nome, "", papeis, authorities);
+		return new UsuarioDto(nome, setor, papeis, authorities);
 	}
 }
