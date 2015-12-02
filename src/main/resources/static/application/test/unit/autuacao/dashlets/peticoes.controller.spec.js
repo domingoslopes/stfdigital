@@ -16,7 +16,7 @@
 		beforeEach(module('appDev'));
 		
 		beforeEach(inject(function($rootScope, $controller, $q, SecurityService) {
-			SecurityService.mockUser({name: 'peticionador'});
+			SecurityService.mockUser({login: 'peticionador'});
 			scope = $rootScope.$new();
 			
 			fakePesquisaService = {
