@@ -27,6 +27,7 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 			.andExpect(jsonPath("$.login", is("autuador")))
 			.andExpect(jsonPath("$.nome", is("autuador")))
 			.andExpect(jsonPath("$.setorLotacao", is("SEJ")))
-			.andExpect(jsonPath("$.papeis[0].nome", is("autuador")));
+			.andExpect(jsonPath("$.papeis[0].nome", is("autuador")))
+			.andExpect(jsonPath("$.papeis[0].setor", is("SEJ")));
 	}
 }

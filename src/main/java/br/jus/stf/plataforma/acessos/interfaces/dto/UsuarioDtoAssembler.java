@@ -25,7 +25,6 @@ public class UsuarioDtoAssembler {
 	
 	public UsuarioDto toDto(Usuario usuario, Set<GrantedAuthority> authorities) {		
 		Set<PapelDto> papeis = usuario.papeis().stream().map(papel -> this.papelDtoAssembler.toDto(papel)).collect(Collectors.toSet());
-		//String setorLotacao = usuario.grupos().stream().filter(g -> g.tipo() == TipoGrupo.SETOR).findFirst().map(g -> g.nome()).orElse("");
 		return new UsuarioDto(usuario.login(), usuario.pessoa().nome(), usuario.setor(), papeis, authorities);
 	}
 }
