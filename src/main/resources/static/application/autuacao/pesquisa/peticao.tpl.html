@@ -78,7 +78,7 @@
 									<tr ng-repeat="resultado in resultados">
 										<td>{{resultado.objeto.identificacao}}</td>
 										<td>{{resultado.objeto.classeSugerida.sigla}}</td>
-										<td><a ui-sref="detalhe({idPeticao: resultado.id})" title="Visualizar"><i class="fa fa-eye" /></a></td>
+										<td><a ui-sref="root.detalhe({idPeticao: resultado.id})" title="Visualizar"><i class="fa fa-eye" /></a></td>
 									</tr>
 								</tbody>
 							</table>
