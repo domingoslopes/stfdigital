@@ -29,7 +29,7 @@
     		dto.campos = ['identificacao', 'dataCadastramento'];
     		dto.ordenadores = {'identificacao' : 'ASC'};
     		dto.filtros = {
-    			'usuarioCadastramento': [SecurityService.user().name]
+    			'usuarioCadastramento': [SecurityService.user().login]
     		};
 
     		return dto;

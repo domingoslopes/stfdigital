@@ -32,11 +32,16 @@ public class ElasticsearchLocalConfiguration {
     @PostConstruct
 	private void configure() throws IOException {		
 		Environment env = new Environment(elasticsearchClient.settings());
-        if (!env.pluginsFile().exists()) {
-            FileSystemUtils.mkdirs(env.pluginsFile());
-            PluginManager pluginManager = new PluginManager(env, null, OutputMode.DEFAULT, TimeValue.timeValueMinutes(2));
-            pluginManager.downloadAndExtract("mobz/elasticsearch-head");
-        }
+		
+		if (env.dataFiles().length > 0) {
+			FileSystemUtils.deleteRecursively(env.dataFiles());
+		}
+		
+		if (!env.pluginsFile().exists()) {
+	        FileSystemUtils.mkdirs(env.pluginsFile());
+	        PluginManager pluginManager = new PluginManager(env, null, OutputMode.DEFAULT, TimeValue.timeValueMinutes(2));
+	        pluginManager.downloadAndExtract("mobz/elasticsearch-head");
+		}
 	}
 	
 }

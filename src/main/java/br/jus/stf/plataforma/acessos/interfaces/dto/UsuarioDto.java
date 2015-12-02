@@ -21,6 +21,9 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Classe responsável por transportar os dados de usuário do back-end para o front-end.")
 public class UsuarioDto {
 
+	@ApiModelProperty(value="Login do usuário.")
+	private String login;
+	
 	@ApiModelProperty(value="Nome do usuário.")
 	private String nome;
 	
@@ -33,11 +36,20 @@ public class UsuarioDto {
 	@ApiModelProperty(value="Lista de permissões do usuário.")
 	private Set<GrantedAuthority> authorities;
 	
-	public UsuarioDto(String nome, String setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
+	public UsuarioDto(String login, String nome, String setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
+		this.login = login;
 		this.nome = nome;
 		this.setorLotacao = setorLotacao;
 		this.papeis = papeis;
 		this.authorities = authorities;
+	}
+	
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getNome() {
@@ -63,4 +75,13 @@ public class UsuarioDto {
 	public void setPapeis(Set<PapelDto> papeis) {
 		this.papeis = papeis;
 	}
+
+	public Set<GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+	
 }
