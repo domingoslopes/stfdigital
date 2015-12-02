@@ -24,6 +24,9 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		
 		//Recupera as informações do usuário.
 		this.mockMvc.perform(get("/api/acessos/usuario").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$.nome", is("autuador")));
+			.andExpect(jsonPath("$.login", is("autuador")))
+			.andExpect(jsonPath("$.nome", is("autuador")))
+			.andExpect(jsonPath("$.setorLotacao", is("")))
+			.andExpect(jsonPath("$.papeis[0].nome", is("autuador")));
 	}
 }
