@@ -65,11 +65,12 @@ public class AssociadoApplicationService {
 		}
 		
 		pessoaInserida = this.pessoaRepository.save(pessoa);
+		Long sequencial = associadoRepository.nextId();
 		
 		if (cargo.trim().isEmpty()){
-			this.associadoRepository.save(new Associado(pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase())));
+			this.associadoRepository.save(new Associado(sequencial, pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase())));
 		} else {
-			this.associadoRepository.save(new Associado(pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase()), cargo));
+			this.associadoRepository.save(new Associado(sequencial, pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase()), cargo));
 		}
 		
 	}
