@@ -1,6 +1,6 @@
 package br.jus.stf.plataforma.shared.certification.interfaces.dto;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
 
 public class PreSignatureDto {
 

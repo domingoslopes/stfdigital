@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.application.DocumentValidatorApplicationService;
 import br.jus.stf.plataforma.shared.certification.domain.PdfInputStreamDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentValidation;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidation;
 
 @Component
 public abstract class GenericSignatureValidator {

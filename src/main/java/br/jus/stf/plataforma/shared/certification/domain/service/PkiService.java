@@ -7,12 +7,12 @@ import java.security.cert.X509Certificate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
-import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidationException;
-import br.jus.stf.plataforma.shared.certification.domain.model.CompositePki;
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateValidationException;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.CompositePki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiRepository;
 
 @Component
 public class PkiService {

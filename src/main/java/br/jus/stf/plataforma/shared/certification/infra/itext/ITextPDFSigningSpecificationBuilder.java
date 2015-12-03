@@ -3,10 +3,10 @@ package br.jus.stf.plataforma.shared.certification.infra.itext;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
-import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningStrategy;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PDFSigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PDFSigningStrategy;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
 
 @Component
 public class ITextPDFSigningSpecificationBuilder implements PDFSigningSpecificationBuilder {
