@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
-import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
+import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.PdfTempDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificationUtil;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
@@ -59,7 +59,7 @@ public class SignatureRestResource {
 	private SignatureApplicationService signatureApplicationService;
 	
 	@Autowired
-	private PDFSigningSpecificationBuilder specBuilder;
+	private PdfSigningSpecificationBuilder specBuilder;
 
 	@ApiOperation("Cria um novo contexto de assinatura com o certificado.")
 	@RequestMapping(value = "/prepare", method = RequestMethod.POST)
