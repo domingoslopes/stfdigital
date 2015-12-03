@@ -17,9 +17,10 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
+import br.jus.stf.shared.UsuarioId;
 
 @Repository
-public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> implements UsuarioRepository {
+public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioId> implements UsuarioRepository {
 	
 	private EntityManager entityManager;
 	
@@ -31,8 +32,8 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Usuario findOne(Long sequencial) {
-		return super.findOne(sequencial);
+	public Usuario findOne(UsuarioId id) {
+		return super.findOne(id);
 	}
 	
 	@SuppressWarnings("unchecked")
