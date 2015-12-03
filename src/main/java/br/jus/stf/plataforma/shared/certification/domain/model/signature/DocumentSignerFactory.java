@@ -2,7 +2,7 @@ package br.jus.stf.plataforma.shared.certification.domain.model.signature;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
 
 @Component
 public class DocumentSignerFactory {
