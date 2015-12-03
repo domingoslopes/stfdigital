@@ -24,7 +24,7 @@
 			var command = $scope.command($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo, $scope.pecas);
 			
 			PeticaoService.peticionar(command).success(function(data) {
-				$state.go('dashboard');
+				$state.go('root.dashboard');
 				$scope.idPeticao = data;
 				$scope.$parent.idPeticao = data;
 				messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
