@@ -25,6 +25,6 @@ public class UsuarioDtoAssembler {
 	
 	public UsuarioDto toDto(Usuario usuario, Set<GrantedAuthority> authorities) {		
 		Set<PapelDto> papeis = usuario.papeis().stream().map(papel -> this.papelDtoAssembler.toDto(papel)).collect(Collectors.toSet());
-		return new UsuarioDto(usuario.login(), usuario.pessoa().nome(), usuario.setor(), papeis, authorities);
+		return new UsuarioDto(usuario.id().toLong(), usuario.login(), usuario.pessoa().nome(), usuario.setor(), papeis, authorities);
 	}
 }
