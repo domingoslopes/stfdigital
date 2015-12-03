@@ -114,13 +114,14 @@ public class SignatureRestResource {
 			throws IOException {
 		SignedDocument signedDocument = signatureApplicationService
 				.recoverSignedDocument(new DocumentSignerId(contextId));
-		InputStream is = signedDocument.stream();
+		InputStream is = signedDocument.document().stream();
 
 		response.setHeader("Content-disposition", "attachment; filename=" + contextId + ".pdf");
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Length", String.valueOf(is.available()));
 
 		IOUtils.copy(is, response.getOutputStream());
+		IOUtils.closeQuietly(is);
 		response.flushBuffer();
 	}
 
