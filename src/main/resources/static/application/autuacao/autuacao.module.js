@@ -10,6 +10,7 @@
 	angular.autuacao = angular.module('autuacao', []);
 	
 	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
+		
 		$stateProvider.state('processos', {
 			parent: 'root',
 			url: '/processos/:processoId',
@@ -39,7 +40,7 @@
 		}).state('pesquisa.processo', {
 			url: '/processo',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/pesquisa/processo.tpl.html',
 					controller: 'PesquisaProcessoController',
 					resolve : {
