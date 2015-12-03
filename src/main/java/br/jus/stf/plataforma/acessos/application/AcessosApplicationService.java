@@ -15,7 +15,6 @@ import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
-import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDto;
 
 /**
  * @author Lucas.Rodrigues
@@ -32,20 +31,23 @@ public class AcessosApplicationService {
 	private RecursoRepository recursoRepository;
 	
 	public Set<Permissao> carregarPermissoesUsuario(String login) {
-		Usuario usuario = usuarioRepository.findOne(login);
-		return usuario.permissoes();
+		return Optional.ofNullable(usuarioRepository.findOne(login))
+				.map(usuario -> usuario.permissoes())
+				.orElse(Collections.emptySet());
 	}
 	
 	public Set<Permissao> carregarPermissoesRecurso(String nome, String tipo) {
 		return Optional.ofNullable(recursoRepository.findOne(nome, TipoRecurso.valueOf(tipo)))
-			.map(recurso -> recurso.permissoesExigidas()).orElse(Collections.emptySet());
+				.map(recurso -> recurso.permissoesExigidas())
+				.orElse(Collections.emptySet());
 	}
 	
 	public Set<String> carregarPapeisUsuario(String login) {
-		Usuario usuario = usuarioRepository.findOne(login);
-		return usuario.papeis().stream()
-				.map(papel -> papel.nome())
-				.collect(Collectors.toSet());
+		return Optional.ofNullable(usuarioRepository.findOne(login))
+				.map(usuario -> usuario.papeis().stream()
+						.map(papel -> papel.nome())
+						.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
 	}
 	
 	/**

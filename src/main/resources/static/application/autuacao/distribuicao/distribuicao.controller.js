@@ -9,7 +9,7 @@
 
 	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, messages, properties, $state, PeticaoService, PesquisaService) {
 		
-		$scope.idPeticao = $stateParams.idTarefa;
+		$scope.idPeticao = $stateParams.resources[0];
 		
 		$scope.ministrosCandidados = data.data;
 		

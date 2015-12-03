@@ -10,7 +10,7 @@
 	angular.autuacao.controller('DevolucaoController', function ($log, PeticaoService, $state, $stateParams, messages, properties) {
 		var devolucao = this;
 		
-		devolucao.idPeticao = $stateParams.idTarefa;
+		devolucao.idPeticao = $stateParams.resources[0];
 		
 		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, {id : 'TRANSITADO', nome : "Transitado"}, {id : 'BAIXADO', nome : "Baixado"}];
 		

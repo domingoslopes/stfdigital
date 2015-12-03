@@ -10,7 +10,7 @@
 	var actions = [{
 	    id: "dummy_action",
 	    description: "Dummy Action",
-	    resourcesType: "DummyObj",
+	    groups: ["DummyObj"],
 	    hasConditionHandlers: true,
 	    resourcesMode: "Many",
 	    neededAuthorities: ["peticionador"]
@@ -27,7 +27,7 @@
 		beforeEach(inject(function($compile, $rootScope, $state, $q, ActionService) {
 			scope = $rootScope.$new();
 			scope.resources = resources;
-			element = angular.element('<actions resources="resources" type="DummyObj" />');
+			element = angular.element('<actions resources="resources" groups="DummyObj" />');
 			ActionService.list = function () {
 				return $q(function(res, rej) {
 					res(actions);

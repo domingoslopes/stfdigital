@@ -6,19 +6,19 @@
   <message id="peticionamentoOrgao" name="Peticionamento por Órgão"/>
   <process id="autuarOriginarios" isExecutable="true">
     <subProcess id="analise" name="Análise">
-      <userTask id="autuacao" name="Autuar Processo" activiti:candidateGroups="autuador"></userTask>
+      <userTask id="autuar" name="Autuar Processo" activiti:candidateGroups="autuador"></userTask>
       <startEvent id="sid-F52E21D9-3C7F-4E32-A3A6-84AAC338F411"/>
       <endEvent id="sid-B0AAF0F4-CEE2-43F6-B6ED-9E6175DCE7D2"/>
-      <sequenceFlow id="sid-E069A95A-245D-4327-AE1A-C8740AD2F6DE" sourceRef="sid-F52E21D9-3C7F-4E32-A3A6-84AAC338F411" targetRef="autuacao"/>
-      <sequenceFlow id="sid-C13511CC-43BA-438F-8AA8-5236214B84E0" sourceRef="autuacao" targetRef="sid-B0AAF0F4-CEE2-43F6-B6ED-9E6175DCE7D2"/>
+      <sequenceFlow id="sid-E069A95A-245D-4327-AE1A-C8740AD2F6DE" sourceRef="sid-F52E21D9-3C7F-4E32-A3A6-84AAC338F411" targetRef="autuar"/>
+      <sequenceFlow id="sid-C13511CC-43BA-438F-8AA8-5236214B84E0" sourceRef="autuar" targetRef="sid-B0AAF0F4-CEE2-43F6-B6ED-9E6175DCE7D2"/>
     </subProcess>
-    <userTask id="devolucao" name="Registrar Motivação da Devolução" activiti:candidateGroups="cartoraria">
+    <userTask id="devolver-peticao" name="Registrar Motivação da Devolução" activiti:candidateGroups="cartoraria">
     </userTask>
-    <sequenceFlow id="finalizardevolucao" sourceRef="devolucao" targetRef="devolvido"/>
+    <sequenceFlow id="finalizardevolucao" sourceRef="devolver-peticao" targetRef="devolvido"/>
     <endEvent id="devolvido" name="Petição Devolvida"/>
-    <userTask id="distribuicao" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
+    <userTask id="distribuir-processo" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
     </userTask>
-    <sequenceFlow id="finalizardistribuicao" sourceRef="distribuicao" targetRef="distribuido"/>
+    <sequenceFlow id="finalizardistribuicao" sourceRef="distribuir-processo" targetRef="distribuido"/>
     <endEvent id="distribuido" name="Processo &#xa;Distribuído"/>
     <boundaryEvent id="abortarAnalise" name="Petição Inválida" attachedToRef="analise" cancelActivity="true">
       <signalEventDefinition signalRef="peticaoInvalida"/>
@@ -29,19 +29,19 @@
     </startEvent>
     <subProcess id="sid-1D5D17F1-3404-430A-925C-8C480DE4D604" name="Recebimento">
       <startEvent id="sid-17BD91B5-A4EE-4ACA-A1E7-9B87D218CA45"/>
-      <userTask id="preautuacao" name="Pré-Autuar Processo" activiti:candidateGroups="preautuador">
+      <userTask id="preautuar" name="Pré-Autuar Processo" activiti:candidateGroups="preautuador">
       </userTask>
       <endEvent id="sid-38F5A9D5-D501-4CAD-9A9E-D16CB66258E5"/>
-      <sequenceFlow id="sid-6A1030CA-E8E9-48F7-B335-B4BBFD5CE456" sourceRef="sid-17BD91B5-A4EE-4ACA-A1E7-9B87D218CA45" targetRef="preautuacao"/>
-      <sequenceFlow id="sid-537862E9-FB79-471D-B7A3-B2FD380D23A1" sourceRef="preautuacao" targetRef="sid-38F5A9D5-D501-4CAD-9A9E-D16CB66258E5"/>
+      <sequenceFlow id="sid-6A1030CA-E8E9-48F7-B335-B4BBFD5CE456" sourceRef="sid-17BD91B5-A4EE-4ACA-A1E7-9B87D218CA45" targetRef="preautuar"/>
+      <sequenceFlow id="sid-537862E9-FB79-471D-B7A3-B2FD380D23A1" sourceRef="preautuar" targetRef="sid-38F5A9D5-D501-4CAD-9A9E-D16CB66258E5"/>
     </subProcess>
     <endEvent id="sid-9DBEF93A-7502-4CE1-9EDB-A89D4E307F53" name="Petição Rejeitada"/>
     <sequenceFlow id="sid-433EC1E6-C399-4821-90A4-D9E009B6E564" sourceRef="abortarAnalise" targetRef="sid-9DBEF93A-7502-4CE1-9EDB-A89D4E307F53"/>
-    <sequenceFlow id="preautuar" sourceRef="receberremessa" targetRef="sid-1D5D17F1-3404-430A-925C-8C480DE4D604"/>
+    <sequenceFlow id="preautuacao" sourceRef="receberremessa" targetRef="sid-1D5D17F1-3404-430A-925C-8C480DE4D604"/>
     <sequenceFlow id="sid-CC112AEA-D2B3-4FF8-BD99-1AD0335F44B7" sourceRef="sid-839872B4-BE62-4ACB-963B-CAAFE68A7374" targetRef="analise"/>
-    <sequenceFlow id="sid-E53CA52C-BB2D-4C03-8E3D-C1C9DE66FC61" sourceRef="sid-66262870-833B-49EB-8FED-58C83921B3B1" targetRef="devolucao"/>
+    <sequenceFlow id="sid-E53CA52C-BB2D-4C03-8E3D-C1C9DE66FC61" sourceRef="sid-66262870-833B-49EB-8FED-58C83921B3B1" targetRef="devolver-peticao"/>
     <sequenceFlow id="sid-5F777509-1214-4155-BF98-705F75C909B9" sourceRef="sid-1D5D17F1-3404-430A-925C-8C480DE4D604" targetRef="analise"/>
-    <sequenceFlow id="sid-6754D57D-CF33-4A60-AB5E-D6A493BB6603" sourceRef="analise" targetRef="distribuicao"/>
+    <sequenceFlow id="sid-6754D57D-CF33-4A60-AB5E-D6A493BB6603" sourceRef="analise" targetRef="distribuir-processo"/>
     <boundaryEvent id="sid-66262870-833B-49EB-8FED-58C83921B3B1" name="Remessa Indevida" attachedToRef="sid-1D5D17F1-3404-430A-925C-8C480DE4D604" cancelActivity="true">
       <signalEventDefinition signalRef="remessaIndevida"/>
     </boundaryEvent>
