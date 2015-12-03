@@ -2,13 +2,13 @@ package br.jus.stf.plataforma.shared.certification.domain.model.signature;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentType;
 
-public class PDFSigningSpecification implements SigningSpecification {
+public class PdfSigningSpecification implements SigningSpecification {
 
-	private PDFSigningStrategy strategy;
+	private PdfSigningStrategy strategy;
 	private String reason;
 	private HashType hashType;
 
-	public PDFSigningSpecification(PDFSigningStrategy strategy, String reason, HashType hashType) {
+	public PdfSigningSpecification(PdfSigningStrategy strategy, String reason, HashType hashType) {
 		this.strategy = strategy;
 		this.reason = reason;
 		this.hashType = hashType;
@@ -22,7 +22,7 @@ public class PDFSigningSpecification implements SigningSpecification {
 	}
 
 	@Override
-	public PDFSigningStrategy strategy() {
+	public PdfSigningStrategy strategy() {
 		return strategy;
 	}
 

@@ -28,21 +28,21 @@ import br.jus.stf.plataforma.shared.certification.domain.model.certificate.Certi
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.AuthenticatedAttributes;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashToSign;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.PDFSigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PdfSigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
 
-public class PKCS7DettachedITextPDFSignatureFinisher implements ITextPDFSignatureFinisher {
+public class PKCS7DettachedITextPdfSignatureFinisher implements ITextPdfSignatureFinisher {
 
 	private byte[] firstHash;
 	private PdfPKCS7 pdfPKCS7;
 	private int estimatedSize;
 
 	@Override
-	public PreSignature finishPreSignature(final PDFSigningSpecification spec,
+	public PreSignature finishPreSignature(final PdfSigningSpecification spec,
 			CertificateValidation certificateValidation, PdfSignatureAppearance appearance) throws SigningException {
 		try {
-			int estimatedSize = ITextPDFSignatureUtil.estimateSignatureSize(certificateValidation.crls(), false, false);
+			int estimatedSize = ITextPdfSignatureUtil.estimateSignatureSize(certificateValidation.crls(), false, false);
 
 			ExternalDigest externalDigest = new ExternalDigest() {
 				@Override
@@ -69,14 +69,14 @@ public class PKCS7DettachedITextPDFSignatureFinisher implements ITextPDFSignatur
 			Calendar cal = Calendar.getInstance();
 			sgnNew.setSignDate(cal);
 			byte[] authAttrs = sgnNew.getAuthenticatedAttributeBytes(primeiroHash, null,
-					ITextPDFSignatureUtil.crlsToByteCollection(certificateValidation.crls()), CryptoStandard.CMS);
+					ITextPdfSignatureUtil.crlsToByteCollection(certificateValidation.crls()), CryptoStandard.CMS);
 
 			this.firstHash = primeiroHash;
 			this.pdfPKCS7 = sgnNew;
 			this.estimatedSize = estimatedSize;
 
 			return new PreSignature(new AuthenticatedAttributes(authAttrs),
-					new HashToSign(ITextPDFSignatureUtil.applyHash(authAttrs, spec.hashType())), spec.hashType());
+					new HashToSign(ITextPdfSignatureUtil.applyHash(authAttrs, spec.hashType())), spec.hashType());
 		} catch (IOException e) {
 			throw new SigningException("Erro ler pré-assinatura do PDF..", e);
 		} catch (DocumentException e) {
@@ -95,13 +95,13 @@ public class PKCS7DettachedITextPDFSignatureFinisher implements ITextPDFSignatur
 	}
 
 	@Override
-	public void finishPostSignature(PDFSigningSpecification spec, CertificateValidation certificateValidation,
+	public void finishPostSignature(PdfSigningSpecification spec, CertificateValidation certificateValidation,
 			PdfSignatureAppearance appearance, HashSignature signature) throws SigningException {
 		try {
 			PdfPKCS7 sgnNew = pdfPKCS7;
 			sgnNew.setExternalDigest(signature.signatureAsBytes(), null, "RSA");
 
-			Collection<byte[]> crls = ITextPDFSignatureUtil.crlsToByteCollection(certificateValidation.crls());
+			Collection<byte[]> crls = ITextPdfSignatureUtil.crlsToByteCollection(certificateValidation.crls());
 
 			byte[] encodedSig = sgnNew.getEncodedPKCS7(firstHash, null, null, crls, CryptoStandard.CMS);
 			byte[] paddedSig = new byte[estimatedSize];

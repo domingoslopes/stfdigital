@@ -15,7 +15,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.validation.Docume
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidator;
 import br.jus.stf.plataforma.shared.certification.infra.configuration.CryptoProvider;
 
-public class ITextPDFSignatureValidator implements DocumentValidator {
+public class ITextPdfSignatureValidator implements DocumentValidator {
 
 	boolean aceitarUmaAssinaturaValida = true;
 	boolean aceitarAssinaturaCertificadoVencido = false;
@@ -23,7 +23,7 @@ public class ITextPDFSignatureValidator implements DocumentValidator {
 	boolean verificarCRL = false;
 	private Pki[] pkis;
 
-	public ITextPDFSignatureValidator(Pki[] pkis) {
+	public ITextPdfSignatureValidator(Pki[] pkis) {
 		this.pkis = pkis;
 	}
 

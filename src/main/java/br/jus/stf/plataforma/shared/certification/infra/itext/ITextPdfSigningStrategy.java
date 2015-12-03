@@ -14,30 +14,30 @@ import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateValidation;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.PDFSigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.PDFSigningStrategy;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PdfSigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PdfSigningStrategy;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
 import br.jus.stf.plataforma.shared.certification.infra.PdfTempSignedDocument;
 
-public class ITextPDFSigningStrategy implements PDFSigningStrategy {
+public class ITextPdfSigningStrategy implements PdfSigningStrategy {
 
 	private static final String PDF_EXTENSION = ".pdf";
 	private static final String TEMP_FILE_PREFIX = "iTextPDFSigning-";
 
-	private ITextPDFSignatureFinisher finisher;
+	private ITextPdfSignatureFinisher finisher;
 
-	private PDFSigningSpecification spec;
+	private PdfSigningSpecification spec;
 
 	private PdfSignatureAppearance appearance;
 
-	public ITextPDFSigningStrategy(ITextPDFSignatureFinisher finisher) {
+	public ITextPdfSigningStrategy(ITextPdfSignatureFinisher finisher) {
 		this.finisher = finisher;
 	}
 
 	@Override
-	public void prepareStrategyWith(PDFSigningSpecification spec) {
+	public void prepareStrategyWith(PdfSigningSpecification spec) {
 		this.spec = spec;
 	}
 
