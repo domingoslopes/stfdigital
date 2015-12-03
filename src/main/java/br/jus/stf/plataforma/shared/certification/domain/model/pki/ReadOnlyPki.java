@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.shared.certification.domain.model.pki;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
@@ -9,11 +10,11 @@ import javax.security.auth.x500.X500Principal;
 public class ReadOnlyPki implements Pki {
 
 	private PkiId id;
-	
+
 	private List<X509Certificate> rootCertificates;
-	
+
 	private List<X509Certificate> intermediateCertificates;
-	
+
 	public ReadOnlyPki(PkiId id, List<X509Certificate> rootCerts, List<X509Certificate> intermediateCerts) {
 		this.id = id;
 		this.rootCertificates = rootCerts;
@@ -50,9 +51,14 @@ public class ReadOnlyPki implements Pki {
 			}
 		}
 	}
-	
+
 	public PkiId id() {
 		return id;
 	}
-	
+
+	@Override
+	public List<X509Certificate> getTrustedAnchors() {
+		return Collections.unmodifiableList(rootCertificates);
+	}
+
 }
