@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DocumentSignatureValidatorFile extends GenericSignatureValidator
-		implements ConstraintValidator<DocumentSigned, File> {
+		implements ConstraintValidator<SignedDocument, File> {
 
 	@Override
 	public boolean isValid(File value, ConstraintValidatorContext context) {
