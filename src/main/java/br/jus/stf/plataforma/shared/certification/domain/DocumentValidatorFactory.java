@@ -5,6 +5,8 @@ import br.jus.stf.plataforma.shared.certification.domain.model.validation.Docume
 
 public interface DocumentValidatorFactory {
 
+	DocumentValidator createDocumentSignatureValidator(Pki pki);
+
 	DocumentValidator createDocumentSignatureValidator(Pki[] pkis);
 
 }

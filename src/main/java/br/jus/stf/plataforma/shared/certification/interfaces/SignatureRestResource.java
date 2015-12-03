@@ -24,7 +24,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
 import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.PdfTempDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificationUtil;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateUtils;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiType;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
@@ -66,7 +66,7 @@ public class SignatureRestResource {
 	public SignerDto prepare(@RequestBody PrepareCommand command) throws DecoderException, SigningException {
 		// Converte o certificado recebido para o objeto da classe
 		// X509Certificate.
-		X509Certificate certificate = CertificationUtil
+		X509Certificate certificate = CertificateUtils
 				.bytesToCertificate(Hex.decodeHex(command.getCertificateAsHex().toCharArray()));
 		// Constrói uma especificação de assinatura de PDF.
 		SigningSpecification spec = specBuilder.pkcs7Dettached().reason(SIGNING_REASON)

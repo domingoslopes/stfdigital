@@ -1,8 +1,11 @@
 package br.jus.stf.plataforma.shared.certification.infra;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.shared.certification.domain.CertificateValidatorFactory;
 import br.jus.stf.plataforma.shared.certification.domain.DocumentValidatorFactory;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.CompositePki;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidator;
 import br.jus.stf.plataforma.shared.certification.infra.itext.ITextPdfSignatureValidator;
@@ -10,9 +13,17 @@ import br.jus.stf.plataforma.shared.certification.infra.itext.ITextPdfSignatureV
 @Component
 public class DocumentValidatorFactoryImpl implements DocumentValidatorFactory {
 
+	@Autowired
+	private CertificateValidatorFactory certificateValidationFactory;
+
 	@Override
 	public DocumentValidator createDocumentSignatureValidator(Pki[] pkis) {
-		return new ITextPdfSignatureValidator(pkis);
+		return createDocumentSignatureValidator(new CompositePki(pkis));
+	}
+
+	@Override
+	public DocumentValidator createDocumentSignatureValidator(Pki pki) {
+		return new ITextPdfSignatureValidator(certificateValidationFactory.createCertificateValidator(pki));
 	}
 
 }
