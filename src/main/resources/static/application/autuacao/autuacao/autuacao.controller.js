@@ -7,10 +7,10 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AutuacaoController', function ($log, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
+	angular.autuacao.controller('AutuacaoController', function ($scope, $log, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var autuacao = this;
 		
-		autuacao.idPeticao = $stateParams.idTarefa;
+		autuacao.idPeticao = $stateParams.resources[0];
 		
 		autuacao.classe = '';
 		

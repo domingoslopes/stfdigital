@@ -8,7 +8,7 @@ import br.jus.stf.processamentoinicial.distribuicao.interfaces.commands.Distribu
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.facade.ProcessoServiceFacade;
 
-@ActionController
+@ActionController(groups = "processo")
 public class ProcessoActionsResource {
 
 	@Autowired
