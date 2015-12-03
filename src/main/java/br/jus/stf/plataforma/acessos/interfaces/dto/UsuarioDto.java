@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.jus.stf.plataforma.acessos.interfaces.dto;
 
 import java.util.Set;
@@ -21,6 +18,9 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Classe responsável por transportar os dados de usuário do back-end para o front-end.")
 public class UsuarioDto {
 
+	@ApiModelProperty(value="Id do usuário.")
+	private Long id;
+	
 	@ApiModelProperty(value="Login do usuário.")
 	private String login;
 	
@@ -36,12 +36,21 @@ public class UsuarioDto {
 	@ApiModelProperty(value="Lista de permissões do usuário.")
 	private Set<GrantedAuthority> authorities;
 	
-	public UsuarioDto(String login, String nome, String setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
+	public UsuarioDto(Long id, String login, String nome, String setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
+		this.id = id;
 		this.login = login;
 		this.nome = nome;
 		this.setorLotacao = setorLotacao;
 		this.papeis = papeis;
 		this.authorities = authorities;
+	}
+	
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	public String getLogin() {

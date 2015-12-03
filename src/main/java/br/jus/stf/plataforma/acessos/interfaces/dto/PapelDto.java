@@ -14,6 +14,9 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value="Objeto responsável por transportar dados de um papél de usuário do back-end para o front-end.")
 public class PapelDto {
 	
+	@ApiModelProperty(value="Id do papel do usuário.", required=true)
+	private Long id;
+	
 	@ApiModelProperty(value="Nome do papel do usuário.", required=true)
 	private String nome;
 	
