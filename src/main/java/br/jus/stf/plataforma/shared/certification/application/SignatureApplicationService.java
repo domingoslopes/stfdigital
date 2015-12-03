@@ -17,7 +17,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
@@ -60,14 +60,14 @@ public class SignatureApplicationService {
 		}
 	}
 
-	public void attachToSign(DocumentSignerId signerId, SigningDocument document) throws SigningException {
+	public void attachToSign(DocumentSignerId signerId, Document document) throws SigningException {
 		DocumentSigner signer = documentSignerRepository.findOne(signerId);
 		signer.attachDocumentToSign(document);
 	}
 
 	public void provideToSign(DocumentSignerId signerId, Long documentId) throws SigningException {
 		try {
-			SigningDocument document = documentAdapter.retrieve(new DocumentoId(documentId));
+			Document document = documentAdapter.retrieve(new DocumentoId(documentId));
 			attachToSign(signerId, document);
 		} catch (IOException e) {
 			throw new RuntimeException("Erro ao recuperar documento.", e);
@@ -94,7 +94,7 @@ public class SignatureApplicationService {
 
 	public DocumentoId saveSigned(DocumentSignerId signerId) {
 		SignedDocument signedDocument = recoverSignedDocument(signerId);
-		DocumentoTemporarioId tempDocId = documentAdapter.upload(signerId.id(), signedDocument);
+		DocumentoTemporarioId tempDocId = documentAdapter.upload(signerId.id(), signedDocument.document());
 		DocumentoId docId = documentAdapter.save(tempDocId);
 		return docId;
 	}

@@ -5,7 +5,6 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,17 +26,15 @@ import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
+import br.jus.stf.plataforma.shared.certification.infra.configuration.CryptoProvider;
 import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 
 public class CustomPkiGenerator {
 
-	private static final String PROVIDER = "BC";
-
 	static {
-		Security.addProvider(new BouncyCastleProvider());
+		CryptoProvider.loadProviders();
 	}
 
 	public CustomPki generateCustomPKI(String rootCN, String... intermediateCNs) throws Exception {
@@ -81,9 +78,9 @@ public class CustomPkiGenerator {
 		builder.addExtension(Extension.keyUsage, true, keyUsage);
 
 		X509CertificateHolder holder = builder
-				.build(new JcaContentSignerBuilder("SHA512WithRSA").setProvider(PROVIDER).build(privateKey));
+				.build(new JcaContentSignerBuilder("SHA512WithRSA").setProvider(CryptoProvider.provider()).build(privateKey));
 
-		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
+		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(CryptoProvider.provider()).getCertificate(holder);
 
 		return new CustomKeyStore(kp, certificate);
 	}
@@ -113,9 +110,9 @@ public class CustomPkiGenerator {
 		builder.addExtension(Extension.keyUsage, true, keyUsage);
 
 		X509CertificateHolder holder = builder.build(
-				new JcaContentSignerBuilder("SHA512WithRSA").setProvider(PROVIDER).build(ca.keyPair().getPrivate()));
+				new JcaContentSignerBuilder("SHA512WithRSA").setProvider(CryptoProvider.provider()).build(ca.keyPair().getPrivate()));
 
-		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
+		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(CryptoProvider.provider()).getCertificate(holder);
 
 		return new CustomKeyStore(kp, certificate);
 	}
@@ -163,9 +160,9 @@ public class CustomPkiGenerator {
 				new GeneralNames(genNames.toArray(new GeneralName[0])));
 
 		X509CertificateHolder holder = builder.build(
-				new JcaContentSignerBuilder("SHA256WithRSA").setProvider(PROVIDER).build(ca.keyPair().getPrivate()));
+				new JcaContentSignerBuilder("SHA256WithRSA").setProvider(CryptoProvider.provider()).build(ca.keyPair().getPrivate()));
 
-		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(PROVIDER).getCertificate(holder);
+		X509Certificate certificate = new JcaX509CertificateConverter().setProvider(CryptoProvider.provider()).getCertificate(holder);
 
 		return new CustomKeyStore(kp, certificate);
 	}

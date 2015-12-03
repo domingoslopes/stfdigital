@@ -6,7 +6,7 @@ public class DocumentSigner {
 	private SigningSpecification spec;
 	private CertificateValidation certificateValidation;
 
-	private SigningDocument signingDocument;
+	private Document signingDocument;
 	private SignedDocument signedDocument;
 
 	public DocumentSigner(DocumentSignerId id, SigningSpecification spec, CertificateValidation certificateValidation) {
@@ -23,7 +23,7 @@ public class DocumentSigner {
 		return spec.strategy().preSign(signingDocument, certificateValidation);
 	}
 
-	public void attachDocumentToSign(SigningDocument document) {
+	public void attachDocumentToSign(Document document) {
 		this.signingDocument = document;
 	}
 
