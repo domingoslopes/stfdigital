@@ -27,7 +27,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashTyp
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
+import br.jus.stf.plataforma.shared.certification.domain.service.CertificateValidationService;
 import br.jus.stf.plataforma.shared.certification.infra.PkiRepositoryImpl;
 import br.jus.stf.plataforma.shared.certification.infra.session.SessionDocumentSignerRepository;
 import br.jus.stf.plataforma.shared.certification.support.pki.UnitTestingPki;
@@ -50,7 +50,7 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 
 	@InjectMocks
 	@Autowired
-	private PkiService pkiService;
+	private CertificateValidationService pkiService;
 
 	@InjectMocks
 	@Autowired

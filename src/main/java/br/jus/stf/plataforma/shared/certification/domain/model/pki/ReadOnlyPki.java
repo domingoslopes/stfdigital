@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
-public class ValidationOnlyPki implements Pki {
+public class ReadOnlyPki implements Pki {
 
 	private PkiId id;
 	
@@ -14,7 +14,7 @@ public class ValidationOnlyPki implements Pki {
 	
 	private List<X509Certificate> intermediateCertificates;
 	
-	public ValidationOnlyPki(PkiId id, List<X509Certificate> rootCerts, List<X509Certificate> intermediateCerts) {
+	public ReadOnlyPki(PkiId id, List<X509Certificate> rootCerts, List<X509Certificate> intermediateCerts) {
 		this.id = id;
 		this.rootCertificates = rootCerts;
 		this.intermediateCertificates = intermediateCerts;

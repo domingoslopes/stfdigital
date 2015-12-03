@@ -5,9 +5,9 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 
-public class CertificationUtil {
+public class CertificateUtils {
 
-	private CertificationUtil() {
+	private CertificateUtils() {
 
 	}
 

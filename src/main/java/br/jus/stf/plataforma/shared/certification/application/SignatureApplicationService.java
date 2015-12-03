@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
-import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateValidation;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSigner;
@@ -20,7 +19,8 @@ import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSign
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.service.CertificateValidationService;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -31,7 +31,7 @@ public class SignatureApplicationService {
 	private DocumentSignerRepository documentSignerRepository;
 
 	@Autowired
-	private PkiService certificateValidationService;
+	private CertificateValidationService certificateValidationService;
 
 	@Autowired
 	private DocumentAdapter documentAdapter;
