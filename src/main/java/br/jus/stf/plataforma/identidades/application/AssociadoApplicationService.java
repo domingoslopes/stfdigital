@@ -1,7 +1,9 @@
 package br.jus.stf.plataforma.identidades.application;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import br.jus.stf.plataforma.identidades.domain.model.Associado;
 import br.jus.stf.plataforma.identidades.domain.model.AssociadoRepository;
@@ -19,7 +21,8 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
  * @since 30.11.2015
  *
  */
-@Component
+@Service
+@Transactional
 public class AssociadoApplicationService {
 	
 	@Autowired
@@ -62,11 +65,12 @@ public class AssociadoApplicationService {
 		}
 		
 		pessoaInserida = this.pessoaRepository.save(pessoa);
+		Long sequencial = associadoRepository.nextId();
 		
 		if (cargo.trim().isEmpty()){
-			this.associadoRepository.save(new Associado(pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase())));
+			this.associadoRepository.save(new Associado(sequencial, pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase())));
 		} else {
-			this.associadoRepository.save(new Associado(pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase()), cargo));
+			this.associadoRepository.save(new Associado(sequencial, pessoaInserida, orgao, TipoAssociado.valueOf(tipoAssociacao.toUpperCase()), cargo));
 		}
 		
 	}

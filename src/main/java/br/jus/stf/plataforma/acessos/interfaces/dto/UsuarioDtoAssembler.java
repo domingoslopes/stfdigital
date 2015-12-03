@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.acessos.domain.model.TipoGrupo;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 
 /**
@@ -26,7 +25,6 @@ public class UsuarioDtoAssembler {
 	
 	public UsuarioDto toDto(Usuario usuario, Set<GrantedAuthority> authorities) {		
 		Set<PapelDto> papeis = usuario.papeis().stream().map(papel -> this.papelDtoAssembler.toDto(papel)).collect(Collectors.toSet());
-		String setorLotacao = usuario.grupos().stream().filter(g -> g.tipo() == TipoGrupo.SETOR).findFirst().map(g -> g.nome()).orElse("");
-		return new UsuarioDto(usuario.login(), usuario.pessoa().nome(), setorLotacao, papeis, authorities);
+		return new UsuarioDto(usuario.id().toLong(), usuario.login(), usuario.pessoa().nome(), usuario.setor(), papeis, authorities);
 	}
 }

@@ -27,6 +27,13 @@ public interface AssociadoRepository {
 	public Associado save(Associado associado);
 	
 	/**
+	 * Recupera o id para um novo associado
+	 * 
+	 * @return
+	 */
+	public Long nextId();
+	
+	/**
 	 * @param sequencial
 	 */
 	public void delete(Long sequencial);

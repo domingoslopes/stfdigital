@@ -8,21 +8,23 @@ import br.jus.stf.shared.stereotype.ValueObject;
  */
 public enum ProcessoSituacao implements ValueObject<ProcessoSituacao> {
 	
-	DISTRIBUIDO;
+	DISTRIBUIDO("Distribuído");
 	
+	private String descricao;
+
+	private ProcessoSituacao(final String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String descricao() {
+		return descricao;
+	}
+
 	@Override
 	public String toString() {
-		String tipo = null;
-		
-		switch(this) {
-			case DISTRIBUIDO: 
-				tipo = "Distribuído"; 
-				break;
-			default: break;
-		}
-		return tipo;
+		return descricao;
 	}
-	
+
 	@Override
 	public boolean sameValueAs(final ProcessoSituacao other) {
 		return this.equals(other);
