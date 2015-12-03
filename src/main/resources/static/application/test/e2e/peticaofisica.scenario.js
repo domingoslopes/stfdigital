@@ -95,7 +95,7 @@
 		    
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/preautuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/preautuacao/);
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
@@ -114,7 +114,7 @@
 		it('Deveria atuar como válida a petição física recebida', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -145,7 +145,7 @@
 		    
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
