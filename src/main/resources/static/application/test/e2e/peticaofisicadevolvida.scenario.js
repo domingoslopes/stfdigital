@@ -93,7 +93,7 @@
 		    
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/preautuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/preautuacao/);
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
@@ -117,7 +117,7 @@
 		it('Deveria registrar a motivação da devolução', function() {
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/devolucao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/devolucao/);
 		    
 			var devolucaoPage = new DevolucaoPage();
 			

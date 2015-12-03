@@ -16,28 +16,28 @@
 		var actions = [{
 		    id: "dummy_action",
 		    description: "Dummy Action",
-		    resourcesType: "DummyObj",
+		    groups: ["DummyObj"],
 		    hasConditionHandlers: true,
 		    resourcesMode: "Many",
 		    neededAuthorities: ["peticionador"]
 		}, {
 		    id: "do_nothing",
 		    description: "Do Nothing",
-		    resourcesType: "Long",
+		    groups: ["Long"],
 		    hasConditionHandlers: false,
 		    resourcesMode: "None",
 		    neededAuthorities: []
 		}, {
 		    id: "do_nothing_long",
 		    description: "Do Nothing Long",
-		    resourcesType: "Long",
+		    groups: ["Long"],
 		    hasConditionHandlers: false,
 		    resourcesMode: "One",
 		    neededAuthorities: ["peticionador"]
 		}, {
 		    id: "registrar_peticao",
 		    description: "Registrar",
-		    resourcesType: "RegistrarPeticaoCommand",
+		    groups: ["Peticao"],
 		    hasConditionHandlers: false,
 		    resourcesMode: "One",
 		    neededAuthorities: ["peticionador"]

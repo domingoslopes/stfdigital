@@ -20,4 +20,11 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface ActionController {
 	
+	/**
+	 * Agrupamento das ações 
+	 * Ex: peticao
+	 * @return um array que representam os grupos de ações
+	 */
+	String[] groups();
+	
 }

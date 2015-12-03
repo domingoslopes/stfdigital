@@ -8,8 +8,6 @@ INSERT INTO plataforma.papel (seq_papel, nom_papel) VALUES (5, 'autuador');
 INSERT INTO plataforma.papel (seq_papel, nom_papel) VALUES (6, 'distribuidor');
 INSERT INTO plataforma.papel (seq_papel, nom_papel) VALUES (7, 'cartoraria');
 INSERT INTO plataforma.papel (seq_papel, nom_papel) VALUES (8, 'gestor-autuacao');
-INSERT INTO plataforma.papel (seq_papel, nom_papel) VALUES (9, 'gestor-orgao');
-INSERT INTO plataforma.papel (seq_papel, nom_papel) VALUES (10, 'gestor-cadastro');
 
 INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, cod_oab, dsc_email, dsc_telefone) VALUES (plataforma.seq_usuario.nextval, 'peticionador', 'peticionador', '00000000001', 'DF12345', 'petic@teste.com.br', '61-80801212');
 INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, cod_oab, dsc_email, dsc_telefone) VALUES (plataforma.seq_usuario.nextval, 'recebedor', 'recebedor', '00000000001', null, 'petic@teste.com.br', '61-80801212');
@@ -19,8 +17,6 @@ INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, 
 INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, cod_oab, dsc_email, dsc_telefone) VALUES (plataforma.seq_usuario.nextval, 'distribuidor', 'distribuidor', '00000000001', null, 'petic@teste.com.br', '61-80801212');
 INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, cod_oab, dsc_email, dsc_telefone) VALUES (plataforma.seq_usuario.nextval, 'cartoraria', 'cartoraria', '00000000001', null, 'petic@teste.com.br', '61-80801212');
 INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, cod_oab, dsc_email, dsc_telefone) VALUES (plataforma.seq_usuario.nextval, 'gestor-autuacao', 'gestor-autuacao', '00000000001', null, 'petic@teste.com.br', '61-80801212');
-INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, cod_oab, dsc_email, dsc_telefone) VALUES (plataforma.seq_usuario.nextval, 'gestor-orgao', 'gestor-orgao', '00000000001', null, 'petic@teste.com.br', '61-80801212');
-INSERT INTO plataforma.usuario (seq_usuario, nom_usuario, sig_usuario, cod_cpf, cod_oab, dsc_email, dsc_telefone) VALUES (plataforma.seq_usuario.nextval, 'gestor-cadastro', 'gestor-cadastro', '00000000001', null, 'petic@teste.com.br', '61-80801212');
 
 INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 1);
 INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 2);
@@ -30,8 +26,6 @@ INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 5);
 INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 6);
 INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 7);
 INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 8);
-INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 9);
-INSERT INTO plataforma.grupo_usuario (seq_grupo, seq_usuario) VALUES (1, 10);
 
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (1, 1);
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (2, 2);
@@ -41,8 +35,6 @@ INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (5, 5);
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (6, 6);
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (7, 7);
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (8, 8);
-INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (9, 9);
-INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (10, 10);
 
 INSERT INTO plataforma.tipo_informacao (seq_tipo_informacao, nom_tipo_informacao) VALUES (1, 'PETICAO');
 INSERT INTO plataforma.tipo_informacao (seq_tipo_informacao, nom_tipo_informacao) VALUES (2, 'PROCESSO');
@@ -96,12 +88,11 @@ INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (7, 7);
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (7, 15);
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (8, 9);
 
-
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (1, 'REGISTRAR-PETICAO-ELETRONICA', 'ACAO');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (2, 'REGISTRAR-PETICAO-FISICA', 'ACAO');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (3, 'REGISTRAR-PETICAO-ELETRONICA-ORGAO', 'ACAO');
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (4, 'PREAUTUAR-PETICAO-FISICA', 'ACAO');
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (5, 'AUTUAR-PETICAO', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (4, 'PREAUTUAR', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (5, 'AUTUAR', 'ACAO');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (6, 'DISTRIBUIR-PROCESSO', 'ACAO');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (7, 'DEVOLVER-PETICAO', 'ACAO');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (8, 'MINHAS-TAREFAS', 'DASHLET');

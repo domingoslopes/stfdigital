@@ -10,7 +10,7 @@
 	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var preautuacao = this;
 		
-		preautuacao.idPeticao = $stateParams.idTarefa;
+		preautuacao.idPeticao = $stateParams.resources[0];
 		
 		preautuacao.valida = 'true';
 		
