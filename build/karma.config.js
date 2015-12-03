@@ -30,7 +30,8 @@ module.exports = {
 	    baseDir + '/vendor/nvd3/build/nv.d3.js',
 	    baseDir + '/vendor/angular-nvd3/dist/angular-nvd3.js',
 	    baseDir + '/vendor/sockjs/sockjs.js',
-	    baseDir + '/vendor/stomp-websocket/lib/stomp.js',	    
+	    baseDir + '/vendor/stomp-websocket/lib/stomp.js',	
+	    baseDir + '/theme/assets/pages/js/pages.js',
 		baseDir + '/application/plataforma/**/*.module.js', 
 		baseDir + '/application/plataforma/**/*.js', 
 		baseDir + '/application/autuacao/**/*.js', 
@@ -70,5 +71,5 @@ module.exports = {
 
 	urlRoot : '/__test/',
 
-	browsers : [ 'PhantomJS' ]
+	browsers : [ 'Chrome' ]
 };
