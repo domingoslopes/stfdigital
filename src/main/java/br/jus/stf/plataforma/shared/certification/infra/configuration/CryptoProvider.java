@@ -23,7 +23,13 @@ public final class CryptoProvider {
 	 * Carrega os providers de criptografia.
 	 */
 	public static void loadProviders() {
-		Security.addProvider(new BouncyCastleProvider());
+		loadBouncyCastle();
+	}
+
+	private static void loadBouncyCastle() {
+		if (Security.getProperty(PROVIDER) == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
 	}
 
 	/**
