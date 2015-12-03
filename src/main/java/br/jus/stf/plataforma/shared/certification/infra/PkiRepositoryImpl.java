@@ -10,14 +10,14 @@ import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.plataforma.shared.certification.domain.CertificationUtil;
-import br.jus.stf.plataforma.shared.certification.domain.model.Certificate;
-import br.jus.stf.plataforma.shared.certification.domain.model.CertificateType;
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
-import br.jus.stf.plataforma.shared.certification.domain.model.ValidationOnlyPki;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.Certificate;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateType;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificationUtil;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiId;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiRepository;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.ValidationOnlyPki;
 import br.jus.stf.plataforma.shared.certification.infra.pki.PlataformaPki;
 
 @Repository

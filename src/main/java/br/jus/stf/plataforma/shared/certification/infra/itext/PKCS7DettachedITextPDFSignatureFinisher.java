@@ -24,13 +24,13 @@ import com.itextpdf.text.pdf.security.ExternalDigest;
 import com.itextpdf.text.pdf.security.MakeSignature.CryptoStandard;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.AuthenticatedAttributes;
-import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashToSign;
-import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.AuthenticatedAttributes;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashToSign;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PDFSigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
 
 public class PKCS7DettachedITextPDFSignatureFinisher implements ITextPDFSignatureFinisher {
 
