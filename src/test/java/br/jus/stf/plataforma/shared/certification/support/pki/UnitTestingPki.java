@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiId;
-import br.jus.stf.plataforma.shared.certification.domain.model.pki.ValidationOnlyPki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.ReadOnlyPki;
 import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 
 public class UnitTestingPki implements Pki {
@@ -18,7 +18,7 @@ public class UnitTestingPki implements Pki {
 	private List<CustomKeyStore> intermediateStores;
 	private CustomKeyStore finalUserStore;
 
-	private ValidationOnlyPki pki;
+	private ReadOnlyPki pki;
 
 	private UnitTestingPki() {
 		try {
@@ -37,7 +37,7 @@ public class UnitTestingPki implements Pki {
 			finalUserStore = pkiGenerator.generateFinalUser(intermediateStores.get(intermediateStores.size() - 1),
 					"TESTE UNITARIO" + ":" + cpf, 1, "teste.unitario@stfdigital.stf.jus.br", dadosPf);
 
-			pki = new ValidationOnlyPki(new PkiId("ICP_PLATAFORMA"), Arrays.asList(rootStore.certificate()),
+			pki = new ReadOnlyPki(new PkiId("ICP_PLATAFORMA"), Arrays.asList(rootStore.certificate()),
 					intermediateStores.stream().map(s -> s.certificate()).collect(Collectors.toList()));
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao criar UnitTestingPki", e);
