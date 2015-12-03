@@ -68,7 +68,17 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
 		SinalizarCommand command = new SinalizarCommand();
 		command.setSinal(REMESSA_INDEVIDA);
-		command.setStatus(PeticaoStatus.REJEITADA.toString());
+		command.setStatus(PeticaoStatus.A_DEVOLVER.toString());
+
+		processoRestService.sinalizar(id.toLong(), command);
+	}
+	
+	@Override
+	public void assinar(Peticao peticao) {
+		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
+		SinalizarCommand command = new SinalizarCommand();
+		command.setSinal(REMESSA_INDEVIDA); // TODO:  Alterar nome do sinal para o criado no BPM
+		command.setStatus(PeticaoStatus.ASSINAR_DEVOLUCAO.toString());
 
 		processoRestService.sinalizar(id.toLong(), command);
 	}
