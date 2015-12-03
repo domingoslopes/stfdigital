@@ -28,7 +28,7 @@
 			}
 			
 			PeticaoService.devolver(devolucao.idPeticao, new DevolverCommand(devolucao.tipoDevolucao, devolucao.numeroOficio)).success(function(data) {
-				$state.go('detalhe', {idPeticao: devolucao.idPeticao});
+				$state.go('root.detalhe', {idPeticao: devolucao.idPeticao});
 				messages.success('Petição devolvida com sucesso.');
 			});
 		};

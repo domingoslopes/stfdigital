@@ -143,8 +143,6 @@
 	angular.plataforma.directive('actionMenu', ['$state', 'ActionService', function ($state, ActionService) {
 		return {
 			restrict : 'AE',
-			transclude : true,
-			replace : false,
 			scope : {
 				id : '@', //obrigatório, identificador da ação
 				resources : '=', //obrigatório, recursos que sofrerão a ação

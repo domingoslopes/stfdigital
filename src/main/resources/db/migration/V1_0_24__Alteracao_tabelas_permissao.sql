@@ -3,6 +3,10 @@ alter table corporativo.pessoa add column cod_oab varchar2(20);
 alter table corporativo.pessoa add column dsc_email varchar2(100);
 alter table corporativo.pessoa add column dsc_telefone varchar2(13);
 
+-- quantidade de pessoas antes da criação de pessoas dos usuários
+set @countPessoa = 0;
+select set(@countPessoa, count(1)) from corporativo.pessoa;
+
 insert into corporativo.pessoa (seq_pessoa, nom_pessoa, cod_cpf, cod_oab, dsc_email, dsc_telefone)
 select corporativo.seq_pessoa.nextval, u.nom_usuario, u.cod_cpf, u.cod_oab, u.dsc_email, u.dsc_telefone from plataforma.usuario u;
 
@@ -14,7 +18,7 @@ alter table plataforma.usuario drop column dsc_email;
 alter table plataforma.usuario drop column dsc_telefone;
 alter table plataforma.usuario add constraint fk_pessoa_usua foreign key (seq_pessoa) references corporativo.pessoa;
 
-update plataforma.usuario set seq_pessoa = seq_usuario + 15;
+update plataforma.usuario set seq_pessoa = seq_usuario + @countPessoa;
 alter table plataforma.usuario alter column seq_pessoa set not null;
 
 create sequence corporativo.seq_associado increment by 1 start with 1 nomaxvalue minvalue 1 nocycle nocache;

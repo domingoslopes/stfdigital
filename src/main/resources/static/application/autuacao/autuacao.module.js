@@ -10,11 +10,11 @@
 	angular.autuacao = angular.module('autuacao', []);
 	
 	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
-		$stateProvider.state('peticionamento', {
+		$stateProvider.state('root.peticionamento', {
 			url: '/peticao',
 			abstract: true,
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/peticionamento/peticionamento.tpl.html',
 					controller: 'PeticionamentoController',
 					resolve : {
@@ -24,50 +24,50 @@
 					}
 				}
 			}
-		}).state('peticionamento.advogado', {
+		}).state('root.peticionamento.advogado', {
 			url: '/advogado',
 			views: {
-				'@peticionamento': {
+				'@root.peticionamento': {
 					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
 					controller: 'PeticionamentoAdvogadoController'
 				}
 			}
-		}).state('peticionamento.orgao', {
+		}).state('root.peticionamento.orgao', {
 			url: '/orgao',
 			views: {
-				'@peticionamento': {
+				'@root.peticionamento': {
 					templateUrl: 'application/autuacao/peticionamento/orgao/peticionamento.tpl.html',
 					controller: 'PeticionamentoOrgaoController'
 				}
 			}
-		}).state('registro', {
+		}).state('root.registro', {
 			url: '/peticao/fisica',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/registro/registro.tpl.html',
 					controller: 'RegistroPeticaoFisicaController'
 				}
 			}
-		}).state('preautuacao', {
+		}).state('root.preautuacao', {
 			url: '/peticao/:idTarefa/preautuacao',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/preautuacao/preautuacao.tpl.html',
 					controller: 'PreautuacaoController'
 				}
 			}
-		}).state('autuacao', {
+		}).state('root.autuacao', {
 			url: '/peticao/:idTarefa/autuacao',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html',
 					controller: 'AutuacaoController'
 				}
 			}
-		}).state('distribuicao', {
+		}).state('root.distribuicao', {
 			url: '/peticao/:idTarefa/distribuicao',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/distribuicao/distribuicao.tpl.html',
 					controller: 'DistribuicaoController',
 					resolve : {
@@ -77,26 +77,26 @@
 					}
 				}
 			}
-		}).state('devolucao', {
+		}).state('root.devolucao', {
 			url: '/peticao/:idTarefa/devolucao',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
 					controller: 'DevolucaoController'
 				}
 			}
-		}).state('processos', {
+		}).state('root.processos', {
 			url: '/processos/:processoId',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/visualizacao/processos/visualizacao.tpl.html',
 					controller: 'VisualizacaoProcessoController'
 				}
 			}
-		}).state('pesquisa.peticao', {
+		}).state('root.pesquisa.peticao', {
 			url: '/peticao',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/pesquisa/peticao.tpl.html',
 					controller: 'PesquisaPeticaoController',
 					resolve : {
@@ -106,10 +106,10 @@
 					}
 				}
 			}
-		}).state('pesquisa.processo', {
+		}).state('root.pesquisa.processo', {
 			url: '/processo',
 			views: {
-				'@': {
+				'content@root': {
 					templateUrl: 'application/autuacao/pesquisa/processo.tpl.html',
 					controller: 'PesquisaProcessoController',
 					resolve : {
