@@ -10,9 +10,9 @@ import java.util.List;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
 
-public class ITextPDFSignatureUtil {
+public class ITextPdfSignatureUtil {
 
-	private ITextPDFSignatureUtil() {
+	private ITextPdfSignatureUtil() {
 
 	}
 

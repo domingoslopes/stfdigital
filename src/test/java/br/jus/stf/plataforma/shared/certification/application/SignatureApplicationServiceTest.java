@@ -16,7 +16,7 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 
-import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
+import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
@@ -56,7 +56,7 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 	private SignatureApplicationService signatureService;
 
 	@Autowired
-	private PDFSigningSpecificationBuilder specBuilder;
+	private PdfSigningSpecificationBuilder specBuilder;
 
 	private HttpSession session;
 
