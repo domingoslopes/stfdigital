@@ -16,7 +16,9 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 
+import br.jus.stf.plataforma.shared.certification.domain.PdfInputStreamDocument;
 import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiId;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
@@ -27,7 +29,6 @@ import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedD
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
 import br.jus.stf.plataforma.shared.certification.infra.PkiRepositoryImpl;
-import br.jus.stf.plataforma.shared.certification.infra.StreamedDocument;
 import br.jus.stf.plataforma.shared.certification.infra.session.SessionDocumentSignerRepository;
 import br.jus.stf.plataforma.shared.certification.support.pki.UnitTestingPki;
 import br.jus.stf.plataforma.shared.certification.support.util.SignatureTestUtil;
@@ -86,7 +87,7 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 		signerId = signatureService.prepareToSign(certificate, ids, spec);
 
 		// Passo 2 - Server-side: Receber o documento para assinatura.
-		StreamedDocument document = new StreamedDocument(SignatureTestUtil.getDocumentToSign(PDF_DE_TESTE));
+		Document document = new PdfInputStreamDocument(SignatureTestUtil.getDocumentToSign(PDF_DE_TESTE));
 		signatureService.attachToSign(signerId, document);
 
 		// Passo 3 - Server-side: Pré-assinar, gerando o hash
