@@ -53,4 +53,9 @@ public class PlataformaPki implements Pki {
 		return pki.certificateChainOf(certificate);
 	}
 
+	@Override
+	public List<X509Certificate> getTrustedAnchors() {
+		return Arrays.asList(rootStore.certificate());
+	}
+
 }
