@@ -24,7 +24,7 @@ public class PlataformaPki implements Pki {
 	private PlataformaPki() {
 		InputStream is = getClass().getResourceAsStream(KEYSTORE_PATH);
 		try {
-			List<CustomKeyStore> stores = PkiUtil.keystoreToCustomKeyStores(is, "changeit".toCharArray());
+			List<CustomKeyStore> stores = PkiUtil.pkiKeystoreToCustomKeyStores(is, "changeit".toCharArray());
 			rootStore = stores.get(0);
 			intermediateStores = stores.subList(1, stores.size());
 			pki = new ReadOnlyPki(new PkiId("ICP_PLATAFORMA"), Arrays.asList(rootStore.certificate()),

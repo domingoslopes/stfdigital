@@ -23,17 +23,17 @@ public class PlataformaCertificateGenerator {
 	/**
 	 * Os parâmetros para a main são:
 	 * 
-	 * <pki-name> <person-name> <person-cpf> <person-email>
+	 * <pki-name> <person-name> <person-cpf> <person-email> <validity-years>
 	 * 
 	 * Por exemplo:
 	 * 
 	 * "icp-plataforma" "JOAO DA SILVA" "57153200380"
-	 * "joao.silva@stfdigital.stf.jus.br"
+	 * "joao.silva@stfdigital.stf.jus.br" 1
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		if (args.length != 4) {
+		if (args.length != 5) {
 			System.err.println("Informe exatamente três parâmetros: <pki-name> <person-name> <person-cpf>");
 			System.exit(1);
 		}
@@ -41,6 +41,7 @@ public class PlataformaCertificateGenerator {
 		String personName = args[1];
 		String personCPF = args[2];
 		String personEmail = args[3];
+		int validityYears = Integer.parseInt(args[4]);
 
 		String pkiPath = RESOURCES_DIR + PKIS_DIR + "/" + pkiName;
 		if (new File(pkiPath).exists()) {
@@ -54,7 +55,7 @@ public class PlataformaCertificateGenerator {
 
 			int serial = recoverSerial(pkiPrivatePath + "/nextSerial");
 			
-			CustomKeyStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF, serial, personEmail, dadosPf);
+			CustomKeyStore finalUser = generator.generateFinalUser(ca, personName + ":" + personCPF, serial, personEmail, dadosPf, validityYears);
 
 			String certificatePath = pkiPath + "/certs";
 			File dirPath = new File(certificatePath);

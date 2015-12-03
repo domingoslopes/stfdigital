@@ -118,7 +118,7 @@ public class CustomPkiGenerator {
 	}
 
 	public CustomKeyStore generateFinalUser(CustomKeyStore ca, String cn, int intSerial, String email,
-			IcpBrasilDadosPessoaFisica dadosPf) throws Exception {
+			IcpBrasilDadosPessoaFisica dadosPf, int validityYears) throws Exception {
 		KeyPair kp = generateKeyPair(2048);
 
 		PublicKey publicKey = kp.getPublic();
@@ -127,7 +127,7 @@ public class CustomPkiGenerator {
 
 		BigInteger serial = BigInteger.valueOf(intSerial);
 		Date notBefore = new Date(System.currentTimeMillis());
-		Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * 1));
+		Date notAfter = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 365 * validityYears));
 
 		X509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(ca.certificate(), serial, notBefore,
 				notAfter, new X500Name(subject), publicKey);
