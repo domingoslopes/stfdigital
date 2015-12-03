@@ -35,6 +35,18 @@ public interface WorkflowAdapter {
 	 */
 	void rejeitarAutuacao(Peticao peticao);
 	
+	/**
+	 * Emite um sinal para o processo que devolve autuação da petição
+	 * 
+	 * @param peticao
+	 */
 	void devolver(Peticao peticao);
+	
+	/**
+	 * Emite um sinal para o processo que libera o documento de devolução da petiação para assinatura
+	 * 
+	 * @param peticao
+	 */
+	void assinar(Peticao peticao);
 	
 }
