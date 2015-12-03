@@ -17,7 +17,7 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 @Constraint(validatedBy = { DocumentSignatureValidatorFile.class,
 		DocumentSignatureValidatorMultipartFile.class })
-public @interface DocumentSigned {
+public @interface SignedDocument {
 
 	String message() default "Assinatura do documento inválida.";
 

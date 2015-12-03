@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentSignatureValidatorMultipartFile extends GenericSignatureValidator
-		implements ConstraintValidator<DocumentSigned, MultipartFile> {
+		implements ConstraintValidator<SignedDocument, MultipartFile> {
 
 	@Override
 	public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
