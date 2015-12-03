@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.shared.DocumentoId;
@@ -54,7 +55,7 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	@Override
 	public DocumentoTemporarioId upload(String nome, byte[] documento) {
 		MultipartFile file = new PDFMultipartFile(nome, documento);
-		return new DocumentoTemporarioId(documentoRestResource.upload(file));
+		return new DocumentoTemporarioId(documentoRestResource.upload(new UploadDocumentoCommand(file)));
 	}
 
 }
