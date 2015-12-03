@@ -40,19 +40,19 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	@Column(name = "SIG_USUARIO", nullable = false)
 	private String login;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
 	private Set<Permissao> permissoes = new HashSet<Permissao>(0);
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PAPEL_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false))
 	private Set<Papel> papeis = new HashSet<Papel>(0);
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "GRUPO_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false))
