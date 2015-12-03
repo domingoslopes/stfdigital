@@ -21,11 +21,25 @@
 		$urlRouterProvider.otherwise('/dashboard');
 		$locationProvider.html5Mode(true);
 		$logProvider.debugEnabled(true);
-		$stateProvider.state('root', {
-		});
-	})
-	.run(function(ActionService, $state) {
-		ActionService.load("autuacao");
+		
+		$stateProvider
+			.state('root', {
+				views: {
+					'main@': {
+						templateUrl: 'application/plataforma/template/default.tpl.html',
+						controller: 'TemplateController',
+						controllerAs: 'vm'
+					}
+				}
+			})
+			.state('login', {
+				url: '/login',
+				views: {
+					'main@': {
+						templateUrl: 'application/plataforma/login/login.tpl.html'
+					}
+				}
+			});
 	})
 	.value('version', '0.1.0');
 	

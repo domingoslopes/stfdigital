@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -30,7 +31,11 @@ public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId
 	@Column(name = "NOM_PAPEL", nullable = false)
 	private String nome;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@ManyToOne
+	@JoinColumn(name = "SEQ_GRUPO")
+	private Grupo grupo;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_PAPEL", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
@@ -48,8 +53,20 @@ public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId
 		this.nome = nome;
 	}
 	
+	public Papel(final PapelId id, final String nome, final Grupo grupo) {
+		this(id, nome);
+		
+		Validate.notNull(grupo, "papel.grupo.required");
+		
+		this.grupo = grupo;
+	}
+	
 	public String nome() {
 		return nome;
+	}
+	
+	public Grupo grupo() {
+		return grupo;
 	}
 	
 	@Override

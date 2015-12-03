@@ -1,6 +1,9 @@
 package br.jus.stf.plataforma.identidades.infra.persistence;
 
+import java.math.BigInteger;
+
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -15,9 +18,9 @@ import br.jus.stf.plataforma.identidades.domain.model.AssociadoRepository;
  */
 @Repository
 public class AssociadoRepositoryImpl extends SimpleJpaRepository<Associado, Long> implements AssociadoRepository {
-
-	private EntityManager entityManager;
 	
+	private EntityManager entityManager;
+
 	@Autowired
 	public AssociadoRepositoryImpl(EntityManager entityManager) {
 		super(Associado.class, entityManager);
@@ -32,11 +35,13 @@ public class AssociadoRepositoryImpl extends SimpleJpaRepository<Associado, Long
 	@SuppressWarnings("unchecked")
 	@Override
 	public Associado save(Associado associado) {
-		
-		Associado novoAssociado = super.save(associado); 
-		this.entityManager.flush();
-		
-		return novoAssociado;
+		return super.save(associado); 
+	}
+	
+	@Override
+	public Long nextId() {
+		Query query = entityManager.createNativeQuery("SELECT CORPORATIVO.SEQ_ASSOCIADO.NEXTVAL FROM DUAL");
+		return ((BigInteger) query.getSingleResult()).longValue();
 	}
 
 }
