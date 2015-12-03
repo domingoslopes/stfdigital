@@ -6,16 +6,17 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
 import br.jus.stf.plataforma.shared.certification.domain.PdfTempDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -27,16 +28,21 @@ public class DocumentRestAdapter implements DocumentAdapter {
 	private DocumentoRestResource docRestResource;
 
 	@Override
-	public SigningDocument retrieve(DocumentoId id) throws IOException {
+	public Document retrieve(DocumentoId id) throws IOException {
 		IntegrationServletResponse response = new IntegrationServletResponse();
 		docRestResource.recuperar(id.toLong(), response);
 		return new PdfTempDocument(new ByteArrayInputStream(response.getBytes()));
 	}
 
 	@Override
-	public DocumentoTemporarioId upload(String name, SignedDocument document) {
-		MultipartFile file = new PDFMultipartFile(name, document.bytes());
-		return new DocumentoTemporarioId(docRestResource.upload(file));
+	public DocumentoTemporarioId upload(String name, Document document) {
+		try {
+			MultipartFile file = new PDFMultipartFile(name, IOUtils.toByteArray(document.stream()));
+			return new DocumentoTemporarioId(docRestResource.upload(new UploadDocumentoCommand(file)));
+		} catch (IOException e) {
+			throw new IllegalStateException("Erro ao ler documento para upload.", e);
+		}
+
 	}
 
 	@Override
