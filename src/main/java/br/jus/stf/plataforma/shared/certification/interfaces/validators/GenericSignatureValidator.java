@@ -19,7 +19,7 @@ public abstract class GenericSignatureValidator {
 	@Autowired
 	protected DocumentValidatorApplicationService documentValidatorApplicationService;
 	
-	public void initialize(DocumentSigned constraintAnnotation) {
+	public void initialize(SignedDocument constraintAnnotation) {
 		
 	}
 
