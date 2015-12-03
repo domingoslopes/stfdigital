@@ -4,9 +4,9 @@ import java.io.InputStream;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 
-public class StreamedDocument implements SigningDocument {
+public class StreamedDocument implements Document {
 
 	private InputStream documentStream;
 

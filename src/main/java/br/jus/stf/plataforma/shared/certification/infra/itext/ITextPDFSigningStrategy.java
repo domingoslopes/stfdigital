@@ -9,14 +9,15 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
 
+import br.jus.stf.plataforma.shared.certification.domain.PdfFileDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningSpecification;
 import br.jus.stf.plataforma.shared.certification.domain.model.PDFSigningStrategy;
 import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
 import br.jus.stf.plataforma.shared.certification.infra.PdfTempSignedDocument;
 
@@ -41,7 +42,7 @@ public class ITextPDFSigningStrategy implements PDFSigningStrategy {
 	}
 
 	@Override
-	public PreSignature preSign(SigningDocument document, CertificateValidation certificateValidation)
+	public PreSignature preSign(Document document, CertificateValidation certificateValidation)
 			throws SigningException {
 		try {
 			PdfReader reader = new PdfReader(document.stream());
@@ -67,7 +68,7 @@ public class ITextPDFSigningStrategy implements PDFSigningStrategy {
 			throws SigningException {
 		finisher.finishPostSignature(spec, certificateValidation, appearance, signature);
 
-		SignedDocument document = new PdfTempSignedDocument(appearance.getTempFile(), new DocumentSignature());
+		SignedDocument document = new PdfTempSignedDocument(new PdfFileDocument(appearance.getTempFile()), new DocumentSignature());
 
 		return document;
 	}
