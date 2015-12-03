@@ -33,7 +33,7 @@ public class AcessosRestAdapter {
 	}
 	
 	public Set<String> carregarPapeisUsuario(String login) {
-		return acessosRestResouce.papeis(login);
+		return acessosRestResouce.papeis(login).stream().map(p -> p.getNome()).collect(Collectors.toSet());
 	}
 	
 }
