@@ -15,7 +15,7 @@ import javax.validation.Payload;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER })
 @Retention(RUNTIME)
-@Constraint(validatedBy = { DocumentSignatureValidatorInputStream.class,
+@Constraint(validatedBy = { DocumentSignatureValidatorFile.class,
 		DocumentSignatureValidatorMultipartFile.class })
 public @interface DocumentSigned {
 
