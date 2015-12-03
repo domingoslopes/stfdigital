@@ -13,6 +13,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateUtils;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidator;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidation;
@@ -135,9 +136,15 @@ public class ITextPdfSignatureValidator implements DocumentValidator {
 		}
 	}
 
-	private void validateCertificates(PdfPKCS7 pdfPKCS7) {
+	private void validateCertificates(PdfPKCS7 pdfPKCS7) throws DocumentValidationException {
 		X509Certificate cert = pdfPKCS7.getSigningCertificate();
 		CertificateValidation validation = certificateValidator.validate(cert);
+		if (!validation.valid()) {
+			StringBuilder sb = new StringBuilder();
+			validation.validationErrors().forEach(e -> sb.append(e));
+			sb.append(" . Certificado: " + CertificateUtils.subjectNameAsString(cert));
+			throw new DocumentValidationException(sb.toString());
+		}
 	}
 
 }
