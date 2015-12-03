@@ -21,4 +21,19 @@ public class CertificateUtils {
 		}
 	}
 
+	/**
+	 * Retorna uma string descritiva do certificado.
+	 * 
+	 * @param certificate
+	 *            Certificado
+	 * @return subjectName como String
+	 */
+	public static String subjectNameAsString(X509Certificate certificate) {
+		StringBuilder certStringBuilder = new StringBuilder();
+		if (certificate.getSubjectX500Principal() != null) {
+			certStringBuilder.append(certificate.getSubjectX500Principal().getName());
+		}
+		return certStringBuilder.toString();
+	}
+
 }

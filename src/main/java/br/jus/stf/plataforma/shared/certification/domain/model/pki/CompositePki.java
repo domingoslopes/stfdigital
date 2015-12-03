@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.shared.certification.domain.model.pki;
 
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +27,13 @@ public class CompositePki implements Pki {
 				break;
 		}
 		return chain;
+	}
+
+	@Override
+	public List<X509Certificate> getTrustedAnchors() {
+		List<X509Certificate> trustedAnchors = new ArrayList<>();
+		pkis.forEach(pki -> trustedAnchors.addAll(pki.getTrustedAnchors()));
+		return trustedAnchors;
 	}
 
 }
