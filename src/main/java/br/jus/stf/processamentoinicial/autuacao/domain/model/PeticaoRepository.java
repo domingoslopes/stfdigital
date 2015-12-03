@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.jus.stf.plataforma.identidades.domain.model.TipoAssociado;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 
@@ -67,12 +68,12 @@ public interface PeticaoRepository {
 	public Orgao findOneOrgao(Long id);
 	
 	/**
+	 * @return a lista de órgãos visíveis pela pessoa do associado
+	 */
+	public List<Orgao> findOrgaoByTipoAssociacao(PessoaId id, TipoAssociado... tipos);
+	
+	/**
 	 * @return a lista de órgãos
 	 */
 	public List<Orgao> findAllOrgao();
-	
-	/**
-	 * @return a lista de órgãos visíveis pelo Associado
-	 */
-	public List<Orgao> findOrgaoByPessoaRepresentante(PessoaId id);
 }

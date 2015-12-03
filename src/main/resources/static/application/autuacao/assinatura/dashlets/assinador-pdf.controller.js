@@ -5,7 +5,7 @@
  */ 
 (function() {
 	'use strict';
-
+	return;
 	angular.autuacao.controller('AssinadorPdfDashletController', ['$scope', '$cookies', 'FileUploader', 'properties', 'SignatureService', function($scope, $cookies, FileUploader, properties, SignatureService) {
 		
 		$scope.documentos = [];

@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.acessos.domain.model;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,6 +21,8 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
+import br.jus.stf.shared.GrupoId;
+import br.jus.stf.shared.PapelId;
 import br.jus.stf.shared.UsuarioId;
 import br.jus.stf.shared.stereotype.Entity;
 
@@ -37,19 +40,19 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	@Column(name = "SIG_USUARIO", nullable = false)
 	private String login;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
 	private Set<Permissao> permissoes = new HashSet<Permissao>(0);
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PAPEL_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false))
 	private Set<Papel> papeis = new HashSet<Papel>(0);
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "GRUPO_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false))
@@ -87,10 +90,18 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		this.papeis.addAll(papeis);
 	}
 	
-	public void removerPapeis(final Set<Papel> papeis) {
+	public void removerPapeis(final Set<PapelId> papeis) {
 		Validate.notEmpty(papeis, "usuario.papeis.required");
 		
-		this.papeis.removeAll(papeis);
+		Iterator<Papel> papelIterator = this.papeis.iterator();
+		
+		while(papelIterator.hasNext()) {
+			Papel papel = papelIterator.next();
+			
+			if (papeis.contains(papel.id())) {
+				papelIterator.remove();
+			}
+		}
 	}
 	
 	public Set<Grupo> grupos() {
@@ -103,10 +114,18 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		this.grupos.addAll(grupos);
 	}
 	
-	public void removerGrupos(final Set<Grupo> grupos) {
+	public void removerGrupos(final Set<GrupoId> grupos) {
 		Validate.notEmpty(grupos, "usuario.grupos.required");
 		
-		this.grupos.removeAll(grupos);
+		Iterator<Grupo> grupoIterator = this.grupos.iterator();
+		
+		while(grupoIterator.hasNext()) {
+			Grupo grupo = grupoIterator.next();
+			
+			if (papeis.contains(grupo.id())) {
+				grupoIterator.remove();
+			}
+		}
 	}
 	
 	@Override
@@ -132,6 +151,10 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		Validate.notEmpty(permissoes, "usuario.permissoes.required");
 		
 		this.permissoes.removeAll(permissoes);
+	}
+	
+	public String setor(){
+		return this.grupos.stream().filter(g -> g.tipo() == TipoGrupo.SETOR).findFirst().map(g -> g.nome()).orElse("");
 	}
 	
 	@Override

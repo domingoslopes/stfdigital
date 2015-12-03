@@ -15,6 +15,9 @@
 		browser.get('/login'); 
 		
 		this.login = function (papel) {
+			browser.wait(function() {
+			    return $('#username').isPresent(); // keeps waiting until this statement resolves to true
+			});
 			
 		    element(by.id('username')).sendKeys(papel);
 		    element(by.id('password')).sendKeys('123');

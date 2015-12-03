@@ -4,12 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -17,7 +14,6 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
-import br.jus.stf.shared.stereotype.ValueObject;
 
 /**
  * @author Rafael.Alencar
@@ -25,14 +21,10 @@ import br.jus.stf.shared.stereotype.ValueObject;
  */
 @Entity
 @Table(name = "ASSOCIADO", schema = "CORPORATIVO", uniqueConstraints = @UniqueConstraint(columnNames = {"SEQ_PESSOA", "SEQ_ORGAO"}))
-public class Associado implements ValueObject<Associado> {
+public class Associado implements br.jus.stf.shared.stereotype.Entity<Associado, Long> {
 
-	private static final long serialVersionUID = 1L;
-	
 	@Id
 	@Column(name = "SEQ_ASSOCIADO")
-	@SequenceGenerator(name = "ASSOCIADOID", sequenceName = "CORPORATIVO.SEQ_ASSOCIADO", allocationSize = 1)
-	@GeneratedValue(generator = "ASSOCIADOID", strategy=GenerationType.SEQUENCE)
 	private Long sequencial;
 
 	@ManyToOne
@@ -50,18 +42,20 @@ public class Associado implements ValueObject<Associado> {
 	@Column(name = "DSC_CARGO_FUNCAO")
 	private String cargoFuncao;
 
-	public Associado(final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo) {
+	public Associado(final Long sequencial, final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo) {
+		Validate.notNull(sequencial, "associado.sequencial.required");
 		Validate.notNull(pessoa, "associado.pessoa.required");
 		Validate.notNull(orgao, "associado.orgao.required");
 		Validate.notNull(tipo, "associado.tipo.required");
 
+		this.sequencial = sequencial;
 		this.pessoa = pessoa;
 		this.orgao = orgao;
 		this.tipo = tipo;
 	}
 	
-	public Associado(final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo, final String cargoFuncao) {
-		this(pessoa, orgao, tipo);
+	public Associado(final Long sequencial, final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo, final String cargoFuncao) {
+		this(sequencial, pessoa, orgao, tipo);
 		
 		Validate.notBlank(cargoFuncao, "associado.cargoFuncao.required");
 
@@ -95,10 +89,15 @@ public class Associado implements ValueObject<Associado> {
 	public String cargoFuncao() {
 		return cargoFuncao;
 	}
+	
+	@Override
+	public Long id() {
+		return sequencial;
+	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(pessoa).append(orgao).append(tipo)
+		return new HashCodeBuilder().append(sequencial)
 				.hashCode();
 	}
 
@@ -114,14 +113,12 @@ public class Associado implements ValueObject<Associado> {
 
 		Associado other = (Associado) obj;
 
-		return sameValueAs(other);
+		return sameIdentityAs(other);
 	}
 
 	@Override
-	public boolean sameValueAs(Associado other) {
-		return other != null && pessoa.sameIdentityAs(other.pessoa)
-				&& orgao.sameValueAs(other.orgao)
-				&& tipo.sameValueAs(other.tipo);
+	public boolean sameIdentityAs(Associado other) {
+		return other != null && sequencial.equals(other.sequencial);
 	}
 
 }
