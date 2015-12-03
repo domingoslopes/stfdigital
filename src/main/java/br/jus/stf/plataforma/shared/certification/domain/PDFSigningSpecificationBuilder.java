@@ -1,7 +1,7 @@
 package br.jus.stf.plataforma.shared.certification.domain;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
 
 public interface PDFSigningSpecificationBuilder {
 

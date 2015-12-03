@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
-import br.jus.stf.plataforma.shared.certification.domain.model.ValidationOnlyPki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiId;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.ValidationOnlyPki;
 
 public class PlataformaPki implements Pki {
 

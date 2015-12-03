@@ -2,8 +2,8 @@ package br.jus.stf.plataforma.shared.certification.domain;
 
 import java.io.IOException;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 

@@ -1,8 +1,8 @@
 package br.jus.stf.plataforma.shared.certification.infra;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
 
 public class PdfTempSignedDocument implements SignedDocument {
 
