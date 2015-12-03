@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface UsuarioRepository {
 	
-	public <T extends Usuario> T findOne(Long sequencial);
+	public Usuario findOne(Long sequencial);
 	
-	public <T extends Usuario> T findOne(String login);
+	public Usuario findOne(String login);
 	
-	public <T extends Usuario> T save(Usuario principal);
+	public Usuario save(Usuario principal);
 	
 	public List<Permissao> findByPermissaoUsuario(String login);
 
