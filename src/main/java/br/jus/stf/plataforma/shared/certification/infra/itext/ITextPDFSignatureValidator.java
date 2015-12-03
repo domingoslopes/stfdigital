@@ -10,9 +10,9 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentValidation;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentValidator;
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidator;
 import br.jus.stf.plataforma.shared.certification.infra.configuration.CryptoProvider;
 
 public class ITextPDFSignatureValidator implements DocumentValidator {
