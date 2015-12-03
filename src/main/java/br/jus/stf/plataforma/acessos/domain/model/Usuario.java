@@ -122,7 +122,7 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		while(grupoIterator.hasNext()) {
 			Grupo grupo = grupoIterator.next();
 			
-			if (papeis.contains(grupo.id())) {
+			if (grupos.contains(grupo.id())) {
 				grupoIterator.remove();
 			}
 		}

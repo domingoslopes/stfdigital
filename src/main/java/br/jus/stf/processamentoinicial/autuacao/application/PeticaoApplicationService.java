@@ -150,10 +150,20 @@ public class PeticaoApplicationService {
 		peticaoRepository.save(peticao);
 		
 		// Passo 04: Completando a tarefa no BPM...
-		tarefaAdapter.completarDevolucao(peticao);
+		processoAdapter.assinar(peticao);
 		
 		//Passo 05: Gera o evento de peticao inválida.
 		this.peticaoApplicationEvent.remessaInvalida(peticao);
+	}
+	
+	/**
+	 * Assina o documento de devolução de uma Petição.
+	 * 
+	 * @param peticao
+	 */
+	public void assinarDevolucao(Peticao peticao) {
+		// TODO: Colocar aqui os passo para finalizar devolução
+		tarefaAdapter.completarDevolucao(peticao);
 	}
 	
 }
