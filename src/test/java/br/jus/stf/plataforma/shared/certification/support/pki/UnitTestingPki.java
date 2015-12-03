@@ -35,7 +35,7 @@ public class UnitTestingPki implements Pki {
 			IcpBrasilDadosPessoaFisica dadosPf = new IcpBrasilDadosPessoaFisica(null, "43848071207", null, null);
 
 			finalUserStore = pkiGenerator.generateFinalUser(intermediateStores.get(intermediateStores.size() - 1),
-					"TESTE UNITARIO" + ":" + cpf, 1, "teste.unitario@stfdigital.stf.jus.br", dadosPf);
+					"TESTE UNITARIO" + ":" + cpf, 1, "teste.unitario@stfdigital.stf.jus.br", dadosPf, 1);
 
 			pki = new ReadOnlyPki(new PkiId("ICP_PLATAFORMA"), Arrays.asList(rootStore.certificate()),
 					intermediateStores.stream().map(s -> s.certificate()).collect(Collectors.toList()));
