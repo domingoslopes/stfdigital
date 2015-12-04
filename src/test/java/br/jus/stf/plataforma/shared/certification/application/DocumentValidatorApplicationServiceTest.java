@@ -16,6 +16,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 public class DocumentValidatorApplicationServiceTest extends AbstractIntegrationTests {
 
 	private static final String PDF_DE_TESTE_ASSINADO = "pdf-de-teste-assinado-001.pdf";
+	private static final String PDF_DE_TESTE_NAO_ASSINADO = "pdf-de-teste-001.pdf";
 
 	@Autowired
 	private DocumentValidatorApplicationService documentValidatorApplicationService;
@@ -33,4 +34,13 @@ public class DocumentValidatorApplicationServiceTest extends AbstractIntegration
 		Assert.assertTrue(documentValidation.valid());
 	}
 
+	@Test
+	public void testValidateNotSignedPdf() throws Exception {
+		Document document = new PdfInputStreamDocument(SignatureTestUtil.getDocumentToSign(PDF_DE_TESTE_NAO_ASSINADO));
+		PkiIds pkiIds = new PkiIds(PkiType.ICP_PLATAFORMA.id());
+		DocumentValidation documentValidation = documentValidatorApplicationService.validateDocumentSignature(document,
+				pkiIds);
+		Assert.assertFalse(documentValidation.valid());
+	}
+	
 }
