@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.acessos.interfaces;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -28,6 +29,7 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 	
 
 	private StringBuilder permissoesUsuario;
+	private ObjectMapper mapper;
 	
 	@Before
 	public void carregarDadosTeste() {
@@ -37,6 +39,8 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		this.permissoesUsuario.append("\"gruposAdicionados\":[2],");
 		this.permissoesUsuario.append("\"papeisRemovidos\":[5],");
 		this.permissoesUsuario.append("\"gruposRemovidos\":[1,2]}");
+		
+		this.mapper = new ObjectMapper();
 	}
 	
 	
@@ -79,20 +83,31 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 	
 	@Test
 	public void cadastrarNovoUsuario() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-		ObjectNode userJson = mapper.createObjectNode();
+		ObjectNode userJson = this.mapper.createObjectNode();
 		
 		userJson.put("login", "joao.silva");
 		userJson.put("nome", "João da Silva");
 		userJson.put("email", "joao.silva@exemplo.com.br");
-		userJson.put("cpf", "");
-		userJson.put("telefone", "");
+		userJson.put("cpf", "71405168633");
+		userJson.put("telefone", "6133332222");
 		
 		this.mockMvc.perform(
 				post("/api/acessos/usuarios")
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(userJson.toString()))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", is(1)));
+				.andExpect(jsonPath("$", instanceOf(Integer.class)));
+	}
+	
+	@Test
+	public void cadastrarNovoUsuarioSemInformacoesObrigatorias() throws Exception {
+		ObjectNode userJson = this.mapper.createObjectNode();		
+		userJson.put("login", "joao.silva");
+		
+		this.mockMvc.perform(
+				post("/api/acessos/usuarios")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(userJson.toString()))
+				.andExpect(status().is4xxClientError());
 	}
 }
