@@ -35,7 +35,7 @@ public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId
 	@JoinColumn(name = "SEQ_GRUPO")
 	private Grupo grupo;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_PAPEL", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))

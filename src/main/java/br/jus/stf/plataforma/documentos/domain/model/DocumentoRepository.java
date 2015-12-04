@@ -1,7 +1,5 @@
 package br.jus.stf.plataforma.documentos.domain.model;
 
-import java.io.InputStream;
-
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
@@ -29,7 +27,7 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 * @param documentoId
 	 * @return o stream do conteúdo
 	 */
-	public InputStream loadStream(DocumentoId documentoId);
+	public DocumentoDownload download(DocumentoId documentoId);
 	
 	/**
 	 * Salva um documento

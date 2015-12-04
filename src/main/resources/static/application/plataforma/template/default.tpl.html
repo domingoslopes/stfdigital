@@ -23,19 +23,14 @@
 	<!-- BEGIN SIDEBAR MENU -->
 	<div class="sidebar-menu">
 		<ul class="menu-items">
-			<li class="m-t-30"><a ui-sref="root.dashboard" class="detailed">
-					<span class="title">Dashboards</span> <span class="details">Lista
-						de Dashlets</span>
-			</a> <span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
+			<li class="m-t-30"><a ui-sref="dashboard" class="detailed">
+				<span class="title">Dashboards</span>
+				<span class="details">Lista	de Dashlets</span>
+			</a><span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
 			</li>
-			<li action-menu id="registrar-peticao-fisica" title="Novo Item"
-				details="Petição Física" state="root.registro" resources="[{}]"></li>
-			<li action-menu id="registrar-peticao-eletronica" title="Novo Item"
-				details="Petição Digital" state="root.peticionamento.advogado"
-				resources="[{}]"></li>
-			<li action-menu id="registrar-peticao-eletronica-orgao"
-				title="Novo Item" details="Petição Órgão"
-				state="root.peticionamento.orgao" resources="[{}]"></li>
+			<li action-menu id="registrar-peticao-fisica" title="Novo Item" details="Petição Física"></li>
+			<li action-menu id="registrar-peticao-eletronica" title="Novo Item" details="Petição Digital"></li>
+			<li action-menu id="registrar-peticao-eletronica-orgao" title="Novo Item" details="Petição Órgão"></li>
 		</ul>
 		<div class="clearfix"></div>
 	</div>
@@ -82,15 +77,12 @@
 				<notification-center></notification-center>
 				<div id="pesquisas" class="search-link dropdown">
 					<span class="dropdown-toggle" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="true"> <i
-						class="pg-search"></i> Pesquisar
+						aria-haspopup="true" aria-expanded="true">
+						<i class="pg-search"></i> Pesquisar
 					</span>
-					<ul
-						class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10"
-						role="menu">
-						<li><a style="line-height: 15px" ui-sref="root.pesquisa.peticao"
-							id="pesquisa_peticao">Petição</a></li>
-						<li><a style="line-height: 15px" ui-sref="root.pesquisa.processo">Processo</a></li>
+					<ul class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10" role="menu">
+						<li><a style="line-height: 15px" ui-sref="pesquisar.peticoes" id="pesquisar-peticoes">Petições</a></li>
+						<li><a style="line-height: 15px" ui-sref="pesquisar.processos" id="pesquisar-processos">Processos</a></li>
 					</ul>
 				</div>
 			</div>
@@ -99,7 +91,7 @@
 			<!-- START User Info-->
 			<div class="visible-lg visible-md m-t-10">
 				<div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
-					<span class="semi-bold" data-ng-bind="user.name"></span>
+					<span class="semi-bold" data-ng-bind="user.login"></span>
 				</div>
 				<div class="dropdown pull-right">
 					<button id="papeisButton" class="profile-dropdown-toggle"

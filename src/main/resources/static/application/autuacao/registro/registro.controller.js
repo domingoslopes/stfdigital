@@ -39,7 +39,7 @@
 		};
 		
 		registro.completar = function(data) {
-			$state.go('root.dashboard');
+			$state.go('dashboard');
 			messages.success('Petição Física <b>#' + data + '</b> registrada com sucesso.');
 		};
 		

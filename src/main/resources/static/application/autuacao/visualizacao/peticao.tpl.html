@@ -1,4 +1,4 @@
-<div class="content" ng-controller="DetalhePeticaoController as detalhe">
+<div class="content">
 	<div class="jumbotron" data-pages="parallax">
 		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
 			<div class="inner">
@@ -20,7 +20,7 @@
 						<h5>Classe</h5>
 					</div>
 					<div class="card-description">
-						<h6  class="font-montserrat">Classe Processual: <strong>{{detalhe.peticao.classe}}</strong></h6>
+						<h6  class="font-montserrat">Classe Processual: <strong>{{peticao.classe}}</strong></h6>
 					</div>
 				</div>
 		    </div>
@@ -31,13 +31,13 @@
 						<h5>Número da Petição</h5>
 					</div>
 					<div class="card-description">
-						 <h6  class="font-montserrat" >Número da Petição: <strong>{{detalhe.peticao.id}}</strong></h6>
+						 <h6  class="font-montserrat" >Número da Petição: <strong>{{peticao.id}}</strong></h6>
 					</div>
 				</div>
 		    </div>
 		</div>
-		<div class="row" ng-show="detalhe.peticao.partes['Polo Ativo'].length || detalhe.peticao.partes['Polo Passivo'].length"">
-			<div class="col-md-6" ng-show="detalhe.peticao.partes['Polo Ativo'].length">
+		<div class="row" ng-show="peticao.partes['Polo Ativo'].length || peticao.partes['Polo Passivo'].length"">
+			<div class="col-md-6" ng-show="peticao.partes['Polo Ativo'].length">
 				<div class="card share" data-social="item" style="width: 100%">
 					<div class="circle" data-toggle="tooltip" title=""
 						data-container="body" data-original-title="Label"></div>
@@ -48,7 +48,7 @@
 						<div class="auto-overflow widget-11-2-table">
 							<table class="table table-condensed table-hover" >
 								<tbody>
-									<tr ng-repeat="parte in detalhe.peticao.partes['Polo Ativo']">
+									<tr ng-repeat="parte in peticao.partes['Polo Ativo']">
 										<td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
 									</tr>
 								</tbody>
@@ -57,7 +57,7 @@
 					</div>
 				</div>
 			</div>
-            <div class="col-md-6" ng-show="detalhe.peticao.partes['Polo Passivo'].length">
+            <div class="col-md-6" ng-show="peticao.partes['Polo Passivo'].length">
 	            <div class="card share" data-social="item" style="width: 100%">
 	                <div class="circle" data-toggle="tooltip" title=""
 	                    data-container="body" data-original-title="Label"></div>
@@ -68,7 +68,7 @@
 	                    <div class="auto-overflow widget-11-2-table">
 	                        <table class="table table-condensed table-hover">
 	                            <tbody>
-	                                <tr ng-repeat="parte in detalhe.peticao.partes['Polo Passivo']">
+	                                <tr ng-repeat="parte in peticao.partes['Polo Passivo']">
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
 	                                </tr>
 	                            </tbody>
@@ -79,7 +79,7 @@
             </div>
 		</div>
 		<div class="row">
-			<div class="col-md-6" ng-show="detalhe.peticao.volumes != null">
+			<div class="col-md-6" ng-show="peticao.volumes != null">
 				<div class="card share" data-social="item" style="width: 100%">
 					<div class="circle" data-toggle="tooltip" title=""
 						data-container="body" data-original-title="Label"></div>
@@ -87,11 +87,11 @@
 						<h5>Quantidade de volumes</h5>
 					</div>
 					<div class="card-description">
-						<h6>Quantidade de Volumes: <strong>{{detalhe.peticao.volumes}}</strong></h6>
+						<h6>Quantidade de Volumes: <strong>{{peticao.volumes}}</strong></h6>
 					</div>
 				</div>
 			</div>
-               <div class="col-md-6" ng-show="detalhe.peticao.apensos != null">
+               <div class="col-md-6" ng-show="peticao.apensos != null">
                    <div class="card share" data-social="item" style="width: 100%">
                        <div class="circle" data-toggle="tooltip" title=""
                            data-container="body" data-original-title="Label"></div>
@@ -99,25 +99,25 @@
                            <h5>Quantidade de Apensos</h5>
                        </div>
                        <div class="card-description">
-                       	<h6>Quantidade de Apensos: <strong>{{detalhe.peticao.apensos}}</strong></h6>
+                       	<h6>Quantidade de Apensos: <strong>{{peticao.apensos}}</strong></h6>
                        </div>
                    </div>
                </div>
 		</div>
 			
 		<div class="row">
-			<div class="col-md-6" ng-show="detalhe.peticao.formaRecebimento.length">
+			<div class="col-md-6" ng-show="peticao.formaRecebimento.length">
 				<div class="card share" data-social="item" style="width: 100%">
 					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 					<div class="card-header clearfix ">
 						<h5>Forma de Envio</h5>
 					</div>
 					<div class="card-description">
-						<h6>Forma de Recebimento: <strong>{{detalhe.peticao.formaRecebimento}}</strong></h6>
+						<h6>Forma de Recebimento: <strong>{{peticao.formaRecebimento}}</strong></h6>
 					</div>
 				</div>
 			</div>
-            <div class="col-md-6" ng-show="detalhe.peticao.numeroSedex.length">
+            <div class="col-md-6" ng-show="peticao.numeroSedex.length">
                 <div class="card share" data-social="item" style="width: 100%">
                      <div class="circle" data-toggle="tooltip" title=""
                          data-container="body" data-original-title="Label"></div>
@@ -125,12 +125,12 @@
                          <h5>Número do Sedex</h5>
                      </div>
                      <div class="card-description">
-                     	<h6>Número do Sedex: <strong>{{detalhe.peticao.numeroSedex}}</strong></h6>
+                     	<h6>Número do Sedex: <strong>{{peticao.numeroSedex}}</strong></h6>
                      </div>
                  </div>
             </div>
 		</div>
-		<div class="row" ng-show="detalhe.peticao.pecas.length">
+		<div class="row" ng-show="peticao.pecas.length">
 			<div class="col-md-12">
 				<div class="card share" data-social="item" style="width: 100%">
 	                <div class="circle" data-toggle="tooltip" title=""
@@ -149,10 +149,10 @@
 		                            </tr>
 		                        </thead>
 	                            <tbody>
-	                                <tr ng-repeat="peca in detalhe.peticao.pecas">
+	                                <tr ng-repeat="peca in peticao.pecas">
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peca.descricao}}</td>
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peca.tipo}}</td>
-                                        <td class="font-montserrat fs-12 col-lg-12"><a ng-href="{{detalhe.urlConteudo(peca)}}" target="_blank">Visualizar</a></td>
+                                        <td class="font-montserrat fs-12 col-lg-12"><a ng-href="{{urlConteudo(peca)}}" target="_blank">Visualizar</a></td>
 	                                </tr>
 	                            </tbody>
 	                        </table>
@@ -164,7 +164,7 @@
 		</div>
 		<br />
  		<p>
- 			<button class="btn btn-complete btn-cons" onClick="location.href='dashboard'">Voltar</button>
+ 			<a href="#" class="btn btn-complete btn-cons" ui-sref="dashboard">Voltar</a>
 		</p>	
 	</div>
 </div>

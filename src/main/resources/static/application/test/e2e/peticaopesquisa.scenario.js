@@ -34,7 +34,7 @@
 		it('Deveria navegar para a página de pesquisa', function() {
 			pesquisaPeticaoPage = new PesquisaPeticaoPage();
 			pesquisaPeticaoPage.iniciarPesquisa();
-			expect(browser.getCurrentUrl()).toMatch(/\/pesquisa\/peticao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/pesquisa\/peticoes/);
 		});
 		
 		it('Deveria pesquisar uma petição', function(){

@@ -10,7 +10,61 @@
 	angular.autuacao = angular.module('autuacao', []);
 	
 	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
-		$stateProvider.state('root.peticionamento', {
+		
+		$stateProvider.state('visualizar', {
+			abstract: true,
+			parent: 'root',
+			url: '/visualizacao'
+		}).state('visualizar.processo', {
+			parent: 'root',
+			url: '/processo/:processoId',
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/visualizacao/processo.tpl.html',
+					controller: 'VisualizacaoProcessoController'
+				}
+			}
+		}).state('visualizar.peticao', {
+			url: '/peticao/:idPeticao',
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/visualizacao/peticao.tpl.html',
+					controller: 'VisualizacaoPeticaoController'
+				}
+			}
+		}).state('pesquisar.peticoes', {
+			url: '/peticoes',
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pesquisa/peticoes.tpl.html',
+					controller: 'PesquisaPeticoesController',
+					resolve : {
+						classes : function(ClasseService) {
+							return ClasseService.listar();
+						}
+					}
+				}
+			}
+		}).state('pesquisar.processos', {
+			url: '/processos',
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pesquisa/processos.tpl.html',
+					controller: 'PesquisaProcessosController',
+					resolve : {
+						classes : function(ClasseService) {
+							return ClasseService.listar();
+						}
+					}
+				}
+			}
+		}).state('actions.autuacao', { // estado abstrato para agrupar as ações do contexto
+			abstract : true,
+			views: {
+				'modal@root' : {}
+			}
+		}).state('registrar-peticao', {
+			parent: 'actions.autuacao',
 			url: '/peticao',
 			abstract: true,
 			views: {
@@ -24,48 +78,70 @@
 					}
 				}
 			}
-		}).state('root.peticionamento.advogado', {
+		}).state('registrar-peticao-eletronica', {
+			parent: 'registrar-peticao',
 			url: '/advogado',
+			params : { resources : [] },
 			views: {
-				'@root.peticionamento': {
+				'@registrar-peticao': {
 					templateUrl: 'application/autuacao/peticionamento/advogado/peticionamento.tpl.html',
 					controller: 'PeticionamentoAdvogadoController'
 				}
 			}
-		}).state('root.peticionamento.orgao', {
+		}).state('registrar-peticao-eletronica-orgao', {
+			parent: 'registrar-peticao',
 			url: '/orgao',
+			params : { resources : [] },
 			views: {
-				'@root.peticionamento': {
+				'@registrar-peticao': {
 					templateUrl: 'application/autuacao/peticionamento/orgao/peticionamento.tpl.html',
 					controller: 'PeticionamentoOrgaoController'
 				}
 			}
-		}).state('root.registro', {
+		}).state('registrar-peticao-fisica', {
+			parent: 'actions.autuacao',
 			url: '/peticao/fisica',
+			params : { resources : [] },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/registro/registro.tpl.html',
 					controller: 'RegistroPeticaoFisicaController'
 				}
 			}
-		}).state('root.preautuacao', {
-			url: '/peticao/:idTarefa/preautuacao',
+		}).state('preautuar', {
+			parent: 'actions.autuacao',
+			url: '/peticao/preautuacao',
+			params : { resources : [] },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/preautuacao/preautuacao.tpl.html',
 					controller: 'PreautuacaoController'
 				}
 			}
-		}).state('root.autuacao', {
-			url: '/peticao/:idTarefa/autuacao',
+		}).state('autuar', {
+			parent: 'actions.autuacao',
+			url: '/peticao/autuacao',
+			params : { resources : [] },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html',
 					controller: 'AutuacaoController'
 				}
 			}
-		}).state('root.distribuicao', {
-			url: '/peticao/:idTarefa/distribuicao',
+		}).state('devolver-peticao', {
+			parent: 'actions.autuacao',
+			url: '/peticao/devolucao',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
+					controller: 'DevolucaoController'
+				}
+			}
+		}).state('distribuir-processo', {
+			parent: 'actions.autuacao',
+			url: '/peticao/distribuicao',
+			params : { resources : [] },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/distribuicao/distribuicao.tpl.html',
@@ -75,64 +151,6 @@
 							return MinistroService.listar();
 						}
 					}
-				}
-			}
-		}).state('root.devolucao', {
-			url: '/peticao/:idTarefa/devolucao',
-			views: {
-				'content@root': {
-					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
-					controller: 'DevolucaoController'
-				}
-			}
-		}).state('root.processos', {
-			url: '/processos/:processoId',
-			views: {
-				'content@root': {
-					templateUrl: 'application/autuacao/visualizacao/processos/visualizacao.tpl.html',
-					controller: 'VisualizacaoProcessoController'
-				}
-			}
-		}).state('root.pesquisa.peticao', {
-			url: '/peticao',
-			views: {
-				'content@root': {
-					templateUrl: 'application/autuacao/pesquisa/peticao.tpl.html',
-					controller: 'PesquisaPeticaoController',
-					resolve : {
-						classes : function(ClasseService) {
-							return ClasseService.listar();
-						}
-					}
-				}
-			}
-		}).state('root.pesquisa.processo', {
-			url: '/processo',
-			views: {
-				'content@root': {
-					templateUrl: 'application/autuacao/pesquisa/processo.tpl.html',
-					controller: 'PesquisaProcessoController',
-					resolve : {
-						classes : function(ClasseService) {
-							return ClasseService.listar();
-						}
-					}
-				}
-			}
-		}).state('actions.autuacao', { // estado abstrato para agrupar as ações do contexto
-			abstract : true
-		}).state('actions.autuacao.dummy_action', {
-			views: {
-				/*
-				'modal@' : {}, //faz com que não mostre no modal
-				'@' : { // faz com que apareça na view principal
-					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
-					controller: 'DevolucaoController'
-				},
-				*/
-				'@actions' : {
-					templateUrl: 'application/autuacao/registro/dummy_action.tpl.html',
-					controller: 'DummyActionController'
 				}
 			}
 		});
