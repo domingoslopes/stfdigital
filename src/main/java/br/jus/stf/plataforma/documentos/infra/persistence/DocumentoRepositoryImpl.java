@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
+import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.shared.DocumentoId;
@@ -47,7 +48,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	}
 	
 	@Override
-	public InputStream loadStream(DocumentoId documentoId) {
+	public DocumentoDownload download(DocumentoId documentoId) {
 		try {
 			Documento documento = Optional.ofNullable(super.findOne(documentoId))
 					.orElseThrow(IllegalArgumentException::new);
@@ -55,7 +56,8 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 			GridFSDBFile gridFile = gridOperations.findOne(new Query()
 					.addCriteria(Criteria.where("_id").is(new ObjectId(documento.numeroConteudo()))));
 			
-			return gridFile.getInputStream();
+			return new DocumentoDownload(gridFile.getInputStream(), gridFile.getLength());
+			
 		} catch (Exception t) {
 			throw new RuntimeException("Não foi possível carregar o stream do arquivo ", t);
 		}

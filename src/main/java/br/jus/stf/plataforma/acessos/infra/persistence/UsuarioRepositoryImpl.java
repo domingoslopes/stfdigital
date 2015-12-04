@@ -3,7 +3,7 @@ package br.jus.stf.plataforma.acessos.infra.persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -30,13 +30,11 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 		this.entityManager = entityManager;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public Usuario findOne(UsuarioId id) {
 		return super.findOne(id);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public Usuario findOne(String login) {
 		return super.findOne(new Specification<Usuario>(){
@@ -52,10 +50,9 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 		return super.save(principal);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Permissao> findByPermissaoUsuario(String login) {
-		Query query = entityManager.createQuery("SELECT perm FROM Usuario usua INNER JOIN usua.permissoes perm WITH usua.login = :login");
+		TypedQuery<Permissao> query = entityManager.createQuery("SELECT perm FROM Usuario usua INNER JOIN usua.permissoes perm WITH usua.login = :login", Permissao.class);
 		query.setParameter("login", login);
 		
 		return query.getResultList();

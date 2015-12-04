@@ -1,18 +1,18 @@
 package br.jus.stf.plataforma.documentos.interfaces;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
@@ -56,11 +57,11 @@ public class DocumentoRestResource {
 	
 	@ApiOperation("Recupera um documento do repositório")
 	@RequestMapping(value = "/{documentoId}", method = RequestMethod.GET)
-	public void recuperar(@PathVariable("documentoId") Long documentoId, HttpServletResponse response) throws IOException {
-		InputStream is = documentoServiceFacade.pesquisaDocumento(documentoId);
-		IOUtils.copy(is, response.getOutputStream());
-		IOUtils.closeQuietly(is);
-	    setPdfReponseHeaders(documentoId, response);
+	public ResponseEntity<InputStreamResource> recuperar(@PathVariable("documentoId") Long documentoId) throws IOException {
+		DocumentoDownload documento = documentoServiceFacade.pesquisaDocumento(documentoId);
+		InputStreamResource is = new InputStreamResource(documento.stream());
+		HttpHeaders headers = createResponseHeaders(documento.tamanho());
+	    return new ResponseEntity<InputStreamResource>(is, headers, HttpStatus.OK);
 	}
 	
 	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")
@@ -76,25 +77,12 @@ public class DocumentoRestResource {
 	 * @param documentoId
 	 * @param response
 	 */
-	private void setPdfReponseHeaders(Long documentoId, HttpServletResponse response) {
-		String filename = documentoId + ".pdf";
-	    response.addHeader(HttpHeaders.CONTENT_TYPE, "application/pdf");
-	    response.addHeader(HttpHeaders.CONTENT_DISPOSITION, createPDFContentDisposition(filename));
-	    response.addHeader(HttpHeaders.CACHE_CONTROL, "must-revalidate, post-check=0, pre-check=0");
-	}
-
-	/**
-	 * Cria o header do Content-Disposition para definir o nome do arquivo
-	 * 
-	 * @param filename
-	 * @return
-	 */
-	private String createPDFContentDisposition(String filename) {
-		StringBuilder contentDisposition = new StringBuilder("form-data; name=\"");
-		contentDisposition.append(filename).append('\"');
-		contentDisposition.append("; filename=\"");
-		contentDisposition.append(filename).append('\"');
-		return contentDisposition.toString();
+	private HttpHeaders createResponseHeaders(Long tamanho) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentLength(tamanho);
+		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+		return headers;
 	}
 	
 }

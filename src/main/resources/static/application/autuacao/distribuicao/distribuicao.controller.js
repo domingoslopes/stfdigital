@@ -9,7 +9,7 @@
 
 	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, messages, properties, $state, PeticaoService, PesquisaService) {
 		
-		$scope.idPeticao = $stateParams.idTarefa;
+		$scope.idPeticao = $stateParams.resources[0];
 		
 		$scope.ministrosCandidados = data.data;
 		
@@ -167,7 +167,7 @@
 					$scope.ministrosCandidados, $scope.ministrosImpedidos, $scope.processosPreventos);
 			
 			PeticaoService.distribuir($scope.idPeticao, command).success(function(data) {
-				$state.go('root.dashboard');
+				$state.go('dashboard');
 				//messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
 			}).error(function(data, status) {
 				if (status === 400) {
