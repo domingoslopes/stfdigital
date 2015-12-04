@@ -99,4 +99,10 @@ public class PeticaoRestResource {
 		PeticaoDto peticao = this.peticaoServiceFacade.consultar(id);
 		return peticao.getPartes();
 	}
+    
+    @ApiOperation(value = "Retorna a lista de status que podem ser atribuídos a uma petição.")
+    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    public List<String> consultarStatus() {
+    	return this.peticaoServiceFacade.consultarStatusPeticao();
+    }
 }
