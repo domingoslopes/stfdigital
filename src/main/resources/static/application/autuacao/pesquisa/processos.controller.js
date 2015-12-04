@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('PesquisaProcessoController', function ($scope, messages, classes, PesquisaService, MinistroService) {
+	angular.plataforma.controller('PesquisaProcessosController', function ($scope, messages, classes, PesquisaService, MinistroService) {
 		
 		$scope.classes = classes.data;
 		$scope.ministros = [];

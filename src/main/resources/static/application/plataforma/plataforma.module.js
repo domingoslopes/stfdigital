@@ -12,7 +12,8 @@
 	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3', 'angularMoment']);
 
 	angular.plataforma.config(function($stateProvider, DashletsProvider) {
-		$stateProvider.state('root.dashboard', {
+		$stateProvider.state('dashboard', {
+			parent: 'root',
 			url : '/dashboard',
 			views: {
 				'content@root': {
@@ -20,15 +21,8 @@
 					controller : 'DashboardController'
 				}
 			}
-		}).state('root.detalhe', {
-			url: '/detalhe/peticao/:idPeticao',
-			views: {
-				'@': {
-					templateUrl: 'application/autuacao/detalhe/detalhepeticao.tpl.html',
-					controller: 'DetalhePeticaoController'
-				}
-			}
-		}).state('root.erro', {
+		}).state('erro', {
+			parent: 'root',
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
 		});

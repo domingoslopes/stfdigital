@@ -15,6 +15,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
+
 /**
  * Representa a requisição que será monitorada. Encapsula os objetos HttpServlet (request, response e filterChain) para
  * viabilizar a extração de informações por todo o ciclo de vida da requisição.
@@ -102,7 +104,7 @@ public class MonitoredRequest {
 	 * @return o usuário logado na aplicação
 	 */
 	public String username() {
-		return request.getHeader("papel");
+		return SecurityContextUtil.getUsername();
 	}
 
 	/**

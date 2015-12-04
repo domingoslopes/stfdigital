@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.acessos.interfaces;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,8 +54,7 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		this.mockMvc.perform(get("/api/acessos/usuarios/grupos")
 			.header("login", "gestor-autuacao")
 			.param("login", "gestor-autuacao")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].id", is(1)))
-			.andExpect(jsonPath("$[0].nome", is("usuario")));
+			.andExpect(jsonPath("$", hasSize(2)));
 	}
 	
 	@Test
@@ -63,8 +63,7 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		this.mockMvc.perform(get("/api/acessos/usuarios/papeis")
 			.header("login", "autuador")
 			.param("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].id", is(1)))
-			.andExpect(jsonPath("$[0].nome", is("usuario")));
+			.andExpect(jsonPath("$", hasSize(1)));
 	}
 	
 	@Test
