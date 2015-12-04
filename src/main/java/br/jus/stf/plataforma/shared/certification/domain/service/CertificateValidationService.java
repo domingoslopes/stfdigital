@@ -24,7 +24,7 @@ public class CertificateValidationService {
 	public CertificateValidation validate(X509Certificate certificate, PkiIds pkiIds) {
 		Pki[] pkis = pkiRepository.findAll(pkiIds.ids());
 		CertificateValidator validator = certificateValidatorFactory.createCertificateValidator(pkis);
-		return validator.validate(certificate);
+		return validator.validateNow(certificate);
 	}
 
 }
