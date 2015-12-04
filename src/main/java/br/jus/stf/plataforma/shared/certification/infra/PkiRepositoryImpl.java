@@ -10,14 +10,14 @@ import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.plataforma.shared.certification.domain.CertificationUtil;
-import br.jus.stf.plataforma.shared.certification.domain.model.Certificate;
-import br.jus.stf.plataforma.shared.certification.domain.model.CertificateType;
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiRepository;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
-import br.jus.stf.plataforma.shared.certification.domain.model.ValidationOnlyPki;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.Certificate;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateType;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateUtils;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiId;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiRepository;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.ReadOnlyPki;
 import br.jus.stf.plataforma.shared.certification.infra.pki.PlataformaPki;
 
 @Repository
@@ -39,12 +39,12 @@ public class PkiRepositoryImpl implements PkiRepository {
 		List<X509Certificate> intermediateCerts = new ArrayList<>();
 		for (Certificate c : certificates) {
 			if (c.certificateType() == CertificateType.R) {
-				rootCerts.add(CertificationUtil.bytesToCertificate(c.content()));
+				rootCerts.add(CertificateUtils.bytesToCertificate(c.content()));
 			} else if (c.certificateType() == CertificateType.A) {
-				intermediateCerts.add(CertificationUtil.bytesToCertificate(c.content()));
+				intermediateCerts.add(CertificateUtils.bytesToCertificate(c.content()));
 			}
 		}
-		ValidationOnlyPki pki = new ValidationOnlyPki(pkiId, rootCerts, intermediateCerts);
+		ReadOnlyPki pki = new ReadOnlyPki(pkiId, rootCerts, intermediateCerts);
 		return pki;
 	}
 
