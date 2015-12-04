@@ -82,7 +82,7 @@ public class AcessosApplicationService {
 		Set<GrupoId> gruposRemov = new HashSet<GrupoId>();
 		
 		Optional.ofNullable(papeisRemovidos).ifPresent(p2 -> p2.forEach(p -> papeisRemov.add(new PapelId(p))));
-		Optional.ofNullable(papeisAdicionados).ifPresent(g2 -> g2.forEach(g -> gruposRemov.add(new GrupoId(g))));
+		Optional.ofNullable(gruposRemovidos).ifPresent(g2 -> g2.forEach(g -> gruposRemov.add(new GrupoId(g))));
 		Optional.ofNullable(papeisAdicionados).ifPresent(p1 -> p1.forEach(p -> papeisAdic.add(this.papelRepository.findOne(new PapelId(p)))));
 		Optional.ofNullable(gruposAdicionados).ifPresent(g1 -> g1.forEach(g -> gruposAdic.add(this.grupoRepository.findOne(new GrupoId(g)))));
 				
