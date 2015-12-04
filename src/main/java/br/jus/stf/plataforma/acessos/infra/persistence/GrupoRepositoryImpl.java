@@ -65,8 +65,8 @@ public class GrupoRepositoryImpl extends SimpleJpaRepository<Grupo, GrupoId> imp
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Grupo save(Grupo Grupo) {
-		return super.save(Grupo);
+	public Grupo save(Grupo grupo) {
+		return super.save(grupo);
 	}
 
 }
