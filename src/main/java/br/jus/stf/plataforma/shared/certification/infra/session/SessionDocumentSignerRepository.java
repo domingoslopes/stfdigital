@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSigner;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerRepository;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSigner;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerRepository;
 
 @Component
 public class SessionDocumentSignerRepository implements DocumentSignerRepository {

@@ -9,9 +9,9 @@ import java.io.InputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 
-public class PdfTempDocument implements SigningDocument {
+public class PdfTempDocument implements Document {
 
 	private static final String FILE_NAME_PREFFIX = "_DocToSignTemp_";
 	private static final String FILE_NAME_EXTENSION = ".pdf";
