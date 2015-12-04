@@ -19,8 +19,11 @@ import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
+import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
+import br.jus.stf.plataforma.identidades.domain.model.PessoaRepository;
 import br.jus.stf.shared.GrupoId;
 import br.jus.stf.shared.PapelId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.UsuarioId;
 
 /**
@@ -30,6 +33,9 @@ import br.jus.stf.shared.UsuarioId;
 @Service
 @Transactional
 public class AcessosApplicationService {
+	
+	@Autowired
+	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -82,7 +88,7 @@ public class AcessosApplicationService {
 		Set<GrupoId> gruposRemov = new HashSet<GrupoId>();
 		
 		Optional.ofNullable(papeisRemovidos).ifPresent(p2 -> p2.forEach(p -> papeisRemov.add(new PapelId(p))));
-		Optional.ofNullable(papeisAdicionados).ifPresent(g2 -> g2.forEach(g -> gruposRemov.add(new GrupoId(g))));
+		Optional.ofNullable(gruposRemovidos).ifPresent(g2 -> g2.forEach(g -> gruposRemov.add(new GrupoId(g))));
 		Optional.ofNullable(papeisAdicionados).ifPresent(p1 -> p1.forEach(p -> papeisAdic.add(this.papelRepository.findOne(new PapelId(p)))));
 		Optional.ofNullable(gruposAdicionados).ifPresent(g1 -> g1.forEach(g -> gruposAdic.add(this.grupoRepository.findOne(new GrupoId(g)))));
 				
@@ -103,6 +109,44 @@ public class AcessosApplicationService {
 	 */
 	public Usuario recuperarInformacoesUsuario(String login){
 		return usuarioRepository.findOne(login);
+	}
+	
+	/**
+	 * Cadastra um novo usuário
+	 * 
+	 * @param String login
+	 * @param String nome
+	 * @param string cpf
+	 * @param String oab
+	 * @param String email
+	 * @param String telefone
+	 * 
+	 * @return Usuario Usuário criado
+	 */
+	public Usuario cadastrarUsuario(String login, String nome, String cpf, String oab, String email, String telefone) {
+		PessoaId idPessoa = pessoaRepository.nextId();
+		Pessoa pessoa;
+		
+		if (cpf != null && oab != null && email != null && telefone != null) {
+			pessoa = new Pessoa(idPessoa, nome, cpf, oab, email, telefone);
+			
+		} else if (cpf != null && email != null && telefone != null) {
+			pessoa = new Pessoa(idPessoa, nome, cpf, email, telefone);
+			
+		} else if (cpf != null) {
+			pessoa = new Pessoa(idPessoa, nome, cpf);
+			
+		} else {
+			pessoa = new Pessoa(idPessoa, nome);
+		}
+		
+		pessoaRepository.save(pessoa);
+		
+		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
+		Usuario principal = new Usuario(idUsuario, pessoa, login);
+		usuarioRepository.save(principal);
+		
+		return principal;
 	}
 
 }
