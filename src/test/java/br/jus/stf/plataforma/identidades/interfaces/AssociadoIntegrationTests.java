@@ -37,13 +37,13 @@ public class AssociadoIntegrationTests extends AbstractIntegrationTests {
 	
 	@Test
 	public void cadastrarAssociadoComCargo() throws Exception {
-		super.mockMvc.perform(post("/api/associado/").header("papel", "gestor-cadastro").contentType(MediaType.APPLICATION_JSON)
+		super.mockMvc.perform(post("/api/associado/").header("login", "gestor-cadastro").contentType(MediaType.APPLICATION_JSON)
 				.content(this.dadosAssociadoComCargoParaCadastro)).andExpect(status().isOk());
 	}
 	
 	@Test
 	public void cadastrarAssociadoSemCargo() throws Exception {
-		super.mockMvc.perform(post("/api/associado/").header("papel", "gestor-cadastro").contentType(MediaType.APPLICATION_JSON)
+		super.mockMvc.perform(post("/api/associado/").header("login", "gestor-cadastro").contentType(MediaType.APPLICATION_JSON)
 				.content(this.dadosAssociadoSemCargoParaCadastro)).andExpect(status().isOk());
 	}
 }

@@ -6,9 +6,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -21,6 +25,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  *
  */
 public class AcessoIntegrationTests extends AbstractIntegrationTests {
+	
 
 	private StringBuilder permissoesUsuario;
 	
@@ -70,5 +75,24 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		//Realiza a autuação.
 		this.mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
 			.content(this.permissoesUsuario.toString())).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void cadastrarNovoUsuario() throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode userJson = mapper.createObjectNode();
+		
+		userJson.put("login", "joao.silva");
+		userJson.put("nome", "João da Silva");
+		userJson.put("email", "joao.silva@exemplo.com.br");
+		userJson.put("cpf", "");
+		userJson.put("telefone", "");
+		
+		this.mockMvc.perform(
+				post("/api/acessos/usuarios")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(userJson.toString()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", is(1)));
 	}
 }

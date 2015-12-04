@@ -36,7 +36,7 @@ public class Grupo implements br.jus.stf.shared.stereotype.Entity<Grupo, GrupoId
 	@Enumerated(EnumType.STRING)
 	private TipoGrupo tipo;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_GRUPO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))

@@ -10,7 +10,7 @@ import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
  * @author Lucas.Rodrigues
  *
  */
-@ActionController
+@ActionController(groups = "DummyObj")
 public class DummyActionController {
 	
 	@ActionMapping(id = "DO_NOTHING", name = "Do Nothing")

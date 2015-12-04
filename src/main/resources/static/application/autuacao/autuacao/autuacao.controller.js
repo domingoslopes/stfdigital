@@ -7,10 +7,10 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AutuacaoController', function ($log, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
+	angular.autuacao.controller('AutuacaoController', function ($scope, $log, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var autuacao = this;
 		
-		autuacao.idPeticao = $stateParams.idTarefa;
+		autuacao.idPeticao = $stateParams.resources[0];
 		
 		autuacao.classe = '';
 		
@@ -42,7 +42,7 @@
 			}
 			
 			PeticaoService.autuar(autuacao.idPeticao, new AutuarCommand(autuacao.classe, autuacao.valida, autuacao.motivo)).success(function(data) {
-				$state.go('root.dashboard');
+				$state.go('dashboard');
 			}).error(function(data, status) {
 				if (status === 400) {
 					messages.error('A Petição <b>não pôde ser autuada</b> porque ela não está válida.');

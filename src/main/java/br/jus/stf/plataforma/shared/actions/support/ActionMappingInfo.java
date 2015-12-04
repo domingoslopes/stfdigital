@@ -22,6 +22,7 @@ public class ActionMappingInfo {
 	private String id;
 	private String description;
 	private Class<?> controllerClass;
+	private Set<String> groupClasses = new HashSet<String>(1);
 	private String methodName;
 	private Class<?> resourcesClass;
 	private ResourcesMode resourcesMode;
@@ -69,6 +70,13 @@ public class ActionMappingInfo {
 	public void setControllerClass(Class<?> controllerClass) {
 		this.controllerClass = controllerClass;
 	}
+	
+	/**
+	 * @return the groupClasses
+	 */
+	public Set<String> getGroupClasses() {
+		return groupClasses;
+	}
 
 	/**
 	 * @return the method name of action
@@ -92,10 +100,10 @@ public class ActionMappingInfo {
 	}
 
 	/**
-	 * @param resourcesClass the resourcesClass to set
+	 * @param rersourcesClass the rersourcesClass to set
 	 */
-	public void setResourcesClass(Class<?> resourcesClass) {
-		this.resourcesClass = resourcesClass;
+	public void setResourcesClass(Class<?> rersourcesClass) {
+		this.resourcesClass = rersourcesClass;
 	}
 
 	/**
