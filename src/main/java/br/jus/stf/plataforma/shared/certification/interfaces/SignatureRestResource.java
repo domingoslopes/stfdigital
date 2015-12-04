@@ -22,18 +22,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
-import br.jus.stf.plataforma.shared.certification.domain.CertificationUtil;
-import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
+import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.PdfTempDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiType;
-import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateUtils;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PostSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PreSignCommand;
 import br.jus.stf.plataforma.shared.certification.interfaces.commands.PrepareCommand;
@@ -59,14 +59,14 @@ public class SignatureRestResource {
 	private SignatureApplicationService signatureApplicationService;
 	
 	@Autowired
-	private PDFSigningSpecificationBuilder specBuilder;
+	private PdfSigningSpecificationBuilder specBuilder;
 
 	@ApiOperation("Cria um novo contexto de assinatura com o certificado.")
 	@RequestMapping(value = "/prepare", method = RequestMethod.POST)
 	public SignerDto prepare(@RequestBody PrepareCommand command) throws DecoderException, SigningException {
 		// Converte o certificado recebido para o objeto da classe
 		// X509Certificate.
-		X509Certificate certificate = CertificationUtil
+		X509Certificate certificate = CertificateUtils
 				.bytesToCertificate(Hex.decodeHex(command.getCertificateAsHex().toCharArray()));
 		// Constrói uma especificação de assinatura de PDF.
 		SigningSpecification spec = specBuilder.pkcs7Dettached().reason(SIGNING_REASON)
@@ -114,13 +114,14 @@ public class SignatureRestResource {
 			throws IOException {
 		SignedDocument signedDocument = signatureApplicationService
 				.recoverSignedDocument(new DocumentSignerId(contextId));
-		InputStream is = signedDocument.stream();
+		InputStream is = signedDocument.document().stream();
 
 		response.setHeader("Content-disposition", "attachment; filename=" + contextId + ".pdf");
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Length", String.valueOf(is.available()));
 
 		IOUtils.copy(is, response.getOutputStream());
+		IOUtils.closeQuietly(is);
 		response.flushBuffer();
 	}
 
