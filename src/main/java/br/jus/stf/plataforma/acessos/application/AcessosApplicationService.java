@@ -44,23 +44,27 @@ public class AcessosApplicationService {
 	private PapelRepository papelRepository;
 	
 	public Set<Permissao> carregarPermissoesUsuario(String login) {
-		Usuario usuario = usuarioRepository.findOne(login);
-		return usuario.permissoes();
+		return Optional.ofNullable(usuarioRepository.findOne(login))
+				.map(usuario -> usuario.permissoes())
+				.orElse(Collections.emptySet());
 	}
 	
 	public Set<Permissao> carregarPermissoesRecurso(String nome, String tipo) {
 		return Optional.ofNullable(recursoRepository.findOne(nome, TipoRecurso.valueOf(tipo)))
-			.map(recurso -> recurso.permissoesExigidas()).orElse(Collections.emptySet());
+				.map(recurso -> recurso.permissoesExigidas())
+				.orElse(Collections.emptySet());
 	}
 	
 	public Set<Papel> carregarPapeisUsuario(String login) {
-		Usuario usuario = usuarioRepository.findOne(login);
-		return usuario.papeis();
+		return Optional.ofNullable(usuarioRepository.findOne(login))
+				.map(usuario -> usuario.papeis())
+				.orElse(Collections.emptySet());
 	}
 	
 	public Set<Grupo> carregarGruposUsuario(String login) {
-		usuarioRepository.findOne(login);
-		return usuarioRepository.findOne(login).grupos();
+		return Optional.ofNullable(usuarioRepository.findOne(login))
+				.map(usuario -> usuario.grupos())
+				.orElse(Collections.emptySet());
 	}
 	
 	/**
@@ -82,13 +86,13 @@ public class AcessosApplicationService {
 		Optional.ofNullable(papeisAdicionados).ifPresent(p1 -> p1.forEach(p -> papeisAdic.add(this.papelRepository.findOne(new PapelId(p)))));
 		Optional.ofNullable(gruposAdicionados).ifPresent(g1 -> g1.forEach(g -> gruposAdic.add(this.grupoRepository.findOne(new GrupoId(g)))));
 				
-		Usuario usuario = this.usuarioRepository.findOne(new UsuarioId(id));
+		Usuario usuario = usuarioRepository.findOne(new UsuarioId(id));
 		usuario.removerPapeis(papeisRemov);
 		usuario.removerGrupos(gruposRemov);
 		usuario.atribuirPapeis(papeisAdic);
 		usuario.atribuirGrupos(gruposAdic);
 		
-		this.usuarioRepository.save(usuario);
+		usuarioRepository.save(usuario);
 	}
 	
 	/**

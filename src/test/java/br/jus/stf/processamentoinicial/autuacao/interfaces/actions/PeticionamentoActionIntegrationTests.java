@@ -116,15 +116,15 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Recupera a(s) tarefa(s) do autuador.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
+			.andExpect(jsonPath("$[0].nome", is("autuar")));
 		
 		//Realiza a autuação.
-		super.mockMvc.perform(post("/api/actions/autuar-peticao/execute").contentType(MediaType.APPLICATION_JSON)
+		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "distribuidor")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].descricao", is("Distribuir Processo")));
+			.andExpect(jsonPath("$[0].nome", is("distribuir-processo")));
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").header("login", "distribuidor").contentType(MediaType.APPLICATION_JSON)
@@ -143,23 +143,23 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
     	//Recupera a(s) tarefa(s) do préautuador.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].descricao", is("Pré-Autuar Processo")));
+			.andExpect(jsonPath("$[0].nome", is("preautuar")));
     	
 		//Realiza a préautuação da petição física.
-		super.mockMvc.perform(post("/api/actions/preautuar-peticao-fisica/execute").contentType(MediaType.APPLICATION_JSON)
+		super.mockMvc.perform(post("/api/actions/preautuar/execute").contentType(MediaType.APPLICATION_JSON)
 	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
+			.andExpect(jsonPath("$[0].nome", is("autuar")));
 		
 		//Realiza a autuação.
-		super.mockMvc.perform(post("/api/actions/autuar-peticao/execute").contentType(MediaType.APPLICATION_JSON)
+		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "distribuidor")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].descricao", is("Distribuir Processo")));
+			.andExpect(jsonPath("$[0].nome", is("distribuir-processo")));
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").contentType(MediaType.APPLICATION_JSON)
@@ -178,10 +178,10 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		
 		//Recupera a(s) tarefa(s) do autuador.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].descricao", is("Autuar Processo")));
+			.andExpect(jsonPath("$[0].nome", is("autuar")));
 		
 		//Realiza a autuação.
-		super.mockMvc.perform(post("/api/actions/autuar-peticao/execute").contentType(MediaType.APPLICATION_JSON)
+		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoInvalidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
     }

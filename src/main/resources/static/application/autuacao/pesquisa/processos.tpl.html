@@ -6,7 +6,7 @@
 					<li>
 						<p>Pesquisa</p>
 					</li>
-					<li><a href="#" id="subtitulo" class="active">Petições</a></li>
+					<li><a href="#" id="subtitulo" class="active">Processos</a></li>
 				</ul>
 			</div>
 		</div>
@@ -20,24 +20,27 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group form-group-default">
-										<label>Número da Petição</label>
-										<input id="numero" type="number" ng-model="numero" class="form-control" autofocus="autofocus" />
+										<label>Classe sugerida</label>
+										<select ui-select2="{allowClear:'true'}" id="classe" ng-model="classe" class="full-width">
+											<option value=""></option>
+											<option ng-repeat="classe in classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
+										</select>
 									</div>
 								</div>
 								<div class="col-md-6">
 									<div class="form-group form-group-default">
-										<label>Ano da Petição</label>
-										<input id="ano" type="number" ng-model="ano" class="form-control" />
+										<label>Número do Processo</label>
+										<input id="numero" type="number" ng-model="numero" class="form-control" />
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group form-group-default">
-										<label>Classe sugerida</label>
-										<select ui-select2="{allowClear:'true'}" id="classe" ng-model="classe" class="full-width">
+										<label>Ministro responsável</label>
+										<select ui-select2="{allowClear:'true'}" id="ministro" ng-model="ministro" class="full-width">
 											<option value=""></option>
-											<option ng-repeat="classe in classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
+											<option ng-repeat="ministro in ministros" value="{{ministro.codigo}}">{{ministro.nome}} ({{ministro.codigo}})</option>
 										</select>
 									</div>
 								</div>
@@ -66,8 +69,8 @@
 							<table class="table table-responsive table-hover table-condensed">
 								<thead>
 									<tr>
-										<th>Identificação</th>
-										<th>Classe sugerida</th>
+										<th>Classe</th>
+										<th>Número</th>
 										<th>Ações</th>
 									</tr>
 								</thead>
@@ -76,9 +79,9 @@
 										<td colspan="3">Nenhum resultado disponível!</td>
 									</tr>
 									<tr ng-repeat="resultado in resultados">
-										<td>{{resultado.objeto.identificacao}}</td>
-										<td>{{resultado.objeto.classeSugerida.sigla}}</td>
-										<td><a ui-sref="root.detalhe({idPeticao: resultado.id})" title="Visualizar"><i class="fa fa-eye" /></a></td>
+										<td>{{resultado.objeto.classe.sigla}}</td>
+										<td>{{resultado.objeto.numero}}</td>
+										<td><a ui-sref="visualizar.processo({processoId: resultado.objeto.numero})" title="Visualizar"><i class="fa fa-eye" /></a></td>
 									</tr>
 								</tbody>
 							</table>
