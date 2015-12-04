@@ -33,7 +33,7 @@
 			command.orgaoId = $scope.orgao;
 			
 			PeticaoService.peticionar(command).success(function(data) {
-				$state.go('root.dashboard');
+				$state.go('dashboard');
 				messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
 			}).error(function(data, status) {
 				if (status === 400) {

@@ -3,7 +3,7 @@ package br.jus.stf.plataforma.acessos.infra.persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -17,9 +17,10 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
+import br.jus.stf.shared.UsuarioId;
 
 @Repository
-public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> implements UsuarioRepository {
+public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioId> implements UsuarioRepository {
 	
 	private EntityManager entityManager;
 	
@@ -29,13 +30,11 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 		this.entityManager = entityManager;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public Usuario findOne(Long sequencial) {
-		return super.findOne(sequencial);
+	public Usuario findOne(UsuarioId id) {
+		return super.findOne(id);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public Usuario findOne(String login) {
 		return super.findOne(new Specification<Usuario>(){
@@ -51,10 +50,9 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, Long> im
 		return super.save(principal);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Permissao> findByPermissaoUsuario(String login) {
-		Query query = entityManager.createQuery("SELECT perm FROM Usuario usua INNER JOIN usua.permissoes perm WITH usua.login = :login");
+		TypedQuery<Permissao> query = entityManager.createQuery("SELECT perm FROM Usuario usua INNER JOIN usua.permissoes perm WITH usua.login = :login", Permissao.class);
 		query.setParameter("login", login);
 		
 		return query.getResultList();

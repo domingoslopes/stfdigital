@@ -21,8 +21,9 @@
 	 *	});
 	 */
 	angular.plataforma.config(['$stateProvider', function($stateProvider) {
-		$stateProvider.state('root.pesquisa', {
+		$stateProvider.state('pesquisar', {
 			abstract : true,
+			parent: 'root',
 			url : '/pesquisa'
 		});
 		

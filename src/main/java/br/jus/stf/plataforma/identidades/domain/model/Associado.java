@@ -41,6 +41,10 @@ public class Associado implements br.jus.stf.shared.stereotype.Entity<Associado,
 	
 	@Column(name = "DSC_CARGO_FUNCAO")
 	private String cargoFuncao;
+	
+	Associado() {
+		
+	}
 
 	public Associado(final Long sequencial, final Pessoa pessoa, final Orgao orgao, final TipoAssociado tipo) {
 		Validate.notNull(sequencial, "associado.sequencial.required");
