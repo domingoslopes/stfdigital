@@ -1,5 +1,6 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.facade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.autuacao.infra.PeticaoStatus;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.shared.ClasseId;
@@ -129,8 +131,23 @@ public class PeticaoServiceFacade {
 			return peticaoDtoAssembler.toDto((PeticaoEletronica) peticao);
 		} else {
 			return peticaoDtoAssembler.toDto((PeticaoFisica) peticao);
+		}	
+	}
+	
+	/**
+	 * Retorna os possíveis status que podem ser atribuídos a uma petição.
+	 * 
+	 * @return Lista de status.
+	 */
+	public List<String> consultarStatusPeticao() {
+		
+		List<String> statusPeticao = new ArrayList<String>();
+		
+		for (PeticaoStatus p : PeticaoStatus.values()) {
+			statusPeticao.add(p.name());
 		}
 		
+		return statusPeticao.stream().sorted().collect(Collectors.toList());
 	}
 
 	/**
