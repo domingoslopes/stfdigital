@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ public class ActionMappingRegistry implements InitializingBean {
 	 * 
 	 * @return a lista de ações registradas
 	 */
+	//@PostFilter("hasPermission(domainObject, 'EXECUTAR')")
 	public Collection<ActionMappingInfo> getRegisteredActions() {
 		return Collections.unmodifiableCollection(actions.values());
 	}
@@ -113,6 +116,7 @@ public class ActionMappingRegistry implements InitializingBean {
 				info.setId(actionMapping.id().toLowerCase());
 				info.setDescription(actionMapping.name());
 				info.setControllerClass(controllerClass);
+				info.getGroupClasses().addAll(getGroupClasses(controllerClass));
 				info.setMethodName(method.getName());
 				info.setResourcesClass(getResourcesClass(method));
 				info.setResourcesMode(getResourcesMode(method)); 
@@ -126,6 +130,18 @@ public class ActionMappingRegistry implements InitializingBean {
 			}
 		}
 		actions.put(info.getId(), info);
+	}
+	
+	/**
+	 * Verifica quais são os grupos de ações do controlador
+	 * @param controllerClass
+	 * @return array de classes para agrupar ações
+	 */
+	private Set<String> getGroupClasses(Class<?> controllerClass) {
+		ActionController actionController = controllerClass.getAnnotation(ActionController.class);
+		return Arrays.asList(actionController.groups()).stream()
+				.map(group -> group.toLowerCase())
+				.collect(Collectors.toSet());
 	}
 	
 	/**
@@ -146,7 +162,7 @@ public class ActionMappingRegistry implements InitializingBean {
 	}
 	
 	/**
-	 * Retorna o tipo dos recursos a partir do método
+	 * Retorna o tipo de parâmetro a partir do método
 	 * 
 	 * @param method
 	 * @return a classe dos recursos
