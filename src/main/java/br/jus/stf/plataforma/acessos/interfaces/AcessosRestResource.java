@@ -32,6 +32,8 @@ import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDtoAssembler;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 
 import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * @author Lucas.Rodrigues
@@ -116,12 +118,26 @@ public class AcessosRestResource {
 	 * Cadastra um novo usuário
 	 * 
 	 * @param CadastrarUsuarioCommand command
-	 * @param BindingResult result
+	 * @param BindingResult binding
 	 * @return Long ID do usuário criado
 	 */
 	@ApiOperation("Cadastra um novo usuário")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Usuário Inválido")})
 	@RequestMapping(value="/usuarios", method = RequestMethod.POST)
-	public Long cadastrarUsuario(@RequestBody @Valid CadastrarUsuarioCommand command, BindingResult result) {
-		return null;
+	public Long cadastrarUsuario(@RequestBody @Valid CadastrarUsuarioCommand command, BindingResult binding) {
+		if (binding.hasErrors()) {
+			throw new IllegalArgumentException("Usuário inválido: " + binding.getAllErrors());
+		}
+		
+		Usuario usuario = this.acessosApplicationService.cadastrarUsuario(
+			command.getLogin(), 
+			command.getNome(), 
+			command.getCpf(), 
+			command.getOab(), 
+			command.getEmail(), 
+			command.getTelefone()
+		);
+		
+		return usuario.id().toLong();
 	}
 }
