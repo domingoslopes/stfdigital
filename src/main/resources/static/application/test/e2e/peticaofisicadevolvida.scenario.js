@@ -127,7 +127,7 @@
 			
 			devolucaoPage.finalizar();
 		    
-			expect(browser.getCurrentUrl()).toMatch(/\/detalhe\/peticao\/\d+/);
+			expect(browser.getCurrentUrl()).toMatch(/\/visualizacao\/peticao\/\d+/);
 			
 		    loginPage.logout();
 		});
