@@ -21,7 +21,7 @@
 			<tbody>
 				<tr ng-repeat="peticao in peticoes">
 					<td class="font-montserrat fs-12 col-lg-12"><a
-						ui-sref="root.detalhe({idPeticao: peticao.id})">{{peticao.objeto.identificacao}}</a>
+						ui-sref="visualizar.peticao({idPeticao: peticao.id})">{{peticao.objeto.identificacao}}</a>
 					</td>
 					<td class="font-montserrat fs-12 col-lg-12">{{peticao.objeto.dataCadastramento | date:'dd/MM/yyyy HH:mm:ss'}}</td>
 					<td class="font-montserrat fs-12 col-lg-12">{{peticao.processo}}</td>

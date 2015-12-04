@@ -11,25 +11,33 @@
 	
 	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
 		
-		$stateProvider.state('processos', {
+		$stateProvider.state('visualizar', {
+			abstract: true,
 			parent: 'root',
-			url: '/processos/:processoId',
+			url: '/visualizacao'
+		}).state('visualizar.processo', {
+			parent: 'root',
+			url: '/processo/:processoId',
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/visualizacao/processos/visualizacao.tpl.html',
+					templateUrl: 'application/autuacao/visualizacao/processo.tpl.html',
 					controller: 'VisualizacaoProcessoController'
 				}
 			}
-		}).state('pesquisa', {
-			parent: 'root',
-			abstract: true,
-			url: '/pesquisa'
-		}).state('pesquisa.peticao', {
-			url: '/peticao',
+		}).state('visualizar.peticao', {
+			url: '/peticao/:idPeticao',
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/pesquisa/peticao.tpl.html',
-					controller: 'PesquisaPeticaoController',
+					templateUrl: 'application/autuacao/visualizacao/peticao.tpl.html',
+					controller: 'VisualizacaoPeticaoController'
+				}
+			}
+		}).state('pesquisar.peticoes', {
+			url: '/peticoes',
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pesquisa/peticoes.tpl.html',
+					controller: 'PesquisaPeticoesController',
 					resolve : {
 						classes : function(ClasseService) {
 							return ClasseService.listar();
@@ -37,12 +45,12 @@
 					}
 				}
 			}
-		}).state('pesquisa.processo', {
-			url: '/processo',
+		}).state('pesquisar.processos', {
+			url: '/processos',
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/pesquisa/processo.tpl.html',
-					controller: 'PesquisaProcessoController',
+					templateUrl: 'application/autuacao/pesquisa/processos.tpl.html',
+					controller: 'PesquisaProcessosController',
 					resolve : {
 						classes : function(ClasseService) {
 							return ClasseService.listar();
@@ -53,7 +61,7 @@
 		}).state('actions.autuacao', { // estado abstrato para agrupar as ações do contexto
 			abstract : true,
 			views: {
-				'modal@' : {}
+				'modal@root' : {}
 			}
 		}).state('registrar-peticao', {
 			parent: 'actions.autuacao',
@@ -105,7 +113,7 @@
 			url: '/peticao/preautuacao',
 			params : { resources : [] },
 			views: {
-				'content@root: {
+				'content@root': {
 					templateUrl: 'application/autuacao/preautuacao/preautuacao.tpl.html',
 					controller: 'PreautuacaoController'
 				}
