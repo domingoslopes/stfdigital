@@ -1,5 +1,6 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -203,7 +204,11 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Tenta recuperar as tarefas do cartoraria. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "cartoraria")).andExpect(status().isOk())
-			.andExpect((jsonPath("$").doesNotExist()));
+			.andExpect((jsonPath("$[0].metadado.tipoInformacao", is("PeticaoFisica"))))
+			.andExpect((jsonPath("$[0].metadado.status", is("A_DEVOLVER"))))
+			.andExpect((jsonPath("$[0].tipoInformacao", is("PeticaoFisica"))))
+			.andExpect((jsonPath("$[0].nome", is("devolver-peticao"))))
+			.andExpect((jsonPath("$[0].descricao", is("Registrar Motivação da Devolução"))));
 	}
 	
 	@Test
@@ -233,8 +238,19 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Tenta recuperar as tarefas do cartoraria. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "cartoraria")).andExpect(status().isOk())
-			.andExpect((jsonPath("$").doesNotExist()));
+			.andExpect((jsonPath("$[0].metadado.tipoInformacao", is("PeticaoFisica"))))
+			.andExpect((jsonPath("$[0].metadado.status", is("A_DEVOLVER"))))
+			.andExpect((jsonPath("$[0].tipoInformacao", is("PeticaoFisica"))))
+			.andExpect((jsonPath("$[0].nome", is("devolver-peticao"))))
+			.andExpect((jsonPath("$[0].descricao", is("Registrar Motivação da Devolução"))));
 		
 	}
 	
+	@Test
+	public void recuperarListaStatusPeticao() throws Exception {
+		//Recupera as informações do usuário.
+		this.mockMvc.perform(get("/api/peticoes/status")
+			.header("login", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(8)));
+	}
 }

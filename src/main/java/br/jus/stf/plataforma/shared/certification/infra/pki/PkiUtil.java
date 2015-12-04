@@ -18,7 +18,7 @@ public final class PkiUtil {
 
 	}
 
-	public static List<CustomKeyStore> keystoreToCustomKeyStores(InputStream input, char[] password) throws Exception {
+	public static List<CustomKeyStore> pkiKeystoreToCustomKeyStores(InputStream input, char[] password) throws Exception {
 		KeyStore pkcs12Store = KeyStore.getInstance("PKCS12");
 		pkcs12Store.load(input, password);
 		Enumeration<String> aliases = pkcs12Store.aliases();
@@ -58,4 +58,17 @@ public final class PkiUtil {
 		return new ArrayList<>(stores.values());
 	}
 
+	public static CustomKeyStore userKeystoreToCustomKeyStores(InputStream input, char[] password) throws Exception {
+		KeyStore pkcs12Store = KeyStore.getInstance("PKCS12");
+		pkcs12Store.load(input, password);
+
+		String alias = "user";
+		
+		PrivateKey key = (PrivateKey) pkcs12Store.getKey(alias, password);
+		X509Certificate certificate = (X509Certificate) pkcs12Store.getCertificate(alias);
+		CustomKeyStore store = new CustomKeyStore(new KeyPair(certificate.getPublicKey(), key), certificate);
+
+		return store;
+	}
+	
 }

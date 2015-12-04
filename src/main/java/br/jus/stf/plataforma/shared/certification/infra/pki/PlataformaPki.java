@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.jus.stf.plataforma.shared.certification.domain.model.Pki;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
-import br.jus.stf.plataforma.shared.certification.domain.model.ValidationOnlyPki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.Pki;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiId;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.ReadOnlyPki;
 
 public class PlataformaPki implements Pki {
 
@@ -19,15 +19,15 @@ public class PlataformaPki implements Pki {
 	private CustomKeyStore rootStore;
 	private List<CustomKeyStore> intermediateStores;
 
-	private ValidationOnlyPki pki;
+	private ReadOnlyPki pki;
 
 	private PlataformaPki() {
 		InputStream is = getClass().getResourceAsStream(KEYSTORE_PATH);
 		try {
-			List<CustomKeyStore> stores = PkiUtil.keystoreToCustomKeyStores(is, "changeit".toCharArray());
+			List<CustomKeyStore> stores = PkiUtil.pkiKeystoreToCustomKeyStores(is, "changeit".toCharArray());
 			rootStore = stores.get(0);
 			intermediateStores = stores.subList(1, stores.size());
-			pki = new ValidationOnlyPki(new PkiId("ICP_PLATAFORMA"), Arrays.asList(rootStore.certificate()),
+			pki = new ReadOnlyPki(new PkiId("ICP_PLATAFORMA"), Arrays.asList(rootStore.certificate()),
 					intermediateStores.stream().map(s -> s.certificate()).collect(Collectors.toList()));
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao criar Plataforma Pki", e);
@@ -51,6 +51,11 @@ public class PlataformaPki implements Pki {
 	@Override
 	public X509Certificate[] certificateChainOf(X509Certificate certificate) {
 		return pki.certificateChainOf(certificate);
+	}
+
+	@Override
+	public List<X509Certificate> getTrustedAnchors() {
+		return Arrays.asList(rootStore.certificate());
 	}
 
 }
