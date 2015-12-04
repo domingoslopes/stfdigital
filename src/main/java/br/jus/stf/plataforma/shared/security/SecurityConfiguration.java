@@ -51,8 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   			.logout()
   				.logoutUrl("/logout").deleteCookies("JSESSIONID").permitAll().and()
   			.authorizeRequests()
-  				.antMatchers("/**").authenticated()
-  				.antMatchers("/login", "/application/**").permitAll()
+  				.antMatchers("/login", "/application/**", "/cadastro").permitAll()
+				.antMatchers("/**").authenticated()
   				.and()
   			.csrf()
   				.csrfTokenRepository(csrfTokenRepository()).and()
@@ -69,8 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/theme/**", "/vendor/**", "/tmp/**", "/application/**");
 	}
   	
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+  	@Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	auth.authenticationProvider(authenticationProvider);
     }
   
