@@ -47,10 +47,11 @@
 		};
 		
 		/**
-		 * Lista as ações a partir dos recursos e tipo dos recursos
+		 * Lista as ações a partir dos recursos e grupo de ações
 		 */
-		this.list = function(resources, type, contextFilter) {
+		this.list = function(resources, groups, contextFilter) {
 			return $q(function(resolve, reject) {
+				groups = angular.isArray(groups) ? groups : [groups];
 				var allowedActions = [];
 				var idsByContext = {};
 				var context = '';
@@ -59,7 +60,7 @@
 					//carrega as ações permitidas localmente e carrega em outro array
 					//as ações para serem verificados no servidor
 					angular.forEach(actions, function(action, id) {
-						if (action.resourcesType === type && isAllowed(action, resources, contextFilter)) {
+						if (containsAny(action.groups, groups) && isAllowed(action, resources, contextFilter)) {
 							// se possuir handlers devem ser verificadas
 							if (action.hasConditionHandlers) {
 								if (context === action.context) {
@@ -234,5 +235,12 @@
 			}
 			return true;
 		};
+		
+		var containsAny = function(source, target) {
+		    var result = source.filter(function(item){
+		    	return target.indexOf(item) > -1
+		    });
+		    return (result.length > 0);  
+		}
 	}]);
 })();

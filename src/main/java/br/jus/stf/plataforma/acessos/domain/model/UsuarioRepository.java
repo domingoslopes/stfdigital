@@ -4,15 +4,19 @@ import java.util.List;
 
 import br.jus.stf.shared.UsuarioId;
 
-
-
+/**
+ * Interface para repositório de usuário
+ * 
+ * @author Rafael Esdras
+ *
+ */
 public interface UsuarioRepository {
 	
-	public <T extends Usuario> T findOne(UsuarioId id);
+	public Usuario findOne(UsuarioId id);
 	
-	public <T extends Usuario> T findOne(String login);
+	public Usuario findOne(String login);
 	
-	public <T extends Usuario> T save(Usuario principal);
+	public Usuario save(Usuario principal);
 	
 	public List<Permissao> findByPermissaoUsuario(String login);
 

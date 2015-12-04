@@ -14,9 +14,9 @@ public class ActionDto {
 
 	private String id;	
 	private String description;
+	private Set<String> groups;
 	private ResourcesMode resourcesMode;
 	private Set<GrantedAuthority> neededAuthorities;
-	private String resourcesType;
 	private Boolean hasConditionHandlers;
 	
 	/**
@@ -76,17 +76,17 @@ public class ActionDto {
 	}
 	
 	/**
-	 * @return the resourcesType
+	 * @return the groups
 	 */
-	public String getResourcesType() {
-		return resourcesType;
+	public Set<String> getGroups() {
+		return groups;
 	}
 	
 	/**
-	 * @param resourcesType the resourcesType to set
+	 * @param groups the groups to set
 	 */
-	public void setResourcesType(String resourcesType) {
-		this.resourcesType = resourcesType;
+	public void setGroups(Set<String> groups) {
+		this.groups = groups;
 	}
 	
 	/**
