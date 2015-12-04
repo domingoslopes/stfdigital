@@ -26,7 +26,6 @@ public class CadastrarUsuarioCommand {
 	private String email;
 
 	@ApiModelProperty(value = "CPF da pessoa", required = true)
-	@NotBlank
 	private String cpf;
 
 	@ApiModelProperty(value = "Número da OAB")
@@ -34,26 +33,6 @@ public class CadastrarUsuarioCommand {
 
 	@ApiModelProperty(value = "Telefone", required = true)
 	private String telefone;
-
-	/**
-	 * Constrói o comando
-	 * 
-	 * @param String login
-	 * @param String nome
-	 * @param String email
-	 * @param String cpf
-	 * @param String oab
-	 * @param String telefone
-	 */
-	public CadastrarUsuarioCommand(final String login, final String nome, final String email, final String cpf,
-			final String oab, final String telefone) {
-		this.login = login;
-		this.nome = nome;
-		this.email = email;
-		this.cpf = cpf;
-		this.oab = oab;
-		this.telefone = telefone;
-	}
 
 	/**
 	 * @return the login
