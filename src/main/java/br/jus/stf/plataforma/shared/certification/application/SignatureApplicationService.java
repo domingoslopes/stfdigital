@@ -7,20 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
-import br.jus.stf.plataforma.shared.certification.domain.model.CertificateValidation;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSigner;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerFactory;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerRepository;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
-import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningException;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSigner;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerFactory;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerRepository;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
+import br.jus.stf.plataforma.shared.certification.domain.service.CertificateValidationService;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -31,7 +31,7 @@ public class SignatureApplicationService {
 	private DocumentSignerRepository documentSignerRepository;
 
 	@Autowired
-	private PkiService certificateValidationService;
+	private CertificateValidationService certificateValidationService;
 
 	@Autowired
 	private DocumentAdapter documentAdapter;
@@ -60,14 +60,14 @@ public class SignatureApplicationService {
 		}
 	}
 
-	public void attachToSign(DocumentSignerId signerId, SigningDocument document) throws SigningException {
+	public void attachToSign(DocumentSignerId signerId, Document document) throws SigningException {
 		DocumentSigner signer = documentSignerRepository.findOne(signerId);
 		signer.attachDocumentToSign(document);
 	}
 
 	public void provideToSign(DocumentSignerId signerId, Long documentId) throws SigningException {
 		try {
-			SigningDocument document = documentAdapter.retrieve(new DocumentoId(documentId));
+			Document document = documentAdapter.retrieve(new DocumentoId(documentId));
 			attachToSign(signerId, document);
 		} catch (IOException e) {
 			throw new RuntimeException("Erro ao recuperar documento.", e);
@@ -94,7 +94,7 @@ public class SignatureApplicationService {
 
 	public DocumentoId saveSigned(DocumentSignerId signerId) {
 		SignedDocument signedDocument = recoverSignedDocument(signerId);
-		DocumentoTemporarioId tempDocId = documentAdapter.upload(signerId.id(), signedDocument);
+		DocumentoTemporarioId tempDocId = documentAdapter.upload(signerId.id(), signedDocument.document());
 		DocumentoId docId = documentAdapter.save(tempDocId);
 		return docId;
 	}

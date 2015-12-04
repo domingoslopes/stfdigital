@@ -16,26 +16,23 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 
-import br.jus.stf.plataforma.shared.certification.domain.PDFSigningSpecificationBuilder;
-import br.jus.stf.plataforma.shared.certification.domain.model.DocumentSignerId;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.HashType;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiId;
-import br.jus.stf.plataforma.shared.certification.domain.model.PkiIds;
-import br.jus.stf.plataforma.shared.certification.domain.model.PreSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.SignedDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.SigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.service.PkiService;
-import br.jus.stf.plataforma.shared.certification.infra.PkiRepositoryImpl;
-import br.jus.stf.plataforma.shared.certification.infra.StreamedDocument;
+import br.jus.stf.plataforma.shared.certification.domain.PdfInputStreamDocument;
+import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
+import br.jus.stf.plataforma.shared.certification.domain.model.Document;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
+import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiType;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.infra.session.SessionDocumentSignerRepository;
-import br.jus.stf.plataforma.shared.certification.support.pki.UnitTestingPki;
+import br.jus.stf.plataforma.shared.certification.support.pki.PlataformaUnitTestingUser;
 import br.jus.stf.plataforma.shared.certification.support.util.SignatureTestUtil;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
-
-	private static final String UNIT_TESTING_PKI = "UNIT_TESTING_PKI";
 
 	private static final String PDF_DE_TESTE = "pdf-de-teste-001.pdf";
 
@@ -44,23 +41,16 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 	@Spy
 	private SessionDocumentSignerRepository documentSignerRepository;
 
-	@Spy
-	private PkiRepositoryImpl pkiRepository;
-
-	@InjectMocks
-	@Autowired
-	private PkiService pkiService;
-
 	@InjectMocks
 	@Autowired
 	private SignatureApplicationService signatureService;
 
 	@Autowired
-	private PDFSigningSpecificationBuilder specBuilder;
+	private PdfSigningSpecificationBuilder specBuilder;
 
 	private HttpSession session;
 
-	private UnitTestingPki unitTestingPki;
+	private PlataformaUnitTestingUser unitTestingUser;
 
 	@Before
 	public void setUp() {
@@ -68,9 +58,7 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 		session = new MockHttpSession();
 		Mockito.doReturn(session).when(documentSignerRepository).session();
 
-		unitTestingPki = UnitTestingPki.instance();
-
-		Mockito.doReturn(unitTestingPki).when(pkiRepository).findOne(new PkiId(UNIT_TESTING_PKI));
+		unitTestingUser = PlataformaUnitTestingUser.instance();
 	}
 
 	@Test
@@ -79,21 +67,21 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 
 		// Passo 1 - Server-side: Criar um contexto de assinatura a partir do
 		// SignatureService.
-		X509Certificate certificate = unitTestingPki.finalUserStore().certificate();
-		PkiIds ids = new PkiIds(new PkiId(UNIT_TESTING_PKI));
+		X509Certificate certificate = unitTestingUser.userStore().certificate();
+		PkiIds ids = new PkiIds(PkiType.ICP_PLATAFORMA.id());
 		SigningSpecification spec = specBuilder.pkcs7Dettached().reason(SIGNING_REASON).hashAlgorithm(HashType.SHA256)
 				.build();
 		signerId = signatureService.prepareToSign(certificate, ids, spec);
 
 		// Passo 2 - Server-side: Receber o documento para assinatura.
-		StreamedDocument document = new StreamedDocument(SignatureTestUtil.getDocumentToSign(PDF_DE_TESTE));
+		Document document = new PdfInputStreamDocument(SignatureTestUtil.getDocumentToSign(PDF_DE_TESTE));
 		signatureService.attachToSign(signerId, document);
 
 		// Passo 3 - Server-side: Pré-assinar, gerando o hash
 		PreSignature preSignature = signatureService.preSign(signerId);
 
 		// Passo 4 - Client-side: Assinar o hash gerado
-		HashSignature signature = sign(preSignature, unitTestingPki.finalUserStore().keyPair().getPrivate());
+		HashSignature signature = sign(preSignature, unitTestingUser.userStore().keyPair().getPrivate());
 
 		// Passo 5 - Server-side: Pós-assinar, gerando o documento
 		signatureService.postSign(signerId, signature);
