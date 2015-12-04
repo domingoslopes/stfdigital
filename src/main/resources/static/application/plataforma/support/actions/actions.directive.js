@@ -24,10 +24,11 @@
 		
 		$stateProvider.state('actions', {
 			abstract : true,
+			parent: 'root',
 			params : {
 				action : {},
 				resources : []
-			},
+			}, 
 			views: {
 				'modal': {
 					templateUrl: 'application/plataforma/support/actions/modal.tpl.html',
@@ -41,7 +42,7 @@
 	/**
 	 * Diretiva de lista de ações
 	 * Ex. de uso: 
-	 * <actions resources="recursos" type="Long"
+	 * <actions resources="recursos" groups="peticao"
 	 *  context="autuacao" btn-class="btn-default" /> 
 	 */
 	angular.plataforma.directive('actions', ['$state', 'ActionService', function ($state, ActionService) {
@@ -49,7 +50,7 @@
 			restrict : 'AE',
 			scope : {
 				resources : '=', //obrigatório, recursos que sofrerão a ação
-				type : '@', //obrigatório, indica o tipo dos recursos
+				groups : '@', //obrigatório, indica os grupos das ações, pode ser um array 
 				context : '@', //opcional, filtra ações de um determinado contexto
 				btnClass: '@' //opcional, classes do botão, default= 'btn-default'
 			},
@@ -60,7 +61,7 @@
 				
 				var listActions = function() {
 					//serviço que lista as ações
-					ActionService.list($scope.resources, $scope.type, $scope.context)
+					ActionService.list($scope.resources, $scope.groups, $scope.context)
 					.then(function(actions) {
 						$scope.actions = actions;
 					});
@@ -75,7 +76,7 @@
 						action : action,
 						resources : $scope.resources
 					};
-					$state.go('actions.' + action.context + '.' + action.id, params);
+					$state.go(action.id, params);
 				};
 			}
 		};
@@ -128,7 +129,7 @@
 							action : action,
 							resources : $scope.resources
 						};
-						$state.go('actions.' + action.context + '.' + action.id, params);
+						$state.go(action.id, params);
 					};
 				});
 			}
@@ -145,14 +146,13 @@
 			restrict : 'AE',
 			scope : {
 				id : '@', //obrigatório, identificador da ação
-				resources : '=', //obrigatório, recursos que sofrerão a ação
-				state : '@', //obrigatório, estado para realizar a ação
 				title : '@', //obrigatório, título para o menu
 				details : '@' //opcional, detalhamento do item do menu, default= descrição da ação
 			},
 			templateUrl : 'application/plataforma/support/actions/actionmenu.tpl.html',
 			controller : function($scope) {
 				ActionService.get($scope.id).then(function(action) {
+					var resources = action.resourcesMode === 'None' ? [] : [{}]; 
 					$scope.showAction = false;
 					
 					if (angular.isUndefined($scope.details)) {
@@ -160,7 +160,7 @@
 					}
 					
 					//Verifica se a ação é permitida
-					ActionService.isAllowed($scope.id, $scope.resources)
+					ActionService.isAllowed($scope.id, resources)
 						.then(function(isAllowed) {
 							$scope.showAction = isAllowed;
 						});
@@ -169,9 +169,9 @@
 					$scope.go = function() {
 						var params = {
 							action : action,
-							resources : $scope.resources
+							resources : resources
 						};
-						$state.go($scope.state, params);
+						$state.go(action.id, params);
 					};
 				});
 			}			

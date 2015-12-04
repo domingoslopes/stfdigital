@@ -104,7 +104,7 @@
 			
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/autuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/autuacao/);
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
@@ -134,7 +134,7 @@
 		    
 		    principalPage.executarTarefa();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/\d+\/distribuicao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			

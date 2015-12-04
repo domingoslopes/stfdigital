@@ -1,12 +1,13 @@
 package br.jus.stf.plataforma.shared.certification.infra;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,9 +29,8 @@ public class DocumentRestAdapter implements DocumentAdapter {
 
 	@Override
 	public SigningDocument retrieve(DocumentoId id) throws IOException {
-		IntegrationServletResponse response = new IntegrationServletResponse();
-		docRestResource.recuperar(id.toLong(), response);
-		return new PdfTempDocument(new ByteArrayInputStream(response.getBytes()));
+		ResponseEntity<InputStreamResource> response = docRestResource.recuperar(id.toLong());
+		return new PdfTempDocument(response.getBody().getInputStream());
 	}
 
 	@Override

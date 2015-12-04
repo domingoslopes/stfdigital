@@ -32,6 +32,16 @@
 					}
 				}
 			})
+			.state('cadastro', {
+				url: '/cadastro',
+				views: {
+					'main@': {
+						templateUrl: 'application/plataforma/cadastro/cadastro.tpl.html',
+						controller: 'CadastroController',
+						controllerAs: 'vm'
+					}
+				}
+			})
 			.state('login', {
 				url: '/login',
 				views: {

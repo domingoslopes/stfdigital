@@ -10,7 +10,7 @@
 	angular.autuacao.controller('DevolucaoController', function ($log, PeticaoService, $state, $stateParams, messages, properties) {
 		var devolucao = this;
 		
-		devolucao.idPeticao = $stateParams.idTarefa;
+		devolucao.idPeticao = $stateParams.resources[0];
 		
 		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, {id : 'TRANSITADO', nome : "Transitado"}, {id : 'BAIXADO', nome : "Baixado"}];
 		
@@ -28,7 +28,7 @@
 			}
 			
 			PeticaoService.devolver(devolucao.idPeticao, new DevolverCommand(devolucao.tipoDevolucao, devolucao.numeroOficio)).success(function(data) {
-				$state.go('root.detalhe', {idPeticao: devolucao.idPeticao});
+				$state.go('visualizar.peticao', {idPeticao: devolucao.idPeticao});
 				messages.success('Petição devolvida com sucesso.');
 			});
 		};
