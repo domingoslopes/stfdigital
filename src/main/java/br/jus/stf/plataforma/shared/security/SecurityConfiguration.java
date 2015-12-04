@@ -69,8 +69,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/theme/**", "/vendor/**", "/tmp/**", "/application/**");
 	}
   	
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+  	@Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	auth.authenticationProvider(authenticationProvider);
     }
   

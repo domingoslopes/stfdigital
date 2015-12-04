@@ -68,17 +68,14 @@ public class AcessosRestResource {
 
 	@RequestMapping("/usuarios/papeis")
 	public Set<PapelDto> papeis(@RequestParam("login") String login) {
-		
-		Set<PapelDto> papeis = acessosApplicationService.carregarPapeisUsuario(login).stream()
+		return acessosApplicationService.carregarPapeisUsuario(login).stream()
 				.map(papel -> this.papelDtoAssembler.toDto(papel))
 				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
-				.collect(Collectors.toCollection(LinkedHashSet::new)); 
-		return papeis;
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 	
 	@RequestMapping("/usuarios/grupos")
 	public Set<GrupoDto> grupos(@RequestParam("login") String login) {
-		
 		return acessosApplicationService.carregarGruposUsuario(login).stream()
 				.map(grupo -> this.grupoDtoAssembler.toDto(grupo))
 				.sorted((g1, g2) -> g1.getNome().compareTo(g2.getNome()))
