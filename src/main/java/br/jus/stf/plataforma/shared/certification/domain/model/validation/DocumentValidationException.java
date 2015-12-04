@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.certification.infra.itext;
+package br.jus.stf.plataforma.shared.certification.domain.model.validation;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +26,7 @@ public class DocumentValidationException extends Exception {
 	}
 
 	public DocumentValidationException(String message, List<DocumentValidationException> causeValidationExceptions) {
+		super(message);
 		this.causeValidationExceptions = causeValidationExceptions;
 	}
 

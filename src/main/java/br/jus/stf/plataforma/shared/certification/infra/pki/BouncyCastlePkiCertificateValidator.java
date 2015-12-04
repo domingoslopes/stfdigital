@@ -12,8 +12,12 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.PKIXParameters;
 import java.security.cert.TrustAnchor;
+import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,19 +38,31 @@ public class BouncyCastlePkiCertificateValidator implements CertificateValidator
 	}
 
 	@Override
-	public CertificateValidation validate(X509Certificate certificate) {
+	public CertificateValidation validateNow(X509Certificate certificate) {
+		// TODO Recuperar as CRLs de agora.
+		return validateThenWithCRLs(certificate, null, Collections.emptyList());
+	}
+
+	@Override
+	public CertificateValidation validateThen(X509Certificate cert, Calendar date) {
+		// TODO Recuperar as CRLs do período que inclui date.
+		return validateThenWithCRLs(cert, date, Collections.emptyList());
+	}
+
+	@Override
+	public CertificateValidation validateThenWithCRLs(X509Certificate cert, Calendar date, Collection<X509CRL> crls) {
 		CertificateValidation validation = new CertificateValidation();
 		try {
-			verifyNotExpired(certificate);
-			if (!pki.belongsToPki(certificate)) {
-				validation.associateChain(new X509Certificate[] { certificate });
+			verifyNotExpired(cert, date);
+			if (!pki.belongsToPki(cert)) {
+				validation.associateChain(new X509Certificate[] { cert });
 				throw new CertificateValidationException(
 						"Certificado não pertence a nehuma infraestrutura de chaves públicas confiável.");
 			}
-			X509Certificate[] chain = pki.certificateChainOf(certificate);
+			X509Certificate[] chain = pki.certificateChainOf(cert);
 			validation.associateChain(chain);
 
-			validateCertificateSignatureEnabled(certificate);
+			validateCertificateSignatureEnabled(cert);
 
 			validateCertificateChain(Arrays.asList(chain));
 
@@ -56,9 +72,13 @@ public class BouncyCastlePkiCertificateValidator implements CertificateValidator
 		return validation;
 	}
 
-	private void verifyNotExpired(X509Certificate certificate) throws CertificateValidationException {
+	private void verifyNotExpired(X509Certificate certificate, Calendar date) throws CertificateValidationException {
 		try {
-			certificate.checkValidity();
+			if (date != null) {
+				certificate.checkValidity(date.getTime());
+			} else {
+				certificate.checkValidity();
+			}
 		} catch (CertificateExpiredException e) {
 			throw new CertificateValidationException("O certificado se encontra expirado.", e);
 		} catch (CertificateNotYetValidException e) {
@@ -116,13 +136,13 @@ public class BouncyCastlePkiCertificateValidator implements CertificateValidator
 
 		Set<TrustAnchor> trustedAnchors = new HashSet<TrustAnchor>();
 		// recupera a lista de ACs confiaveis
-		List<X509Certificate> confiaveis = pki.getTrustedAnchors();
+		List<X509Certificate> trusted = pki.getTrustedAnchors();
 
-		if (confiaveis == null || confiaveis.size() == 0) {
+		if (trusted == null || trusted.size() == 0) {
 			throw new CertificateValidationException("Nenhuma raiz confiável foi encontrada.");
 		}
 
-		for (X509Certificate c : confiaveis) {
+		for (X509Certificate c : trusted) {
 			trustedAnchors.add(new TrustAnchor(c, null));
 		}
 		// cria o pkixParameters

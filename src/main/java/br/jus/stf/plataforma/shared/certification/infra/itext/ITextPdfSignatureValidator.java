@@ -3,10 +3,16 @@ package br.jus.stf.plataforma.shared.certification.infra.itext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.security.cert.CRL;
+import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.PdfReader;
@@ -17,6 +23,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.certificate.Certi
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidator;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidation;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidationException;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidator;
 import br.jus.stf.plataforma.shared.certification.infra.configuration.CryptoProvider;
 
@@ -31,9 +38,9 @@ import br.jus.stf.plataforma.shared.certification.infra.configuration.CryptoProv
 public class ITextPdfSignatureValidator implements DocumentValidator {
 
 	boolean acceptAtLeastOneValidSignature = true;
-	boolean aceitarAssinaturaCertificadoVencido = false;
-	boolean aceitarAssinaturaSemCadeia = false;
-	boolean verificarCRL = false;
+	boolean acceptSignatureWithExpiredCertificate = false;
+	boolean acceptSignatureWithoutChain = true;
+	boolean verifyCRL = false;
 	private CertificateValidator certificateValidator;
 
 	public ITextPdfSignatureValidator(CertificateValidator certificateValidator) {
@@ -58,9 +65,11 @@ public class ITextPdfSignatureValidator implements DocumentValidator {
 			validateFields(fields);
 
 			int validSignatures = 0;
-			List<DocumentValidationException> invalidSignaturesExceptions = new ArrayList<>();
+			List<DocumentValidationException> invalidSignatureExceptions = new ArrayList<>();
+
+			// Valida cada campo de assinatura.
 			for (String fieldName : fields) {
-				// recupera um PdfPKCS7 para continuar a verificação
+				// Recupera um PdfPKCS7 para continuar a verificação.
 				PdfPKCS7 pdfPKCS7 = acroFields.verifySignature(fieldName, CryptoProvider.provider());
 
 				try {
@@ -75,7 +84,7 @@ public class ITextPdfSignatureValidator implements DocumentValidator {
 					if (!acceptAtLeastOneValidSignature) {
 						throw e;
 					}
-					invalidSignaturesExceptions.add(e);
+					invalidSignatureExceptions.add(e);
 				}
 
 			}
@@ -83,7 +92,7 @@ public class ITextPdfSignatureValidator implements DocumentValidator {
 			if (validSignatures == 0) {
 				throw new DocumentValidationException(
 						"Nenhuma assinatura existente no documento foi considerada válida.",
-						invalidSignaturesExceptions);
+						invalidSignatureExceptions);
 			}
 		} catch (DocumentValidationException e) {
 			validation.appendValidationError(e.getMessage());
@@ -138,13 +147,43 @@ public class ITextPdfSignatureValidator implements DocumentValidator {
 
 	private void validateCertificates(PdfPKCS7 pdfPKCS7) throws DocumentValidationException {
 		X509Certificate cert = pdfPKCS7.getSigningCertificate();
-		CertificateValidation validation = certificateValidator.validate(cert);
+		Collection<CRL> crls = pdfPKCS7.getCRLs();
+		Calendar signDate = pdfPKCS7.getSignDate();
+
+		CertificateValidation validation;
+		if (crls == null) {
+			validation = certificateValidator.validateThen(cert, signDate);
+		} else {
+			validation = certificateValidator.validateThenWithCRLs(cert, signDate,
+					crls.stream().map(X509CRL.class::cast).collect(Collectors.toList()));
+		}
+
 		if (!validation.valid()) {
 			StringBuilder sb = new StringBuilder();
 			validation.validationErrors().forEach(e -> sb.append(e));
 			sb.append(" . Certificado: " + CertificateUtils.subjectNameAsString(cert));
 			throw new DocumentValidationException(sb.toString());
 		}
+
+		X509Certificate[] pdfOriginalCertificateChain = (X509Certificate[]) pdfPKCS7.getSignCertificateChain();
+		if (!acceptSignatureWithoutChain) {
+			if (!Arrays.equals(pdfOriginalCertificateChain, validation.certificateChain())) {
+				throw new DocumentValidationException("Cadeia de certificação incompleta.");
+			}
+		} else {
+			if (pdfOriginalCertificateChain.length > validation.certificateChain().length) {
+				throw new DocumentValidationException("Cadeia de certificação inválida.");
+			} else {
+				int i = 0;
+				for (X509Certificate c : pdfOriginalCertificateChain) {
+					if (!c.equals(validation.certificateChain()[i])) {
+						throw new DocumentValidationException("Cadeia de certificação inválida.");
+					}
+					i++;
+				}
+			}
+		}
+
 	}
 
 }
