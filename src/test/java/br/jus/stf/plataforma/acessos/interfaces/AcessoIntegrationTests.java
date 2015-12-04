@@ -72,9 +72,5 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		//Realiza a autuação.
 		this.mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
 			.content(this.permissoesUsuario.toString())).andExpect(status().isOk());
-		
-		int i = 0;
-		
-		i++;
 	}
 }
