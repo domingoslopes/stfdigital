@@ -16,12 +16,12 @@
 				
 		this.iniciarPesquisa = function() {
 			var linkPesquisa = element(by.id('pesquisas'));
-			var linkPesquisaPeticao = element(by.id('pesquisa_peticao'));
+			var linkPesquisaPeticoes = element(by.id('pesquisar-peticoes'));
 			
 			browser.actions().mouseMove(linkPesquisa).perform();
 			linkPesquisa.click();
-			browser.actions().mouseMove(linkPesquisaPeticao).perform();
-			linkPesquisaPeticao.click();
+			browser.actions().mouseMove(linkPesquisaPeticoes).perform();
+			linkPesquisaPeticoes.click();
 		};
 		
 		this.filtrarPorNumero = function(numero) {

@@ -42,7 +42,7 @@
 			}
 			
 			PeticaoService.autuar(autuacao.idPeticao, new AutuarCommand(autuacao.classe, autuacao.valida, autuacao.motivo)).success(function(data) {
-				$state.go('root.dashboard');
+				$state.go('dashboard');
 			}).error(function(data, status) {
 				if (status === 400) {
 					messages.error('A Petição <b>não pôde ser autuada</b> porque ela não está válida.');

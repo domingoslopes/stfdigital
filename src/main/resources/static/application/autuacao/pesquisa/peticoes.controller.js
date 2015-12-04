@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('PesquisaPeticaoController', function ($scope, messages, classes, PesquisaService) {
+	angular.plataforma.controller('PesquisaPeticoesController', function ($scope, messages, classes, PesquisaService) {
 		
 		$scope.classes = classes.data;
 		$scope.numero = null;
