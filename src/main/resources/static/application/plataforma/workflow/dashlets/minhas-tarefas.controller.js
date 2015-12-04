@@ -19,7 +19,7 @@
 							action : action,
 							resources : [tarefa.metadado.informacao]
 						};
-					$state.go('actions.' + action.context + '.' + action.id, params);
+					$state.go(action.id, params);
 				});
 		};
 		

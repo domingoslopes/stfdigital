@@ -62,8 +62,9 @@ public class AcessosApplicationService {
 	}
 	
 	public Set<Grupo> carregarGruposUsuario(String login) {
-		usuarioRepository.findOne(login);
-		return usuarioRepository.findOne(login).grupos();
+		return Optional.ofNullable(usuarioRepository.findOne(login))
+				.map(usuario -> usuario.grupos())
+				.orElse(Collections.emptySet());
 	}
 	
 	/**
