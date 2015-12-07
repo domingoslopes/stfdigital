@@ -35,7 +35,7 @@ import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
-import br.jus.stf.shared.ProcessoWorkflowId;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.stereotype.Entity;
 
 /**
@@ -82,7 +82,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
-	private Set<ProcessoWorkflowId> processosWorkflow = new TreeSet<ProcessoWorkflowId>((p1, p2) -> p1.toLong().compareTo(p2.toLong()));
+	private Set<ProcessoWorkflow> processosWorkflow = new TreeSet<ProcessoWorkflow>((p1, p2) -> p1.id().toLong().compareTo(p2.id().toLong()));
 	
 	@Column(name = "DAT_CADASTRAMENTO")
 	private Date dataCadastramento;
@@ -256,7 +256,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return ProcessoFactory.criarProcesso(this.classeProcessual, relator, this.partes, this.pecas, this.id);
 	}
 
-	public Set<ProcessoWorkflowId> processosWorkflow() {
+	public Set<ProcessoWorkflow> processosWorkflow() {
 		return Collections.unmodifiableSet(processosWorkflow);
 	}
 
@@ -264,10 +264,10 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 * 
 	 * @param processosWorkflow
 	 */
-	public void associarProcessoWorkflow(final ProcessoWorkflowId processoWorkflowId) {
-		Validate.notNull(processoWorkflowId, "peticao.processoWorkflowId.required");
+	public void associarProcessoWorkflow(final ProcessoWorkflow processoWorkflow) {
+		Validate.notNull(processoWorkflow, "peticao.processoWorkflow.required");
 	
-		this.processosWorkflow.add(processoWorkflowId);
+		this.processosWorkflow.add(processoWorkflow);
 	}
 	
 	public boolean isEletronica() {
