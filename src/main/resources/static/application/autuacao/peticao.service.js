@@ -47,6 +47,10 @@
 			consultarPartes : function(idPeticao) {
 				return $http.get(properties.apiUrl + '/peticoes/' + idPeticao +  '/partes');
 			},
+			
+			listarStatus : function() {
+				return $http.get(properties.apiUrl + '/peticoes/status/');
+			}
 		};
 	});
 	
