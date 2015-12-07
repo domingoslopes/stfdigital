@@ -11,8 +11,6 @@
 		
 		$scope.user = SecurityService.user();
 		
-		$state.go('dashboard');
-		
 		$scope.logout = function() {
 			SecurityService.logout()
 				.then(function() {

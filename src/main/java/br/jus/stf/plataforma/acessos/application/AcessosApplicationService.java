@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -126,14 +127,13 @@ public class AcessosApplicationService {
 	public Usuario cadastrarUsuario(String login, String nome, String cpf, String oab, String email, String telefone) {
 		PessoaId idPessoa = pessoaRepository.nextId();
 		Pessoa pessoa;
-		
-		if (cpf != null && oab != null && email != null && telefone != null) {
+		if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(oab) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
 			pessoa = new Pessoa(idPessoa, nome, cpf, oab, email, telefone);
 			
-		} else if (cpf != null && email != null && telefone != null) {
+		} else if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
 			pessoa = new Pessoa(idPessoa, nome, cpf, email, telefone);
 			
-		} else if (cpf != null) {
+		} else if (StringUtils.isNotBlank(cpf)) {
 			pessoa = new Pessoa(idPessoa, nome, cpf);
 			
 		} else {
