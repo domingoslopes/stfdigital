@@ -21,6 +21,25 @@
 			$scope.ministros = ministros;
 		});
 		
+		$scope.buildSelectedObject = function(item) {
+			return {'processoId': item.id};
+		};
+		
+		$scope.toggleCheck = function() {
+			if ($scope.checkToggle) {
+				$scope.selecao.objetos = $scope.resultados.map(function(item) {
+					return $scope.buildSelectedObject(item);
+				});
+			} else {
+				$scope.selecao.objetos = [];
+			}
+		};
+		
+		$scope.selecao = {
+			objetos: []
+		};
+		
+		
 		$scope.pesquisaPessoa = {
 			texto : 'nome',
 			indices : ['pessoa'],
