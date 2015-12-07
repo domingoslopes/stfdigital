@@ -17,11 +17,6 @@ public enum TipoAssociado implements ValueObject<TipoAssociado> {
 	public String descricao() {
 		return descricao;
 	}
-	
-	@Override
-	public String toString() {
-		return descricao;
-	}
 
 	@Override
 	public boolean sameValueAs(final TipoAssociado other) {

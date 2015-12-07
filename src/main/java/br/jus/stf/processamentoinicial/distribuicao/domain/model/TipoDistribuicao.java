@@ -16,11 +16,6 @@ public enum TipoDistribuicao implements ValueObject<TipoDistribuicao> {
 	public String descricao() {
 		return descricao;
 	}
-	
-	@Override
-	public String toString() {
-		return descricao;
-	}
 
 	@Override
 	public boolean sameValueAs(final TipoDistribuicao other) {
