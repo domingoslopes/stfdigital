@@ -2,7 +2,6 @@ package br.jus.stf.plataforma.pesquisas;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -86,7 +85,7 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"indices\": [\"teste-quantidade-autuacoes\"], \"filtros\": {\"mesAutuacao\": [5]}, \"campos\": [\"classeProcessual\"], \"campoAgregacao\": \"classeProcessual\" }")
 				.header("papel", "peticionador"))
-			.andDo(print())
+			//.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].tipo", is("ValoresAgregados")))
 			.andExpect(jsonPath("$[0].objeto['adi']", is(2)))
