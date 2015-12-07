@@ -71,5 +71,5 @@ module.exports = {
 
 	urlRoot : '/__test/',
 
-	browsers : [ 'Chrome' ]
+	browsers : [ 'PhantomJS' ]
 };
