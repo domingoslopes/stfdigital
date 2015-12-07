@@ -40,6 +40,10 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	@Column(name = "SIG_USUARIO", nullable = false)
 	private String login;
 	
+	@ManyToOne
+	@JoinColumn(name = "COD_SETOR_LOTACAO", referencedColumnName = "COD_SETOR")
+	private Setor lotacao;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_USUARIO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
@@ -70,6 +74,14 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		this.id = id;
 		this.pessoa = pessoa;
 		this.login = login;
+	}
+	
+	public Usuario(final UsuarioId id, final Pessoa pessoa, final String login, final Setor lotacao) {
+		this(id, pessoa, login);
+		
+		Validate.notNull(lotacao, "usuario.lotacao.required");
+		
+		this.lotacao = lotacao;
 	}
 	
 	public Pessoa pessoa() {
@@ -153,8 +165,12 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		this.permissoes.removeAll(permissoes);
 	}
 	
+	public Setor lotacao(){
+		return lotacao;
+	}
+	
 	public String setor(){
-		return this.grupos.stream().filter(g -> g.tipo() == TipoGrupo.SETOR).findFirst().map(g -> g.nome()).orElse("");
+		return Optional.ofNullable(lotacao.sigla()).orElse("");
 	}
 	
 	@Override

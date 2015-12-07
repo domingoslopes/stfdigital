@@ -1,1 +1,1 @@
-alter table corporativo.associado add column dsc_cargo_funcao varchar2(30);
+alter table corporativo.associado add column dsc_cargo_funcao varchar2(50);
