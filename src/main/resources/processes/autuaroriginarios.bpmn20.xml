@@ -14,6 +14,8 @@
     </subProcess>
     <userTask id="devolver-peticao" name="Registrar Motivação da Devolução" activiti:candidateGroups="cartoraria">
     </userTask>
+    <userTask id="assinar-devolucao-peticao" name="Assinar Documento de Devolução" activiti:candidateGroups="gestor-recebimento">
+    </userTask>
     <sequenceFlow id="finalizardevolucao" sourceRef="devolver-peticao" targetRef="devolvido"/>
     <endEvent id="devolvido" name="Petição Devolvida"/>
     <userTask id="distribuir-processo" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
@@ -49,5 +51,6 @@
       <messageEventDefinition messageRef="peticionamentoOrgao"/>
     </startEvent>
     <sequenceFlow id="sid-79372B52-B46A-4C98-BBFD-4B0EA80557B3" sourceRef="sid-27E237EF-FDF9-428B-B063-C9606880DFF6" targetRef="analise"/>
+    <sequenceFlow id="assinatura-devolucao-peticao" sourceRef="devolver-peticao" targetRef="assinar-devolucao-peticao"/>
   </process>
 </definitions>

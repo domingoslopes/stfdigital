@@ -8,6 +8,7 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
 /**
@@ -40,6 +41,11 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	@Override
 	public void completarDistribuicao(Peticao peticao) {
 		completarTarefaPorProcesso(peticao, PeticaoStatus.DISTRIBUIDA);	
+	}
+	
+	@Override
+	public void completarPreparacaoParaDevolucao(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.ASSINAR_DEVOLUCAO);
 	}
 	
 	/**

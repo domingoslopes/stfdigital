@@ -1,4 +1,4 @@
-package br.jus.stf.processamentoinicial.autuacao.infra;
+package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
 
 /**
