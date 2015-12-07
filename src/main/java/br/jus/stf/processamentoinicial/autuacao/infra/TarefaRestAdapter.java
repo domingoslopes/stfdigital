@@ -54,7 +54,7 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	 * @param processoWorkflowId
 	 */
 	private void completarTarefaPorProcesso(Peticao peticao, PeticaoStatus status) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
+		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next().id();
 		CompletarTarefaCommand command = new CompletarTarefaCommand();
 		command.setStatus(status.toString());
 		TarefaDto dto = tarefaRestResource.consultarPorProcesso(id.toLong());
