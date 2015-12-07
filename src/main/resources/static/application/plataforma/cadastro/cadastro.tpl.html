@@ -1,29 +1,134 @@
-
-<div class="jumbotron m-b-0">
-	<div class="container-fluid container-fixed-lg padding-20">
-		<a ui-sref="login"><i class="fa fa-angle-left"></i> Voltar à tela de login</a>
-	</div>
-</div>
-
-<div class="page-content">
-	<div class="page-content-wrapper">	
-		<div class="content bg-white padding-20">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-sm-10 col-sm-offset-1">
-						!!!
+<div class="register-container full-height sm-p-t-30">
+	<div class="container-sm-height full-height">
+		<div class="row row-sm-height">
+			<div class="col-sm-12 col-sm-height col-middle">
+				<h3>Cadastre-se</h3>
+				
+				<form id="form-cadastro" ng-submit="vm.cadastrarUsuario()">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group form-group-default">
+								<label>Nome de Usuário</label>
+								<input 
+									type="text" 
+									name="login"
+									class="form-control" 
+									required
+									ng-model="vm.detalhes.login">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group form-group-default">
+								<label>Nome Completo</label>
+								<input 
+									type="text" 
+									name="name"
+									class="form-control" 
+									required
+									ng-model="vm.detalhes.nome">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group form-group-default">
+								<label>Senha</label>
+								<input
+									type="password"
+									name="senha"
+									class="form-control"
+									aria-required="true"
+									ng-model="vm.detalhes.senha">
+							</div>
+						</div>
+						
+						<div class="col-sm-6">
+							<div class="form-group form-group-default">
+								<label>Confirme a Senha</label>
+								<input 
+									type="password"
+									name="senhaRepeticao"
+									class="form-control"
+									aria-required="true"
+									ng-model="vm.detalhes.senhaRepeticao">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group form-group-default">
+								<label>CPF</label>
+								<input
+									type="text"
+									name="cpf"
+									class="form-control"
+									aria-required="true"
+									ng-model="vm.detalhes.cpf"
+									mask="999.999.999-99"
+									mask-clean="true"
+									mask-restrict="reject">
+							</div>
+						</div>
+						
+						<div class="col-sm-6">
+							<div class="form-group form-group-default">
+								<label>Número da OAB</label>
+								<input 
+									type="text"
+									name="oab"
+									class="form-control"
+									aria-required="true"
+									ng-model="vm.detalhes.oab"
+									mask="@@999999"
+									mask-restrict="reject">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group form-group-default">
+								<label>Email</label>
+								<input
+									type="email"
+									name="email"
+									class="form-control"
+									aria-required="true"
+									ng-model="vm.detalhes.email">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group form-group-default">
+								<label>Telefone</label>
+								<input 
+									type="text"
+									name="telefone"
+									class="form-control"
+									aria-required="true"
+									ng-model="vm.detalhes.telefone"
+									mask="(99) 9?9999-9999"
+									mask-clean="true"
+									mask-restrict="reject">
+							</div>
+						</div>
+					</div>
+	
+					<div class="form-group">
+						<button class="btn btn-info btn-cons m-t-10" type="submit">Criar uma nova conta</button>
+						<a class="btn btn-cons m-t-10" ui-sref="login">Voltar</a>
 					</div>
 				</div>
-			</div>
+			</form>
 		</div>
-	
-		<div class="footer">
-			<div class="copyright sm-text-center">
-				<p class="small no-margin pull-left sm-pull-reset p-l-20 p-r-20">
-					<span class="hint-text">© Supremo Tribunal Federal</span>
-				</p>
-			</div>
-		</div>
-	
 	</div>
 </div>
+
+<script src="theme/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
