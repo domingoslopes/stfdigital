@@ -1,37 +1,32 @@
 package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
+import br.jus.stf.shared.stereotype.ValueObject;
+
 
 /**
  * @author Lucas.Rodrigues
  *
  */
-public enum FormaRecebimento {
+public enum FormaRecebimento implements ValueObject<FormaRecebimento> {
 
-	BALCAO, SEDEX, MALOTE, FAX, EMAIL;
+	BALCAO("Balcão"),
+	SEDEX("Sedex"),
+	MALOTE("Malote"),
+	FAX("Fax"),
+	EMAIL("E-mail");
 	
-	@Override
-	public String toString() {
-		String forma = null;
-		switch(this) {
-			case BALCAO: 
-				forma = "Balcão";
-				break;
-			case EMAIL:
-				forma = "E-mail";
-				break;
-			case FAX: 
-				forma = "Fax"; 
-				break;
-			case MALOTE:
-				forma = "Malote"; 
-				break;
-			case SEDEX: 
-				forma = "Sedex"; 
-				break;
-			default: 
-				break;
-		}
-		return forma;
+	private String descricao;
+	
+	private FormaRecebimento(final String descricao) {
+		this.descricao = descricao;
+	}
+	
+	public String descricao() {
+		return descricao;
+	}
+	
+	public boolean sameValueAs(final FormaRecebimento other) {
+		return this.equals(other);
 	}
 	
 }
