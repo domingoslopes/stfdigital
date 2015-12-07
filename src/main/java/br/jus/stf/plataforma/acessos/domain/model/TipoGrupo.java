@@ -22,11 +22,6 @@ public enum TipoGrupo implements ValueObject<TipoGrupo> {
 	}
 	
 	@Override
-	public String toString() {
-		return descricao;
-	}
-	
-	@Override
 	public boolean sameValueAs(final TipoGrupo other) {
 		return this.equals(other);
 	}
