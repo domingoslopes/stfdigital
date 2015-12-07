@@ -63,8 +63,8 @@ public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> imp
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Papel save(Papel Papel) {
-		return super.save(Papel);
+	public Papel save(Papel papel) {
+		return super.save(papel);
 	}
 
 }
