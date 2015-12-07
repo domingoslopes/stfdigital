@@ -11,6 +11,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
 /**
@@ -38,7 +39,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setDescricao(peticaoEletronica.identificacao());
 		
 		Long id = processoRestService.iniciar(command);
-		peticaoEletronica.associarProcessoWorkflow(new ProcessoWorkflowId(id));
+		peticaoEletronica.associarProcessoWorkflow(new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_AUTUAR.name()));
 	}
 
 	@Override
@@ -51,12 +52,12 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setDescricao(peticaoFisica.identificacao());
 		
 		Long id = processoRestService.iniciarPorMensagem(command);
-		peticaoFisica.associarProcessoWorkflow(new ProcessoWorkflowId(id));
+		peticaoFisica.associarProcessoWorkflow(new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_PREAUTUAR.name()));
 	}
 	
 	@Override
 	public void rejeitarAutuacao(Peticao peticao) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
+		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next().id();
 		SinalizarCommand command = new SinalizarCommand();
 		command.setSinal(PETICAO_INVALIDA);
 		command.setStatus(PeticaoStatus.REJEITADA.toString());
@@ -66,7 +67,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	
 	@Override
 	public void devolver(Peticao peticao) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
+		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next().id();
 		SinalizarCommand command = new SinalizarCommand();
 		command.setSinal(REMESSA_INDEVIDA);
 		command.setStatus(PeticaoStatus.A_DEVOLVER.toString());
