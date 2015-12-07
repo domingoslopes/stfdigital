@@ -8,8 +8,18 @@ import br.jus.stf.shared.stereotype.ValueObject;
  * @created 14-ago-2015 18:57:03
  */
 public enum TipoPolo implements ValueObject<TipoPolo> {
-	POLO_ATIVO,
-	POLO_PASSIVO;
+	POLO_ATIVO("Polo ativo"),
+	POLO_PASSIVO("Polo passivo");
+	
+	private String descricao;
+	
+	private TipoPolo(final String descricao) {
+		this.descricao = descricao;
+	}
+	
+	public String descricao() {
+		return descricao;
+	}
 
 	/**
 	 * 

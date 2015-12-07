@@ -21,11 +21,6 @@ public enum TipoPermissao implements ValueObject<TipoPermissao>{
 	public String descricao() {
 		return descricao;
 	}
-	
-	@Override
-	public String toString() {
-		return descricao;
-	}
 
 	@Override
 	public boolean sameValueAs(final TipoPermissao other) {
