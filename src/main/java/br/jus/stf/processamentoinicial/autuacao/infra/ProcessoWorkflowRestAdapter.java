@@ -10,6 +10,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
 /**
@@ -69,16 +70,6 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		SinalizarCommand command = new SinalizarCommand();
 		command.setSinal(REMESSA_INDEVIDA);
 		command.setStatus(PeticaoStatus.A_DEVOLVER.toString());
-
-		processoRestService.sinalizar(id.toLong(), command);
-	}
-	
-	@Override
-	public void assinar(Peticao peticao) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
-		SinalizarCommand command = new SinalizarCommand();
-		command.setSinal(REMESSA_INDEVIDA); // TODO:  Alterar nome do sinal para o criado no BPM
-		command.setStatus(PeticaoStatus.ASSINAR_DEVOLUCAO.toString());
 
 		processoRestService.sinalizar(id.toLong(), command);
 	}
