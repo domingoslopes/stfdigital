@@ -55,7 +55,7 @@ public class PeticaoDtoAssembler {
 		List<Long> partesPoloPassivo = new LinkedList<Long>();
 		List<PecaDto> pecas = new LinkedList<PecaDto>();
 		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
-		Long processoWorkflowId = peticao.processosWorkflow().iterator().next().toLong();
+		Long processoWorkflowId = peticao.processosWorkflow().iterator().next().id().toLong();
 		
 		peticao.partesPoloAtivo().forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
 		

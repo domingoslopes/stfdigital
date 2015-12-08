@@ -2,6 +2,9 @@ package br.jus.stf.plataforma.identidades.infra.eventbus;
 
 import static reactor.bus.selector.Selectors.$;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +25,8 @@ import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 @Component
 public class PessoaIndexadorConsumer implements Consumer<Event<Pessoa>>, InitializingBean {
 
+	private static final String TIPO_ADVOGADO = "Advogado";
+	
 	@Autowired
 	private EventBus eventBus;
 	
@@ -37,10 +42,22 @@ public class PessoaIndexadorConsumer implements Consumer<Event<Pessoa>>, Initial
 	public void accept(Event<Pessoa> event) {
 		Pessoa pessoa = event.getData();
 		try {
-			indexadorRestAdapter.indexar(IdentidadesConfiguration.INDICE, pessoa);
+			indexadorRestAdapter.indexar(IdentidadesConfiguration.INDICE_PESSOA, pessoa);
+			if (pessoa.ehAdvogado()) {
+				indexadorRestAdapter.indexar(IdentidadesConfiguration.INDICE_ADVOGADO, pessoa.id().toString(), TIPO_ADVOGADO, montarAdvogado(pessoa));
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private Map<String, Object> montarAdvogado(Pessoa pessoa) {
+		Map<String, Object> advogado = new HashMap<String, Object>();
+		advogado.put("pessoaId", pessoa.id());
+		advogado.put("nome", pessoa.nome());
+		advogado.put("oab", pessoa.oab());
+		advogado.put("cpf", pessoa.cpf());
+		return advogado;
 	}
 
 }
