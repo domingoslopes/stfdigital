@@ -16,6 +16,7 @@ import br.jus.stf.plataforma.identidades.domain.model.TipoAssociado;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
@@ -105,6 +106,15 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 		query.setParameter("id", id);
 		
 		return query.getResultList();
+	}
+
+	@Override
+	public boolean estaoNoMesmoStatus(List<PeticaoId> ids, PeticaoStatus status) {
+		Query query = entityManager.createQuery("SELECT COUNT(peticao) FROM Peticao peticao JOIN peticao.processosWorkflow as petpw, ProcessoWorkflow pw WHERE peticao.id IN (:ids) AND petpw.sequencial = pw.id.sequencial AND pw.status != :status");
+		query.setParameter("ids", ids);
+		query.setParameter("status", status.name());
+		Long count = (Long)query.getSingleResult();
+		return count == 0;
 	}
 	
 }
