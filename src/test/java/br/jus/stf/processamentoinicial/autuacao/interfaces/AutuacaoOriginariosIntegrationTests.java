@@ -2,6 +2,8 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,11 +15,18 @@ import java.io.UnsupportedEncodingException;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
+import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
+import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
 
 /**
  * @author Rodrigo Barreiros
@@ -36,6 +45,23 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String peticaoFisicaInvalidaParaPreautuacao;
 	private String peticaoInvalidaParaAutuacao;
 	private String peticaoFisicaParaDevolucao;
+	
+	@Spy
+	private IndexadorRestAdapter indexadorRestAdapter;
+	
+	@Autowired
+	@InjectMocks
+	private ProcessoIndexadorConsumer processoIndexadorConsumer;
+	
+	@Autowired
+	@InjectMocks
+	private PeticaoIndexadorConsumer peticaoIndexadorConsumer;
+	
+	@Before
+	public void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		doNothing().when(indexadorRestAdapter).indexar(any(), any());
+	}
 	
 	@Before
 	public void criarObjetosJSON() throws UnsupportedEncodingException, Exception{
@@ -204,11 +230,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Tenta recuperar as tarefas do cartoraria. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "cartoraria")).andExpect(status().isOk())
-			.andExpect((jsonPath("$[0].metadado.tipoInformacao", is("PeticaoFisica"))))
-			.andExpect((jsonPath("$[0].metadado.status", is("A_DEVOLVER"))))
-			.andExpect((jsonPath("$[0].tipoInformacao", is("PeticaoFisica"))))
-			.andExpect((jsonPath("$[0].nome", is("devolver-peticao"))))
-			.andExpect((jsonPath("$[0].descricao", is("Registrar Motivação da Devolução"))));
+			.andExpect((jsonPath("$", hasSize(0))));
 	}
 	
 	@Test
@@ -238,11 +260,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Tenta recuperar as tarefas do cartoraria. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "cartoraria")).andExpect(status().isOk())
-			.andExpect((jsonPath("$[0].metadado.tipoInformacao", is("PeticaoFisica"))))
-			.andExpect((jsonPath("$[0].metadado.status", is("A_DEVOLVER"))))
-			.andExpect((jsonPath("$[0].tipoInformacao", is("PeticaoFisica"))))
-			.andExpect((jsonPath("$[0].nome", is("devolver-peticao"))))
-			.andExpect((jsonPath("$[0].descricao", is("Registrar Motivação da Devolução"))));
+			.andExpect((jsonPath("$", hasSize(0))));
 		
 	}
 	
