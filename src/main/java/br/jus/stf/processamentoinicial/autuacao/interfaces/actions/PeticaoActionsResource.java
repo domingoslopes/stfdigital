@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.plataforma.shared.actions.annotation.ActionController;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
+import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.AssinarDevolucaoPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.AutuarPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.DevolverPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
@@ -31,4 +33,11 @@ public class PeticaoActionsResource {
 		TipoDevolucao tipoDevolucao = TipoDevolucao.valueOf(command.getTipoDevolucao());
 		peticaoServiceFacade.devolver(command.getPeticaoId(), tipoDevolucao, command.getNumeroOficio()); 
 	}
+	
+	@ActionMapping(id = "ASSINAR-DEVOLUCAO-PETICAO", name = "Assinar Documento de Devolução")
+	@FiltrarPeticaoPorStatus(PeticaoStatus.ASSINAR_DEVOLUCAO)
+	public void assinar(AssinarDevolucaoPeticaoCommand command) {
+		 
+	}
+	
 }
