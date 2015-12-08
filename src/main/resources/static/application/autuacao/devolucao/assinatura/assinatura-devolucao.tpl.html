@@ -1,0 +1,47 @@
+<div class="content">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Petições</p>
+					</li>
+					<li><a href="#" class="active">Assinatura do Documento de Devolução</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+        <div class="row" ng-show="peticao.pecas.length">
+			<div class="col-md-12">
+				<div class="card share" data-social="item" style="width: 100%">
+	                <div class="circle" data-toggle="tooltip" title=""
+	                    data-container="body" data-original-title="Label"></div>
+	                <div class="card-header clearfix">
+	                    <h5>Petições</h5>
+	            	</div>
+	                <div class="card-description">
+	                    <div class="auto-overflow widget-11-2-table">
+	                        <table class="table table-condensed table-hover">
+   		                        <thead>
+		                            <tr>
+		                                <th width="50%">Petição</th>
+		                                <th width="40%">Documento de Devolução</th>
+		                                <th width="10%">Arquivo</th>
+		                            </tr>
+		                        </thead>
+	                            <tbody>
+	                                <tr ng-repeat="peticao in peticoes">
+	                                    <td class="font-montserrat fs-12 col-lg-12">{{peticao.descricao}}</td>
+	                                    <td class="font-montserrat fs-12 col-lg-12">{{petica.tipo}}</td>
+                                        <td class="font-montserrat fs-12 col-lg-12"><a ng-href="{{urlConteudo(peticao)}}" target="_blank">Visualizar</a></td>
+	                                </tr>
+	                            </tbody>
+	                        </table>
+	                    </div>
+		            </div>
+           		</div>
+			</div>
+		</div>
+	</div>
+</div>

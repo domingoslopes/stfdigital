@@ -11,10 +11,10 @@ import java.util.List;
  * <pre>
  * {@code
  * Component
- * public class RequiresResourcesHandler implements ActionConditionHandler<RequiresResources> {
+ * public class RequiresResourcesHandler implements ActionConditionHandler<RequiresResources, Resource> {
  * 
  * 	
- * 	public <T> boolean matches(RequiresResources annotation, Collection<T> resources) {
+ * 	public <T> boolean matches(RequiresResources annotation, Collection<Resource> resources) {
  * 		Mode mode = annotation.value();
  * 		if (mode.equals(Mode.One)) {
  * 			return resources.size() == 1;
