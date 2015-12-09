@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.factory('error-handler', function httpInterceptor($q, $log, $injector) {
+	angular.plataforma.factory('error-handler', function httpInterceptor($q, $log, $injector, properties) {
 		return {
 			request : function(config) {
 				$log.debug('Request: ', config);
@@ -22,6 +22,11 @@
 				return response;
 			},
 			responseError : function(rejection) {
+				// Não filtra se estiver na lista de URLs para não interceptar
+				if (properties.urlsNaoInterceptar.indexOf(rejection.config.url) >= -1) {
+					return;
+				}
+					
 				$log.debug('Response Error: ', rejection);
 				if (rejection.status === 500) {
 					$injector.get('$state').go('erro');
