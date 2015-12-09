@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 
 import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.CriarIndiceCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarCommand;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.CriarIndiceCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 import br.jus.stf.shared.stereotype.Entity;
 
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -53,13 +53,25 @@ public class IndexadorRestAdapter implements InitializingBean {
 		}
 	}
 	
+	public void indexar(String indice, String id, String tipo, Map<String, Object> mapaDeIndexacao) throws Exception {
+		try {
+			indexarOuAtualizar(indice, id, tipo, mapaDeIndexacao);
+		} catch (Exception e) {
+			throw new Exception("Não foi possível indexar o objeto!", e);
+		}
+	}
+	
 	public void atualizar(String indice, String id, String tipo, Map<String, Object> mapaDeAtualizacao) throws Exception {
 		try {
-			AtualizarCommand atualizarCommand = criarComandoAtualizacao(indice, id, tipo, mapaDeAtualizacao);
-			indexadorRestResource.atualizar(atualizarCommand, new BeanPropertyBindingResult(atualizarCommand, "atualizarCommand"));
+			indexarOuAtualizar(indice, id, tipo, mapaDeAtualizacao);
 		} catch (Exception e) {
 			throw new Exception("Não foi possível atualizar o objeto!", e);
 		}
+	}
+	
+	private void indexarOuAtualizar(String indice, String id, String tipo, Map<String, Object> mapaDeAtualizacao) throws Exception {
+		AtualizarCommand atualizarCommand = criarComandoAtualizacao(indice, id, tipo, mapaDeAtualizacao);
+		indexadorRestResource.atualizar(atualizarCommand, new BeanPropertyBindingResult(atualizarCommand, "atualizarCommand"));
 	}
 
 	/**

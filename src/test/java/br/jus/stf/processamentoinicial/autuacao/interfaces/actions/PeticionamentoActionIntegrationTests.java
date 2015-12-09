@@ -1,6 +1,8 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.actions;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,11 +14,18 @@ import java.io.UnsupportedEncodingException;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
+import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
+import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
 
 /**
  * Realiza os testes de integração do peticionamento usando o mecanismo de ações da plataforma STF Digital.
@@ -35,6 +44,23 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
 	private String peticaoInvalidaParaAutuacao;
+	
+	@Spy
+	private IndexadorRestAdapter indexadorRestAdapter;
+	
+	@Autowired
+	@InjectMocks
+	private ProcessoIndexadorConsumer processoIndexadorConsumer;
+	
+	@Autowired
+	@InjectMocks
+	private PeticaoIndexadorConsumer peticaoIndexadorConsumer;
+	
+	@Before
+	public void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		doNothing().when(indexadorRestAdapter).indexar(any(), any());
+	}
 	
 	@Before
 	public void criarObjetosJSON() throws UnsupportedEncodingException, Exception{
