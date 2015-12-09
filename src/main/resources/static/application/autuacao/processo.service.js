@@ -14,7 +14,7 @@
 			},
 			
 			listarStatus : function() {
-				return ["Distribuída"];
+				return ["distribuido"];
 			}
 		};
 	});
