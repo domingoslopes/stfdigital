@@ -36,7 +36,7 @@ public class CertificateValidation {
 	}
 
 	public boolean valid() {
-		return validationErrors.size() == 0;
+		return validationErrors.isEmpty();
 	}
 
 }
