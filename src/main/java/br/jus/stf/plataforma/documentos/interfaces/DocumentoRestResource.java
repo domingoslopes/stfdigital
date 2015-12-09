@@ -29,6 +29,7 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
@@ -70,11 +71,18 @@ public class DocumentoRestResource {
 	
 	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	@ApiResponses(value = {@ApiResponse(code = 400, message = "O arquivo enviado não foi assinado digitalmente.")})
 	@ResponseStatus(HttpStatus.CREATED)
 	public String upload(UploadDocumentoCommand command) {
+		return documentoServiceFacade.salvarDocumentoTemporario(command.getFile());
+	}
+	
+	@ApiOperation("Envia um documento assinado para armazenamento temporário e retorna o indentificador")
+	@RequestMapping(value = "/upload/assinado", method = RequestMethod.POST)
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "O arquivo enviado não foi assinado digitalmente.")})
+	@ResponseStatus(HttpStatus.CREATED)
+	public String uploadAssinado(UploadDocumentoAssinadoCommand command) {
 		
-		Set<ConstraintViolation<UploadDocumentoCommand>> result = validator.validate(command);
+		Set<ConstraintViolation<UploadDocumentoAssinadoCommand>> result = validator.validate(command);
 		
 		if (!result.isEmpty()) {
 			throw new IllegalArgumentException(result.toString());
