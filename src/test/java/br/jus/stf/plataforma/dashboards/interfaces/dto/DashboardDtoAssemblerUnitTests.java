@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.dashboards.interfaces.dto;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,14 +27,14 @@ public class DashboardDtoAssemblerUnitTests {
 
 	@Test
 	public void converterDashboardToDtoUnicoDashlet() {
-		Dashboard dashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01")));
+		Dashboard dashboard = new Dashboard("Dash", Arrays.asList(new Dashlet("dashlet-01")));
 		DashboardDto dto = dashboardDtoAssembler.toDto(dashboard);
 		Assert.assertArrayEquals(new String[] { "dashlet-01" }, dto.getDashlets().toArray());
 	}
 
 	@Test
 	public void converterDashboardToDtoVariosDashlets() {
-		Dashboard dashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02"), new Dashlet("dashlet-03")));
+		Dashboard dashboard = new Dashboard("Dash", Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02"), new Dashlet("dashlet-03")));
 		DashboardDto dto = dashboardDtoAssembler.toDto(dashboard);
 		Assert.assertArrayEquals(new String[] { "dashlet-01", "dashlet-02", "dashlet-03" },
 				dto.getDashlets().toArray());
@@ -41,7 +42,7 @@ public class DashboardDtoAssemblerUnitTests {
 
 	@Test
 	public void converterDashboardToDtoNenhumDashlet() {
-		Dashboard dashboard = new Dashboard();
+		Dashboard dashboard = new Dashboard("Dash", Collections.emptyList());
 		DashboardDto dto = dashboardDtoAssembler.toDto(dashboard);
 		Assert.assertEquals(0, dto.getDashlets().size());
 	}
