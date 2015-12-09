@@ -17,6 +17,7 @@ public interface PdfSigningSpecificationBuilder {
 
 		public PKCS7SpecBuilder hashAlgorithm(HashType hashType);
 
+		@Override
 		public SigningSpecification build();
 
 	}

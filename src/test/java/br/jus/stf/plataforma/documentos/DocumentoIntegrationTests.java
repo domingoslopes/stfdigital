@@ -25,10 +25,27 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 	
 	@Test
-	public void enviarArquivo() throws Exception {
+	public void enviarArquivoSemAssinatura() throws Exception {
 		String nomeArquivo = "teste_arq_temp.pdf";
 		String mime = "application/pdf";
 		String caminho = "pdf/padraoAD-V2.pdf";
+		
+		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
+
+	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
+		
+	    mockMvc.perform(fileUpload("/api/documentos/upload")
+	    			.file(mockArquivo)
+	    			.contentType(MediaType.MULTIPART_FORM_DATA)
+	    			.content(arquivo))
+	    	.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void enviarArquivoAssinado() throws Exception {
+		String nomeArquivo = "teste_arq_temp.pdf";
+		String mime = "application/pdf";
+		String caminho = "certification/pdf-de-teste-assinado-01.pdf";
 		
 		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
 

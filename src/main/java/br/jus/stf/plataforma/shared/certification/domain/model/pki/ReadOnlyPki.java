@@ -21,6 +21,7 @@ public class ReadOnlyPki implements Pki {
 		this.intermediateCertificates = intermediateCerts;
 	}
 
+	@Override
 	public boolean belongsToPki(X509Certificate certificate) {
 		List<X509Certificate> chain = new ArrayList<>();
 		chain.add(certificate);
@@ -28,6 +29,7 @@ public class ReadOnlyPki implements Pki {
 		return rootCertificates.contains(chain.get(chain.size() - 1));
 	}
 
+	@Override
 	public X509Certificate[] certificateChainOf(X509Certificate certificate) {
 		List<X509Certificate> chain = new ArrayList<>();
 		chain.add(certificate);
