@@ -15,12 +15,14 @@ import br.jus.stf.plataforma.shared.certification.domain.model.signature.Documen
 @Component
 public class SessionDocumentSignerRepository implements DocumentSignerRepository {
 
+	@Override
 	public DocumentSigner save(DocumentSigner signer) {
 		DocumentSignerId signerId = signer.id();
 		session().setAttribute(signerId.id(), signer);
 		return signer;
 	}
 
+	@Override
 	public DocumentSigner findOne(DocumentSignerId signerId) {
 		DocumentSigner signer = (DocumentSigner) session().getAttribute(signerId.id());
 		if (signer != null) {
@@ -35,6 +37,7 @@ public class SessionDocumentSignerRepository implements DocumentSignerRepository
 		return sra.getRequest().getSession();
 	}
 
+	@Override
 	public DocumentSignerId nextId() {
 		return new DocumentSignerId(UUID.randomUUID().toString());
 	}

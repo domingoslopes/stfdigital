@@ -6,6 +6,7 @@ import java.security.cert.CRLException;
 import java.security.cert.X509CRL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
@@ -38,7 +39,7 @@ public class ITextPdfSignatureUtil {
 
 	public static Collection<byte[]> crlsToByteCollection(X509CRL[] crls) throws CRLException {
 		if (crls.length == 0)
-			return null;
+			return Collections.emptyList();;
 		List<byte[]> crlCol = new ArrayList<>();
 		for (X509CRL crl : crls) {
 			crlCol.add(crl.getEncoded());
@@ -50,8 +51,7 @@ public class ITextPdfSignatureUtil {
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance(hashType.dashedName());
 			messageDigest.update(bytes);
-			byte hash[] = messageDigest.digest();
-			return hash;
+			return messageDigest.digest();
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException("Algoritmo de hash SHA-256 não encontrado.", e);
 		}
