@@ -14,8 +14,6 @@
 		var scope;
 		var cadastroService;
 		
-		var idDoUsuarioCadastrado = 30; // Número aleatório
-
 		var detalhesValidos = {
 			login: 'joao.silva',
 			nome: 'João da Silva',
@@ -33,18 +31,29 @@
 			senha: '123456'
 		};
 		
+		var respostaValida = {
+			id: jasmine.any(Number),
+			login: 'joao.silva',
+			nome: 'João da Silva',
+			email: 'joao.silva@exemplo.com.br',
+			cpf: '68748373702',
+			telefone: '',
+		};
+		
+		var respostaInvalida = {error: 'Erro simulado'};
+		
 		beforeEach(module('appDev'));
 		
 		beforeEach(inject(function($rootScope, $controller, $httpBackend, properties, CadastroService) {
 			$httpBackend.expectPOST(
 				properties.apiUrl + '/acessos/usuarios', 
 				jasmine.objectContaining(detalhesValidos)
-			).respond(idDoUsuarioCadastrado);
+			).respond(respostaValida);
 
 			$httpBackend.expectPOST(
 				properties.apiUrl + '/acessos/usuarios', 
 				jasmine.objectContaining(detalhesInvalidos)
-			).respond({error: 'Erro simulado'});
+			).respond(respostaInvalida);
 
 			cadastroService = CadastroService;
 			scope = $rootScope.$new();
@@ -52,14 +61,14 @@
 		
 		it("Deveria cadastrar um usuário", function() {
 			cadastroService.cadastrar(detalhesValidos).then(function(response) {
-				expect(response).toEqual(jasmine.any(Number));
+				expect(response).toEqual(jasmine.objectContaining(respostaValida));
 			});
 		});
 		
 		it("Deveria rejeitar um usuário com informações insuficientes", function() {
 			cadastroService.cadastrar(detalhesInvalidos).then(function(response) {
-				expect(response).not.toEqual(jasmine.any(Number));
-			})
+				expect(response).not.toEqual(jasmine.objectContaining(respostaInvalida));
+			});
 		});
 	});
 })();

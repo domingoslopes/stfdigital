@@ -127,6 +127,7 @@ public class AcessosApplicationService {
 	public Usuario cadastrarUsuario(String login, String nome, String cpf, String oab, String email, String telefone) {
 		PessoaId idPessoa = pessoaRepository.nextId();
 		Pessoa pessoa;
+		
 		if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(oab) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
 			pessoa = new Pessoa(idPessoa, nome, cpf, oab, email, telefone);
 			
