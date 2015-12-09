@@ -15,8 +15,8 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 public class DocumentValidatorApplicationServiceTest extends AbstractIntegrationTests {
 
-	private static final String PDF_DE_TESTE_ASSINADO = "pdf-de-teste-assinado-001.pdf";
-	private static final String PDF_DE_TESTE_NAO_ASSINADO = "pdf-de-teste-001.pdf";
+	private static final String PDF_DE_TESTE_ASSINADO = "pdf-de-teste-assinado-01.pdf";
+	private static final String PDF_DE_TESTE_NAO_ASSINADO = "pdf-de-teste-01.pdf";
 
 	@Autowired
 	private DocumentValidatorApplicationService documentValidatorApplicationService;
