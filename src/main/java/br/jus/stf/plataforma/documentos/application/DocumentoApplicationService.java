@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
@@ -18,7 +20,8 @@ import br.jus.stf.shared.DocumentoTemporarioId;
  * @since 1.0.0
  * @since 25.09.2015
  */
-@Component
+@Service
+@Transactional
 public class DocumentoApplicationService {
 
 	@Autowired
@@ -41,6 +44,11 @@ public class DocumentoApplicationService {
 	 */
 	public String salvarDocumentoTemporario(DocumentoTemporario documentoTemporario) {
 		return documentoRepository.storeTemp(documentoTemporario);
+	}
+
+	public void apagarDocumentosTemporarios(List<String> documentoTemporarioIds) {
+		documentoTemporarioIds.stream()
+			.forEach(tempId -> documentoRepository.removeTemp(tempId));
 	}
 
 }

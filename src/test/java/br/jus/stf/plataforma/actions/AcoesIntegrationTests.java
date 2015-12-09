@@ -8,9 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -24,6 +21,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     public void listarAcoes() throws Exception {
     	
     	mockMvc.perform(get("/api/actions")
+    			.header("login", "peticionador")
     			.accept(MediaType.APPLICATION_JSON))
     		.andExpect(status().isOk());
     		//.andDo(print());
@@ -33,6 +31,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     public void verificaAcoes() throws Exception {
     	
     	mockMvc.perform(post("/api/actions/isallowed")
+    			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"ids\":[\"dummy_action\"], \"resources\": [{\"attr\":\"TESTE1\"}]}"))
     		.andExpect(status().isOk())
@@ -44,6 +43,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     public void verificaAcao() throws Exception {
     	
     	mockMvc.perform(post("/api/actions/dummy_action/isallowed")
+    			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [{\"attr\":\"TESTE1\"}]}"))
     		.andExpect(status().isOk())
@@ -59,6 +59,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     public void executaAcao() throws Exception {
     	
     	mockMvc.perform(post("/api/actions/dummy_action/execute")
+    			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [{\"attr\":\"TESTE1\"}, {\"attr\":\"TESTE2\"}]}"))
     		.andExpect(status().isOk());
@@ -68,31 +69,27 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     @Test
     public void executaAcaoRestrita() throws Exception {
 
-		setAuthenticationAuthorities("RESTRICT_ACTION");
     	mockMvc.perform(post("/api/actions/do_nothing_long/execute")
+    			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [1]}"))
     		.andExpect(status().isOk());
     		//.andDo(print());
-    	setAuthenticationAuthorities(new String[] {});
     }
     
     @Test
     public void executaAcaoSemRecursos() throws Exception {
     	
     	mockMvc.perform(post("/api/actions/do_nothing/execute")
+    			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [1]}"))
     		.andExpect(status().isOk());
     		//.andDo(print());
     	
-    	mockMvc.perform(get("/api/actions/do_nothing/execute"))
+    	mockMvc.perform(get("/api/actions/do_nothing/execute")
+    			.header("login", "peticionador"))
     		.andExpect(status().isOk());
     }
     
-	private void setAuthenticationAuthorities(String... authorities) {
-		Authentication authentication = new TestingAuthenticationToken("", "", authorities);
-		authentication.setAuthenticated(true);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-	}
 }
