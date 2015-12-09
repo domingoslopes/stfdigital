@@ -124,7 +124,7 @@ public class AcessosRestResource {
 	@ApiOperation("Cadastra um novo usuário")
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "Usuário Inválido")})
 	@RequestMapping(value="/usuarios", method = RequestMethod.POST)
-	public Long cadastrarUsuario(@RequestBody @Valid CadastrarUsuarioCommand command, BindingResult binding) {
+	public UsuarioDto cadastrarUsuario(@RequestBody @Valid CadastrarUsuarioCommand command, BindingResult binding) {
 		if (binding.hasErrors()) {
 			throw new IllegalArgumentException("Usuário inválido: " + binding.getAllErrors());
 		}
@@ -138,6 +138,6 @@ public class AcessosRestResource {
 			command.getTelefone()
 		);
 		
-		return usuario.id().toLong();
+		return this.usuarioDtoAssembler.toDto(usuario, null);
 	}
 }

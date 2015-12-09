@@ -7,7 +7,7 @@
  * @since 03.12.2015
  */
 (function($) {
-	angular.plataforma.controller('CadastroController', function(CadastroService) {
+	angular.plataforma.controller('CadastroController', function($state, $timeout, CadastroService) {
 		
 		this.detalhes = {
 			login: "",
@@ -17,7 +17,8 @@
 			cpf: "",
 			oab: "",
 			email: "",
-			telefone: ""
+			telefone: "",
+			tipoAdvogado: 0
 		}
 	
 		$(document).ready(function () {
@@ -88,13 +89,36 @@
 			
 			// Cadastra o usuário
 			CadastroService.cadastrar(this.detalhes)
-				.then(function() {
-					// TODO: Informar sucesso
-				}, function() {
-					// TODO: Tratar erro
-				});
+				.then(function(response) {
+					// Recebeu o ID do novo usuário
+					if (response.id !== null) {
+						this.exibirNotificacao("Usuário cadastrado com sucesso! Você será redirecionado em alguns segundos...", 'info');
+						
+						$timeout(function() {
+							$state.go('login', {}, {reload: true});
+						}, 5000);
+					} else {
+						this.exibirNotificacao("Ocorreu um erro. Por favor tente novamente mais tarde.", 'error');
+					}
+				}.bind(this), function(response) {
+					this.exibirNotificacao("Ocorreu um erro. Por favor tente novamente mais tarde.", 'error');
+				}.bind(this));
 			
 			return true;
+		}
+		
+		/**
+		 * Exibe uma notificação na tela
+		 * 
+		 * @param string mensagem
+		 * @param string tipo 
+		 */
+		this.exibirNotificacao = function exibirNotificacao(mensagem, tipo) {
+			$('body').pgNotification({
+				message: mensagem,
+				type: tipo,
+				style: 'flip'
+			}).show();
 		}
 		
 		/**
