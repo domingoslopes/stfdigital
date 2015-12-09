@@ -11,6 +11,10 @@
 		return {
 			consultar : function(peticaoId) {
 				return $http.get(properties.apiUrl + '/processos/' + peticaoId);
+			},
+			
+			listarStatus : function() {
+				return ["Distribuída"];
 			}
 		};
 	});

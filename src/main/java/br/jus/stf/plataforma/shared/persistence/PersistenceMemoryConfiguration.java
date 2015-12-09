@@ -8,10 +8,13 @@ import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
+import br.jus.stf.plataforma.shared.settings.Profiles;
 
 /**
  * @author Lucas.Rodrigues
@@ -27,16 +30,27 @@ public class PersistenceMemoryConfiguration {
 	@Value("${H2.tcp.port}")
 	private String tcpPort;
 	
+	@Profile("!" + Profiles.KEEP_DATA)
 	@Bean(name = "dataSource")
-	public DataSource dataSource() throws Exception {
+	public DataSource dataSourceMemory() throws Exception {
+		return dataSourceH2("jdbc:h2:mem:stfdigital;MODE=Oracle;DB_CLOSE_DELAY=-1");
+	}
+	
+	@Profile(Profiles.KEEP_DATA)
+	@Bean(name = "dataSource")
+	public DataSource dataSourceDisk() throws Exception {
+		return dataSourceH2("jdbc:h2:" + LocalData.instance().dataDirRelativeUnixPath() + "/stfdigital;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1");
+	}
+
+	private DataSource dataSourceH2(String connectionUrl) throws Exception {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(org.h2.Driver.class);
-		dataSource.setUrl("jdbc:h2:mem:stfdigital;MODE=Oracle;DB_CLOSE_DELAY=-1");
+		dataSource.setUrl(connectionUrl);
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
 		return dataSource;
 	}
-
+	
 	/**
 	 * Adaptador do Hibernate para JPA com configurações para H2.
 	 * 
