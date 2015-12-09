@@ -118,7 +118,7 @@ public class ITextPdfSignatureValidator implements DocumentValidator {
 	}
 
 	private void validateFields(List<String> fields) throws DocumentValidationException {
-		if (fields == null || fields.size() < 1) {
+		if (fields == null || fields.isEmpty()) {
 			throw new DocumentValidationException("Não foi possível recuperar os campos de assinatura do pdf.");
 		}
 	}
