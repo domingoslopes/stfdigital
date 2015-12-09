@@ -42,6 +42,14 @@
 					}
 				}
 			})
+			.state('cadastro.sucesso', {
+				url: '/sucesso',
+				views: {
+					'main@': {
+						templateUrl: 'application/plataforma/cadastro/sucesso.tpl.html'
+					}
+				}
+			})
 			.state('login', {
 				url: '/login',
 				views: {
