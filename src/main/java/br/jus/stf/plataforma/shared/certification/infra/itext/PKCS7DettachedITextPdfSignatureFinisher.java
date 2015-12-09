@@ -42,7 +42,7 @@ public class PKCS7DettachedITextPdfSignatureFinisher implements ITextPdfSignatur
 	public PreSignature finishPreSignature(final PdfSigningSpecification spec,
 			CertificateValidation certificateValidation, PdfSignatureAppearance appearance) throws SigningException {
 		try {
-			int estimatedSize = ITextPdfSignatureUtil.estimateSignatureSize(certificateValidation.crls(), false, false);
+			int tamEstimado = ITextPdfSignatureUtil.estimateSignatureSize(certificateValidation.crls(), false, false);
 
 			ExternalDigest externalDigest = new ExternalDigest() {
 				@Override
@@ -56,14 +56,14 @@ public class PKCS7DettachedITextPdfSignatureFinisher implements ITextPdfSignatur
 			dic.setDate(new PdfDate(appearance.getSignDate()));
 			appearance.setCryptoDictionary(dic);
 			HashMap<PdfName, Integer> exc = new HashMap<PdfName, Integer>();
-			exc.put(PdfName.CONTENTS, new Integer(estimatedSize * 2 + 2));
+			exc.put(PdfName.CONTENTS, new Integer(tamEstimado * 2 + 2));
 			appearance.preClose(exc);
 
 			PdfPKCS7 sgnNew = new PdfPKCS7(null, certificateValidation.certificateChain(), spec.hashType().name(), null,
 					externalDigest, false);
 
 			InputStream data = appearance.getRangeStream();
-			byte primeiroHash[] = DigestAlgorithms.digest(data,
+			byte[] primeiroHash = DigestAlgorithms.digest(data,
 					externalDigest.getMessageDigest(spec.hashType().name()));
 
 			Calendar cal = Calendar.getInstance();
@@ -73,7 +73,7 @@ public class PKCS7DettachedITextPdfSignatureFinisher implements ITextPdfSignatur
 
 			this.firstHash = primeiroHash;
 			this.pdfPKCS7 = sgnNew;
-			this.estimatedSize = estimatedSize;
+			this.estimatedSize = tamEstimado;
 
 			return new PreSignature(new AuthenticatedAttributes(authAttrs),
 					new HashToSign(ITextPdfSignatureUtil.applyHash(authAttrs, spec.hashType())), spec.hashType());

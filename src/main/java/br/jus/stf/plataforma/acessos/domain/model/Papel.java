@@ -100,10 +100,17 @@ public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId
 	
 	@Override
 	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 	
 		Papel other = (Papel) obj;
+		
 		return sameIdentityAs(other);
 	}
 

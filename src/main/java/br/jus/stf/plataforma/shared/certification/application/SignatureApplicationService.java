@@ -76,27 +76,23 @@ public class SignatureApplicationService {
 
 	public PreSignature preSign(DocumentSignerId signerId) throws SigningException {
 		DocumentSigner signer = documentSignerRepository.findOne(signerId);
-		PreSignature preSignature = signer.preSign();
-		return preSignature;
+		return signer.preSign();
 	}
 
 	public DocumentSignature postSign(DocumentSignerId signerId, HashSignature signature) throws SigningException {
 		DocumentSigner signer = documentSignerRepository.findOne(signerId);
-		DocumentSignature documentSignature = signer.postSign(signature);
-		return documentSignature;
+		return signer.postSign(signature);
 	}
 
 	public SignedDocument recoverSignedDocument(DocumentSignerId signerId) {
 		DocumentSigner signer = documentSignerRepository.findOne(signerId);
-		SignedDocument document = signer.recoverSignedDocument();
-		return document;
+		return signer.recoverSignedDocument();
 	}
 
 	public DocumentoId saveSigned(DocumentSignerId signerId) {
 		SignedDocument signedDocument = recoverSignedDocument(signerId);
 		DocumentoTemporarioId tempDocId = documentAdapter.upload(signerId.id(), signedDocument.document());
-		DocumentoId docId = documentAdapter.save(tempDocId);
-		return docId;
+		return documentAdapter.save(tempDocId);
 	}
 
 }

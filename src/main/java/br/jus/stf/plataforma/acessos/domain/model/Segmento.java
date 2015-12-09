@@ -61,10 +61,17 @@ public class Segmento implements br.jus.stf.shared.stereotype.Entity<Segmento, S
 	
 	@Override
 	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 	
 		Segmento other = (Segmento) obj;
+		
 		return sameIdentityAs(other);
 	}
 

@@ -23,9 +23,18 @@ public class PapelDto {
 	@ApiModelProperty(value="Nome do setor associado ao papel.", required=true)
 	private String setor;
 	
-	public PapelDto(String nome, String setor) {
+	public PapelDto(Long id, String nome, String setor) {
+		this.id = id;
 		this.nome = nome;
 		this.setor = setor;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
