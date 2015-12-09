@@ -1,5 +1,5 @@
 <!-- START PAGE-CONTAINER -->
-<div class="login-wrapper " ng-non-bindable>
+<div class="login-wrapper">
 	<!-- START Login Background Pic Wrapper-->
 	<div class="bg-pic">
 		<!-- START Background Pic-->
@@ -24,8 +24,10 @@
 				height="22">
 			<p class="p-t-35">Entre com a sua conta</p>
 			<!-- START Login Form -->
-			<form id="form-login" class="p-t-15" role="form" action="/login" method="post">
+			<form id="form-login" class="p-t-15" role="form" action="/login"
+				method="post" ng-non-bindable>
 				<input type="hidden" name="_csrf" id="csrf_token">
+				
 				<!-- START Form Control-->
 				<div class="form-group form-group-default">
 					<label>Usuário</label>
@@ -58,6 +60,9 @@
 				<!-- END Form Control-->
 				<button id="entrar" class="btn btn-info btn-cons m-t-10"
 					type="submit">Entrar</button>
+				
+				<a href="/cadastro" id="cadastro"
+					class="btn btn-info btn-cons m-t-10" type="submit">Cadastro</a>
 			</form>
 			<!--END Login Form-->
 		</div>
@@ -79,9 +84,9 @@
 	$(function() {
 		// fix for windows 8
 		if (navigator.appVersion.indexOf("Windows NT 6.2") != -1) {
-	        document.head.innerHTML += '<link rel="stylesheet" type="text/css" href="theme/assets/pages/css/windows.chrome.fix.css" />'
+			document.head.innerHTML += '<link rel="stylesheet" type="text/css" href="theme/assets/pages/css/windows.chrome.fix.css" />'
 		}
-	        
+
 		$('#form-login').validate();
 		var cks = document.cookie;
 		var token = cks.substring(cks.indexOf("XSRF-TOKEN="), cks.length)
