@@ -27,7 +27,8 @@
     "checklist-model": "~0.8.0",
     "stomp-websocket": "~2.3.3",
     "sockjs": "~0.3.4",
-    "hwcrypto": "~0.0.10"
+    "hwcrypto": "~0.0.10",
+    "ngMask": "angular-mask#~3.0.16"
   },
   "ignoredDependencies": [],
   "devDependencies": {}
