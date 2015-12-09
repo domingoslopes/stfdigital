@@ -34,7 +34,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 
-	private static final String PDF_DE_TESTE = "pdf-de-teste-001.pdf";
+	private static final String PDF_DE_TESTE = "pdf-de-teste-01.pdf";
 
 	private static final String SIGNING_REASON = "Unit Test STF Digital";
 
