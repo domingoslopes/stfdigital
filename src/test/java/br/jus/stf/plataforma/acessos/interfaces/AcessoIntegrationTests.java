@@ -96,7 +96,9 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(userJson.toString()))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$", instanceOf(Integer.class)));
+				.andExpect(jsonPath("$.id", instanceOf(Integer.class)))
+				.andExpect(jsonPath("$.login", is("joao.silva")))
+				.andExpect(jsonPath("$.nome", is("João da Silva")));
 	}
 	
 	@Test
