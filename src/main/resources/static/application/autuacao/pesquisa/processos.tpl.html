@@ -51,6 +51,17 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group form-group-default">
+										<label>Situação da petição</label>
+										<select ui-select2="{allowClear:'true'}" id="situacao" ng-model="situacao" class="full-width">
+											<option value=""></option>
+											<option ng-repeat="situacao in situacoes" value="{{situacao}}">{{situacao | lowercase}}</option>
+										</select>
+									</div>
+								</div>
+							</div>
 							<br />
 							<p>
 								<input type="submit" id="botaoPesquisar" class="btn btn-complete btn-cons m-t-10" value="Pesquisar" />
