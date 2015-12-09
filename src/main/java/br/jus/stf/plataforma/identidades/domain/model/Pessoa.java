@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.util.StringUtils;
 
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.stereotype.Entity;
@@ -84,12 +85,24 @@ public class Pessoa implements Entity<Pessoa, PessoaId> {
 	}
 
 	@Override
-	public PessoaId id(){
+	public PessoaId id() {
 		return id;
 	}
 
-	public String nome(){
+	public String nome() {
 		return nome;
+	}
+	
+	public String cpf() {
+		return cpf;
+	}
+	
+	public String oab() {
+		return oab;
+	}
+	
+	public boolean ehAdvogado() {
+		return !StringUtils.isEmpty(oab);
 	}
 	
 	@Override

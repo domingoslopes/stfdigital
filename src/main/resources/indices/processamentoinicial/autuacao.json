@@ -134,10 +134,18 @@
         },
         "processosWorkflow": {
           "properties": {
-            "sequencial": {
-              "type": "long",
-              "index": "not_analyzed",
-          	  "include_in_all" : false
+          	"processosWorkflowId": {
+              "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }              
+            },
+            "status": {
+              "type": "string",
+              "analyzer": "keyword_analyzer"
             }
           }
         }
@@ -249,10 +257,18 @@
         },
         "processosWorkflow": {        
           "properties": {
-            "sequencial": {
-              "type": "long",
-          	  "index": "not_analyzed",
-          	  "include_in_all" : false              
+          	"processosWorkflowId": {
+              "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }              
+            },
+            "status": {
+              "type": "string",
+              "analyzer": "keyword_analyzer"
             }
           }
         },

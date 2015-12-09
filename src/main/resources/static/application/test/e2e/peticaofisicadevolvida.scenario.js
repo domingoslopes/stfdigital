@@ -132,5 +132,19 @@
 		    loginPage.logout();
 		});
 		
+		it('Deveria logar como gestor-recebimento', function() {
+			login('gestor-recebimento');
+		});
+		
+		it('Deveria assinar o documento de devolução.', function() {
+		    principalPage.executarTarefa();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/assinatura-devolucao/);
+		    
+			
+			
+		    loginPage.logout();
+		});
+		
 	});
 })();
