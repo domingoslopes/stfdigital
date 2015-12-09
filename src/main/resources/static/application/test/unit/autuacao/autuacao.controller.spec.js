@@ -16,14 +16,16 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($controller, $httpBackend, $log, properties) {
+		beforeEach(inject(function($rootScope, $controller, $httpBackend, $log, properties) {
 			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/1').respond({classe : 'AP'});
 			$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
 
-			stateParams = {idTarefa: 1};
+			stateParams = {resources: [1]};
 			
+			scope = $rootScope.$new();
 			controller = $controller('AutuacaoController', {
+				$scope : scope,
 				$stateParams : stateParams,
 				$log: $log
 			});
