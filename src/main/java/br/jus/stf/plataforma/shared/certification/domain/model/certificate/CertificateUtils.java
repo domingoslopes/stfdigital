@@ -14,8 +14,7 @@ public class CertificateUtils {
 	public static X509Certificate bytesToCertificate(byte[] certificateBytes) {
 		try {
 			CertificateFactory cf = CertificateFactory.getInstance("X.509");
-			X509Certificate cert = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
-			return cert;
+			return (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificateBytes));
 		} catch (CertificateException e) {
 			throw new RuntimeException("Erro ao converter bytes para Certificate", e);
 		}
