@@ -18,7 +18,7 @@ public class AssociadoDto {
 	private Long idOrgao;
 	
 	@ApiModelProperty(value = "Número do CPF do associado.")
-	private String CPF;
+	private String cpf;
 	
 	@ApiModelProperty(value = "Nome do associado.")
 	private String nome;
@@ -29,9 +29,9 @@ public class AssociadoDto {
 	@ApiModelProperty(value ="Cargo do associado.")
 	private String cargo;
 
-	public AssociadoDto(Long idOrgao, String CPF, String nome, String tipoAssociacao, String cargo){
+	public AssociadoDto(Long idOrgao, String cpf, String nome, String tipoAssociacao, String cargo){
 		this.idOrgao = idOrgao;
-		this.CPF = CPF;
+		this.cpf = cpf;
 		this.nome = nome;
 		this.tipoAssociacao = tipoAssociacao;
 		this.cargo = cargo;
@@ -46,11 +46,11 @@ public class AssociadoDto {
 	}
 
 	public String getCPF() {
-		return this.CPF;
+		return this.cpf;
 	}
 
-	public void setCPF(String cPF) {
-		this.CPF = cPF;
+	public void setCPF(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getNome() {
