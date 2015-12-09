@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
@@ -65,6 +67,7 @@ public class DocumentoRestResource {
 	
 	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "O arquivo enviado não foi assinado digitalmente.")})
 	@ResponseStatus(HttpStatus.CREATED)
 	public String upload(UploadDocumentoCommand command) {
 		
