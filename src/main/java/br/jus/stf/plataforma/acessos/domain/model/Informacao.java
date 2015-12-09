@@ -18,7 +18,7 @@ import br.jus.stf.shared.InformacaoId;
 public class Informacao implements br.jus.stf.shared.stereotype.Entity<Informacao, InformacaoId> {
 	
 	@EmbeddedId
-	private InformacaoId informacao;
+	private InformacaoId informacaoId;
 	
 	@ManyToOne
 	@JoinColumn(name = "SEQ_TIPO_INFORMACAO", nullable = false)
@@ -39,7 +39,7 @@ public class Informacao implements br.jus.stf.shared.stereotype.Entity<Informaca
 		Validate.notNull(id, "informacao.id.required");
 		Validate.notBlank(identidade, "informacao.identidade.required");
 		
-		this.informacao = id;
+		this.informacaoId = id;
 		this.identidade = identidade;
 	}
 	
@@ -74,18 +74,24 @@ public class Informacao implements br.jus.stf.shared.stereotype.Entity<Informaca
 	
 	@Override
 	public InformacaoId id() {
-		return informacao;
+		return this.informacaoId;
 	}
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(informacao).hashCode();
+		return new HashCodeBuilder().append(this.informacaoId).hashCode();
 	}
 	
 	@Override
 	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 	
 		Informacao other = (Informacao) obj;
 		
@@ -95,7 +101,7 @@ public class Informacao implements br.jus.stf.shared.stereotype.Entity<Informaca
 	@Override
 	public boolean sameIdentityAs(final Informacao other) {
 		return other != null
-				&& informacao.sameValueAs(other.informacao);
+				&& this.informacaoId.sameValueAs(other.informacaoId);
 	}
 
 }
