@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('PesquisaProcessosController', function ($scope, messages, classes, PesquisaService, MinistroService) {
+	angular.plataforma.controller('PesquisaProcessosController', function ($scope, messages, classes, PesquisaService, MinistroService, ProcessoService) {
 		
 		$scope.classes = classes.data;
 		$scope.ministros = [];
@@ -21,7 +21,13 @@
 			$scope.ministros = ministros;
 		});
 		
-		$scope.buildSelectedObject = function(item) {
+		$scope.situacoes = ProcessoService.listarStatus();
+		
+		/*ProcessoService.listarStatus().success(function(situacoes){
+			$scope.situacoes = situacoes;
+		});*/
+		
+		$scope.buildSelectedObject = function(item){
 			return {'processoId': item.id};
 		};
 		
