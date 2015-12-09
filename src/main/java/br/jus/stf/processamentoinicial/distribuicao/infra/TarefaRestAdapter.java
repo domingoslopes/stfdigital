@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
-import br.jus.stf.processamentoinicial.autuacao.infra.PeticaoStatus;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.processamentoinicial.distribuicao.domain.TarefaAdapter;
 import br.jus.stf.shared.ProcessoWorkflowId;
 

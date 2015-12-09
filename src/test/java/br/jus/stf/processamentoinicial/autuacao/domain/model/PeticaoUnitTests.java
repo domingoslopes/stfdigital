@@ -24,6 +24,7 @@ import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
 public class PeticaoUnitTests {
@@ -263,9 +264,10 @@ public class PeticaoUnitTests {
 	@Test
 	public void associaPeticaoComWorkflow() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
+		ProcessoWorkflow processoWorkflow = new ProcessoWorkflow(new ProcessoWorkflowId(1L), "A_PREAUTUAR");
 		
-		peticao.associarProcessoWorkflow(new ProcessoWorkflowId(1L));
-		assertTrue(peticao.processosWorkflow().contains(new ProcessoWorkflowId(1L)));
+		peticao.associarProcessoWorkflow(processoWorkflow);
+		assertTrue(peticao.processosWorkflow().contains(processoWorkflow));
 	}
 	
 	@Test(expected = NullPointerException.class)
