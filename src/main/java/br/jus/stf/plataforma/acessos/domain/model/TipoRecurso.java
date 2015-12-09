@@ -19,11 +19,6 @@ public enum TipoRecurso implements ValueObject<TipoRecurso>{
 	public String descricao() {
 		return descricao;
 	}
-	
-	@Override
-	public String toString() {
-		return descricao;
-	}
 
 	@Override
 	public boolean sameValueAs(final TipoRecurso other) {
