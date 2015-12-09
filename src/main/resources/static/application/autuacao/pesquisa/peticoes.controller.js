@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('PesquisaPeticoesController', function ($scope, messages, classes, PesquisaService) {
+	angular.plataforma.controller('PesquisaPeticoesController', function ($scope, messages, classes, PesquisaService, PeticaoService) {
 		
 		$scope.classes = classes.data;
 		$scope.numero = null;
@@ -14,6 +14,28 @@
 		$scope.pessoa = null;
 		$scope.classe = null;
 		$scope.resultados = [];
+		
+		PeticaoService.listarStatus().success(function(situacoes) {
+			$scope.situacoes = situacoes;
+		});
+		
+		$scope.buildSelectedObject = function(item) {
+			return {'peticaoId': item.id};
+		};
+		
+		$scope.toggleCheck = function() {
+			if ($scope.checkToggle) {
+				$scope.selecao.objetos = $scope.resultados.map(function(item) {
+					return $scope.buildSelectedObject(item);
+				});
+			} else {
+				$scope.selecao.objetos = [];
+			}
+		};
+		
+		$scope.selecao = {
+			objetos: []
+		};
 		
 		$scope.pesquisaPessoa = {
 			texto : 'nome',
@@ -51,6 +73,9 @@
     		if (angular.isNumber($scope.ano)) {
     			dto.filtros.ano = [$scope.ano];
     		}
+/*    		if (angular.isString($scope.situacao) && !$.isEmptyObject($scope.situacao)){
+    			dto.filtros.situacao = [$scope.situacao];
+    		}*/
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {
     			dto.filtros['classeSugerida.sigla'] = [$scope.classe];
     		}
