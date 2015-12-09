@@ -36,7 +36,7 @@
 		};
 		
 		this.uploadPecas = function(){
-			var fileToUpload = '../test.pdf';
+			var fileToUpload = '../pdf-de-teste-assinado-02.pdf';
 			var absolutePath = path.resolve(__dirname, fileToUpload);
 			// Procura o elemento input da tela com o atributo com o tipo "file"
 		    var fileElem = element(by.css('input[type="file"]'));
