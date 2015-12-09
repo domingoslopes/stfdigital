@@ -16,6 +16,6 @@ import br.jus.stf.plataforma.acessos.domain.model.Papel;
 public class PapelDtoAssembler {
 	
 	public PapelDto toDto(Papel papel) {
-		return new PapelDto(papel.nome(), papel.grupo() == null ? "" : papel.grupo().nome());
+		return new PapelDto(papel.id().toLong(), papel.nome(), papel.grupo() == null ? "" : papel.grupo().nome());
 	}
 }

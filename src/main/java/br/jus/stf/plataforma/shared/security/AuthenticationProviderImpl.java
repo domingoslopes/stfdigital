@@ -3,7 +3,6 @@ package br.jus.stf.plataforma.shared.security;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,9 +23,6 @@ import org.springframework.stereotype.Component;
 public class AuthenticationProviderImpl implements AuthenticationProvider {
 	
 	private static final String PASS = "N/A";
-	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	private AcessosRestAdapter acessosRestAdapter;
