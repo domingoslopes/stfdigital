@@ -8,6 +8,7 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
 /**
@@ -42,13 +43,18 @@ public class TarefaRestAdapter implements TarefaAdapter {
 		completarTarefaPorProcesso(peticao, PeticaoStatus.DISTRIBUIDA);	
 	}
 	
+	@Override
+	public void completarPreparacaoParaDevolucao(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.ASSINAR_DEVOLUCAO);
+	}
+	
 	/**
 	 * Completa uma tarefa do processo com um status
 	 * 
 	 * @param processoWorkflowId
 	 */
 	private void completarTarefaPorProcesso(Peticao peticao, PeticaoStatus status) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next();
+		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next().id();
 		CompletarTarefaCommand command = new CompletarTarefaCommand();
 		command.setStatus(status.toString());
 		TarefaDto dto = tarefaRestResource.consultarPorProcesso(id.toLong());
