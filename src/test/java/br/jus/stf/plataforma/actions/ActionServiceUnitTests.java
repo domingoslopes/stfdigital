@@ -5,7 +5,8 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,7 +42,7 @@ public class ActionServiceUnitTests {
 	
 	@Test
 	public void listActionsTest() {
-		Collection<ActionMappingInfo> actions = mock(Collection.class);
+		Set<ActionMappingInfo> actions = mock(Set.class);
 		when(actionMappingRegistry.getRegisteredActions()).thenReturn(actions);
 		Assert.assertEquals(actionService.listActions(), actions);
 	}
@@ -59,13 +60,13 @@ public class ActionServiceUnitTests {
 		Assert.assertFalse(actionService.isAllowed("ACTIONID", new ArrayNode(null)));
 	}
 	
-	@Test(expected = RuntimeException.class)
-	public void executeActionNotAllowed() {
+	@Test(expected = Exception.class)
+	public void executeActionNotAllowed() throws Exception {
 		initMockActionInfo();
 		actionService.executeAction("ACTIONID", null);
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test(expected = Exception.class)
 	public void executeActionAllowedException() throws Exception {
 		ActionMappingInfo actionInfo = initMockActionInfo();
 		validResourcesAndAuthorities(actionInfo, true);
@@ -84,14 +85,13 @@ public class ActionServiceUnitTests {
 	
 	private ActionMappingInfo initMockActionInfo() {
 		ActionMappingInfo actionInfo = mock(ActionMappingInfo.class);
-		when(actionMappingRegistry.findRegisteredActionsById(anyString())).thenReturn(actionInfo);
+		when(actionMappingRegistry.findRegisteredActionsById(anyString())).thenReturn(Optional.of(actionInfo));
 		when(actionInfo.getResourcesClass()).thenReturn((Class) String.class);
 		return actionInfo;
 	}
 	
 	private void validResourcesAndAuthorities(ActionMappingInfo actionInfo, boolean bool) {
 		when(actionInfo.isValidResourceMode(any())).thenReturn(bool);
-		when(actionInfo.hasNeededAuthorities()).thenReturn(bool);
 	}
 
 }
