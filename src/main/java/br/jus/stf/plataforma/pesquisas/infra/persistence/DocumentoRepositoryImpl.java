@@ -50,11 +50,13 @@ public class DocumentoRepositoryImpl implements DocumentoRepository {
 	public void atualizar(final Documento documento) {
 		UpdateRequest updateRequest = new UpdateRequest();
 		updateRequest.doc(documento.objeto());
+		updateRequest.upsert(documento.objeto());
 		UpdateQuery query = new UpdateQueryBuilder()
 			.withId(documento.id())
 			.withType(documento.tipo())
 			.withIndexName(documento.indice().nome())
 			.withUpdateRequest(updateRequest)
+			.withDoUpsert(true)
 			.build();
 		elasticsearchTemplate.update(query);
 	}

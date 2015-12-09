@@ -42,11 +42,4 @@ public interface WorkflowAdapter {
 	 */
 	void devolver(Peticao peticao);
 	
-	/**
-	 * Emite um sinal para o processo que libera o documento de devolução da petiação para assinatura
-	 * 
-	 * @param peticao
-	 */
-	void assinar(Peticao peticao);
-	
 }

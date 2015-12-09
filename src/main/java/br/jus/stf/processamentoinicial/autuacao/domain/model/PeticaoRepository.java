@@ -76,4 +76,6 @@ public interface PeticaoRepository {
 	 * @return a lista de órgãos
 	 */
 	public List<Orgao> findAllOrgao();
+	
+	public boolean estaoNoMesmoStatus(List<PeticaoId> ids, PeticaoStatus status);
 }
