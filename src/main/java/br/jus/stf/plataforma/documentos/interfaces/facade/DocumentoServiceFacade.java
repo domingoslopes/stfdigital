@@ -49,4 +49,8 @@ public class DocumentoServiceFacade {
 		return documentoRepository.download(new DocumentoId(documentoId));
 	}
 
+	public void apagarDocumentosTemporarios(List<String> files) {
+		documentoApplicationService.apagarDocumentosTemporarios(files);
+	}
+
 }

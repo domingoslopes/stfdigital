@@ -8,18 +8,23 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.notificacoes.domain.exception.NotificacaoServiceException;
 import br.jus.stf.plataforma.notificacoes.domain.model.Notificacao;
 import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoEmailService;
+import br.jus.stf.plataforma.shared.security.stereotype.Resource;
 
 /**
  * @author Lucas.Rodrigues
  *
  */
 @Component
-public class NotificacaoEmailServiceImpl extends NotificacaoServiceImpl implements NotificacaoEmailService {
+public class NotificacaoEmailServiceImpl extends Resource<NotificacaoEmailServiceImpl> implements NotificacaoEmailService {
 
 	private static final String ASSUNTO = "STF - Notificação";
 	
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	public NotificacaoEmailServiceImpl() {
+		super("NOTIFICAR-EMAIL");
+	}
 	
 	@Override
 	public void emitir(Notificacao notificacao) throws NotificacaoServiceException {

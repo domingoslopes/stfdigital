@@ -51,6 +51,19 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 */
 	public String storeTemp(DocumentoTemporario documentoTemporario);
 	
+	/**
+	 * Remove um arquivo temporário
+	 * 
+	 * @param tempId
+	 * @return
+	 */
+	public void removeTemp(String tempId);
+	
+	/**
+	 * Recupera o próximo id do documento
+	 * 
+	 * @return
+	 */
 	public DocumentoId nextId();
 
 }
