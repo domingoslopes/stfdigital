@@ -134,8 +134,17 @@
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html',
-					controller: 'DevolucaoController'
+					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html'
+				}
+			}
+		}).state('assinar-devolucao-peticao', {
+			parent: 'actions.autuacao',
+			url: '/peticao/assinatura-devolucao',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/devolucao/assinatura/assinatura-devolucao.tpl.html',
+					controller: 'AssinaturaDevolucaoController'
 				}
 			}
 		}).state('distribuir-processo', {
