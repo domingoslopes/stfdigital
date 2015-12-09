@@ -144,7 +144,7 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	public Set<Permissao> permissoes() {
 		Set<Permissao> permissoesCompletas = new HashSet<Permissao>();
 		
-		Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papeis -> permissoesCompletas.addAll(papeis.permissoes())));
+		Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papel -> permissoesCompletas.addAll(papel.permissoes())));
 		Optional.ofNullable(grupos).ifPresent(g -> g.forEach(grupo -> permissoesCompletas.addAll(grupo.permissoes())));
 		Optional.ofNullable(permissoes).ifPresent(p -> permissoesCompletas.addAll(p));
 		
@@ -185,10 +185,17 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	
 	@Override
 	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 	
 		Usuario other = (Usuario) obj;
+		
 		return sameIdentityAs(other);
 	}
 

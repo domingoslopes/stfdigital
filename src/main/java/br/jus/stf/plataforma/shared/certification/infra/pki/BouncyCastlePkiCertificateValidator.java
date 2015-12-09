@@ -138,7 +138,7 @@ public class BouncyCastlePkiCertificateValidator implements CertificateValidator
 		// recupera a lista de ACs confiaveis
 		List<X509Certificate> trusted = pki.getTrustedAnchors();
 
-		if (trusted == null || trusted.size() == 0) {
+		if (trusted == null || trusted.isEmpty()) {
 			throw new CertificateValidationException("Nenhuma raiz confiável foi encontrada.");
 		}
 
