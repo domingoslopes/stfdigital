@@ -23,7 +23,7 @@
 			},
 			responseError : function(rejection) {
 				// Não filtra se estiver na lista de URLs para não interceptar
-				if (properties.urlsNaoInterceptar.indexOf(rejection.config.url) >= -1) {
+				if (properties.urlsNaoInterceptar.indexOf(rejection.config.url) > -1) {
 					return;
 				}
 					
