@@ -21,7 +21,7 @@
 		
 		
 		var uploader = $scope.uploader = new FileUploader({
-            url: properties.apiUrl + '/documentos/upload',
+            url: properties.apiUrl + '/documentos/upload/assinado',
             headers : {'X-XSRF-TOKEN': $cookies.get('XSRF-TOKEN')},
             formData: [{name: "file"}],
             filters: [{
