@@ -26,9 +26,20 @@ var pkg = require('./package');
 var karma = require('karma').server;
 var del = require('del');
 var _ = require('lodash');
+var argv = require('yargs').argv;
 /* jshint camelcase:false */
 var webdriverStandalone = require('gulp-protractor').webdriver_standalone;
 var webdriverUpdate = require('gulp-protractor').webdriver_update;
+
+var replacePattern = function(source) {
+	var pattern = "*"; // Pattern padrão
+	if (argv.pattern) {
+		pattern = argv.pattern;
+	}
+	return source.map(function(val) {
+		return val.replace("{pattern}", pattern);
+	});
+};
 
 /**
  * Atualizando o webdriver. Essa task será usada pela task 'e2e'
@@ -39,10 +50,11 @@ gulp.task('webdriver:update', webdriverUpdate);
  * Roda os testes unitário sempre que houve uma modificação no arquivos
  */
 gulp.task('tdd', function(cb) {
+	karmaConfig.files = replacePattern(karmaConfig.files);
 	karma.start(_.assign({}, karmaConfig, {
 		singleRun: false,
 		action: 'watch',
-		browsers: ['Chrome']
+		browsers: ['PhantomJS']
 	}), cb);
 });
 
@@ -225,6 +237,7 @@ gulp.task('default', ['serve']);
  * Apenas executa os testes unitáriios.
  */
 gulp.task('test:unit', ['build'], function(cb) {
+	karmaConfig.files = replacePattern(karmaConfig.files);
 	karma.start(_.assign({}, karmaConfig, {
 		singleRun: true
 	}), cb);
@@ -234,7 +247,7 @@ gulp.task('test:unit', ['build'], function(cb) {
  * Executa os teste e2e usado Protractor.
  */
 gulp.task('test:e2e', ['webdriver:update'], function() {
-	
+	protractorConfig.config.specs = replacePattern(protractorConfig.config.specs);
 	return gulp.src(protractorConfig.config.specs)
 		.pipe($.protractor.protractor({
 			configFile: 'build/protractor.config.js'

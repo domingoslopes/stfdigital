@@ -29,6 +29,7 @@ module.exports = {
 	    baseDir + '/vendor/d3/d3.js',
 	    baseDir + '/vendor/nvd3/build/nv.d3.js',
 	    baseDir + '/vendor/angular-nvd3/dist/angular-nvd3.js',
+	    baseDir + '/vendor/checklist-model/checklist-model.js',
 	    baseDir + '/vendor/sockjs/sockjs.js',
 	    baseDir + '/vendor/stomp-websocket/lib/stomp.js',
 	    baseDir + '/vendor/ngMask/dist/ngMask.min.js',
@@ -39,7 +40,7 @@ module.exports = {
 		baseDir + '/application/autuacao/**/*.js', 
 		baseDir + '/tmp/*.js',
 		baseDir + '/application/test/**/*.module.js',
-		baseDir + '/application/test/unit/**/*.spec.js' 
+		baseDir + '/application/test/unit/**/{pattern}.spec.js' 
 	],
 
 	frameworks : [ 'jasmine' ],
