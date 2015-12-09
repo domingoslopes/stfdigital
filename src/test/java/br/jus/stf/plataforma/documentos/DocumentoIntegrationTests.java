@@ -45,7 +45,7 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 	public void enviarArquivoAssinado() throws Exception {
 		String nomeArquivo = "teste_arq_temp.pdf";
 		String mime = "application/pdf";
-		String caminho = "certification/pdf-de-teste-assinado-01.pdf";
+		String caminho = "certification/pdf-de-teste-assinado-02.pdf";
 		
 		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
 
