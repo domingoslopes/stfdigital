@@ -1,7 +1,7 @@
 (function($) {
 	angular.plataforma.controller('TemplateController', function(ActionService) {
 		ActionService.load("autuacao");
-	}).run(function() {
+	}).run(function($compile) {
 		// Observa pela adição da sidebar no documento para só então ativar o plugin que a faz funcionar
 		$('body').on('DOMNodeInserted', function(e) {
 			$target = $(e.target);
@@ -11,5 +11,6 @@
 		});
 		
 		$.Pages.init();
+		
 	});
 })(jQuery);

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,12 @@ import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
+import br.jus.stf.plataforma.identidades.application.PessoaApplicationEvent;
+import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
+import br.jus.stf.plataforma.identidades.domain.model.PessoaRepository;
 import br.jus.stf.shared.GrupoId;
 import br.jus.stf.shared.PapelId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.UsuarioId;
 
 /**
@@ -30,6 +35,9 @@ import br.jus.stf.shared.UsuarioId;
 @Service
 @Transactional
 public class AcessosApplicationService {
+	
+	@Autowired
+	private PessoaRepository pessoaRepository;
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -42,6 +50,9 @@ public class AcessosApplicationService {
 	
 	@Autowired
 	private PapelRepository papelRepository;
+	
+	@Autowired
+	private PessoaApplicationEvent pessoaApplicationEvent;
 	
 	public Set<Permissao> carregarPermissoesUsuario(String login) {
 		return Optional.ofNullable(usuarioRepository.findOne(login))
@@ -103,6 +114,45 @@ public class AcessosApplicationService {
 	 */
 	public Usuario recuperarInformacoesUsuario(String login){
 		return usuarioRepository.findOne(login);
+	}
+	
+	/**
+	 * Cadastra um novo usuário
+	 * 
+	 * @param String login
+	 * @param String nome
+	 * @param string cpf
+	 * @param String oab
+	 * @param String email
+	 * @param String telefone
+	 * 
+	 * @return Usuario Usuário criado
+	 */
+	public Usuario cadastrarUsuario(String login, String nome, String cpf, String oab, String email, String telefone) {
+		PessoaId idPessoa = pessoaRepository.nextId();
+		Pessoa pessoa;
+		
+		if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(oab) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
+			pessoa = new Pessoa(idPessoa, nome, cpf, oab, email, telefone);
+			
+		} else if (StringUtils.isNotBlank(cpf) && StringUtils.isNotBlank(email) && StringUtils.isNotBlank(telefone)) {
+			pessoa = new Pessoa(idPessoa, nome, cpf, email, telefone);
+			
+		} else if (StringUtils.isNotBlank(cpf)) {
+			pessoa = new Pessoa(idPessoa, nome, cpf);
+			
+		} else {
+			pessoa = new Pessoa(idPessoa, nome);
+		}
+		
+		pessoaRepository.save(pessoa);
+		
+		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
+		Usuario principal = new Usuario(idUsuario, pessoa, login);
+		usuarioRepository.save(principal);
+		pessoaApplicationEvent.pessoaCadastrada(pessoa);
+		
+		return principal;
 	}
 
 }

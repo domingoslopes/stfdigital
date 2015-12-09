@@ -4,9 +4,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.plataforma.acessos.application.AcessosApplicationService;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
+import br.jus.stf.plataforma.acessos.interfaces.commands.CadastrarUsuarioCommand;
 import br.jus.stf.plataforma.acessos.interfaces.commands.ConfigurarPermissoesUsuarioCommand;
 import br.jus.stf.plataforma.acessos.interfaces.dto.GrupoDto;
 import br.jus.stf.plataforma.acessos.interfaces.dto.GrupoDtoAssembler;
@@ -28,6 +32,8 @@ import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDtoAssembler;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 
 import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * @author Lucas.Rodrigues
@@ -107,4 +113,31 @@ public class AcessosRestResource {
 		return this.usuarioDtoAssembler.toDto(usuario, authorities);
 	}
 	
+
+	/**
+	 * Cadastra um novo usuário
+	 * 
+	 * @param CadastrarUsuarioCommand command
+	 * @param BindingResult binding
+	 * @return Long ID do usuário criado
+	 */
+	@ApiOperation("Cadastra um novo usuário")
+	@ApiResponses(value = {@ApiResponse(code = 400, message = "Usuário Inválido")})
+	@RequestMapping(value="/usuarios", method = RequestMethod.POST)
+	public UsuarioDto cadastrarUsuario(@RequestBody @Valid CadastrarUsuarioCommand command, BindingResult binding) {
+		if (binding.hasErrors()) {
+			throw new IllegalArgumentException("Usuário inválido: " + binding.getAllErrors());
+		}
+		
+		Usuario usuario = this.acessosApplicationService.cadastrarUsuario(
+			command.getLogin(), 
+			command.getNome(), 
+			command.getCpf(), 
+			command.getOab(), 
+			command.getEmail(), 
+			command.getTelefone()
+		);
+		
+		return this.usuarioDtoAssembler.toDto(usuario, null);
+	}
 }
