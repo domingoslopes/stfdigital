@@ -1,12 +1,18 @@
 {
   "development": {
     "properties": {
-        "apiUrl": "/api"
+        "apiUrl": "/api",
+        "urlsNaoInterceptar": [
+        	"/api/acessos/usuarios"
+        ]
     }
   },
   "production": {
     "properties": {
-        "apiUrl": "/api"
+        "apiUrl": "/api",
+        "urlsNaoInterceptar": [
+        	"/api/acessos/usuarios"
+        ]
     }
   }
 }

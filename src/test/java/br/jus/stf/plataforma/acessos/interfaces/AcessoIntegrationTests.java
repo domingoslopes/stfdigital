@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.acessos.interfaces;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -10,6 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -23,7 +27,9 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  */
 public class AcessoIntegrationTests extends AbstractIntegrationTests {
 	
+
 	private StringBuilder permissoesUsuario;
+	private ObjectMapper mapper;
 	
 	@Before
 	public void carregarDadosTeste() {
@@ -33,6 +39,8 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		this.permissoesUsuario.append("\"gruposAdicionados\":[2],");
 		this.permissoesUsuario.append("\"papeisRemovidos\":[5],");
 		this.permissoesUsuario.append("\"gruposRemovidos\":[1,2]}");
+		
+		this.mapper = new ObjectMapper();
 	}
 	
 	
@@ -47,7 +55,7 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 			.andExpect(jsonPath("$.papeis[0].nome", is("autuador")))
 			.andExpect(jsonPath("$.papeis[0].setor", is("SEJ")));
 	}
-	
+
 	@Test
 	public void carregarGruposUsuario() throws Exception {
 		//Recupera as informações do usuário.
@@ -71,5 +79,37 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		//Realiza a autuação.
 		this.mockMvc.perform(post("/api/acessos/permissoes/configuracao").contentType(MediaType.APPLICATION_JSON)
 			.content(this.permissoesUsuario.toString())).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void cadastrarNovoUsuario() throws Exception {
+		ObjectNode userJson = this.mapper.createObjectNode();
+		
+		userJson.put("login", "joao.silva");
+		userJson.put("nome", "João da Silva");
+		userJson.put("email", "joao.silva@exemplo.com.br");
+		userJson.put("cpf", "71405168633");
+		userJson.put("telefone", "6133332222");
+		
+		this.mockMvc.perform(
+				post("/api/acessos/usuarios")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(userJson.toString()))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id", instanceOf(Integer.class)))
+				.andExpect(jsonPath("$.login", is("joao.silva")))
+				.andExpect(jsonPath("$.nome", is("João da Silva")));
+	}
+	
+	@Test
+	public void cadastrarNovoUsuarioSemInformacoesObrigatorias() throws Exception {
+		ObjectNode userJson = this.mapper.createObjectNode();		
+		userJson.put("login", "joao.silva");
+		
+		this.mockMvc.perform(
+				post("/api/acessos/usuarios")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(userJson.toString()))
+				.andExpect(status().is4xxClientError());
 	}
 }
