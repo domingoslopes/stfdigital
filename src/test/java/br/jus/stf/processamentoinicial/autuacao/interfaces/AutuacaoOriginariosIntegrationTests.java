@@ -85,14 +85,14 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		String idDoc = "";
 		String nomeArquivo = "teste_arq_temp.pdf";
 		String mime = "application/pdf";
-		String caminho = "pdf/archimate.pdf";
+		String caminho = "certification/pdf-de-teste-assinado-02.pdf";
 		
 		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
 
 	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
 		
 	    //Envia um documento antes de enviar a petição.
-	    idDoc = mockMvc.perform(fileUpload("/api/documentos/upload").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
+	    idDoc = mockMvc.perform(fileUpload("/api/documentos/upload/assinado").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
 	    	.andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
 		
 	    //Cria um objeto contendo os dados da petição eletrônica a ser usado no teste.
