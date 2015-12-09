@@ -26,7 +26,7 @@ public final class PkiUtil {
 		SortedMap<String, CustomKeyStore> stores = new TreeMap<>(new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				if (o1.equals("root") && !o2.equals("root")) {
+				if ("root".equals(01) && !"root".equals(o2)) {
 					return -1;
 				} else if (!o1.startsWith("root") && o2.startsWith("root")) {
 					return 1;
@@ -66,9 +66,7 @@ public final class PkiUtil {
 		
 		PrivateKey key = (PrivateKey) pkcs12Store.getKey(alias, password);
 		X509Certificate certificate = (X509Certificate) pkcs12Store.getCertificate(alias);
-		CustomKeyStore store = new CustomKeyStore(new KeyPair(certificate.getPublicKey(), key), certificate);
-
-		return store;
+		return new CustomKeyStore(new KeyPair(certificate.getPublicKey(), key), certificate);
 	}
 	
 }

@@ -67,6 +67,13 @@ public class DocumentoRestResource {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String upload(UploadDocumentoCommand command) {
+		
+		Set<ConstraintViolation<UploadDocumentoCommand>> result = validator.validate(command);
+		
+		if (!result.isEmpty()) {
+			throw new IllegalArgumentException(result.toString());
+		}		
+		
 		return documentoServiceFacade.salvarDocumentoTemporario(command.getFile());
 	}
 
