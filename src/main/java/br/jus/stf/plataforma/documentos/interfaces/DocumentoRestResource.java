@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
+import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
@@ -78,6 +81,15 @@ public class DocumentoRestResource {
 		}		
 		
 		return documentoServiceFacade.salvarDocumentoTemporario(command.getFile());
+	}
+	
+	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")
+	@RequestMapping(value = "/temporarios/delete", method = RequestMethod.POST)
+	public void deleteTemp(@Valid @RequestBody DeleteTemporarioCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.toString());
+		}		
+		documentoServiceFacade.apagarDocumentosTemporarios(command.getFiles());
 	}
 
 	/**
