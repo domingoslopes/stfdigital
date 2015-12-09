@@ -95,10 +95,17 @@ public class Grupo implements br.jus.stf.shared.stereotype.Entity<Grupo, GrupoId
 	
 	@Override
 	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 	
 		Grupo other = (Grupo) obj;
+		
 		return sameIdentityAs(other);
 	}
 
