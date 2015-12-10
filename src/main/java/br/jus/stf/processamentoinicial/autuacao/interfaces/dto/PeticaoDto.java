@@ -24,6 +24,9 @@ public class PeticaoDto {
 	@ApiModelProperty(value = "Ano da petição")
 	private Short ano;
 
+	@ApiModelProperty(value = "Identificação da petição")
+	private String identificacao;
+	
 	@ApiModelProperty(value = "Classe processual sugerida pelo peticionador")
 	private String classe;
 	
@@ -40,10 +43,11 @@ public class PeticaoDto {
 		
 	}
 	
-	public PeticaoDto(Long id, Long numero, Short ano, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas, Long processoWorkflowId) {
+	public PeticaoDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas, Long processoWorkflowId) {
 		this.id = id;
 		this.numero = numero;
 		this.ano = ano;
+		this.identificacao = identificacao;
 		this.classe = classe;
 		this.partes = partes;
 		this.pecas = pecas;
@@ -58,8 +62,12 @@ public class PeticaoDto {
 		return numero;
 	}
 	
-	public Short ano() {
+	public Short getAno() {
 		return ano;
+	}
+	
+	public String getIdentificacao() {
+		return identificacao;
 	}
 
 	public String getClasse() {
