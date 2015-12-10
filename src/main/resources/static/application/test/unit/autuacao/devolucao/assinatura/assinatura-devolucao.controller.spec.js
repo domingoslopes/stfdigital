@@ -15,8 +15,8 @@
 		var fakePeca;
 		
 		var fakePecaService;
-		
 		var fakePeticaoService;
+		var fakeMessages;
 		
 		var initController = function(resources) {
 			return function($rootScope, $controller, $q) {
@@ -32,6 +32,10 @@
 					montarUrlConteudo: function(){}	
 				};
 
+				fakeMessages = {
+					error: function(){}
+				};
+				
 				fakePeca = {
 					"tipoId" : 8,
 					"tipoNome" : "Ofício",
@@ -61,16 +65,29 @@
 				
 				spyOn(fakePecaService, 'montarUrlConteudo').and.returnValue('url-fake');
 				
+				spyOn(fakeMessages, 'error').and.callThrough();
+				
 				var controller = $controller('AssinaturaDevolucaoController', {
 					$scope : scope,
 					$stateParams: stateParams,
 					PeticaoService: fakePeticaoService,
-					PecaService: fakePecaService
+					PecaService: fakePecaService,
+					messages: fakeMessages
 				});
 			};
 		};
 		
 		beforeEach(module('appDev'));
+		
+		describe('Controller com objetos de resources', function() {
+			
+			beforeEach(inject(initController([{'peticaoId': 6}])));
+			
+			it('Deveria detectar resources como ids a partir de objetos', function() {
+				scope.$apply();
+				expect(fakePeticaoService.consultar).toHaveBeenCalledWith(6);
+			});
+		});
 		
 		describe('Controller com ids de resources', function() {
 			
@@ -88,21 +105,19 @@
 			});
 			
 			it('Deveria delegar a montagem da url de conteúdo da peça para PecaService', function() {
+				scope.$apply();
 				var url = scope.urlConteudo(fakePeca);
 				expect(url).toEqual('url-fake');
 				expect(fakePecaService.montarUrlConteudo).toHaveBeenCalledWith(fakePeca);
 			});
-		});
-		
-		describe('Controller com objetos de resources', function() {
 			
-			beforeEach(inject(initController([{'peticaoId': 6}])));
-			
-			it('Deveria detectar resources como ids a partir de objetos', function() {
+			it('Deveria validar que documentos não foram assinados', function() {
 				scope.$apply();
-				expect(fakePeticaoService.consultar).toHaveBeenCalledWith(6);
+				scope.finalizar();
+				expect(fakeMessages.error).toHaveBeenCalledWith("É necessário assinar os documentos antes de finalizar.");
 			});
 		});
+		
 		
 	});
 })();
