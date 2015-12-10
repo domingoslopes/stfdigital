@@ -7,14 +7,12 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('SignatureService', ['properties', '$http', '$q', function(properties, $http, $q) {
-		var crypto = hwcrypto;
-		
+	angular.plataforma.service('SignatureService', function(properties, $http, $q, Crypto) {
 		var requestUserCertificate = function(alreadySelectedCertificate) {
 			console.log('requestUserCertificate');
 			return $q(function(resolve, reject) {
 				if (!alreadySelectedCertificate) {
-					crypto.getCertificate({lang: 'en'}).then(function(response) {
+					Crypto.getCertificate({lang: 'en'}).then(function(response) {
 						resolve(response);
 					}, function(err) {
 						reject(err);
@@ -61,7 +59,7 @@
 		var sign = function(resolvedObject) {
 			console.log(resolvedObject);
 			return $q(function(resolve, reject) {
-				crypto.sign(resolvedObject.injectedCertificate, {type: 'SHA-256', hex: resolvedObject.hash}, {lang: 'en'}).then(function(response) {
+				Crypto.sign(resolvedObject.injectedCertificate, {type: 'SHA-256', hex: resolvedObject.hash}, {lang: 'en'}).then(function(response) {
 					console.log(response);
 					resolve({'signature': response.hex});
 				}, function(err) {
@@ -88,7 +86,12 @@
 			});
 		};
 		
-		var SignerWithUpload = function(collectCertificate, injectCertificate, injectAlreadySelectedCertificate) {
+		var ProvideToSignCommand = function(signerId, documentId) {
+			this.signerId = signerId;
+			this.documentId = documentId;
+		};
+		
+		var Signer = function(collectCertificate, injectCertificate, injectAlreadySelectedCertificate) {
 			var self = this;
 			
 			var signerId;
@@ -100,7 +103,8 @@
 			
 			var documentUploadDeferred;
 			
-			this.onSignerCreated = function(callback) {
+			// Callbacks
+			this.onSignerReady = function(callback) {
 				signerCreatedCallback = callback;
 			};
 			
@@ -112,14 +116,26 @@
 				errorCallback = callback;
 			};
 			
-			this.triggerFileUploaded = function() {
+			// Trigger
+			this.triggerDocumentProvided = function() {
 				console.log('triggerFileUpload');
 				if (documentUploadDeferred) {
 					documentUploadDeferred.resolve(signerId);
 				}
 			};
 			
-			var callSignerCreatedCallback = function(ci) {
+			this.provideExistingDocument = function(documentId) {
+				var command = new ProvideToSignCommand(signerId, documentId);
+				$http.post(properties.apiUrl + '/certification/signature/provide-to-sign', command).then(function(response) {
+					console.log(response.data);
+					self.triggerDocumentProvided();
+				}, function(response) {
+					console.log(response.data);
+					errorCallback(response.data);
+				});
+			};
+			
+			var callSignerReadyCallback = function(ci) {
 				signerId = ci.signerId;
 				documentUploadDeferred = $q.defer();
 				if (signerCreatedCallback) {
@@ -142,11 +158,11 @@
 			};
 			
 			this.start = function() {
-				if (crypto.use('auto')) {
+				if (Crypto.use('auto')) {
 					$q.when().then(injectAlreadySelectedCertificate) // Injeta o certificado se já tiver sido selecionado.
 					.then(requestUserCertificate).then(collectCertificate)
 					.then(prepare)
-					.then(callSignerCreatedCallback)
+					.then(callSignerReadyCallback)
 					.then(preSign)
 					.then(injectCertificate).then(sign)
 					.then(injectSignerId).then(postSign)
@@ -162,7 +178,7 @@
 			};
 		};
 		
-		var SigningTrackerWithUpload = function() {
+		var SigningManager = function() {
 			var certificate;
 			
 			var collectCertificate = function(cert) {
@@ -201,19 +217,19 @@
 				});
 			};
 			
-			this.newSigner = function() {
-				return new SignerWithUpload(collectCertificate, injectCertificate, injectAlreadySelectedCertificate);
+			this.createSigner = function() {
+				return new Signer(collectCertificate, injectCertificate, injectAlreadySelectedCertificate);
 			}
 		};
 		
 		this.signerWithExternalUpload = function() {
-			return new SigningTrackerWithUpload();
+			return new SigningTracker();
 		};
 		
-		this.signerWithExistingDocument = function(documentId) {
-			
+		this.signingManager = function() {
+			return new SigningManager();
 		};
 		
-	}]);
+	});
 	
 })();
