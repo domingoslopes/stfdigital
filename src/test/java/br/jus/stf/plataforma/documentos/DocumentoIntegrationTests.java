@@ -34,7 +34,7 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 
 	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
 		
-	    mockMvc.perform(fileUpload("/api/documentos/upload")
+	    mockMvc.perform(fileUpload("/api/documentos/upload/assinado")
 	    			.file(mockArquivo)
 	    			.contentType(MediaType.MULTIPART_FORM_DATA)
 	    			.content(arquivo))
@@ -51,7 +51,7 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 
 	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
 		
-	    String idTemp = mockMvc.perform(fileUpload("/api/documentos/upload")
+	    String idTemp = mockMvc.perform(fileUpload("/api/documentos/upload/assinado")
 	    			.file(mockArquivo)
 	    			.contentType(MediaType.MULTIPART_FORM_DATA)
 	    			.content(arquivo))

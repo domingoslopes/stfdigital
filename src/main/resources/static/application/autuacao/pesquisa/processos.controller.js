@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('PesquisaProcessosController', function ($scope, messages, classes, PesquisaService, MinistroService) {
+	angular.plataforma.controller('PesquisaProcessosController', function ($scope, messages, classes, PesquisaService, MinistroService, ProcessoService) {
 		
 		$scope.classes = classes.data;
 		$scope.ministros = [];
@@ -21,7 +21,13 @@
 			$scope.ministros = ministros;
 		});
 		
-		$scope.buildSelectedObject = function(item) {
+		$scope.situacoes = ProcessoService.listarStatus();
+		
+		/*ProcessoService.listarStatus().success(function(situacoes){
+			$scope.situacoes = situacoes;
+		});*/
+		
+		$scope.buildSelectedObject = function(item){
 			return {'processoId': item.id};
 		};
 		
@@ -79,6 +85,9 @@
     		}
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {
     			dto.filtros['classe.sigla'] = [$scope.classe];
+    		}
+    		if (angular.isString($scope.situacao) && !$.isEmptyObject($scope.situacao)){
+    			dto.filtros.situacao = [$scope.situacao];
     		}
     		if (angular.isObject($scope.pessoa)) {
     			dto.filtros['partes.pessoaId.sequencial'] = [$scope.pessoa.id];
