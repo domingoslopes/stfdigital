@@ -85,7 +85,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		String idDoc = "";
 		String nomeArquivo = "teste_arq_temp.pdf";
 		String mime = "application/pdf";
-		String caminho = "pdf/archimate.pdf";
+		String caminho = "certification/pdf-de-teste-assinado-02.pdf";
 		
 		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
 
