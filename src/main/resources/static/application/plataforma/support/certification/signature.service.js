@@ -135,6 +135,16 @@
 				});
 			};
 			
+			this.saveSignedDocument = function() {
+				return $http.post(properties.apiUrl + '/certification/signature/save-signed/' + signerId, {}).then(function(response) {
+					console.log(response.data);
+					return response.data;
+				}, function(response) {
+					console.log(response.data);
+					return response.data;
+				});
+			};
+			
 			var callSignerReadyCallback = function(ci) {
 				signerId = ci.signerId;
 				documentUploadDeferred = $q.defer();
