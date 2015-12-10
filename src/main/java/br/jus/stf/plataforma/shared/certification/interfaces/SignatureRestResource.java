@@ -109,14 +109,14 @@ public class SignatureRestResource {
 	}
 
 	@ApiOperation("Recupera o documento assinado.")
-	@RequestMapping(value = "/download-signed/{contextId}")
-	public void downloadSigned(@PathVariable("contextId") String contextId, HttpServletResponse response)
+	@RequestMapping(value = "/download-signed/{signerId}")
+	public void downloadSigned(@PathVariable("signerId") String signerId, HttpServletResponse response)
 			throws IOException {
 		SignedDocument signedDocument = signatureApplicationService
-				.recoverSignedDocument(new DocumentSignerId(contextId));
+				.recoverSignedDocument(new DocumentSignerId(signerId));
 		InputStream is = signedDocument.document().stream();
 
-		response.setHeader("Content-disposition", "attachment; filename=" + contextId + ".pdf");
+		response.setHeader("Content-disposition", "attachment; filename=" + signerId + ".pdf");
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Length", String.valueOf(is.available()));
 
@@ -126,9 +126,9 @@ public class SignatureRestResource {
 	}
 
 	@ApiOperation("Salva o documento assinado no contexto de documentos.")
-	@RequestMapping(value = "/save-signed/{contextId}")
-	public SignedDocumentDto saveSigned(@PathVariable("contextId") String contextId) throws IOException {
-		DocumentoId documentId = signatureApplicationService.saveSigned(new DocumentSignerId(contextId));
+	@RequestMapping(value = "/save-signed/{signerId}", method = RequestMethod.POST)
+	public SignedDocumentDto saveSigned(@PathVariable("signerId") String signerId) throws IOException {
+		DocumentoId documentId = signatureApplicationService.saveSigned(new DocumentSignerId(signerId));
 		return new SignedDocumentDto(documentId.toLong());
 	}
 
