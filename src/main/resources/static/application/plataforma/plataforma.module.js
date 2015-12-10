@@ -24,6 +24,17 @@
 			parent: 'root',
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
+		})
+		
+		.state('registrar-associado', {
+			parent: 'root',
+			url: '/associado',
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/identidades/associado/registrar.tpl.html',
+					controller: 'RegistrarAssociadoController'
+				}
+			}
 		});
 		
 		DashletsProvider.dashlet('minhas-tarefas', {
