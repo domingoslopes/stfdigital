@@ -86,6 +86,9 @@
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {
     			dto.filtros['classe.sigla'] = [$scope.classe];
     		}
+    		if (angular.isString($scope.situacao) && !$.isEmptyObject($scope.situacao)){
+    			dto.filtros.situacao = [$scope.situacao];
+    		}
     		if (angular.isObject($scope.pessoa)) {
     			dto.filtros['partes.pessoaId.sequencial'] = [$scope.pessoa.id];
     		}
