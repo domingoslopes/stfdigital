@@ -16,17 +16,18 @@
 
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($rootScope, $controller, messages, ClasseService, PesquisaService) {
+		beforeEach(inject(function($rootScope, $controller, messages, ClasseService, PesquisaService, MinistroService) {
 			
 			scope = $rootScope.$new(); 
 			pesquisaService = PesquisaService;
 			messagesService = messages;
-			
-			controller = $controller('PesquisaPeticaoController', {
+			 
+			controller = $controller('PesquisaPeticoesController', {
 				$scope : scope, 
 				messages : messages,
 				classes : [], 
-				PesquisaService : PesquisaService
+				PesquisaService : PesquisaService,
+				MinistroService : MinistroService,
 			});
 		}));
 		

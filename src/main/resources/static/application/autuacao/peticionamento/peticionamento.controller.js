@@ -21,7 +21,7 @@
 		
 		
 		var uploader = $scope.uploader = new FileUploader({
-            url: properties.apiUrl + '/documentos/upload',
+            url: properties.apiUrl + '/documentos/upload/assinado',
             headers : {'X-XSRF-TOKEN': $cookies.get('XSRF-TOKEN')},
             formData: [{name: "file"}],
             filters: [{
@@ -115,7 +115,7 @@
 		$scope.remover = function(peca, apagarDoServidor) {
 			if (apagarDoServidor) {
 				var pecaFull = recuperarPecaPorItem(peca.fileItem);
-				var arquivoTemporario = [pecaFull.id];
+				var arquivoTemporario = [pecaFull.documentoTemporario];
 				PecaService.excluirArquivosTemporarios(arquivoTemporario);
 			}
 			
@@ -143,8 +143,8 @@
 		
 		$scope.limparPecas = function() {
 			var arquivosTemporarios = [];
-			angular.forEach($scope.getPecas(), function(peca) {
-				arquivosTemporarios.push(peca.id);
+			angular.forEach($scope.pecas, function(peca) {
+				arquivosTemporarios.push(peca.documentoTemporario);
 			});
 			PecaService.excluirArquivosTemporarios(arquivosTemporarios);
 			uploader.clearQueue();

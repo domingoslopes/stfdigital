@@ -20,7 +20,7 @@
 			scope = $rootScope.$new();
 			fakeData = [{id : 42, nome: 'Min. Cármen Lúcia'}, {id : 44, nome: 'Min. Dias Toffoli'}];
 
-			stateParams = {idTarefa: 1};
+			stateParams = {resources: [1]};
 			
 			controller = $controller('DistribuicaoController', {
 				$scope : scope,
