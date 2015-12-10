@@ -42,6 +42,7 @@
 			pesquisaPeticaoPage.filtrarPorAno(2015);
 			pesquisaPeticaoPage.filtrarPorClasse('AP');
 			pesquisaPeticaoPage.filtrarPorParte('Maria da Silva');
+			//pesquisaPeticaoPage.filtrarPorSituacao('a_autuar');
 			pesquisaPeticaoPage.pesquisar();
 			
 		    expect(pesquisaPeticaoPage.resultados().count()).toBeGreaterThan(0);    
