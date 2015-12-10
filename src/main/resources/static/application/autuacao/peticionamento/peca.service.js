@@ -7,19 +7,26 @@
 (function() {
 	'use strict';
 
-	angular.autuacao.service('PecaService', function ($http, $log, $q) {
+	angular.autuacao.service('PecaService', function ($http, $q, properties) {
 		
 		this.excluirArquivosTemporarios = function(arquivosTemporarios) {
-    		var url = 'api/documento/files/delete';
-    		$log.info("Excluindo arquivos temporários: ");
-    		$log.info(arquivosTemporarios);
-			return $http.post(url, arquivosTemporarios).success(function(data, status) {
-				$log.info("Resposta: (" + status + ")");
-			});
+    		var url = properties.apiUrl + '/documentos/temporarios/delete';
+    		var command = new DeleteTemporarioCommand(arquivosTemporarios);
+			return $http.post(url, command);
     	};
     	
     	this.limpar = function(arr) {
 			arr.splice(0, arr.length);
+		};
+		
+		var DeleteTemporarioCommand = function(files) {
+			return {
+				files : files
+			}; 
+		};
+		
+		this.montarUrlConteudo = function(peca) {
+			return properties.apiUrl + '/documentos/' + peca.documentoId;
 		};
 		
 	});

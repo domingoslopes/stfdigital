@@ -73,9 +73,9 @@
     		if (angular.isNumber($scope.ano)) {
     			dto.filtros.ano = [$scope.ano];
     		}
-/*    		if (angular.isString($scope.situacao) && !$.isEmptyObject($scope.situacao)){
-    			dto.filtros.situacao = [$scope.situacao];
-    		}*/
+    		if (angular.isString($scope.situacao) && !$.isEmptyObject($scope.situacao)){
+    			dto.filtros['processosWorkflow.status'] = [$scope.situacao];
+    		}
     		if (angular.isString($scope.classe) && !$.isEmptyObject($scope.classe)) {
     			dto.filtros['classeSugerida.sigla'] = [$scope.classe];
     		}

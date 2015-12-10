@@ -98,6 +98,13 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 		TEMP_FILES.put(documentoTemporario.tempId(), documentoTemporario);
 		return documentoTemporario.tempId();
 	}
+	
+	@Override
+	public void removeTemp(String tempId) {
+		DocumentoTemporario documentoTemporario = TEMP_FILES.get(tempId);
+		documentoTemporario.delete();
+		TEMP_FILES.remove(tempId);
+	}
 
 	@Override
 	public DocumentoId nextId() {
