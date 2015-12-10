@@ -2,8 +2,13 @@ package br.jus.stf.plataforma.documentos.infra.configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+
+import com.jezhumble.javasysmon.JavaSysMon;
+import com.jezhumble.javasysmon.ProcessInfo;
 
 import br.jus.stf.plataforma.shared.persistence.LocalData;
 
@@ -16,17 +21,25 @@ import br.jus.stf.plataforma.shared.persistence.LocalData;
  */
 public final class LocalMongoCleaner {
 
+	private static final Pattern pattern = Pattern.compile("extract.+extractmongod.*");
+	
 	private LocalMongoCleaner() {
 
 	}
 
 	public static void killExtracted() throws IOException {
-		Runtime rt = Runtime.getRuntime();
-		if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
-			rt.exec("taskkill /F /IM extract*");
-		} else {
-			// rt.exec("kill -9 extract*"); TODO Implementar para Linux e Mac
+		JavaSysMon monitor = new JavaSysMon();
+		ProcessInfo[] processTable = monitor.processTable();
+		for (ProcessInfo pi : processTable) {
+			if (isMongodExtractedProcess(pi)) {
+				monitor.killProcess(pi.getPid());
+			}
 		}
+	}
+
+	private static boolean isMongodExtractedProcess(ProcessInfo pi) {
+		Matcher matcher = pattern.matcher(pi.getName());
+		return matcher.matches();
 	}
 
 	/**
