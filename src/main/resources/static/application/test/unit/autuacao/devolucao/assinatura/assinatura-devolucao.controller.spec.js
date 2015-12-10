@@ -94,11 +94,11 @@
 			});
 		});
 		
-		describe('Controller com ids de resources', function() {
+		describe('Controller com objetos de resources', function() {
 			
 			beforeEach(inject(initController([{'peticaoId': 6}])));
 			
-			it('Deveria detectar resources como ids a partir de commands', function() {
+			it('Deveria detectar resources como ids a partir de objetos', function() {
 				scope.$apply();
 				expect(fakePeticaoService.consultar).toHaveBeenCalledWith(6);
 			});
