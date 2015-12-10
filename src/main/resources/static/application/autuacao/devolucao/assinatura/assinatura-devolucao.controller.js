@@ -10,8 +10,6 @@
 	'use strict';
 	
 	angular.autuacao.controller('AssinaturaDevolucaoController', function($scope, $stateParams, PeticaoService, PecaService) {
-		console.log($stateParams.resources);
-		
 		var resourcesToIds = function(resources) {
 			var resourcesIds = [];
 			angular.forEach(resources, function(resource) {
