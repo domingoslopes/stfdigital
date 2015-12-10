@@ -110,7 +110,7 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 
 	@Override
 	public boolean estaoNoMesmoStatus(List<PeticaoId> ids, PeticaoStatus status) {
-		Query query = entityManager.createQuery("SELECT COUNT(peticao) FROM Peticao peticao JOIN peticao.processosWorkflow as petpw, ProcessoWorkflow pw WHERE peticao.id IN (:ids) AND petpw.sequencial = pw.id.sequencial AND pw.status != :status");
+		Query query = entityManager.createQuery("SELECT COUNT(peticao) FROM Peticao peticao JOIN peticao.processosWorkflow as pw WHERE peticao.id IN (:ids) AND pw.status != :status");
 		query.setParameter("ids", ids);
 		query.setParameter("status", status.name());
 		Long count = (Long)query.getSingleResult();

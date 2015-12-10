@@ -49,6 +49,7 @@ public class PeticaoDtoAssembler {
 		Long id = peticao.id().toLong();
 		Long numero = peticao.numero();
 		Short ano = peticao.ano();
+		String identificacao = peticao.identificacao();
 		Optional<ClasseId> classeId = Optional.ofNullable(Optional.ofNullable(peticao.classeProcessual()).orElse(peticao.classeSugerida()));
 		String classe = classeId.isPresent() ? classeId.get().toString() : null;
 		List<Long> partesPoloAtivo = new LinkedList<Long>();
@@ -67,9 +68,9 @@ public class PeticaoDtoAssembler {
 		peticao.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
 		
 		if (isFisica) {
-			return new PeticaoFisicaDto(id, numero, ano, classe, partes, pecas, processoWorkflowId);
+			return new PeticaoFisicaDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId);
 		} else {
-			return new PeticaoDto(id, numero, ano, classe, partes, pecas, processoWorkflowId);
+			return new PeticaoDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId);
 		}
 
 	}
