@@ -8,6 +8,8 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.env.Environment;
 import org.elasticsearch.plugins.PluginManager;
 import org.elasticsearch.plugins.PluginManager.OutputMode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchProperties;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -24,11 +26,24 @@ import br.jus.stf.plataforma.shared.settings.Profiles;
 public class ElasticsearchLocalAfterPropertiesSetConfigurer implements ElasticsearchAfterPropertiesSetConfigurer {
 
 	private static final String ELASTIC_DATA_DIR = "target/elasticsearch/data";
+	
+	@Autowired
+	private org.springframework.core.env.Environment env;
+	
+	@Autowired
+	private ElasticsearchProperties elasticsearchProperties;
 
 	@Override
 	public void afterPropertiesSet() {
-		// Apaga o diretório de dados.
-		FileSystemUtils.deleteRecursively(new File(ELASTIC_DATA_DIR), true);
+		if (!env.acceptsProfiles(Profiles.KEEP_DATA)) {
+			// Apaga o diretório de dados.
+			FileSystemUtils.deleteRecursively(new File(ELASTIC_DATA_DIR), true);
+		} else {
+			String userDir = System.getProperty("user.home");
+			elasticsearchProperties.getProperties().put("path.data", userDir + "/stfdigital-data/elasticsearch/data");
+			elasticsearchProperties.getProperties().put("path.logs", userDir + "/stfdigital-data/elasticsearch/logs");
+			elasticsearchProperties.getProperties().put("path.plugins", userDir + "/stfdigital-data/elasticsearch/plugins");
+		}
 	}
 
 	@Override
