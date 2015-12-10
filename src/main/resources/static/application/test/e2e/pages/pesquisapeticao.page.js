@@ -40,6 +40,10 @@
 			utils.select('div#s2id_pessoa', nome);
 		};
 		
+		this.filtrarPorSituacao = function(situacao) {
+			utils.select('div#s2id_situacao', situacao);
+		};
+		
 		this.pesquisar = function() {
 			element(by.id('botaoPesquisar')).click();
 			browser.waitForAngular();

@@ -9,6 +9,9 @@ package br.jus.stf.plataforma.shared.settings;
 public abstract class Profiles {
     
     public static final String DESENVOLVIMENTO = "desenvolvimento";
+    // Subprofile do desenvolvimento que mantém os dados entre execuções
+    public static final String KEEP_DATA = "keepData";
+    
     public static final String PRODUCAO = "producao";
 
     /**
