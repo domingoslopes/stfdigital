@@ -21,7 +21,8 @@ import br.jus.stf.plataforma.shared.persistence.LocalData;
  */
 public final class LocalMongoCleaner {
 
-	private static final Pattern pattern = Pattern.compile("extract.+extractmongod.*");
+	private static final Pattern pattern = Pattern.compile(".*extract.+extractmongod.*");
+	private static final boolean isLinux = System.getProperty("os.name").toLowerCase().startsWith("linux");
 	
 	private LocalMongoCleaner() {
 
@@ -32,13 +33,18 @@ public final class LocalMongoCleaner {
 		ProcessInfo[] processTable = monitor.processTable();
 		for (ProcessInfo pi : processTable) {
 			if (isMongodExtractedProcess(pi)) {
-				monitor.killProcess(pi.getPid());
+				if (!isLinux) {
+					monitor.killProcess(pi.getPid());
+				} else {
+					// No Linux, o método acima estava dando erro.
+					Runtime.getRuntime().exec("kill -9 " + pi.getPid());
+				}
 			}
 		}
 	}
 
 	private static boolean isMongodExtractedProcess(ProcessInfo pi) {
-		Matcher matcher = pattern.matcher(pi.getName());
+		Matcher matcher = pattern.matcher(pi.getCommand());
 		return matcher.matches();
 	}
 
