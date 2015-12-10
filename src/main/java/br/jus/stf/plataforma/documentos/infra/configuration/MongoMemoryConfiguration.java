@@ -24,21 +24,23 @@ import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 
 	private MongodForTestsFactory factory;
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	public MongodForTestsFactory factory() throws IOException {
 		if (factory == null) {
+			LocalMongoCleaner.killExtracted();
 			if (env.acceptsProfiles(Profiles.KEEP_DATA)) {
-				factory = new PersistentMongodForTestsFactory();
+				LocalMongoCleaner.clearLock();
+				factory = new PersistentMongodFactory();
 			} else {
 				factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
 			}
 		}
 		return factory;
 	}
-	
+
 	@Bean
 	public GridFsTemplate gridFsTemplate() throws Exception {
 		return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
@@ -48,10 +50,10 @@ public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 	protected String getDatabaseName() {
 		return "test";
 	}
-	
+
 	@Override
 	public Mongo mongo() throws Exception {
 		return factory().newMongo();
 	}
-	
+
 }
