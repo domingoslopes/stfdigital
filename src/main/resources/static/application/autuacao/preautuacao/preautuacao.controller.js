@@ -22,7 +22,7 @@
 		
 		preautuacao.peticao = {};
 		
-		PeticaoService.consultar(preautuacao.idPeticao).success(function(data) {
+		PeticaoService.consultar(preautuacao.idPeticao).then(function(data) {
 			preautuacao.peticao = data;
 		});
 		
