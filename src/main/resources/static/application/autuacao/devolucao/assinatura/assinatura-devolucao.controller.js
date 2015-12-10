@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AssinaturaDevolucaoController', function($scope, $stateParams, PeticaoService, PecaService) {
+	angular.autuacao.controller('AssinaturaDevolucaoController', function($scope, $stateParams, PeticaoService, PecaService, messages) {
 		var resourcesToIds = function(resources) {
 			var resourcesIds = [];
 			angular.forEach(resources, function(resource) {
@@ -27,6 +27,8 @@
 		var ID_TIPO_PECA_DEVOLUCAO = 8;
 		
 		$scope.peticoes = [];
+		
+		var peticoesAssinadas = [];
 		
 		angular.forEach(idsPeticoes, function(id) {
 			PeticaoService.consultar(id).then(function(peticao) {
@@ -46,6 +48,12 @@
 		
 		$scope.urlConteudo = function(peca) {
 			return PecaService.montarUrlConteudo(peca);
+		};
+		
+		$scope.finalizar = function() {
+			if (peticoesAssinadas.length == 0) {
+				messages.error('É necessário assinar os documentos antes de finalizar.');
+			}
 		};
 		
 	});
