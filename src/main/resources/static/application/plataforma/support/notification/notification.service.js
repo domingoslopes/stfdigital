@@ -124,10 +124,16 @@
 		};
 		
 		var connHeaders = function() {
-			return {
-				'login' : SecurityService.user().login,
-				'X-XSRF-TOKEN' : $cookies.get('XSRF-TOKEN') 
+			var headers = {};
+			headers['X-XSRF-TOKEN'] = $cookies.get('XSRF-TOKEN');
+			
+			var user =  SecurityService.user();
+			
+			if (user) {
+				headers['login'] = user.login;
 			};
+			
+			return headers;
 		};
 		
 		var notificar = function(message) {

@@ -23,7 +23,7 @@
 			$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
 
 			mockMessages = {};
-			stateParams = {idTarefa: 2};
+			stateParams = {resources: [2]};
 			controller = $controller('PreautuacaoController', {
 				$stateParams : stateParams,
 				$log: $log,
