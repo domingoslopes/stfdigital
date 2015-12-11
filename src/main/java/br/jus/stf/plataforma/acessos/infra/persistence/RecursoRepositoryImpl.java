@@ -28,11 +28,6 @@ public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, Long> im
 	}
 	
 	@Override
-	public Recurso findOne(Long sequencial) {
-		return super.findOne(sequencial);
-	}
-	
-	@Override
 	public Recurso findOne(String nome, TipoRecurso tipo) {
 		TypedQuery<Recurso> query = entityManager.createQuery("SELECT recurso FROM Recurso recurso WHERE recurso.nome = :nome AND recurso.tipo = :tipo", Recurso.class);
 		query.setParameter("nome", nome);
