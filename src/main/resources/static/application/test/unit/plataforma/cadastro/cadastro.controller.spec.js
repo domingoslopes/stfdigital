@@ -27,16 +27,6 @@
 		it('Deveria instanciar o controlador do cadastro', function() {
 			expect(controller).not.toEqual(null);
 		});
-
-		it('Deveria validar CPF corretamente', function() {
-			scope.$apply();
-			
-			var cpfValido = "25636816502",
-				cpfInvalido = "11111111111";
-			
-			expect(controller.validarCPF(cpfValido)).toBeTruthy();
-			expect(controller.validarCPF(cpfInvalido)).not.toBeTruthy();
-		});
 		
 		it('Deveria impedir o cadastro sem os campos obrigatórios', function() {
 			expect(controller.cadastrarUsuario()).toBeFalsy();

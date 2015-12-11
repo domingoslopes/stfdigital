@@ -20,6 +20,22 @@
 		};
 		
 		/**
+		 * Verifica se um tipo de associação é válido
+		 * 
+		 * @param String tipo Tipo de associação a ser validado
+		 * @return boolean Validade do tipo de associação
+		 */
+		this.isTipoAssociacaoValido = function isTipoAssociacaoValido(tipo) {
+			var TiposValidos = [
+                'Gestor',
+                'Representante',
+                'Associado'
+            ];
+
+			return (TiposValidos.indexOf(tipo) > -1);
+		}
+		
+		/**
 		 * Comando para cadastrar um usuário
 		 * 
 		 * @param Object Detalhes do cadastro

@@ -32,7 +32,8 @@
 			views: {
 				'content@root': {
 					templateUrl: 'application/plataforma/identidades/associado/registrar.tpl.html',
-					controller: 'RegistrarAssociadoController'
+					controller: 'RegistrarAssociadoController',
+					controllerAs: 'vm'
 				}
 			}
 		});
