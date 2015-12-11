@@ -27,11 +27,6 @@ public class AssociadoRepositoryImpl extends SimpleJpaRepository<Associado, Long
 		this.entityManager = entityManager;
 	}
 	
-	@Override
-	public Associado findOne(Long sequencial) {
-		return super.findOne(sequencial);
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Associado save(Associado associado) {
