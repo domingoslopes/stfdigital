@@ -5,7 +5,7 @@
  */ 
 (function() {
 	'use strict';
-	return;
+	
 	angular.autuacao.controller('AssinadorPdfDashletController', ['$scope', '$cookies', 'FileUploader', 'properties', 'SignatureService', function($scope, $cookies, FileUploader, properties, SignatureService) {
 		
 		$scope.documentos = [];
@@ -36,10 +36,10 @@
 		    }]
         });
 		
-		var signingTracker = SignatureService.signerWithExternalUpload();
+		var signingManager = SignatureService.signingManager();
 		
 		uploader.onAfterAddingFile = function(fileItem) {
-			var signer = signingTracker.newSigner();
+			var signer = signingManager.createSigner();
 			
             var documento = {
 				"fileItem" : fileItem,
@@ -48,7 +48,7 @@
             };
             $scope.documentos.push(documento);
                         
-            signer.onSignerCreated(function(signerId) {
+            signer.onSignerReady(function(signerId) {
             	console.log('controller-signerId');
             	console.log(signerId);
             	fileItem.headers['Signer-Id'] = signerId;
@@ -71,7 +71,7 @@
         	
         	var signer = documento.signer;
         	
-        	signer.triggerFileUploaded();
+        	signer.triggerDocumentProvided();
         };
         
         function recuperarDocumentoPorItem(item) {

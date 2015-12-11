@@ -39,7 +39,7 @@ public class PersistenceMemoryConfiguration {
 	@Profile(Profiles.KEEP_DATA)
 	@Bean(name = "dataSource")
 	public DataSource dataSourceDisk() throws Exception {
-		return dataSourceH2("jdbc:h2:~/stfdigital-data/stfdigital;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1");
+		return dataSourceH2("jdbc:h2:" + LocalData.instance().dataDirRelativeUnixPath() + "/stfdigital;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1");
 	}
 
 	private DataSource dataSourceH2(String connectionUrl) throws Exception {
