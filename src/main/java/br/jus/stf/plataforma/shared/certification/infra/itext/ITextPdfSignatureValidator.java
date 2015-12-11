@@ -14,10 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.itextpdf.text.pdf.AcroFields;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.security.PdfPKCS7;
-
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateUtils;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
@@ -26,6 +22,10 @@ import br.jus.stf.plataforma.shared.certification.domain.model.validation.Docume
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidationException;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.DocumentValidator;
 import br.jus.stf.plataforma.shared.certification.infra.configuration.CryptoProvider;
+
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.security.PdfPKCS7;
 
 /**
  * Validador de documento pdf que utiliza o iText.
@@ -88,7 +88,7 @@ public class ITextPdfSignatureValidator implements DocumentValidator {
 				}
 
 			}
-
+			
 			if (validSignatures == 0) {
 				throw new DocumentValidationException(
 						"Nenhuma assinatura existente no documento foi considerada válida.",

@@ -68,9 +68,7 @@ public class ITextPdfSigningStrategy implements PdfSigningStrategy {
 			throws SigningException {
 		finisher.finishPostSignature(spec, certificateValidation, appearance, signature);
 
-		SignedDocument document = new PdfTempSignedDocument(new PdfFileDocument(appearance.getTempFile()), new DocumentSignature());
-
-		return document;
+		return new PdfTempSignedDocument(new PdfFileDocument(appearance.getTempFile()), new DocumentSignature());
 	}
 
 	private File createPDFTempFile() throws SigningException {
