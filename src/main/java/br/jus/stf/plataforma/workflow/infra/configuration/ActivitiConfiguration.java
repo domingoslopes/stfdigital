@@ -21,6 +21,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import br.jus.stf.plataforma.shared.persistence.LocalData;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 
 /**
@@ -103,7 +104,7 @@ public class ActivitiConfiguration {
 
 	private String connectionUrl() {
 		if (env.acceptsProfiles(Profiles.KEEP_DATA)) {
-			return "jdbc:h2:~/stfdigital-data/stfdigitalactiviti;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
+			return "jdbc:h2:" + LocalData.instance().dataDirRelativeUnixPath() + "/stfdigitalactiviti;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
 		} else {
 			return "jdbc:h2:mem:stfdigitalactiviti;MODE=Oracle;DB_CLOSE_DELAY=-1";
 		}

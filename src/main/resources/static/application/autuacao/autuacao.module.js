@@ -180,7 +180,7 @@
 			view: 'application/autuacao/distribuicao/dashlets/grafico-distribuicao.tpl.html',
 			controller: 'GraficoDistribuicaoDashletController'
 		}).dashlet('assinador-pdf', {
-			view: 'application/autuacao/assinatura/dashlets/assinador-pdf.tpl.html',
+			view: 'application/autuacao/certification/dashlets/assinador-pdf.tpl.html',
 			controller: 'AssinadorPdfDashletController'
 		});
 	});
