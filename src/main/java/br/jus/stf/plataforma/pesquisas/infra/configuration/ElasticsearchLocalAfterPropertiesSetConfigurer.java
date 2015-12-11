@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchPropert
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.shared.persistence.LocalData;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 
 /**
@@ -35,14 +36,14 @@ public class ElasticsearchLocalAfterPropertiesSetConfigurer implements Elasticse
 
 	@Override
 	public void afterPropertiesSet() {
-		if (!env.acceptsProfiles(Profiles.KEEP_DATA)) {
+		if (env.acceptsProfiles(Profiles.KEEP_DATA)) {
+			// Para manter os dados, altera o diretório em que será armazenado o elasticsearch.
+			elasticsearchProperties.getProperties().put("path.data", LocalData.instance().dataDirAbsolutePath() + "/elasticsearch/data");
+			elasticsearchProperties.getProperties().put("path.logs", LocalData.instance().dataDirAbsolutePath() + "/elasticsearch/logs");
+			elasticsearchProperties.getProperties().put("path.plugins", LocalData.instance().dataDirAbsolutePath() + "/elasticsearch/plugins");
+		} else {
 			// Apaga o diretório de dados.
 			FileSystemUtils.deleteRecursively(new File(ELASTIC_DATA_DIR), true);
-		} else {
-			String userDir = System.getProperty("user.home");
-			elasticsearchProperties.getProperties().put("path.data", userDir + "/stfdigital-data/elasticsearch/data");
-			elasticsearchProperties.getProperties().put("path.logs", userDir + "/stfdigital-data/elasticsearch/logs");
-			elasticsearchProperties.getProperties().put("path.plugins", userDir + "/stfdigital-data/elasticsearch/plugins");
 		}
 	}
 
