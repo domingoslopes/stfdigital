@@ -17,7 +17,7 @@ public class DocumentSignatureValidatorMultipartFile extends GenericSignatureVal
 		InputStream is = null;
 		try {
 			is = value.getInputStream();
-			return isValid(is, context);
+			return isValid(is);
 		} catch (IOException e) {
 			throw new RuntimeException("Erro ao recuperar documento para validação.", e);
 		} finally {

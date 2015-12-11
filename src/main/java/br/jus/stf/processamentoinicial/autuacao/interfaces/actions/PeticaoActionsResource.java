@@ -39,7 +39,7 @@ public class PeticaoActionsResource {
 	@ActionMapping(id = "ASSINAR-DEVOLUCAO-PETICAO", name = "Assinar Documento de Devolução")
 	@FiltrarPeticaoPorStatus(PeticaoStatus.ASSINAR_DEVOLUCAO)
 	public void assinar(List<AssinarDevolucaoPeticaoCommand> command) {
-		 
+		throw new UnsupportedOperationException();
 	}
 	
 }
