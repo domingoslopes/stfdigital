@@ -7,7 +7,7 @@
 (function($) {
 	'use strict';
 	
-	angular.plataforma.controller('RegistrarAssociadoController', function ($scope, AssociadoService, CPFService, SecurityService, OrgaoService) {
+	angular.plataforma.controller('RegistrarAssociadoController', function ($scope, $state, messages, AssociadoService, CPFService, SecurityService, OrgaoService) {
 		if (SecurityService.hasPapel('gestor-cadastro')) {
 			this.orgaosPromise = OrgaoService.listar();
 		} else {
@@ -17,8 +17,6 @@
 		this.orgaosPromise.then(function(response) {
 			this.orgaos = response.data;
 		}.bind(this));
-		
-		console.log(this.orgaos);
 		
 		this.detalhes = {
 				idOrgao: null,
@@ -88,7 +86,10 @@
 				return false;
 			}
 
-			AssociadoService.cadastrar(this.detalhes);
+			AssociadoService.cadastrar(this.detalhes).then(function() {
+				messages.success("Associado cadastrado com sucesso.");
+				$state.go('dashboard');
+			});
 			
 			return true;
 		}
