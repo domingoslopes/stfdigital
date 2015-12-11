@@ -72,9 +72,11 @@
 					<div class="panel-heading">
 						<div class="panel-title">Resultados</div>
 					</div>
+					<div class="actions-wrapper">
+						<actions resources="selecao.objetos" groups="peticao" context="autuacao" btn-class="btn-default" />
+					</div>
 					<div class="auto-overflow" ng-class="(resultados.length > 0) ? 'widget-11-2-table' : ''">
-						<div class="panel-body">	
-							<actions resources="selecao.objetos" groups="peticao" context="autuacao" btn-class="btn-default" /> 
+						<div class="panel-body actions-enabled">	
 							<table class="table table-responsive table-hover table-condensed">
 								<thead>
 									<tr>
