@@ -31,17 +31,13 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 	}
 	
 	@Override
-	public Usuario findOne(UsuarioId id) {
-		return super.findOne(id);
-	}
-	
-	@Override
 	public Usuario findOne(String login) {
 		return super.findOne(new Specification<Usuario>(){
 			@Override
 			public Predicate toPredicate(Root<Usuario> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				return cb.equal(root.get("login"), login);
-			}} );
+			}
+		});
 	}
 
 	@SuppressWarnings("unchecked")

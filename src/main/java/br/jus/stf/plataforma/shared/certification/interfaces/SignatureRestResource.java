@@ -63,16 +63,30 @@ public class SignatureRestResource {
 
 	@ApiOperation("Cria um novo contexto de assinatura com o certificado.")
 	@RequestMapping(value = "/prepare", method = RequestMethod.POST)
-	public SignerDto prepare(@RequestBody PrepareCommand command) throws DecoderException, SigningException {
+	public SignerDto prepare(@RequestBody PrepareCommand command) {
 		// Converte o certificado recebido para o objeto da classe
 		// X509Certificate.
-		X509Certificate certificate = CertificateUtils
-				.bytesToCertificate(Hex.decodeHex(command.getCertificateAsHex().toCharArray()));
+		X509Certificate certificate;
+		
+		try {
+			certificate = CertificateUtils
+					.bytesToCertificate(Hex.decodeHex(command.getCertificateAsHex().toCharArray()));
+		} catch (DecoderException e) {
+			throw new RuntimeException(e);
+		}
+		
 		// Constrói uma especificação de assinatura de PDF.
 		SigningSpecification spec = specBuilder.pkcs7Dettached().reason(SIGNING_REASON)
 				.hashAlgorithm(HashType.SHA256).build();
 		// Prepara uma assinador de documentos.
-		DocumentSignerId signerId = signatureApplicationService.prepareToSign(certificate, pkis(), spec);
+		DocumentSignerId signerId;
+		
+		try {
+			signerId = signatureApplicationService.prepareToSign(certificate, pkis(), spec);
+		} catch (SigningException e) {
+			throw new RuntimeException(e);
+		}
+		
 		return new SignerDto(signerId.id());
 	}
 
@@ -82,10 +96,14 @@ public class SignatureRestResource {
 
 	@ApiOperation("Faz o upload do arquivo para assinatura.")
 	@RequestMapping(value = "/upload-to-sign", method = RequestMethod.POST)
-	public void uploadToSign(@RequestHeader("Signer-Id") String signerId, @RequestParam("file") MultipartFile file)
-			throws IOException, SigningException {
-		signatureApplicationService.attachToSign(new DocumentSignerId(signerId),
-				new PdfTempDocument(file.getInputStream()));
+	public void uploadToSign(@RequestHeader("Signer-Id") String signerId, @RequestParam("file") MultipartFile file) {
+		
+		try {
+			signatureApplicationService.attachToSign(new DocumentSignerId(signerId),
+					new PdfTempDocument(file.getInputStream()));
+		} catch (SigningException | IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@ApiOperation("Fornece um arquivo já existente no servidor para assinatura.")
