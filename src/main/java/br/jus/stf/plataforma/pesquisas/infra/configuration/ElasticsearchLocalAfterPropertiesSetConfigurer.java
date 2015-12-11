@@ -49,11 +49,11 @@ public class ElasticsearchLocalAfterPropertiesSetConfigurer implements Elasticse
 
 	@Override
 	public void afterPropertiesSet(Client elasticsearchClient) throws Exception {
-		Environment env = new Environment(elasticsearchClient.settings());
+		Environment envir = new Environment(elasticsearchClient.settings());
 
-		if (!env.pluginsFile().exists()) {
-			FileSystemUtils.mkdirs(env.pluginsFile());
-			PluginManager pluginManager = new PluginManager(env, null, OutputMode.DEFAULT,
+		if (!envir.pluginsFile().exists()) {
+			FileSystemUtils.mkdirs(envir.pluginsFile());
+			PluginManager pluginManager = new PluginManager(envir, null, OutputMode.DEFAULT,
 					TimeValue.timeValueMinutes(2));
 			pluginManager.downloadAndExtract("mobz/elasticsearch-head");
 		}

@@ -28,11 +28,6 @@ public class InformacaoRepositoryImpl extends SimpleJpaRepository<Informacao, In
 	}
 	
 	@Override
-	public Informacao findOne(InformacaoId id) {
-		return super.findOne(id);
-	}
-	
-	@Override
 	public Informacao findOne(TipoInformacao tipo, Segmento segmento, String identidade) {
 		String sql = "SELECT info FROM Informacao info WHERE info.tipo = :tipo AND info.identidade = :identidade";
 		
@@ -64,9 +59,4 @@ public class InformacaoRepositoryImpl extends SimpleJpaRepository<Informacao, In
 		return super.save(informacao);
 	}
 	
-	@Override
-	public void delete(InformacaoId id) {
-		super.delete(id);
-	}
-
 }
