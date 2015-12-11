@@ -110,6 +110,12 @@
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
 			<version>1.50.0</version>
 		</dependency>
+		<!-- Futuramente manter apenas no perfil de desenvolvimento a dependência abaixo -->
+		<dependency>
+			<groupId>com.outr.javasysmon</groupId>
+			<artifactId>javasysmon_2.10</artifactId>
+			<version>0.3.4</version>
+		</dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
