@@ -41,6 +41,7 @@
 			// Navega até a página e espera que seja a página correta
 			principalPage.iniciarProcesso('link_registrar-associado');
 			expect(browser.getCurrentUrl()).toMatch(/\/associado/);
+			loginPage.logout();
 		});
 	});
 		
@@ -61,6 +62,7 @@
 			// Navega até a página e espera que seja a página correta
 			principalPage.iniciarProcesso('link_registrar-associado');
 			expect(browser.getCurrentUrl()).toMatch(/\/associado/);
+			loginPage.logout();
 		});
 	});
 })();

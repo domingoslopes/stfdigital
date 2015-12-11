@@ -87,10 +87,17 @@ public class Recurso implements Entity<Recurso, Long> {
 	
 	@Override
 	public boolean equals(Object obj){
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		if (this == obj) {
+			return true;
+		}
+		
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
 	
 		Recurso other = (Recurso) obj;
+		
 		return sequencial.equals(other.sequencial);
 	}
 	
