@@ -28,7 +28,7 @@ public class PeticaoApplicationEventImpl implements PeticaoApplicationEvent {
 	@Override
 	public void peticaoRecebida(Peticao peticao) {
 		PeticaoRecebida evento = new PeticaoRecebida(peticao);
-		eventBus.notify("indexadorEventBus", Event.wrap(evento));
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoModificada(peticao)));
 		eventBus.notify("notificadorEventBus", Event.wrap(evento));
 	}
 	
@@ -63,6 +63,27 @@ public class PeticaoApplicationEventImpl implements PeticaoApplicationEvent {
 	public void peticaoAutuada(Peticao peticao) {
 		PeticaoAutuada evento = new PeticaoAutuada(peticao);
 		eventBus.notify("indicadorEventBus", Event.wrap(evento));
+	}
+	
+	/**
+	 * Evento utilizado para notificar o(s) interessado(s) acerda da preautuação de uma petição.
+	 * 
+	 * @param peticao Dados da petição preautuada.
+	 */
+	@Override
+	public void peticaoPreautuada(Peticao peticao) {
+		PeticaoPreautuada evento = new PeticaoPreautuada(peticao);
+		eventBus.notify("indicadorEventBus", Event.wrap(evento));
+	}
+
+	/**
+	 * Notifica interessados sobre a preparação da petição para devolução.
+	 * 
+	 * @param peticao
+	 */
+	@Override
+	public void peticaoPreparadaParaDevolucao(Peticao peticao) {
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoModificada(peticao)));
 	}
 
 }

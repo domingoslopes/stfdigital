@@ -78,4 +78,6 @@ public interface PeticaoRepository {
 	public List<Orgao> findAllOrgao();
 	
 	public boolean estaoNoMesmoStatus(List<PeticaoId> ids, PeticaoStatus status);
+
+	public void refresh(Peticao peticao);
 }
