@@ -54,7 +54,7 @@
 										<label>Situação da petição</label>
 										<select ui-select2="{allowClear:'true'}" id="situacao" ng-model="situacao" class="full-width">
 											<option value=""></option>
-											<option ng-repeat="situacao in situacoes" value="{{situacao}}">{{situacao | lowercase}}</option>
+											<option ng-repeat="situacao in situacoes" value="{{situacao.nome}}">{{situacao.descricao}}</option>
 										</select>
 									</div>
 								</div>

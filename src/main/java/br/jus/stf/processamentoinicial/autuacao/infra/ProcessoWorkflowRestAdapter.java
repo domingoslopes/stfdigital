@@ -10,9 +10,13 @@ import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
+import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusModificado;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
+import reactor.bus.Event;
+import reactor.bus.EventBus;
 
 /**
  * @author Rodrigo Barreiros
@@ -29,6 +33,12 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	@Autowired
 	private WorkflowRestResource processoRestService;
 
+	@Autowired
+	private EventBus eventBus;
+	
+	@Autowired
+	private PeticaoRepository peticaoRepository;
+	
 	@Override
 	public void iniciarWorkflow(PeticaoEletronica peticaoEletronica) {
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
@@ -57,22 +67,35 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	
 	@Override
 	public void rejeitarAutuacao(Peticao peticao) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next().id();
+		ProcessoWorkflow processoWorkflow = peticao.processosWorkflow().iterator().next();
+		ProcessoWorkflowId id = processoWorkflow.id();
 		SinalizarCommand command = new SinalizarCommand();
 		command.setSinal(PETICAO_INVALIDA);
-		command.setStatus(PeticaoStatus.REJEITADA.toString());
+		PeticaoStatus novoStatus = PeticaoStatus.REJEITADA;
+		command.setStatus(novoStatus.toString());
 
 		processoRestService.sinalizar(id.toLong(), command);
+		peticaoRepository.refresh(peticao); // O comando acima poderá alterar o status da petição, por isso o refresh.
+		notifyPeticaoStatusModificado(peticao, processoWorkflow.id(), novoStatus);
 	}
 	
 	@Override
 	public void devolver(Peticao peticao) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next().id();
+		ProcessoWorkflow processoWorkflow = peticao.processosWorkflow().iterator().next();
+		ProcessoWorkflowId id = processoWorkflow.id();
 		SinalizarCommand command = new SinalizarCommand();
 		command.setSinal(REMESSA_INDEVIDA);
-		command.setStatus(PeticaoStatus.A_DEVOLVER.toString());
+		
+		PeticaoStatus novoStatus = PeticaoStatus.A_DEVOLVER;
+		command.setStatus(novoStatus.toString());
 
 		processoRestService.sinalizar(id.toLong(), command);
+		peticaoRepository.refresh(peticao); // O comando acima poderá alterar o status da petição, por isso o refresh.
+		notifyPeticaoStatusModificado(peticao, processoWorkflow.id(), novoStatus);
+	}
+	
+	private void notifyPeticaoStatusModificado(Peticao peticao, ProcessoWorkflowId processoWorkflowId, PeticaoStatus status) {
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao, processoWorkflowId, status)));
 	}
 	
 }
