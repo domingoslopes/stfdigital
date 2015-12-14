@@ -8,7 +8,93 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="container-fluid container-fixed-lg">
-		
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-2">
+				<form id="cadastro-associado" ng-submit="vm.cadastrar()" novalidate>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group form-group-default required" aria-required="true">
+								<label>Nome</label>
+								<input 
+									type="text" 
+									class="form-control"
+									id="nome"
+									name="nome"
+									required 
+									aria-required="true"
+									ng-model="vm.detalhes.nome">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group form-group-default required" aria-required="true">
+								<label>CPF</label>
+								<input 
+									type="text" 
+									class="form-control"
+									id="cpf"
+									name="cpf"
+									required 
+									aria-required="true"
+									ng-model="vm.detalhes.cpf"
+									mask="999.999.999-99"
+									mask-clean="true"
+									mask-restrict="reject">
+							</div>
+						</div>
+						
+						<div class="col-sm-6">
+							<div class="form-group form-group-default" aria-required="true">
+								<label>Cargo/Função</label>
+								<input 
+									type="text" 
+									class="form-control"
+									id="cargo"
+									name="cargo"
+									aria-required="true"
+									ng-model="vm.detalhes.cargo">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="control-label">Tipo de Associação</label>
+								<div class="radio radio-success m-t-0">
+									<input type="radio" value="Gestor" name="tipoAssociacao" id="tipoAssociacao0" ng-model="vm.detalhes.tipoAssociacao">
+									<label for="tipoAssociacao0">Gestor</label>
+									<input type="radio" value="Representante" name="tipoAssociacao" id="tipoAssociacao1" ng-model="vm.detalhes.tipoAssociacao">
+									<label for="tipoAssociacao1">Representante</label>
+									<input type="radio" value="Associado" name="tipoAssociacao" id="tipoAssociacao2" ng-model="vm.detalhes.tipoAssociacao">
+									<label for="tipoAssociacao2">Associado</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-sm-6">
+							<div class="form-group" aria-required="true">
+								<label>Órgão</label>
+								<div>
+									<select ui-select2 ng-model="vm.detalhes.idOrgao" id="orgao" data-placeholder="Selecione o órgão" style="width: 100%;">
+										<option value=""></option>
+										<option ng-repeat="orgao in vm.orgaos" value="{{orgao.id}}">{{orgao.nome}}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="clearfix"></div>
+					<div class="form-group">
+						<button class="btn btn-info" type="submit">Criar nova conta</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
 </div>

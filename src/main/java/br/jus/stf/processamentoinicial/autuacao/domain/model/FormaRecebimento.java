@@ -25,6 +25,7 @@ public enum FormaRecebimento implements ValueObject<FormaRecebimento> {
 		return descricao;
 	}
 	
+	@Override
 	public boolean sameValueAs(final FormaRecebimento other) {
 		return this.equals(other);
 	}
