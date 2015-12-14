@@ -28,6 +28,31 @@
 		
 		$scope.peticoes = [];
 		
+		// Lógica de seleção de petições
+		var selectAll = function() {
+			$scope.selecao.peticoes = $scope.peticoes.map(function(peticao) {
+				return peticao;
+			});
+		};
+		
+		var unselectAll = function() {
+			$scope.selecao.peticoes = [];
+		};
+		
+		$scope.checkToggle = true;
+		
+		$scope.toggleCheck = function() {
+			if ($scope.checkToggle) {
+				selectAll();
+			} else {
+				unselectAll();
+			}
+		};
+		
+		$scope.selecao = {
+			'peticoes': []
+		};
+		
 		var peticoesAssinadas = [];
 		
 		var signingManager = SignatureService.signingManager();
@@ -35,6 +60,7 @@
 		angular.forEach(idsPeticoes, function(id) {
 			PeticaoService.consultar(id).then(function(peticao) {
 				$scope.peticoes.push(peticao);
+				$scope.selecao.peticoes.push(peticao);
 			});
 		});
 		

@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wordnik.swagger.annotations.ApiOperation;
+
+import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarColecaoCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.CriarIndiceCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.facade.IndexadorServiceFacade;
-
-import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Controlador com API Rest para indexação
@@ -60,6 +61,17 @@ public class IndexadorRestResource {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		indexadorServiceFacade.atualizar(command.getId(), command.getTipo(), command.getIndice(), command.getObjeto());
+	}
+	
+	@ApiOperation("Atualiza campos de um item de uma coleção")
+	@RequestMapping(value = "/documentos/colecao", method = RequestMethod.PUT)
+	public void atualizarColecao(@RequestBody @Valid AtualizarColecaoCommand command, BindingResult result) throws Exception {
+		
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.getAllErrors().toString());
+		}
+		indexadorServiceFacade.atualizarColecao(command.getId(), command.getTipo(), command.getIndice(),
+				command.getCampoColecao(), command.getExpressaoId(), command.getIdItem(), command.getObjeto());
 	}
 
 }

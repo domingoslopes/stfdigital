@@ -8,16 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 
-import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarCommand;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.CriarIndiceCommand;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
-import br.jus.stf.shared.stereotype.Entity;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarColecaoCommand;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarCommand;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.CriarIndiceCommand;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
+import br.jus.stf.shared.stereotype.Entity;
 
 /**
  * @author Lucas.Rodrigues
@@ -69,6 +70,15 @@ public class IndexadorRestAdapter implements InitializingBean {
 		}
 	}
 	
+	public void atualizarItemDeColecao(String indice, String id, String tipo, String campoColecao, String expressaoId, Object idItem, Map<String, Object> mapaDeAtualizacao) throws Exception {
+		try {
+			AtualizarColecaoCommand atualizarCommand = criarComandoAtualizacaoColecao(indice, id, tipo, campoColecao, expressaoId, idItem, mapaDeAtualizacao);
+			indexadorRestResource.atualizarColecao(atualizarCommand, new BeanPropertyBindingResult(atualizarCommand, "atualizarCommand"));
+		} catch (Exception e) {
+			throw new Exception("Não foi possível atualizar o objeto!", e);
+		}
+	}
+	
 	private void indexarOuAtualizar(String indice, String id, String tipo, Map<String, Object> mapaDeAtualizacao) throws Exception {
 		AtualizarCommand atualizarCommand = criarComandoAtualizacao(indice, id, tipo, mapaDeAtualizacao);
 		indexadorRestResource.atualizar(atualizarCommand, new BeanPropertyBindingResult(atualizarCommand, "atualizarCommand"));
@@ -103,6 +113,18 @@ public class IndexadorRestAdapter implements InitializingBean {
 		command.setObjeto(criarJson(mapaDeAtualizacao));
 		return command;
 	}
+	
+	private AtualizarColecaoCommand criarComandoAtualizacaoColecao(String indice, String id, String tipo, String campoColecao, String expressaoId, Object idItem, Map<String, Object> mapaDeAtualizacao) throws IOException {
+		AtualizarColecaoCommand command = new AtualizarColecaoCommand();
+		command.setId(id);
+		command.setTipo(tipo);
+		command.setIndice(indice);
+		command.setCampoColecao(campoColecao);
+		command.setExpressaoId(expressaoId);
+		command.setIdItem(idItem);
+		command.setObjeto(criarJson(mapaDeAtualizacao));
+		return command;
+	}	
 	
 	/**
 	 * Cria um json para ser indexado
