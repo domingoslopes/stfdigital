@@ -41,7 +41,7 @@ public class ProcessoApplicationService {
 	 * @return processo
 	 */
 	public Processo distribuir(TipoDistribuicao tipoDistribuicao, ParametroDistribuicao parametroDistribuicao) {
-		tarefaAdapter.completarDistribuicao(parametroDistribuicao.peticao().processoWorkflowId());
+		tarefaAdapter.completarDistribuicao(parametroDistribuicao.peticao());
 		Distribuicao distribuicao;
 		
 		switch(tipoDistribuicao) {
