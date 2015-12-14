@@ -21,11 +21,9 @@
 			$scope.ministros = ministros;
 		});
 		
-		$scope.situacoes = ProcessoService.listarStatus();
-		
-		/*ProcessoService.listarStatus().success(function(situacoes){
+		ProcessoService.listarStatus().success(function(situacoes){
 			$scope.situacoes = situacoes;
-		});*/
+		});
 		
 		$scope.buildSelectedObject = function(item){
 			return {'processoId': item.id};
