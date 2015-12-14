@@ -36,6 +36,18 @@
 					controllerAs: 'vm'
 				}
 			}
+		})
+		
+		.state('informacoes-usuario', {
+			parent: 'root',
+			url: '/usuario',
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/identidades/usuario/informacoes.tpl.html',
+					controller: 'RegistrarAssociadoController',
+					controllerAs: 'vm'
+				}
+			}
 		});
 		
 		DashletsProvider.dashlet('minhas-tarefas', {
