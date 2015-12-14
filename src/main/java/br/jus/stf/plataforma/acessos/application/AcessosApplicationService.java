@@ -17,6 +17,7 @@ import br.jus.stf.plataforma.acessos.domain.model.Papel;
 import br.jus.stf.plataforma.acessos.domain.model.PapelRepository;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
 import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
+import br.jus.stf.plataforma.acessos.domain.model.TipoGrupo;
 import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
@@ -149,6 +150,13 @@ public class AcessosApplicationService {
 		
 		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
 		Usuario principal = new Usuario(idUsuario, pessoa, login);
+		
+		Grupo grupoUsuario = grupoRepository.findOne("usuario", TipoGrupo.CONFIGURACAO);
+		Set<Grupo> grupos = new HashSet<Grupo>();
+		grupos.add(grupoUsuario);
+		
+		principal.atribuirGrupos(grupos);		
+		
 		usuarioRepository.save(principal);
 		pessoaApplicationEvent.pessoaCadastrada(pessoa);
 		
