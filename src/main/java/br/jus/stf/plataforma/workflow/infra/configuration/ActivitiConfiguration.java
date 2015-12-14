@@ -15,10 +15,14 @@ import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import br.jus.stf.plataforma.shared.persistence.LocalData;
+import br.jus.stf.plataforma.shared.settings.Profiles;
 
 /**
  * @author Lucas Mariano
@@ -31,6 +35,9 @@ public class ActivitiConfiguration {
 	
 	@Autowired
 	private PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	private Environment env;
 	
 	@Bean
 	public SpringProcessEngineConfiguration processEngineConfiguration() throws Exception {	
@@ -89,10 +96,18 @@ public class ActivitiConfiguration {
 	private DataSource dataSourceActiviti() {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(org.h2.Driver.class);
-		dataSource.setUrl("jdbc:h2:mem:stfdigitalactiviti;MODE=Oracle;DB_CLOSE_DELAY=-1");
+		dataSource.setUrl(connectionUrl());
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
 		return dataSource;
+	}
+
+	private String connectionUrl() {
+		if (env.acceptsProfiles(Profiles.KEEP_DATA)) {
+			return "jdbc:h2:" + LocalData.instance().dataDirRelativeUnixPath() + "/stfdigitalactiviti;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1";
+		} else {
+			return "jdbc:h2:mem:stfdigitalactiviti;MODE=Oracle;DB_CLOSE_DELAY=-1";
+		}
 	}
 
 }

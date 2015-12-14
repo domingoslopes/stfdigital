@@ -18,7 +18,7 @@
 		
 		beforeEach(inject(function($rootScope, $controller, $httpBackend, $log, properties, FileUploader, OrgaoService) {
 			scope = $rootScope.$new();
-			$httpBackend.expectGET(properties.apiUrl + '/orgaos').respond([{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }]);			
+			$httpBackend.expectGET(properties.apiUrl + '/orgaos/representados').respond([{ id : 1, nome : "AGU" }, { id : 2, nome : "PGR" }, { id : 3, nome : "União" }]);			
 			
 			controller = $controller('PeticionamentoOrgaoController', {
 				$scope : scope

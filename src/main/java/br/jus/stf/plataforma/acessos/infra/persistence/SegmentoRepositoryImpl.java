@@ -29,22 +29,12 @@ public class SegmentoRepositoryImpl extends SimpleJpaRepository<Segmento, Segmen
 	}
 	
 	@Override
-	public Segmento findOne(SegmentoId id) {
-		return super.findOne(id);
-	}
-	
-	@Override
 	public Segmento findOne(String nome, TipoInformacaoId tipo) {
 		TypedQuery<Segmento> query = entityManager.createQuery("SELECT segmento FROM Segmento segmento WHERE segmento.nome = :nome AND segmento.tipo = :tipo", Segmento.class);
 		query.setParameter("nome", nome);
 		query.setParameter("tipo", tipo);
 		
 		return query.getSingleResult();
-	}
-	
-	@Override
-	public List<Segmento> findAll() {
-		return super.findAll();
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -14,7 +14,9 @@
 			},
 			
 			consultar : function(peticaoId) {
-				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId);
+				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId).then(function(response) {
+					return response.data;
+				});
 			},
 			
 			preautuar : function(peticaoId, preautuarCommand){

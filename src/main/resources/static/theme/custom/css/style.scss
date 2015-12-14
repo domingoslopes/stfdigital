@@ -74,3 +74,12 @@ body {
 #mainContainer {
 	height: 100%;
 }
+
+.actions-wrapper {
+	padding-top: 20px;
+	padding-left: 20px;
+}
+
+.panel-body.actions-enabled {
+	padding-top: 0px;
+}
