@@ -7,9 +7,9 @@ import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
-import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusModificado;
 import br.jus.stf.processamentoinicial.distribuicao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Peticao;
+import br.jus.stf.shared.PeticaoStatusModificado;
 import reactor.bus.Event;
 import reactor.bus.EventBus;
 
