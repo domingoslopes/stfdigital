@@ -37,13 +37,17 @@ public class ProcessoDto {
 	@ApiModelProperty(value = "A lista de peças anexadas")
 	private List<PecaDto> pecas;
 	
-	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas) {
+	@ApiModelProperty(value = "Dituação do processo.")
+	private String situacao;
+	
+	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao) {
 		this.id = id;
 		this.classe = classe;
 		this.numero = numero;
 		this.relator = relator;
 		this.partes = partes;
 		this.pecas = pecas;
+		this.situacao = situacao;
 	}
 	
 	public Long getId() {
@@ -68,6 +72,10 @@ public class ProcessoDto {
 	
 	public List<PecaDto> getPecas() {
 		return pecas;
+	}
+	
+	public String getSituacao(){
+		return this.situacao;
 	}
 	
 }
