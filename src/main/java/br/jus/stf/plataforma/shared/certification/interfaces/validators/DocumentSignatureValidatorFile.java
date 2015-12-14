@@ -20,7 +20,7 @@ public class DocumentSignatureValidatorFile extends GenericSignatureValidator
 		InputStream is = null;
 		try {
 			is = new FileInputStream(value);
-			return isValid(is, context);
+			return isValid(is);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Erro ao recuperar documento para validação.", e);
 		} finally {
