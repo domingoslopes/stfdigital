@@ -17,16 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 
 import br.jus.stf.plataforma.shared.certification.domain.PdfInputStreamDocument;
-import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiType;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningSpecification;
 import br.jus.stf.plataforma.shared.certification.infra.session.SessionDocumentSignerRepository;
 import br.jus.stf.plataforma.shared.certification.support.pki.PlataformaUnitTestingUser;
 import br.jus.stf.plataforma.shared.certification.support.util.SignatureTestUtil;
@@ -44,9 +41,6 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 	@InjectMocks
 	@Autowired
 	private SignatureApplicationService signatureService;
-
-	@Autowired
-	private PdfSigningSpecificationBuilder specBuilder;
 
 	private HttpSession session;
 
@@ -69,9 +63,7 @@ public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
 		// SignatureService.
 		X509Certificate certificate = unitTestingUser.userStore().certificate();
 		PkiIds ids = new PkiIds(PkiType.ICP_PLATAFORMA.id());
-		SigningSpecification spec = specBuilder.pkcs7Dettached().reason(SIGNING_REASON).hashAlgorithm(HashType.SHA256)
-				.build();
-		signerId = signatureService.prepareToSign(certificate, ids, spec);
+		signerId = signatureService.prepareToSign(certificate, ids, SIGNING_REASON);
 
 		// Passo 2 - Server-side: Receber o documento para assinatura.
 		Document document = new PdfInputStreamDocument(SignatureTestUtil.getDocumentToSign(PDF_DE_TESTE));
