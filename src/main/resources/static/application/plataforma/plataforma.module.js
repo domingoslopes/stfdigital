@@ -24,6 +24,40 @@
 			parent: 'root',
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
+		})
+		
+		.state('registrar-associado', {
+			parent: 'root',
+			url: '/associado',
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/identidades/associado/registrar.tpl.html',
+					controller: 'RegistrarAssociadoController',
+					controllerAs: 'vm'
+				}
+			}
+		})
+		.state('configurar-permissao', {
+			parent: 'root',
+			url: '/permissoes',
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/acessos/permissoes/permissoes.tpl.html',
+					controller: 'PermissoesController',
+					controllerAs: 'vm'
+				}
+			}
+		})
+		.state('informacoes-usuario', {
+			parent: 'root',
+			url: '/usuario',
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/identidades/usuario/informacoes.tpl.html',
+					controller: 'RegistrarAssociadoController',
+					controllerAs: 'vm'
+				}
+			}
 		});
 		
 		DashletsProvider.dashlet('minhas-tarefas', {
