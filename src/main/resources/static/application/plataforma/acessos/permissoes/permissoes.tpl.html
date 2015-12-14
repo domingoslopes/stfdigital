@@ -1,0 +1,80 @@
+<div class="content">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li><a href="#" class="active">Configurar Permissoes</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid container-fixed-lg">
+		<form ng-submit="configurarPermissoes()">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Selecione o usuário</h5>
+						</div>
+						<div class="card-description">
+	                        <div class="auto-overflow widget-11-2-table">
+	                            <pesquisa modelo="vm.usuario" configuracao="vm.configuracaoPesquisaUsuario" class="full-width"/>
+	                        </div>
+	                    </div>
+					</div>
+				</div>
+				
+				<div class="col-sm-6" ng-show="vm.passo > 1">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Selecione os papeis</h5>
+						</div>
+						<div class="card-description">
+	                        <div class="auto-overflow widget-11-2-table">
+	                            Conteúdo
+	                        </div>
+	                    </div>
+					</div>
+				</div>	
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-6" ng-show="vm.passo > 2">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Selecione os papeis</h5>
+						</div>
+						<div class="card-description">
+	                        <div class="auto-overflow widget-11-2-table">
+	                            Conteúdo
+	                        </div>
+	                    </div>
+					</div>
+				</div>
+				<div class="col-sm-6" ng-show="vm.passo > 3">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Selecione os grupos</h5>
+						</div>
+						<div class="card-description">
+	                        <div class="auto-overflow widget-11-2-table">
+	                            Conteúdo
+	                        </div>
+	                    </div>
+					</div>
+				</div>		
+			</div>
+			
+			<div class="row" ng-show="vm.passo > 4">
+				<div class="col-sm-12 text-center">
+					
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
