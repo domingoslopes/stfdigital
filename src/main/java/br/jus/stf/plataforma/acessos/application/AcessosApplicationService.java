@@ -21,6 +21,7 @@ import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
 import br.jus.stf.plataforma.identidades.application.PessoaApplicationEvent;
+import br.jus.stf.plataforma.identidades.application.UsuarioApplicationEvent;
 import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
 import br.jus.stf.plataforma.identidades.domain.model.PessoaRepository;
 import br.jus.stf.shared.GrupoId;
@@ -53,6 +54,9 @@ public class AcessosApplicationService {
 	
 	@Autowired
 	private PessoaApplicationEvent pessoaApplicationEvent;
+	
+	@Autowired
+	private UsuarioApplicationEvent usuarioApplicationEvent;
 	
 	public Set<Permissao> carregarPermissoesUsuario(String login) {
 		return Optional.ofNullable(usuarioRepository.findOne(login))
@@ -149,9 +153,9 @@ public class AcessosApplicationService {
 		
 		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
 		Usuario principal = new Usuario(idUsuario, pessoa, login);
-		usuarioRepository.save(principal);
-		pessoaApplicationEvent.pessoaCadastrada(pessoa);
-		
+		this.usuarioRepository.save(principal);
+		this.pessoaApplicationEvent.pessoaCadastrada(pessoa);
+				
 		return principal;
 	}
 
