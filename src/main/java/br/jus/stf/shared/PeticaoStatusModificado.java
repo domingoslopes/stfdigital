@@ -1,8 +1,6 @@
-package br.jus.stf.processamentoinicial.autuacao.infra.eventbus;
+package br.jus.stf.shared;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
-import br.jus.stf.shared.PeticaoId;
-import br.jus.stf.shared.ProcessoWorkflowId;
 
 public class PeticaoStatusModificado {
 
