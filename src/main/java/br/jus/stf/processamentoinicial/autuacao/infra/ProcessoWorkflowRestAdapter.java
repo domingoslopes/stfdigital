@@ -95,7 +95,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	}
 	
 	private void notifyPeticaoStatusModificado(Peticao peticao, ProcessoWorkflowId processoWorkflowId, PeticaoStatus status) {
-		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao, processoWorkflowId, status)));
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao.id(), peticao.getClass().getSimpleName(), processoWorkflowId, status)));
 	}
 	
 }

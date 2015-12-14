@@ -3,7 +3,7 @@ package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 import java.util.Collections;
 import java.util.Set;
 
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
@@ -18,17 +18,20 @@ public class Peticao implements ValueObject<Peticao> {
 	
 	private PeticaoId id;
 	private ClasseId classeProcessual;
+	private String tipo;
 	private Set<Parte> partes;
 	private Set<Peca> pecas;
 	private ProcessoWorkflowId processoWorkflowId;
 	
-	public Peticao(final PeticaoId id, final ClasseId classeProcessual, final Set<Parte> partes, final Set<Peca> pecas, final ProcessoWorkflowId processoWorkflowId) {
+	public Peticao(final PeticaoId id, final ClasseId classeProcessual, final String tipo, final Set<Parte> partes, final Set<Peca> pecas, final ProcessoWorkflowId processoWorkflowId) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
+		Validate.notBlank(tipo, "peticao.tipo.required");
 		Validate.notNull(processoWorkflowId, "peticao.processoWorkflowId.required");
 		
 		this.id = id;
 		this.classeProcessual = classeProcessual;
+		this.tipo = tipo;
 		this.partes = partes;
 		this.pecas = pecas;
 		this.processoWorkflowId = processoWorkflowId;
@@ -42,6 +45,10 @@ public class Peticao implements ValueObject<Peticao> {
 		return this.classeProcessual;
 	}
 	
+	public String tipo() {
+		return tipo;
+	}
+
 	public Set<Parte> partes() {
 		return Collections.unmodifiableSet(this.partes);
 	}
