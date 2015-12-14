@@ -11,5 +11,10 @@ import br.jus.stf.plataforma.acessos.domain.model.Usuario;
  *
  */
 public interface UsuarioApplicationEvent {
+	
+	/**
+	 * Dispara o evento de um novo usuário cadastrado.
+	 * @param usuario Dados do usuário.
+	 */
 	public void usuarioCadastrado(Usuario usuario);
 }

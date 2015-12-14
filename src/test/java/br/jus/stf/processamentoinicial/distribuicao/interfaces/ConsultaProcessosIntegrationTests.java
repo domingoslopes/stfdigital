@@ -33,4 +33,12 @@ public class ConsultaProcessosIntegrationTests extends AbstractIntegrationTests 
 			.andExpect(jsonPath("$.pecas", hasSize(1)));
 	}
 	
+	@Test
+	public void recuperarListaStatusProcesso() throws Exception {
+		//Recupera a lista de status do processo.
+		this.mockMvc.perform(get("/api/processos/status")
+			.header("login", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)));
+	}
+	
 }
