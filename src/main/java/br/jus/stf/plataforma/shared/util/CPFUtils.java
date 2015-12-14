@@ -40,12 +40,13 @@ public class CPFUtils {
 	public static String aplicarMascara(String cpf) {
 		Pattern pattern = Pattern.compile("(\\d{3})(\\d{3})(\\d{3})(\\d{2})");
 		Matcher matcher = pattern.matcher(cpf);
+		String novoCPF = "";
 
 		if (matcher.matches() && isValido(cpf)) {
-			cpf = matcher.replaceAll("$1.$2.$3-$4");
+			novoCPF = matcher.replaceAll("$1.$2.$3-$4");
 		}
 
-		return cpf;
+		return novoCPF;
 	}
 
     /**
@@ -53,11 +54,11 @@ public class CPFUtils {
      * @return
      */
     private static boolean isCPFPadrao(String cpf) {
-		if (cpf.equals("00000000000") || cpf.equals("11111111111")
-				|| cpf.equals("22222222222") || cpf.equals("33333333333")
-				|| cpf.equals("44444444444") || cpf.equals("55555555555")
-				|| cpf.equals("66666666666") || cpf.equals("77777777777")
-				|| cpf.equals("88888888888") || cpf.equals("99999999999")) {
+		if ("00000000000".equals(cpf) || "11111111111".equals(cpf)
+				|| "22222222222".equals(cpf) || "33333333333".equals(cpf)
+				|| "44444444444".equals(cpf) || "55555555555".equals(cpf)
+				|| "66666666666".equals(cpf) || "77777777777".equals(cpf)
+				|| "88888888888".equals(cpf) || "99999999999".equals(cpf)) {
 			return true;
 		}
 
@@ -76,7 +77,7 @@ public class CPFUtils {
 			soma += Integer.parseInt(numero.substring(i, i + 1)) * peso--;
 		}
 
-		if (soma % 11 == 0 | soma % 11 == 1) {
+		if (soma % 11 == 0 || soma % 11 == 1) {
 			primeiroDigito = new Integer(0);
 		} else {
 			primeiroDigito = new Integer(11 - (soma % 11));
@@ -89,7 +90,7 @@ public class CPFUtils {
 		}
 
 		soma += primeiroDigito.intValue() * 2;
-		if (soma % 11 == 0 | soma % 11 == 1) {
+		if (soma % 11 == 0 || soma % 11 == 1) {
 			segundoDigito = new Integer(0);
 		} else {
 			segundoDigito = new Integer(11 - (soma % 11));

@@ -202,7 +202,7 @@
 			return [200, classes, {}];
 		});
 		
-		$httpBackend.whenGET(properties.apiUrl + '/orgaos').respond(function(method, url, data, headers){
+		$httpBackend.whenGET(properties.apiUrl + '/orgaos/representados').respond(function(method, url, data, headers){
 			console.log('Recebendo orgãos:', method, url, data, headers);
 			return [200, orgaos, {}];
 		});
