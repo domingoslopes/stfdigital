@@ -25,6 +25,7 @@
 	                        <table class="table table-condensed table-hover">
    		                        <thead>
 		                            <tr>
+		                            	<th style="width: 10px;"><input type="checkbox" ng-model="checkToggle" ng-change="toggleCheck()"></th>
 		                                <th width="30%">Petição</th>
 		                                <th width="30%">Documento de Devolução</th>
 		                                <th width="20%">Arquivo Original</th>
@@ -33,6 +34,7 @@
 		                        </thead>
 	                            <tbody>
 	                                <tr ng-repeat="peticao in peticoes" ng-init="peca=pecaDocumentoDevolucao(peticao)">
+	                                	<td><input type="checkbox" checklist-model="selecao.peticoes" checklist-value="peticao"></td>
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peticao.identificacao}}</td>
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peca.descricao}}</td>
                                         <td class="font-montserrat fs-12 col-lg-12"><a ng-href="{{urlConteudo(peca)}}" target="_blank">Visualizar</a></td>
