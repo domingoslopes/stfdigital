@@ -42,7 +42,7 @@ public class PeticaoStatusIndexadorConsumer implements Consumer<Event<PeticaoSta
 
 		try {
 			this.indexadorRestAdapter.atualizarItemDeColecao(AutuacaoConfiguration.INDICE, psm.peticaoId().toString(),
-					psm.peticaoClass().getSimpleName(), campoColecao, expressaoId, idItem, mapaCamposAlterados);
+					psm.tipo(), campoColecao, expressaoId, idItem, mapaCamposAlterados);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
