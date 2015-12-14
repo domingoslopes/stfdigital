@@ -72,7 +72,7 @@ public class TarefaRestAdapter implements TarefaAdapter {
 		TarefaDto dto = tarefaRestResource.consultarPorProcesso(id.toLong());
 		tarefaRestResource.completar(dto.getId(), command);
 		peticaoRepository.refresh(peticao); // O comando acima poderá alterar o status da petição, por isso o refresh.
-		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao, workflow.id(), status)));
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao.id(), peticao.getClass().getSimpleName(), workflow.id(), status)));
 	}
 
 }
