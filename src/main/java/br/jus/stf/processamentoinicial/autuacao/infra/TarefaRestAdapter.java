@@ -8,8 +8,13 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
+import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusModificado;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
+import reactor.bus.Event;
+import reactor.bus.EventBus;
 
 /**
  * @author Rodrigo Barreiros
@@ -23,6 +28,12 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	@Autowired
 	private TarefaRestResource tarefaRestResource;
 
+	@Autowired
+	private PeticaoRepository peticaoRepository;
+	
+	@Autowired
+	private EventBus eventBus;
+	
 	@Override
 	public void completarDevolucao(Peticao peticao) {
 		completarTarefaPorProcesso(peticao, PeticaoStatus.DEVOLVIDA);		
@@ -54,11 +65,14 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	 * @param processoWorkflowId
 	 */
 	private void completarTarefaPorProcesso(Peticao peticao, PeticaoStatus status) {
-		ProcessoWorkflowId id = peticao.processosWorkflow().iterator().next().id();
+		ProcessoWorkflow workflow = peticao.processosWorkflow().iterator().next();
+		ProcessoWorkflowId id = workflow.id();
 		CompletarTarefaCommand command = new CompletarTarefaCommand();
 		command.setStatus(status.toString());
 		TarefaDto dto = tarefaRestResource.consultarPorProcesso(id.toLong());
 		tarefaRestResource.completar(dto.getId(), command);
+		peticaoRepository.refresh(peticao); // O comando acima poderá alterar o status da petição, por isso o refresh.
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao, workflow.id(), status)));
 	}
 
 }

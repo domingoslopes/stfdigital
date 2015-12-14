@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.AutuarPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.DevolverPeticaoCommand;
@@ -23,11 +27,8 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.PreautuarPet
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.RegistrarPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.RegistrarPeticaoFisicaCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
+import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.facade.PeticaoServiceFacade;
-
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * @author Rodrigo Barreiros
@@ -102,7 +103,7 @@ public class PeticaoRestResource {
     
     @ApiOperation(value = "Retorna a lista de status que podem ser atribuídos a uma petição.")
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public List<String> consultarStatus() {
+    public List<PeticaoStatusDto> consultarStatus() {
     	return this.peticaoServiceFacade.consultarStatusPeticao();
     }
 }
