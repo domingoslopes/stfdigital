@@ -36,5 +36,19 @@ public interface PeticaoApplicationEvent {
 	 * @param peticao Dados da petição.
 	 */
 	public void peticaoAutuada(Peticao peticao);
+
+	/**
+	 * Notifica interessados sobre a preautuação de uma petição.
+	 * 
+	 * @param peticao Dados da petição.
+	 */
+	public void peticaoPreautuada(Peticao peticao);
+
+	/**
+	 * Notifica interessados sobre a preparação da petição para devolução.
+	 * 
+	 * @param peticao
+	 */
+	public void peticaoPreparadaParaDevolucao(Peticao peticao);
 	
 }
