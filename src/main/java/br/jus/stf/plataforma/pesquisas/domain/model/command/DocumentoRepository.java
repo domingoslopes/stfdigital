@@ -27,5 +27,7 @@ public interface DocumentoRepository {
 	 * @param documento
 	 */
 	void atualizar(Documento documento);
+
+	void atualizarColecao(SubDocumento subDocumento);
 	
 }
