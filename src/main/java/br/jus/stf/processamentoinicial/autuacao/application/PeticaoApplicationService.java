@@ -101,13 +101,17 @@ public class PeticaoApplicationService {
 	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
 		if (peticaoValida) {
 			tarefaAdapter.completarPreautuacao(peticao);
+			peticao.preautuar(classeSugerida);
+			peticaoRepository.save(peticao);
+			peticaoApplicationEvent.peticaoPreautuada(peticao);
 		} else {
 			peticao.devolver(motivoDevolucao);
+			peticao.preautuar(classeSugerida);
+			peticaoRepository.save(peticao);
 			processoAdapter.devolver(peticao);
+			peticaoApplicationEvent.remessaInvalida(peticao);
 		}
 		
-		peticao.preautuar(classeSugerida);
-		peticaoRepository.save(peticao);
 	}
 
 	/**
@@ -121,14 +125,15 @@ public class PeticaoApplicationService {
 	public void autuar(Peticao peticao, ClasseId classe, boolean peticaoValida, String motivoRejeicao) {
 		if (peticaoValida) {
 			peticao.aceitar(classe);
+			peticaoRepository.save(peticao);
 			tarefaAdapter.completarAutuacao(peticao);
 			this.peticaoApplicationEvent.peticaoAutuada(peticao);
 		} else {
 			peticao.rejeitar(motivoRejeicao);
+			peticaoRepository.save(peticao);
 			processoAdapter.rejeitarAutuacao(peticao);
 			this.peticaoApplicationEvent.peticaoRejeitada(peticao);
 		}
-		peticaoRepository.save(peticao);
 	}
 
 	/**
@@ -136,7 +141,7 @@ public class PeticaoApplicationService {
 	 * 
 	 * @param peticao Dados da petição.
 	 */
-	public void devolver(Peticao peticao, TipoDevolucao tipoDevolucao, Long numero) {
+	public void prepararDevolucao(Peticao peticao, TipoDevolucao tipoDevolucao, Long numero) {
     	// Passo 01: Gerando o Ofício de Devolução e fazendo o upload do documento (arquivo temporário)...
 		byte[] oficio = pecaDevolucaoBuilder.build(peticao.identificacao(), tipoDevolucao, numero);
 		DocumentoTemporarioId documentoTemporarioId = documentoAdapter.upload(tipoDevolucao.nome(), oficio);
@@ -153,7 +158,7 @@ public class PeticaoApplicationService {
 		tarefaAdapter.completarPreparacaoParaDevolucao(peticao);
 		
 		//Passo 05: Gera o evento de peticao inválida.
-		this.peticaoApplicationEvent.remessaInvalida(peticao);
+		peticaoApplicationEvent.peticaoPreparadaParaDevolucao(peticao);
 	}
 	
 	/**
