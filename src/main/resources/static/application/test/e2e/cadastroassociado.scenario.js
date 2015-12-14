@@ -27,8 +27,42 @@
 		expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 		browser.ignoreSynchronization = false;
 	};
+	
+	var gerarCPFAleatorio = function() {
+		var cpf = "";
+		var soma = 0;
+		var resto;
 		
-	xdescribe('Cadastrando associado como GESTOR DE CADASTRO', function() {
+		for (var i = 0; i < 9; i++) {
+			var n = Math.floor(9 * Math.random());
+			cpf += n;
+			soma += (10 - i) * n;
+		}
+		
+		resto = (10 * soma) % 11;
+		if (resto > 9) {
+			resto = 0;
+		}
+		
+		cpf += resto;
+		
+		soma = 0;
+		for (var i = 0; i < 10; i++) {
+			var n = parseInt(cpf.substr(i, 1));
+			soma += (11 - i) * n; 
+		}
+		
+		resto = (10 * soma) % 11;
+		if (resto > 9) {
+			resto = 0;
+		}
+		
+		cpf += resto;
+		
+		return cpf;
+	}
+		
+	describe('Cadastrando associado como GESTOR DE CADASTRO', function() {
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
@@ -55,7 +89,7 @@
 			
 			cadastroAssociado = new CadastroAssociado();
 			cadastroAssociado.nome("João da Silva");
-			cadastroAssociado.cpf("04102030255"); // TODO: Gabriel.Bastos Gerar CPF válido, pra evitar o erro de "Associado já cadastrado com esse CPF"
+			cadastroAssociado.cpf(gerarCPFAleatorio());
 			cadastroAssociado.cargo("Servidor");
 			cadastroAssociado.tipoAssociacao("Representante");
 			cadastroAssociado.orgao("DEFENSORIA PÚBLICA DA UNIÃO");
@@ -67,7 +101,7 @@
 		});
 	});
 		
-	xdescribe('Cadastrando associado como GESTOR DE ÓRGÃO', function() {
+	describe('Cadastrando associado como GESTOR DE ÓRGÃO', function() {
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
@@ -94,7 +128,7 @@
 			
 			cadastroAssociado = new CadastroAssociado();
 			cadastroAssociado.nome("João da Silva");
-			cadastroAssociado.cpf("73880063540"); // TODO: Gabriel.Bastos Gerar CPF válido, pra evitar o erro de "Associado já cadastrado com esse CPF"
+			cadastroAssociado.cpf(gerarCPFAleatorio());
 			cadastroAssociado.cargo("Servidor");
 			cadastroAssociado.tipoAssociacao("Representante");
 			cadastroAssociado.orgao("PROCURADORIA-GERAL DA REPÚBLICA");
