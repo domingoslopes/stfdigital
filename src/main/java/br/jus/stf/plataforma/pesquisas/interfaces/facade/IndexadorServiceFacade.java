@@ -7,12 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
+import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
 
 /**
  * Serviço de fachada que concentra o acesso à indexação
@@ -87,6 +87,12 @@ public class IndexadorServiceFacade {
 	 */
 	private String converterJsonString(JsonNode json) throws JsonProcessingException {
 		return objectMapper.writeValueAsString(json);
+	}
+
+	public void atualizarColecao(String id, String tipo, String indice, String campoColecao, String expressaoId,
+			Object idItem, JsonNode objeto) throws JsonProcessingException {
+		Indice index = new Indice(indice); 
+		indexadorApplicationService.atualizarColecao(id, tipo, index, campoColecao, expressaoId, idItem, converterJsonString(objeto));
 	}
 	
 }
