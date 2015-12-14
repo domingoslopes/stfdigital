@@ -28,23 +28,13 @@ public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> imp
 	}
 	
 	@Override
-	public Papel findOne(PapelId id) {
-		return super.findOne(id);
-	}
-	
-	@Override
 	public Papel findOne(String nome) {
 		TypedQuery<Papel> query = entityManager.createQuery("SELECT papel FROM Papel papel WHERE papel.nome = :nome", Papel.class);
 		query.setParameter("nome", nome);
 		
 		return query.getSingleResult();
 	}
-	
-	@Override
-	public List<Papel> findAll() {
-		return super.findAll();
-	}
-	
+			
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Permissao> findPermissaoByPapel(PapelId id) {

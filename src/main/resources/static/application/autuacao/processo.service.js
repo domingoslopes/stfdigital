@@ -14,7 +14,7 @@
 			},
 			
 			listarStatus : function() {
-				return ["Distribuída"];
+				return $http.get(properties.apiUrl + '/processos/status');
 			}
 		};
 	});

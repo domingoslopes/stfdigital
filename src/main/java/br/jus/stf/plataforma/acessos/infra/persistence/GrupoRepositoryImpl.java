@@ -29,22 +29,12 @@ public class GrupoRepositoryImpl extends SimpleJpaRepository<Grupo, GrupoId> imp
 	}
 	
 	@Override
-	public Grupo findOne(GrupoId id) {
-		return super.findOne(id);
-	}
-	
-	@Override
 	public Grupo findOne(String nome, TipoGrupo tipo) {
-		TypedQuery<Grupo> query = entityManager.createQuery("SELECT grupo FROM Grupo grupo WHERE grupo.nome = :nome", Grupo.class);
+		TypedQuery<Grupo> query = entityManager.createQuery("SELECT grupo FROM Grupo grupo WHERE grupo.nome = :nome AND grupo.tipo = :tipo", Grupo.class);
 		query.setParameter("nome", nome);
 		query.setParameter("tipo", tipo);
 		
 		return query.getSingleResult();
-	}
-	
-	@Override
-	public List<Grupo> findAll() {
-		return super.findAll();
 	}
 	
 	@SuppressWarnings("unchecked")

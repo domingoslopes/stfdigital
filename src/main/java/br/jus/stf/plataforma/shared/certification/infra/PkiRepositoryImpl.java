@@ -44,8 +44,8 @@ public class PkiRepositoryImpl implements PkiRepository {
 				intermediateCerts.add(CertificateUtils.bytesToCertificate(c.content()));
 			}
 		}
-		ReadOnlyPki pki = new ReadOnlyPki(pkiId, rootCerts, intermediateCerts);
-		return pki;
+		
+		return new ReadOnlyPki(pkiId, rootCerts, intermediateCerts);
 	}
 
 	private boolean isPlataformaPki(PkiId pkiId) {

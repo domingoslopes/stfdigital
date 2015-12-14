@@ -23,8 +23,7 @@ public class DocumentValidatorApplicationService {
 	public DocumentValidation validateDocumentSignature(Document document, PkiIds pkiIds) {
 		Pki[] pkis = pkiRepository.findAll(pkiIds.ids());
 		DocumentValidator validator = factory.createDocumentSignatureValidator(pkis);
-		DocumentValidation validation = validator.validate(document);
-		return validation;
+		return validator.validate(document);
 	}
 	
 }

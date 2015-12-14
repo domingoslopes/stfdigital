@@ -26,6 +26,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusIndexadorConsumer;
 import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
 
 /**
@@ -57,10 +58,15 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	@InjectMocks
 	private PeticaoIndexadorConsumer peticaoIndexadorConsumer;
 	
+	@Autowired
+	@InjectMocks
+	private PeticaoStatusIndexadorConsumer peticaoStatusIndexadorConsumer;
+	
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		doNothing().when(indexadorRestAdapter).indexar(any(), any());
+		doNothing().when(indexadorRestAdapter).atualizarItemDeColecao(any(), any(), any(), any(), any(), any(), any());
 	}
 	
 	@Before
