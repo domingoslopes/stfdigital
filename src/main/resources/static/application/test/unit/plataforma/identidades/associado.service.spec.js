@@ -85,5 +85,15 @@
 			expect(sucessoLocal).not.toHaveBeenCalled();
 			expect(falhaLocal).toHaveBeenCalled();
 		});
+		
+		it("Deveria validar corretamente quais os tipos de associação", function() {
+			expect(associadoService.isTipoAssociacaoValido("Gestor")).toBeTruthy();
+			expect(associadoService.isTipoAssociacaoValido("Representante")).toBeTruthy();
+			expect(associadoService.isTipoAssociacaoValido("Associado")).toBeTruthy();
+			
+			expect(associadoService.isTipoAssociacaoValido("Dono")).toBeFalsy();
+			expect(associadoService.isTipoAssociacaoValido("Cargo")).toBeFalsy();
+			expect(associadoService.isTipoAssociacaoValido("Gst")).toBeFalsy();
+		});
 	});
 })();

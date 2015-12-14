@@ -21,6 +21,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
+import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PeticaoId;
@@ -116,7 +117,7 @@ public class PeticaoServiceFacade {
 	 */
 	public void devolver(Long peticaoId, TipoDevolucao tipoDevolucao, Long numero) {
 		Peticao peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.devolver(peticao, tipoDevolucao, numero);
+		peticaoApplicationService.prepararDevolucao(peticao, tipoDevolucao, numero);
 	}
 	
 	/**
@@ -139,15 +140,15 @@ public class PeticaoServiceFacade {
 	 * 
 	 * @return Lista de status.
 	 */
-	public List<String> consultarStatusPeticao() {
+	public List<PeticaoStatusDto> consultarStatusPeticao() {
 		
-		List<String> statusPeticao = new ArrayList<String>();
+		List<PeticaoStatusDto> statusPeticao = new ArrayList<PeticaoStatusDto>();
 		
 		for (PeticaoStatus p : PeticaoStatus.values()) {
-			statusPeticao.add(p.name());
+			statusPeticao.add(new PeticaoStatusDto(p.name(), p.descricao()));
 		}
 		
-		return statusPeticao.stream().sorted().collect(Collectors.toList());
+		return statusPeticao.stream().sorted((s1, s2) -> s1.getNome().compareTo(s2.getNome())).collect(Collectors.toList());
 	}
 
 	/**

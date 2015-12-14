@@ -31,6 +31,8 @@
 			<li action-menu id="registrar-peticao-fisica" title="Novo Item" details="Petição Física"></li>
 			<li action-menu id="registrar-peticao-eletronica" title="Novo Item" details="Petição Digital"></li>
 			<li action-menu id="registrar-peticao-eletronica-orgao" title="Novo Item" details="Petição Órgão"></li>
+			<li action-menu id="registrar-associado" title="Registrar" details="Associado"></li>
+			<li action-menu id="configurar-permissao" title="Configurar" details="Permissões"></li>
 		</ul>
 		<div class="clearfix"></div>
 	</div>
@@ -105,10 +107,16 @@
 						</span>
 					</button>
 					<ul class="dropdown-menu profile-dropdown" role="menu">
-						<li class="bg-master-lighter"><a id="logout" href="#"
-							ng-click="logout()" class="clearfix"> <span class="pull-left">Logout</span>
+						<li class="bg-master-lighter">
+							<a id="logout" href="#" ui-sref="informacoes-usuario" class="clearfix">Minhas Informa��es</a>
+						</li>
+						
+						<li class="bg-master-lighter">
+							<a id="logout" href="#" ng-click="logout()" class="clearfix">
+								<span class="pull-left">Logout</span>
 								<span class="pull-right"><i class="pg-power"></i></span>
-						</a></li>
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>

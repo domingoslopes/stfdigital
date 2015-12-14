@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.actions;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.plataforma.shared.actions.annotation.ActionController;
@@ -36,8 +38,8 @@ public class PeticaoActionsResource {
 	
 	@ActionMapping(id = "ASSINAR-DEVOLUCAO-PETICAO", name = "Assinar Documento de Devolução")
 	@FiltrarPeticaoPorStatus(PeticaoStatus.ASSINAR_DEVOLUCAO)
-	public void assinar(AssinarDevolucaoPeticaoCommand command) {
-		 
+	public void assinar(List<AssinarDevolucaoPeticaoCommand> command) {
+		throw new UnsupportedOperationException();
 	}
 	
 }

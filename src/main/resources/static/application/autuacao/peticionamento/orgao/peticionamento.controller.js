@@ -11,7 +11,7 @@
 
 		$scope.$parent.child = $scope;
 		
-		OrgaoService.listar().success(function(orgaos) {
+		OrgaoService.listarRepresentados().success(function(orgaos) {
 			$scope.orgaos = orgaos;
 		});
 		

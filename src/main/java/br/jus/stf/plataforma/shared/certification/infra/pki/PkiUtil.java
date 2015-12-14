@@ -26,7 +26,7 @@ public final class PkiUtil {
 		SortedMap<String, CustomKeyStore> stores = new TreeMap<>(new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				if ("root".equals(01) && !"root".equals(o2)) {
+				if ("root".equals(o1) && !"root".equals(o2)) {
 					return -1;
 				} else if (!o1.startsWith("root") && o2.startsWith("root")) {
 					return 1;
