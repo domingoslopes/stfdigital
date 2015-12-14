@@ -116,5 +116,11 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 		Long count = (Long)query.getSingleResult();
 		return count == 0;
 	}
+
+	@Override
+	public void refresh(Peticao peticao) {
+		entityManager.flush();
+		entityManager.refresh(peticao);
+	}
 	
 }
