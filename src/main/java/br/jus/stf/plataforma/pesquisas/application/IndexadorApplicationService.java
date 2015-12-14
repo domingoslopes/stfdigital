@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.jus.stf.plataforma.pesquisas.domain.model.command.Documento;
 import br.jus.stf.plataforma.pesquisas.domain.model.command.DocumentoRepository;
 import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
+import br.jus.stf.plataforma.pesquisas.domain.model.command.SubDocumento;
 
 /**
  * @author Lucas.Rodrigues
@@ -57,6 +58,12 @@ public class IndexadorApplicationService {
 	public void atualizar(String id, String tipo, Indice indice, String objeto) {
 		Documento documento = new Documento(id, tipo, indice, objeto);
 		documentoRepository.atualizar(documento);
+	}
+
+	public void atualizarColecao(String id, String tipo, Indice indice, String campoColecao, String expressaoId,
+			Object idItem, String objeto) {
+		SubDocumento subDocumento = new SubDocumento(id, tipo, indice, campoColecao, expressaoId, idItem, objeto);
+		documentoRepository.atualizarColecao(subDocumento);
 	}
 
 }
