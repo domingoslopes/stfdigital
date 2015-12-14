@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.shared.certification.domain.DocumentAdapter;
+import br.jus.stf.plataforma.shared.certification.domain.PdfSigningSpecificationBuilder;
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.pki.PkiIds;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignature;
@@ -15,6 +16,7 @@ import br.jus.stf.plataforma.shared.certification.domain.model.signature.Documen
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerId;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignerRepository;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashType;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
@@ -38,6 +40,9 @@ public class SignatureApplicationService {
 
 	@Autowired
 	private DocumentSignerFactory signerFactory;
+	
+	@Autowired
+	private PdfSigningSpecificationBuilder specBuilder;
 
 	/**
 	 * Recebe o certificado que vai assinar um documento, permitindo a criação
@@ -45,13 +50,15 @@ public class SignatureApplicationService {
 	 * 
 	 * @param certificate
 	 * @param pkiId
-	 * @param spec
+	 * @param reason
 	 * @return
 	 */
-	public DocumentSignerId prepareToSign(X509Certificate certificate, PkiIds pkiIds, SigningSpecification spec)
+	public DocumentSignerId prepareToSign(X509Certificate certificate, PkiIds pkiIds, String reason)
 			throws SigningException {
 		CertificateValidation validation = certificateValidationService.validate(certificate, pkiIds);
 		if (validation.valid()) {
+			// Constrói uma especificação de assinatura de PDF.
+			SigningSpecification spec = specBuilder.pkcs7Dettached().reason(reason).hashAlgorithm(HashType.SHA256).build();
 			DocumentSigner signer = signerFactory.create(documentSignerRepository.nextId(), spec, validation);
 			documentSignerRepository.save(signer);
 			return signer.id();
