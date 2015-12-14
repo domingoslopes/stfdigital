@@ -19,5 +19,5 @@ public class ProcessoActionsResource {
 		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), command.getPeticaoId(), command.getJustificativa(),
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
-
+	
 }

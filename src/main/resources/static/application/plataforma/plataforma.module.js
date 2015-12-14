@@ -58,7 +58,7 @@
 					controllerAs: 'vm'
 				}
 			}
-		});;
+		});
 		
 		DashletsProvider.dashlet('minhas-tarefas', {
 			view: 'application/plataforma/workflow/dashlets/minhas-tarefas.tpl.html',
