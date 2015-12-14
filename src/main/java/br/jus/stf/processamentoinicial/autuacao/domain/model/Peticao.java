@@ -79,7 +79,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
 	private Set<Peca> pecas = new LinkedHashSet<Peca>(0);
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "NUM_PROCESS_INSTANCE", nullable = false))
 	private Set<ProcessoWorkflow> processosWorkflow = new TreeSet<ProcessoWorkflow>((p1, p2) -> p1.id().toLong().compareTo(p2.id().toLong()));
