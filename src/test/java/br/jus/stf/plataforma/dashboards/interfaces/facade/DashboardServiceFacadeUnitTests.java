@@ -11,12 +11,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import br.jus.stf.plataforma.dashboards.application.DashboardApplicationService;
 import br.jus.stf.plataforma.dashboards.domain.model.Dashboard;
-import br.jus.stf.plataforma.dashboards.domain.model.DashboardRepository;
 import br.jus.stf.plataforma.dashboards.domain.model.Dashlet;
 import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDto;
 import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDtoAssembler;
-import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacade;
 
 /**
  * Testes unitários para o DashboardServiceFacade.
@@ -27,7 +26,7 @@ import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacade
 public class DashboardServiceFacadeUnitTests {
 
 	@Mock
-	private DashboardRepository dashboardRepository;
+	private DashboardApplicationService dashboardApplicationService;
 
 	@Mock(answer = Answers.CALLS_REAL_METHODS)
 	private DashboardDtoAssembler dashboardDtoAssembler;
@@ -42,8 +41,8 @@ public class DashboardServiceFacadeUnitTests {
 
 	@Test
 	public void recuperarPadrao() throws Exception {
-		Dashboard fakeDashboard = new Dashboard(Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02")));
-		Mockito.when(dashboardRepository.consultarPadrao()).thenReturn(fakeDashboard);
+		Dashboard fakeDashboard = new Dashboard("Dash", Arrays.asList(new Dashlet("dashlet-01"), new Dashlet("dashlet-02")));
+		Mockito.when(dashboardApplicationService.consultarPadrao()).thenReturn(fakeDashboard);
 
 		DashboardDto dashboard = dashboardServiceFacade.recuperarPadrao();
 		Assert.assertArrayEquals(new String[] { "dashlet-01", "dashlet-02" }, dashboard.getDashlets().toArray());

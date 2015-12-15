@@ -1,12 +1,13 @@
 package br.jus.stf.plataforma.notificacoes.domain.model;
 
 import br.jus.stf.plataforma.notificacoes.domain.exception.NotificacaoServiceException;
+import br.jus.stf.plataforma.shared.security.stereotype.Secured;
 
 /**
  * @author Lucas.Rodrigues
  *
  */
-public interface NotificacaoService {
+public interface NotificacaoService extends Secured {
 
 	/**
 	 * Emite uma notificação
@@ -16,5 +17,4 @@ public interface NotificacaoService {
 	 */
 	void emitir(Notificacao notificacao) throws NotificacaoServiceException;
 	
-	boolean permitidoEmitir();
 }
