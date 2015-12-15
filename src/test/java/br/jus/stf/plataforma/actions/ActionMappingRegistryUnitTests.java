@@ -1,18 +1,23 @@
 package br.jus.stf.plataforma.actions;
 
+import java.util.Optional;
+
+import org.junit.Assert;
 import org.junit.Test;
 
 import br.jus.stf.plataforma.shared.actions.service.ActionMappingRegistry;
+import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
 
 public class ActionMappingRegistryUnitTests {
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	public void findNotRegisteredAction() {
 		ActionMappingRegistry registry = new ActionMappingRegistry();
-		registry.findRegisteredActionsById("ACTIONID");
+		Optional<ActionMappingInfo> op = registry.findRegisteredActionsById("actionid");
+		Assert.assertFalse(op.isPresent());
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = Exception.class)
 	public void findActionIdNull() {
 		ActionMappingRegistry registry = new ActionMappingRegistry();
 		registry.findRegisteredActionsById(null);

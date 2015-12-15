@@ -21,6 +21,10 @@ public class NotificacaoEmailServiceImpl extends NotificacaoServiceImpl implemen
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	public NotificacaoEmailServiceImpl() {
+		super("notificar-email");
+	}
+	
 	@Override
 	public void emitir(Notificacao notificacao) throws NotificacaoServiceException {
 		try {

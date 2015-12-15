@@ -1,0 +1,61 @@
+<div class="content">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Informações do Usuário</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+	    <div class="row">
+       		<div class="col-md-6">
+				<div class="card share" data-social="item" style="width: 100%">
+				    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+				    <div class="card-header clearfix">
+				        <h5>Nome do usuário: {{usuario.nome}}</h5>
+				    </div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card share" data-social="item" style="width: 100%">
+				    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+				    <div class="card-header clearfix">
+				    	<h5>Setor: {{usuario.setorLotacao}} </h5>
+				    </div>
+				</div>
+        	</div>
+        	
+        	<div class="col-md-12">
+	        <div class="card share" data-social="item" style="width: 100%">
+				<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+				<div class="card-header clearfix ">
+					<h5>Papéis associados ao usuário</h5>
+					<h6>Quantidade de papéis: {{ usuario.papeis.length }}.</h6>
+				</div>
+				<div class="card-description">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Papel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="papel in usuario.papeis">
+                            	<td>
+                            		<strong>{{papel.nome}}</strong>
+                           		</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+			</div>
+        </div>
+        	
+       	</div>
+       	
+	</div>
+</div>

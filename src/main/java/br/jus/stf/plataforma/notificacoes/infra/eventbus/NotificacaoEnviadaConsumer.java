@@ -3,10 +3,10 @@ package br.jus.stf.plataforma.notificacoes.infra.eventbus;
 import static reactor.bus.selector.Selectors.$;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import reactor.bus.Event;
@@ -16,6 +16,7 @@ import br.jus.stf.plataforma.notificacoes.domain.model.Notificacao;
 import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoService;
 import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoUIService;
 import br.jus.stf.plataforma.notificacoes.domain.model.TipoNotificacao;
+import br.jus.stf.plataforma.notificacoes.infra.NotificacaoServiceLocator;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 
 /**
@@ -31,10 +32,10 @@ public class NotificacaoEnviadaConsumer implements Consumer<Event<NotificacaoEnv
 	private EventBus eventBus;
 	
 	@Autowired
-	private ApplicationContext applicationContext;
+	private NotificacaoUIService notificacaoUIService;
 	
 	@Autowired
-	private NotificacaoUIService notificacaoUIService;
+	private NotificacaoServiceLocator notificacaoServiceLocator;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -46,10 +47,10 @@ public class NotificacaoEnviadaConsumer implements Consumer<Event<NotificacaoEnv
 		List<Notificacao> notificacoes = event.getData().notificacoes();
 		try {
 			TipoNotificacao tipo = notificacoes.get(0).tipo();
-			NotificacaoService notificacaoService = applicationContext.getBean(tipo.strategy());
-			if (notificacaoService.permitidoEmitir()) {
+			Optional<NotificacaoService> notificacaoService = notificacaoServiceLocator.getBean(tipo.strategy());
+			if (notificacaoService.isPresent()) {
 				for (Notificacao notificacao : notificacoes) {
-					notificacaoService.emitir(notificacao);
+					notificacaoService.get().emitir(notificacao);
 				}
 			} else {
 				String msg = "Usuário sem permissões para emitir notificações de " + tipo.name();
