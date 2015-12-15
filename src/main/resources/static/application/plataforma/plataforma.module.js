@@ -54,7 +54,7 @@
 			views: {
 				'content@root': {
 					templateUrl: 'application/plataforma/identidades/usuario/informacoes.tpl.html',
-					controller: 'RegistrarAssociadoController',
+					controller: 'InformacoesController',
 					controllerAs: 'vm'
 				}
 			}
