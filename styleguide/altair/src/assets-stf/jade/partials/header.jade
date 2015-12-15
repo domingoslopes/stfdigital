@@ -1,0 +1,27 @@
+// main header
+header#header_main
+  .header_main_content
+    nav.uk-navbar
+      // main sidebar switch
+      a#sidebar_main_toggle.sSwitch.sSwitch_left(href='#')
+        span.sSwitchIcon
+      // secondary sidebar switch
+      a#sidebar_secondary_toggle.sSwitch.sSwitch_right.sidebar_secondary_check(href='#')
+        span.sSwitchIcon
+      #menu_top.uk-float-left.uk-hidden-small
+        include ./header-aplicativos.jade
+
+      .uk-navbar-flip
+        ul.uk-navbar-nav.user_actions
+          li
+            a#main_search_btn.user_action_icon(href='#')
+              i.material-icons.md-24.md-light &#xE8B6;
+
+          li(data-uk-dropdown="{mode:'click'}")
+            include ./header-notificacoes.jade
+
+          li(data-uk-dropdown="{mode:'click'}")
+            include ./header-perfil.jade
+
+  include ./header-pesquisa.jade
+// main header end
