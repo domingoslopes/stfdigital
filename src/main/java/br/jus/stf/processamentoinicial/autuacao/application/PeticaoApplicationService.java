@@ -14,6 +14,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
@@ -165,10 +166,23 @@ public class PeticaoApplicationService {
 	 * Assina o documento de devolução de uma Petição.
 	 * 
 	 * @param peticao
+	 * @param documentoTemporarioId
 	 */
-	public void assinarDevolucao(Peticao peticao) {
-		// TODO: Colocar aqui os passo para finalizar devolução
+	public void assinarDevolucao(Peticao peticao, DocumentoTemporarioId documentoTemporarioId) {
+		// Salva definitivamente o documento assinado.
+		DocumentoId documentoId = documentoAdapter.salvar(documentoTemporarioId);
+		
+		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8));
+		Peca pecaOriginal = peticao.pecas().stream().filter(p -> p.tipo().equals(tipo)).findFirst().get();
+		Peca pecaAssinada = new PecaPeticao(documentoId, tipo, pecaOriginal.descricao());
+		
+		peticao.substituirPeca(pecaOriginal, pecaAssinada);
+		
+		peticaoRepository.save(peticao);
+
 		tarefaAdapter.completarDevolucao(peticao);
+		
+		peticaoApplicationEvent.peticaoDevolucaoAssinada(peticao);
 	}
 	
 }

@@ -26,7 +26,8 @@
 				var stateParams = {'resources': resources};
 				
 				fakePeticaoService = {
-					consultar: function(){}
+					consultar: function(){},
+					assinarDevolucao: function(){}
 				};
 				
 				fakePecaService = {
@@ -120,6 +121,7 @@
 				};
 				
 				spyOn(fakePeticaoService, 'consultar').and.returnValue($q.when(fakePeticao));
+				spyOn(fakePeticaoService, 'assinarDevolucao').and.returnValue($q.when());
 				
 				spyOn(fakePecaService, 'montarUrlConteudo').and.returnValue('url-fake');
 				
@@ -191,6 +193,7 @@
 				
 				scope.finalizar();
 				expect(fakeMessages.error).not.toHaveBeenCalled();
+				expect(fakePeticaoService.assinarDevolucao).toHaveBeenCalledWith([{'peticaoId': 6, 'documentoId': 2}]);
 			});
 		});
 		
