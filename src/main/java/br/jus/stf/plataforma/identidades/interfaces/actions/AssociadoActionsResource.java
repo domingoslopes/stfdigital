@@ -7,12 +7,12 @@ import br.jus.stf.plataforma.identidades.interfaces.facade.AssociadoServiceFacad
 import br.jus.stf.plataforma.shared.actions.annotation.ActionController;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
 
-@ActionController(groups = "associado")
-public class AssociadoActionResource {
+@ActionController(groups = "menu")
+public class AssociadoActionsResource {
 	@Autowired
 	private AssociadoServiceFacade associadoServiceFacade;
 	
-	@ActionMapping(id = "REGISTRAR-ASSOCIADO", name = "Registrar Associado")
+	@ActionMapping(id = "registrar-associado", name = "Registrar Associado")
 	public void registrar(AssociadoCommand command) {
 		associadoServiceFacade.cadastrar(command.getIdOrgao(), command.getCPF(), command.getNome(), command.getTipoAssociacao(), command.getCargo());			
 	}
