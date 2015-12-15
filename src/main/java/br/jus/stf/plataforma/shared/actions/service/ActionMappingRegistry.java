@@ -5,13 +5,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -24,6 +25,7 @@ import br.jus.stf.plataforma.shared.actions.support.ActionConditionHandlerInfo;
 import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
 import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
 import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
+import br.jus.stf.plataforma.shared.security.annotation.SecuredResource;
 
 /**
  * Registro que fornece as ações definidas. O registro é realizado na inicialização do bean
@@ -53,9 +55,9 @@ public class ActionMappingRegistry implements InitializingBean {
 	 * 
 	 * @return a lista de ações registradas
 	 */
-	//@PostFilter("hasPermission(domainObject, 'EXECUTAR')")
-	public Collection<ActionMappingInfo> getRegisteredActions() {
-		return Collections.unmodifiableCollection(actions.values());
+	@SecuredResource
+	public Set<ActionMappingInfo> getRegisteredActions() {
+		return new HashSet<ActionMappingInfo>(actions.values());
 	}
 	
 	/**
@@ -63,11 +65,10 @@ public class ActionMappingRegistry implements InitializingBean {
 	 * 
 	 * @return a lista de ações registradas
 	 */
-	public ActionMappingInfo findRegisteredActionsById(String actionId) {
-		String id = Optional.ofNullable(actionId).orElseThrow(IllegalArgumentException::new);
-		Optional<ActionMappingInfo> actionInfo = Optional.ofNullable(actions.get(id.toLowerCase()));
-		return actionInfo.orElseThrow(
-				() -> new RuntimeException("Ação não registrada: " + actionId));
+	@SecuredResource
+	public Optional<ActionMappingInfo> findRegisteredActionsById(String actionId) {
+		Validate.notBlank(actionId);
+		return Optional.ofNullable(actions.get(actionId.toLowerCase()));
 	}
 	
 	/**
@@ -108,20 +109,18 @@ public class ActionMappingRegistry implements InitializingBean {
 	 */
 	private void processActionMethod(Class<?> controllerClass, Method method, Map<Class<?>, Class<?>> handlers) {
 		
-		ActionMappingInfo info = new ActionMappingInfo();
+		ActionMappingInfo info = null;
 		
 		for (Annotation annotation : method.getAnnotations()) {
 			if (annotation.annotationType().equals(ActionMapping.class)) {
 				ActionMapping actionMapping = (ActionMapping) annotation;
-				info.setId(actionMapping.id().toLowerCase());
+				info = new ActionMappingInfo(actionMapping.id().toLowerCase());
 				info.setDescription(actionMapping.name());
 				info.setControllerClass(controllerClass);
 				info.getGroupClasses().addAll(getGroupClasses(controllerClass));
 				info.setMethodName(method.getName());
 				info.setResourcesClass(getResourcesClass(method));
-				info.setResourcesMode(getResourcesMode(method)); 
-				info.getNeededAuthorities().addAll(
-						acessosRestAdapter.carregarPermissoesRecurso(actionMapping.id(), "ACAO"));
+				info.setResourcesMode(getResourcesMode(method));
 				
 			} else if (handlers.containsKey(annotation.annotationType())) {
 				info.getActionHandlersInfo().add(

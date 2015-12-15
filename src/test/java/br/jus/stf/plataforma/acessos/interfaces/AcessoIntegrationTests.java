@@ -51,7 +51,9 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 		this.mockMvc.perform(get("/api/acessos/usuario").header("login", "autuador")).andExpect(status().isOk())
 			.andExpect(jsonPath("$.login", is("autuador")))
 			.andExpect(jsonPath("$.nome", is("autuador")))
-			.andExpect(jsonPath("$.setorLotacao", is("SEJ")))
+			.andExpect(jsonPath("$.setorLotacao.codigo", is(600000627)))
+			.andExpect(jsonPath("$.setorLotacao.sigla", is("SEJ")))
+			.andExpect(jsonPath("$.setorLotacao.nome", is("SECRETARIA JUDICIÁRIA")))
 			.andExpect(jsonPath("$.papeis[0].nome", is("autuador")))
 			.andExpect(jsonPath("$.papeis[0].setor", is("SEJ")));
 	}

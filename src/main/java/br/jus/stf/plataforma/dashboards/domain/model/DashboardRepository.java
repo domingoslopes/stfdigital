@@ -1,5 +1,8 @@
 package br.jus.stf.plataforma.dashboards.domain.model;
 
+
+
+
 /**
  * Repositório para Dashboard.
  * 

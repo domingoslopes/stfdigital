@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.interfaces.facade;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,10 +15,12 @@ import br.jus.stf.processamentoinicial.distribuicao.domain.model.ParametroDistri
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoSituacao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.processamentoinicial.distribuicao.infra.PeticaoRestAdapter;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDtoAssembler;
+import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoStatusDto;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.ProcessoId;
 
@@ -90,4 +94,19 @@ public class ProcessoServiceFacade {
 				.collect(Collectors.toSet());
 	}
 
+	/**
+	 * Retorna a lista de status atribuídos a um processo.
+	 * 
+	 * @return Lista de status de processos.
+	 */
+	public List<ProcessoStatusDto> consultarStatus() {
+		
+		List<ProcessoStatusDto> statusProcesso = new ArrayList<ProcessoStatusDto>();
+		
+		for (ProcessoSituacao p : ProcessoSituacao.values()) {
+			statusProcesso.add(new ProcessoStatusDto(p.name(), p.descricao()));
+		}
+		
+		return statusProcesso.stream().sorted((s1, s2) -> s1.getNome().compareTo(s2.getNome())).collect(Collectors.toList());
+    }
 }

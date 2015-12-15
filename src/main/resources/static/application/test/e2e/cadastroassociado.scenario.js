@@ -1,8 +1,8 @@
 /**
- * @author Rodrigo Barreiros
+ * @author Gabriel Teles
  * 
  * @since 1.0.0
- * @since 07.07.2015
+ * @since 11.12.2015
  */
 /*jshint undef:false */
 (function() {
@@ -91,7 +91,7 @@
 			cadastroAssociado.nome("João da Silva");
 			cadastroAssociado.cpf(gerarCPFAleatorio());
 			cadastroAssociado.cargo("Servidor");
-			cadastroAssociado.tipoAssociacao("Representante");
+			cadastroAssociado.tipoAssociacao("Associado");
 			cadastroAssociado.orgao("DEFENSORIA PÚBLICA DA UNIÃO");
 			cadastroAssociado.enviar();
 			

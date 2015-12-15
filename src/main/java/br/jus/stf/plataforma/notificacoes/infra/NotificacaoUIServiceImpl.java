@@ -30,6 +30,10 @@ public class NotificacaoUIServiceImpl extends NotificacaoServiceImpl implements 
 	@Autowired
 	private IndexadorRestAdapter indexadorRestAdapter;
 	
+	public NotificacaoUIServiceImpl() {
+		super("notificar-ui");
+	}
+	
 	@Override
 	public void emitir(Notificacao notificacao) throws NotificacaoServiceException {
 		NotificacaoDto dto = notificacaoDtoAssembler.toDto(notificacao, false);
