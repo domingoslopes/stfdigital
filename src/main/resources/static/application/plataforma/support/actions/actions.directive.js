@@ -61,8 +61,7 @@
 				
 				var listActions = function() {
 					//serviço que lista as ações
-					ActionService.list($scope.resources, $scope.groups, $scope.context)
-					.then(function(actions) {
+					ActionService.list($scope.resources, $scope.groups, $scope.context).then(function(actions) {
 						$scope.actions = actions;
 					});
 				};
@@ -102,17 +101,25 @@
 			},
 			templateUrl : 'application/plataforma/support/actions/action.tpl.html',
 			controller : function($scope) {
-				ActionService.get($scope.id).then(function(action) {
-					$scope.description = action.description;
-					$scope.disabled = true;
-					$scope.showAction = true;
-					$scope.showIcon = angular.isString($scope.iconClass);
-					$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
-					$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+				
+				var action = null;
+				$scope.disabled = true;
+				$scope.showAction = true;
+				$scope.showIcon = angular.isString($scope.iconClass);
+				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
+				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+				
+				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
+					$scope.showDescription = true;
+				}	
+				
+				ActionService.get($scope.id).then(function(theAction) {
 					
-					if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
-						$scope.showDescription = true;
+					if (angular.isUndefined(theAction)) {
+						return;
 					}
+					action = theAction;
+					$scope.description = action.description;
 					//Verifica se a ação é permitida
 					ActionService.isAllowed($scope.id, $scope.resources)
 						.then(function(isAllowed) {
@@ -122,16 +129,16 @@
 								$scope.showAction = $scope.showNotAllowed;
 							}
 						});
-					
-					//vai para o estado de uma ação, passando os recursos como parâmetro
-					$scope.go = function() {
-						var params = {
-							action : action,
-							resources : $scope.resources
-						};
-						$state.go(action.id, params);
-					};
 				});
+				
+				//vai para o estado de uma ação, passando os recursos como parâmetro
+				$scope.go = function() {
+					var params = {
+						action : action,
+						resources : $scope.resources
+					};
+					$state.go(action.id, params);
+				};
 			}
 		};
 	}]);
@@ -143,37 +150,26 @@
 	 */
 	angular.plataforma.directive('actionMenu', ['$state', 'ActionService', function ($state, ActionService) {
 		return {
-			restrict : 'AE',
-			scope : {
-				id : '@', //obrigatório, identificador da ação
-				title : '@', //obrigatório, título para o menu
-				details : '@' //opcional, detalhamento do item do menu, default= descrição da ação
-			},
+			restrict : 'A',
+			scope : { },
 			templateUrl : 'application/plataforma/support/actions/actionmenu.tpl.html',
 			controller : function($scope) {
-				ActionService.get($scope.id).then(function(action) {
-					var resources = action.resourcesMode === 'None' ? [] : [{}]; 
-					$scope.showAction = false;
-					
-					if (angular.isUndefined($scope.details)) {
-						$scope.details = action.description;
-					}
-					
-					//Verifica se a ação é permitida
-					ActionService.isAllowed($scope.id, resources)
-						.then(function(isAllowed) {
-							$scope.showAction = isAllowed;
-						});
-					
-					//vai para o estado de uma ação, passando os recursos como parâmetro
-					$scope.go = function() {
-						var params = {
-							action : action,
-							resources : resources
-						};
-						$state.go(action.id, params);
-					};
+				
+				var resources = [{}];
+				var group = 'menu';
+				$scope.actions = [];
+				
+				ActionService.list(resources, group).then(function(actions) {
+					$scope.actions = actions;
 				});
+				
+				//vai para o estado de uma ação, passando os recursos como parâmetro
+				$scope.go = function(action) {
+					var params = {
+						action : action
+					};
+					$state.go(action.id, params);
+				};
 			}			
 		};
 	}]);
@@ -203,15 +199,22 @@
 			},
 			templateUrl : 'application/plataforma/support/actions/executor.tpl.html',
 			controller : function($scope) {
+				
+				$scope.disabled = true;
+				$scope.showAction = false;
+				$scope.showIcon = angular.isString($scope.iconClass);
+				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
+				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+				
 				ActionService.get($scope.id).then(function(action) {
-					if (angular.isObject(action) &&
-							ActionService.isValidResources(action, $scope.resources)) {
+					
+					if (angular.isUndefined(action)) {
+						return;
+					}
+					
+					if (ActionService.isValidResources(action, $scope.resources)) {
 						$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
-						$scope.disabled = true;
-						$scope.showAction = true;
-						$scope.showIcon = angular.isString($scope.iconClass);
-						$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
-						$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+
 						
 						if (angular.isUndefined($scope.verifyIfAllowed)) {
 							$scope.verifyIfAllowed = true;	
@@ -226,13 +229,11 @@
 							ActionService.isAllowed($scope.id, $scope.resources)
 								.then(function(isAllowed) {
 									$scope.disabled = !isAllowed;
-		
-									if ($scope.disabled && angular.isDefined($scope.showNotAllowed)) {
-										$scope.showAction = $scope.showNotAllowed;
-									}
+									$scope.showAction = (isAllowed) ? true : $scope.showNotAllowed;
 								});
 						} else {
 							$scope.disabled = false;
+							$scope.showAction = true;
 						}
 						
 						// Executa a ação

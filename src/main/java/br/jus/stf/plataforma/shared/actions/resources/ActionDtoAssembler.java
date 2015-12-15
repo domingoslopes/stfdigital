@@ -16,7 +16,6 @@ public class ActionDtoAssembler {
 		dto.setId(actionInfo.getId());
 		dto.setDescription(actionInfo.getDescription());
 		dto.setResourcesMode(actionInfo.getResourcesMode());
-		dto.setNeededAuthorities(actionInfo.getNeededAuthorities());
 		dto.setGroups(actionInfo.getGroupClasses());
 		dto.setHasConditionHandlers(!actionInfo.getActionHandlersInfo().isEmpty());
 		return dto;

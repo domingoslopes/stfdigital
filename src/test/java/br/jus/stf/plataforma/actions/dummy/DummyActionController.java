@@ -13,17 +13,17 @@ import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
 @ActionController(groups = "DummyObj")
 public class DummyActionController {
 	
-	@ActionMapping(id = "DO_NOTHING", name = "Do Nothing")
+	@ActionMapping(id = "do-nothing", name = "Do Nothing")
 	public void doNothing() {
 
 	}
 	
-	@ActionMapping(id = "DO_NOTHING_LONG", name = "Do Nothing Long")
+	@ActionMapping(id = "do-nothing-long", name = "Do Nothing Long")
 	public void doNothing(Long resource) {
 
 	}
 	
-	@ActionMapping(id = "DUMMY_ACTION", name = "Do Nothing")
+	@ActionMapping(id = "dummy-action", name = "Do Nothing")
 	@DummyAnnotation
 	public List<DummyObj> doNothingDummy(List<DummyObj> resources) {
 		List<DummyObj> dummies = new ArrayList<DummyObj>();

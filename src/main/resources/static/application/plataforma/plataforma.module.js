@@ -36,6 +36,28 @@
 					controllerAs: 'vm'
 				}
 			}
+		})
+		.state('configurar-permissao', {
+			parent: 'root',
+			url: '/permissoes',
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/acessos/permissoes/permissoes.tpl.html',
+					controller: 'PermissoesController',
+					controllerAs: 'vm'
+				}
+			}
+		})
+		.state('informacoes-usuario', {
+			parent: 'root',
+			url: '/usuario',
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/identidades/usuario/informacoes.tpl.html',
+					controller: 'InformacoesController',
+					controllerAs: 'vm'
+				}
+			}
 		});
 		
 		DashletsProvider.dashlet('minhas-tarefas', {

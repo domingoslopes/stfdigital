@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.interfaces;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDto;
+import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoStatusDto;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.facade.ProcessoServiceFacade;
 
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -39,4 +42,9 @@ public class ProcessoRestResource {
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
 
+	@ApiOperation(value = "Retorna a lista de status que podem ser atribuídos a um processo.")
+    @RequestMapping(value = "processos/status", method = RequestMethod.GET)
+    public List<ProcessoStatusDto> consultarStatus() {
+    	return this.processoServiceFacade.consultarStatus();
+    }
 }
