@@ -18,6 +18,7 @@
 		this.titleGestaoAutuacao = element(by.id('gestaoAutuacaoId'));
 
 		this.iniciarProcesso = function (idIcon) {
+			browser.waitForAngular();
 			browser.actions().mouseMove(element(by.css('i.pg-home'))).perform();
 			var elem = element(by.id(idIcon));
 			browser.actions().mouseMove(elem).perform();

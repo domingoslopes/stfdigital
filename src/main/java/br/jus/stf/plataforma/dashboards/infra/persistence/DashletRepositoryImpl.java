@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.dashboards.domain.model.Dashlet;
 import br.jus.stf.plataforma.dashboards.domain.model.DashletRepository;
-import br.jus.stf.plataforma.shared.security.stereotype.SecuredResource;
+import br.jus.stf.plataforma.shared.security.annotation.SecuredResource;
 
 /**
  * Implementação fake temporária do DashboardRepository. Essa implementação fixa

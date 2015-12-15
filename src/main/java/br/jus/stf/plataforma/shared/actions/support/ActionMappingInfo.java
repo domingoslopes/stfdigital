@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
-import br.jus.stf.plataforma.shared.security.stereotype.Resource;
+import br.jus.stf.plataforma.shared.security.resource.Resource;
+import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 
 /**
  * Armazena as metainformações definidas na anotação {@link ActionMapping}.
@@ -13,7 +14,7 @@ import br.jus.stf.plataforma.shared.security.stereotype.Resource;
  * @author Lucas.Rodrigues
  * 
  */
-public class ActionMappingInfo extends Resource<ActionMappingInfo> {
+public class ActionMappingInfo extends Resource {
 
 	private String id;
 	private String description;
@@ -25,7 +26,7 @@ public class ActionMappingInfo extends Resource<ActionMappingInfo> {
 	private Set<ActionConditionHandlerInfo> actionHandlersInfo = new HashSet<ActionConditionHandlerInfo>(0);
 	
 	public ActionMappingInfo(String id) {
-		super(id);
+		super(id, ResourceType.ACAO);
 		this.id = id;
 	}
 	
@@ -146,11 +147,6 @@ public class ActionMappingInfo extends Resource<ActionMappingInfo> {
 			return resourcesMode.equals(ResourcesMode.One) || resourcesMode.equals(ResourcesMode.Many);
 		}
 		return resourcesMode.equals(ResourcesMode.Many);
-	}
-
-	@Override
-	public String type() {
-		return "ACAO";
 	}
 
 }
