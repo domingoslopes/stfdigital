@@ -33,16 +33,16 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     	mockMvc.perform(post("/api/actions/isallowed")
     			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
-    			.content("{\"ids\":[\"dummy_action\"], \"resources\": [{\"attr\":\"TESTE1\"}]}"))
+    			.content("{\"ids\":[\"dummy-action\"], \"resources\": [{\"attr\":\"TESTE1\"}]}"))
     		.andExpect(status().isOk())
-    		.andExpect(jsonPath("$[0]", is("dummy_action")));
+    		.andExpect(jsonPath("$[0]", is("dummy-action")));
     		//.andDo(print());
     }
     
     @Test
     public void verificaAcao() throws Exception {
     	
-    	mockMvc.perform(post("/api/actions/dummy_action/isallowed")
+    	mockMvc.perform(post("/api/actions/dummy-action/isallowed")
     			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [{\"attr\":\"TESTE1\"}]}"))
@@ -50,7 +50,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     		.andExpect(jsonPath("$", is(true)));
     		//.andDo(print());
     	
-    	mockMvc.perform(get("/api/actions/do_nothing/isallowed"))
+    	mockMvc.perform(get("/api/actions/do-nothing/isallowed"))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$", is(true)));
     }
@@ -58,7 +58,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     @Test
     public void executaAcao() throws Exception {
     	
-    	mockMvc.perform(post("/api/actions/dummy_action/execute")
+    	mockMvc.perform(post("/api/actions/dummy-action/execute")
     			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [{\"attr\":\"TESTE1\"}, {\"attr\":\"TESTE2\"}]}"))
@@ -69,7 +69,7 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     @Test
     public void executaAcaoRestrita() throws Exception {
 
-    	mockMvc.perform(post("/api/actions/do_nothing_long/execute")
+    	mockMvc.perform(post("/api/actions/do-nothing-long/execute")
     			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [1]}"))
@@ -80,14 +80,14 @@ public class AcoesIntegrationTests extends AbstractIntegrationTests {
     @Test
     public void executaAcaoSemRecursos() throws Exception {
     	
-    	mockMvc.perform(post("/api/actions/do_nothing/execute")
+    	mockMvc.perform(post("/api/actions/do-nothing/execute")
     			.header("login", "peticionador")
     			.contentType(MediaType.APPLICATION_JSON)
     			.content("{\"resources\": [1]}"))
     		.andExpect(status().isOk());
     		//.andDo(print());
     	
-    	mockMvc.perform(get("/api/actions/do_nothing/execute")
+    	mockMvc.perform(get("/api/actions/do-nothing/execute")
     			.header("login", "peticionador"))
     		.andExpect(status().isOk());
     }

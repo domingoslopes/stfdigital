@@ -50,27 +50,27 @@ public class ActionServiceUnitTests {
 	@Test
 	public void isAllowedNotValidResourcesAndNotGrantedAuthorities() {
 		initMockActionInfo();
-		Assert.assertFalse(actionService.isAllowed("ACTIONID", new ArrayNode(null)));
+		Assert.assertFalse(actionService.isAllowed("actionid", new ArrayNode(null)));
 	}
 	
 	@Test
 	public void isAllowedValidResourcesAndGrantedAuthorities() {
 		ActionMappingInfo actionInfo = initMockActionInfo();
 		validResourcesAndAuthorities(actionInfo, false);
-		Assert.assertFalse(actionService.isAllowed("ACTIONID", new ArrayNode(null)));
+		Assert.assertFalse(actionService.isAllowed("actionid", new ArrayNode(null)));
 	}
 	
 	@Test(expected = Exception.class)
 	public void executeActionNotAllowed() throws Exception {
 		initMockActionInfo();
-		actionService.executeAction("ACTIONID", null);
+		actionService.executeAction("actionid", null);
 	}
 	
 	@Test(expected = Exception.class)
 	public void executeActionAllowedException() throws Exception {
 		ActionMappingInfo actionInfo = initMockActionInfo();
 		validResourcesAndAuthorities(actionInfo, true);
-		actionService.executeAction("ACTIONID", null);
+		actionService.executeAction("actionid", null);
 	}
 	
 	@Test
@@ -80,7 +80,7 @@ public class ActionServiceUnitTests {
 		when(actionInfo.getControllerClass()).thenReturn((Class) DummyActionController.class);
 		when(actionInfo.getMethodName()).thenReturn("doNothing");
 		when(applicationContext.getBean(DummyActionController.class)).thenReturn(mock(DummyActionController.class));
-		Assert.assertNull(actionService.executeAction("ACTIONID", null));
+		Assert.assertNull(actionService.executeAction("actionid", null));
 	}
 	
 	private ActionMappingInfo initMockActionInfo() {
