@@ -154,12 +154,10 @@ public class AcessosApplicationService {
 		
 		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
 		Usuario principal = new Usuario(idUsuario, pessoa, login);
-<<<<<<< HEAD
+
 		this.usuarioRepository.save(principal);
 		this.pessoaApplicationEvent.pessoaCadastrada(pessoa);
 				
-=======
-		
 		Grupo grupoUsuario = grupoRepository.findOne("usuario", TipoGrupo.CONFIGURACAO);
 		Set<Grupo> grupos = new HashSet<Grupo>();
 		grupos.add(grupoUsuario);
@@ -169,7 +167,6 @@ public class AcessosApplicationService {
 		usuarioRepository.save(principal);
 		pessoaApplicationEvent.pessoaCadastrada(pessoa);
 		
->>>>>>> a5a0bdf92951e09bdc59586a5ee3c13eaae22e29
 		return principal;
 	}
 
