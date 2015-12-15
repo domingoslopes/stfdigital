@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.identidades.infra.eventbus;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import reactor.bus.Event;
 import reactor.bus.EventBus;
@@ -15,7 +16,8 @@ import br.jus.stf.plataforma.identidades.application.UsuarioApplicationEvent;
  * @since 14.12.2015
  *
  */
-public class UsuarioApplicationEventImpl implements UsuarioApplicationEvent{
+@Component
+public class UsuarioApplicationEventImpl implements UsuarioApplicationEvent {
 	
 	@Autowired
 	private EventBus eventBus;

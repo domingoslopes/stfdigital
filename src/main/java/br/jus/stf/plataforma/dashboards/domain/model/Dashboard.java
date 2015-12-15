@@ -2,7 +2,8 @@ package br.jus.stf.plataforma.dashboards.domain.model;
 
 import java.util.List;
 
-import br.jus.stf.plataforma.shared.security.stereotype.Resource;
+import br.jus.stf.plataforma.shared.security.resource.Resource;
+import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 
 /**
  * Entidade Dashboard. É composta por um conjunto de Dashlets.
@@ -10,13 +11,13 @@ import br.jus.stf.plataforma.shared.security.stereotype.Resource;
  * @author Tomas.Godoi
  *
  */
-public class Dashboard extends Resource<Dashboard> {
+public class Dashboard extends Resource {
 
 	private String nome;
 	private List<Dashlet> dashlets;
 	
 	public Dashboard(String nome, List<Dashlet> dashlets) {
-		super(nome);
+		super(nome, ResourceType.DASHBOARD);
 		
 		this.nome = nome;
 		this.dashlets = dashlets;

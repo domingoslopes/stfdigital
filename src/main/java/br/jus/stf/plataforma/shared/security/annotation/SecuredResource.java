@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.shared.security.stereotype;
+package br.jus.stf.plataforma.shared.security.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

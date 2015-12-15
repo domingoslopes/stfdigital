@@ -91,7 +91,7 @@
 			cadastroAssociado.nome("João da Silva");
 			cadastroAssociado.cpf(gerarCPFAleatorio());
 			cadastroAssociado.cargo("Servidor");
-			cadastroAssociado.tipoAssociacao("Representante");
+			cadastroAssociado.tipoAssociacao("Associado");
 			cadastroAssociado.orgao("DEFENSORIA PÚBLICA DA UNIÃO");
 			cadastroAssociado.enviar();
 			

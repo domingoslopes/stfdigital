@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoService;
-import br.jus.stf.plataforma.shared.security.stereotype.SecuredResource;
+import br.jus.stf.plataforma.shared.security.annotation.SecuredResource;
 
 /**
  * @author Lucas.Rodrigues
