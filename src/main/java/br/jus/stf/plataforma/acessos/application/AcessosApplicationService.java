@@ -18,13 +18,12 @@ import br.jus.stf.plataforma.acessos.domain.model.PapelRepository;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
 import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoGrupo;
-import br.jus.stf.plataforma.acessos.domain.model.TipoRecurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
 import br.jus.stf.plataforma.identidades.application.PessoaApplicationEvent;
-import br.jus.stf.plataforma.identidades.application.UsuarioApplicationEvent;
 import br.jus.stf.plataforma.identidades.domain.model.Pessoa;
 import br.jus.stf.plataforma.identidades.domain.model.PessoaRepository;
+import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 import br.jus.stf.shared.GrupoId;
 import br.jus.stf.shared.PapelId;
 import br.jus.stf.shared.PessoaId;
@@ -56,9 +55,6 @@ public class AcessosApplicationService {
 	@Autowired
 	private PessoaApplicationEvent pessoaApplicationEvent;
 	
-	@Autowired
-	private UsuarioApplicationEvent usuarioApplicationEvent;
-	
 	public Set<Permissao> carregarPermissoesUsuario(String login) {
 		return Optional.ofNullable(usuarioRepository.findOne(login))
 				.map(usuario -> usuario.permissoes())
@@ -66,7 +62,7 @@ public class AcessosApplicationService {
 	}
 	
 	public Set<Permissao> carregarPermissoesRecurso(String nome, String tipo) {
-		return Optional.ofNullable(recursoRepository.findOne(nome, TipoRecurso.valueOf(tipo)))
+		return Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
 				.map(recurso -> recurso.permissoesExigidas())
 				.orElse(Collections.emptySet());
 	}
