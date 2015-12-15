@@ -28,7 +28,7 @@ public class UsuarioDto {
 	private String nome;
 	
 	@ApiModelProperty(value="Setor de lotação do usuário.")
-	private String setorLotacao;
+	private SetorDto setorLotacao;
 	
 	@ApiModelProperty(value="Lista de papéis associados ao usuário.")
 	private Set<PapelDto> papeis;
@@ -36,7 +36,7 @@ public class UsuarioDto {
 	@ApiModelProperty(value="Lista de permissões do usuário.")
 	private Set<GrantedAuthority> authorities;
 	
-	public UsuarioDto(Long id, String login, String nome, String setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
+	public UsuarioDto(Long id, String login, String nome, SetorDto setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
 		this.id = id;
 		this.login = login;
 		this.nome = nome;
@@ -69,11 +69,11 @@ public class UsuarioDto {
 		this.nome = nome;
 	}
 
-	public String getSetorLotacao() {
+	public SetorDto getSetorLotacao() {
 		return this.setorLotacao;
 	}
 
-	public void setSetorLotacao(String setorLotacao) {
+	public void setSetorLotacao(SetorDto setorLotacao) {
 		this.setorLotacao = setorLotacao;
 	}
 

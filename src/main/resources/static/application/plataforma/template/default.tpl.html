@@ -23,16 +23,25 @@
 	<!-- BEGIN SIDEBAR MENU -->
 	<div class="sidebar-menu">
 		<ul class="menu-items">
-			<li class="m-t-30"><a ui-sref="dashboard" class="detailed">
-				<span class="title">Dashboards</span>
-				<span class="details">Lista	de Dashlets</span>
-			</a><span class="icon-thumbnail bg-success"><i class="pg-home"></i></span>
+			<li class="m-t-30">
+				<a ui-sref="dashboard" class="detailed">
+					<span class="title">Dashboards</span>
+					<span class="details">Lista	de Dashlets</span>
+				</a>
+				<span class="icon-thumbnail">
+					<i class="pg-home"></i>
+				</span>
 			</li>
-			<li action-menu id="registrar-peticao-fisica" title="Novo Item" details="Petição Física"></li>
-			<li action-menu id="registrar-peticao-eletronica" title="Novo Item" details="Petição Digital"></li>
-			<li action-menu id="registrar-peticao-eletronica-orgao" title="Novo Item" details="Petição Órgão"></li>
-			<li action-menu id="registrar-associado" title="Registrar" details="Associado"></li>
-			<li action-menu id="configurar-permissao" title="Configurar" details="Permissões"></li>
+			<li>
+				<a href="javascript:;">
+					<span class="title">Novo Item</span>
+					<span class="arrow open"></span>
+				</a>
+				<span class="icon-thumbnail">
+					<i class=" fa fa-plus"></i>
+				</span>
+				<ul class="sub-menu" style="display: block;" action-menu></ul>
+			</li>
 		</ul>
 		<div class="clearfix"></div>
 	</div>

@@ -1,7 +1,3 @@
-<a id="link_{{id}}" class="detailed" ng-click="go()" ng-show="showAction">
-     <span class="title">{{title}}</span>
-     <span class="details">{{details}}</span>
-</a>
-<span class="icon-thumbnail bg-success" ng-show="showAction">
-	<i class="fa fa-plus"></i>
-</span>
+<li ng-repeat="action in actions">
+	<a id="link_{{action.id}}" ng-click="go(action)">{{action.description}}</a>
+</li>

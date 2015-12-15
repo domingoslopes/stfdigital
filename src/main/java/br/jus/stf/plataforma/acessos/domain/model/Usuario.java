@@ -169,8 +169,8 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 		return lotacao;
 	}
 	
-	public String setor(){
-		return Optional.ofNullable(lotacao).map(l -> l.sigla()).orElse("");
+	public Setor setor(){
+		return lotacao;
 	}
 	
 	@Override
