@@ -32,7 +32,7 @@ INSERT INTO plataforma.tipo_informacao (seq_tipo_informacao, nom_tipo_informacao
 
 INSERT INTO plataforma.permissao (seq_permissao, seq_tipo_informacao, seq_segmento, tip_permissao) VALUES (17, 6, null, 'CRIAR');
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (16, 'REGISTRAR-ASSOCIADO', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (16, 'registrar-associado', 'ACAO');
 INSERT INTO plataforma.permissao_recurso (seq_recurso, seq_permissao) VALUES (16, 17);
 
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (9, 17);

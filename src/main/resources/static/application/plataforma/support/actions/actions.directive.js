@@ -61,8 +61,7 @@
 				
 				var listActions = function() {
 					//serviço que lista as ações
-					ActionService.list($scope.resources, $scope.groups, $scope.context)
-					.then(function(actions) {
+					ActionService.list($scope.resources, $scope.groups, $scope.context).then(function(actions) {
 						$scope.actions = actions;
 					});
 				};
@@ -151,43 +150,23 @@
 	 */
 	angular.plataforma.directive('actionMenu', ['$state', 'ActionService', function ($state, ActionService) {
 		return {
-			restrict : 'AE',
-			scope : {
-				id : '@', //obrigatório, identificador da ação
-				title : '@', //obrigatório, título para o menu
-				details : '@' //opcional, detalhamento do item do menu, default= descrição da ação
-			},
+			restrict : 'A',
+			scope : { },
 			templateUrl : 'application/plataforma/support/actions/actionmenu.tpl.html',
 			controller : function($scope) {
 				
-				var action = null;
-				var resources = [];
-				$scope.showAction = false;
+				var resources = [{}];
+				var group = 'menu';
+				$scope.actions = [];
 				
-				ActionService.get($scope.id).then(function(theAction) {
-					
-					if (angular.isUndefined(theAction)) {
-						return;
-					}
-					action = theAction;
-					resources = action.resourcesMode === 'None' ? [] : [{}]; 
-					
-					if (angular.isUndefined($scope.details)) {
-						$scope.details = action.description;
-					}
-					
-					//Verifica se a ação é permitida
-					ActionService.isAllowed($scope.id, resources)
-						.then(function(isAllowed) {
-							$scope.showAction = isAllowed;
-						});
+				ActionService.list(resources, group).then(function(actions) {
+					$scope.actions = actions;
 				});
 				
 				//vai para o estado de uma ação, passando os recursos como parâmetro
-				$scope.go = function() {
+				$scope.go = function(action) {
 					var params = {
-						action : action,
-						resources : resources
+						action : action
 					};
 					$state.go(action.id, params);
 				};
