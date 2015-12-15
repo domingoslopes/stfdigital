@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.acessos.domain.model;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -76,7 +77,12 @@ public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId
 
 	@Override
 	public Set<Permissao> permissoes() {
-		return Collections.unmodifiableSet(permissoes);
+		Set<Permissao> permissoesCompletas = new HashSet<Permissao>();
+		
+		permissoesCompletas.addAll(permissoes);
+		Optional.ofNullable(grupo).ifPresent(g -> permissoesCompletas.addAll(g.permissoes()));
+		
+		return Collections.unmodifiableSet(permissoesCompletas);
 	}
 
 	@Override
