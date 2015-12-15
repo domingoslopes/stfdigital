@@ -13,11 +13,11 @@ public class ActionMappingRegistryUnitTests {
 	@Test
 	public void findNotRegisteredAction() {
 		ActionMappingRegistry registry = new ActionMappingRegistry();
-		Optional<ActionMappingInfo> op = registry.findRegisteredActionsById("ACTIONID");
+		Optional<ActionMappingInfo> op = registry.findRegisteredActionsById("actionid");
 		Assert.assertFalse(op.isPresent());
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test(expected = Exception.class)
 	public void findActionIdNull() {
 		ActionMappingRegistry registry = new ActionMappingRegistry();
 		registry.findRegisteredActionsById(null);
