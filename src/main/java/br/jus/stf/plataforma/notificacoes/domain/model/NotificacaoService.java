@@ -17,8 +17,4 @@ public interface NotificacaoService extends Secured {
 	 */
 	void emitir(Notificacao notificacao) throws NotificacaoServiceException;
 	
-	default String type() {
-		return "NOTIFICACAO";
-	}
-	
 }

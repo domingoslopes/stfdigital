@@ -1,18 +1,19 @@
-package br.jus.stf.plataforma.acessos.domain.model;
+package br.jus.stf.plataforma.shared.security.resource;
 
 import br.jus.stf.shared.stereotype.ValueObject;
 
-public enum TipoRecurso implements ValueObject<TipoRecurso>{
+public enum ResourceType implements ValueObject<ResourceType>{
 	
 	ACAO("Ação"),
 	DASHLET("Dashlet"),
+	DASHBOARD("Dashboard"),
 	NOTIFICACAO("Notificação"),
 	PESQUISA("Pesquisa"),
 	TAREFA("Tarefa");
 	
 	private String descricao;
 	
-	private TipoRecurso(final String descricao) {
+	private ResourceType(final String descricao) {
 		this.descricao = descricao;
 	}
 	
@@ -21,7 +22,7 @@ public enum TipoRecurso implements ValueObject<TipoRecurso>{
 	}
 
 	@Override
-	public boolean sameValueAs(final TipoRecurso other) {
+	public boolean sameValueAs(final ResourceType other) {
 		return this.equals(other);
 	}
 

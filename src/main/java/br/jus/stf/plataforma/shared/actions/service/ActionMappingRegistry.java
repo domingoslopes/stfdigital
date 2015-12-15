@@ -25,7 +25,7 @@ import br.jus.stf.plataforma.shared.actions.support.ActionConditionHandlerInfo;
 import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
 import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
 import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
-import br.jus.stf.plataforma.shared.security.stereotype.SecuredResource;
+import br.jus.stf.plataforma.shared.security.annotation.SecuredResource;
 
 /**
  * Registro que fornece as ações definidas. O registro é realizado na inicialização do bean
