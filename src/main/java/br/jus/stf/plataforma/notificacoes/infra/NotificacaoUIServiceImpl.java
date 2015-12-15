@@ -11,14 +11,13 @@ import br.jus.stf.plataforma.notificacoes.infra.configuration.NotificacoesConfig
 import br.jus.stf.plataforma.notificacoes.interfaces.dto.NotificacaoDto;
 import br.jus.stf.plataforma.notificacoes.interfaces.dto.NotificacaoDtoAssembler;
 import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
-import br.jus.stf.plataforma.shared.security.stereotype.Resource;
 
 /**
  * @author Lucas.Rodrigues
  *
  */
 @Component
-public class NotificacaoUIServiceImpl extends Resource<NotificacaoUIServiceImpl> implements NotificacaoUIService {
+public class NotificacaoUIServiceImpl extends NotificacaoServiceImpl implements NotificacaoUIService {
 
 	private static final String DESTINO = "/notificacoes"; 
 	
@@ -32,7 +31,7 @@ public class NotificacaoUIServiceImpl extends Resource<NotificacaoUIServiceImpl>
 	private IndexadorRestAdapter indexadorRestAdapter;
 	
 	public NotificacaoUIServiceImpl() {
-		super("NOTIFICAR-UI");
+		super("notificar-ui");
 	}
 	
 	@Override
