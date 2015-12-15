@@ -99,9 +99,9 @@ INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (8
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (9, 'minhas-peticoes', 'DASHLET');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (10, 'grafico-gestao', 'DASHLET');
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (11, 'notificar', 'NOTIFICACAO');
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (12, 'do_nothing_long', 'ACAO');
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (13, 'do_nothing', 'ACAO');
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (14, 'dummy_action', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (12, 'do-nothing-long', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (13, 'do-nothing', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (14, 'dummy-action', 'ACAO');
 
 INSERT INTO plataforma.permissao_recurso (seq_recurso, seq_permissao) VALUES (1, 1);
 INSERT INTO plataforma.permissao_recurso (seq_recurso, seq_permissao) VALUES (2, 2);
