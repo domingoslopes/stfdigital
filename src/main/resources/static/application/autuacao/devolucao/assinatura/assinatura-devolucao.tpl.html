@@ -38,23 +38,29 @@
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peticao.identificacao}}</td>
 	                                    <td class="font-montserrat fs-12 col-lg-12">{{peca.descricao}}</td>
                                         <td class="font-montserrat fs-12 col-lg-12"><a ng-href="{{urlConteudo(peca)}}" target="_blank">Visualizar</a></td>
-	                                    <td class="font-montserrat fs-12 col-lg-12"></td>
+	                                    <td class="font-montserrat fs-12 col-lg-12">
+	                                    	<div class="progress" style="margin-bottom: 0;" ng-show="peticao.progress() > 0">
+		                                    	<div class="progress-bar" role="progressbar" ng-style="{ 'width': peticao.progress() + '%' }"></div>
+		                                	</div>
+		                                </td>
 	                                </tr>
 	                            </tbody>
 	                        </table>
 	                    </div>
 	                    <div>
-							<button type="button" class="btn btn-info btn-s" ng-click="assinar()">
-								<span class="glyphicon glyphicon-asterisk"></span> Assinar
-							</button>
-						</div>
+	                    	<div class="progress" style="margin-bottom: 0;">
+		                    	<div class="progress-bar" role="progressbar" ng-style="{ 'width': progressoTotal() + '%' }"></div>
+		                    </div>
+	                    </div>
 		            </div>
            		</div>
 			</div>
 		</div>
 		<br />
 		<p>
-			<button id="botaoFinalizarAssinaturaDevolucao" class="btn btn-complete btn-cons m-t-10" ng-click="finalizar()">Finalizar</button>
+			<button id="botaoFinalizarAssinaturaDevolucao" type="button" class="btn btn-info btn-s" ng-click="assinar()">
+				<span class="glyphicon glyphicon-asterisk"></span> Assinar
+			</button>
 		</p>
 	</div>
 </div>

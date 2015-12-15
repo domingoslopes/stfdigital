@@ -50,5 +50,12 @@ public interface PeticaoApplicationEvent {
 	 * @param peticao
 	 */
 	public void peticaoPreparadaParaDevolucao(Peticao peticao);
+
+	/**
+	 * Notifica interessados sobre a assinatura do documento de devolução da petição.
+	 * 
+	 * @param peticao
+	 */
+	public void peticaoDevolucaoAssinada(Peticao peticao);
 	
 }

@@ -10,7 +10,7 @@ public class AssinarDevolucaoPeticaoCommand {
 	@ApiModelProperty(value = "Id da petição.", required = true)
 	private Long peticaoId;
 
-	@ApiModelProperty(value = "Id do documento de devolução assinado.", required = false)
+	@ApiModelProperty(value = "Id do documento de devolução assinado.", required = true)
 	private String documentoId;
 
 	public Long getPeticaoId() {
