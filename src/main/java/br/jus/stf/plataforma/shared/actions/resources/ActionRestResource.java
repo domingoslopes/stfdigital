@@ -100,10 +100,11 @@ public class ActionRestResource {
      * 
      * @param actionId
      * @return o resultado da execução
+     * @throws Exception 
      */
     @ApiOperation(value = "Executa uma ação sem recursos informados.")
 	@RequestMapping(value = "/{actionId}/execute", method = RequestMethod.GET)
-	public Object execute(@PathVariable("actionId") String actionId) {
+	public Object execute(@PathVariable("actionId") String actionId) throws Exception {
     	return actionService.executeAction(actionId, new ArrayNode(null));
 	}
     
@@ -113,10 +114,11 @@ public class ActionRestResource {
      * @param actionId
      * @param command
      * @return o resultado da execução
+     * @throws Exception 
      */
     @ApiOperation(value = "Executa uma ação sobre os recursos informados.")
 	@RequestMapping(value = "/{actionId}/execute", method = RequestMethod.POST)
-	public Object execute(@PathVariable("actionId") String actionId, @RequestBody ResourcesCommand command) {
+	public Object execute(@PathVariable("actionId") String actionId, @RequestBody ResourcesCommand command) throws Exception {
     	return actionService.executeAction(actionId, command.getResources());
 	}
 	

@@ -1,15 +1,12 @@
 package br.jus.stf.plataforma.shared.actions.support;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
-import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
+import br.jus.stf.plataforma.shared.security.resource.Resource;
+import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 
 /**
  * Armazena as metainformações definidas na anotação {@link ActionMapping}.
@@ -17,7 +14,7 @@ import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
  * @author Lucas.Rodrigues
  * 
  */
-public class ActionMappingInfo {
+public class ActionMappingInfo extends Resource {
 
 	private String id;
 	private String description;
@@ -26,8 +23,12 @@ public class ActionMappingInfo {
 	private String methodName;
 	private Class<?> resourcesClass;
 	private ResourcesMode resourcesMode;
-	private Set<GrantedAuthority> neededAuthorities = new HashSet<GrantedAuthority>();
-	private List<ActionConditionHandlerInfo> actionHandlersInfo = new ArrayList<ActionConditionHandlerInfo>(0);
+	private Set<ActionConditionHandlerInfo> actionHandlersInfo = new HashSet<ActionConditionHandlerInfo>(0);
+	
+	public ActionMappingInfo(String id) {
+		super(id, ResourceType.ACAO);
+		this.id = id;
+	}
 	
 	/**
 	 * @return the id
@@ -119,18 +120,11 @@ public class ActionMappingInfo {
 	public void setResourcesMode(ResourcesMode resourcesMode) {
 		this.resourcesMode = resourcesMode;
 	}
-	
-	/**
-	 * @return the neededAuthorities
-	 */
-	public Set<GrantedAuthority> getNeededAuthorities() {
-		return neededAuthorities;
-	}
 
 	/**
 	 * @return the actionHandlersInfo
 	 */
-	public List<ActionConditionHandlerInfo> getActionHandlersInfo() {
+	public Set<ActionConditionHandlerInfo> getActionHandlersInfo() {
 		return actionHandlersInfo;
 	}
 		
@@ -153,15 +147,6 @@ public class ActionMappingInfo {
 			return resourcesMode.equals(ResourcesMode.One) || resourcesMode.equals(ResourcesMode.Many);
 		}
 		return resourcesMode.equals(ResourcesMode.Many);
-	}
-	
-	/**
-	 * Verifica se o usuário possui os papéis necessários
-	 * 
-	 * @return
-	 */
-	public boolean hasNeededAuthorities() {
-		return SecurityContextUtil.userContainsAll(neededAuthorities);
 	}
 
 }

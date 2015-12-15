@@ -196,18 +196,6 @@
 		};
 		
 		/**
-		 * Valida se o usuário possui as permissões necessárias para listar uma ação
-		 */
-		//TODO Lucas.Rodrigues Recuperar os perfis de segurança do usuário
-		var hasNeededAuthorities = function(action) {
-			if (action.neededAuthorities.length === 0) {
-				return true;
-			}
-			var authorities = SecurityService.user().authorities;
-			return containsAll(action.neededAuthorities, authorities);
-		};
-		
-		/**
 		 * Valida caso um contexto informado se a ação pertence a esse contexto
 		 */
 		var isActionContext = function(action, context) {
@@ -219,19 +207,8 @@
 		 */
 		var isAllowed = function(action, resources, context) {
 			if (!isActionContext(action, context) ||
-					!that.isValidResources(action, resources) ||
-					!hasNeededAuthorities(action)) {
+					!that.isValidResources(action, resources)) {
 				return false;
-			}
-			return true;
-		};
-		
-		/**
-		 * Verifica se um array está contido em outro
-		 */
-		var containsAll = function(needles, haystack){ 
-			for(var i = 0 , len = needles.length; i < len; i++){
-				if ($.grep(haystack, function(e){ return e.authority == needles[i].authority; }).length === 0) return false;
 			}
 			return true;
 		};

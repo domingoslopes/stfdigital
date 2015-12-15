@@ -22,6 +22,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 import br.jus.stf.shared.stereotype.Entity;
 
 @javax.persistence.Entity
@@ -39,7 +40,7 @@ public class Recurso implements Entity<Recurso, Long> {
 	
 	@Column(name = "TIP_RECURSO", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private TipoRecurso tipo;
+	private ResourceType tipo;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PERMISSAO_RECURSO", schema = "PLATAFORMA",
@@ -51,7 +52,7 @@ public class Recurso implements Entity<Recurso, Long> {
 		
 	}
 	
-	public Recurso(final Long sequencial, final String nome, final TipoRecurso tipo, final Set<Permissao> permissoesExigidas) {
+	public Recurso(final Long sequencial, final String nome, final ResourceType tipo, final Set<Permissao> permissoesExigidas) {
 		Validate.notNull(sequencial, "recurso.sequencial.required");
 		Validate.notBlank(nome, "recurso.nome.required");
 		Validate.notNull(tipo, "recurso.tipo.required");
@@ -72,7 +73,7 @@ public class Recurso implements Entity<Recurso, Long> {
 		return nome;
 	}
 	
-	public TipoRecurso tipo() {
+	public ResourceType tipo() {
 		return tipo;
 	}
 	
