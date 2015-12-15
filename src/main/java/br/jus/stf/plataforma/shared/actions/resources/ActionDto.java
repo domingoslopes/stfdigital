@@ -2,8 +2,6 @@ package br.jus.stf.plataforma.shared.actions.resources;
 
 import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
 
 /**
@@ -16,7 +14,6 @@ public class ActionDto {
 	private String description;
 	private Set<String> groups;
 	private ResourcesMode resourcesMode;
-	private Set<GrantedAuthority> neededAuthorities;
 	private Boolean hasConditionHandlers;
 	
 	/**
@@ -59,20 +56,6 @@ public class ActionDto {
 	 */
 	public void setResourcesMode(ResourcesMode resourcesMode) {
 		this.resourcesMode = resourcesMode;
-	}
-	
-	/**
-	 * @return the neededAuthorities
-	 */
-	public Set<GrantedAuthority> getNeededAuthorities() {
-		return neededAuthorities;
-	}
-	
-	/**
-	 * @param neededAuthorities the neededAuthorities to set
-	 */
-	public void setNeededAuthorities(Set<GrantedAuthority> neededAuthorities) {
-		this.neededAuthorities = neededAuthorities;
 	}
 	
 	/**
