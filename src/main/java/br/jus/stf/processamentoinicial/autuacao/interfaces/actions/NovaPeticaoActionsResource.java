@@ -18,17 +18,17 @@ public class NovaPeticaoActionsResource {
 	@Autowired
 	private PeticaoServiceFacade peticaoServiceFacade;
 
-	@ActionMapping(id = "REGISTRAR-PETICAO-ELETRONICA", name = "Registrar Petição Eletrônica")
+	@ActionMapping(id = "registrar-peticao-eletronica", name = "Petição Eletrônica")
 	public Long peticionar(RegistrarPeticaoCommand command) {			
 		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas(), command.getOrgaoId());
 	}
 	
-	@ActionMapping(id = "REGISTRAR-PETICAO-ELETRONICA-ORGAO", name = "Registrar Petição Eletrônica")
+	@ActionMapping(id = "registrar-peticao-eletronica-orgao", name = "Petição Órgão")
 	public Long peticionarOrgao(RegistrarPeticaoCommand command) {			
 		return peticaoServiceFacade.peticionar(command.getClasseId(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo(), command.getPecas(), command.getOrgaoId());
 	}
 	
-	@ActionMapping(id = "REGISTRAR-PETICAO-FISICA", name = "Registrar Petição Física")
+	@ActionMapping(id = "registrar-peticao-fisica", name = "Petição Física")
 	public Long registrar(RegistrarPeticaoFisicaCommand command) {		
     	return peticaoServiceFacade.registrar(command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex());
 	}
