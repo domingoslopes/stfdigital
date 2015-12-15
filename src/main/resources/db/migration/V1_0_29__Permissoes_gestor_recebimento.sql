@@ -16,6 +16,6 @@ INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (11, 16
 
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (11, 7);
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (15, 'ASSINAR-DEVOLUCAO-PETICAO', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (15, 'assinar-devolucao-peticao', 'ACAO');
 
 INSERT INTO plataforma.permissao_recurso (seq_recurso, seq_permissao) VALUES (15, 16);

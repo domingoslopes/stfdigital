@@ -150,9 +150,6 @@ public class AcessosApplicationService {
 		
 		UsuarioId idUsuario = new UsuarioId(idPessoa.toLong());
 		Usuario principal = new Usuario(idUsuario, pessoa, login);
-
-		this.usuarioRepository.save(principal);
-		this.pessoaApplicationEvent.pessoaCadastrada(pessoa);
 				
 		Grupo grupoUsuario = grupoRepository.findOne("usuario", TipoGrupo.CONFIGURACAO);
 		Set<Grupo> grupos = new HashSet<Grupo>();
