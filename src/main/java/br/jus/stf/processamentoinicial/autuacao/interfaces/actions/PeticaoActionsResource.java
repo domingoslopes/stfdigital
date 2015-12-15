@@ -20,23 +20,23 @@ public class PeticaoActionsResource {
 	@Autowired
 	private PeticaoServiceFacade peticaoServiceFacade;
 	
-	@ActionMapping(id = "PREAUTUAR", name = "Preautuar Petição Física")
+	@ActionMapping(id = "preautuar", name = "Preautuar Petição Física")
 	public void preautuar(PreautuarPeticaoFisicaCommand command) {
 		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo());
 	}
 	
-	@ActionMapping(id = "AUTUAR", name = "Autuar Petição")
+	@ActionMapping(id = "autuar", name = "Autuar Petição")
 	public void autuar(AutuarPeticaoCommand command) {
 		peticaoServiceFacade.autuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo()); 
 	}
 	
-	@ActionMapping(id = "DEVOLVER-PETICAO", name = "Devolver Petição")
+	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição")
 	public void devolver(DevolverPeticaoCommand command) {
 		TipoDevolucao tipoDevolucao = TipoDevolucao.valueOf(command.getTipoDevolucao());
 		peticaoServiceFacade.devolver(command.getPeticaoId(), tipoDevolucao, command.getNumeroOficio()); 
 	}
 	
-	@ActionMapping(id = "ASSINAR-DEVOLUCAO-PETICAO", name = "Assinar Documento de Devolução")
+	@ActionMapping(id = "assinar-devolucao-peticao", name = "Assinar Documento de Devolução")
 	@FiltrarPeticaoPorStatus(PeticaoStatus.ASSINAR_DEVOLUCAO)
 	public void assinar(List<AssinarDevolucaoPeticaoCommand> command) {
 		throw new UnsupportedOperationException();
