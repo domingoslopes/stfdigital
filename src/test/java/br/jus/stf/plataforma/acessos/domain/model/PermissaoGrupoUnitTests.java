@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 import br.jus.stf.shared.GrupoId;
 import br.jus.stf.shared.SegmentoId;
 
@@ -53,7 +54,7 @@ public class PermissaoGrupoUnitTests {
 		permissoes.add(criarPessoa);
 		permissoes.add(criarPeca);
 		
-		Recurso autuar = new Recurso(2L, "Autuar", TipoRecurso.ACAO, permissoes);
+		Recurso autuar = new Recurso(2L, "Autuar", ResourceType.ACAO, permissoes);
 		
 		Assert.assertTrue(grupo.possuiAcessoNo(autuar));
 	}
@@ -70,7 +71,7 @@ public class PermissaoGrupoUnitTests {
 		permissoes.add(pesquisarPeticaoEletronica);
 		
 		
-		Recurso distribuir = new Recurso(1L, "Distribuir", TipoRecurso.ACAO, permissoes);
+		Recurso distribuir = new Recurso(1L, "Distribuir", ResourceType.ACAO, permissoes);
 		
 		Assert.assertFalse(grupo.possuiAcessoNo(distribuir));
 	}
