@@ -13,7 +13,21 @@
 	</div>
 	<div class="container-fluid container-fixed-lg">
 		<div class="row">
-			<div class="col-md-6" ng-show="detalhe.peticao.classe.length" >
+		    <div class="col-md-6">
+			    <div class="card share" data-social="item" style="width: 100%">
+<!-- 					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div> -->
+					<div class="pull-right">
+						<actions resources="peticaoResources" groups="peticao" context="autuacao" btn-class="btn-default" size="2"/>
+					</div>
+					<div class="card-header clearfix ">
+						<h5>Número da Petição</h5>
+					</div>
+					<div class="card-description">
+						 <h6  class="font-montserrat" >Número da Petição: <strong>{{peticao.id}}</strong></h6>
+					</div>
+				</div>
+		    </div>
+			<div class="col-md-6" ng-show="detalhe.peticao.classe" >
 				<div class="card share" data-social="item" style="width: 100%">
 					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 					<div class="card-header clearfix ">
@@ -21,17 +35,6 @@
 					</div>
 					<div class="card-description">
 						<h6  class="font-montserrat">Classe Processual: <strong>{{peticao.classe}}</strong></h6>
-					</div>
-				</div>
-		    </div>
-		    <div class="col-md-6">
-			    <div class="card share" data-social="item" style="width: 100%">
-					<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-					<div class="card-header clearfix ">
-						<h5>Número da Petição</h5>
-					</div>
-					<div class="card-description">
-						 <h6  class="font-montserrat" >Número da Petição: <strong>{{peticao.id}}</strong></h6>
 					</div>
 				</div>
 		    </div>
