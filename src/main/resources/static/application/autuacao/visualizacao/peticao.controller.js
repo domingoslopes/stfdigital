@@ -10,9 +10,11 @@
 		
 		$scope.peticao = {};
 		
-		var idPeticao = $stateParams.idPeticao;
+		var peticaoId = $stateParams.peticaoId;
 		
-		PeticaoService.consultar(idPeticao).then(function(data) {
+		$scope.peticaoResources = [{'peticaoId' : peticaoId}];
+		
+		PeticaoService.consultar(peticaoId).then(function(data) {
 			$scope.peticao = data;
 		});
 		

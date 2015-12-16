@@ -51,6 +51,8 @@
 
 		var commandPartesPeticao;
 		
+		$scope.recursos = [{}];
+		
 		$scope.pesquisaProcesso = {
 				texto : 'identificacao',
 				indices : ['distribuicao'],
@@ -130,14 +132,14 @@
 		}
 		
 		
-		$scope.finalizar = function() {
+		$scope.validar = function(){
+			var errors = null;
 			
 			//Caso o usuário selecione o tipo de distribuição "Comum", a lista de ministros candidatos não
 			//deve estar vazia
 			if ($scope.tipoDistribuicao == 'COMUM'){
 				if($scope.ministrosCandidados.length == 0){
-					messages.error('A lista deve possuir ao menos um Ministro para sorteio.');
-					return;
+					errors = 'A lista deve possuir ao menos um Ministro para sorteio.';
 				}
 			}
 			
@@ -145,15 +147,13 @@
 			// um processo adicionado
 			if ($scope.tipoDistribuicao == 'PREVENCAO'){
 				if ($scope.processosPreventos.length == 0){
-					messages.error('Você precisa adicionar ao menos um processo na lista de preventos.');
-					return;
+					errors += 'Você precisa adicionar ao menos um processo na lista de preventos.';
 				}
 			}
 			
 			//A justificativa deve ser obrigatória quando o tipo de distribuição for 'PREVENCAO'
 			if ($scope.justificativa.length == 0 && $scope.tipoDistribuicao == 'PREVENCAO' ){
-				messages.error('Você precisa inserir uma justificativa.');
-				return;
+				errors += 'Você precisa inserir uma justificativa.';
 			}
 			
 			//Se o tipo de distribuição for 'PREVENCAO' a lista de ministros candidatos e impedidos
@@ -163,17 +163,19 @@
 				$scope.ministrosImpedidos = [];
 			}
 			
-			var command = new DistribuirCommand($scope.tipoDistribuicao, $scope.idPeticao, $scope.justificativa, 
+			if (errors) {
+				messages.error(errors);
+				return false;
+			}
+			$scope.recursos[0] = new DistribuirCommand($scope.tipoDistribuicao, $scope.idPeticao, $scope.justificativa, 
 					$scope.ministrosCandidados, $scope.ministrosImpedidos, $scope.processosPreventos);
+			return true;
 			
-			PeticaoService.distribuir($scope.idPeticao, command).success(function(data) {
-				$state.go('dashboard');
-				//messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
-			}).error(function(data, status) {
-				if (status === 400) {
-					messages.error('A Petição <b>não pode ser registrada</b> porque ela não está válida.');
-				}
-			});
+		};
+		
+		$scope.finalizar = function(data) {
+			$state.go('dashboard');
+			messages.success('<b>' + data.classe + ' #' + data.numero + '</b> distribuída para <b>' + data.relator + '</b>');
 		};
 		
 		
