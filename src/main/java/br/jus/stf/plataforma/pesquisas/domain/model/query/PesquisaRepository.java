@@ -30,5 +30,13 @@ public interface PesquisaRepository {
 	 * @return o resultado da pesquisa
 	 */
 	List<Resultado> pesquisar(Pesquisa pesquisa, Pageable paginacao);
+
+	/**
+	 * Realize a contagem dos resultados da pesquisa com os filtros informados.
+	 * 
+	 * @param pesquisa
+	 * @return
+	 */
+	Long count(Pesquisa pesquisa);
 	
 }
