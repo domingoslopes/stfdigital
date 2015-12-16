@@ -118,10 +118,18 @@ public class AcessosApplicationService {
 		Optional.ofNullable(gruposAdicionados).ifPresent(g1 -> g1.forEach(g -> gruposAdic.add(this.grupoRepository.findOne(new GrupoId(g)))));
 				
 		Usuario usuario = usuarioRepository.findOne(new UsuarioId(id));
-		usuario.removerPapeis(papeisRemov);
-		usuario.removerGrupos(gruposRemov);
-		usuario.atribuirPapeis(papeisAdic);
-		usuario.atribuirGrupos(gruposAdic);
+		if (!papeisRemov.isEmpty()) {
+			usuario.removerPapeis(papeisRemov);
+		}
+		if (!gruposRemov.isEmpty()) {
+			usuario.removerGrupos(gruposRemov);
+		}
+		if (!papeisAdic.isEmpty()) {
+			usuario.atribuirPapeis(papeisAdic);
+		}
+		if (!gruposAdic.isEmpty()) {
+			usuario.atribuirGrupos(gruposAdic);
+		}
 		
 		usuarioRepository.save(usuario);
 	}
