@@ -26,11 +26,14 @@
 			replace: true,
 			templateUrl: 'application/plataforma/support/picklist/picklist.tpl.html',
 			scope: {
-			leftListRowsModel: '=leftListRows',
+				leftListRowsModel: '=leftListRows',
 				rightListRowsModel: '=rightListRows',
 				
 				displayFn: '&',
 		
+				toRightCallback: '&',
+				toLeftCallback: '&',
+				
 				listWidth: '@listWidth',//optional, empty by default
 				listHeight: '@listHeight',//optional, empty by default
 				showMoveAllButtons : '@' //optional, true by default
@@ -93,6 +96,10 @@
 						return row.data;
 					});
 		
+					if (scope.toRightCallback) {
+						this.toRightCallback({data: selectedData});
+					}
+					
 					//add data to the right list
 					scope.rightListRowsModel = scope.rightListRowsModel.concat(selectedData);
 		
@@ -116,6 +123,10 @@
 						return row.data;
 					});
 		
+					if (scope.toLeftCallback) {
+						this.toLeftCallback({data: selectedData});
+					}
+					
 					//add data to the left list
 					scope.leftListRowsModel = scope.leftListRowsModel.concat(selectedData);
 		
@@ -133,6 +144,10 @@
 				scope.moveRightAll = function () {
 					preventReinitialize = true;
 					
+					if (scope.toRightCallback) {
+						this.toRightCallback({data: scope.leftListRowsModel});
+					}
+					
 					//add data to the right list
 					scope.rightListRowsModel = scope.rightListRowsModel.concat(scope.leftListRowsModel);
 		
@@ -148,6 +163,10 @@
 		
 				scope.moveLeftAll = function () {
 					preventReinitialize = true;
+					
+					if (scope.toLeftCallback) {
+						this.toLeftCallback({data: scope.rightListRowsModel});
+					}
 					
 					//add data to the right list
 					scope.leftListRowsModel = scope.leftListRowsModel.concat(scope.rightListRowsModel);
