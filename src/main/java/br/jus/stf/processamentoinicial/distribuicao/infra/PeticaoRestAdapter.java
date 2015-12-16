@@ -39,7 +39,7 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 	@Override
 	public Peticao consultar(Long id) {
 		PeticaoDto peticaoDto = peticaoRestResource.consultar(id);
-		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()), new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()));
+		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), peticaoDto.getTipo(), carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()), new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()));
 	}
 	
 	private Set<Parte> carregarPartes(Map<String, List<Long>> partesDto) {

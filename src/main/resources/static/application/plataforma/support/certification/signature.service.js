@@ -103,6 +103,25 @@
 			
 			var documentUploadDeferred;
 			
+			var currentStep = 0;
+			var totalSteps = 12.0;
+			
+			this.progressTracker = function(totalProgress) {
+				return {
+					currentProgress: function() {
+						return (currentStep / totalSteps) * totalProgress;
+					}
+				};
+			};
+			
+			var trackProgress = function(func) {
+				return function() {
+					console.log(currentStep);
+					currentStep++;
+					return func.apply(this, arguments);
+				};
+			};
+			
 			// Callbacks
 			this.onSignerReady = function(callback) {
 				signerCreatedCallback = callback;
@@ -168,15 +187,17 @@
 			};
 			
 			this.start = function() {
+				currentStep = 0;
 				if (Crypto.use('auto')) {
-					$q.when().then(injectAlreadySelectedCertificate) // Injeta o certificado se já tiver sido selecionado.
-					.then(requestUserCertificate).then(collectCertificate)
-					.then(prepare)
-					.then(callSignerReadyCallback)
-					.then(preSign)
-					.then(injectCertificate).then(sign)
-					.then(injectSignerId).then(postSign)
-					.then(callSigningCompletedCallback)
+					currentStep++;
+					$q.when().then(trackProgress(injectAlreadySelectedCertificate)) // Injeta o certificado se já tiver sido selecionado.
+					.then(trackProgress(requestUserCertificate)).then(trackProgress(collectCertificate))
+					.then(trackProgress(prepare))
+					.then(trackProgress(callSignerReadyCallback))
+					.then(trackProgress(preSign))
+					.then(trackProgress(injectCertificate)).then(trackProgress(sign))
+					.then(trackProgress(injectSignerId)).then(trackProgress(postSign))
+					.then(trackProgress(callSigningCompletedCallback))
 					.catch(function(error) {
 						console.log('catch');
 						console.log(error);
