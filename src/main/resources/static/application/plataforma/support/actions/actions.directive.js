@@ -52,12 +52,14 @@
 				resources : '=', //obrigatório, recursos que sofrerão a ação
 				groups : '@', //obrigatório, indica os grupos das ações, pode ser um array 
 				context : '@', //opcional, filtra ações de um determinado contexto
-				btnClass: '@' //opcional, classes do botão, default= 'btn-default'
+				btnClass: '@', //opcional, classes do botão, default= 'btn-default'
+				size: '@' //opcional, tamanho do icone fa-cog	
 			},
 			templateUrl : 'application/plataforma/support/actions/actions.tpl.html',
 			controller : function($scope) {
 				$scope.actions = [];
 				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
+				$scope.sizeClass = angular.isString($scope.size) ? 'fa-'+ $scope.size + 'x'  : "";
 				
 				var listActions = function() {
 					//serviço que lista as ações
