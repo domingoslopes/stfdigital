@@ -77,7 +77,23 @@ public final class LocalMongoCleaner {
 	}
 
 	private static void killExtractedLinux() {
-		
+		BufferedReader reader = null;
+		try {
+			String line;
+			Process p = Runtime.getRuntime().exec("ps -ewwo pid,command");
+			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((line = reader.readLine()) != null) {
+				if (isMongodExtractedProcess(line)) {
+					String pid = line.trim().split(" ")[0];
+					Runtime.getRuntime().exec(String.format("kill -9 %s", pid));
+				}
+			}
+			reader.close();
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao matar o processo do mongodb.", e);
+		} finally {
+			IOUtils.closeQuietly(reader);
+		}
 	}
 	
 	private static boolean isMongodExtractedProcess(String processName) {
