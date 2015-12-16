@@ -80,6 +80,22 @@ public class AcessosRestResource {
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 	
+	@RequestMapping("/papeis")
+	public Set<PapelDto> todosPapeis() {
+		return acessosApplicationService.todosPapeis().stream()
+				.map(papel -> this.papelDtoAssembler.toDto(papel))
+				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+	
+	@RequestMapping("/grupos")
+	public Set<PapelDto> todosGrupos() {
+		return acessosApplicationService.todosPapeis().stream()
+				.map(papel -> this.papelDtoAssembler.toDto(papel))
+				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+	
 	@RequestMapping("/usuarios/grupos")
 	public Set<GrupoDto> grupos(@RequestParam("login") String login) {
 		return acessosApplicationService.carregarGruposUsuario(login).stream()

@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.acessos.application;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -77,6 +78,24 @@ public class AcessosApplicationService {
 		return Optional.ofNullable(usuarioRepository.findOne(login))
 				.map(usuario -> usuario.grupos())
 				.orElse(Collections.emptySet());
+	}
+	
+	/**
+	 * Carrega todos os papeis do sistema
+	 * 
+	 * @return List<Papel> Lista de todos os papeis
+	 */
+	public List<Papel> todosPapeis() {
+		return papelRepository.findAll();
+	}
+	
+	/**
+	 * Carrega todos os grupos do sistema
+	 * 
+	 * @return List<Grupo> Lista de todos os grupos
+	 */
+	public List<Grupo> todosGrupos() {
+		return grupoRepository.findAll();
 	}
 	
 	/**
