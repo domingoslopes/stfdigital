@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AssinaturaDevolucaoController', function($scope, $stateParams, PeticaoService, PecaService, SignatureService, messages) {
+	angular.autuacao.controller('AssinaturaDevolucaoController', function($scope, $state, $stateParams, PeticaoService, PecaService, SignatureService, messages) {
 		var resourcesToIds = function(resources) {
 			var resourcesIds = [];
 			angular.forEach(resources, function(resource) {
@@ -54,6 +54,12 @@
 		};
 		
 		var peticoesAssinadas = [];
+		var peticoesComErroDuranteAssinatura = [];
+		
+		var AssinarDevolucaoCommand = function(peticaoId, documentoId) {
+			this.peticaoId = peticaoId;
+			this.documentoId = documentoId;
+		};
 		
 		var signingManager = SignatureService.signingManager();
 		
@@ -79,31 +85,65 @@
 		};
 		
 		$scope.assinar = function() {
-			angular.forEach($scope.peticoes, function(peticao) {
+			if ($scope.selecao.peticoes.length == 0) {
+				messages.error('É necessário selecionar pelo menos uma petição para assinar.');
+			}
+			angular.forEach($scope.selecao.peticoes, function(peticao) {
 				var peca = $scope.pecaDocumentoDevolucao(peticao);
 				var idDocumento = peca.documentoId;
 				var signer = signingManager.createSigner();
 				
+				var progressTracker = signer.progressTracker(90); // 90% é o progresso final do passo de assinatura
+				var lastStepFinished = false;
+				
+				// Função que calcula o progresso atual da assinatura
+				peticao.progress = function() {
+					if (lastStepFinished) {
+						return 100;
+					} else {
+						return progressTracker.currentProgress();
+					}
+				};
+				
+				peticao.isFinished = function() {
+					return lastStepFinished;
+				};
+				
 				signer.onSignerReady(function(signerId) {
 					signer.provideExistingDocument(idDocumento);
 	            });
-	            signer.onSigningCompleted(function(signedDocument) {
-	            	signer.saveSignedDocument().then(function() {
-	            		peticoesAssinadas.push({'peticaoId': peticao.id, 'documentoId': signedDocument});
+	            signer.onSigningCompleted(function() {
+	            	signer.saveSignedDocument().then(function(savedSignedDocument) {
+	            		var command = new AssinarDevolucaoCommand(peticao.id, savedSignedDocument.documentId);
+	            		PeticaoService.assinarDevolucao([command]).then(function() {
+	            			lastStepFinished = true;
+	            			peticoesAssinadas.push(peticao);
+	            			checarTerminoAssinatura();
+	    				});
 	            	});
 	            });
 	            signer.onErrorCallback(function(error) {
-	            	console.log('controller-error-callback');
-	            	console.log(error);
+	            	messages.error('Erro ao assinar documento de devolução da Petição ' + petiao.id + '.');
+	            	peticoesComErroDuranteAssinatura.push(peticao);
+	            	checarTerminoAssinatura();
 	            });
 	            signer.start();
 			});
 		};
 		
-		$scope.finalizar = function() {
-			if (peticoesAssinadas.length == 0) {
-				messages.error('É necessário assinar os documentos antes de finalizar.');
+		var checarTerminoAssinatura = function() {
+			if (peticoesAssinadas.length + peticoesComErroDuranteAssinatura.length == $scope.selecao.peticoes.length) {
+				completar();
 			}
+		};
+		
+		$scope.progressoTotal = function() {
+			return (peticoesAssinadas.length + peticoesComErroDuranteAssinatura.length) / (1.0 * $scope.selecao.peticoes.length);
+		};
+		
+		var completar = function() {
+			$state.go('dashboard');
+			messages.success(peticoesAssinadas.length + ' documento(s) de devolução assinados com sucesso.');
 		};
 		
 	});

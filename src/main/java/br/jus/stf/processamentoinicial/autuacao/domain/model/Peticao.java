@@ -22,7 +22,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
@@ -85,6 +88,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	private Set<ProcessoWorkflow> processosWorkflow = new TreeSet<ProcessoWorkflow>((p1, p2) -> p1.id().toLong().compareTo(p2.id().toLong()));
 	
 	@Column(name = "DAT_CADASTRAMENTO")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCadastramento;
 	
 	@Column(name = "SIG_USUARIO_CADASTRAMENTO")
@@ -110,6 +114,11 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.usuarioCadastramento = usuarioCadastramento;
 	}
 
+	@PostLoad
+	private void init() {
+		this.identificacao = montarIdentificacao();
+	}
+	
 	@Override
 	public PeticaoId id() {
 		return this.id;
@@ -186,6 +195,13 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notNull(peca, "peticao.peca.required");
 	
 		return this.pecas.add(peca);
+	}
+	
+	public void substituirPeca(Peca pecaOriginal, Peca pecaSubstituta) {
+		Validate.notNull(pecaOriginal, "peticao.pecaOriginal.required");
+		Validate.notNull(pecaSubstituta, "peticao.pecaSubstituta.required");
+		removerPeca(pecaOriginal);
+		juntar(pecaSubstituta);
 	}
 	
 	/**
