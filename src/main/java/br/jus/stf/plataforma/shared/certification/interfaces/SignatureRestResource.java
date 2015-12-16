@@ -38,7 +38,7 @@ import br.jus.stf.plataforma.shared.certification.interfaces.commands.ProvideToS
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignerDto;
-import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * Serviços REST para a assinatura de documentos.
@@ -137,8 +137,8 @@ public class SignatureRestResource {
 	@ApiOperation("Salva o documento assinado no contexto de documentos.")
 	@RequestMapping(value = "/save-signed/{signerId}", method = RequestMethod.POST)
 	public SignedDocumentDto saveSigned(@PathVariable("signerId") String signerId) throws IOException {
-		DocumentoId documentId = signatureApplicationService.saveSigned(new DocumentSignerId(signerId));
-		return new SignedDocumentDto(documentId.toLong());
+		DocumentoTemporarioId documentId = signatureApplicationService.saveSigned(new DocumentSignerId(signerId));
+		return new SignedDocumentDto(documentId.toString());
 	}
 
 }

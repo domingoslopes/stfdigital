@@ -18,7 +18,6 @@ public class Documento implements Entity<Documento, String> {
 	
 	public Documento(String id, String tipo, Indice indice, String objeto) {
 		Validate.notBlank(id, "documento.id.required");
-		Validate.notBlank(tipo, "documento.tipo.required");
 		Validate.notNull(indice, "documento.indice.required");
 		Validate.notBlank(objeto, "documento.objeto.required");
 		

@@ -26,7 +26,8 @@
 				var stateParams = {'resources': resources};
 				
 				fakePeticaoService = {
-					consultar: function(){}
+					consultar: function(){},
+					assinarDevolucao: function(){}
 				};
 				
 				fakePecaService = {
@@ -34,7 +35,8 @@
 				};
 
 				fakeMessages = {
-					error: function(){}
+					error: function(){},
+					success: function(){}
 				};
 				
 				fakeSigner = new function() {
@@ -46,6 +48,14 @@
 					
 					this.onSignerReady = function(callback) {
 						callbackSignerReady = callback;
+					};
+					
+					this.progressTracker = function() {
+						return {
+							currentProgress: function() {
+								return 15.0;
+							}
+						};
 					};
 					
 					this.onSigningCompleted = function(callback) {
@@ -66,12 +76,12 @@
 					};
 					
 					this.saveSignedDocument = function() {
-						return $q.when();
+						return $q.when({'documentId': 7});
 					};
 					
-					this.start = function(){
+					this.start = function() {
 						callbackSignerReady("123");						
-					}
+					};
 				};
 				
 				spyOn(fakeSigner, 'start').and.callThrough();
@@ -120,10 +130,12 @@
 				};
 				
 				spyOn(fakePeticaoService, 'consultar').and.returnValue($q.when(fakePeticao));
+				spyOn(fakePeticaoService, 'assinarDevolucao').and.returnValue($q.when());
 				
 				spyOn(fakePecaService, 'montarUrlConteudo').and.returnValue('url-fake');
 				
 				spyOn(fakeMessages, 'error').and.callThrough();
+				spyOn(fakeMessages, 'success').and.callThrough();
 				
 				var controller = $controller('AssinaturaDevolucaoController', {
 					$scope : scope,
@@ -170,10 +182,15 @@
 				expect(fakePecaService.montarUrlConteudo).toHaveBeenCalledWith(fakePeca);
 			});
 			
-			it('Deveria validar que documentos não foram assinados', function() {
+			it('Deveria validar que nenhuma petição foi selecionada.', function() {
 				scope.$apply();
-				scope.finalizar();
-				expect(fakeMessages.error).toHaveBeenCalledWith("É necessário assinar os documentos antes de finalizar.");
+				
+				// Deseleciona todos.
+				scope.checkToggle = false;
+				scope.toggleCheck();
+				
+				scope.assinar();
+				expect(fakeMessages.error).toHaveBeenCalledWith("É necessário selecionar pelo menos uma petição para assinar.");
 			});
 			
 			it('Deveria assinar os documentos', function() {
@@ -189,8 +206,13 @@
 				expect(fakeSigner.provideExistingDocument).toHaveBeenCalledWith(2);
 				expect(fakeSigner.saveSignedDocument).toHaveBeenCalled();
 				
-				scope.finalizar();
 				expect(fakeMessages.error).not.toHaveBeenCalled();
+				
+				// Valida se chamou o PeticaoService.assinarDevolucao corretamente.
+				var callArgs = fakePeticaoService.assinarDevolucao.calls.mostRecent().args;
+				expect(callArgs.length).toEqual(1);
+				expect(callArgs[0].length).toEqual(1);
+				expect(callArgs[0][0]).toEqual(jasmine.objectContaining({'peticaoId': 6, 'documentoId': 7}));
 			});
 		});
 		

@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.factory('PeticaoService', function($http, $q, properties) {
+	angular.plataforma.factory('PeticaoService', function($http, $q, properties, ActionService) {
 		return {
 			peticionar : function(peticionarCommand) {
 				return $http.post(properties.apiUrl + '/peticoes', peticionarCommand);
@@ -37,6 +37,10 @@
 			
 			registrar : function(registrarCommand){
 				return $http.post(properties.apiUrl + '/peticoes/fisicas', registrarCommand);
+			},
+			
+			assinarDevolucao : function(assinarDevolucaoCommands) {
+				return ActionService.execute('assinar-devolucao-peticao', assinarDevolucaoCommands);
 			},
 			
 			listarTipoPecas : function() {
