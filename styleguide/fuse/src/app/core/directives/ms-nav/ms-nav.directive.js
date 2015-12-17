@@ -368,7 +368,7 @@
                     scope.$on('$destroy', function ()
                     {
                         stateChangeSuccessEvent();
-                    })
+                    });
                 };
             }
         };
