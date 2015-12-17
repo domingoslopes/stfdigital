@@ -22,7 +22,7 @@
         var customTheme = $cookies.getObject('customTheme');
         if ( customTheme )
         {
-            fuseThemes['custom'] = customTheme;
+            fuseThemes.custom = customTheme;
         }
 
         $mdThemingProvider.alwaysWatchTheme(true);

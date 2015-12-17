@@ -80,6 +80,22 @@ public class AcessosRestResource {
 				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 	
+	@RequestMapping("/papeis")
+	public Set<PapelDto> todosPapeis() {
+		return acessosApplicationService.todosPapeis().stream()
+				.map(papel -> this.papelDtoAssembler.toDto(papel))
+				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+	
+	@RequestMapping("/grupos")
+	public Set<GrupoDto> todosGrupos() {
+		return acessosApplicationService.todosGrupos().stream()
+				.map(grupo -> this.grupoDtoAssembler.toDto(grupo))
+				.sorted((p1, p2) -> p1.getNome().compareTo(p2.getNome()))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+	
 	@RequestMapping("/usuarios/grupos")
 	public Set<GrupoDto> grupos(@RequestParam("login") String login) {
 		return acessosApplicationService.carregarGruposUsuario(login).stream()
@@ -111,6 +127,19 @@ public class AcessosRestResource {
 		Usuario usuario = this.acessosApplicationService.recuperarInformacoesUsuario(login);
 		
 		return this.usuarioDtoAssembler.toDto(usuario, authorities);
+	}
+	
+	/**
+	 * Recupera o ID de determinado usuário
+	 * 
+	 * @param String login Login do usuário.
+	 * @return ID do usuário
+	 */
+	@ApiOperation("Recupera o ID de um usuário.")
+	@RequestMapping("/usuarios/id")
+	public Long recuperarId(@RequestParam("login") String login) {
+		Usuario usuario = this.acessosApplicationService.recuperarInformacoesUsuario(login);
+		return usuario.id().toLong();
 	}
 	
 
