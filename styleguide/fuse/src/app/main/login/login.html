@@ -1,1 +1,71 @@
-!!!
+<div id="login" layout="row" layout-align="start">
+    <div id="login-intro" flex hide show-gt-sm>
+        <div class="logo">
+            <span><img src="/assets/images/logos/stfdigital.png"/></span>
+        </div>
+        <div class="title" translate="LOGIN.INTRO_TITLE">
+            Bem-vindo ao STF Digital
+        </div>
+        <div class="description" translate="LOGIN.INTRO_DESCRIPTION">
+            Toda a tecnologia do STF reunida em um único lugar para você se preocupar com o que realmente importa: <strong>julgar mais, com mais qualidade e segurança.</strong>
+        </div>
+    </div>
+
+    <div id="login-form-wrapper" class="flex-scrollable md-whiteframe-8dp" ms-scroll>
+        <div id="login-form">
+            <div class="logo" hide-gt-sm>
+                <span><img src="/assets/images/logos/stfdigital.png"/></span>
+            </div>
+
+            <div class="title" translate="LOGIN.TITLE">STF Digital</div>
+            <div class="description" translate="LOGIN.DESCRIPTION">Todos os serviços do STF em um único lugar</div>
+
+            <form name="loginForm" novalidate>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="text" name="username" ng-model="vm.form.username" placeholder="Usuário"
+                           translate translate-attr-placeholder="LOGIN.USERNAME" required>
+
+                    <div ng-messages="loginForm.username.$error" ng-show="loginForm.username.$touched" role="alert" multiple>
+                        <div ng-message="required">
+                            <span translate="LOGIN.ERRORS.REQUIRED">Esse campo é obrigatório. Por favor preencha.</span>
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block" md-no-float>
+                    <input type="password" name="password" ng-model="vm.form.password" placeholder="Senha"
+                           translate translate-attr-placeholder="LOGIN.PASSWORD"
+                           required>
+                    <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched" role="alert">
+                        <div ng-message="required">
+                           <span translate="LOGIN.ERRORS.REQUIRED">Esse campo é obrigatório. Por favor preencha.</span>
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <div class="remember-forgot-password" layout="row" layout-sm="column"
+                     layout-align="space-between center">
+                    <md-checkbox class="remember-me" ng-model="data.cb1" aria-label="Remember Me">
+                        <span translate="LOGIN.REMEMBER_ME">Lembre de mim</span>
+                    </md-checkbox>
+
+                    <a ui-sref="app.pages_auth_forgot-password" class="clickable link"
+                       translate="LOGIN.FORGOT_PASSWORD">Esqueceu sua senha?</a>
+                </div>
+
+                <md-button type="submit" class="md-raised md-accent" aria-label="ENTRAR"
+                           ng-disabled="loginForm.$invalid || loginForm.$pristine"
+                           translate="LOGIN.LOG_IN" translate-attr-aria-label="LOGIN.LOG_IN">
+                    ENTRAR
+                </md-button>
+            </form>
+            </div>
+
+            <div class="register" layout="row" layout-sm="column" layout-align="center center">
+                <span class="text" translate="LOGIN.DONT_HAVE_ACCOUNT">Não tem uma conta?</span>
+                &nbsp;
+                <a class="clickable link" ui-sref="app.pages_auth_register-v2" translate="LOGIN.CREATE_ACCOUNT">Criar uma conta</a>
+            </div>
+        </div>
+    </div>
+</div>
