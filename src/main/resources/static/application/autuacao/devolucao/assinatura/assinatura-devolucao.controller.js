@@ -123,7 +123,7 @@
 	            	});
 	            });
 	            signer.onErrorCallback(function(error) {
-	            	messages.error('Erro ao assinar documento de devolução da Petição ' + petiao.id + '.');
+	            	messages.error('Erro ao assinar documento de devolução da Petição ' + peticao.id + '.');
 	            	peticoesComErroDuranteAssinatura.push(peticao);
 	            	checarTerminoAssinatura();
 	            });

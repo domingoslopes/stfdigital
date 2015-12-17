@@ -1,4 +1,5 @@
 /**
+ * Mocks específicos para os testes unitários.
  * 
  * @author Tomas.Godoi
  */ 
