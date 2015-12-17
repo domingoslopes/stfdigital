@@ -25,7 +25,7 @@
 
         // Navigation array
         var navigation = [];
-
+        /*jshint validthis:true */
         var service = this;
 
         // Methods
@@ -239,7 +239,7 @@
         /* ----------------- */
         /* Service           */
         /* ----------------- */
-
+        /*jshint validthis:true */
         this.$get = function ()
         {
             var activeItem = null,
