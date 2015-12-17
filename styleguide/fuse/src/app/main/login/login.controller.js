@@ -5,8 +5,8 @@
 
 		inject: ['$scope'],
 
-		init: {
-
+		init: function() {
+			
 		},
 
 		methods: {
