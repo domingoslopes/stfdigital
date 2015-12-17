@@ -26,7 +26,9 @@
             registeredThemes;
 
         // Methods
+        /*jshint validthis:true */
         this.setRegisteredPalettes = setRegisteredPalettes;
+        /*jshint validthis:true */
         this.setRegisteredThemes = setRegisteredThemes;
 
         //////////
@@ -54,6 +56,7 @@
         /**
          * Service
          */
+        /*jshint validthis:true */
         this.$get = function ()
         {
             var service = {
