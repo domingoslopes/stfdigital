@@ -42,36 +42,66 @@
 				configuracao : '=' //Configuração da diretiva
 			},
 			link : function(scope, elem, attrs) {
+				var configPesquisa = function(term, page) {
+					var conf = scope.configuracao;
+					
+					if (!angular.isObject(conf)) throw "Um objeto com a configuração deve ser informado!";
+					
+					var texto = null; //obrigatório, campo que representa o texto que será apresentado no retorno. Ex: 'identificacao'
+					if(angular.isDefined(conf.texto)) {
+						texto = conf.texto;
+					} else { 
+						throw 'Texto obrigatório! Um campo deve ser escolhido para ser exibido no resultado como texto.';
+					}
+					
+					var indices = null; //obrigatório, indices a serem pesquisados. Ex: ['autuacao']
+					if(angular.isArray(conf.indices)) {
+						indices = conf.indices;
+					} else { 
+						throw 'Índices obrigatórios! Um array deve ser informado com os índices para pesquisa.';
+					}
+					
+					var filtros = null; //obrigatório, filtros da pesquisa. Ex: ['identificacao']
+					if(angular.isArray(conf.filtros)) {
+						filtros = conf.filtros;
+					} else { 
+						throw 'Filtros obrigatórios! Os campos que devem ser filtrados pela entrada informada.';
+					}
+				
+					var campos = (angular.isArray(conf.campos)) ? conf.campos : null; //opcional, campos as serem retornados. Ex: 
+					var tipos = (angular.isArray(conf.tipos)) ? conf.tipos : null;  //opcional, os tipos de objetos que devem ser retornados. Ex: ['PeticaoFisica', 'Processo']
+					var ordenadores = (angular.isObject(conf.ordenadores)) ? conf.ordenadores : null; //opcional, campos de ordenação. Ex: [{'identificacao' : 'ASC'},{'classe' : 'DESC'}] 
+					var filtrosFixos = (angular.isObject(conf.filtrosFixos) ? conf.filtrosFixos : null); // Opcional, filtros fixos da consulta
+
+					var pesquisa = {
+	            		'indices': indices, 
+            			'filtros': {},
+            			'tipos': tipos,
+            			'campos': campos,
+            			'ordenadores': ordenadores,
+            		};
+					
+	            	if (isPaginada) {
+	            		pesquisa.page = page - 1;
+	            		pesquisa.tamanho = 15;
+	            	}
+
+		            angular.forEach(filtros, function(filtro) {
+            			pesquisa.filtros[filtro] = [term.toLowerCase()];
+            		});
+		            
+		            for (var chave in filtrosFixos) {
+            			pesquisa.filtros[chave] = filtrosFixos[chave];
+            		};
+	            		
+	            	return pesquisa;
+				}
+				
 				var conf = scope.configuracao;
-				if (!angular.isObject(conf)) throw "Um objeto com a configuração deve ser informado!";
-				
-				var texto = null; //obrigatório, campo que representa o texto que será apresentado no retorno. Ex: 'identificacao'
-				if(angular.isDefined(conf.texto)) {
-					texto = conf.texto;
-				} else { 
-					throw 'Texto obrigatório! Um campo deve ser escolhido para ser exibido no resultado como texto.';
-				}
-				
-				var indices = null; //obrigatório, indices a serem pesquisados. Ex: ['autuacao']
-				if(angular.isArray(conf.indices)) {
-					indices = conf.indices;
-				} else { 
-					throw 'Índices obrigatórios! Um array deve ser informado com os índices para pesquisa.';
-				}
-				
-				var filtros = null; //obrigatório, filtros da pesquisa. Ex: ['identificacao']
-				if(angular.isArray(conf.filtros)) {
-					filtros = conf.filtros;
-				} else { 
-					throw 'Filtros obrigatórios! Os campos que devem ser filtrados pela entrada informada.';
-				}
-				var campos = (angular.isArray(conf.campos)) ? conf.campos : null; //opcional, campos as serem retornados. Ex: 
-				var tipos = (angular.isArray(conf.tipos)) ? conf.tipos : null;  //opcional, os tipos de objetos que devem ser retornados. Ex: ['PeticaoFisica', 'Processo']
-				var ordenadores = (angular.isObject(conf.ordenadores)) ? conf.ordenadores : null; //opcional, campos de ordenação. Ex: [{'identificacao' : 'ASC'},{'classe' : 'DESC'}] 
 				var pesquisa = (angular.isDefined(conf.pesquisa)) ? conf.pesquisa : 'simples'; //opcional, o tipo de pesquisa que deve ser realizado. Ex: 'sugestao' ou 'paginada'
 				var isPaginada = (pesquisa === 'paginada');
 				var url = properties.apiUrl + '/pesquisas/';
-				url += (pesquisa === 'sugestao') ? 'sugestoes' : ((pesquisa === 'paginada') ? 'paginadas' : ''); 
+				url += (pesquisa === 'sugestao') ? 'sugestoes' : ((pesquisa === 'paginada') ? 'paginadas' : '');
 				
 				$(elem).select2({
 					dropdownAutoWidth: 'true',
@@ -88,20 +118,7 @@
 			            dataType: 'json',
 			            type: "POST",
 			            data: function (term, page) {
-			            	var pesquisa = {
-			            		'indices': indices, 
-		            			'filtros': {},
-		            			'tipos': tipos,
-		            			'campos': campos,
-		            			'ordenadores': ordenadores,
-		            		};
-			            	if (isPaginada) {
-			            		pesquisa.page = page - 1;
-			            		pesquisa.tamanho = 15;
-			            	}
-		            		angular.forEach(filtros, function(filtro) {
-		            			pesquisa.filtros[filtro] = [term.toLowerCase()];
-		            		});
+			            	var pesquisa = configPesquisa(term, page);
 			            	return JSON.stringify(pesquisa);
 			            },
 				        results: function (data, page) {
@@ -123,10 +140,10 @@
 			            }
 				    },
 			        formatResult: function (item) { 
-			        	return ('<div>' + item.objeto[texto] + '</div>'); 
+			        	return ('<div>' + item.objeto[scope.configuracao.texto] + '</div>'); 
 			        },
 			        formatSelection: function (item) { 
-			        	return item.objeto[texto]; 
+			        	return item.objeto[scope.configuracao.texto]; 
 			        },
 			        escapeMarkup: function (m) { 
 			        	return m;

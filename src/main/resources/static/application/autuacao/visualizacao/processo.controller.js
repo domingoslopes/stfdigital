@@ -7,6 +7,8 @@
 		
 		$scope.processo = {};
 		
+		$scope.processoResources = [{'processoId' : processoId}];
+		
 		ProcessoService.consultar(processoId).success(function(processo) {
 			$scope.processo = processo;
 		});
