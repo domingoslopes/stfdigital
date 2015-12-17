@@ -3,15 +3,14 @@
     'use strict';
 
     angular
-        .module('fuse')
+        .module('app')
         .config(routeConfig);
 
     /** @ngInject */
-    function routeConfig($stateProvider, $urlRouterProvider, $locationProvider)
-    {
+    function routeConfig($stateProvider, $urlRouterProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
 
-        $urlRouterProvider.otherwise('/sample');
+        $urlRouterProvider.otherwise('/login');
 
         // State definitions
         $stateProvider
@@ -33,8 +32,8 @@
                     'quickPanel@app': {
                         templateUrl: 'app/quick-panel/quick-panel.html',
                         controller : 'QuickPanelController as vm'
-                    }
-                }
+                    },
+                },
             });
     }
 
