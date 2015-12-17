@@ -15,7 +15,9 @@
 	var AssinaturaDevolucaoPage = function () {
 		var assinaturaDevolucao = this;
 		
-		
+		this.assinar = function() {
+			element(by.id('botaoFinalizarAssinaturaDevolucao')).click();
+		};
 	};
 
 	module.exports = AssinaturaDevolucaoPage;
