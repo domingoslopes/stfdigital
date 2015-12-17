@@ -25,7 +25,7 @@
 				}
 			}
 		}).state('visualizar.peticao', {
-			url: '/peticao/:idPeticao',
+			url: '/peticao/:peticaoId',
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/visualizacao/peticao.tpl.html',
