@@ -138,7 +138,7 @@
 
                 };
             }
-        }
+        };
 
     }
 
@@ -158,9 +158,9 @@
                         MsFormWizardCtrl = ctrls[1];
 
                     MsFormWizardCtrl.registerForm(formCtrl);
-                }
+                };
             }
-        }
+        };
     }
 
 })();
