@@ -1,3 +1,19 @@
 {
-	
+	"LOGIN": {
+		"INTRO_TITLE": "Bem-vindo ao STF Digital",
+		"INTRO_DESCRIPTION": "Toda a tecnologia do STF reunida em um único lugar para você se preocupar com o que realmente importa: <strong>julgar mais, com mais qualidade e segurança.</strong>",
+		"TITLE": "STF Digital",
+		"DESCRIPTION": "Todos os serviços do STF em um único lugar",
+		"USERNAME": "Usuário",
+		"PASSWORD": "Senha",
+		"REMEMBER_ME": "Lembre de mim",
+		"FORGOT_PASSWORD": "Esqueceu sua senha?",
+		"LOG_IN": "ENTRAR",
+		"DONT_HAVE_ACCOUNT": "Não tem uma conta?",
+		"CREATE_ACCOUNT": "Criar uma conta",
+
+		"ERRORS": {
+			"REQUIRED": "Esse campo é obrigatório. Por favor preencha."
+		}
+	}
 }

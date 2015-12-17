@@ -16,6 +16,10 @@
     margin: 0 8px;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
 // Soft hide (don't remove from DOM flow)
 .hidden {
     visibility: hidden;

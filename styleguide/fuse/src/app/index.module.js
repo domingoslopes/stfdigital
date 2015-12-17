@@ -20,7 +20,7 @@
             // Quick panel
             'app.quick-panel',
 
-            // Sample
-            'app.sample'
+            // Pages
+            'app.login'
         ]);
 })();
