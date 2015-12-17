@@ -6,7 +6,7 @@
      * Main module of the Fuse
      */
     angular
-        .module('fuse', [
+        .module('app', [
 
             // Core
             'app.core',
@@ -20,7 +20,7 @@
             // Quick panel
             'app.quick-panel',
 
-            // Sample
-            'app.sample'
+            // Pages
+            'app.login'
         ]);
 })();
