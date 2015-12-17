@@ -7,8 +7,18 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.factory('Crypto', function() {
-		return hwcrypto;
+	angular.plataforma.service('Crypto', function() {
+		this.use = function(backend) {
+			return hwcrypto.use(backend);
+		};
+		
+		this.getCertificate = function(options) {
+			return hwcrypto.getCertificate(options);
+		};
+		
+		this.sign = function(certificate, hash, options) {
+			return hwcrypto.sign(certificate, hash, options);
+		};
 	});
 	
 })();
