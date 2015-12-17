@@ -13,11 +13,16 @@
 			.state('app.login', {
 				url: '/login',
 				views: {
-					'content@app': {
+					'main@': {
+	                    templateUrl: 'app/core/layouts/content-only.html',
+	                    controller : 'MainController as vm'
+	                },
+					'content@app.login': {
 						templateUrl: 'app/main/login/login.html',
 						controller: 'LoginController'
 					}
-				}
+				},
+				bodyClass: 'login-v2'
 			});
 	}
 })();
