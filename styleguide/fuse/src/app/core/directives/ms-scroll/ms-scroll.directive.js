@@ -27,6 +27,7 @@
         };
 
         // Methods
+        /*jshint validthis:true */
         this.config = config;
 
         //////////
@@ -44,6 +45,7 @@
         /**
          * Service
          */
+        /*jshint validthis:true */
         this.$get = function ()
         {
             var service = {

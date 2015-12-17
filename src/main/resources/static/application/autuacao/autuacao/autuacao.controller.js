@@ -10,7 +10,9 @@
 	angular.autuacao.controller('AutuacaoController', function ($scope, $log, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var autuacao = this;
 		
-		autuacao.idPeticao = $stateParams.resources[0];
+		var resource = $stateParams.resources[0];
+		
+		autuacao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
 		
 		autuacao.classe = '';
 		
@@ -26,7 +28,7 @@
 			autuacao.classes = classes;
 		});
 		
-		PeticaoService.consultar(autuacao.idPeticao).then(function(data) {
+		PeticaoService.consultar(autuacao.peticaoId).then(function(data) {
 			autuacao.peticao = data;
 		});
 		
@@ -41,7 +43,7 @@
 				return;
 			}
 			
-			PeticaoService.autuar(autuacao.idPeticao, new AutuarCommand(autuacao.classe, autuacao.valida, autuacao.motivo)).success(function(data) {
+			PeticaoService.autuar(autuacao.peticaoId, new AutuarCommand(autuacao.peticaoId, autuacao.classe, autuacao.valida, autuacao.motivo)).success(function(data) {
 				$state.go('dashboard');
 			}).error(function(data, status) {
 				if (status === 400) {
@@ -50,8 +52,9 @@
 			});
 		};
 
-    	function AutuarCommand(classe, valida, motivo){
+    	function AutuarCommand(id, classe, valida, motivo){
     		var dto = {};
+    		dto.peticaoId = id;
     		dto.classeId = classe;
     		dto.valida = valida;
     		dto.motivo = motivo;
