@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.shared.errorhandling;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ErrorMessageDto {
@@ -18,4 +19,8 @@ public class ErrorMessageDto {
 		this.errors = errors;
 	}
 
+	public static ErrorMessageDto buildSingleMessageError(String error) {
+    	return new ErrorMessageDto(Arrays.asList(new ErrorDto(error)));
+    }
+	
 }
