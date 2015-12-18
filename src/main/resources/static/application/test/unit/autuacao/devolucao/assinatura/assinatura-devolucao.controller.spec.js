@@ -39,7 +39,7 @@
 					success: function(){}
 				};
 				
-				fakeSigner = new function() {
+				var FakeSigner = function() {
 					var self = this;
 					
 					var callbackSignerReady;
@@ -83,6 +83,8 @@
 						callbackSignerReady("123");						
 					};
 				};
+				
+				fakeSigner = new FakeSigner();
 				
 				spyOn(fakeSigner, 'start').and.callThrough();
 				spyOn(fakeSigner, 'onSignerReady').and.callThrough();
