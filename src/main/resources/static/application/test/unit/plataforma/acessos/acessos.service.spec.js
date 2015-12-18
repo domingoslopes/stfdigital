@@ -14,6 +14,8 @@
 		var httpBackend;
 		var properties;
 		
+		var $rootScope;
+		
 		var papeisMock = [
             {id: 1, nome: "peticionador"},
             {id: 2, nome: "recebedor"},
@@ -37,10 +39,11 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function($httpBackend, _properties_, AcessosService) {
+		beforeEach(inject(function($httpBackend, _properties_, AcessosService, _$rootScope_) {
 			httpBackend = $httpBackend;
 			properties = _properties_;
 			acessosService = AcessosService;
+			$rootScope = _$rootScope_;
 		}));
 		
 		it("Deveria listar corretamente os papeis do sistema", function() {
@@ -60,7 +63,7 @@
 		});
 		
 		it("Deveria listar corretamente os papeis de um usuário", function() {
-			httpBackend.expectGET(properties.apiUrl + '/acessos/usuarios/papeis', {params: {login: "usuario.mock"}}).respond(papeisUserMock);
+			httpBackend.expectGET(properties.apiUrl + '/acessos/usuarios/papeis?login=usuario.mock').respond(papeisUserMock);
 			acessosService.papeis('usuario.mock').then(function(response) {
 				expect(response.data).toEqual(papeisUserMock);
 			});
@@ -68,7 +71,7 @@
 		});
 		
 		it("Deveria listar corretamente os grupos de um usuário", function() {
-			httpBackend.expectGET(properties.apiUrl + '/acessos/usuarios/grupos', {params: {login: "usuario.mock"}}).respond(gruposUserMock);
+			httpBackend.expectGET(properties.apiUrl + '/acessos/usuarios/grupos?login=usuario.mock').respond(gruposUserMock);
 			acessosService.grupos('usuario.mock').then(function(response) {
 				expect(response.data).toEqual(gruposUserMock);
 			});
