@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.acessos.interfaces.AcessosRestResource;
+import br.jus.stf.shared.UsuarioId;
 
 /**
  * @author Lucas.Rodrigues
@@ -34,6 +35,10 @@ public class AcessosRestAdapter {
 	
 	public Set<String> carregarPapeisUsuario(String login) {
 		return acessosRestResouce.papeis(login).stream().map(p -> p.getNome()).collect(Collectors.toSet());
+	}
+	
+	public String recuperarNomeUsuario(UsuarioId usuarioId) {
+		return acessosRestResouce.recuperarUsuario(usuarioId.toLong()).getNome();
 	}
 	
 }

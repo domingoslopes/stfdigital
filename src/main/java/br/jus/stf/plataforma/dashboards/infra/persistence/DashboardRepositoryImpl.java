@@ -1,14 +1,18 @@
 package br.jus.stf.plataforma.dashboards.infra.persistence;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.dashboards.domain.model.Dashboard;
+import br.jus.stf.plataforma.dashboards.domain.model.DashboardId;
 import br.jus.stf.plataforma.dashboards.domain.model.DashboardRepository;
-import br.jus.stf.plataforma.dashboards.domain.model.Dashlet;
-import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
+import br.jus.stf.plataforma.shared.security.annotation.SecuredResource;
 
 /**
  * Implementação fake temporária do DashboardRepository. Essa implementação fixa
@@ -18,16 +22,27 @@ import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
  *
  */
 @Repository
-public class DashboardRepositoryImpl implements DashboardRepository {
+public class DashboardRepositoryImpl extends SimpleJpaRepository<Dashboard, DashboardId> implements DashboardRepository {
 	
-	private static final String DASHBOARD_PADRAO = "Dashboard";
+	private EntityManager entityManager;
 	
 	@Autowired
-	private AcessosRestAdapter acessosRestAdapter;
+	public DashboardRepositoryImpl(EntityManager entityManager) {
+		super(Dashboard.class, entityManager);
+		this.entityManager = entityManager;
+	}
 	
 	@Override
-	public Dashboard consultarPadrao() {
-		return new Dashboard(DASHBOARD_PADRAO, new ArrayList<Dashlet>());
+	@SecuredResource
+	public List<Dashboard> listar() {
+		return findAll();
+	}
+
+	@Override
+	public DashboardId proximoId() {
+		Query query = entityManager.createNativeQuery("SELECT PLATAFORMA.SEQ_DASHBOARD.NEXTVAL FROM DUAL", Long.class);
+		Long sequencial = (Long) query.getSingleResult();
+		return new DashboardId(sequencial);
 	}
 
 }
