@@ -167,7 +167,6 @@
 		});
 		
 		$httpBackend.whenPOST(properties.apiUrl + '/actions/isallowed').respond(function(method,url,data) {
-			console.log("Recuperando as ações verificadas");
 			var actions = ["dummy_action"];
 			return [200, actions, {}];
 		});
@@ -251,7 +250,6 @@
 		});
 		
 		$httpBackend.whenGET(properties.apiUrl + '/actions').respond(function(method,url,data) {
-			console.log("Recuperando as ações");
 			return [200, actions, {}];
 		});
 		
