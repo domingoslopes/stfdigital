@@ -152,9 +152,11 @@
 			
 			assinaturaDevolucaoPage.assinar();
 			
-			browser.sleep(3000); // TODO Verificar se apareceu mensagem de erro.
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-		    loginPage.logout();
+			expect(assinaturaDevolucaoPage.mensagemSucesso().isPresent()).toBeTruthy();
+			
+			loginPage.logout();
 		});
 		
 	});
