@@ -17,6 +17,12 @@
 		
 		this.assinar = function() {
 			element(by.id('botaoFinalizarAssinaturaDevolucao')).click();
+			
+			browser.waitForAngular();
+		};
+		
+		this.mensagemSucesso = function() {
+			return element(by.xpath("//*[contains(text(), '1 documento(s) de devolução assinados com sucesso.')]"));
 		};
 	};
 
