@@ -104,8 +104,7 @@
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/registro/registro.tpl.html',
-					controller: 'RegistroPeticaoFisicaController'
+					templateUrl: 'application/autuacao/registro/registro.tpl.html'
 				}
 			}
 		}).state('preautuar', {
@@ -114,8 +113,7 @@
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/preautuacao/preautuacao.tpl.html',
-					controller: 'PreautuacaoController'
+					templateUrl: 'application/autuacao/preautuacao/preautuacao.tpl.html'
 				}
 			}
 		}).state('autuar', {
@@ -124,8 +122,7 @@
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html',
-					controller: 'AutuacaoController'
+					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html'
 				}
 			}
 		}).state('devolver-peticao', {
