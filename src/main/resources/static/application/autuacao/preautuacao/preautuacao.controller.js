@@ -10,7 +10,7 @@
 	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var preautuacao = this;
 		
-		preautuacao.idPeticao = $stateParams.resources[0];
+		preautuacao.peticaoId = $stateParams.resources[0];
 		
 		preautuacao.valida = 'true';
 		
@@ -22,7 +22,9 @@
 		
 		preautuacao.peticao = {};
 		
-		PeticaoService.consultar(preautuacao.idPeticao).then(function(data) {
+		preautuacao.recursos = [{}];
+		
+		PeticaoService.consultar(preautuacao.peticaoId).then(function(data) {
 			preautuacao.peticao = data;
 		});
 		
@@ -30,29 +32,35 @@
 			preautuacao.classes = classes;
 		});
 		
-		preautuacao.finalizar = function() {
+		preautuacao.validar = function(){
+			var errors = null;
+			
 			if (preautuacao.classe.length === 0) {
-				messages.error('Você precisa selecionar <b>a classe processual sugerida</b>.');
-				return;
+				errors = 'Você precisa selecionar <b>a classe processual sugerida</b>.';
 			}
 			
 			if (preautuacao.valida === 'false' && preautuacao.motivo.length === 0) {
-				messages.error('Para petição incorretas, você precisa informar os detalhes do motivo.');
-				return;
+				errors += 'Para petição incorretas, você precisa informar os detalhes do motivo.';
 			}
 			
-			PeticaoService.preautuar(preautuacao.idPeticao, new PreautuarCommand(preautuacao.classe, preautuacao.valida, preautuacao.motivo)).success(function(data) {
-				$state.go('dashboard');
-				messages.success('Petição pré-autuada com sucesso.');
-			}).error(function(data, status) {
-				if (status === 400) {
-					messages.error('A Petição <b>não pôde ser pré-autuada</b> porque ela não está válida.');
-				}
-			});
+			if (errors) {
+				messages.error(errors);
+				return false;
+			}
+			
+			preautuacao.recursos[0] = new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, preautuacao.valida, preautuacao.motivo);
+			
+			return true;
 		};
 		
-    	function PreautuarCommand(classeId, valida, motivo){
+		preautuacao.finalizar = function() {
+			$state.go('dashboard');
+			messages.success('Petição pré-autuada com sucesso.');
+		};
+		
+    	function PreautuarCommand(peticaoId, classeId, valida, motivo){
     		var command = {};
+    		command.peticaoId = peticaoId;
     		command.classeId = classeId;
     		command.valida = valida;
     		command.motivo = motivo;

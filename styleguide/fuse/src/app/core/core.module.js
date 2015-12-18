@@ -24,6 +24,7 @@
                 'textAngular',
                 'ui.sortable',
                 'ng-sortable',
-                'xeditable'
-                ]);
+                'xeditable',
+                'classy'
+            ]);
 })();

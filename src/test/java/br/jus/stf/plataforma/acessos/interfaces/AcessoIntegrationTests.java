@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import net.minidev.json.JSONArray;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -113,5 +116,19 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(userJson.toString()))
 				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void listarTodosOsPapeis() throws Exception {
+		this.mockMvc.perform(
+			get("/api/acessos/papeis"))
+			.andExpect(jsonPath("$", instanceOf(JSONArray.class)));
+	}
+	
+	@Test
+	public void listarTodosOsGrupos() throws Exception {
+		this.mockMvc.perform(
+			get("/api/acessos/grupos"))
+			.andExpect(jsonPath("$", instanceOf(JSONArray.class)));
 	}
 }

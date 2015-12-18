@@ -8,6 +8,8 @@
 (function() {
 	'use strict';
 	
+	var e2eMockModule = require('../e2e-mocks.module');
+	
 	var PrincipalPage = require('./pages/principal.page');
 	
 	var PeticionamentoPage = require('./pages/peticionamento.page');
@@ -19,6 +21,8 @@
 	var DevolucaoPage = require('./pages/devolucao.page')
 	
 	var LoginPage = require('./pages/login.page');
+	
+	var AssinaturaDevolucaoPage = require('./pages/assinatura-devolucao.page');
 	
 	var principalPage;
 	
@@ -137,11 +141,18 @@
 		});
 		
 		it('Deveria assinar o documento de devolução.', function() {
+			browser.addMockModule('e2e.mocks.crypto', e2eMockModule.mockCryptoModule);
+			browser.refresh();
+			
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/assinatura-devolucao/);
-		    
 			
+			var assinaturaDevolucaoPage = new AssinaturaDevolucaoPage();
+			
+			assinaturaDevolucaoPage.assinar();
+			
+			browser.sleep(3000); // TODO Verificar se apareceu mensagem de erro.
 			
 		    loginPage.logout();
 		});
