@@ -56,19 +56,13 @@
 			var signer = signingManager.createSigner();
 			
 			signer.onSignerReady(function(signerId) {
-				console.log('controller-onSignerReady');
-				console.log(signerId);
 				signer.provideExistingDocument("6");
 			});
 			
 			signer.onSigningCompleted(function(signedDocument) {
-				console.log('controller-onSigningCompleted');
-				console.log(signedDocument);
 			});
 			
 			signer.onErrorCallback(function(error) {
-            	console.log('controller-onErrorCallback');
-            	console.log(error);
             });
 			
 			var progressTracker = signer.progressTracker(90);
