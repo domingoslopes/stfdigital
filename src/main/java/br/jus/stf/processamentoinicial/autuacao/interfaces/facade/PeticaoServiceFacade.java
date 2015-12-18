@@ -120,6 +120,11 @@ public class PeticaoServiceFacade {
 		peticaoApplicationService.prepararDevolucao(peticao, tipoDevolucao, numero);
 	}
 	
+	public void assinarDevolucao(Long peticaoId, String documentoId) {
+		Peticao peticao = carregarPeticao(peticaoId);
+		peticaoApplicationService.assinarDevolucao(peticao, new DocumentoTemporarioId(documentoId));
+	}
+	
 	/**
 	 * Consulta uma petição
 	 * 

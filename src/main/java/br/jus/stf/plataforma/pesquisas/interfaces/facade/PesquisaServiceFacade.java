@@ -48,7 +48,10 @@ public class PesquisaServiceFacade {
 			Map<String, String[]> filtros, Map<String, String> ordenadores, String campoAgregacao) {
 		Pesquisa pesquisa = new Pesquisa(indices, filtros)
 			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores).agregadoPeloCampo(campoAgregacao);
-		return resultadoDtoAssembler.toDto(pesquisaRepository.pesquisar(pesquisa, null));
+		Long total = pesquisaRepository.count(pesquisa);
+		int tamanhoPagina = total < 10 ? 10 : total.intValue(); // O tamanho da página será no mínimo 10.
+		Pageable paginacao = new PageRequest(0, tamanhoPagina); // Cria uma página com o tamanho total de itens
+		return resultadoDtoAssembler.toDto(pesquisaRepository.pesquisar(pesquisa, paginacao));
 	}
 	
 	/**

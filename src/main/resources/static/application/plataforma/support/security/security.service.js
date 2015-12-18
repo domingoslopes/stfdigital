@@ -47,10 +47,10 @@
 				if (papel.nome === papelNome) {
 					return true;
 				}
-			};
+			}
 			
 			return false;
-		}
+		};
 		
 		this.logout = function() {
 			return $http.post('/logout');

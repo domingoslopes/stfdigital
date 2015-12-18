@@ -56,7 +56,7 @@
 		
 		this.enviar = function() {
 			element(by.css('button[type=submit]')).click();
-		}
+		};
 	};
 	
 	module.exports = CadastroAssociado;
