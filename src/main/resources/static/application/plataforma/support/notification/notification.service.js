@@ -130,8 +130,8 @@
 			var user =  SecurityService.user();
 			
 			if (user) {
-				headers['login'] = user.login;
-			};
+				headers.login = user.login;
+			}
 			
 			return headers;
 		};
