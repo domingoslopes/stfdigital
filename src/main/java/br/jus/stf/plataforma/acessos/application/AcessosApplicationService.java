@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.acessos.application;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -80,6 +81,24 @@ public class AcessosApplicationService {
 	}
 	
 	/**
+	 * Carrega todos os papeis do sistema
+	 * 
+	 * @return List<Papel> Lista de todos os papeis
+	 */
+	public List<Papel> todosPapeis() {
+		return papelRepository.findAll();
+	}
+	
+	/**
+	 * Carrega todos os grupos do sistema
+	 * 
+	 * @return List<Grupo> Lista de todos os grupos
+	 */
+	public List<Grupo> todosGrupos() {
+		return grupoRepository.findAll();
+	}
+	
+	/**
 	 * Registra os grupos e papéis associados a um usuário.
 	 * 
 	 * @param id Id do usuário.
@@ -99,10 +118,18 @@ public class AcessosApplicationService {
 		Optional.ofNullable(gruposAdicionados).ifPresent(g1 -> g1.forEach(g -> gruposAdic.add(this.grupoRepository.findOne(new GrupoId(g)))));
 				
 		Usuario usuario = usuarioRepository.findOne(new UsuarioId(id));
-		usuario.removerPapeis(papeisRemov);
-		usuario.removerGrupos(gruposRemov);
-		usuario.atribuirPapeis(papeisAdic);
-		usuario.atribuirGrupos(gruposAdic);
+		if (!papeisRemov.isEmpty()) {
+			usuario.removerPapeis(papeisRemov);
+		}
+		if (!gruposRemov.isEmpty()) {
+			usuario.removerGrupos(gruposRemov);
+		}
+		if (!papeisAdic.isEmpty()) {
+			usuario.atribuirPapeis(papeisAdic);
+		}
+		if (!gruposAdic.isEmpty()) {
+			usuario.atribuirGrupos(gruposAdic);
+		}
 		
 		usuarioRepository.save(usuario);
 	}
@@ -113,8 +140,19 @@ public class AcessosApplicationService {
 	 * @param login Login do usuário.
 	 * @return Informações do usuário.
 	 */
-	public Usuario recuperarInformacoesUsuario(String login){
+	public Usuario recuperarUsuario(String login){
 		return usuarioRepository.findOne(login);
+	}
+	
+	/**
+	 * Recupera as informações do usuário pelo id.
+	 * 
+	 * @param login Login do usuário.
+	 * @return Informações do usuário.
+	 */
+	public Usuario recuperarUsuario(Long id){
+		UsuarioId usuarioId = new UsuarioId(id);
+		return usuarioRepository.findOne(usuarioId);
 	}
 	
 	/**

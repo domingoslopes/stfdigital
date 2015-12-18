@@ -16,16 +16,47 @@
 	 * @example
 	 * <div data-dashboard=""></div>
 	 */
-	angular.plataforma.directive('dashboard', ['$compile', 'Dashlets', 'DashboardService', 'DashboardLayoutManager', function($compile, Dashlets, DashboardService, DashboardLayoutManager) {
+	angular.plataforma.directive('dashboard', ['DashboardLayoutManager', function(DashboardLayoutManager) {
+		return {
+			restrict : 'EA',
+			scope: {
+				dashboard : '='
+			},
+			templateUrl: 'application/plataforma/support/dashboards/dashboard-layout.tpl.html',
+			controller: ['$scope', function($scope) {
+				var dashlets = angular.isDefined($scope.dashboard) ? $scope.dashboard.dashlets : [];
+				$scope.layout = DashboardLayoutManager.defaultLayout(dashlets);
+			}]
+		};
+	}]);
+	
+	/**
+	 * @ngdoc directive
+	 * @name dashboard
+	 * @memberOf plataforma
+	 * 
+	 * @description Diretiva para renderizar um dashboard específico.
+	 * A especificação dos dashlets que compõem o dashboard é obtida por meio do DashboardService.
+	 * 
+	 * @example
+	 * <div data-dashboard=""></div>
+	 */
+	angular.plataforma.directive('dashboardMenu', ['$state', 'DashboardService', function($state, DashboardService) {
 		return {
 			restrict : 'EA',
 			scope: {},
-			templateUrl: 'application/plataforma/support/dashboards/dashboard-layout.tpl.html',
+			templateUrl: 'application/plataforma/support/dashboards/dashboard-menu.tpl.html',
 			controller: ['$scope', function($scope) {
-				$scope.layout = {};
-				DashboardService.getDashlets().then(function(dashlets) {
-					$scope.layout = DashboardLayoutManager.defaultLayout(dashlets);
+				$scope.dashboards = [];
+				
+				DashboardService.getDashboards().then(function(dashboards) {
+					$scope.dashboards = dashboards;
 				});
+				
+				$scope.go = function(dashboard) {
+					var params = {dashboard : dashboard};
+					$state.go('dashboard', params);
+				}
 			}]
 		};
 	}]);

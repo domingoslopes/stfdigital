@@ -36,9 +36,9 @@
 							colunas: []
 						};
 						layout.linhas.push(linhaAtual);
-						linhaAtual.colunas.push({dashlet: dashlets[i], columnClasses: ['col-md-6', 'col-lg-6', 'm-b-10']});
+						linhaAtual.colunas.push({dashlet: dashlets[i].nome, columnClasses: ['col-md-6', 'col-lg-6', 'm-b-10']});
 					} else {
-						linhaAtual.colunas.push({dashlet: dashlets[i], columnClasses: ['col-md-6', 'col-lg-6', 'm-b-10']});
+						linhaAtual.colunas.push({dashlet: dashlets[i].nome, columnClasses: ['col-md-6', 'col-lg-6', 'm-b-10']});
 					}
 				}
 			}

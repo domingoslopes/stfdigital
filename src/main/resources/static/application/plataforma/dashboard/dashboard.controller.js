@@ -9,8 +9,8 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DashboardController', function ($scope, $http, properties) {
-		
+	angular.plataforma.controller('DashboardController', function ($scope, $stateParams) {
+		$scope.dashboard = $stateParams.dashboard;
 	});
 	
 })();

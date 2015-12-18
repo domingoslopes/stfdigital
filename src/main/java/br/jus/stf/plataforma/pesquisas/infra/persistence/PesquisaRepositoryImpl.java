@@ -59,6 +59,13 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 		return executeQuery(builder.build());
 	}
 	
+	@Override
+	public Long count(Pesquisa pesquisa) {
+		NativeSearchQueryBuilder builder = buildQuery(pesquisa);
+		builder.withQuery(buildFiltros(pesquisa.filtros()));
+		return executeCountQuery(builder.build());
+	}
+
 	/**
 	 * Monta um query com base na pesquisa
 	 * 
@@ -140,6 +147,16 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 	}
 	
 	/**
+	 * Executa o count de uma query.
+	 * 
+	 * @param build
+	 * @return
+	 */
+	private Long executeCountQuery(NativeSearchQuery query) {
+		return elasticsearchTemplate.count(query);
+	}
+	
+	/**
 	 * Extrai o resultado da pesquisa
 	 */
 	private final class ResultadoPesquisa implements ResultsExtractor<List<Resultado>> {
@@ -174,7 +191,6 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 			} catch (Exception e) {
 				throw e;
 			}
-			
 			return documentos;
 		}
 	}
