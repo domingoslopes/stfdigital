@@ -95,8 +95,8 @@ public class DocumentoRepositoryImpl implements DocumentoRepository {
 	private HashMap<String, Object> jsonToMap(String objeto) {
 		JsonFactory factory = new JsonFactory();
 		ObjectMapper mapper = new ObjectMapper(factory);
-		TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-		};
+		TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {	};
+		
 		try {
 			return mapper.readValue(objeto, typeRef);
 		} catch (IOException e) {

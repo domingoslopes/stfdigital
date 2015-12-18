@@ -2,8 +2,6 @@ package br.jus.stf.plataforma.acessos.interfaces.dto;
 
 import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -33,16 +31,12 @@ public class UsuarioDto {
 	@ApiModelProperty(value="Lista de papéis associados ao usuário.")
 	private Set<PapelDto> papeis;
 	
-	@ApiModelProperty(value="Lista de permissões do usuário.")
-	private Set<GrantedAuthority> authorities;
-	
-	public UsuarioDto(Long id, String login, String nome, SetorDto setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
+	public UsuarioDto(Long id, String login, String nome, SetorDto setorLotacao, Set<PapelDto> papeis) {
 		this.id = id;
 		this.login = login;
 		this.nome = nome;
 		this.setorLotacao = setorLotacao;
 		this.papeis = papeis;
-		this.authorities = authorities;
 	}
 	
 	public Long getId() {
@@ -83,14 +77,6 @@ public class UsuarioDto {
 
 	public void setPapeis(Set<PapelDto> papeis) {
 		this.papeis = papeis;
-	}
-
-	public Set<GrantedAuthority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<GrantedAuthority> authorities) {
-		this.authorities = authorities;
 	}
 	
 }

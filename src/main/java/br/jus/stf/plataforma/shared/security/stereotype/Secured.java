@@ -12,9 +12,9 @@ public interface Secured {
 	/**
 	 * Identificador do recurso
 	 * 
-	 * @return uma string com o tipo do recurso
+	 * @return uma string com o id do recurso
 	 */
-	String id();
+	String resourceId();
 
 	/**
 	 * Tipo do recurso

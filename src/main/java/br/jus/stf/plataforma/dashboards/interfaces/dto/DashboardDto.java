@@ -11,14 +11,20 @@ import java.util.List;
  */
 public class DashboardDto {
 
-	private List<String> dashlets;
-
-	public List<String> getDashlets() {
-		return dashlets;
+	private String nome;
+	private List<DashletDto> dashlets;
+	
+	public DashboardDto(String nome, List<DashletDto> dashlets) {
+		this.nome = nome;
+		this.dashlets = dashlets;
+	}
+	
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDashlets(List<String> dashlets) {
-		this.dashlets = dashlets;
+	public List<DashletDto> getDashlets() {
+		return dashlets;
 	}
 
 }

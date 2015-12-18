@@ -40,7 +40,7 @@ public class OrgaoRestResource {
 	
 	@RequestMapping(value = "/representados", method = RequestMethod.GET)
 	public List<OrgaoDto> listarRepresentados() {
-		PessoaId id = acessoApplicationService.recuperarInformacoesUsuario(SecurityContextUtil.getUsername()).pessoa().id();
+		PessoaId id = acessoApplicationService.recuperarUsuario(SecurityContextUtil.getUsername()).pessoa().id();
 		return peticaoRepository.findOrgaoByTipoAssociacao(id, TipoAssociado.GESTOR, TipoAssociado.REPRESENTANTE).stream().map(orgao -> orgaoDtoAssembler.toDto(orgao)).collect(Collectors.toList());
 	}
 	

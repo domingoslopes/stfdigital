@@ -15,6 +15,7 @@ public class Tarefa implements Entity<Tarefa, TarefaId> {
 	private TarefaId id;
 	private String nome;
 	private String descricao; 
+	private Responsavel responsavel;
 	private ProcessoWorkflowId processo;
 	private Metadado metadado;
 	
@@ -44,12 +45,20 @@ public class Tarefa implements Entity<Tarefa, TarefaId> {
 		return descricao;
 	}
 	
+	public Responsavel reponsavel() {
+		return responsavel;
+	}
+	
 	public ProcessoWorkflowId processo() {
 		return processo;
 	}
 	
 	public Metadado metadado() {
 		return metadado;
+	}
+		
+	public void atribuir(Responsavel responsavel) {
+		this.responsavel = responsavel;
 	}
 
 	@Override
