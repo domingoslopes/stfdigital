@@ -10,7 +10,7 @@
 	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var preautuacao = this;
 		
-		preautuacao.idPeticao = $stateParams.resources[0];
+		preautuacao.peticaoId = $stateParams.resources[0];
 		
 		preautuacao.valida = 'true';
 		
@@ -24,7 +24,7 @@
 		
 		preautuacao.recursos = [{}];
 		
-		PeticaoService.consultar(preautuacao.idPeticao).then(function(data) {
+		PeticaoService.consultar(preautuacao.peticaoId).then(function(data) {
 			preautuacao.peticao = data;
 		});
 		
@@ -48,7 +48,7 @@
 				return false;
 			}
 			
-			preautuacao.recursos[0] = new PreautuarCommand(preautuacao.classe, preautuacao.valida, preautuacao.motivo);
+			preautuacao.recursos[0] = new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, preautuacao.valida, preautuacao.motivo);
 			
 			return true;
 		};
@@ -58,8 +58,9 @@
 			messages.success('Petição pré-autuada com sucesso.');
 		};
 		
-    	function PreautuarCommand(classeId, valida, motivo){
+    	function PreautuarCommand(peticaoId, classeId, valida, motivo){
     		var command = {};
+    		command.peticaoId = peticaoId;
     		command.classeId = classeId;
     		command.valida = valida;
     		command.motivo = motivo;

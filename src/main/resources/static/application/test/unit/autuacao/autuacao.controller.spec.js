@@ -34,7 +34,7 @@
 		}));
 
 		it('Deveria carregar identificador da petição no escopo do controlador', function() {
-			expect(controller.idPeticao).toEqual(1);
+			expect(controller.peticaoId).toEqual(1);
 		});
 		
 		it('Deveria carregar a lista de classes no escopo do controlador', function() {

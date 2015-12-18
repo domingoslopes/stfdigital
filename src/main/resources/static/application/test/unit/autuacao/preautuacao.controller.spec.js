@@ -22,7 +22,11 @@
 //			$httpBackend.expectGET(properties.apiUrl + '/peticoes/fisicas/2/preautuar').respond({tipoRecebimento : 'Sedex'});
 			$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
 
-			mockMessages = {};
+			mockMessages = {
+				success: function(){}
+			};
+			
+			
 			stateParams = {resources: [2]};
 			controller = $controller('PreautuacaoController', {
 				$stateParams : stateParams,
@@ -30,12 +34,13 @@
 				messages: mockMessages
 			});
 
-			$httpBackend.flush();
+			spyOn(mockMessages, 'success').and.callThrough();
 			
+			$httpBackend.flush();
 		}));
 
 		it('Deveria carregar identificador da petição no escopo do controlador', function() {
-			expect(controller.idPeticao).toEqual(2);
+			expect(controller.peticaoId).toEqual(2);
 		});
 		
 		it('Deveria carregar a lista de classes no escopo do controlador', function() {
@@ -45,6 +50,7 @@
 		it('Deveria carregar a petição a preautuar no escopo do controlador', function() {
 			controller.classe = 'HC';
 			controller.finalizar();
+			expect(mockMessages.success).toHaveBeenCalledWith('Petição pré-autuada com sucesso.');
 			// TODO Complementar esse teste assim que a controller estiver com essa implementação completa.
 //			expect(controller.peticao.tipoRecebimento).toEqual('Sedex');
 		});
