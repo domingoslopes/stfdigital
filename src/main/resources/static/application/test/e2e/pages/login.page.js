@@ -17,8 +17,8 @@
 		this.login = function (papel) {
 			// Espera até que o formulário de login esteja presente
 			browser.wait(function() {
-			    return $('#username').isPresent();
-			});
+			    return element(by.id('username')).isPresent();
+			}, 3000);
 			
 		    element(by.id('username')).sendKeys(papel);
 		    element(by.id('password')).sendKeys('123');
