@@ -1,14 +1,14 @@
 package br.jus.stf.plataforma.documentos.infra.configuration;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
-
-import com.jezhumble.javasysmon.JavaSysMon;
-import com.jezhumble.javasysmon.ProcessInfo;
+import org.apache.commons.io.IOUtils;
 
 import br.jus.stf.plataforma.shared.persistence.LocalData;
 
@@ -22,29 +22,82 @@ import br.jus.stf.plataforma.shared.persistence.LocalData;
 public final class LocalMongoCleaner {
 
 	private static final Pattern pattern = Pattern.compile(".*extract.+extractmongod.*");
-	private static final boolean isLinux = System.getProperty("os.name").toLowerCase().startsWith("linux");
-	
+	private static final String osName = System.getProperty("os.name").toLowerCase();
+
 	private LocalMongoCleaner() {
 
 	}
 
 	public static void killExtracted() throws IOException {
-		JavaSysMon monitor = new JavaSysMon();
-		ProcessInfo[] processTable = monitor.processTable();
-		for (ProcessInfo pi : processTable) {
-			if (isMongodExtractedProcess(pi)) {
-				if (!isLinux) {
-					monitor.killProcess(pi.getPid());
-				} else {
-					// No Linux, o método acima estava dando erro.
-					Runtime.getRuntime().exec("kill -9 " + pi.getPid());
-				}
-			}
+		if (isWindows()) {
+			killExtractedWindows();
+		} else if (isLinux()) {
+			killExtractedLinux();
+		} else if (isMacOsX()) {
+			killExtractedMacOsX();
 		}
 	}
 
-	private static boolean isMongodExtractedProcess(ProcessInfo pi) {
-		Matcher matcher = pattern.matcher(pi.getCommand());
+	private static boolean isWindows() {
+		return osName.startsWith("windows");
+	}
+
+	private static boolean isMacOsX() {
+		return osName.equals("mac os x");
+	}
+
+	private static boolean isLinux() {
+		return osName.startsWith("linux");
+	}
+	
+	private static void killExtractedWindows() {
+		BufferedReader reader = null;
+		try {
+			String line;
+			Process p = Runtime.getRuntime().exec("tasklist /fo csv /nh");
+			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((line = reader.readLine()) != null) {
+				String[] cols = line.split(",");
+				String processName = cols[0].replace("\"", "");
+				if (isMongodExtractedProcess(processName)) {
+					String pid = cols[1].replace("\"", "");
+					Runtime.getRuntime().exec(String.format("taskkill /f /pid %s", pid));
+				}
+			}
+			reader.close();
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao matar o processo do mongodb.", e);
+		} finally {
+			IOUtils.closeQuietly(reader);
+		}
+	}
+	
+	private static void killExtractedMacOsX() {
+		
+	}
+
+	private static void killExtractedLinux() {
+		BufferedReader reader = null;
+		try {
+			String line;
+			Process p = Runtime.getRuntime().exec("ps -ewwo pid,command");
+			reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			while ((line = reader.readLine()) != null) {
+				if (isMongodExtractedProcess(line)) {
+					String pid = line.trim().split(" ")[0];
+					Runtime.getRuntime().exec(String.format("kill -9 %s", pid));
+				}
+			}
+			reader.close();
+		} catch (IOException e) {
+			throw new RuntimeException("Erro ao matar o processo do mongodb.", e);
+		} finally {
+			IOUtils.closeQuietly(reader);
+		}
+	}
+	
+	private static boolean isMongodExtractedProcess(String processName) {
+		Matcher matcher = pattern.matcher(processName);
 		return matcher.matches();
 	}
 

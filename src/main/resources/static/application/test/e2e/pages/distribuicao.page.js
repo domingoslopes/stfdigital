@@ -20,7 +20,7 @@
 		
 		this.selecionarTipoDistribuicao = function(nome) {
 			utils.select('div#s2id_tipoDistribuicaoId', nome);
-			browser.waitForAngular()
+			browser.waitForAngular();
 		};
 		
 		this.criarListaDeMinistrosImpedidos = function(){
@@ -57,10 +57,10 @@
 			utils.select('div#s2id_processo', siglaNumeroProcesso);
 			 browser.sleep(2000);
 			browser.waitForAngular();
-		}
+		};
 		
 		this.finalizar = function() {
-			element(by.id('finalizar')).click();
+			element(by.id('btn_exec_distribuir-processo')).click();
 			
 		    browser.waitForAngular();
 		};

@@ -27,7 +27,9 @@ public class PeticaoDtoAssembler {
 	 * @return o dto
 	 */
 	public PeticaoDto toDto(PeticaoEletronica peticao) {
-		return toDto(peticao, false);
+		PeticaoDto dto = toDto(peticao, false);
+		dto.setTipo(peticao.getClass().getSimpleName());
+		return dto;
 	}
 	
 	/**
@@ -42,6 +44,7 @@ public class PeticaoDtoAssembler {
 		dto.setVolumes(peticao.volumes());
 		dto.setFormaRecebimento(peticao.formaRecebimento().toString());
 		dto.setNumeroSedex(peticao.numeroSedex());
+		dto.setTipo(peticao.getClass().getSimpleName());
 		return dto;
 	}
 	

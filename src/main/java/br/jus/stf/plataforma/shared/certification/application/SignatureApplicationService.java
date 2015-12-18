@@ -96,10 +96,9 @@ public class SignatureApplicationService {
 		return signer.recoverSignedDocument();
 	}
 
-	public DocumentoId saveSigned(DocumentSignerId signerId) {
+	public DocumentoTemporarioId saveSigned(DocumentSignerId signerId) {
 		SignedDocument signedDocument = recoverSignedDocument(signerId);
-		DocumentoTemporarioId tempDocId = documentAdapter.upload(signerId.id(), signedDocument.document());
-		return documentAdapter.save(tempDocId);
+		return documentAdapter.upload(signerId.id(), signedDocument.document());
 	}
 
 }

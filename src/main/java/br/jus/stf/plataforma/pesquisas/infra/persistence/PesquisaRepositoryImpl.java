@@ -28,11 +28,11 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import br.jus.stf.plataforma.pesquisas.domain.model.query.Pesquisa;
 import br.jus.stf.plataforma.pesquisas.domain.model.query.PesquisaRepository;
 import br.jus.stf.plataforma.pesquisas.domain.model.query.Resultado;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * @author Lucas.Rodrigues

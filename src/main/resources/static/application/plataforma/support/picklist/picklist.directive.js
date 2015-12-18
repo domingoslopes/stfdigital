@@ -26,11 +26,14 @@
 			replace: true,
 			templateUrl: 'application/plataforma/support/picklist/picklist.tpl.html',
 			scope: {
-			leftListRowsModel: '=leftListRows',
+				leftListRowsModel: '=leftListRows',
 				rightListRowsModel: '=rightListRows',
 				
 				displayFn: '&',
 		
+				toRightCallback: '&',
+				toLeftCallback: '&',
+				
 				listWidth: '@listWidth',//optional, empty by default
 				listHeight: '@listHeight',//optional, empty by default
 				showMoveAllButtons : '@' //optional, true by default
@@ -44,8 +47,23 @@
 					scope.rightListRows = scope.rightListRowsModel.map(function(element, index) {
 						return new ListEntry(index, element);
 					});
+					
+					//clear selected lists
+					scope.rightSelected = [];
+					scope.leftSelected = [];
 				}
 		
+				var preventReinitialize = false;
+				
+				var refreshRowLists = function() {
+					if (!preventReinitialize) {
+						initializeRowLists();
+					}
+				};
+				
+				scope.$watch('leftListRowsModel', refreshRowLists);
+				scope.$watch('rightListRowsModel', refreshRowLists);
+				
 				scope.display = function(obj) {
 					if (attrs.displayFn) {						
 						return scope.displayFn({data: obj});
@@ -68,12 +86,6 @@
 		
 				initializeRowLists();
 		
-				//indices of selected rows
-				scope.leftSelected = [];
-				scope.rightSelected = [];
-		
-				scope.leftFilter = '';
-				scope.rightFilter = '';
 		
 				/**
 				 * moves only selected rows from left to right
@@ -84,6 +96,10 @@
 						return row.data;
 					});
 		
+					if (scope.toRightCallback) {
+						this.toRightCallback({data: selectedData});
+					}
+					
 					//add data to the right list
 					scope.rightListRowsModel = scope.rightListRowsModel.concat(selectedData);
 		
@@ -94,21 +110,23 @@
 		
 					//reinitialize row models
 					initializeRowLists();
-		
-					//clear selected lists
-					scope.rightSelected = [];
-					scope.leftSelected = [];
 				};
 		
 				/**
 				 * moves only selected rows from right to left
 				 */
 				scope.moveLeftSelected = function () {
+					preventReinitialize = true;
+					
 					//convert selected rows into raw data
 					var selectedData = scope.rightSelected.map(function (row) {
 						return row.data;
 					});
 		
+					if (scope.toLeftCallback) {
+						this.toLeftCallback({data: selectedData});
+					}
+					
 					//add data to the left list
 					scope.leftListRowsModel = scope.leftListRowsModel.concat(selectedData);
 		
@@ -117,43 +135,49 @@
 						scope.rightListRowsModel.splice(element.originalIndex, 1);
 					});
 		
+					preventReinitialize = false;
+					
 					//reinitialize row models
 					initializeRowLists();
-		
-					//clear selected lists
-					scope.rightSelected = [];
-					scope.leftSelected = [];
 				};
 		
 				scope.moveRightAll = function () {
+					preventReinitialize = true;
+					
+					if (scope.toRightCallback) {
+						this.toRightCallback({data: scope.leftListRowsModel});
+					}
+					
 					//add data to the right list
 					scope.rightListRowsModel = scope.rightListRowsModel.concat(scope.leftListRowsModel);
 		
 					//remove data from left list
 					scope.leftListRowsModel = [];
 		
+					preventReinitialize = false;
+					
 					//reinitialize row models
 					initializeRowLists();
-		
-					//clear selected lists
-					scope.rightSelected = [];
-					scope.leftSelected = [];
 				};
 		
 		
 				scope.moveLeftAll = function () {
+					preventReinitialize = true;
+					
+					if (scope.toLeftCallback) {
+						this.toLeftCallback({data: scope.rightListRowsModel});
+					}
+					
 					//add data to the right list
 					scope.leftListRowsModel = scope.leftListRowsModel.concat(scope.rightListRowsModel);
 		
 					//remove data from left list
 					scope.rightListRowsModel = [];
 		
+					preventReinitialize = false;
+					
 					//reinitialize row models
 					initializeRowLists();
-		
-					//clear selected lists
-					scope.rightSelected = [];
-					scope.leftSelected = [];
 				};
 		
 			}
