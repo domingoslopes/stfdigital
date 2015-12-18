@@ -1,7 +1,9 @@
 package br.jus.stf.plataforma.workflow.interfaces.dto;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
 import br.jus.stf.plataforma.workflow.domain.model.Metadado;
 import br.jus.stf.plataforma.workflow.domain.model.Tarefa;
 
@@ -13,11 +15,15 @@ import br.jus.stf.plataforma.workflow.domain.model.Tarefa;
  */
 @Component
 public class TarefaDtoAssembler {
+	
+	@Autowired
+	private AcessosRestAdapter acessosRestAdapter;
 
 	public TarefaDto toDto(Tarefa tarefa) {
 		Long id = tarefa.id().toLong();
 		Long processo = tarefa.processo().toLong();
-		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), processo, toDto(tarefa.metadado()), tarefa.metadado().tipoInformacao());
+		String responsavel = tarefa.reponsavel().nome();
+		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), responsavel, processo, toDto(tarefa.metadado()));
 	}
 	
 	private MetadadoDto toDto(Metadado metadado) {

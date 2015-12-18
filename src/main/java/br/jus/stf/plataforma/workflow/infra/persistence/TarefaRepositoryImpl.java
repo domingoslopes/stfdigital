@@ -16,10 +16,12 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.plataforma.workflow.domain.model.Metadado;
+import br.jus.stf.plataforma.workflow.domain.model.Responsavel;
 import br.jus.stf.plataforma.workflow.domain.model.Tarefa;
 import br.jus.stf.plataforma.workflow.domain.model.TarefaRepository;
 import br.jus.stf.shared.ProcessoWorkflowId;
 import br.jus.stf.shared.TarefaId;
+import br.jus.stf.shared.UsuarioId;
 
 /**
  * @author Rodrigo Barreiros
@@ -40,6 +42,15 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 	public List<Tarefa> listar() {
 		Set<String> papeis = acessosRestAdapter.carregarPapeisUsuario(SecurityContextUtil.getUsername());
 		return taskService.createTaskQuery().taskCandidateGroupIn(new ArrayList<String>(papeis)).includeProcessVariables().list()
+				.stream()
+				.map(task -> newTarefa(task))
+				.collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<Tarefa> listar(Responsavel responsavel) {
+		String usuarioId = responsavel.usuarioId().toString();
+		return taskService.createTaskQuery().taskAssignee(usuarioId).includeProcessVariables().list()
 				.stream()
 				.map(task -> newTarefa(task))
 				.collect(Collectors.toList());
@@ -75,7 +86,15 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 		String nome = task.getTaskDefinitionKey();
 		String descricao = task.getName();
 		Metadado metadado = Metadado.converte(task.getProcessVariables());
-		return new Tarefa(id, nome, descricao, processo, metadado);
+		Tarefa tarefa = new Tarefa(id, nome, descricao, processo, metadado);
+		Optional.ofNullable(task.getAssignee()).ifPresent(reponsavelId -> tarefa.atribuir(newResponsavel(reponsavelId)));
+		return tarefa;
+	}
+	
+	private Responsavel newResponsavel(String id) {
+		UsuarioId usuarioId = new UsuarioId(Long.valueOf(id));
+		String login = acessosRestAdapter.recuperarNomeUsuario(usuarioId);
+		return new Responsavel(usuarioId, login);
 	}
 	
 }

@@ -22,12 +22,19 @@ public interface TarefaRepository {
 	void completar(Tarefa tarefa, Metadado metadado);
 
 	/**
-	 * Lista as tarefas de um papel
+	 * Lista as tarefas dos papéis do usuário
 	 * 
-	 * @param papel
 	 * @return
 	 */
 	List<Tarefa> listar();
+	
+	/**
+	 * Lista as tarefas de um responsavel
+	 * 
+	 * @param responsavel
+	 * @return
+	 */
+	List<Tarefa> listar(Responsavel responsavel);
 	
 	/**
 	 * Consulta uma tarefa

@@ -71,6 +71,9 @@
             	console.log(error);
             });
 			
+			var progressTracker = signer.progressTracker(90);
+			expect(progressTracker).not.toBeNull();
+
 			signer.start();
 			
 			$httpBackend.flush();
@@ -78,8 +81,6 @@
 			$rootScope.$apply();
 			
 			$rootScope.$apply();
-			
-			var a = 'b';
 		});
 		
 	});

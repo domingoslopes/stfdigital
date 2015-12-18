@@ -14,6 +14,7 @@
 		$stateProvider.state('dashboard', {
 			parent: 'root',
 			url : '/dashboard',
+			params : { dashboard : {} },
 			views: {
 				'content@root': {
 					templateUrl : 'application/plataforma/dashboard/dashboard.tpl.html',
