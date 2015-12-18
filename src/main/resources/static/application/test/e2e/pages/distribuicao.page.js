@@ -60,7 +60,7 @@
 		}
 		
 		this.finalizar = function() {
-			element(by.id('finalizar')).click();
+			element(by.id('btn_exec_distribuir-processo')).click();
 			
 		    browser.waitForAngular();
 		};

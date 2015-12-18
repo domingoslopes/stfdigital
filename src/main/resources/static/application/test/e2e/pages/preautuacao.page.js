@@ -20,7 +20,7 @@
 		};
 		
 		preautuacao.finalizar = function() {
-			element(by.id('finalizar')).click();
+			element(by.id('btn_exec_preautuar')).click();
 		};
 		
 		preautuacao.invalidarPeticaoRadio = function(){
