@@ -33,6 +33,7 @@ import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssin
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
+import br.jus.stf.plataforma.shared.errorhandling.ValidationException;
 
 /**
  * Api REST para salvar e recuperar documentos
@@ -80,12 +81,9 @@ public class DocumentoRestResource {
 	@RequestMapping(value = "/upload/assinado", method = RequestMethod.POST)
 	@ApiResponses(value = {@ApiResponse(code = 400, message = "O arquivo enviado não foi assinado digitalmente.")})
 	@ResponseStatus(HttpStatus.CREATED)
-	public String uploadAssinado(UploadDocumentoAssinadoCommand command) {
-		
-		Set<ConstraintViolation<UploadDocumentoAssinadoCommand>> result = validator.validate(command);
-		
-		if (!result.isEmpty()) {
-			throw new IllegalArgumentException(result.toString());
+	public String uploadAssinado(@Valid UploadDocumentoAssinadoCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new ValidationException(result.getAllErrors());
 		}		
 		
 		return documentoServiceFacade.salvarDocumentoTemporario(command.getFile());
