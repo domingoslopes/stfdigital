@@ -85,7 +85,7 @@
 		};
 		
 		$scope.assinar = function() {
-			if ($scope.selecao.peticoes.length == 0) {
+			if ($scope.selecao.peticoes.length === 0) {
 				messages.error('É necessário selecionar pelo menos uma petição para assinar.');
 			}
 			angular.forEach($scope.selecao.peticoes, function(peticao) {

@@ -92,10 +92,10 @@
 		            
 		            for (var chave in filtrosFixos) {
             			pesquisa.filtros[chave] = filtrosFixos[chave];
-            		};
+            		}
 	            		
 	            	return pesquisa;
-				}
+				};
 				
 				var conf = scope.configuracao;
 				var pesquisa = (angular.isDefined(conf.pesquisa)) ? conf.pesquisa : 'simples'; //opcional, o tipo de pesquisa que deve ser realizado. Ex: 'sugestao' ou 'paginada'
@@ -158,7 +158,7 @@
 					if (!novoValor){
 						$(elem).select2('val','');
 					}
-				})
+				});
 			}
 		};
 	}]);
