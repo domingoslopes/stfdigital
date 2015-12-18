@@ -9,6 +9,10 @@ public class ErrorDto {
 	public ErrorDto() {
 	}
 
+	public ErrorDto(String message) {
+		this.message = message;
+	}
+
 	public String getName() {
 		return name;
 	}
