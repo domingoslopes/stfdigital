@@ -17,6 +17,7 @@
         };
 
         // Methods
+        /*jshint validthis:true */
         this.config = config;
 
         //////////

@@ -3,10 +3,10 @@ package br.jus.stf.processamentoinicial.autuacao.infra.eventbus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.bus.Event;
-import reactor.bus.EventBus;
 import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationEvent;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
+import reactor.bus.Event;
+import reactor.bus.EventBus;
 
 /**
  * Classe que implementa a publicação de eventos de petição.
@@ -83,6 +83,15 @@ public class PeticaoApplicationEventImpl implements PeticaoApplicationEvent {
 	 */
 	@Override
 	public void peticaoPreparadaParaDevolucao(Peticao peticao) {
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoModificada(peticao)));
+	}
+
+	/**
+	 * Notifica interessados sobre a assinatura do documento de devolução.
+	 * 
+	 */
+	@Override
+	public void peticaoDevolucaoAssinada(Peticao peticao) {
 		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoModificada(peticao)));
 	}
 

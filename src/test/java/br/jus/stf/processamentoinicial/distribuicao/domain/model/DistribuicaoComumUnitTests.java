@@ -65,7 +65,7 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(1L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
 		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
 		Distribuicao distribuicao = new DistribuicaoComum(parametros);
 		MinistroId relator = distribuicao.executar().relator();
@@ -97,7 +97,7 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(48L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
 		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
 		new DistribuicaoComum(parametros);
 	}
@@ -119,7 +119,7 @@ public class DistribuicaoComumUnitTests {
 		ministrosCanditatos.add(new MinistroId(1L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
 		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, null, null);
 		new DistribuicaoComum(parametros);
 	}

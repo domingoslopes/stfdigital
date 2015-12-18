@@ -4,19 +4,19 @@ import org.apache.commons.lang3.Validate;
 
 public class SignedDocumentDto {
 
-	private Long documentId;
+	private String documentId;
 
-	public SignedDocumentDto(Long id) {
+	public SignedDocumentDto(String id) {
 		Validate.notNull(id);
 
 		documentId = id;
 	}
 
-	public Long getDocumentId() {
+	public String getDocumentId() {
 		return documentId;
 	}
 
-	public void setDocumentId(Long documentId) {
+	public void setDocumentId(String documentId) {
 		this.documentId = documentId;
 	}
 

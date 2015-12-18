@@ -10,7 +10,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
-import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusModificado;
+import br.jus.stf.shared.PeticaoStatusModificado;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
 import reactor.bus.Event;
@@ -72,7 +72,7 @@ public class TarefaRestAdapter implements TarefaAdapter {
 		TarefaDto dto = tarefaRestResource.consultarPorProcesso(id.toLong());
 		tarefaRestResource.completar(dto.getId(), command);
 		peticaoRepository.refresh(peticao); // O comando acima poderá alterar o status da petição, por isso o refresh.
-		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao, workflow.id(), status)));
+		eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao.id(), peticao.getClass().getSimpleName(), workflow.id(), status)));
 	}
 
 }
