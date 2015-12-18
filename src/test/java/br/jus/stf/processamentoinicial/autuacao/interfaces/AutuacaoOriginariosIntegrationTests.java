@@ -11,7 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.cert.CertificateEncodingException;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +25,14 @@ import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MvcResult;
 
+import com.jayway.jsonpath.JsonPath;
+
+import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
+import br.jus.stf.plataforma.shared.certification.support.pki.PlataformaUnitTestingUser;
 import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
@@ -46,6 +56,12 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String peticaoFisicaInvalidaParaPreautuacao;
 	private String peticaoInvalidaParaAutuacao;
 	private String peticaoFisicaParaDevolucao;
+	
+	private String prepareCommand;
+	private String provideToSignCommand;
+	private String preSignCommand;
+	private String postSignCommand;
+	private String assinarDevolucaoPeticaoCommand;
 	
 	@Spy
 	private IndexadorRestAdapter indexadorRestAdapter;
@@ -144,6 +160,13 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoFisicaParaDevolucao.append("{\"numeroOficio\":1234,");
 		peticaoFisicaParaDevolucao.append("\"tipoDevolucao\":\"REMESSA_INDEVIDA\"}");
 		this.peticaoFisicaParaDevolucao = peticaoFisicaParaDevolucao.toString();
+		
+		//Cria os objetos a serem usados no processo de assinatura do documento de devolução.
+		this.prepareCommand = "{\"certificateAsHex\":\"@\"}";
+		this.provideToSignCommand = "{\"documentId\":@documentId,\"signerId\":\"@signerId\"}";
+		this.preSignCommand = "{\"signerId\":\"@\"}";
+		this.postSignCommand = "{\"signatureAsHex\":\"@signatureAsHex\",\"signerId\":\"@signerId\"}";
+		this.assinarDevolucaoPeticaoCommand = "{\"resources\":[{\"peticaoId\":@peticaoId,\"documentoId\":\"@documentoId\"}]}";
 	}
 	
 	@Test
@@ -268,6 +291,61 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "cartoraria")).andExpect(status().isOk())
 			.andExpect((jsonPath("$", hasSize(0))));
 		
+		// Realiza a assinatura do documento de devolução e finalizando, portanto, a devolução.
+		assinarDevolucaoPeticao(peticaoId);
+	}
+
+	private void assinarDevolucaoPeticao(String peticaoId)
+			throws UnsupportedEncodingException, Exception, CertificateEncodingException {
+		String peticaoJson = this.mockMvc.perform(get("/api/peticoes/" + peticaoId).header("login", "gestor-recebimento"))
+			.andExpect(status().isOk()).andExpect(jsonPath("$.pecas[?(@.tipoId == 8)]", hasSize(1))).andReturn().getResponse().getContentAsString();
+		Integer documentoId = JsonPath.read(peticaoJson, "$.pecas[?(@.tipoId == 8)].documentoId[0]");
+		
+		CustomKeyStore userStore = PlataformaUnitTestingUser.instance().userStore();
+		String hexCertificate = Hex.encodeHexString(userStore.certificate().getEncoded());
+		
+		MvcResult result = this.mockMvc.perform(post("/api/certification/signature/prepare").header("login", "gestor-recebimento")
+			.contentType(MediaType.APPLICATION_JSON).content(this.prepareCommand.replace("@", hexCertificate)))
+			.andExpect(status().isOk()).andExpect(jsonPath("$.signerId").exists()).andReturn();
+		MockHttpSession signatureSession = (MockHttpSession) result.getRequest().getSession();
+		String signerJson = result.getResponse().getContentAsString();
+		String signerId = JsonPath.read(signerJson, "$.signerId");
+		
+		this.mockMvc.perform(post("/api/certification/signature/provide-to-sign").session(signatureSession).header("login", "gestor-recebimento")
+			.contentType(MediaType.APPLICATION_JSON).content(this.provideToSignCommand.replace("@documentId", documentoId.toString())
+				.replace("@signerId", signerId))).andExpect(status().isOk());
+		
+		String preSignJson = this.mockMvc.perform(post("/api/certification/signature/pre-sign").session(signatureSession).header("login", "gestor-recebimento")
+			.contentType(MediaType.APPLICATION_JSON).content(this.preSignCommand.replace("@", signerId)))
+			.andExpect(status().isOk()).andExpect(jsonPath("$.hash").exists()).andExpect(jsonPath("$.hashType").exists())
+			.andReturn().getResponse().getContentAsString();
+		
+		String hash = JsonPath.read(preSignJson, "$.hash");
+		String signature = sign(hash, userStore.keyPair().getPrivate());
+		this.mockMvc.perform(post("/api/certification/signature/post-sign").session(signatureSession).header("login", "gestor-recebimento")
+				.contentType(MediaType.APPLICATION_JSON).content(this.postSignCommand.replace("@signatureAsHex", signature)
+					.replace("@signerId", signerId))).andExpect(status().isOk());
+		
+		String documentJson = this.mockMvc.perform(post("/api/certification/signature/save-signed/" + signerId).session(signatureSession).header("login", "gestor-recebimento"))
+			.andExpect(status().isOk()).andExpect(jsonPath("$.documentId").exists()).andReturn().getResponse().getContentAsString();
+		String signedDocumentId = JsonPath.read(documentJson, "$.documentId");
+		
+		this.mockMvc.perform(post("/api/actions/assinar-devolucao-peticao/execute").header("login", "gestor-recebimento")
+				.contentType(MediaType.APPLICATION_JSON).content(this.assinarDevolucaoPeticaoCommand.replace("@peticaoId", peticaoId)
+					.replace("@documentoId", signedDocumentId))).andExpect(status().isOk());
+		
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "gestor-recebimento")).andExpect(status().isOk())
+			.andExpect((jsonPath("$", hasSize(0))));
+	}
+	
+	private String sign(String hashAsHex, PrivateKey key) throws Exception {
+		Signature signature = Signature.getInstance("SHA256withRSA");
+		signature.initSign(key);
+		signature.update(Hex.decodeHex(hashAsHex.toCharArray()));
+
+		byte[] signed = signature.sign();
+
+		return Hex.encodeHexString(signed);
 	}
 	
 	@Test
