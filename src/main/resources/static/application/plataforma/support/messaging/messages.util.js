@@ -26,6 +26,16 @@
 					timeout: 6000, 
 					type: 'danger'
 				}).show();
+			},
+			buildErrorMessage: function(errorMessageDto) {
+				var errorMsg = '';
+				for (var i in errorMessageDto.errors) {
+					errorMsg += errorMessageDto.errors[i].message;
+					if (i < (errorMessageDto.errors.length - 1)) {
+						errorMsg += ' ';
+					}
+				}
+				return errorMsg;
 			}
 		};
 	});

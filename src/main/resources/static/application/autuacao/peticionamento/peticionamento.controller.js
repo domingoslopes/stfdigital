@@ -56,9 +56,21 @@
 			fileItem.upload();
 		};
 		
-        uploader.onCompleteItem = function(fileItem, response) {
+        uploader.onSuccessItem = function(fileItem, response, status) {
         	var peca = recuperarPecaPorItem(fileItem);
-        	peca.documentoTemporario = response;
+       		peca.documentoTemporario = response;
+        };
+        
+        uploader.onErrorItem = function(fileItem, response, status) {
+        	var peca = recuperarPecaPorItem(fileItem);
+        	if (status === 0) {
+        		// O status 0 provavelmente foi porque a conexão foi resetada por ultrapassar
+        		// o tamanho máximo de 10 MB no backend.
+        		messages.error('Não foi possível anexar o arquivo "' + fileItem.file.name + '". <br />O tamanho do arquivo excede 10mb.');
+        	} else {
+        		messages.error(messages.buildErrorMessage(response));
+        	}
+        	$scope.remover(peca, false);
         };
         
         // FILTERS
