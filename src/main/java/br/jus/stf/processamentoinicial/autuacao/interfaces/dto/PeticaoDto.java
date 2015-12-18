@@ -39,6 +39,9 @@ public class PeticaoDto {
 	@ApiModelProperty(value = "")
 	private Long processoWorkflowId;
 	
+	@ApiModelProperty(value = "Tipo da petição")
+	private String tipo;
+	
 	PeticaoDto() {
 		
 	}
@@ -84,6 +87,14 @@ public class PeticaoDto {
 	
 	public Long getProcessoWorkflowId() {
 		return processoWorkflowId;
+	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	
 }

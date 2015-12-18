@@ -68,7 +68,7 @@
 			var elm = element(by.model("idPeticao"));
 			elm.getAttribute('value').then(function (value) {
 				console.log(value);
-			   return value
+			   return value;
 			});
 		};
 		
