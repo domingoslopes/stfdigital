@@ -56,9 +56,15 @@
 			fileItem.upload();
 		};
 		
-        uploader.onCompleteItem = function(fileItem, response) {
+        uploader.onSuccessItem = function(fileItem, response, status) {
         	var peca = recuperarPecaPorItem(fileItem);
-        	peca.documentoTemporario = response;
+       		peca.documentoTemporario = response;
+        };
+        
+        uploader.onErrorItem = function(fileItem, response, status) {
+        	var peca = recuperarPecaPorItem(fileItem);
+        	messages.error(messages.buildErrorMessage(response));
+        	$scope.remover(peca, false);
         };
         
         // FILTERS
