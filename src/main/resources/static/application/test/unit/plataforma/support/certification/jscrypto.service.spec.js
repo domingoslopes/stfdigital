@@ -8,6 +8,16 @@
 (function() {
 	'use strict';
 
+	// Caso não esteja definido o crypto.subtle, não realiza o teste. (Isso ocorre no PhantomJS)
+	if (!window.crypto.subtle) {
+		describe('Service: JsCrypto: Window Crypto Subtle not defined', function() {
+			it('skipTest', function() {
+				
+			});
+		});
+		return;
+	}
+	
 	describe('Service: JsCrypto', function() {
 
 		var $rootScope;
