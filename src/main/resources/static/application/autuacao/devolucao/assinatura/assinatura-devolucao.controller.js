@@ -123,7 +123,7 @@
 	            	});
 	            });
 	            signer.onErrorCallback(function(error) {
-	            	messages.error('Erro ao assinar documento de devolução da Petição ' + peticao.id + '.');
+	            	messages.error('Erro ao assinar documento de devolução da Petição ' + peticao.id + '. ' + error);
 	            	peticoesComErroDuranteAssinatura.push(peticao);
 	            	checarTerminoAssinatura();
 	            });
@@ -143,7 +143,9 @@
 		
 		var completar = function() {
 			$state.go('dashboard');
-			messages.success(peticoesAssinadas.length + ' documento(s) de devolução assinados com sucesso.');
+			if (peticoesAssinadas.length > 0) {
+				messages.success(peticoesAssinadas.length + ' documento(s) de devolução assinados com sucesso.');
+			}
 		};
 		
 	});
