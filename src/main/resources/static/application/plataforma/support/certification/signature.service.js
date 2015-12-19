@@ -14,7 +14,7 @@
 					Crypto.getCertificate({lang: 'en'}).then(function(response) {
 						resolve(response);
 					}, function(err) {
-						reject(err);
+						resolve({'error': err}); // O tratamento de erro será feito no collect certificate, de modo a rejeitar as outras promises.
 					});
 				} else {
 					resolve(alreadySelectedCertificate);
@@ -171,7 +171,7 @@
 			
 			this.start = function() {
 				currentStep = 0;
-				if (Crypto.use('auto')) {
+				Crypto.use('auto').then(function(status) {
 					currentStep++;
 					$q.when().then(trackProgress(injectAlreadySelectedCertificate)) // Injeta o certificado se já tiver sido selecionado.
 					.then(trackProgress(requestUserCertificate)).then(trackProgress(collectCertificate))
@@ -182,11 +182,15 @@
 					.then(trackProgress(injectSignerId)).then(trackProgress(postSign))
 					.then(trackProgress(callSigningCompletedCallback))
 					.catch(function(error) {
-						errorCallback(error);
+						if (error.message === 'no_implementation') {
+							errorCallback("O plugin de assinatura não foi encontrado.");
+						} else {
+							errorCallback(error);
+						}
 					});
-				} else {
-					// TODO Tratar o caso de não ter nenhuma implementação.
-				}
+				}, function(err) {
+					errorCallback("O plugin de assinatura não foi encontrado.");
+				});
 			};
 		};
 		
@@ -194,11 +198,18 @@
 			var certificate;
 			
 			var collectCertificate = function(cert) {
-				if (!certificate) {
-					certificate = cert;
-					deferredRequestingFirstCertificate.resolve();
-				}
-				return $q.when(certificate)
+				return $q(function(resolve, reject) {
+					if (cert.error) {
+						deferredRequestingFirstCertificate.reject(cert.error);
+						reject(cert.error);
+					} else {
+						if (!certificate) {
+							certificate = cert;
+							deferredRequestingFirstCertificate.resolve();
+						}
+						resolve(certificate);
+					}
+				})
 			};
 			
 			var injectCertificate = function(resolvedObject) {
@@ -209,7 +220,7 @@
 			var deferredRequestingFirstCertificate;
 			
 			var injectAlreadySelectedCertificate = function() {
-				return $q(function(resolve) {
+				return $q(function(resolve, reject) {
 					if (certificate) {
 						resolve(certificate);
 					} else if (!deferredRequestingFirstCertificate) {
@@ -218,6 +229,8 @@
 					} else {
 						deferredRequestingFirstCertificate.promise.then(function() {
 							resolve(certificate);
+						}, function(error) {
+							reject(error);
 						});
 					}
 				});
