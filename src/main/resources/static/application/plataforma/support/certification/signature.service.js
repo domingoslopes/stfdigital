@@ -52,7 +52,7 @@
 		
 		var sign = function(resolvedObject) {
 			return $q(function(resolve, reject) {
-				Crypto.sign(resolvedObject.injectedCertificate, {type: 'SHA-256', hex: resolvedObject.hash}, {lang: 'en'}).then(function(response) {
+				Crypto.sign(resolvedObject.injectedCertificate, {data: resolvedObject.data, type: 'SHA-256', hex: resolvedObject.hash}, {lang: 'en'}).then(function(response) {
 					resolve({'signature': response.hex});
 				}, function(err) {
 					reject(err);
