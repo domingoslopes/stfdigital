@@ -19,6 +19,16 @@
 		    return bytes.buffer;
 		};
 		
+		var arrayBufferToBase64 = function(buffer) {
+		    var binary = '';
+		    var bytes = new Uint8Array(buffer);
+		    var len = bytes.byteLength;
+		    for (var i = 0; i < len; i++) {
+		        binary += String.fromCharCode(bytes[i]);
+		    }
+		    return window.btoa(binary);
+		}
+		
 		var hex2ArrayBuffer = function(str) {
             var len = Math.floor(str.length / 2);
             var ret = new Uint8Array(len);
@@ -61,13 +71,13 @@
 				return certificate;
 			};
 			
-			this.sign = function(hash) {
+			this.sign = function(data) {
 				return $q(function(resolve, reject) {
 					window.crypto.subtle.sign({
 							name: 'RSASSA-PKCS1-v1_5'
 						},
 						privateKey,
-						hex2ArrayBuffer(hash)
+						hex2ArrayBuffer(data.data)
 					).then(function(sig) {
 						resolve(new Signature(sig));
 					}).catch(function(err) {
@@ -79,11 +89,17 @@
 		
 		this.create = function(privateKey, certificate) {
 			return $q(function(resolve, reject) {
-				window.crypto.subtle.importKey('pkcs8', base64ToArrayBuffer(privateKey), {
+				console.log(privateKey);
+				window.crypto.subtle.importKey('jwk', privateKey, {
 					name: 'RSASSA-PKCS1-v1_5',
 					hash: {name: 'SHA-256'}
-				}, false, ['sign']).then(function(pk) {
-					resolve(new JsCrypto(pk, certificate));
+				}, true, ['sign']).then(function(pk) {
+					window.crypto.subtle.exportKey('jwk', pk).then(function(key) {
+						console.log(key);
+						resolve(new JsCrypto(pk, certificate));
+					}).catch(function(err) {
+						reject(err);
+					});
 				}).catch(function(err) {
 					reject(err);
 				});
