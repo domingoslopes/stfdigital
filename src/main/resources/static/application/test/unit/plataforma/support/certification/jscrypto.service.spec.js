@@ -81,7 +81,8 @@
 			JsCryptoFactory.create(privateKey, certificate).then(function(jc) {
 				jsCrypto = jc;
 				finish();
-			}, function() {
+			}, function(error) {
+				fail(error);
 				finish();
 			});
 		});
@@ -105,9 +106,10 @@
 			};
 			
 			jsCrypto.sign(hash).then(function(signature) {
-//				expect(signature.asHex()).toEqual(expectedSignature); // TODO Corrigir para baterem assinaturas.
+				// expect(signature.asHex()).toEqual(expectedSignature); // TODO Corrigir para baterem assinaturas.
 				finish();
-			}, function() {
+			}, function(error) {
+				fail(error);
 				finish();
 			});
 		});
