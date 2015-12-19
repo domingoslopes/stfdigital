@@ -38,7 +38,7 @@
 			$httpBackend = _$httpBackend_;
 			properties = _properties_;
 			
-			spyOn(fakeCrypto, 'use').and.returnValue(true);
+			spyOn(fakeCrypto, 'use').and.returnValue($q.when(true));
 			spyOn(fakeCrypto, 'getCertificate').and.returnValue($q.when({}));
 			spyOn(fakeCrypto, 'sign').and.returnValue($q.when({'hex': 'signature-hex'}));
 		}));
@@ -47,7 +47,7 @@
 			expect(signingManager).not.toBeNull();
 		});
 		
-		it('Deveria ter passado chamado os callbacks', function() {
+		it('Deveria ter chamado os callbacks', function() {
 			$httpBackend.expectPOST(properties.apiUrl + '/certification/signature/prepare').respond({'signerId': 123});
 			$httpBackend.expectPOST(properties.apiUrl + '/certification/signature/provide-to-sign').respond({});
 			$httpBackend.expectPOST(properties.apiUrl + '/certification/signature/pre-sign').respond({'hash': 'fake-hash', 'hashType': 'SHA-256'});

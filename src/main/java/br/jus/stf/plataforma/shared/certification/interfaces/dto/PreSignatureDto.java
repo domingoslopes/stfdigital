@@ -34,6 +34,7 @@ public class PreSignatureDto {
 
 	public static PreSignatureDto from(PreSignature preSignature) {
 		PreSignatureDto dto = new PreSignatureDto();
+		dto.setData(preSignature.auth().authAsHex());
 		dto.setHash(preSignature.hash().hashAsHex());
 		dto.setHashType(preSignature.hashType().toString());
 		return dto;
