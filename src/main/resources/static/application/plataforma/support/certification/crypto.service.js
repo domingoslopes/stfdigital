@@ -16,8 +16,8 @@
 			return hwcrypto.getCertificate(options);
 		};
 		
-		this.sign = function(certificate, hash, options) {
-			return hwcrypto.sign(certificate, hash, options);
+		this.sign = function(certificate, data, options) {
+			return hwcrypto.sign(certificate, {type: data.type, hex: data.hex}, options);
 		};
 	});
 	
