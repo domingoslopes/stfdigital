@@ -21,9 +21,12 @@
             <div class="description" translate="LOGIN.DESCRIPTION">Todos os serviços do STF em um único lugar</div>
 
             <form name="loginForm" novalidate>
-                <md-input-container class="md-block" md-no-float>
-                    <input type="text" name="username" ng-model="vm.form.username" placeholder="Usuário"
-                           translate translate-attr-placeholder="LOGIN.USERNAME" required>
+
+
+
+                <md-input-container class="md-block" >
+                    <label>Usuário</label>
+                    <input type="text" name="username" ng-model="vm.form.username" required>
 
                     <div ng-messages="loginForm.username.$error" ng-show="loginForm.username.$touched" role="alert" multiple>
                         <div ng-message="required">
@@ -32,10 +35,9 @@
                     </div>
                 </md-input-container>
 
-                <md-input-container class="md-block" md-no-float>
-                    <input type="password" name="password" ng-model="vm.form.password" placeholder="Senha"
-                           translate translate-attr-placeholder="LOGIN.PASSWORD"
-                           required>
+                <md-input-container class="md-block">
+                    <label>Senha</label>
+                    <input type="password" name="password" ng-model="vm.form.password" required>
                     <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched" role="alert">
                         <div ng-message="required">
                            <span translate="LOGIN.ERRORS.REQUIRED">Esse campo é obrigatório. Por favor preencha.</span>
