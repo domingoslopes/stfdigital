@@ -8,8 +8,8 @@
     <form name="cadastroForm" ng-submit="vm.cadastrar()" novalidate>
         <div class="md-light-blue-50-bg md-hue-3 cadastro-user-type">
             <label>Como você deseja se identificar?</label>
-            <md-radio-group ng-model="vm.form.tipoCadastro">
 
+            <md-radio-group ng-model="vm.form.tipoCadastro">
                 <md-radio-button value="1"><span translate="PLATAFORMA.TERMO.CIDADAO">Cidadão</span></md-radio-button>
                 <md-radio-button value="2"><span translate="PLATAFORMA.TERMO.ADVOGADO">Advogado</span></md-radio-button>
             </md-radio-group>
@@ -21,21 +21,20 @@
 
             <div ng-messages="cadastroForm.nome.$error" ng-show="cadastroForm.nome.$touched" role="alert" multiple>
                 <div ng-message="required">
-                    <span translate="PLATAFORMA.ERRO.REQUERIDO">Nome é um campo obrigatório.</span>
+                    <span translate="CADASTRO.ERRO.NOME_REQUERIDO">Nome é um campo obrigatório.</span>
                 </div>
             </div>
         </md-input-container>
 
 
         <div layout="row">
-
             <md-input-container flex class="md-block">
                 <label translate="PLATAFORMA.CAMPO.USUARIO">Usuário</label>
                 <input type="text" name="usuario" ng-model="vm.form.usuario" required>
 
                 <div ng-messages="cadastroForm.usuario.$error" ng-show="cadastroForm.usuario.$touched" role="alert" multiple>
                     <div ng-message="required">
-                        <span translate="PLATAFORMA.ERRO.REQUERIDO">Usuário é um campo obrigatório.</span>
+                        <span translate="CADASTRO.ERRO.USUARIO_REQUERIDO">Usuário é um campo obrigatório.</span>
                     </div>
                 </div>
             </md-input-container>        
@@ -83,7 +82,7 @@
 
                 <div ng-messages="cadastroForm.oab.$error" ng-show="cadastroForm.oab.$touched" role="alert" multiple>
                     <div ng-message="required">
-                        <span translate="PLATAFORMA.ERRO.REQUERIDO">OAB é obrigatório para advogados.</span>
+                        <span translate="CADASTRO.ERRO.OAB_REQUERIDO">OAB é obrigatório para advogados.</span>
                     </div>
 
                     <div ng-message="mask">
@@ -100,21 +99,21 @@
 
                 <div ng-messages="cadastroForm.senha.$error" ng-show="cadastroForm.senha.$touched" role="alert" multiple>
                     <div ng-message="required">
-                        <span translate="PLATAFORMA.ERRO.REQUERIDO">Senha é um campo obrigatório.</span>
+                        <span translate="CADASTRO.ERRO.SENHA_REQUERIDA">Senha é um campo obrigatório.</span>
                     </div>
                 </div>
             </md-input-container>
 
             <md-input-container flex class="md-block">
-                <label translate="PLATAFORMA.CAMPO.REPETIR_SENHA">Repetir senha</label>
-                <input type="password" name="repetir_senha" ng-model="vm.form.repetir_senha"ngrequired stf-matches="vm.form.senha">
+                <label translate="CADASTRO.CAMPO.REPETIR_SENHA">Repetir senha</label>
+                <input type="password" name="repetir_senha" ng-model="vm.form.repetir_senha" required stf-matches="vm.form.senha">
 
                 <div ng-messages="cadastroForm.repetir_senha.$error" ng-show="cadastroForm.repetir_senha.$touched" role="alert" multiple>
                     <div ng-message="required">
-                        <span translate="PLATAFORMA.ERRO.REQUERIDO">É obrigatório repetir a senha.</span>
+                        <span translate="CADASTRO.ERRO.REPETIR_SENHA_REQUERIDA">É obrigatório repetir a senha.</span>
                     </div>
                     <div ng-message="matches">
-                        <span translate="PLATAFORMA.ERRO.REPETIR_SENHA_INCORRETA">As senhas são diferentes.</span>
+                        <span translate="CADASTRO.ERRO.REPETIR_SENHA_INCORRETA">As senhas são diferentes.</span>
                     </div>
                 </div>
             </md-input-container>
@@ -133,7 +132,7 @@
     </form>
 
     <div layout="row" layout-sm="column" layout-align="center center">
-        <span class="text" translate="CADASTRO.JA_TEM_CONTA">Já tem umaconta?</span>
+        <span class="text" translate="CADASTRO.JA_TEM_CONTA">Já tem uma conta?</span>
         &nbsp;
         <a class="clickable link" ui-sref="app.nao-autenticado.login" translate="CADASTRO.ENTRE_AGORA">Entre agora!</a>
     </div>
