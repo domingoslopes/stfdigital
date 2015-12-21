@@ -1,0 +1,11 @@
+{
+	"PLATAFORMA": {
+		"CAMPO": {
+			"USUARIO": "Usuário",
+			"SENHA": "Senha"
+		},
+		"ERRO": {
+			"REQUERIDO": "Esse campo é obrigatório. Por favor preencha."
+		}
+	}
+}
