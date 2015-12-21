@@ -1,11 +1,27 @@
 {
 	"PLATAFORMA": {
+		"TERMO": {
+			"CIDADAO": "Cidadão",
+			"ADVOGADO": "Advogado"
+		},
 		"CAMPO": {
 			"USUARIO": "Usuário",
-			"SENHA": "Senha"
+			"SENHA": "Senha",
+			"REPETIR_SENHA": "Repetir senha",
+
+			"NOME": "Nome",
+			"EMAIL": "Email",
+			"TELEFONE": "Telefone",
+			"CPF": "CPF",
+			"OAB": "Número da OAB"
 		},
 		"ERRO": {
-			"REQUERIDO": "Esse campo é obrigatório. Por favor preencha."
+			"REQUERIDO": "Esse campo é obrigatório. Por favor preencha.",
+			"EMAIL_INVALIDO": "Email inválido",
+			"TELEFONE_INVALIDO": "Telefone inválido",
+			"CPF_INVALIDO": "CPF inválido",
+			"OAB_FORMATO_INVALIDO": "OAB em formato inválido",
+			"REPETIR_SENHA_INCORRETA": "A senha não foi repetida corretamente."
 		}
 	}
 }
