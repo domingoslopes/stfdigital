@@ -21,6 +21,7 @@
             'app.quick-panel',
 
             // Pages
-            'app.login'
+            'app.nao-autenticado',
+            'app.nao-autenticado.login'
         ]);
 })();
