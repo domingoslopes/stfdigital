@@ -1,13 +1,10 @@
-#login {
+#nao-autenticado {
     height: 100%;
     overflow: hidden;
-    background: url('/assets/images/backgrounds/unauthenticated.jpg') no-repeat center center fixed; 
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
+    background: url('/assets/images/backgrounds/nao-autenticado.jpg') no-repeat center center fixed;
+    background-size: cover;
 
-    #login-intro {
+    #nao-autenticado-intro {
         padding: 128px;
 
         .logo {
@@ -35,14 +32,14 @@
         }
     }
 
-    #login-form-wrapper {
+    #nao-autenticado-form-wrapper {
         width: 416px;
         min-width: 416px;
         max-width: 416px;
         height: 100%;
         background: #FFFFFF;
 
-        #login-form {
+        #nao-autenticado-form {
             padding: 128px 48px 48px 48px;
 
             .logo {
@@ -71,21 +68,6 @@
 
                 md-checkbox {
                     margin: 0;
-                }
-
-                .remember-forgot-password {
-                    font-size: 13px;
-                    margin-top: 8px;
-
-                    .remember-me {
-                        margin-bottom: 16px
-                    }
-
-                    .forgot-password {
-                        font-size: 13px;
-                        font-weight: 500;
-                        margin-bottom: 16px
-                    }
                 }
 
                 .md-button {
@@ -130,31 +112,7 @@
                     }
                 }
             }
-
-            .md-button {
-
-                &.google,
-                &.facebook {
-                    width: 70%;
-                    text-transform: none;
-                    color: #FFFFFF;
-                    font-size: 13px;
-
-                    md-icon {
-                        color: #FFFFFF;
-                        margin: 0 8px 0 0;
-                    }
-                }
-
-                &.google {
-                    background-color: #D73D32;
-                }
-
-                &.facebook {
-                    background-color: rgb(63, 92, 154);
-                }
-            }
-
+            
             .register {
                 margin: 32px auto 24px auto;
                 width: 250px;
@@ -174,27 +132,16 @@
 
 // RESPONSIVE
 @media screen and (max-width: $layout-breakpoint-sm) {
-
-    #login {
-
-        #login-form-wrapper {
+    #nao-autenticado {
+        #nao-autenticado-form-wrapper {
             width: 100%;
             min-width: 100%;
             max-width: 100%;
 
-            #login-form {
+            #nao-autenticado-form {
                 text-align: center;
                 padding: 24px;
-
-                .md-button {
-
-                    &.google,
-                    &.facebook {
-                        width: 80%;
-                    }
-                }
             }
         }
     }
-
 }
