@@ -1,6 +1,10 @@
 #cadastro-form {
+
+	margin-top:-20px;
+	
 	.cadastro-user-type {
 		margin: 0 -48px;
+		margin-bottom:24px;
 		padding: 12px 48px;
 
 		label {
@@ -14,7 +18,9 @@
 
 		@media screen and (max-width: $layout-breakpoint-sm) {
 			margin: 0 -24px;
+			margin-bottom:24px;			
 			padding: 12px 24px;
+			text-align: center;
 		}
 	}
 }
