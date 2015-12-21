@@ -7,7 +7,6 @@
 		"CAMPO": {
 			"USUARIO": "Usuário",
 			"SENHA": "Senha",
-			"REPETIR_SENHA": "Repetir senha",
 
 			"NOME": "Nome",
 			"EMAIL": "Email",
@@ -20,8 +19,7 @@
 			"EMAIL_INVALIDO": "Email inválido",
 			"TELEFONE_INVALIDO": "Telefone inválido",
 			"CPF_INVALIDO": "CPF inválido",
-			"OAB_FORMATO_INVALIDO": "OAB em formato inválido",
-			"REPETIR_SENHA_INCORRETA": "A senha não foi repetida corretamente."
+			"OAB_FORMATO_INVALIDO": "OAB em formato inválido"
 		}
 	}
 }

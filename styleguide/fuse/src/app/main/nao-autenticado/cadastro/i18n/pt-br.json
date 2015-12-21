@@ -7,6 +7,19 @@
 		"TERMOS_E_CONDICOES": "os termos e condições",
 		"CRIAR_CONTA": "Quero criar minha conta",
 		"JA_TEM_CONTA": "Já tem uma conta?",
-		"ENTRE_AGORA": "Entre agora!"
+		"ENTRE_AGORA": "Entre agora!",
+
+		"CAMPO": {
+			"REPETIR_SENHA": "Repetir senha"
+		},
+
+		"ERRO": {
+			"NOME_REQUERIDO": "Nome é um campo obrigatório.",
+			"USUARIO_REQUERIDO": "Usuário é um campo obrigatório.",
+			"OAB_REQUERIDO": "OAB é obrigatório para advogados.",
+			"SENHA_REQUERIDA": "Senha é um campo obrigatório.",
+			"REPETIR_SENHA_REQUERIDA": "É obrigatório repetir a senha.",
+			"REPETIR_SENHA_INCORRETA": "As senhas são diferentes."
+		}
 	}	
 }
