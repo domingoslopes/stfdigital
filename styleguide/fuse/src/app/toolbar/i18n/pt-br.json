@@ -4,8 +4,10 @@
 		"ALTERNAR_PESQUISA": "Alterar pesquisa",
 		
 		"PESQUISA": {
-			"PLACEHOLDER_PROCESSO": "Digite uma classe e número para pesquisar processos e pressione [enter]",
-			"PLACEHOLDER_PETICAO": "Digite uma classe e número para pesquisar petições e pressione [enter]"
+			"PLACEHOLDER_PROCESSO": "Digite a classe e o número do PROCESSO e pressione [enter]...",
+			"PLACEHOLDER_PETICAO": "Digite o protocolo e o ano da PETIÇÃO e pressione [enter]...",
+			"PESQUISAR_PROCESSO": "Pesquisar Processo",
+			"PESQUISAR_PETICAO": "Pesquisar petição"
 		}
 	}
 }
