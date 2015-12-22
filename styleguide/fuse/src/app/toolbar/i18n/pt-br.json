@@ -1,3 +1,11 @@
 {
-	
+	"TOOLBAR": {
+		"ALTERNAR_NAVEGACAO": "Alternar navegação",
+		"ALTERNAR_PESQUISA": "Alterar pesquisa",
+		
+		"PESQUISA": {
+			"PLACEHOLDER_PROCESSO": "Digite uma classe e número para pesquisar processos e pressione [enter]",
+			"PLACEHOLDER_PETICAO": "Digite uma classe e número para pesquisar petições e pressione [enter]"
+		}
+	}
 }
