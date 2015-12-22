@@ -6,13 +6,12 @@
 		.config(config);
 
 	/** @ngInject **/
-	function config($translatePartialLoaderProvider, $stateProvider, $translateProvider) {
+	function config($translatePartialLoaderProvider, $stateProvider, $translateProvider, msNavigationServiceProvider) {
 		$translatePartialLoaderProvider.addPart('app/main/autenticado');
 		
 		$stateProvider
 			.state('app.autenticado', {
-				//abstract: true,
-				url: '/base',
+				abstract: true,
 				views: {
 					'main@': {
 	                    templateUrl: 'app/core/layouts/vertical-navigation.html',
