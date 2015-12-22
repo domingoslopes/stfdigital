@@ -23,7 +23,7 @@
 
                 scope.$watch("stfMatches", function() {
                     ctrl.$validate();
-                })
+                });
             }
         };
     }
