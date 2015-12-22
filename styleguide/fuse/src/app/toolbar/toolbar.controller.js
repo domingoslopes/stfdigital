@@ -4,56 +4,50 @@
     angular.module('app.toolbar').classy.controller({
         name: 'ToolbarController',
 
-        inject: ['$rootScope', '$mdSidenav', '$mdToast', '$mdMedia', 'msNavigationService'],
+        inject: ['$scope', '$rootScope', '$mdSidenav', '$mdToast', '$mdMedia', 'msNavigationService', '$state'],
 
         init: function() {
             this.bodyEl = angular.element('body');
             
-            this.$rootScope.global = {
-                search: ''
-            };
+            this.$scope.$watch(function() {
+                return this.$mdMedia('gt-sm');
+            }.bind(this), this.updateNavigation);
 
-            this.userStatusOptions = [
-                {
-                    'title': 'Online',
-                    'icon' : 'icon-checkbox-marked-circle',
-                    'color': '#4CAF50'
-                },
-                {
-                    'title': 'Away',
-                    'icon' : 'icon-clock',
-                    'color': '#FFC107'
-                },
-                {
-                    'title': 'Do not Disturb',
-                    'icon' : 'icon-minus-circle',
-                    'color': '#F44336'
-                },
-                {
-                    'title': 'Invisible',
-                    'icon' : 'icon-checkbox-blank-circle-outline',
-                    'color': '#BDBDBD'
-                },
-                {
-                    'title': 'Offline',
-                    'icon' : 'icon-checkbox-blank-circle-outline',
-                    'color': '#616161'
-                }
-            ];
-
-            this.userStatus = this.userStatusOptions[0];
+            // TODO: Isso deve virar um enum em alguma factory para indicar o tipo de pesquisa
+            // 1 = Processo, 2 = Petição
+            this.tipoBusca = 1;
         },
 
         methods: {
-            /**
-             * 
-             */
             toggleNavigation: function () { 
                 if (this.$mdMedia('gt-sm')) {
                     this.msNavigationService.toggleFolded();
                 } else {
                     this.toggleSidenav('navigation');
                 }
+
+                this.updateNavigation();
+            },
+
+            updateNavigation: function() {
+                if (this.$mdMedia('gt-sm')) {
+                    this.folded = this.msNavigationService.getFolded();
+                } else {
+                    this.folded = this.$mdSidenav('navigation').isOpen();
+                }
+            },
+
+            alterarBusca: function(tipo) {
+                this.tipoBusca = tipo;
+            },
+
+            teclaPressionadaBusca: function(evento) {
+                // Só nos interessa a tecla enter
+                if (evento.keyCode !== 13) {
+                    return;
+                }
+
+                console.log('TODO: Buscar por um' + (this.tipoBusca == 1 ? ' processo' : 'a petição') + ' com o termo: ' + this.termoBusca);
             },
 
             /**
@@ -77,7 +71,8 @@
              * Logout Function
              */
             logout: function () {
-
+                this.$state.go('app.nao-autenticado.login');
+                console.log("TODO: Fazer logout do usuário");
             },
 
             /**

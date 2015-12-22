@@ -23,12 +23,12 @@
 						templateUrl: 'app/main/autenticado/autenticado.html'
 					},
 					'toolbar@app.autenticado'   : {
-                        templateUrl: 'app/toolbar/layouts/vertical-navigation/toolbar.html',
+                        templateUrl: 'app/toolbar/toolbar.html',
                         controller : 'ToolbarController',
                         controllerAs: 'vm'
                     },
                     'navigation@app.autenticado': {
-                        templateUrl: 'app/navigation/layouts/vertical-navigation/navigation.html',
+                        templateUrl: 'app/navigation/navigation.html',
                         controller : 'NavigationController',
                         controllerAs: 'vm'
                     },
