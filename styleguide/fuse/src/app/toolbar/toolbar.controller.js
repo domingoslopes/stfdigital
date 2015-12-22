@@ -7,7 +7,7 @@
         .controller('ToolbarController', ToolbarController);
 
     /** @ngInject */
-    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast)
+    function ToolbarController($rootScope, $mdSidenav, $translate, $mdToast, $mdMedia, msNavigationService)
     {
         var vm = this;
 
@@ -43,28 +43,9 @@
                 'color': '#616161'
             }
         ];
-        vm.languages = [
-            {
-                'title'      : 'English',
-                'translation': 'TOOLBAR.ENGLISH',
-                'code'       : 'en',
-                'flag'       : 'gb'
-            },
-            {
-                'title'      : 'Spanish',
-                'translation': 'TOOLBAR.SPANISH',
-                'code'       : 'es',
-                'flag'       : 'es'
-            },
-            {
-                'title'      : 'Turkish',
-                'translation': 'TOOLBAR.TURKISH',
-                'code'       : 'tr',
-                'flag'       : 'tr'
-            }
-        ];
 
         // Methods
+        vm.toggleNavigation = toggleNavigation;
         vm.toggleSidenav = toggleSidenav;
         vm.logout = logout;
         vm.changeLanguage = changeLanguage;
@@ -74,7 +55,14 @@
         //////////
 
         vm.userStatus = vm.userStatusOptions[0];
-        vm.selectedLanguage = vm.languages[0];
+        
+        function toggleNavigation() {
+            if ($mdMedia('gt-sm')) {
+                msNavigationService.toggleFolded();
+            } else {
+                this.toggleSidenav('navigation');
+            }
+        }
 
         /**
          * Toggle sidenav
