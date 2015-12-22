@@ -2,19 +2,20 @@
 	'use strict';
 
 	angular
-		.module('app.nao-autenticado.cadastro', ['classy', 'ngMask'])
+		.module('app.cadastro', ['app.nao-autenticado', 'classy', 'ngMask'])
 		.config(config);
 
 	/** @ngInject **/
 	function config($translatePartialLoaderProvider, $stateProvider) {
-		$translatePartialLoaderProvider.addPart('app/main/nao-autenticado/cadastro');
+		$translatePartialLoaderProvider.addPart('app/main/cadastro');
 
 		$stateProvider
-			.state('app.nao-autenticado.cadastro', {
+			.state('app.cadastro', {
+				parent: 'app.nao-autenticado',
 				url: '/cadastro',
 				views: {
 					'form@app.nao-autenticado': {
-						templateUrl: 'app/main/nao-autenticado/cadastro/cadastro.html',
+						templateUrl: 'app/main/cadastro/cadastro.html',
 						controller: 'CadastroController',
 						controllerAs: 'vm'
 					}

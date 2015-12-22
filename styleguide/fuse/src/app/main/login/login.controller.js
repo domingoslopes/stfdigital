@@ -1,6 +1,6 @@
 (function() {
 
-	angular.module('app.nao-autenticado.login').classy.controller({
+	angular.module('app.login').classy.controller({
 		name: 'LoginController',
 
 		inject: ['$state'],
