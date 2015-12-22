@@ -6,6 +6,7 @@
 		"PESQUISA": {
 			"PLACEHOLDER_PROCESSO": "Digite a classe e o número do PROCESSO e pressione [enter]...",
 			"PLACEHOLDER_PETICAO": "Digite o protocolo e o ano da PETIÇÃO e pressione [enter]...",
+			"PESQUISA_AVANCADA": "Pesquisa avançada",
 			"PESQUISAR_PROCESSO": "Pesquisar Processo",
 			"PESQUISAR_PETICAO": "Pesquisar petição"
 		}
