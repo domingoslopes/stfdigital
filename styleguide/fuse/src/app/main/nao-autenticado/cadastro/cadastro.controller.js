@@ -8,7 +8,7 @@
 		init: function() {
 			this.form = {
 				tipoCadastro: 1
-			}
+			};
 		},
 
 		methods: {
