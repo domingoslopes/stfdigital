@@ -1,6 +1,6 @@
 (function() {
 
-	angular.module('app.nao-autenticado.cadastro').classy.controller({
+	angular.module('app.cadastro').classy.controller({
 		name: 'CadastroController',
 
 		inject: ['$scope'],
