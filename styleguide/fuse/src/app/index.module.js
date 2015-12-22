@@ -21,11 +21,9 @@
             'app.quick-panel',
 
             // Pages
-            'app.nao-autenticado',
-            'app.nao-autenticado.login',
-            'app.nao-autenticado.cadastro',
-            'app.autenticado',
-
+            'app.login',
+            'app.cadastro',
+            
             'app.gestao.meus-paineis',
             
             'app.processos.ultimos-acessos',
