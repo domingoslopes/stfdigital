@@ -2,7 +2,9 @@
 	"PLATAFORMA": {
 		"TERMO": {
 			"CIDADAO": "Cidadão",
-			"ADVOGADO": "Advogado"
+			"ADVOGADO": "Advogado",
+			"PROCESSO": "Processo",
+			"PETICAO": "Petição"
 		},
 		"CAMPO": {
 			"USUARIO": "Usuário",
