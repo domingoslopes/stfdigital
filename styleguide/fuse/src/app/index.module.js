@@ -23,6 +23,7 @@
             // Pages
             'app.nao-autenticado',
             'app.nao-autenticado.login',
-            'app.nao-autenticado.cadastro'
+            'app.nao-autenticado.cadastro',
+            'app.autenticado'
         ]);
 })();
