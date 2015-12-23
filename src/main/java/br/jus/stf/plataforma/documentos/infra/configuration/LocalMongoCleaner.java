@@ -31,10 +31,8 @@ public final class LocalMongoCleaner {
 	public static void killExtracted() throws IOException {
 		if (isWindows()) {
 			killExtractedWindows();
-		} else if (isLinux()) {
-			killExtractedLinux();
-		} else if (isMacOsX()) {
-			killExtractedMacOsX();
+		} else if (isLinux() || isMacOsX()) {
+			killExtractedUnix();
 		}
 	}
 
@@ -71,12 +69,8 @@ public final class LocalMongoCleaner {
 			IOUtils.closeQuietly(reader);
 		}
 	}
-	
-	private static void killExtractedMacOsX() {
-		
-	}
 
-	private static void killExtractedLinux() {
+	private static void killExtractedUnix() {
 		BufferedReader reader = null;
 		try {
 			String line;

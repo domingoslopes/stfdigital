@@ -320,8 +320,8 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(status().isOk()).andExpect(jsonPath("$.hash").exists()).andExpect(jsonPath("$.hashType").exists())
 			.andReturn().getResponse().getContentAsString();
 		
-		String hash = JsonPath.read(preSignJson, "$.hash");
-		String signature = sign(hash, userStore.keyPair().getPrivate());
+		String data = JsonPath.read(preSignJson, "$.data");
+		String signature = sign(data, userStore.keyPair().getPrivate());
 		this.mockMvc.perform(post("/api/certification/signature/post-sign").session(signatureSession).header("login", "gestor-recebimento")
 				.contentType(MediaType.APPLICATION_JSON).content(this.postSignCommand.replace("@signatureAsHex", signature)
 					.replace("@signerId", signerId))).andExpect(status().isOk());
@@ -338,10 +338,10 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect((jsonPath("$", hasSize(0))));
 	}
 	
-	private String sign(String hashAsHex, PrivateKey key) throws Exception {
+	private String sign(String dataAsHash, PrivateKey key) throws Exception {
 		Signature signature = Signature.getInstance("SHA256withRSA");
 		signature.initSign(key);
-		signature.update(Hex.decodeHex(hashAsHex.toCharArray()));
+		signature.update(Hex.decodeHex(dataAsHash.toCharArray()));
 
 		byte[] signed = signature.sign();
 

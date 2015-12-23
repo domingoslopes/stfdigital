@@ -1,0 +1,97 @@
+<div layout="row" layout-align="start center">
+    <div layout="row" layout-align="start center" flex>
+        <md-button id="navigation-toggle" class="md-icon-button" ng-click="vm.toggleNavigation()"
+                   aria-label="Alternar navegação" translate
+                   translate-attr-aria-label="TOOLBAR.ALTERNAR_NAVEGACAO">
+            <md-icon
+                class="fold-toggle"
+                md-font-icon="icon-backburger"
+                ng-class="{'folded': vm.folded}">
+            </md-icon>
+        </md-button>
+
+        <div flex id="navigation-search">
+            <md-icon class="ml-16 mr-16" md-font-icon="icon-magnify"></md-icon>
+
+            <input
+                class="bn s18"
+                ng-model="vm.termoBusca"
+                placeholder="{{ ('TOOLBAR.PESQUISA.PLACEHOLDER_' + (vm.tipoBusca == 1 ? 'PROCESSO' : 'PETICAO' )) | translate }}"
+                ng-keyup="vm.teclaPressionadaBusca($event)">
+            
+            <md-menu>
+                <md-button
+                    class="md-icon-button"
+                    aria-label="Alternar pesquisa"
+                    translate
+                    translate-attr-aria-label="TOOLBAR.ALTERNAR_PESQUISA"
+                    ng-click="$mdOpenMenu($event)">
+                    <md-icon md-font-icon="icon-chevron-down" class="icon s16"></md-icon>
+                </md-button>
+
+                <md-menu-content width="4">            
+                    <md-menu-item>
+                        <md-button translate="TOOLBAR.PESQUISA.PESQUISAR_PROCESSO" ng-click="vm.alterarBusca(1)">Pesquisar Processos</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button translate="TOOLBAR.PESQUISA.PESQUISAR_PETICAO" ng-click="vm.alterarBusca(2)">Pesquisar petições</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            <md-button class="md-accent" translate="TOOLBAR.PESQUISA.PESQUISA_AVANCADA">Pesquisa Avançada</md-button>
+        </div>
+
+        <md-progress-circular
+            id="toolbar-progress"
+            ng-if="$root.loadingProgress"
+            class="md-accent"
+            md-mode="indeterminate"
+            md-diameter="64">
+        </md-progress-circular>
+    </div>
+
+    <div layout="row" layout-align="start center">
+        <md-menu-bar id="user-menu">
+            <md-menu md-position-mode="left bottom">
+                <md-button class="user-button" ng-click="$mdOpenMenu()"
+                           aria-label="User settings"
+                           translate translate-attr-aria-label="TOOLBAR.USER_SETTINGS">
+                    <div layout="row" layout-align="space-between center">
+                        <div class="avatar-wrapper">
+                            <img md-menu-align-target class="avatar" src="assets/images/avatars/profile.jpg">
+                            <!--
+                            <md-icon md-font-icon ng-class="vm.userStatus.icon"
+                                     ng-style="{'color': vm.userStatus.color }"
+                                     class="icon status s16">
+                            </md-icon>
+                            -->
+                        </div>
+                        <span class="username" hide-xs>John Doe</span>
+                        <md-icon md-font-icon="icon-chevron-down" class="icon s16" hide-xs></md-icon>
+                    </div>
+                </md-button>
+
+                <md-menu-content width="3">
+                    <md-menu-item class="md-indent" ui-sref="app.configuracoes.meu-perfil">
+                        <md-icon md-font-icon="icon-account" class="icon s20"></md-icon>
+                        <md-button>Meu Perfil</md-button>
+                    </md-menu-item>
+
+                    <md-menu-divider></md-menu-divider>
+
+                    <md-menu-item class="md-indent">
+                        <md-icon md-font-icon="icon-logout" class="icon s20"></md-icon>
+                        <md-button ng-click="vm.logout()">Sair</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-menu-bar>
+
+        <div class="toolbar-separator"></div>
+
+        <md-button id="quick-panel-toggle" class="md-icon-button" ng-click="vm.toggleSidenav('quick-panel')"
+                   aria-label="Toggle quick panel" translate translate-attr-aria-label="TOOLBAR.TOGGLE_QUICK_PANEL">
+            <md-icon md-font-icon="icon-format-list-bulleted" class="icon"></md-icon>
+        </md-button>
+    </div>
+</div>

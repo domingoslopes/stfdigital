@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('app.login', ['classy'])
+		.module('app.login', ['app.nao-autenticado', 'classy'])
 		.config(config);
 
 	/** @ngInject **/
@@ -11,18 +11,15 @@
 
 		$stateProvider
 			.state('app.login', {
+				parent: 'app.nao-autenticado',
 				url: '/login',
 				views: {
-					'main@': {
-	                    templateUrl: 'app/core/layouts/content-only.html',
-	                    controller : 'MainController as vm'
-	                },
-					'content@app.login': {
+					'form@app.nao-autenticado': {
 						templateUrl: 'app/main/login/login.html',
-						controller: 'LoginController'
+						controller: 'LoginController',
+						controllerAs: 'vm'
 					}
-				},
-				bodyClass: 'login-v2'
+				}
 			});
 	}
 })();
