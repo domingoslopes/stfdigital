@@ -383,6 +383,45 @@ $border-style: 1px solid rgba(0, 0, 0, 0.12);
     border-bottom: $border-style;
 }
 
+
+.border-none,
+.bn {
+    border: none;
+}
+
+.border-top-none,
+.btn {
+    border-top: none;
+}
+
+.border-right-none,
+.brn {
+    border-right: none;
+}
+
+.border-bottom-none,
+.bbn {
+    border-bottom: none;
+}
+
+.border-left-none,
+.bln {
+    border-left: none;
+}
+
+.border-horizontal-none,
+.bhn {
+    border-left: none;
+    border-right: none;
+}
+
+.border-vertical-none,
+.bvn {
+    border-top: none;
+    border-bottom: none;
+}
+
+
 // Border-radius helpers
 @for $i from 1 through 12 {
 
