@@ -65,7 +65,7 @@ public class ProcessoServiceFacade {
 	public ProcessoDto distribuir(String tipoDistribuicao, Long peticaoId, String justificativa,
 			Set<Long> ministrosCandidatos, Set<Long> ministrosImpedidos, Set<Long> processosPreventos) {
 		Peticao peticao = peticaoRestAdapter.consultar(peticaoId);
-		String usuarioCadastramento = SecurityContextUtil.getUsername();
+		String usuarioCadastramento = SecurityContextUtil.getUser().getUsername();
 		TipoDistribuicao tipo = TipoDistribuicao.valueOf(tipoDistribuicao); 
 		ParametroDistribuicao parametroDistribuicao = new ParametroDistribuicao(peticao, justificativa, usuarioCadastramento,
 				this.carregarMinistros(ministrosCandidatos), this.carregarMinistros(ministrosImpedidos), this.carregarProcessos(processosPreventos));

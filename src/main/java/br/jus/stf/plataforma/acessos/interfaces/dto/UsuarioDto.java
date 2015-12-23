@@ -1,7 +1,5 @@
 package br.jus.stf.plataforma.acessos.interfaces.dto;
 
-import java.util.Set;
-
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -28,15 +26,15 @@ public class UsuarioDto {
 	@ApiModelProperty(value="Setor de lotação do usuário.")
 	private SetorDto setorLotacao;
 	
-	@ApiModelProperty(value="Lista de papéis associados ao usuário.")
-	private Set<PapelDto> papeis;
+	public UsuarioDto() {
+		
+	}
 	
-	public UsuarioDto(Long id, String login, String nome, SetorDto setorLotacao, Set<PapelDto> papeis) {
+	public UsuarioDto(Long id, String login, String nome, SetorDto setorLotacao) {
 		this.id = id;
 		this.login = login;
 		this.nome = nome;
 		this.setorLotacao = setorLotacao;
-		this.papeis = papeis;
 	}
 	
 	public Long getId() {
@@ -69,14 +67,6 @@ public class UsuarioDto {
 
 	public void setSetorLotacao(SetorDto setorLotacao) {
 		this.setorLotacao = setorLotacao;
-	}
-
-	public Set<PapelDto> getPapeis() {
-		return this.papeis;
-	}
-
-	public void setPapeis(Set<PapelDto> papeis) {
-		this.papeis = papeis;
 	}
 	
 }
