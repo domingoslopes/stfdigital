@@ -11,6 +11,21 @@
         margin: 0;
         border-right: 1px solid rgba(0, 0, 0, 0.12);
         border-radius: 0;
+
+        .fold-toggle {
+            transition: 300ms;
+
+            &.folded {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    #navigation-search {
+        input {
+            font-size: 0.7em;
+            width: 50%;
+        }
     }
 
     #user-menu {
