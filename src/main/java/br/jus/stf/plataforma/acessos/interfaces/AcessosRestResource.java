@@ -114,14 +114,13 @@ public class AcessosRestResource {
 	
 	/**
 	 * Recupera as informações do usuário logado.
-	 * 
-	 * @param id Id do usuário.
+	 *
 	 * @return Informações do usuário.
 	 */
 	@ApiOperation("Recupera as informações do usuário logado.")
 	@RequestMapping(value="/usuario", method = RequestMethod.GET)
 	public UsuarioDto recuperarUsuario() {
-		String login = SecurityContextUtil.getUsername();
+		String login = SecurityContextUtil.getUser().getUsername();
 		return usuarioDtoAssembler.toDto(
 				acessosApplicationService.recuperarUsuario(login));
 	}
@@ -137,6 +136,19 @@ public class AcessosRestResource {
 	public UsuarioDto recuperarUsuario(@PathVariable("usuarioId") Long usuarioId) {
 		return usuarioDtoAssembler.toDto(
 				acessosApplicationService.recuperarUsuario(usuarioId));
+	}
+	
+	/**
+	 * Recupera as informações do usuário informado.
+	 * 
+	 * @param login do usuário.
+	 * @return Informações do usuário.
+	 */
+	@ApiOperation("Recupera as informações do usuário informado.")
+	@RequestMapping(value="/usuarios/:login.+", method = RequestMethod.GET)
+	public UsuarioDto recuperarUsuario(@PathVariable("login") String login) {
+		return usuarioDtoAssembler.toDto(
+				acessosApplicationService.recuperarUsuario(login));
 	}
 	
 	/**

@@ -23,9 +23,11 @@
 				dashboard : '='
 			},
 			templateUrl: 'application/plataforma/support/dashboards/dashboard-layout.tpl.html',
-			controller: ['$scope', function($scope) {
-				var dashlets = angular.isDefined($scope.dashboard) ? $scope.dashboard.dashlets : [];
-				$scope.layout = DashboardLayoutManager.defaultLayout(dashlets);
+			controller: ['$scope', function($scope) {								
+				$scope.$watch('dashboard', function() {
+					var dashlets = angular.isDefined($scope.dashboard) ? $scope.dashboard.dashlets : [];
+					$scope.layout = DashboardLayoutManager.defaultLayout(dashlets);
+				});
 			}]
 		};
 	}]);

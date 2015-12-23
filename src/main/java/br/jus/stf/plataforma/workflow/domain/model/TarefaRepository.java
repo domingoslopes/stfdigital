@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.jus.stf.shared.ProcessoWorkflowId;
 import br.jus.stf.shared.TarefaId;
+import br.jus.stf.shared.UsuarioId;
 
 /**
  * @author Rodrigo Barreiros
@@ -22,11 +23,11 @@ public interface TarefaRepository {
 	void completar(Tarefa tarefa, Metadado metadado);
 
 	/**
-	 * Lista as tarefas dos papéis do usuário
+	 * Lista as tarefas do usuário
 	 * 
 	 * @return
 	 */
-	List<Tarefa> listar();
+	List<Tarefa> listarMinhas();
 	
 	/**
 	 * Lista as tarefas de um responsavel
@@ -34,7 +35,15 @@ public interface TarefaRepository {
 	 * @param responsavel
 	 * @return
 	 */
-	List<Tarefa> listar(Responsavel responsavel);
+	List<Tarefa> listarPor(UsuarioId usuarioId);
+	
+	/**
+	 * Lista as tarefas dos papéis do usuário
+	 * 
+	 * @param responsavel
+	 * @return
+	 */
+	List<Tarefa> listarPorMeusPapeis();
 	
 	/**
 	 * Consulta uma tarefa
@@ -51,4 +60,7 @@ public interface TarefaRepository {
 	 * @return
 	 */
 	Tarefa consultarPorProcesso(ProcessoWorkflowId id);
+
+	void delegar(TarefaId tarefaId, UsuarioId usuarioId);
+	
 }

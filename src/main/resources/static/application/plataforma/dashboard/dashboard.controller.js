@@ -9,8 +9,19 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DashboardController', function ($scope, $stateParams) {
-		$scope.dashboard = $stateParams.dashboard;
+	angular.plataforma.controller('DashboardController', function ($scope, $rootScope, $stateParams, DashboardService) {
+		
+		$scope.dashboard = {};
+		
+		if (angular.isDefined($stateParams.dashboard.dashlets)) {
+			$scope.dashboard = $stateParams.dashboard;
+		} else {
+			//TODO enquanto não existe um dashboard padrão, o primeiro será usado
+			DashboardService.getDashboards().then(function(dashboards) {
+				var lastPos = (dashboards.length > 0) ? dashboards.length - 1 : 0;
+				$scope.dashboard = dashboards[lastPos];
+			});
+		}
 	});
 	
 })();
