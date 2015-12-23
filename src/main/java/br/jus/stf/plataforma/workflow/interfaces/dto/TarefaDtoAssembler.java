@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.workflow.interfaces.dto;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +24,7 @@ public class TarefaDtoAssembler {
 	public TarefaDto toDto(Tarefa tarefa) {
 		Long id = tarefa.id().toLong();
 		Long processo = tarefa.processo().toLong();
-		String responsavel = tarefa.reponsavel().nome();
+		String responsavel = Optional.ofNullable(tarefa.reponsavel()).map(r -> r.nome()).orElse("");
 		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), responsavel, processo, toDto(tarefa.metadado()));
 	}
 	
