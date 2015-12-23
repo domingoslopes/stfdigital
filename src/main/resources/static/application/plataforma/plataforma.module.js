@@ -14,6 +14,8 @@
 		$stateProvider.state('dashboard', {
 			parent: 'root',
 			url : '/dashboard',
+			deepStateRedirect: true,
+		    sticky: true,
 			params : { dashboard : {} },
 			views: {
 				'content@root': {
@@ -59,11 +61,38 @@
 					controllerAs: 'vm'
 				}
 			}
+		})
+		.state('assumir-tarefa', {
+			parent: 'action',
+			params : {
+				resources : []
+			},
+			views: {
+				'@action': {
+					templateUrl: 'application/plataforma/workflow/tarefa/assumir.tpl.html',
+					controller: 'AssumirController'
+				}
+			}
+		})
+		.state('delegar-tarefa', {
+			parent: 'action',
+			params : {
+				resources : []
+			},
+			views: {
+				'@action': {
+					templateUrl: 'application/plataforma/workflow/tarefa/delegar.tpl.html',
+					controller: 'DelegarController'
+				}
+			}
 		});
 		
 		DashletsProvider.dashlet('minhas-tarefas', {
-			view: 'application/plataforma/workflow/dashlets/minhas-tarefas.tpl.html',
+			view: 'application/plataforma/dashlets/minhas-tarefas.tpl.html',
 			controller: 'MinhasTarefasDashletController'
+		}).dashlet('tarefas-papeis', {
+			view: 'application/plataforma/dashlets/tarefas-papeis.tpl.html',
+			controller: 'TarefasPapeisDashletController'
 		});
 	});
 	

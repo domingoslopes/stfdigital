@@ -8,7 +8,7 @@
 
 	angular.plataforma.controller('MinhasTarefasDashletController', ['$scope', 'TarefaService', 'ActionService', '$state', function($scope, TarefaService, ActionService, $state) {
 		
-		TarefaService.listar().success(function(tarefas) {
+		TarefaService.listarMinhas().success(function(tarefas) {
 			$scope.tarefas = tarefas;
 		});
 		

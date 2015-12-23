@@ -14,17 +14,12 @@ public class Responsavel implements ValueObject<Responsavel> {
 	private static final long serialVersionUID = 1L;
 	private UsuarioId usuarioId;
 	private String nome;
-
-	public Responsavel(UsuarioId usuarioId) {
-		Validate.notNull(usuarioId, "responsavel.usuarioId.required");
-		
-		this.usuarioId = usuarioId;
-	}
 	
 	public Responsavel(UsuarioId usuarioId, String nome) {
-		this(usuarioId);
+		Validate.notNull(usuarioId, "responsavel.usuarioId.required");
 		Validate.notBlank(nome, "responsavel.nome.required");
 		
+		this.usuarioId = usuarioId;
 		this.nome = nome;
 	}
 

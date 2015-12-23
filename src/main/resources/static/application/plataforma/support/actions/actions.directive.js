@@ -22,7 +22,7 @@
 	 */
 	angular.plataforma.config(['$stateProvider', function($stateProvider) {
 		
-		$stateProvider.state('actions', {
+		$stateProvider.state('action', {
 			abstract : true,
 			parent: 'root',
 			params : {
@@ -30,7 +30,7 @@
 				resources : []
 			}, 
 			views: {
-				'modal': {
+				'modal@root': {
 					templateUrl: 'application/plataforma/support/actions/modal.tpl.html',
 					controller: 'ModalActionController'
 				}

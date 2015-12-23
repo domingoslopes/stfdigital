@@ -34,10 +34,16 @@ public class TarefaRestResource {
 	@Autowired
 	private Validator validator;
     
-    @ApiOperation(value = "Lista todas as tarefas associadas ao papel do usuário corrente")
+    @ApiOperation(value = "Lista todas as tarefas associadas ao usuário corrente")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<TarefaDto> tarefas() {    	
         return tarefaServiceFacade.tarefas();
+	}
+    
+    @ApiOperation(value = "Lista todas as tarefas associadas aos papéis do usuário corrente")
+	@RequestMapping(value = "/papeis", method = RequestMethod.GET)
+	public List<TarefaDto> tarefasPapeis() {    	
+        return tarefaServiceFacade.tarefasPorMeusPapeis();
 	}
 	
     @RequestMapping(value = "/{id}/completar", method = RequestMethod.PUT)
