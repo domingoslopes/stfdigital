@@ -10,7 +10,6 @@
 	'use strict';
 	
 	angular.autuacao.controller('GraficoPeticoesDashletController', ['$scope', function($scope) {
-		$scope.titulo = 'Dashlet Gráfico de Petições';
 		
 		$scope.options = {
 			    chart: {

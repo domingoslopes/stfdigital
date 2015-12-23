@@ -35,6 +35,7 @@ INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (5, 5);
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (6, 6);
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (7, 7);
 INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (8, 8);
+INSERT INTO plataforma.papel_usuario (seq_papel, seq_usuario) VALUES (5, 8);
 
 INSERT INTO plataforma.tipo_informacao (seq_tipo_informacao, nom_tipo_informacao) VALUES (1, 'PETICAO');
 INSERT INTO plataforma.tipo_informacao (seq_tipo_informacao, nom_tipo_informacao) VALUES (2, 'PROCESSO');

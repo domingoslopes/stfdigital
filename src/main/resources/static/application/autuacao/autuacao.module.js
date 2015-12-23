@@ -58,13 +58,13 @@
 					}
 				}
 			}
-		}).state('actions.autuacao', { // estado abstrato para agrupar as ações do contexto
+		}).state('action.autuacao', { // estado abstrato para agrupar as ações do contexto
 			abstract : true,
 			views: {
 				'modal@root' : {}
 			}
 		}).state('registrar-peticao', {
-			parent: 'actions.autuacao',
+			parent: 'action.autuacao',
 			url: '/peticao',
 			abstract: true,
 			views: {
@@ -99,7 +99,7 @@
 				}
 			}
 		}).state('registrar-peticao-fisica', {
-			parent: 'actions.autuacao',
+			parent: 'action.autuacao',
 			url: '/peticao/fisica',
 			params : { resources : [] },
 			views: {
@@ -108,7 +108,7 @@
 				}
 			}
 		}).state('preautuar', {
-			parent: 'actions.autuacao',
+			parent: 'action.autuacao',
 			url: '/peticao/preautuacao',
 			params : { resources : [] },
 			views: {
@@ -117,7 +117,7 @@
 				}
 			}
 		}).state('autuar', {
-			parent: 'actions.autuacao',
+			parent: 'action.autuacao',
 			url: '/peticao/autuacao',
 			params : { resources : [] },
 			views: {
@@ -126,7 +126,7 @@
 				}
 			}
 		}).state('devolver-peticao', {
-			parent: 'actions.autuacao',
+			parent: 'action.autuacao',
 			url: '/peticao/devolucao',
 			params : { resources : [] },
 			views: {
@@ -135,7 +135,7 @@
 				}
 			}
 		}).state('assinar-devolucao-peticao', {
-			parent: 'actions.autuacao',
+			parent: 'action.autuacao',
 			url: '/peticao/assinatura-devolucao',
 			params : { resources : [] },
 			views: {
@@ -145,7 +145,7 @@
 				}
 			}
 		}).state('distribuir-processo', {
-			parent: 'actions.autuacao',
+			parent: 'action.autuacao',
 			url: '/peticao/distribuicao',
 			params : { resources : [] },
 			views: {
@@ -162,23 +162,20 @@
 		});
 		
 		DashletsProvider.dashlet('minhas-peticoes', {
-			view: 'application/autuacao/peticionamento/dashlets/peticoes.tpl.html',
+			view: 'application/autuacao/dashlets/peticoes.tpl.html',
 			controller: 'MinhasPeticoesDashletController'
 		}).dashlet('grafico-gestao', {
-			view: 'application/autuacao/gestao/dashlets/gestao-autuacao.tpl.html',
+			view: 'application/autuacao/dashlets/gestao-autuacao.tpl.html',
 			controller: 'GestaoAutuacaoDashletController'
 		}).dashlet('peticoes-para-preautuar', {
-			view: 'application/autuacao/preautuacao/dashlets/peticoes-preautuar.tpl.html',
+			view: 'application/autuacao/dashlets/peticoes-preautuar.tpl.html',
 			controller: 'MinhasPeticoesParaAutuarDashletController'
 		}).dashlet('grafico-peticoes', {
-			view: 'application/autuacao/autuacao/dashlets/grafico-peticoes.tpl.html',
+			view: 'application/autuacao/dashlets/grafico-peticoes.tpl.html',
 			controller: 'GraficoPeticoesDashletController'
 		}).dashlet('grafico-distribuicao', {
-			view: 'application/autuacao/distribuicao/dashlets/grafico-distribuicao.tpl.html',
+			view: 'application/autuacao/dashlets/grafico-distribuicao.tpl.html',
 			controller: 'GraficoDistribuicaoDashletController'
-		}).dashlet('assinador-pdf', {
-			view: 'application/autuacao/certification/dashlets/assinador-pdf.tpl.html',
-			controller: 'AssinadorPdfDashletController'
 		});
 	});
 

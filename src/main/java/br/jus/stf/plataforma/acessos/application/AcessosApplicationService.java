@@ -70,13 +70,19 @@ public class AcessosApplicationService {
 	
 	public Set<Papel> carregarPapeisUsuario(String login) {
 		return Optional.ofNullable(usuarioRepository.findOne(login))
-				.map(usuario -> usuario.papeis())
+				.map(usuario -> {
+					usuario.papeis().size(); //inicializa o proxy
+					return usuario.papeis();	
+				})
 				.orElse(Collections.emptySet());
 	}
 	
 	public Set<Grupo> carregarGruposUsuario(String login) {
 		return Optional.ofNullable(usuarioRepository.findOne(login))
-				.map(usuario -> usuario.grupos())
+				.map(usuario -> {
+					usuario.grupos().size(); //inicializa o proxy
+					return usuario.grupos();	
+				})
 				.orElse(Collections.emptySet());
 	}
 	

@@ -13,8 +13,11 @@
 
 	angular.plataforma.factory('TarefaService', function($http, $window, properties) {
 		return {
-			listar : function() {
+			listarMinhas : function() {
 				return $http.get(properties.apiUrl + '/workflow/tarefas');
+			},
+			listarPorMeusPapeis : function() {
+				return $http.get(properties.apiUrl + '/workflow/tarefas/papeis');
 			}
 		};
 	});
