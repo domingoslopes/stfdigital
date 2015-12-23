@@ -1,10 +1,16 @@
 package br.jus.stf.plataforma.shared.errorhandling;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
@@ -29,8 +35,39 @@ class GlobalControllerExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public void handleInvalids(IllegalArgumentException exception) {
+    public void handleIllegals(IllegalArgumentException exception) {
     	LOGGER.error(exception.getClass().getName(), exception);
+    }
+    
+    /**
+     * Captura exceções ocorridas devido a problemas de validação.
+     * 
+     * @param exception a exceção indicando parâmetros inválidos
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValidationException.class)
+    @ResponseBody
+    public ErrorMessageDto handleInvalids(ValidationException exception) {
+    	LOGGER.error(exception.getClass().getName(), exception);
+    	
+    	List<ErrorDto> errors = new ArrayList<>();
+    	
+    	for (ObjectError oe : exception.getValidationErrors()) {
+    		ErrorDto error = new ErrorDto();
+    		if (oe instanceof FieldError) {
+    			FieldError fe = (FieldError)oe;
+    			error.setName(fe.getField());
+    			error.setMessage(fe.getDefaultMessage());
+    			error.setType("field");
+    		} else {
+	    		error.setName(oe.getObjectName());
+	    		error.setType("object");
+	    		error.setMessage(oe.getDefaultMessage());
+    		}
+    		errors.add(error);
+    	}
+
+    	return new ErrorMessageDto(errors);
     }
     
     /**

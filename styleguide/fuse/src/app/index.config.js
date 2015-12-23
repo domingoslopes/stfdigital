@@ -7,9 +7,9 @@
         .config(config);
 
     /** @ngInject */
-    function config()
-    {
-        // Put your custom configurations here
+    function config($translatePartialLoaderProvider) {
+        // Adiciona o conjunto de strings de tradução
+        $translatePartialLoaderProvider.addPart('app/main');
     }
 
 })();
