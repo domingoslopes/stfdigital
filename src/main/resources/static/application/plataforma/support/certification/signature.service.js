@@ -9,13 +9,12 @@
 
 	angular.plataforma.service('SignatureService', function(properties, $http, $q, Crypto) {
 		var requestUserCertificate = function(alreadySelectedCertificate) {
-			console.log('requestUserCertificate');
 			return $q(function(resolve, reject) {
 				if (!alreadySelectedCertificate) {
 					Crypto.getCertificate({lang: 'en'}).then(function(response) {
 						resolve(response);
 					}, function(err) {
-						reject(err);
+						resolve({'error': err}); // O tratamento de erro será feito no collect certificate, de modo a rejeitar as outras promises.
 					});
 				} else {
 					resolve(alreadySelectedCertificate);
@@ -27,14 +26,11 @@
 			this.certificateAsHex = certificate;
 		};
 		var prepare = function(certificate) {
-			console.log('prepare');
 			return $q(function(resolve, reject) {
 				var command = new PrepareCommand(certificate.hex);
 				$http.post(properties.apiUrl + '/certification/signature/prepare', command).success(function(dto) {
-					console.log(dto);
 					resolve(dto);
 				}).error(function(error) {
-					console.log(error);
 					reject(error);
 				});
 			});
@@ -47,23 +43,18 @@
 			var command = new PreSignCommand(signerId);
 			return $q(function(resolve, reject) {
 				$http.post(properties.apiUrl + '/certification/signature/pre-sign', command).success(function(dto) {
-					console.log(dto);
 					resolve(dto);
 				}).error(function(error) {
-					console.log(error);
 					reject(error);
 				});
 			});
 		};
 		
 		var sign = function(resolvedObject) {
-			console.log(resolvedObject);
 			return $q(function(resolve, reject) {
-				Crypto.sign(resolvedObject.injectedCertificate, {type: 'SHA-256', hex: resolvedObject.hash}, {lang: 'en'}).then(function(response) {
-					console.log(response);
+				Crypto.sign(resolvedObject.injectedCertificate, {data: resolvedObject.data, type: 'SHA-256', hex: resolvedObject.hash}, {lang: 'en'}).then(function(response) {
 					resolve({'signature': response.hex});
 				}, function(err) {
-					console.log(err);
 					reject(err);
 				});
 			});
@@ -77,10 +68,8 @@
 			var command = new PostSignCommand(resolvedObject.injectedSignerId, resolvedObject.signature);
 			return $q(function(resolve, reject) {
 				$http.post(properties.apiUrl + '/certification/signature/post-sign', command).success(function(dto) {
-					console.log(dto);
 					resolve({'downloadUrl': properties.apiUrl + '/certification/signature/download-signed/' + resolvedObject.injectedSignerId});
 				}).error(function(error) {
-					console.log(error);
 					reject(error);
 				});
 			});
@@ -116,7 +105,6 @@
 			
 			var trackProgress = function(func) {
 				return function() {
-					console.log(currentStep);
 					currentStep++;
 					return func.apply(this, arguments);
 				};
@@ -137,7 +125,6 @@
 			
 			// Trigger
 			this.triggerDocumentProvided = function() {
-				console.log('triggerFileUpload');
 				if (documentUploadDeferred) {
 					documentUploadDeferred.resolve(signerId);
 				}
@@ -146,20 +133,16 @@
 			this.provideExistingDocument = function(documentId) {
 				var command = new ProvideToSignCommand(signerId, documentId);
 				$http.post(properties.apiUrl + '/certification/signature/provide-to-sign', command).then(function(response) {
-					console.log(response.data);
 					self.triggerDocumentProvided();
 				}, function(response) {
-					console.log(response.data);
 					errorCallback(response.data);
 				});
 			};
 			
 			this.saveSignedDocument = function() {
 				return $http.post(properties.apiUrl + '/certification/signature/save-signed/' + signerId, {}).then(function(response) {
-					console.log(response.data);
 					return response.data;
 				}, function(response) {
-					console.log(response.data);
 					return response.data;
 				});
 			};
@@ -188,7 +171,7 @@
 			
 			this.start = function() {
 				currentStep = 0;
-				if (Crypto.use('auto')) {
+				Crypto.use('auto').then(function(status) {
 					currentStep++;
 					$q.when().then(trackProgress(injectAlreadySelectedCertificate)) // Injeta o certificado se já tiver sido selecionado.
 					.then(trackProgress(requestUserCertificate)).then(trackProgress(collectCertificate))
@@ -199,13 +182,15 @@
 					.then(trackProgress(injectSignerId)).then(trackProgress(postSign))
 					.then(trackProgress(callSigningCompletedCallback))
 					.catch(function(error) {
-						console.log('catch');
-						console.log(error);
-						errorCallback(error);
+						if (error.message === 'no_implementation') {
+							errorCallback("O plugin de assinatura não foi encontrado.");
+						} else {
+							errorCallback(error);
+						}
 					});
-				} else {
-					console.log('Nenhuma implementação encontrada.')
-				}
+				}, function(err) {
+					errorCallback("O plugin de assinatura não foi encontrado.");
+				});
 			};
 		};
 		
@@ -213,16 +198,21 @@
 			var certificate;
 			
 			var collectCertificate = function(cert) {
-				if (!certificate) {
-					certificate = cert;
-					deferredRequestingFirstCertificate.resolve();
-				}
-				return $q.when(certificate)
+				return $q(function(resolve, reject) {
+					if (cert.error) {
+						deferredRequestingFirstCertificate.reject(cert.error);
+						reject(cert.error);
+					} else {
+						if (!certificate) {
+							certificate = cert;
+							deferredRequestingFirstCertificate.resolve();
+						}
+						resolve(certificate);
+					}
+				})
 			};
 			
 			var injectCertificate = function(resolvedObject) {
-				console.log('injectCertificate');
-				console.log(resolvedObject);
 				resolvedObject['injectedCertificate'] = certificate;
 				return $q.when(resolvedObject);
 			};
@@ -230,19 +220,17 @@
 			var deferredRequestingFirstCertificate;
 			
 			var injectAlreadySelectedCertificate = function() {
-				return $q(function(resolve) {
+				return $q(function(resolve, reject) {
 					if (certificate) {
-						console.log('existing-certificate');
 						resolve(certificate);
 					} else if (!deferredRequestingFirstCertificate) {
-						console.log('creating-deferred');
 						deferredRequestingFirstCertificate = $q.defer();
 						resolve();
 					} else {
-						console.log('else');
 						deferredRequestingFirstCertificate.promise.then(function() {
-							console.log('resolvedFirstCertificate');
 							resolve(certificate);
+						}, function(error) {
+							reject(error);
 						});
 					}
 				});

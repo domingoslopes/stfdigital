@@ -22,11 +22,11 @@
                         controller : 'MainController as vm'
                     },
                     'toolbar@app'   : {
-                        templateUrl: 'app/toolbar/layouts/vertical-navigation/toolbar.html',
+                        templateUrl: 'app/toolbar/toolbar.html',
                         controller : 'ToolbarController as vm'
                     },
                     'navigation@app': {
-                        templateUrl: 'app/navigation/layouts/vertical-navigation/navigation.html',
+                        templateUrl: 'app/navigation/navigation.html',
                         controller : 'NavigationController as vm'
                     },
                     'quickPanel@app': {

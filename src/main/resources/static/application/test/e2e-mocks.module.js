@@ -7,9 +7,7 @@
 	'use strict';
 
 	var mockCryptoModule = function() {
-		console.log('mockCryptoModuleBeforeModuleDef');
 		var mockCryptoModule = angular.module('e2e.mocks.crypto', ['plataforma']);
-		console.log('mockCryptoModule');
 		// Mock do Crypto
 		var mockCrypto = ['$delegate', '$q', 'JsCryptoFactory', function($delegate, $q, JsCryptoFactory) {
 			var privateKey =  
@@ -48,7 +46,7 @@
 			});
 			
 			$delegate.use = function(backend) {
-				return true;
+				return $q.when(true);
 			};
 			
 			$delegate.getCertificate = function(options) {
@@ -58,13 +56,15 @@
 				});
 			};
 			
-			$delegate.sign = function(certificate, hash, options) {
+			$delegate.sign = function(certificate, data, options) {
 				return $q(function(resolve, reject) {
-					jsCrypto.sign(hash).then(function(signature) {
+					jsCrypto.sign({'data': data.data}).then(function(signature) {
 						resolve({
 							hex: signature.asHex(),
 							value: signature.asUint8Array()
 						});
+					}, function(error) {
+						reject(error);
 					});
 				});
 			};
