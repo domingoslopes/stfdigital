@@ -13,7 +13,6 @@
         transition: 300ms;
         
         .logo {
-
             .logo-image {
                 display: block;
                 background: material-color('light-blue', '600');
@@ -46,14 +45,34 @@
         }
     }
 
+    .call-to-action {
+        text-align: center;
+        padding: 24px 0;
+
+        .md-raised {
+            width: 80%;
+            font-size: 1em;
+        }
+
+        .small {
+            display: none;
+        }
+
+        .small, .large {
+            margin: 0 auto;
+        }
+    }
+
     &:not(.md-locked-open) {
         box-shadow: $whiteframe-shadow-8dp;
     }
+
+
 }
 
 // Folded navigation
 @media only screen and (min-width: $layout-breakpoint-sm) {
-
+    
     .ms-navigation-folded {
 
         #content-container {
@@ -73,7 +92,29 @@
             }
         }
 
+        
+        .call-to-action {
+            .small { 
+                display: block !important;
+            }
+
+            .large {
+                display: none;
+            }
+        }
+
+
         &.ms-navigation-folded-open {
+
+            .call-to-action {
+                .small {
+                    display: none !important;
+                }
+
+                .large {
+                    display: block;
+                }   
+            }
 
             #vertical-navigation {
 
@@ -93,7 +134,6 @@
         }
 
         &:not(.ms-navigation-folded-open) {
-
             #vertical-navigation {
                 position: absolute;
                 width: $navigationFoldedWidth;
