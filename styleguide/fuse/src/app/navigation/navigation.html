@@ -5,4 +5,21 @@
     </div>
 </md-toolbar>
 
-<ms-navigation class="scrollable" ms-scroll="vm.msScrollOptions"></ms-navigation>
+<div class="scrollable" ms-scroll="vm.msScrollOptions">
+	<div class="call-to-action">
+	    <md-button class="md-raised md-float md-warn primary-action md-center md-call-to-action large"
+	               ms-nav-button md-ink-ripple
+	               translate="NAVEGACAO.INICIAR_PROCESSO"
+	               aria-label="Iniciar Processo"
+	               translate-attr-aria-label="NAVEGACAO.INICIAR_PROCESSO">
+	        Iniciar Processo
+	    </md-button>
+
+	    <md-button class="md-fab md-mini md-warn primary-action md-center md-call-to-action small"
+	               aria-label="Iniciar Processo" translate-attr-aria-label="NAVEGACAO.INICIAR_PROCESSO">
+	        <md-icon md-font-icon="icon-plus"></md-icon>
+	    </md-button>
+	</div>
+
+	<ms-navigation></ms-navigation>
+</div>
