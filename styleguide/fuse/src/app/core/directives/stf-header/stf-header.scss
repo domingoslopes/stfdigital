@@ -1,0 +1,29 @@
+.stf-header {
+	background-image: url('/assets/images/backgrounds/stf-fachada-bigger.jpg');
+	background-size: cover;
+	background-position: center;
+	
+	padding: 24px;
+
+	position: relative;
+
+	.breadcrumb {
+		&, span, md-icon {
+			color: rgba(255, 255, 255, 0.75);
+		}
+
+		.separator {
+			margin: 1px 8px 0;
+		}
+
+		.title {
+			font-weight: bold;
+		}
+	}
+
+	.fab {
+	    position: absolute;
+    	right: 18px;
+    	bottom: -32px;
+	}
+}
