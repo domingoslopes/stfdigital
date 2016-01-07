@@ -23,7 +23,7 @@
             title      : 'Notificações',
             icon       : 'icon-comment-alert',
             state      : 'app.tarefas.notificacoes',
-            translation: 'NOTIFICACOES.NOTIFICACOES',
+            translation: 'TAREFAS.NOTIFICACOES.NOTIFICACOES',
             weight     : 1,
             badge : {
                 content: 2,
