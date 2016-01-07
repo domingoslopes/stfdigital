@@ -14,7 +14,9 @@
 				url: '/meus-paineis',
 				views: {
 					'content@app.autenticado': {
-						templateUrl: 'app/main/gestao/meus-paineis/meus-paineis.html'
+						templateUrl: 'app/main/gestao/meus-paineis/meus-paineis.html',
+						controller: 'GestaoMeusPaineisController',
+						controllerAs: 'vm'
 					}
 				}
 			});
@@ -23,7 +25,7 @@
             title      : 'Meus Paineis',
             icon       : 'icon-view-dashboard',
             state      : 'app.gestao.meus-paineis',
-            translation: 'MEUS-PAINEIS.MEUS-PAINEIS',
+            translation: 'GESTAO.MEUS-PAINEIS.MEUS-PAINEIS',
             weight     : 1
         });
 	}
