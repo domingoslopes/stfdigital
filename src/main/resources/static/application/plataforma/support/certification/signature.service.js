@@ -241,10 +241,6 @@
 			}
 		};
 		
-		this.signerWithExternalUpload = function() {
-			return new SigningTracker();
-		};
-		
 		this.signingManager = function() {
 			return new SigningManager();
 		};
