@@ -23,7 +23,7 @@
             title      : 'Pesquisa Avançada',
             icon       : 'icon-magnify',
             state      : 'app.processos.pesquisa-avancada',
-            translation: 'PESQUISA-AVANCADA.PESQUISA-AVANCADA',
+            translation: 'PROCESSOS.PESQUISA-AVANCADA.PESQUISA-AVANCADA',
             weight     : 1
         });
 	}
