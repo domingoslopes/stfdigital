@@ -23,7 +23,7 @@
             title      : 'Meu Perfil',
             icon       : 'icon-account',
             state      : 'app.configuracoes.meu-perfil',
-            translation: 'MEUS-PAINEIS.MEUS-PAINEIS',
+            translation: 'CONFIGURACOES.MEUS-PAINEIS.MEUS-PAINEIS',
             weight     : 1
         });
 	}

@@ -23,7 +23,7 @@
             title      : 'Últimos Acessos',
             icon       : 'icon-history',
             state      : 'app.processos.ultimos-acessos',
-            translation: 'ULTIMOS-ACESSOS.ULTIMOS-ACESSOS',
+            translation: 'PROCESSOS.ULTIMOS-ACESSOS.ULTIMOS-ACESSOS',
             weight     : 1
         });
 	}

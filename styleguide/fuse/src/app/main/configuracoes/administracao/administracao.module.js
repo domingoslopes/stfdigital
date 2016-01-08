@@ -23,7 +23,7 @@
             title      : 'Administração',
             icon       : 'icon-cog',
             state      : 'app.configuracoes.administracao',
-            translation: 'MEUS-PAINEIS.MEUS-PAINEIS',
+            translation: 'CONFIGURACOES.ADMINISTRACAO.ADMINISTRACAO',
             weight     : 1
         });
 	}
