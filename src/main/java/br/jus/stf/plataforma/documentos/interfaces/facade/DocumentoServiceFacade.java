@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.application.DocumentoApplicationService;
-import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
@@ -45,7 +45,7 @@ public class DocumentoServiceFacade {
 		return documentoApplicationService.salvarDocumentoTemporario(documentoTemporario);
 	}
 
-	public DocumentoDownload pesquisaDocumento(Long documentoId) {
+	public ConteudoDocumentoDownload pesquisaDocumento(Long documentoId) {
 		return documentoRepository.download(new DocumentoId(documentoId));
 	}
 

@@ -24,7 +24,7 @@ public class OracleDocumentoPersistenceConfiguration {
 		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriver(new oracle.jdbc.OracleDriver());
 		dataSource.setUrl("jdbc:oracle:thin:@10.200.3.129:1521:documento");
-		dataSource.setUsername("sys");
+		dataSource.setUsername("sys as sysdba");
 		dataSource.setPassword("oracle123");
 		return dataSource;
 	}
