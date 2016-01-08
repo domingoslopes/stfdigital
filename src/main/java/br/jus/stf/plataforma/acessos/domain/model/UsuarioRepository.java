@@ -12,6 +12,8 @@ import br.jus.stf.shared.UsuarioId;
  */
 public interface UsuarioRepository {
 	
+	public List<Usuario> findAll();
+	
 	public Usuario findOne(UsuarioId id);
 	
 	public Usuario findOne(String login);
