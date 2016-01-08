@@ -2,8 +2,6 @@ package br.jus.stf.plataforma.documentos.infra.persistence;
 
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -11,30 +9,34 @@ import javax.persistence.EntityManager;
 import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.stereotype.Repository;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFSDBFile;
+
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.shared.settings.Profiles;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.gridfs.GridFSDBFile;
 
 /**
  * @author Lucas Rodrigues
  */
 @Repository
-public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, DocumentoId> implements DocumentoRepository {
+@Profile(Profiles.DOCUMENTO_MONGO)
+public class MongoDocumentoRepositoryImpl extends SimpleJpaRepository<Documento, DocumentoId> implements DocumentoRepository {
 
-	private static Map<String, DocumentoTemporario> TEMP_FILES = new HashMap<String, DocumentoTemporario>();
+	@Autowired
+	private DocumentoTempRepository documentoTempRepository;
 	
 	private EntityManager entityManager;
 	
@@ -42,7 +44,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	private GridFsOperations gridOperations;
 	
 	@Autowired
-	public DocumentoRepositoryImpl(EntityManager entityManager) {
+	public MongoDocumentoRepositoryImpl(EntityManager entityManager) {
 		super(Documento.class, entityManager);
 		this.entityManager = entityManager;
 	}
@@ -65,7 +67,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 
 	@Override
 	public DocumentoId save(DocumentoTemporarioId documentoTemporario) {
-		DocumentoTemporario docTemp = TEMP_FILES.get(documentoTemporario.toString());
+		DocumentoTemporario docTemp = documentoTempRepository.recoverTemp(documentoTemporario);
 		InputStream stream = docTemp.stream();
 		DocumentoId id = nextId();
 		DBObject metaData = new BasicDBObject();
@@ -79,11 +81,11 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 
 		entityManager.flush();
 		IOUtils.closeQuietly(stream);
-		TEMP_FILES.remove(documentoTemporario.toString());
+		documentoTempRepository.removeTemp(documentoTemporario.toString());
 		docTemp.delete();
 		return documento.id();
 	}
-	
+
 	@Override
 	public void delete(Documento documento) {
 		String numeroConteudo = documento.numeroConteudo();
@@ -95,15 +97,12 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	
 	@Override
 	public String storeTemp(DocumentoTemporario documentoTemporario) {
-		TEMP_FILES.put(documentoTemporario.tempId(), documentoTemporario);
-		return documentoTemporario.tempId();
+		return documentoTempRepository.storeTemp(documentoTemporario);
 	}
 	
 	@Override
 	public void removeTemp(String tempId) {
-		DocumentoTemporario documentoTemporario = TEMP_FILES.get(tempId);
-		documentoTemporario.delete();
-		TEMP_FILES.remove(tempId);
+		documentoTempRepository.removeTemp(tempId);
 	}
 
 	@Override

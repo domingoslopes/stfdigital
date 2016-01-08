@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
 import com.mongodb.Mongo;
 
+import br.jus.stf.plataforma.shared.settings.AndProfilesCondition;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
@@ -20,7 +22,8 @@ import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
  * @author Rafael.Alencar
  */
 @Configuration
-@Profile(Profiles.DESENVOLVIMENTO)
+@Profile({Profiles.DESENVOLVIMENTO, Profiles.DOCUMENTO_MONGO})
+@Conditional(AndProfilesCondition.class)
 public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 
 	private MongodForTestsFactory factory;
