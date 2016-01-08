@@ -39,14 +39,15 @@
 		
 		it('Deveria pesquisar uma petição', function(){
 			//pesquisaPeticaoPage.filtrarPorNumero(22);
-			pesquisaPeticaoPage.filtrarPorAno(2015);
+			var anoAtual = new Date().getFullYear();
+			pesquisaPeticaoPage.filtrarPorAno(anoAtual);
 			pesquisaPeticaoPage.filtrarPorClasse('AP');
 			pesquisaPeticaoPage.filtrarPorParte('Maria da Silva');
 			//pesquisaPeticaoPage.filtrarPorSituacao('a_autuar');
 			pesquisaPeticaoPage.pesquisar();
 			
 		    expect(pesquisaPeticaoPage.resultados().count()).toBeGreaterThan(0);    
-		    expect(pesquisaPeticaoPage.resultados().get(0).getText()).toMatch('/2015 AP');
+		    expect(pesquisaPeticaoPage.resultados().get(0).getText()).toMatch('/' + anoAtual + ' AP');
 		    loginPage.logout();
 		});	
 	});
