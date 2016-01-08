@@ -1,29 +1,47 @@
 /**
- * @author Tomas.Godoi
+ * @author Lucas.Rodrigues
  * 
  * @since 1.0.0
  */ 
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('DelegarController', function($scope, $stateParams, TarefaService) {
+	angular.plataforma.controller('DelegarController', function($scope, $stateParams, SecurityService, messages) {
 		
-		/*TarefaService.listarMinhas().success(function(tarefas) {
-			$scope.tarefas = tarefas;
-		});*/
+		var gestor = SecurityService.user();
 		
-		//$
+		$scope.pesquisaPessoa = {
+				texto : 'pessoa.nome',
+				indices : ['usuario'],
+				filtros : ['pessoa.nome', 'login'],
+				filtrosFixos: {'lotacao.codigo': [gestor.setorLotacao.codigo] },
+				pesquisa : 'sugestao'
+			};
 		
-		/*$scope.go = function(tarefa) {
-			ActionService.get(tarefa.nome)
-				.then(function(action) {
-					var params = {
-							action : action,
-							resources : [tarefa.metadado.informacao]
-						};
-					$state.go(action.id, params);
+		$scope.commands = [];
+		
+		var DelegarTarefaCommand = function(tarefaId, usuarioId) {
+			return {
+				tarefaId : tarefaId, 
+				usuarioId : usuarioId
+			};
+		};
+		
+		angular.forEach($stateParams.resources, function(tarefa) {
+			$scope.commands.push(new DelegarTarefaCommand(tarefa.id, null));
+		});
+		
+		$scope.validar = function() {
+			if (angular.isObject($scope.usuario) ) {
+				angular.forEach($scope.commands, function(command) {
+					command.usuarioId = $scope.usuario.id;
 				});
-		};*/
+				return true;
+			} else {
+				messages.error("Selecione um usuário!");
+				return false;
+			} 
+		};
 		
 	});
 	

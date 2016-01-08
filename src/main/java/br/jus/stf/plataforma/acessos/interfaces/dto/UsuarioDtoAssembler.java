@@ -26,7 +26,7 @@ public class UsuarioDtoAssembler {
 		if (usuario == null) {
 			return null;
 		}
-		SetorDto setor = this.setorDtoAssembler.toDto(usuario.setor());
+		SetorDto setor = setorDtoAssembler.toDto(usuario.setor());
 		return new UsuarioDto(usuario.id().toLong(), usuario.login(), usuario.pessoa().nome(), setor);
 	}
 }
