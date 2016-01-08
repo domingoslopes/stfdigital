@@ -61,6 +61,12 @@ public interface TarefaRepository {
 	 */
 	Tarefa consultarPorProcesso(ProcessoWorkflowId id);
 
+	/**
+	 * Delega uma tarefa para um usuário
+	 * 
+	 * @param tarefaId
+	 * @param usuarioId
+	 */
 	void delegar(TarefaId tarefaId, UsuarioId usuarioId);
 	
 }

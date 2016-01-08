@@ -41,13 +41,13 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 	
 	@Override
 	public List<Tarefa> listarMinhas() {
-		UsuarioId usuarioId = SecurityContextUtil.getUser().getUserDetails().getUserId();
+		UsuarioId usuarioId = userDetails().getUserId();
 		return listarPor(usuarioId);
 	}
 
 	@Override
 	public List<Tarefa> listarPorMeusPapeis() {
-		List<String> papeis = SecurityContextUtil.getUser().getUserDetails().getRoles();
+		List<String> papeis = userDetails().getRoles();
 		StringBuilder sql = new StringBuilder("SELECT task.* FROM ACT_RU_TASK task");
 		sql.append(" JOIN ACT_RU_IDENTITYLINK link ON task.ID_ = link.TASK_ID_");
 		sql.append(" WHERE link.GROUP_ID_ IN(");
@@ -69,10 +69,15 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 
 	@Override
 	public void completar(Tarefa tarefa, Metadado metadado) {
-		Map<String, Object> variaveis = new HashMap<String, Object>();
-		variaveis.put("status", metadado.status());
-		Optional.ofNullable(metadado.descricao()).ifPresent(d -> variaveis.put("descricao", d));
-		taskService.complete(tarefa.id().toString(), variaveis);
+		if (isUserAssignee(tarefa)) {
+			Map<String, Object> variaveis = new HashMap<String, Object>();
+			variaveis.put("status", metadado.status());
+			Optional.ofNullable(metadado.descricao()).ifPresent(d -> variaveis.put("descricao", d));
+			
+			taskService.complete(tarefa.id().toString(), variaveis);
+		} else {
+			throw new IllegalArgumentException("A tarefa não pode ser completada pelo usuário.");
+		}
 	}
 
 	@Override
@@ -91,6 +96,7 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 				.orElse(null);
 	}
 	
+	@Override
 	public void delegar(TarefaId tarefaId, UsuarioId usuarioId) {
 		Validate.notNull(tarefaId);
 		Validate.notNull(usuarioId);
@@ -103,6 +109,13 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 		}
 	}
 	
+	/**
+	 * Cria uma tarefa a partir de uma task do activiti
+	 * 
+	 * @param task
+	 * @param variables
+	 * @return
+	 */
 	private Tarefa newTarefa(Task task, Map<String, Object> variables) {
 		TarefaId id = new TarefaId(Long.parseLong(task.getId()));
 		ProcessoWorkflowId processo = new ProcessoWorkflowId(Long.parseLong(task.getProcessInstanceId()));
@@ -114,14 +127,35 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 		return tarefa;
 	}
 	
-	private Responsavel newResponsavel(String id) {
-		UsuarioId usuarioId = new UsuarioId(Long.valueOf(id));
-		Optional<UserDetails> userDetails = acessosRestAdapter.recuperarUsuario(usuarioId);
+	/**
+	 * Cria o responsavel a partir de um usuário
+	 * 
+	 * @param usuarioId
+	 * @return
+	 */
+	private Responsavel newResponsavel(String usuarioId) {
+		UsuarioId id = new UsuarioId(Long.valueOf(usuarioId));
+		Optional<UserDetails> userDetails = acessosRestAdapter.recuperarUsuario(id);
 		if (userDetails.isPresent()) {
 			String nome = userDetails.get().getName();
-			return new Responsavel(usuarioId, nome);
+			return new Responsavel(id, nome);
 		}
 		return null;
+	}
+	
+	/**
+	 * @return os detalhes do usuário logado
+	 */
+	private UserDetails userDetails() {
+		return SecurityContextUtil.getUser().getUserDetails();
+	}
+	
+	/**
+	 * @param tarefa
+	 * @return se o usuário é o responsável pela tarefa
+	 */
+	private boolean isUserAssignee(Tarefa tarefa) {
+		return tarefa.reponsavel().usuarioId().sameValueAs(userDetails().getUserId());
 	}
 	
 }
