@@ -26,7 +26,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
-import br.jus.stf.plataforma.documentos.domain.model.DocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
@@ -64,7 +64,7 @@ public class DocumentoRestResource {
 	@ApiOperation("Recupera um documento do repositório")
 	@RequestMapping(value = "/{documentoId}", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> recuperar(@PathVariable("documentoId") Long documentoId) throws IOException {
-		DocumentoDownload documento = documentoServiceFacade.pesquisaDocumento(documentoId);
+		ConteudoDocumentoDownload documento = documentoServiceFacade.pesquisaDocumento(documentoId);
 		InputStreamResource is = new InputStreamResource(documento.stream());
 		HttpHeaders headers = createResponseHeaders(documento.tamanho());
 	    return new ResponseEntity<InputStreamResource>(is, headers, HttpStatus.OK);
