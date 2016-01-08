@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.documentos.infra.configuration;
+package br.jus.stf.plataforma.documentos.infra.configuration.mongo;
 
 import java.io.IOException;
 

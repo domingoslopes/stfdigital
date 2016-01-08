@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.documentos.infra.configuration;
+package br.jus.stf.plataforma.documentos.infra.configuration.mongo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
