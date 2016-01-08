@@ -12,14 +12,14 @@ import br.jus.stf.shared.stereotype.ValueObject;
  * @author Lucas.Rodrigues
  *
  */
-public class DocumentoDownload implements ValueObject<DocumentoDownload> {
+public class ConteudoDocumentoDownload implements ValueObject<ConteudoDocumentoDownload> {
 
 	private static final long serialVersionUID = -2253600773759421258L;
 	
 	private InputStream stream;
 	private Long tamanho;
 	
-	public DocumentoDownload(final InputStream stream, final Long tamanho) {
+	public ConteudoDocumentoDownload(final InputStream stream, final Long tamanho) {
 		Validate.notNull(stream, "documentodownload.stream.required");
 		Validate.notNull(tamanho, "documentodownload.tamanho.required");
 		
@@ -52,12 +52,12 @@ public class DocumentoDownload implements ValueObject<DocumentoDownload> {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		DocumentoDownload other = (DocumentoDownload) obj;
+		ConteudoDocumentoDownload other = (ConteudoDocumentoDownload) obj;
 		return sameValueAs(other);
 	}
 
 	@Override
-	public boolean sameValueAs(DocumentoDownload other) {
+	public boolean sameValueAs(ConteudoDocumentoDownload other) {
 		try {
 			return IOUtils.contentEquals(stream, other.stream) &&
 					tamanho.equals(other.tamanho);

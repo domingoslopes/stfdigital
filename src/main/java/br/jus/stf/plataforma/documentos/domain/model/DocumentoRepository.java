@@ -27,7 +27,7 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 * @param documentoId
 	 * @return o stream do conteúdo
 	 */
-	public DocumentoDownload download(DocumentoId documentoId);
+	public ConteudoDocumentoDownload download(DocumentoId documentoId);
 	
 	/**
 	 * Salva um documento

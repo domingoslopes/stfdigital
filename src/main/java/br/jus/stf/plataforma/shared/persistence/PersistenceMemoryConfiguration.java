@@ -8,6 +8,7 @@ import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -32,12 +33,14 @@ public class PersistenceMemoryConfiguration {
 	
 	@Profile("!" + Profiles.KEEP_DATA)
 	@Bean(name = "dataSource")
+	@Primary
 	public DataSource dataSourceMemory() throws Exception {
 		return dataSourceH2("jdbc:h2:mem:stfdigital;MODE=Oracle;DB_CLOSE_DELAY=-1");
 	}
 	
 	@Profile(Profiles.KEEP_DATA)
 	@Bean(name = "dataSource")
+	@Primary
 	public DataSource dataSourceDisk() throws Exception {
 		return dataSourceH2("jdbc:h2:" + LocalData.instance().dataDirRelativeUnixPath() + "/stfdigital;MODE=Oracle;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1");
 	}
