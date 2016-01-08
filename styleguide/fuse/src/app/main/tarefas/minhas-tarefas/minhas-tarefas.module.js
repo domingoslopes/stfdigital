@@ -23,7 +23,7 @@
             title      : 'Minhas Tarefas',
             icon       : 'icon-view-list',
             state      : 'app.tarefas.minhas-tarefas',
-            translation: 'MEUS-PAINEIS.MEUS-PAINEIS',
+            translation: 'TAREFAS.MEUS-PAINEIS.MEUS-PAINEIS',
             weight     : 1,
             badge : {
                 content: 1,

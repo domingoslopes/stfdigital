@@ -23,7 +23,7 @@
             title      : 'Painel de Fases',
             icon       : 'icon-view-week',
             state      : 'app.tarefas.painel-de-fases',
-            translation: 'PAINEL-DE-FASES.PAINEL-DE-FASES',
+            translation: 'TAREFAS.PAINEL-DE-FASES.PAINEL-DE-FASES',
             weight     : 1
         });
 	}
