@@ -1,8 +1,18 @@
 <div ng-controller="DelegarController">
-	<ul>
-		<!--  li ng-repeat="resource in action.resources">{{resource.attr}}</li-->
-	</ul>
+	<p>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group form-group-default">
+					<label>Usuários do meu setor</label>
+					<pesquisa id="pessoa" modelo="usuario" configuracao="pesquisaPessoa" class="full-width" />
+				</div>
+			</div>
+		</div>
+	</p>
 	<div align="center" class="modal-footer">
-		<action-executor id="delegar-tarefa" description="Finalizar" resources="action.resources"/>
+		<span>
+			<action-executor id="delegar-tarefa" fn-validate="validar" fn-result="modal.close()" description="Confirmar" resources="commands"/>
+		</span>
+		<button ng-click="modal.close()" class="btn btn-default">Cancelar</button>
 	</div>
 </div>

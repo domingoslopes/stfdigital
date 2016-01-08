@@ -23,7 +23,7 @@ public class Metadado implements ValueObject<Metadado>{
 		Validate.notNull(informacao, "metadado.informacao.required");
 		Validate.notBlank(tipoInformacao, "metadado.tipoInformacao.required");
 		Validate.notBlank(status, "metadado.status.required");
-		Validate.notNull(descricao, "metadado.descricao.required");
+		Validate.notBlank(descricao, "metadado.descricao.required");
 		
 		this.informacao = informacao;
 		this.tipoInformacao = tipoInformacao;
@@ -33,6 +33,7 @@ public class Metadado implements ValueObject<Metadado>{
 	
 	public Metadado(String status, String descricao) {
 		Validate.notBlank(status, "metadado.status.required");
+		Validate.notBlank(descricao, "metadado.descricao.required");
 		
 		this.status = status;
 		this.descricao = descricao;

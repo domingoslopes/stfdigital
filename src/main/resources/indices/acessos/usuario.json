@@ -14,26 +14,39 @@
     "Usuario": {
       "dynamic": false,
       "properties": {
-        "pessoa": {
+        "id": {
           "properties": {
-            "id": {
+            "sequencial": {
               "type": "long",
           	  "index": "not_analyzed",
           	  "include_in_all": false
             }
           }
-        },
-        "nome": {
-          "type": "string",
-          "analyzer": "keyword_analyzer"
+        },      	
+        "pessoa": {
+          "properties": {
+            "id": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	          	  "index": "not_analyzed",
+	          	  "include_in_all": false
+	          	}
+	          }
+            },
+	        "nome": {
+	          "type": "string",
+	          "analyzer": "keyword_analyzer"
+	        }
+          }
         },
         "login": {
           "type": "string",
           "index": "not_analyzed"
         },
-        "setor": {
+        "lotacao": {
           "properties": {
-            "id": {
+            "codigo": {
               "type": "long",
           	  "index": "not_analyzed",
           	  "include_in_all": false
