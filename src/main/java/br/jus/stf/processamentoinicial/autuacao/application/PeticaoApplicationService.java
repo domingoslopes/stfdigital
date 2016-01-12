@@ -102,12 +102,12 @@ public class PeticaoApplicationService {
 	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
 		if (peticaoValida) {
 			tarefaAdapter.completarPreautuacao(peticao);
-			peticao.preautuar(classeSugerida);
+			peticao.preautuar(classeSugerida, null);
 			peticaoRepository.save(peticao);
 			peticaoApplicationEvent.peticaoPreautuada(peticao);
 		} else {
 			peticao.devolver(motivoDevolucao);
-			peticao.preautuar(classeSugerida);
+			peticao.preautuar(classeSugerida, null);
 			peticaoRepository.save(peticao);
 			processoAdapter.devolver(peticao);
 			peticaoApplicationEvent.remessaInvalida(peticao);
