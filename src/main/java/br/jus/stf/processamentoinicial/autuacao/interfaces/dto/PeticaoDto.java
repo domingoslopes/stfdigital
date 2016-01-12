@@ -42,11 +42,14 @@ public class PeticaoDto {
 	@ApiModelProperty(value = "Tipo da petição")
 	private String tipo;
 	
+	@ApiModelProperty(value = "Tipo do processo")
+	private String tipoProcesso;
+	
 	PeticaoDto() {
 		
 	}
 	
-	public PeticaoDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas, Long processoWorkflowId) {
+	public PeticaoDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas, Long processoWorkflowId, String tipoProcesso) {
 		this.id = id;
 		this.numero = numero;
 		this.ano = ano;
@@ -55,6 +58,7 @@ public class PeticaoDto {
 		this.partes = partes;
 		this.pecas = pecas;
 		this.processoWorkflowId = processoWorkflowId;
+		this.tipoProcesso = tipoProcesso;
 	}
 	
 	public Long getId() {
@@ -95,6 +99,14 @@ public class PeticaoDto {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+	
+	public String getTipoProcesso() {
+		return tipoProcesso;
+	}
+
+	public void setTipoProcesso(String tipoProcesso) {
+		this.tipoProcesso = tipoProcesso;
 	}
 	
 }

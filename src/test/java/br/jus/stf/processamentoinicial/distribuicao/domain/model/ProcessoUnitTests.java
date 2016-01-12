@@ -20,6 +20,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -62,32 +63,32 @@ public class ProcessoUnitTests {
 	}
 
 	private Processo processo() {
-		return new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		return new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComIdNulo() {
-		new Processo(null, new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		new Processo(null, new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComClasseNula() {
-		new Processo(new ProcessoId(1L), null, 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		new Processo(new ProcessoId(1L), null, 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComNumeroNulo() {
-		new Processo(new ProcessoId(1L), new ClasseId("HD"), null, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		new Processo(new ProcessoId(1L), new ClasseId("HD"), null, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComRelatorNulo() {
-		new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, null, new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, null, new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComPeticaoNula() {
-		new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), null, partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), null, partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test
@@ -117,7 +118,7 @@ public class ProcessoUnitTests {
 	@Test
 	public void comparaProcessosDiferentes() {
 		Processo processo1 = processo();
-		Processo processo2 = new Processo(new ProcessoId(2L), new ClasseId("HC"), 1L, new MinistroId(2L), new PeticaoId(2L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		Processo processo2 = new Processo(new ProcessoId(2L), new ClasseId("HC"), 1L, new MinistroId(2L), new PeticaoId(2L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 		
 		assertFalse(processo1.equals(processo2));
 	}
@@ -125,7 +126,7 @@ public class ProcessoUnitTests {
 	@Test
 	public void comparaProcessosComIdentidadesDiferentes() {
 		Processo processo1 = processo();
-		Processo processo2 = new Processo(new ProcessoId(2L), new ClasseId("HC"), 1L, new MinistroId(2L), new PeticaoId(2L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		Processo processo2 = new Processo(new ProcessoId(2L), new ClasseId("HC"), 1L, new MinistroId(2L), new PeticaoId(2L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 		
 		assertFalse(processo1.sameIdentityAs(processo2));
 	}
@@ -133,7 +134,7 @@ public class ProcessoUnitTests {
 	@Test
 	public void comparaProcessosComHashesDiferentes() {
 		Processo processo1 = processo();
-		Processo processo2 = new Processo(new ProcessoId(2L), new ClasseId("HC"), 1L, new MinistroId(2L), new PeticaoId(2L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		Processo processo2 = new Processo(new ProcessoId(2L), new ClasseId("HC"), 1L, new MinistroId(2L), new PeticaoId(2L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, TipoProcesso.ORIGINARIO);
 		
 		assertFalse(processo1.hashCode() == processo2.hashCode());
 	}
