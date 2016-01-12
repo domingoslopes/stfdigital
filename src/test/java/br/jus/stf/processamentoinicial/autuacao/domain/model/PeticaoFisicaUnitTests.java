@@ -48,7 +48,7 @@ public class PeticaoFisicaUnitTests {
 	public void preautuaPeticaoFisica() {
 		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR");
 		
-		peticaoFisica.preautuar(new ClasseId("ADI"));
+		peticaoFisica.preautuar(new ClasseId("ADI"), null);
 		
 		assertEquals(peticaoFisica.classeSugerida(), new ClasseId("ADI"));
 	}
@@ -57,7 +57,7 @@ public class PeticaoFisicaUnitTests {
 	public void tentaPreautuarPeticaoFisicaSemSugerirClasse() {
 		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR");
 		
-		peticaoFisica.preautuar(null);
+		peticaoFisica.preautuar(null, null);
 	}
 	
 }

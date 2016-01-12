@@ -28,6 +28,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
@@ -69,7 +70,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaProcesso.class)
 	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
-	private Set<Peca> pecas = new LinkedHashSet<Peca>(0); // Para utilizar TreeSet Peca deve implementar Comparable
+	private Set<Peca> pecas = new LinkedHashSet<Peca>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Distribuicao.class)
 	@JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", nullable = false)
@@ -78,6 +79,10 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	@Column(name = "TIP_SITUACAO")
 	@Enumerated(EnumType.STRING)
 	private ProcessoSituacao situacao;
+	
+	@Column(name = "TIP_PROCESSO")
+	@Enumerated(EnumType.STRING)
+	private TipoProcesso tipoProcesso;
 	
 	@Transient
 	private String identificacao;
@@ -94,7 +99,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	 * @param partes
 	 * @param documentos
 	 */
-	public Processo(final ProcessoId id, final ClasseId classe, final Long numero, final MinistroId relator, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao) {
+	public Processo(final ProcessoId id, final ClasseId classe, final Long numero, final MinistroId relator, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao, final TipoProcesso tipoProcesso) {
 		Validate.notNull(id, "processo.id.required");
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
@@ -111,6 +116,7 @@ public class Processo implements Entity<Processo, ProcessoId> {
 		this.pecas.addAll(pecas);
 		this.identificacao = montarIdentificacao();
 		this.situacao = situacao;
+		this.tipoProcesso = tipoProcesso;
 	}
 
 	@Override
@@ -152,6 +158,10 @@ public class Processo implements Entity<Processo, ProcessoId> {
 	
 	public ProcessoSituacao situacao() {
 		return this.situacao;
+	}
+	
+	public TipoProcesso tipoProcesso() {
+		return tipoProcesso;
 	}
 	
 	/**

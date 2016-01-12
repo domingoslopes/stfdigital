@@ -1,5 +1,8 @@
 package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
+import java.util.Optional;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.Enumerated;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.Preferencia;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
 
@@ -70,10 +74,16 @@ public class PeticaoFisica extends Peticao {
 		return numeroSedex;
 	}
 	
-	public void preautuar(final ClasseId classeSugerida) {
+	public void preautuar(final ClasseId classeSugerida, final Set<Preferencia> preferencias) {
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		
 		super.sugerirClasse(classeSugerida);
+		
+		Optional.ofNullable(preferencias).ifPresent(prefs -> {
+			if (!prefs.isEmpty()) {
+				super.atribuirPreferencias(prefs);
+			}
+		});
 	}
 		
 	@Override

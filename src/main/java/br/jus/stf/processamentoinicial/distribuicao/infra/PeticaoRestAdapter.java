@@ -19,6 +19,7 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.distribuicao.domain.PeticaoAdapter;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.PessoaId;
@@ -39,7 +40,7 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 	@Override
 	public Peticao consultar(Long id) {
 		PeticaoDto peticaoDto = peticaoRestResource.consultar(id);
-		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), peticaoDto.getTipo(), carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()), new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()));
+		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), peticaoDto.getTipo(), carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()), new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()), TipoProcesso.valueOf(peticaoDto.getTipoProcesso()));
 	}
 	
 	private Set<Parte> carregarPartes(Map<String, List<Long>> partesDto) {
