@@ -25,7 +25,9 @@ import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.TeseId;
 
 @Entity
-@Table(name = "TESE", schema = "JURISPRUDENCIA", uniqueConstraints = @UniqueConstraint(columnNames = {"DSC_TESE", "TIP_TESE"}))
+@Table(name = "TESE", schema = "JURISPRUDENCIA",
+		uniqueConstraints = {@UniqueConstraint(columnNames = {"TIP_TESE", "DSC_TESE"}),
+							 @UniqueConstraint(columnNames = {"TIP_TESE", "NUM_TESE"})})
 public class Tese implements br.jus.stf.shared.stereotype.Entity<Tese, TeseId> {
 	
 	@EmbeddedId
@@ -33,6 +35,9 @@ public class Tese implements br.jus.stf.shared.stereotype.Entity<Tese, TeseId> {
 	
 	@Column(name = "DSC_TESE", nullable = false)
 	private String descricao;
+	
+	@Column(name = "NUM_TESE", nullable = false)
+	private Long numero;
 	
 	@Column(name = "TIP_TESE", nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -48,16 +53,28 @@ public class Tese implements br.jus.stf.shared.stereotype.Entity<Tese, TeseId> {
 		
 	}
 	
-	public Tese(final TeseId codigo, final String descricao) {
+	public Tese(final TeseId codigo, final String descricao, final TipoTese tipo, final Long numero) {
 		Validate.notNull(codigo, "tese.codigo.required");
 		Validate.notBlank(descricao, "tese.descricao.required");
+		Validate.notNull(tipo, "tese.tipo.required");
+		Validate.notNull(numero, "tese.numero.required");
 		
 		this.codigo = codigo;
 		this.descricao = descricao;
+		this.tipo = tipo;
+		this.numero = numero;
 	}
 	
 	public String descricao() {
 		return descricao;
+	}
+	
+	public TipoTese tipo() {
+		return tipo;
+	}
+	
+	public Long numero() {
+		return numero;
 	}
 	
 	public Set<Assunto> assuntos() {

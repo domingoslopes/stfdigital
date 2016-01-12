@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.Repository;
 
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.PreferenciaId;
 
 /**
  * @author Rafael.Alencar
@@ -27,5 +28,24 @@ public interface ClasseRepository extends Repository<Classe, ClasseId> {
 	 * @return lista de classes
 	 */
 	public List<Classe> findAll();
+	
+	/**
+	 * @param tipo
+	 * @return
+	 */
+	public List<Classe> findClasseByTipo(TipoProcesso tipo);
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Preferencia findOnePreferencia(PreferenciaId id);
+	
+	/**
+	 * Recupera a lista de preferências
+	 * 
+	 * @return a lista de preferências
+	 */
+	public List<Preferencia> findAllPreferencia();
 
 }
