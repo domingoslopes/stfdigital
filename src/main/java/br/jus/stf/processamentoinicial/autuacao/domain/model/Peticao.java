@@ -102,12 +102,12 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	
 	@Column(name = "TIP_PROCESSO")
 	@Enumerated(EnumType.STRING)
-	private TipoProcesso tipoProcesso = TipoProcesso.RECURSAL;
+	private TipoProcesso tipoProcesso;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "PETICAO_PREFERENCIA", schema = "AUTUACAO",
 		joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "SEQ_PREFERENCIA", nullable = false))
+		inverseJoinColumns = @JoinColumn(name = "COD_PREFERENCIA", nullable = false))
 	private Set<Preferencia> preferencias = new HashSet<Preferencia>(0);
 		
 	@Transient
@@ -117,7 +117,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 
 	}
 	
-	public Peticao(final PeticaoId id, final Long numero, final String usuarioCadastramento) {
+	public Peticao(final PeticaoId id, final Long numero, final String usuarioCadastramento, final TipoProcesso tipoProcesso) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
 		Validate.notBlank(usuarioCadastramento, "peticao.usuarioCadastramento.required");
@@ -128,14 +128,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.identificacao = montarIdentificacao();
 		this.dataCadastramento = new Date();
 		this.usuarioCadastramento = usuarioCadastramento;
-	}
-	
-	public Peticao(final PeticaoId id, final Long numero, final String usuarioCadastramento, final TipoProcesso tipoProcesso) {
-		this(id, numero, usuarioCadastramento);
-		
-		Validate.notNull(tipoProcesso, "peticao.tipoProcesso.required");
-		
-		this.tipoProcesso = tipoProcesso;
+		this.tipoProcesso = Optional.ofNullable(tipoProcesso).orElse(TipoProcesso.RECURSAL);
 	}
 
 	@PostLoad
