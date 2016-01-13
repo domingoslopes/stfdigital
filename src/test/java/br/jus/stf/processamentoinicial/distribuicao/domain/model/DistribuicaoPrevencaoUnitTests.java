@@ -115,7 +115,7 @@ public class DistribuicaoPrevencaoUnitTests {
 	}
 
 	private PeticaoFisica preparaPeticao() {
-		PeticaoFisica peticao = new PeticaoFisica(new PeticaoId(1L), 1L, "DISTRIBUIDOR", 1, 1, FormaRecebimento.SEDEX, "BR123456789AD");
+		PeticaoFisica peticao = new PeticaoFisica(new PeticaoId(1L), 1L, "DISTRIBUIDOR", 1, 1, FormaRecebimento.SEDEX, "BR123456789AD", TipoProcesso.ORIGINARIO);
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
 		
 		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));

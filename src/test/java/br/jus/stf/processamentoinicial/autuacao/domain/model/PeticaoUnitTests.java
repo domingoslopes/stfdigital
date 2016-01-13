@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -379,7 +380,7 @@ public class PeticaoUnitTests {
 	// Innerclass que possibilita o teste dos métodos concretos em Peticao
 	private class PeticaoImpl extends Peticao {
 		PeticaoImpl(final PeticaoId id, final Long numero, final String usuarioCadastramento) {
-			super(id, numero, usuarioCadastramento);
+			super(id, numero, usuarioCadastramento, TipoProcesso.ORIGINARIO);
 		}
 
 		public boolean hasRepresentacao() {

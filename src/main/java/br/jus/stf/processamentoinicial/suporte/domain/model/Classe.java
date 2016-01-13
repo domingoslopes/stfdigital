@@ -43,8 +43,8 @@ public class Classe implements Entity<Classe, ClasseId> {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "CLASSE_PREFERENCIA", schema = "AUTUACAO",
-		joinColumns = @JoinColumn(name = "SEQ_CLASSE", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "SEQ_PREFERENCIA", nullable = false))
+		joinColumns = @JoinColumn(name = "SIG_CLASSE", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "COD_PREFERENCIA", nullable = false))
 	private Set<Preferencia> preferencias = new HashSet<Preferencia>(0);
 
 	Classe() {
