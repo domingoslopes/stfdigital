@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
 
@@ -14,7 +15,7 @@ public class PeticaoFisicaUnitTests {
 
 	@Test
 	public void criaPeticaoFisicaBalcaoValida() {
-		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.BALCAO, null);
+		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.BALCAO, null, TipoProcesso.ORIGINARIO);
 
 	    assertNotNull(peticaoFisica);
 	    assertEquals(peticaoFisica.id(), new PeticaoId(1L));
@@ -28,7 +29,7 @@ public class PeticaoFisicaUnitTests {
 	
 	@Test
 	public void criaPeticaoFisicaSedexValida() {
-		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR");
+		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR", TipoProcesso.ORIGINARIO);
 
 		assertEquals(peticaoFisica.formaRecebimento(), FormaRecebimento.SEDEX);
 		assertEquals(peticaoFisica.numeroSedex(), "AA100833276BR");
@@ -36,17 +37,17 @@ public class PeticaoFisicaUnitTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaCriarPeticaoFisicaMaloteInvalida() {
-		new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.MALOTE, "AA100833276BR");
+		new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.MALOTE, "AA100833276BR", TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaCriarPeticaoFisicaSedexInvalida() {
-		new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, null);
+		new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, null, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test
 	public void preautuaPeticaoFisica() {
-		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR");
+		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR", TipoProcesso.ORIGINARIO);
 		
 		peticaoFisica.preautuar(new ClasseId("ADI"), null);
 		
@@ -55,7 +56,7 @@ public class PeticaoFisicaUnitTests {
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaPreautuarPeticaoFisicaSemSugerirClasse() {
-		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR");
+		PeticaoFisica peticaoFisica = new PeticaoFisica(new PeticaoId(1L), 5L, "PETICIONADOR", 4, 3, FormaRecebimento.SEDEX, "AA100833276BR", TipoProcesso.ORIGINARIO);
 		
 		peticaoFisica.preautuar(null, null);
 	}
