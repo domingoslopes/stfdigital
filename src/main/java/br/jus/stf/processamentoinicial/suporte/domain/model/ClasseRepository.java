@@ -2,8 +2,6 @@ package br.jus.stf.processamentoinicial.suporte.domain.model;
 
 import java.util.List;
 
-import org.springframework.data.repository.Repository;
-
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PreferenciaId;
 
@@ -12,7 +10,7 @@ import br.jus.stf.shared.PreferenciaId;
  * @version 1.0
  * @created 14-ago-2015 18:34:02
  */
-public interface ClasseRepository extends Repository<Classe, ClasseId> {
+public interface ClasseRepository {
 	
 	/**
 	 * Pesquisa uma classe
@@ -39,7 +37,7 @@ public interface ClasseRepository extends Repository<Classe, ClasseId> {
 	 * @param id
 	 * @return
 	 */
-	public Preferencia findOnePreferencia(PreferenciaId id);
+	public Preferencia findOnePreferencia(PreferenciaId preferenciaId);
 	
 	/**
 	 * Recupera a lista de preferências
@@ -47,5 +45,11 @@ public interface ClasseRepository extends Repository<Classe, ClasseId> {
 	 * @return a lista de preferências
 	 */
 	public List<Preferencia> findAllPreferencia();
+	
+	/**
+	 * @param classeId
+	 * @return
+	 */
+	public List<Preferencia> findPreferenciaByClasse(ClasseId classeId);
 
 }
