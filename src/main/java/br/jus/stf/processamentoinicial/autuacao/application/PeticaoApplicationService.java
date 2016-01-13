@@ -69,7 +69,7 @@ public class PeticaoApplicationService {
 	 * @return Id da petição eletrônica registrada.
 	 */
 	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas, Optional<Long> orgaoId) {
-		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId);
+		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId, null);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
@@ -84,7 +84,7 @@ public class PeticaoApplicationService {
 	 * @return Id da petição física registrada.
 	 */
 	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
-		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
+		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, null);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);

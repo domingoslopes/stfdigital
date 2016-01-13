@@ -18,7 +18,7 @@ public class PreferenciaId implements ValueObject<PreferenciaId>{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "SEQ_PREFERENCIA", nullable = false)
+	@Column(name = "COD_PREFERENCIA", nullable = false)
 	private Long codigo;
 
 	PreferenciaId() {

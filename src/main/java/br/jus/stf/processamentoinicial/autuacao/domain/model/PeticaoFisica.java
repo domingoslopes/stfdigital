@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.Preferencia;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
 
@@ -42,8 +43,8 @@ public class PeticaoFisica extends Peticao {
 	}
 	
 	public PeticaoFisica(final PeticaoId id, final Long numero, final String usuarioCadastramento, final Integer volumes, 
-			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex) {
-		super(id, numero, usuarioCadastramento);
+			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex, final TipoProcesso tipoProcesso) {
+		super(id, numero, usuarioCadastramento, tipoProcesso);
 		
 		Validate.isTrue(volumes != null && volumes > 0, "peticaoFisica.volumes.maiorQueZero");
 		Validate.isTrue(apensos != null && apensos >= 0, "peticaoFisica.apensos.maiorIgualAZero");
