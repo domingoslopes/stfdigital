@@ -3,9 +3,13 @@
 	background-size: cover;
 	background-position: center;
 	
-	padding: 24px;
-
 	position: relative;
+
+	.header-content {
+		padding: 24px;
+		background: rgba(28, 111, 151, 0.7);
+	}
+	
 
 	.breadcrumb {
 		&, span, md-icon {
