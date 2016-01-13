@@ -1,4 +1,30 @@
-<stf-header fab-action="vm.foo()" fab-icon="icon-plus">
+<stf-header fab-action="vm.foo()" fab-icon="icon-cog">
 </stf-header>
 
-MEUS PAINEIS
+<div class="content" flex layout="column">
+	<md-tabs md-dynamic-height flex>
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PRINCIPAL' | translate }}">
+        	<md-content class="padding-8 border-top">
+        		<div ng-include="'/app/main/gestao/meus-paineis/principal/principal.html'" ng-controller="GestaoMeusPaineisPrincipalController as vm"></div>
+        	</md-content>
+        </md-tab>
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PETICOES' | translate }}">
+        	<md-content class="padding-8 border-top">
+        		<!-- <div ng-include="'/app/main/gestao/meus-paineis/peticoes/peticoes.html'" ng-controller="GestaoMeusPaineisPeticoesController"></div> -->
+        	</md-content>
+        	
+        </md-tab>
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.AUTUACOES' | translate }}">
+        	<md-content class="padding-8 border-top">
+        		<!-- <div ng-include="'/app/main/gestao/meus-paineis/autuacoes/autuacoes.html'" ng-controller="GestaoMeusPaineisAutuacoesController"></div> -->
+        	</md-content>
+        	
+        </md-tab>
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PRODUTIVIDADE-DO-TIME' | translate }}">
+        	<md-content class="padding-8 border-top">
+        		<!-- <div ng-include="'/app/main/gestao/meus-paineis/produtividade-do-time/produtividade-do-time.html'" ng-controller="GestaoMeusPaineisProdutividadeDoTimeController"></div> -->
+        	</md-content>
+        	
+        </md-tab>
+    </md-tabs>
+</div>
