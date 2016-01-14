@@ -22,7 +22,7 @@ public class DashboardIntegrationTests extends AbstractIntegrationTests {
 		mockMvc.perform(get("/api/dashboards/padrao").header("login", "peticionador")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.dashlets[0]", is("minhas-peticoes")));
 
-		mockMvc.perform(get("/api/dashboards/padrao").header("login", "preautuador")).andExpect(status().isOk())
+		mockMvc.perform(get("/api/dashboards/padrao").header("login", "preautuador-originario")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
 
 		mockMvc.perform(get("/api/dashboards/padrao").header("login", "autuador")).andExpect(status().isOk())
