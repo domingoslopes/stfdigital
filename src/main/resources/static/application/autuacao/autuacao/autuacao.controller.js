@@ -11,18 +11,13 @@
 		var autuacao = this;
 		
 		var resource = $stateParams.resources[0];
-		
 		autuacao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
-		
 		autuacao.classe = '';
-		
 		autuacao.valida = 'true';
-		
 		autuacao.motivo = '';
-		
 		autuacao.classes = [];
-		
 		autuacao.peticao = {};
+		autuacao.recursos = [];
 		
 		ClasseService.listar().success(function(classes) {
 			autuacao.classes = classes;
@@ -32,24 +27,27 @@
 			autuacao.peticao = data;
 		});
 		
-		autuacao.finalizar = function() {
+		autuacao.validar = function() {
+			var errors = null;
 			if (autuacao.classe.length === 0) {
-				messages.error('Você precisa selecionar <b>a classe processual definitiva</b>.');
-				return;
+				errors = 'Você precisa selecionar <b>a classe processual definitiva</b>.<br/>';
 			}
 			
 			if (autuacao.valida === 'false' && autuacao.motivo.length === 0) {
-				messages.error('Para petição inválidas, você precisa informar o motivo da inaptidão.');
-				return;
+				errors += 'Para petição inválidas, você precisa informar o motivo da inaptidão.<br/>';
 			}
 			
-			PeticaoService.autuar(autuacao.peticaoId, new AutuarCommand(autuacao.peticaoId, autuacao.classe, autuacao.valida, autuacao.motivo)).success(function(data) {
-				$state.go('dashboard');
-			}).error(function(data, status) {
-				if (status === 400) {
-					messages.error('A Petição <b>não pôde ser autuada</b> porque ela não está válida.');
-				}
-			});
+			if (errors) {
+				messages.error(errors);
+				return false;
+			}
+			autuacao.recursos.push(new AutuarCommand(autuacao.peticaoId, autuacao.classe, autuacao.valida, autuacao.motivo));
+			return true;
+		}
+		
+		autuacao.completar = function() {
+			$state.go('dashboard');
+			messages.success('Petição <b>' + autuacao.peticao.identificacao + '</b> autuada com sucesso.');
 		};
 
     	function AutuarCommand(id, classe, valida, motivo){

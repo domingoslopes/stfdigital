@@ -24,7 +24,7 @@
 		};
 		
 		devolucao.finalizar = function() {
-			element(by.id('botaoFinalizar')).click();
+			element(by.id('btn_exec_devolver-peticao')).click();
 		};
 	};
 
