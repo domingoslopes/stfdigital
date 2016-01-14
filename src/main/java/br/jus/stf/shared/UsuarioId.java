@@ -30,11 +30,13 @@ public class UsuarioId implements ValueObject<UsuarioId> {
 		this.sequencial = sequencial;
 	}
 	
-	/**
-	 * @return
-	 */
 	public Long toLong(){
 		return sequencial;
+	}
+	
+	@Override
+	public String toString(){
+		return sequencial.toString();
 	}
 
 	@Override

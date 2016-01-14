@@ -34,7 +34,7 @@ public class Notificacao implements Entity<Notificacao, NotificacaoId> {
 		this.notificado = notificado;
 		
 		this.dataCriacao = new Date();
-		this.notificante = SecurityContextUtil.getUsername();
+		this.notificante = SecurityContextUtil.getUser().getUsername();
 	}
 
 	@Override
