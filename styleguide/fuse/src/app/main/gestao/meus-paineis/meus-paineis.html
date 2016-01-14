@@ -2,29 +2,29 @@
 </stf-header>
 
 <div class="content" layout="column" ms-scroll>
-	<md-tabs md-dynamic-height flex>
-        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PRINCIPAL' | translate }}">
+	<md-tabs md-dynamic-height flex layout="column">
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PRINCIPAL' | translate }}" ui-sref="app.gestao.meus-paineis.principal" md-active="vm.isTabActive('app.gestao.meus-paineis.principal')">
         	<md-content class="padding-8 border-top">
-        		<div ng-include="'/app/main/gestao/meus-paineis/principal/principal.html'" ng-controller="GestaoMeusPaineisPrincipalController as vm"></div>
+                <div ui-view="principal" class="animate-fade-in"></div>
         	</md-content>
         </md-tab>
-        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PETICOES' | translate }}">
+        
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PETICOES' | translate }}" ui-sref="app.gestao.meus-paineis.peticoes" md-active="vm.isTabActive('app.gestao.meus-paineis.peticoes')">
         	<md-content class="padding-8 border-top">
-        		<!-- <div ng-include="'/app/main/gestao/meus-paineis/peticoes/peticoes.html'" ng-controller="GestaoMeusPaineisPeticoesController"></div> -->
-        	</md-content>
-        	
+                <div ui-view="peticoes" class="animate-fade-in"></div>
+        	</md-content>        	
         </md-tab>
-        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.AUTUACOES' | translate }}">
+        
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.AUTUACOES' | translate }}" ui-sref="app.gestao.meus-paineis.autuacoes" md-active="vm.isTabActive('app.gestao.meus-paineis.autuacoes')">
         	<md-content class="padding-8 border-top">
-        		<!-- <div ng-include="'/app/main/gestao/meus-paineis/autuacoes/autuacoes.html'" ng-controller="GestaoMeusPaineisAutuacoesController"></div> -->
-        	</md-content>
-        	
+                <div ui-view="autuacoes" class="animate-fade-in"></div>
+        	</md-content>        	
         </md-tab>
-        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PRODUTIVIDADE-DO-TIME' | translate }}">
+
+        <md-tab label="{{ 'GESTAO.MEUS-PAINEIS.PRODUTIVIDADE-DO-TIME' | translate }}" ui-sref="app.gestao.meus-paineis.produtividade-do-time" md-active="vm.isTabActive('app.gestao.meus-paineis.produtividade-do-time')">
         	<md-content class="padding-8 border-top">
-        		<!-- <div ng-include="'/app/main/gestao/meus-paineis/produtividade-do-time/produtividade-do-time.html'" ng-controller="GestaoMeusPaineisProdutividadeDoTimeController"></div> -->
-        	</md-content>
-        	
+                <div ui-view="produtividade-do-time" class="animate-fade-in"></div>
+        	</md-content>        	
         </md-tab>
     </md-tabs>
 </div>
