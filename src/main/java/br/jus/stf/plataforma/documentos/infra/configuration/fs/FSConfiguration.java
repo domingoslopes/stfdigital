@@ -5,13 +5,14 @@ import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+
+import com.google.common.io.Files;
 
 import br.jus.stf.plataforma.shared.settings.Profiles;
 
@@ -31,11 +32,6 @@ public class FSConfiguration {
 		if (env.acceptsProfiles(Profiles.DESENVOLVIMENTO)) { // No desenvolvimento, tenta criar diretório
 			if (!docsDir.exists()) {
 				if (!docsDir.mkdir()) throw new RuntimeException("Erro ao criar o diretório de documentos.");
-			} else {
-				if (!env.acceptsProfiles(Profiles.KEEP_DATA)) {
-					FileUtils.forceDelete(docsDir);
-					if (!docsDir.mkdir()) throw new RuntimeException("Erro ao criar o diretório de documentos.");
-				}
 			}
 		} else {
 			if (!docsDir.exists()) {
@@ -46,13 +42,27 @@ public class FSConfiguration {
 
 	@Bean(name = "documentosDirPath")
 	public String documentosDirPath() {
-		String normalizedPath;
-		if (docsDirPath.startsWith("~")) {
-			normalizedPath = System.getProperty("user.home") + docsDirPath.substring(1);
+		if (!willStoreOnTempDir()) {
+			String normalizedPath;
+			if (docsDirPath.startsWith("~")) {
+				normalizedPath = System.getProperty("user.home") + docsDirPath.substring(1);
+			} else {
+				normalizedPath = docsDirPath;
+			}
+			return normalizedPath;
 		} else {
-			normalizedPath = docsDirPath;
+			return Files.createTempDir().getAbsolutePath();
 		}
-		return normalizedPath;
+	}
+
+	/**
+	 * Armazena em diretório temporário no desenvolvimento e quando não se quer
+	 * manter os dados.
+	 * 
+	 * @return
+	 */
+	private boolean willStoreOnTempDir() {
+		return env.acceptsProfiles(Profiles.DESENVOLVIMENTO) && !env.acceptsProfiles(Profiles.KEEP_DATA);
 	}
 	
 }
