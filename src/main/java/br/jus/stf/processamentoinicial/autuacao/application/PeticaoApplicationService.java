@@ -63,12 +63,12 @@ public class PeticaoApplicationService extends AutuacaoApplicationService {
 			peticao.aceitar(classe);
 			peticaoRepository.save(peticao);
 			tarefaAdapter.completarAutuacao(peticao);
-			this.peticaoApplicationEvent.peticaoAutuada(peticao);
+			peticaoApplicationEvent.peticaoAutuada(peticao);
 		} else {
 			peticao.rejeitar(motivoRejeicao);
 			peticaoRepository.save(peticao);
 			processoAdapter.rejeitarAutuacao(peticao);
-			this.peticaoApplicationEvent.peticaoRejeitada(peticao);
+			peticaoApplicationEvent.peticaoRejeitada(peticao);
 		}
 	}
 

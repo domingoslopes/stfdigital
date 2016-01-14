@@ -54,7 +54,7 @@ public class NotificacaoEnviadaConsumer implements Consumer<Event<NotificacaoEnv
 				}
 			} else {
 				String msg = "Usuário sem permissões para emitir notificações de " + tipo.name();
-				Notificacao notificacaoErro = new Notificacao(TipoNotificacao.UI, msg, SecurityContextUtil.getUsername());
+				Notificacao notificacaoErro = new Notificacao(TipoNotificacao.UI, msg, SecurityContextUtil.getUser().getUsername());
 				notificacaoUIService.emitir(notificacaoErro);
 			}			
 		} catch (Exception e) {

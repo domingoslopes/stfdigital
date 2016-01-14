@@ -13,6 +13,8 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.identidades.domain.model.TipoAssociado;
+import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
+import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
@@ -28,6 +30,9 @@ import br.jus.stf.shared.PeticaoId;
 @Repository
 public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoId> implements PeticaoRepository {
 
+	@Autowired
+	public AcessosRestAdapter acessosRestAdapter;
+	
 	private EntityManager entityManager;
 	
 	@Autowired
@@ -70,7 +75,6 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	public TipoPeca findOneTipoPeca(Long id) {
 		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo WHERE tipo.sequencial = :id");
 		query.setParameter("id", id);
-		
 		return (TipoPeca)query.getSingleResult();
 	}
 	
@@ -78,7 +82,6 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	@Override
 	public List<TipoPeca> findAllTipoPeca() {
 		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo ORDER BY tipo.nome");
-		
 		return query.getResultList();
 	}
 	
@@ -86,7 +89,6 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	public Orgao findOneOrgao(Long id) {
 		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.sequencial = :id");
 		query.setParameter("id", id);
-		
 		return (Orgao)query.getSingleResult();
 	}
 	
@@ -94,18 +96,21 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	@Override
 	public List<Orgao> findAllOrgao() {
 		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao ORDER BY orgao.nome");
-		
 		return query.getResultList();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Orgao> findOrgaoByTipoAssociacao(PessoaId id, TipoAssociado... tipos){
-		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo IN :tipos AND asso.pessoa.id = :id) ORDER BY orgao.nome");
-		query.setParameter("tipos", Arrays.asList(tipos));
-		query.setParameter("id", id);
+	public List<Orgao> findOrgaoRepresentados(boolean verificarPerfil) {
+		String gestorCadastro = "gestor-cadastro";
 		
-		return query.getResultList();
+		if (verificarPerfil && SecurityContextUtil.getUser().getUserDetails().getPapeis().contains(gestorCadastro)) {
+			return findAllOrgao();
+		} else {
+			PessoaId id = SecurityContextUtil.getUser().getUserDetails().getPessoaId();
+			TipoAssociado[] tipos = new TipoAssociado[] { TipoAssociado.GESTOR, TipoAssociado.REPRESENTANTE };
+			
+			return findOrgaoByTipoAssociacao(id, tipos); 	
+		}
 	}
 
 	@Override
@@ -121,6 +126,15 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	public void refresh(Peticao peticao) {
 		entityManager.flush();
 		entityManager.refresh(peticao);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Orgao> findOrgaoByTipoAssociacao(PessoaId id, TipoAssociado... tipos){
+		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo IN :tipos AND asso.pessoa.id = :id) ORDER BY orgao.nome");
+		query.setParameter("tipos", Arrays.asList(tipos));
+		query.setParameter("id", id);
+		
+		return query.getResultList();
 	}
 	
 }
