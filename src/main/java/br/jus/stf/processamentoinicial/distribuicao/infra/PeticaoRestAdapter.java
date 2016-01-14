@@ -20,10 +20,12 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.distribuicao.domain.PeticaoAdapter;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.PreferenciaDto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
 /**
@@ -40,7 +42,7 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 	@Override
 	public Peticao consultar(Long id) {
 		PeticaoDto peticaoDto = peticaoRestResource.consultar(id);
-		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), peticaoDto.getTipo(), carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()), new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()), TipoProcesso.valueOf(peticaoDto.getTipoProcesso()));
+		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), peticaoDto.getTipo(), carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()), new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()), TipoProcesso.valueOf(peticaoDto.getTipoProcesso()), carregarPreferencias(peticaoDto.getPreferencias()));
 	}
 	
 	private Set<Parte> carregarPartes(Map<String, List<Long>> partesDto) {
@@ -59,6 +61,14 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 		return pecasDto.stream()
 				.map(pecaDto -> new PecaPeticao(new DocumentoId(pecaDto.getDocumentoId()), new TipoPeca(pecaDto.getTipoId(), pecaDto.getTipoNome()), pecaDto.getDescricao()))
 				.collect(Collectors.toSet());
+	}
+	
+	private Set<PreferenciaId> carregarPreferencias(List<PreferenciaDto> preferenciasDto) {
+		Set<PreferenciaId> preferencias = preferenciasDto.stream()
+				.map(preferenciaDto -> new PreferenciaId(preferenciaDto.getCodigo()))
+				.collect(Collectors.toSet());
+		
+		return preferencias;
 	}
 
 }

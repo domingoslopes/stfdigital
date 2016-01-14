@@ -12,10 +12,10 @@ import javax.persistence.Enumerated;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.processamentoinicial.suporte.domain.model.Preferencia;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 
 /**
  * @author Lucas.Rodrigues
@@ -75,7 +75,7 @@ public class PeticaoFisica extends Peticao {
 		return numeroSedex;
 	}
 	
-	public void preautuar(final ClasseId classeSugerida, final Set<Preferencia> preferencias) {
+	public void preautuar(final ClasseId classeSugerida, final Set<PreferenciaId> preferencias) {
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		
 		super.sugerirClasse(classeSugerida);
