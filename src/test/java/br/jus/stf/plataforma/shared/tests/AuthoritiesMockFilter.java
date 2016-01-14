@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
+import br.jus.stf.plataforma.shared.security.UserDetails;
+import br.jus.stf.plataforma.shared.security.UserImpl;
+import br.jus.stf.shared.PessoaId;
+import br.jus.stf.shared.UsuarioId;
 
 /**
  * Criado provisoriamente para viabilizar o funcionamento básico dos Mecanismo de Workflow e do Mecanismo de Ações, que
@@ -42,7 +45,8 @@ public class AuthoritiesMockFilter extends OncePerRequestFilter {
 		
 		if (login.isPresent()) {
 			Set<GrantedAuthority> authorities = acessoAdapter.carregarPermissoesUsuario(login.get());
-			User principal = new User(login.get(), "N/A", authorities);
+			UserDetails userDetails = new UserDetails(new UsuarioId(1L), new PessoaId(1L), login.get());
+			UserImpl principal = new UserImpl(login.get(), "N/A", userDetails, authorities);
 			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(login.get(), principal, authorities);
 	
 	        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());

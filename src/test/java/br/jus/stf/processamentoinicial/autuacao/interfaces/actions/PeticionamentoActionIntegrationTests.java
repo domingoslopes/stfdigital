@@ -11,6 +11,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.UnsupportedEncodingException;
 
+import org.activiti.engine.impl.util.json.JSONArray;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +46,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
 	private String peticaoInvalidaParaAutuacao;
+	private String tarefaParaAssumir;
 	
 	@Spy
 	private IndexadorRestAdapter indexadorRestAdapter;
@@ -129,6 +132,10 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoInValidaParaAutuacao.append("\"valida\":false,");
 		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}]}");
 		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
+		
+		StringBuilder tarefaParaAssumir = new StringBuilder();
+		tarefaParaAssumir.append("{\"tarefaId\": @");
+		this.tarefaParaAssumir = tarefaParaAssumir.toString();
 	}
 	
 	@Test
@@ -162,30 +169,47 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     public void executarAcaoRegistroPeticaoFisica() throws Exception {
     	
     	String peticaoId = "";
+    	String tarefaObject = "";
+    	String tarefaId = "";
     	
     	//Envia a petição eletrônica.
     	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-fisica/execute").header("login", "recebedor").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador-originario")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("preautuar")));
+    	tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "preautuador-originario")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("preautuar"))).andReturn().getResponse().getContentAsString();
+    	tarefaId = getTarefaId(tarefaObject);
+		
+    	//Assumir a(s) tarefa(s) do préautuador.
+		super.mockMvc.perform(get("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
+	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
     	
 		//Realiza a préautuação da petição física.
 		super.mockMvc.perform(post("/api/actions/preautuar/execute").contentType(MediaType.APPLICATION_JSON)
 	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("autuar")));
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
+		tarefaId = getTarefaId(tarefaObject);
+		
+    	//Assumir a(s) tarefa(s) do autuador.
+		super.mockMvc.perform(get("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
+	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
 		
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "distribuidor")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("distribuir-processo")));
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "distribuidor")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("distribuir-processo"))).andReturn().getResponse().getContentAsString();
+		tarefaId = getTarefaId(tarefaObject);
+		
+    	//Assumir a(s) tarefa(s) do distribuidor.
+		super.mockMvc.perform(get("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
+	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").contentType(MediaType.APPLICATION_JSON)
@@ -210,5 +234,10 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoInvalidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
+    }
+    
+    private String getTarefaId(String json) {
+    	JSONArray jo = new JSONArray(json);
+    	return new JSONObject(jo.getString(0)).getString("id");
     }
 }
