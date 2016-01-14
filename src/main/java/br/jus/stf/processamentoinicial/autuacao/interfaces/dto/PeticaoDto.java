@@ -3,6 +3,8 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces.dto;
 import java.util.List;
 import java.util.Map;
 
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.PreferenciaDto;
+
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -44,6 +46,9 @@ public class PeticaoDto {
 	
 	@ApiModelProperty(value = "Tipo do processo")
 	private String tipoProcesso;
+	
+	@ApiModelProperty(value = "A lista de preferências")
+	private List<PreferenciaDto> preferencias;
 	
 	PeticaoDto() {
 		
@@ -105,8 +110,8 @@ public class PeticaoDto {
 		return tipoProcesso;
 	}
 
-	public void setTipoProcesso(String tipoProcesso) {
-		this.tipoProcesso = tipoProcesso;
+	public List<PreferenciaDto> getPreferencias() {
+		return preferencias;
 	}
 	
 }
