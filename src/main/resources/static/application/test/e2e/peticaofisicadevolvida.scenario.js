@@ -80,8 +80,8 @@
 		    
 		});
 		
-		it('Deveria logar como preautuador', function() {
-			login('preautuador');
+		it('Deveria logar como preautuador originário', function() {
+			login('preautuador-originario');
 		});
 
 		it('Deveria pré-atuar como INDEVIDA a petição recebida', function() {
