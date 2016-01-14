@@ -8,6 +8,7 @@ import br.jus.stf.shared.stereotype.ValueObject;
  */
 public enum ProcessoSituacao implements ValueObject<ProcessoSituacao> {
 	
+	CRIADO("Recursal criado"),
 	DISTRIBUIDO("Distribuído");
 	
 	private String descricao;

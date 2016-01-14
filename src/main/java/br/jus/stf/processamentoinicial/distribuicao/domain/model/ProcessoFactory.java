@@ -16,6 +16,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 
 /**
@@ -34,7 +35,7 @@ public class ProcessoFactory {
 		processoRepository = repository;
 	}
 	
-	public static Processo criarProcesso(ClasseId classe, MinistroId relator, Set<Parte> partes, Set<Peca> pecas, PeticaoId peticaoId, TipoProcesso tipo) {
+	public static Processo criarProcesso(ClasseId classe, MinistroId relator, Set<Parte> partes, Set<Peca> pecas, PeticaoId peticaoId, TipoProcesso tipo, Set<PreferenciaId> preferencias) {
 		Set<ParteProcesso> partesProcesso = new HashSet<ParteProcesso>();
 		partesProcesso.addAll(coletarPartes(partes));
 		
@@ -44,7 +45,20 @@ public class ProcessoFactory {
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(classe);
 		
-		return new Processo(id, classe, numero, relator, peticaoId, partesProcesso, pecasProcesso, ProcessoSituacao.DISTRIBUIDO, tipo);
+		Processo processo;
+		
+		switch (tipo) {
+			case ORIGINARIO:
+				processo = new ProcessoOriginario(id, classe, numero, relator, peticaoId, partesProcesso, pecasProcesso, ProcessoSituacao.DISTRIBUIDO, preferencias);
+				break;
+			case RECURSAL:
+				processo = new ProcessoRecursal(id, classe, numero, peticaoId, ProcessoSituacao.CRIADO, preferencias);
+				break;
+			default:
+				throw new IllegalArgumentException("Tipo de processo inexistente: " + tipo);
+		}
+		
+		return processo;
 	}
 
 	private static Set<ParteProcesso> coletarPartes(Set<Parte> partesPeticao) {

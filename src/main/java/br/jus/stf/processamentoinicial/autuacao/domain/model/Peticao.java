@@ -37,7 +37,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
-import br.jus.stf.processamentoinicial.suporte.domain.model.Preferencia;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
@@ -108,7 +107,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@JoinTable(name = "PETICAO_PREFERENCIA", schema = "AUTUACAO",
 		joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "COD_PREFERENCIA", nullable = false))
-	private Set<Preferencia> preferencias = new HashSet<Preferencia>(0);
+	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
 		
 	@Transient
 	private String identificacao;
@@ -247,11 +246,11 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return tipoProcesso;
 	}
 	
-	public Set<Preferencia> preferencias(){
+	public Set<PreferenciaId> preferencias(){
 		return Collections.unmodifiableSet(preferencias);
 	}
 
-	public void atribuirPreferencias(final Set<Preferencia> preferencias) {
+	public void atribuirPreferencias(final Set<PreferenciaId> preferencias) {
 		Validate.notEmpty(preferencias, "peticao.preferencias.required");
 		
 		this.preferencias.addAll(preferencias);
@@ -260,12 +259,12 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public void removerPreferencias(final Set<PreferenciaId> preferencias) {
 		Validate.notEmpty(preferencias, "peticao.preferencias.required");
 		
-		Iterator<Preferencia> preferenciaIterator = this.preferencias.iterator();
+		Iterator<PreferenciaId> preferenciaIterator = this.preferencias.iterator();
 		
 		while(preferenciaIterator.hasNext()) {
-			Preferencia preferencia = preferenciaIterator.next();
+			PreferenciaId preferenciaId = preferenciaIterator.next();
 			
-			if (preferencias.contains(preferencia.toLong())) {
+			if (preferencias.contains(preferenciaId)) {
 				preferenciaIterator.remove();
 			}
 		}
@@ -314,7 +313,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notNull(relator, "peticao.ministroRelator.required");
 		Validate.notNull(classeProcessual, "peticao.distribuir.classeProcessual.invalid");
 		
-		return ProcessoFactory.criarProcesso(classeProcessual, relator, partes, pecas, id, tipoProcesso);
+		return ProcessoFactory.criarProcesso(classeProcessual, relator, partes, pecas, id, tipoProcesso, preferencias);
 	}
 
 	public Set<ProcessoWorkflow> processosWorkflow() {
