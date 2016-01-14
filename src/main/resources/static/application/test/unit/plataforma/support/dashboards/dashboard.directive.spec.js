@@ -13,7 +13,7 @@
 		var $compile, $q, scope, $compileProvider;
 		
 		var mockDashboardService = {
-			getDashlets: function() {}
+			getDashboards: function() {}
 		};
 
 		beforeEach(module('appDev'));
@@ -30,7 +30,7 @@
 		}));
 
 		beforeEach(function() {
-			spyOn(mockDashboardService, 'getDashlets').and.returnValue($q.when(['dashlet-01', 'dashlet-02']));
+			spyOn(mockDashboardService, 'getDashboards').and.returnValue($q.when([{dashlets : [{nome : 'dashlet-01'}, {nome : 'dashlet-02'}]}]));
 		});
 		
 		it('Deveria ter compilado a diretiva', function() {
@@ -50,8 +50,8 @@
 					}
 				};
 			});
-			
-			var element = $compile('<div data-dashboard=""></div>')(scope);
+			scope.dashboard = {dashlets : [{nome : 'dashlet-01'}, {nome : 'dashlet-02'}]};
+			var element = $compile('<div dashboard="dashboard"></div>')(scope);
 			
 			scope.$digest();
 			

@@ -1,17 +1,18 @@
 
 /**
- * 
+ * @author Anderson.Araujo
  */
 
 (function(){
 	'use strict';
 	
-	angular.plataforma.controller('InformacoesController', function($scope, UsuarioService) {
+	angular.plataforma.controller('InformacoesController', function($scope, SecurityService, AcessosService) {
 		
-		$scope.usuario = {};
+		$scope.usuario = SecurityService.user();
+		$scope.usuario.papeis = [];
 		
-		UsuarioService.recuperarInformacoes().then(function(usuario) {
-			$scope.usuario = usuario;
+		AcessosService.papeis($scope.usuario.login).then(function(response) {
+			$scope.usuario.papeis = response.data;
 		});
 	});
 })();

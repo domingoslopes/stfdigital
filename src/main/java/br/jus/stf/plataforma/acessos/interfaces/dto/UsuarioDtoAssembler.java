@@ -1,10 +1,6 @@
 package br.jus.stf.plataforma.acessos.interfaces.dto;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
@@ -26,9 +22,12 @@ public class UsuarioDtoAssembler {
 	@Autowired
 	private SetorDtoAssembler setorDtoAssembler;
 	
-	public UsuarioDto toDto(Usuario usuario, Set<GrantedAuthority> authorities) {		
-		Set<PapelDto> papeis = usuario.papeis().stream().map(papel -> this.papelDtoAssembler.toDto(papel)).collect(Collectors.toSet());
-		SetorDto setor = this.setorDtoAssembler.toDto(usuario.setor());
-		return new UsuarioDto(usuario.id().toLong(), usuario.login(), usuario.pessoa().nome(), setor, papeis, authorities);
+	public UsuarioDto toDto(Usuario usuario) {
+		if (usuario == null) {
+			return null;
+		}
+		SetorDto setor = setorDtoAssembler.toDto(usuario.setor());
+		return new UsuarioDto(usuario.id().toLong(), usuario.login(),
+				usuario.pessoa().nome(), usuario.pessoa().id().toLong(), setor);
 	}
 }

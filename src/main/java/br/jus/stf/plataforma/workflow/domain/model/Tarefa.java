@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.workflow.domain.model;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.shared.ProcessoWorkflowId;
 import br.jus.stf.shared.TarefaId;
 import br.jus.stf.shared.stereotype.Entity;
@@ -15,6 +16,7 @@ public class Tarefa implements Entity<Tarefa, TarefaId> {
 	private TarefaId id;
 	private String nome;
 	private String descricao; 
+	private Responsavel responsavel;
 	private ProcessoWorkflowId processo;
 	private Metadado metadado;
 	
@@ -44,12 +46,28 @@ public class Tarefa implements Entity<Tarefa, TarefaId> {
 		return descricao;
 	}
 	
+	public Responsavel reponsavel() {
+		return responsavel;
+	}
+	
 	public ProcessoWorkflowId processo() {
 		return processo;
 	}
 	
 	public Metadado metadado() {
 		return metadado;
+	}
+		
+	public void atribuir(Responsavel responsavel) {
+		this.responsavel = responsavel;
+	}
+	
+	public boolean isDono() {
+		if (responsavel != null) {
+			return responsavel.usuarioId().sameValueAs(
+					SecurityContextUtil.getUser().getUserDetails().getUsuarioId());
+		}
+		return false;
 	}
 
 	@Override
