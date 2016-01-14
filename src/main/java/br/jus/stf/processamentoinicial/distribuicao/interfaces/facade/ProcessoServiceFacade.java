@@ -21,7 +21,10 @@ import br.jus.stf.processamentoinicial.distribuicao.infra.PeticaoRestAdapter;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoStatusDto;
+import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
+import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 
 @Component
@@ -109,4 +112,29 @@ public class ProcessoServiceFacade {
 		
 		return statusProcesso.stream().sorted((s1, s2) -> s1.getNome().compareTo(s2.getNome())).collect(Collectors.toList());
     }
+	
+	/**
+	 * Cadastra um processo recursal
+	 * 
+	 */
+	public ProcessoDto cadastrarRecursal(Long processoId, String classeId, Long numero, Long peticaoId, String situacao, Set<Long> preferencias) {
+		ProcessoId procId = new ProcessoId(processoId);
+		ClasseId clasId = new ClasseId(classeId);
+		PeticaoId petiId = new PeticaoId(peticaoId);
+		ProcessoSituacao procSituacao = ProcessoSituacao.valueOf(situacao);
+		Processo processo = processoApplicationService.cadastrarRecursal(procId, clasId, numero, petiId, procSituacao, carregarPreferencias(preferencias));
+		
+		return processoDtoAssembler.toDto(processo);
+	}
+	
+	private Set<PreferenciaId> carregarPreferencias(Set<Long> listaPreferencias) {
+		if (!Optional.ofNullable(listaPreferencias).isPresent()) {
+			return null;
+		}
+
+		return listaPreferencias.stream()
+				.map(id -> new PreferenciaId(id))
+				.collect(Collectors.toSet());
+	}
+	
 }
