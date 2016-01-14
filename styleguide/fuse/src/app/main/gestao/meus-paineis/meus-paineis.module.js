@@ -24,7 +24,7 @@
         msNavigationServiceProvider.saveItem('gestao.meus-paineis', {
             title      : 'Meus Paineis',
             icon       : 'icon-view-dashboard',
-            state      : 'app.gestao.meus-paineis',
+            state      : 'app.gestao.meus-paineis.*',
             translation: 'GESTAO.MEUS-PAINEIS.MEUS-PAINEIS',
             weight     : 1
         });

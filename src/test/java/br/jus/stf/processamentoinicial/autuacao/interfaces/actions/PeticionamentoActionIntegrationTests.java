@@ -168,7 +168,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador")).andExpect(status().isOk())
+		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador-originario")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].nome", is("preautuar")));
     	
 		//Realiza a préautuação da petição física.
