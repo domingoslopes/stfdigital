@@ -127,8 +127,8 @@
 			login('gestor-autuacao');
 		});
 		
-		it('Deveria exibir os dashlets do papel gestor-autuacao', function(){			
-			expect(browser.isElementPresent(principalPage.titleGestaoAutuacao)).toBe(true)
+		it('Deveria exibir os dashlets do papel gestor-autuacao', function(){	
+			expect(principalPage.dashletGestaoAutuacao.isDisplayed()).toBe(true)
 			loginPage.logout();
 		});
 		
@@ -136,8 +136,9 @@
 			login('cartoraria');
 		});
 		
-		it ('Deveria exibir a dashlet do papel cartorária', function(){			
-			expect(principalPage.dashletMinhasTarefas.count()).toBeGreaterThan(0);
+		it ('Deveria exibir a dashlet do papel cartorária', function() {
+			expect(principalPage.dashletMinhasTarefas.isDisplayed()).toBe(true);
+			loginPage.logout();
 		});
 		
 		
@@ -159,11 +160,11 @@
 			
 			peticionamentoPage.selecionarTipoPeca('Ato coator');
 		    
-			peticionamentoPage.registrar();
+			peticionamentoPage.registrar('registrar-peticao-eletronica');
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.dashletMinhasPeticoes.count()).toBeGreaterThan(0);
+			expect(principalPage.peticoes().count()).toBeGreaterThan(0);
 		}
 		
 		var autuar = function(){
@@ -189,14 +190,14 @@
 			
 			distribuicaoPage.selecionarTipoDistribuicao(tipoDistribuicao);
 			
-			if (tipoDistribuicao == 'COMUM'){
+			if (tipoDistribuicao == 'COMUM') {
 				
 				distribuicaoPage.criarListaDeMinistrosImpedidos();
 				
 				//verifica se a lista de ministros impedidos possui ao menos um ministro
 				expect(distribuicaoPage.listaMinistrosImpedidos().count()).toBeGreaterThan(0);
 				
-			}else if (tipoDistribuicao == 'PREVENCAO'){
+			} else if (tipoDistribuicao == 'PREVENCAO') {
 				
 				distribuicaoPage.selecionarPrimeiraParte();
 				
@@ -205,7 +206,6 @@
 				//verifica se a lista de processos preventos possui ao menos um processo
 				expect(distribuicaoPage.listaProcessosPreventos().count()).toBeGreaterThan(0);
 			}
-			
 			
 			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao ' + tipoDistribuicao);
 			

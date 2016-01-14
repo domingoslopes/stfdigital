@@ -78,11 +78,11 @@
 			
 			peticionamentoPage.selecionarTipoPeca('Petição Inicial');
 		    
-			peticionamentoPage.registrar();
+			peticionamentoPage.registrar('registrar-peticao-eletronica-orgao');
 
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.dashletMinhasPeticoes.count()).toBeGreaterThan(0);
+			expect(principalPage.peticoes().count()).toBeGreaterThan(0);
 			
 		    loginPage.logout();
 		});

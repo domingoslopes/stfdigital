@@ -53,7 +53,7 @@ public class WorkflowApplicationService {
 	 * @param metadado
 	 */
 	public void sinalizar(ProcessoWorkflow processo, String sinal, Metadado metadado){
-		processoWorkflowRepository.sinalizar(sinal, metadado);
+		processoWorkflowRepository.sinalizar(sinal, processo.id(), metadado);
 		processoWorkflowRepository.updateStatus(processo.id(), metadado.status());
 	}
 	
