@@ -14,13 +14,15 @@ public class TarefaDto {
 	private String descricao;
 	private Long processoWorkflow;
 	private String responsavel;
+	private boolean dono;
 	private MetadadoDto metadado;
 
-	public TarefaDto(Long id, String nome, String descricao, String responsavel, Long processoWorkflow, MetadadoDto metadado) {
+	public TarefaDto(Long id, String nome, String descricao, String responsavel, boolean dono, Long processoWorkflow, MetadadoDto metadado) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.responsavel = responsavel;
+		this.dono = dono;
 		this.processoWorkflow = processoWorkflow;
 		this.metadado = metadado;
 	}
@@ -35,6 +37,10 @@ public class TarefaDto {
 	
 	public String getDescricao() {
 		return descricao;
+	}
+	
+	public boolean isDono() {
+		return dono;
 	}
 	
 	public String getResponsavel() {

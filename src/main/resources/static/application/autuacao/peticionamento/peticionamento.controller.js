@@ -17,8 +17,7 @@
 		$scope.poloAtivoController = new PartesController($scope.partesPoloAtivo);
 		$scope.poloPassivoController = new PartesController($scope.partesPoloPassivo);
 		$scope.pecas = [];
-		$scope.idPeticao;
-		
+		$scope.recursos = [];
 		
 		var uploader = $scope.uploader = new FileUploader({
             url: properties.apiUrl + '/documentos/upload/assinado',
@@ -171,17 +170,20 @@
              $window.open(fileURL);
 	    };
 	    
-		$scope.finalizar = function() {
-			
+	    $scope.validar = function() {
+	    	var errors = null;
+	    	
 			if ($scope.partesPoloAtivo.length === 0) {
-				messages.error('Você precisa informar <b>pelo menos uma parte</b> para o polo <b>ativo</b>.');
-				return;
+				errors = 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>ativo</b>.<br/>';
 			}
 			
 			if ($scope.partesPoloPassivo.length === 0) {
-				messages.error('Você precisa informar <b>pelo menos uma parte</b> para o polo <b>passivo</b>.');
-				return;
+				errors += 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>passivo</b>.<br/>';
 			}
+			
+	    	if($scope.pecas.length === 0){
+	    		errors += 'Você precisa adicionar <b>pelo menos uma peça</b> na sua petição.<br/>';
+	    	}
 			
 			var tiposSelecionados = [];
 			
@@ -190,19 +192,18 @@
 	    	});
 	    	
 	    	if(tiposSelecionados.length < $scope.pecas.length){
-	    		messages.error('Por favor, classifique todas as peças da sua petição.');
-	    		return;
+	    		errors += 'Por favor, classifique todas as peças da sua petição.<br/>';
 	    	}
 	    	
 	    	if(angular.isFunction($scope.child.validar)) {
-	    		if(!$scope.child.validar()) {
-	    			return;
-	    		}
+	    		return $scope.child.validar(errors);
 	    	}
-	    	
-	    	if(angular.isFunction($scope.child.finalizar)) {
-	    		$scope.child.finalizar();
-	    	}
+	    	return false;
+	    };
+	    
+		$scope.finalizar = function(data) {
+			$state.go('dashboard');
+			messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
 		};
 		
     	function PartesController(partes){

@@ -59,7 +59,7 @@ public interface TarefaRepository {
 	 * @param id
 	 * @return
 	 */
-	Tarefa consultarPorProcesso(ProcessoWorkflowId id);
+	Tarefa consultarPor(ProcessoWorkflowId id);
 
 	/**
 	 * Delega uma tarefa para um usuário
