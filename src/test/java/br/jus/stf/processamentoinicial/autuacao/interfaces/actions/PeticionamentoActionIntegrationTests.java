@@ -12,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.io.UnsupportedEncodingException;
 
 import org.activiti.engine.impl.util.json.JSONArray;
-import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -187,7 +186,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     	
 		//Realiza a préautuação da petição física.
 		super.mockMvc.perform(post("/api/actions/preautuar/execute").contentType(MediaType.APPLICATION_JSON)
-	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do autuador.
 		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
@@ -237,7 +236,6 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     }
     
     private String getTarefaId(String json) {
-    	JSONArray jo = new JSONArray(json);
-    	return new JSONObject(jo.getString(0)).getString("id");
+    	return (String) new JSONArray(json).getJSONObject(0).get("id");
     }
 }
