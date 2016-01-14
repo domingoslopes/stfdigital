@@ -18,29 +18,25 @@
 		    description: "Dummy Action",
 		    groups: ["DummyObj"],
 		    hasConditionHandlers: true,
-		    resourcesMode: "Many",
-		    neededAuthorities: ["peticionador"]
+		    resourcesMode: "Many"
 		}, {
 		    id: "do_nothing",
 		    description: "Do Nothing",
 		    groups: ["Long"],
 		    hasConditionHandlers: false,
-		    resourcesMode: "None",
-		    neededAuthorities: []
+		    resourcesMode: "None"
 		}, {
 		    id: "do_nothing_long",
 		    description: "Do Nothing Long",
 		    groups: ["Long"],
 		    hasConditionHandlers: false,
-		    resourcesMode: "One",
-		    neededAuthorities: ["peticionador"]
+		    resourcesMode: "One"
 		}, {
 		    id: "registrar_peticao",
 		    description: "Registrar",
 		    groups: ["Peticao"],
 		    hasConditionHandlers: false,
-		    resourcesMode: "One",
-		    neededAuthorities: ["peticionador"]
+		    resourcesMode: "One"
 		}];
 		
 		var classes = [{ sigla : "ADI", nome : "Ação Direta de Inconstitucionalidade" },
@@ -242,10 +238,6 @@
 		});
 		  
 		$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond(function(method,url,data, headers) {
-			console.log("Recuperando as tarefas");
-/*			if (headers.papel == 'recebedor') {
-				taref
-			}*/
 			return [200, tarefas, {}];
 		});
 		
@@ -262,4 +254,3 @@
 	});
 
 })();
-

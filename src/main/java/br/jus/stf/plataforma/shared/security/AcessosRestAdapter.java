@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.shared.security;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.acessos.interfaces.AcessosRestResource;
+import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDto;
+import br.jus.stf.shared.PessoaId;
+import br.jus.stf.shared.UsuarioId;
 
 /**
  * @author Lucas.Rodrigues
@@ -33,7 +37,28 @@ public class AcessosRestAdapter {
 	}
 	
 	public Set<String> carregarPapeisUsuario(String login) {
-		return acessosRestResouce.papeis(login).stream().map(p -> p.getNome()).collect(Collectors.toSet());
+		return acessosRestResouce.papeis(login).stream()
+				.map(p -> p.getNome()).collect(Collectors.toSet());
+	}
+	
+	public Optional<UserDetails> recuperarUsuario(UsuarioId usuarioId) {
+		return Optional.ofNullable(acessosRestResouce.recuperarUsuario(usuarioId.toLong()))
+				.map(dto -> newUser(dto)).orElse(Optional.empty());
+	}
+	
+	public Optional<UserDetails> recuperarUsuario(String login) {
+		return Optional.ofNullable(acessosRestResouce.recuperarUsuario(login))
+				.map(dto -> newUser(dto)).orElse(Optional.empty());
+	}
+	
+	/**
+	 * @param dto
+	 * @return
+	 */
+	private Optional<UserDetails> newUser(UsuarioDto dto) {
+		UsuarioId usuarioId = new UsuarioId(dto.getId());
+		PessoaId pessoaId = new PessoaId(dto.getPessoaId());
+		return Optional.of(new UserDetails(usuarioId, pessoaId, dto.getNome()));
 	}
 	
 }

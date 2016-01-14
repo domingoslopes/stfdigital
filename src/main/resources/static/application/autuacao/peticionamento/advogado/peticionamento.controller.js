@@ -7,34 +7,22 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PeticionamentoAdvogadoController', function ($scope, $state, messages, PeticaoService) {
+	angular.autuacao.controller('PeticionamentoAdvogadoController', function ($scope, $state, messages) {
 
 		$scope.$parent.child = $scope;
-		$scope.idPeticao;
+		$scope.actionId = "registrar-peticao-eletronica";
 		
-		$scope.validar = function() {
+		$scope.validar = function(errors) {
 			if ($scope.classe.length === 0) {
-				messages.error('Você precisa selecionar <b>a classe processual sugerida</b>.');
+				errors += 'Você precisa selecionar <b>a classe processual sugerida</b>.<br/>';
+			}
+			
+			if (errors) {
+				messages.error(errors);
 				return false;
 			}
+			$scope.recursos.push($scope.command($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo, $scope.pecas));
 			return true;
 		};
-
-		$scope.finalizar = function() {
-			var command = $scope.command($scope.classe, $scope.partesPoloAtivo, $scope.partesPoloPassivo, $scope.pecas);
-			
-			PeticaoService.peticionar(command).success(function(data) {
-				$state.go('dashboard');
-				$scope.idPeticao = data;
-				$scope.$parent.idPeticao = data;
-				messages.success('Petição <b>#' + data + '</b> enviada com sucesso.');
-			}).error(function(data, status) {
-				if (status === 400) {
-					messages.error('A Petição <b>não pôde ser registrada</b> porque ela não está válida.');
-				}
-			});
-		};
-		
-		
 	});	
 })();

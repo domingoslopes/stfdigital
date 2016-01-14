@@ -28,7 +28,7 @@ alter table plataforma.permissao_usuario add constraint FK_PERMISSAO_PEUS foreig
 
 create table plataforma.recurso (seq_recurso bigint not null, nom_recurso varchar2(50) not null, tip_recurso varchar2(20) not null, constraint pk_recurso primary key (seq_recurso));
 alter table plataforma.recurso add constraint uk_recu_nom_recurso unique(nom_recurso, tip_recurso);
-alter table plataforma.recurso add constraint ck_recu_tip_recurso check (tip_recurso in ('ACAO', 'DASHLET', 'NOTIFICACAO', 'PESQUISA', 'TAREFA'));
+alter table plataforma.recurso add constraint ck_recu_tip_recurso check (tip_recurso in ('ACAO', 'DASHLET', 'DASHBOARD', 'NOTIFICACAO', 'PESQUISA', 'TAREFA'));
 
 create table plataforma.permissao_recurso (seq_permissao bigint not null, seq_recurso bigint not null, constraint pk_permissao_recurso primary key (seq_permissao, seq_recurso));
 alter table plataforma.permissao_recurso add constraint FK_RECURSO_PERE foreign key (seq_recurso) references plataforma.recurso;
