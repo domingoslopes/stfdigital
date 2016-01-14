@@ -2,10 +2,7 @@ package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -21,10 +18,8 @@ public class MotivoInaptidao implements ValueObject<MotivoInaptidao> {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name = "SEQ_MOTIVO_INAPTIDAO")
-	@SequenceGenerator(name = "MOTIVOINAPTIDAOID", sequenceName = "AUTUACAO.SEQ_MOTIVO_INAPTIDAO", allocationSize = 1)
-	@GeneratedValue(generator = "MOTIVOINAPTIDAOID", strategy=GenerationType.SEQUENCE)
-	private Long sequencial;
+	@Column(name = "COD_MOTIVO_INAPTIDAO")
+	private Long codigo;
 	
 	@Column(name = "DSC_MOTIVO_INAPTIDAO", nullable = false)
 	private String descricao;
@@ -33,16 +28,16 @@ public class MotivoInaptidao implements ValueObject<MotivoInaptidao> {
 		
 	}
 	
-	public MotivoInaptidao(final Long sequencial, final String descricao) {
-		Validate.notNull(sequencial, "motivoInaptidao.sequencial.required");
+	public MotivoInaptidao(final Long codigo, final String descricao) {
+		Validate.notNull(codigo, "motivoInaptidao.codigo.required");
 		Validate.notBlank(descricao, "motivoInaptidao.descricao.required");
 		
-		this.sequencial = sequencial;
+		this.codigo = codigo;
 		this.descricao = descricao;
 	}
 	
 	public Long toLong() {
-		return this.sequencial;
+		return this.codigo;
 	}
 	
 	public String descricao() {
@@ -51,7 +46,7 @@ public class MotivoInaptidao implements ValueObject<MotivoInaptidao> {
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(sequencial).hashCode();
+		return new HashCodeBuilder().append(codigo).hashCode();
 	}
 	
 	@Override
@@ -67,7 +62,7 @@ public class MotivoInaptidao implements ValueObject<MotivoInaptidao> {
 	
 		MotivoInaptidao other = (MotivoInaptidao) obj;
 		
-		return sequencial.equals(other.sequencial);
+		return codigo.equals(other.codigo);
 	}
 
 	@Override
