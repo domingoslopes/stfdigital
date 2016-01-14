@@ -1,7 +1,11 @@
 {
 	"GESTAO": {
 		"MEUS-PAINEIS": {
-			"MEUS-PAINEIS": "Meus Paineis"
+			"MEUS-PAINEIS": "Meus Paineis",
+			"PRINCIPAL": "Principal",
+			"PETICOES": "Petições",
+			"AUTUACOES": "Autuações",
+			"PRODUTIVIDADE-DO-TIME": "Produtividade do Time"
 		}
 	}
 }
