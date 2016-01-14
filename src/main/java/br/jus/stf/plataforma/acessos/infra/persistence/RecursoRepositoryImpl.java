@@ -33,7 +33,8 @@ public class RecursoRepositoryImpl extends SimpleJpaRepository<Recurso, Long> im
 		query.setParameter("nome", nome);
 		query.setParameter("tipo", tipo);
 
-		return query.getSingleResult();
+		List<Recurso> results = query.getResultList();
+		return results.isEmpty() ? null : results.get(0);
 	}
 	
 	@Override

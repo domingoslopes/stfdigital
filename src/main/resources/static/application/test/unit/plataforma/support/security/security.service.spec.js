@@ -22,19 +22,7 @@
 	            	"nome": "gestor-cadastro",
 	            	"setor": ""
         		}
-            ],
-            
-            "authorities": [
-                {
-                	"authority": "VISUALIZAR_NOTIFICACAO"
-        		},
-        		{
-        			"authority": "CRIAR_ASSOCIADO"
-				},
-				{
-					"authority": "CRIAR_NOTIFICACAO"
-				}
-			]
+            ]
 		};
 
 		beforeEach(module('appDev'));

@@ -1,0 +1,16 @@
+<!-- START WIDGET -->
+<div class="auto-overflow widget-11-2-table">
+	<table class="table table-condensed table-hover">
+		<tbody>
+			<tr ng-repeat="tarefa in tarefas">
+				<td class="font-montserrat fs-12 col-lg-10">
+				   <a href="#" ng-click="go(tarefa)">{{tarefa.descricao}}</a>
+				</td>
+				<td class="text-right b-l b-dashed b-grey col-lg-2">
+					<span class="hint-text small">#{{tarefa.metadado.descricao}}</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- END WIDGET -->
