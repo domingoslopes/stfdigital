@@ -28,7 +28,6 @@
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
 		})
-		
 		.state('registrar-associado', {
 			parent: 'root',
 			url: '/associado',
@@ -39,7 +38,7 @@
 					controllerAs: 'vm'
 				}
 			}
-		})
+		})		
 		.state('configurar-permissao', {
 			parent: 'root',
 			url: '/permissoes',
@@ -64,9 +63,7 @@
 		})
 		.state('assumir-tarefa', {
 			parent: 'action',
-			params : {
-				resources : []
-			},
+			params : { resources : [] },
 			views: {
 				'@action': {
 					templateUrl: 'application/plataforma/workflow/tarefa/assumir.tpl.html',
@@ -76,9 +73,7 @@
 		})
 		.state('delegar-tarefa', {
 			parent: 'action',
-			params : {
-				resources : []
-			},
+			params : { resources : [] },
 			views: {
 				'@action': {
 					templateUrl: 'application/plataforma/workflow/tarefa/delegar.tpl.html',

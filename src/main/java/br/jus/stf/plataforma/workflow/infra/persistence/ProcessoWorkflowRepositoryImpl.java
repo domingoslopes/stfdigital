@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.workflow.infra.persistence;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -80,11 +82,15 @@ public class ProcessoWorkflowRepositoryImpl extends SimpleJpaRepository<Processo
 	}
 
 	@Override
-	public void sinalizar(String sinal, Metadado metadado) {
+	public void sinalizar(String sinal, ProcessoWorkflowId id, Metadado metadado) {
 		Map<String, Object> variaveis = new HashMap<String, Object>();
 		variaveis.put("status", metadado.status());
 		Optional.ofNullable(metadado.descricao()).ifPresent(d -> variaveis.put("descricao", d));
-		runtimeService.signalEventReceived(sinal, variaveis);
+		
+		List<Execution> executions = runtimeService.createExecutionQuery()
+												   .processInstanceId(id.toString())
+												   .signalEventSubscriptionName(sinal).list();
+		executions.forEach(ex -> runtimeService.signalEventReceived(sinal, ex.getId(), variaveis));
 	}
 	
 	@SuppressWarnings("unchecked")
