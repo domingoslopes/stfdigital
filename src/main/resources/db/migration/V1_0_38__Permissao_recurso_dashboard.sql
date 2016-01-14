@@ -49,5 +49,4 @@ INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (9, 25)
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (9, 31);
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (9, 32);
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (10, 32);
-INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (11, 26);
 INSERT INTO plataforma.permissao_papel (seq_papel, seq_permissao) VALUES (11, 27);

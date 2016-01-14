@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.elasticsearch.common.lang3.Validate;
 
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.UsuarioId;
 
 /**
@@ -13,37 +14,47 @@ import br.jus.stf.shared.UsuarioId;
  */
 public class UserDetails {
 
-	private UsuarioId userId;
-	private String name;
+	private UsuarioId usuarioId;
+	private PessoaId pessoaId;
+	private String nome;
 	private List<String> roles = new ArrayList<String>(0);
 	
-	public UserDetails(UsuarioId userId, String name) {
+	public UserDetails(UsuarioId usuarioId, PessoaId pessoaId, String nome) {
 		
-		Validate.notNull(userId);
-		Validate.notBlank(name);
+		Validate.notNull(usuarioId);
+		Validate.notNull(pessoaId);
+		Validate.notBlank(nome);
 		
-		this.userId = userId;
-		this.name = name;
+		this.usuarioId = usuarioId;
+		this.pessoaId = pessoaId;
+		this.nome = nome;
 	}
 
 	/**
 	 * @return identificador do usuário
 	 */
-	public UsuarioId getUserId() {
-		return userId;
+	public UsuarioId getUsuarioId() {
+		return usuarioId;
+	}
+	
+	/**
+	 * @return identificador da pessoa
+	 */
+	public PessoaId getPessoaId() {
+		return pessoaId;
 	}
 	
 	/**
 	 * @return nome completo do usuário
 	 */
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 	
 	/**
 	 * @return os papéis do usuário
 	 */
-	public List<String> getRoles() {
+	public List<String> getPapeis() {
 		return roles;
 	}
 	

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
@@ -56,13 +57,18 @@ public class TarefaRestResource {
 	}
 	
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public TarefaDto consultar(@PathVariable("id") Long id){
+	public TarefaDto consultar(@PathVariable("id") Long id) {
 		return tarefaServiceFacade.consultar(id);
 	}
     
-    @RequestMapping(value = "/processo/{id}", method = RequestMethod.GET)
-	public TarefaDto consultarPorProcesso(@PathVariable("id") Long id){
+    @RequestMapping(value = "/processos/{id}", method = RequestMethod.GET)
+	public TarefaDto consultarPorProcesso(@PathVariable("id") Long id) {
 		return tarefaServiceFacade.consultarPorProcesso(id);
+	}
+    
+    @RequestMapping(value = "/processos", method = RequestMethod.GET)
+	public List<TarefaDto> consultarPorProcessos(@RequestParam("ids") List<Long> ids) {
+		return tarefaServiceFacade.consultarPorProcessos(ids);
 	}
 
 }

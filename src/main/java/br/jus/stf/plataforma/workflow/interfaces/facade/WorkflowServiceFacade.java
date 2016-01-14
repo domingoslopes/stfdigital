@@ -28,13 +28,13 @@ public class WorkflowServiceFacade {
 	@Autowired
 	private ProcessoDtoAssembler processoDtoAssembler;
 	
-	public Long iniciar(String chave, Long informacao, String tipoInformacao, String status, String descricao) {
+	public Long iniciar(String chave, String informacao, String tipoInformacao, String status, String descricao) {
 		Metadado metadado = new Metadado(informacao, tipoInformacao, status, descricao);
 		ProcessoWorkflowId id = processoApplicationService.iniciar(chave, metadado);
 		return id.toLong();
 	}
 	
-	public Long iniciarPorMensagem(String mensagem, Long informacao, String tipoInformacao, String status, String descricao) {
+	public Long iniciarPorMensagem(String mensagem, String informacao, String tipoInformacao, String status, String descricao) {
 		Metadado metadado = new Metadado(informacao, tipoInformacao, status, descricao);
 		ProcessoWorkflowId id = processoApplicationService.iniciarPorMensagem(mensagem, metadado);
 		return id.toLong();

@@ -56,7 +56,7 @@ public class TarefaApplicationService {
 	 * @param tarefaId
 	 */
 	public void assumir(TarefaId tarefaId) {
-		UsuarioId usuarioId = SecurityContextUtil.getUser().getUserDetails().getUserId();
+		UsuarioId usuarioId = SecurityContextUtil.getUser().getUserDetails().getUsuarioId();
 		tarefaRepository.delegar(tarefaId, usuarioId);
 	}
 	

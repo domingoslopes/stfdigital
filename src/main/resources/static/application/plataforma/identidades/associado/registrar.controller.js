@@ -8,13 +8,8 @@
 	'use strict';
 	
 	angular.plataforma.controller('RegistrarAssociadoController', function ($scope, $state, messages, AssociadoService, CPFService, SecurityService, OrgaoService) {
-		if (SecurityService.hasPapel('gestor-cadastro')) {
-			this.orgaosPromise = OrgaoService.listar();
-		} else {
-			this.orgaosPromise = OrgaoService.listarRepresentados();
-		}
 		
-		this.orgaosPromise.then(function(response) {
+		OrgaoService.listarRepresentados(true).then(function(response) {
 			this.orgaos = response.data;
 		}.bind(this));
 		

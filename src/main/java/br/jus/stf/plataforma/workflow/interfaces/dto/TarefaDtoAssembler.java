@@ -25,7 +25,7 @@ public class TarefaDtoAssembler {
 		Long id = tarefa.id().toLong();
 		Long processo = tarefa.processo().toLong();
 		String responsavel = Optional.ofNullable(tarefa.reponsavel()).map(r -> r.nome()).orElse("");
-		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), responsavel, processo, toDto(tarefa.metadado()));
+		return new TarefaDto(id, tarefa.nome(), tarefa.descricao(), responsavel, tarefa.isDono(), processo, toDto(tarefa.metadado()));
 	}
 	
 	private MetadadoDto toDto(Metadado metadado) {
