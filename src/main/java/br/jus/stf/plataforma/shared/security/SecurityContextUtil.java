@@ -8,7 +8,6 @@ import java.util.Set;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 /**
  * Classe utilitária com informações do contexto de segurança
@@ -32,9 +31,9 @@ public class SecurityContextUtil {
 	/**
 	 * @return o nome do usuário autenticado
 	 */
-	public static String getUsername() {
+	public static UserImpl getUser() {
 		return Optional.ofNullable(getAuthentication())
-				.map(auth -> ((User) auth.getPrincipal()).getUsername())
+				.map(auth -> ((UserImpl) auth.getPrincipal()))
 				.orElse(null);
 	}
 	

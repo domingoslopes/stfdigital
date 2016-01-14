@@ -60,8 +60,9 @@
 			 utils.select('div#s2id_tipoPecaId', descricao);
 		};
 		
-		this.registrar = function () {
-			element(by.id('botaoPeticionar')).click();
+		this.registrar = function (id) {
+			element(by.id('btn_exec_' + id)).click();
+			browser.waitForAngular();
 		};
 		
 		this.registrarValorPeticao = function(){

@@ -44,7 +44,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
 		command.setMensagem("autuarOriginarios");
 		command.setStatus(PeticaoStatus.A_AUTUAR.toString());
-		command.setInformacao(peticaoEletronica.id().toLong());
+		command.setInformacao(peticaoEletronica.id().toString());
 		command.setTipoInformacao(peticaoEletronica.getClass().getSimpleName());
 		command.setDescricao(peticaoEletronica.identificacao());
 		
@@ -57,7 +57,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
 		command.setMensagem("Remessa de Petições Físicas");
 		command.setStatus(PeticaoStatus.A_PREAUTUAR.toString());
-		command.setInformacao(peticaoFisica.id().toLong());
+		command.setInformacao(peticaoFisica.id().toString());
 		command.setTipoInformacao(peticaoFisica.getClass().getSimpleName());
 		command.setDescricao(peticaoFisica.identificacao());
 		

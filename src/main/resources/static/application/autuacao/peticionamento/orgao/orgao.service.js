@@ -13,8 +13,9 @@
 				return $http.get(properties.apiUrl + '/orgaos');
 			},
 			
-			listarRepresentados: function() {
-				return $http.get(properties.apiUrl + '/orgaos/representados');
+			listarRepresentados: function(verificarPerfil) {
+				var params = { verificarPerfil : (verificarPerfil == true) ? true : false };
+				return $http.get(properties.apiUrl + '/orgaos/representados', { params : params });
 			},
 			
 			consultar : function(orgaoId) {
