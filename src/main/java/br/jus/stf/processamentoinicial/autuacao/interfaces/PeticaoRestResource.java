@@ -63,7 +63,7 @@ public class PeticaoRestResource {
     	if (binding.hasErrors()) {
 			throw new IllegalArgumentException("Petição Inválida: " + binding.getAllErrors());
 		}
-    	return peticaoServiceFacade.registrar(command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex());
+    	return peticaoServiceFacade.registrar(command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex(), command.getTipoProcesso());
 	}
 
     @ApiOperation("Recupera as informações de uma determinada petição")
