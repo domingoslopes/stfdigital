@@ -212,7 +212,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do préautuador.
-		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador")).andExpect(status().isOk())
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador-originario")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].nome", is("preautuar")));
 		
 		//Faz a préautuação da petição registrada.
@@ -272,7 +272,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.content(peticaoFisicaParaRegistro.toString())).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do préautuador.
-		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador")).andExpect(status().isOk())
+		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador-originario")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].nome", is("preautuar")));
 		
 		//Faz a préautuação da petição registrada.

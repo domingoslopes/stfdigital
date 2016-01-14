@@ -1,1 +1,94 @@
-PETIÇÕES
+<!-- WIDGET GROUP -->
+<div class="widget-group" layout="row" flex="100" layout-wrap layout-align="space-between">
+	<ms-widget flex="100"  flex-gt-xs="33" class="h-170" layout="column" layout-padding>
+		<ms-widget-front class="light-blue-bg">
+		    <div layout="row" layout-align="space-between center">
+		        <div class="h4 font-weight-500 secondary-text text-uppercase" translate="GESTAO.MEUS-PAINEIS.PETICOES-VIEW.PETICOES">Petições ADI, ADC, ADO e ADPF</div>
+		    </div>
+
+		    <div class="white-fg" layout="column" layout-align="space-between" flex>
+		        <div class="md-display-2 font-weight-100" layout="row" layout-align="start center">
+		            <span>{{ 342 | number }}</span>
+		        </div>
+
+		        <div layout="row" layout-align="start center">
+		            <span><span translate="GESTAO.MEUS-PAINEIS.PETICOES-VIEW.ULTIMA_SEMANA">Última Semana:</span> {{ 30002 | number }}</span>
+		            <span class="text-boxed-light">+ 1,12%</span>
+		        </div>
+		    </div>
+		</ms-widget-front>
+	</ms-widget>
+
+	<ms-widget flex="100"  flex-gt-xs="33" class="h-170" layout="column" layout-padding>
+		<ms-widget-front class="green-bg">
+		    <div layout="row" layout-align="space-between center">
+		        <div class="h4 font-weight-500 secondary-text text-uppercase" translate="GESTAO.MEUS-PAINEIS.PETICOES-VIEW.PROCESSOS_PETICIONADOS">Processos Peticionados</div>
+		    </div>
+
+		    <div class="white-fg" layout="column" layout-align="space-between" flex>
+		        <div class="md-display-2 font-weight-100" layout="row" layout-align="start center">
+		            <span>{{ 800 | number }}</span>
+		            <md-icon md-font-icon="icon-trending-up" class="s36 ml-16"></md-icon>
+		        </div>
+
+		        <div layout="row" layout-align="start center">
+		            <span translate="GESTAO.MEUS-PAINEIS.PETICOES-VIEW.VEJA_MAIS_DETALHES">Veja mais detalhes</span>
+		        </div>
+		    </div>
+		</ms-widget-front>
+	</ms-widget>
+
+	<ms-widget flex="100" flex-gt-xs="33" class="h-170" layout="column" layout-padding>
+		<ms-widget-front class="blue-grey-bg">
+		    <div layout="row" layout-align="space-between center">
+		        <div class="h4 font-weight-500 secondary-text text-uppercase" translate="GESTAO.MEUS-PAINEIS.PETICOES-VIEW.PROCESSOS_AUTUADOS">Processos Autuados</div>
+		    </div>
+
+		    <div class="white-fg" layout="column" layout-align="space-between" flex>
+		        <div class="md-display-2 font-weight-100" layout="row" layout-align="start center">
+		            <span>65%</span>
+		            <md-icon md-font-icon="icon-trending-down" class="s36 ml-16"></md-icon>
+		        </div>
+
+		        <div layout="row" layout-align="start center">
+		            <span><span translate="GESTAO.MEUS-PAINEIS.PETICOES-VIEW.ULTIMA_SEMANA">Última Semana:</span> 70%</span>
+		            <span class="text-boxed-light">- 5%</span>
+		        </div>
+		    </div>
+	 	</ms-widget-front>
+	</ms-widget>
+</div>
+
+<div class="widget-group" layout="row" flex="100" layout-wrap layout-align="space-between">
+	<ms-widget class="h-300" layout="column" flex="100" flex-gt-md="66" layout-padding>
+
+        <!-- Front -->
+        <ms-widget-front class="p-16 white-bg">
+            <div layout="row" layout-align="space-between">
+                <div class="mr-16">
+                    <div class="h4 weight-500 pb-8" translate="GESTAO.MEUS-PAINEIS.PETICOES-VIEW.ENTRADA_DE_PROCESSOS">Entrada de Processos</div>
+                    <div class="h1 secondary-text">{{1342 | number}}</div>
+                    <div class="pt-8" layout="row" layout-align="start center">
+                        <div>US: {{540 | number}}</div>
+                        <div class="text-boxed">+ 1,12%</div>
+                    </div>
+                </div>
+
+                <c3chart flex bindto-id="weekly-visitors">
+                    <chart-column ng-repeat="column in vm.widget18.chart.columns"
+                                  column-id="{{column.id}}"
+                                  column-name="{{column.name}}"
+                                  column-color="{{column.color}}"
+                                  column-values="{{column.values}}"
+                                  column-type="{{column.type}}"
+                    />
+                    <chart-legend show-legend="false"/>
+                    <chart-bar width="10"/>
+                    <chart-size chart-height="240"/>
+                </c3chart>
+            </div>
+        </ms-widget-front>
+        <!-- / Front -->
+
+    </ms-widget>
+</div>
