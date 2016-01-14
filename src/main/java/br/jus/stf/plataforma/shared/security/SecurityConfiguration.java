@@ -1,6 +1,10 @@
 package br.jus.stf.plataforma.shared.security;
 
+import javax.servlet.Filter;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
@@ -25,7 +30,7 @@ import br.jus.stf.plataforma.shared.web.CsrfHeaderFilter;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter { 
 	
 	@Autowired
 	private AuthenticationProvider authenticationProvider;
@@ -38,6 +43,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public SessionRegistry sessionRegistry() {
 		return new SessionRegistryImpl();
+	}
+	
+	@Bean
+	public FilterRegistrationBean securityFilterChain(
+			@Qualifier(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME) Filter securityFilter) {
+	    FilterRegistrationBean registration = new FilterRegistrationBean(securityFilter);
+	    registration.setOrder(Integer.MIN_VALUE);
+	    registration.setName(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME);
+	    return registration;
 	}
 	
   	@Override

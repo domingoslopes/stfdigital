@@ -13,6 +13,7 @@
 	</div>
 	<div class="container-fluid container-fixed-lg">
         <div class="row" ng-show="peticoes.length > 0">
+        	<div tarefa-actions processo="processoWorkflowIds" tarefa="tarefa" />
 			<div class="col-md-12">
 				<div class="card share" data-social="item" style="width: 100%">
 	                <div class="circle" data-toggle="tooltip" title=""
@@ -58,7 +59,7 @@
 		</div>
 		<br />
 		<p>
-			<button id="botaoFinalizarAssinaturaDevolucao" type="button" class="btn btn-info btn-s" ng-click="assinar()">
+			<button id="botaoFinalizarAssinaturaDevolucao" type="button" class="btn btn-info btn-s" ng-click="assinar()" ng-disabled="!tarefa.dono">
 				<span class="glyphicon glyphicon-asterisk"></span> Assinar
 			</button>
 		</p>

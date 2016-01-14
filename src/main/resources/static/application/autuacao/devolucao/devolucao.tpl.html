@@ -12,11 +12,12 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
+		<div tarefa-actions processo="devolucao.processoWorkflowId" tarefa="tarefa" />
         <div class="row">
             <div class="col-lg-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <form id="searchForm" ng-submit="devolucao.finalizar()" role="form">
+                        <form role="form">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group form-group-default">
@@ -32,9 +33,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <p>
-                                <input class="btn btn-complete btn-cons m-t-10" type="submit" id="botaoFinalizar" value="Finalizar">
-                            </p>
+				            <p>
+				                <action-executor id="devolver-peticao" resources="devolucao.recursos" fn-validate="devolucao.validar"
+					 				fn-result="devolucao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
+				            </p>
                         </form>
                     </div>
                 </div>

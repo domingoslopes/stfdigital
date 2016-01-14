@@ -57,7 +57,7 @@ public class PeticaoFactory {
 		
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
-		String usuarioCadastramento = SecurityContextUtil.getUsername();
+		String usuarioCadastramento = SecurityContextUtil.getUser().getUsername();
 		
 		if (orgaoId.isPresent()) {
 			Orgao orgao = peticaoRepository.findOneOrgao(orgaoId.get());
@@ -80,7 +80,7 @@ public class PeticaoFactory {
 	public PeticaoFisica criarPeticaoFisica(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex) {
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
-		String usuarioCadastramento = SecurityContextUtil.getUsername();
+		String usuarioCadastramento = SecurityContextUtil.getUser().getUsername();
 		
 		return new PeticaoFisica(id, numero, usuarioCadastramento, volumes, apensos, formaRecebimento, numeroSedex);
 	}
