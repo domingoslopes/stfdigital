@@ -140,10 +140,10 @@
 			            }
 				    },
 			        formatResult: function (item) { 
-			        	return ('<div>' + item.objeto[scope.configuracao.texto] + '</div>'); 
+			        	return ('<div>' + fetchFromObject(item.objeto, scope.configuracao.texto) + '</div>'); 
 			        },
 			        formatSelection: function (item) { 
-			        	return item.objeto[scope.configuracao.texto]; 
+			        	return fetchFromObject(item.objeto, scope.configuracao.texto); 
 			        },
 			        escapeMarkup: function (m) { 
 			        	return m;
@@ -162,4 +162,22 @@
 			}
 		};
 	}]);
+	
+	/**
+	 * Método para recuperar uma propriedade do objeto.
+	 * Obs: Necessário por causa dos tipos de retorno do mecanismo de pesquisa 
+	 */
+	var fetchFromObject = function(obj, prop) {
+
+	    if(typeof obj === 'undefined') {
+	        return false;
+	    }
+
+	    var _index = prop.indexOf('.')
+	    if(_index > -1) {
+	        return fetchFromObject(obj[prop.substring(0, _index)], prop.substr(_index + 1));
+	    }
+
+	    return obj[prop];
+	};
 })();

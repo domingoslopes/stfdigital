@@ -11,7 +11,6 @@ import br.jus.stf.plataforma.actions.ActionMappingInfoUnitTests;
 import br.jus.stf.plataforma.actions.ActionMappingRegistryUnitTests;
 import br.jus.stf.plataforma.actions.ActionServiceUnitTests;
 import br.jus.stf.plataforma.dashboards.interfaces.dto.DashboardDtoAssemblerUnitTests;
-import br.jus.stf.plataforma.dashboards.interfaces.facade.DashboardServiceFacadeUnitTests;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporarioUnitTests;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoUnitTests;
 import br.jus.stf.plataforma.identidades.domain.model.AssociadoUnitTests;
@@ -68,7 +67,6 @@ import br.jus.stf.shared.TarefaIdUnitTests;
 	ActionMappingInfoUnitTests.class,
 	ActionMappingRegistryUnitTests.class,
 	ActionServiceUnitTests.class,
-	DashboardServiceFacadeUnitTests.class,
 	DashboardDtoAssemblerUnitTests.class,
 	OrgaoUnitTests.class,
 	ProcessoUnitTests.class,

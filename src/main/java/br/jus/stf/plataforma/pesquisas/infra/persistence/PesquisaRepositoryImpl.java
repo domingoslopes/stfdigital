@@ -191,7 +191,6 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 			} catch (Exception e) {
 				throw e;
 			}
-			
 			return documentos;
 		}
 	}

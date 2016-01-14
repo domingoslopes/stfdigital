@@ -1,0 +1,15 @@
+<!-- START WIDGET -->
+<div class="auto-overflow widget-11-2-table">
+	<table class="table table-condensed table-hover">
+		<tbody>
+			<tr ng-repeat="peticao in peticoes">
+				<td class="font-montserrat fs-12 col-lg-12"><a
+					ui-sref="visualizar.peticao({peticaoId: peticao.id})">{{peticao.objeto.identificacao}}</a>
+				</td>
+				<td class="font-montserrat fs-12 col-lg-12">{{peticao.objeto.dataCadastramento | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+				<td class="font-montserrat fs-12 col-lg-12">{{peticao.processo}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- END WIDGET -->

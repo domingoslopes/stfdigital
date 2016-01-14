@@ -12,6 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
+		<div tarefa-actions processo="preautuacao.peticao.processoWorkflowId" tarefa="tarefa" />
         <form>
         	<div class="row">
         		<div class="col-md-6">
@@ -92,8 +93,7 @@
             </div>
             <p>
             	<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validar"
-	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" description="Finalizar"
-	 				show-description="true" verify-if-allowed="true" /> 
+	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" /> 
             </p>
         </form>
 	</div>
