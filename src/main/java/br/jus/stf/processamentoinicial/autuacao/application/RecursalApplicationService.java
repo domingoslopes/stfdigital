@@ -27,6 +27,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRecursal;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -73,7 +74,7 @@ public class RecursalApplicationService {
 	 * @return Id da petição eletrônica registrada.
 	 */
 	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas, Optional<Long> orgaoId) {
-		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId, null);
+		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId, TipoProcesso.RECURSAL);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
@@ -88,7 +89,7 @@ public class RecursalApplicationService {
 	 * @return Id da petição física registrada.
 	 */
 	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
-		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, null);
+		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, TipoProcesso.RECURSAL);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
@@ -106,16 +107,14 @@ public class RecursalApplicationService {
 	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
 		if (peticaoValida) {
 			tarefaAdapter.completarPreautuacao(peticao);
-			peticao.preautuar(classeSugerida, null);
+			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
 			peticaoApplicationEvent.peticaoPreautuada(peticao);
 			
 			processoRest.cadastrarRecursal((ProcessoRecursal)ProcessoFactory.criarProcesso(peticao.classeProcessual(), null, null, null, peticao.id(), peticao.tipoProcesso(), peticao.preferencias()));
-			
-			System.out.println("Para testar!");
 		} else {
 			peticao.devolver(motivoDevolucao);
-			peticao.preautuar(classeSugerida, null);
+			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
 			processoAdapter.devolver(peticao);
 			peticaoApplicationEvent.remessaInvalida(peticao);
