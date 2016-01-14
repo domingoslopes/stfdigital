@@ -12,7 +12,8 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-    	<form ng-submit="autuacao.finalizar()" novalidate>
+		<div tarefa-actions processo="autuacao.peticao.processoWorkflowId" tarefa="tarefa" />
+    	<form>
             <div class="row">
             	<div class="col-md-6">
                     <div class="card share" data-social="item" style="width: 100%">
@@ -151,10 +152,9 @@
 				</div>
             </div>
             <p>
-                <input id="botaoAutuar" class="btn btn-complete btn-cons m-l-15" type="submit" value="Autuar">
+                <action-executor id="autuar" resources="autuacao.recursos" fn-validate="autuacao.validar"
+	 				fn-result="autuacao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
             </p>
-	        </form>
-            </div>
-
+	   </form>
 	</div>
 </div>

@@ -23,10 +23,10 @@
 		}));
 		
 		it('Deveria ter carregado as dashlets do dashboard padrão', function() {
-			$httpBackend.expectGET(properties.apiUrl + '/dashboards/padrao').respond({'dashlets': ['dashlet-01', 'dashlet-02']});
+			$httpBackend.expectGET(properties.apiUrl + '/dashboards').respond([{dashlets: [{nome : 'dashlet-01'}, {nome : 'dashlet-02'}]}]);
 			
-			DashboardService.getDashlets().then(function(dashlets) {
-				expect(dashlets).toEqual(['dashlet-01', 'dashlet-02']);
+			DashboardService.getDashboards().then(function(dashboards) {
+				expect(dashboards[0].dashlets).toEqual([{nome : 'dashlet-01'}, {nome : 'dashlet-02'}]);
 			}, function() {
 				fail();
 			});
