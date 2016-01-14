@@ -54,7 +54,7 @@
 			    },
 			    {
 			    	id: 4,
-			    	nome: "preautuador",
+			    	nome: "preautuador-originario",
 			    	grupo: 2
 			    }
 			],
@@ -76,7 +76,7 @@
             {id: 1, nome: "peticionador"},
             {id: 2, nome: "recebedor"},
             {id: 3, nome: "representante"},
-            {id: 4, nome: "preatutuador", grupo: "SEJ"}
+            {id: 4, nome: "preatutuador-originario", grupo: "SEJ"}
   		];
   		
   		var gruposMock = [

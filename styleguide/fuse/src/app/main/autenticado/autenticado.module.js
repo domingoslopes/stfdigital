@@ -18,9 +18,6 @@
 	                    controller : 'MainController',
 	                    controllerAs: 'vm'
 	                },
-					'content@app.autenticado': {
-						templateUrl: 'app/main/autenticado/autenticado.html'
-					},
 					'toolbar@app.autenticado'   : {
                         templateUrl: 'app/toolbar/toolbar.html',
                         controller : 'ToolbarController',
