@@ -15,6 +15,7 @@ INSERT INTO plataforma.dashlet (seq_dashlet, nom_dashlet, dsc_dashlet) VALUES (p
 INSERT INTO plataforma.dashboard_dashlet (seq_dashboard, seq_dashlet) VALUES (1, 1);
 INSERT INTO plataforma.dashboard_dashlet (seq_dashboard, seq_dashlet) VALUES (2, 1);
 INSERT INTO plataforma.dashboard_dashlet (seq_dashboard, seq_dashlet) VALUES (3, 2);
+INSERT INTO plataforma.dashboard_dashlet (seq_dashboard, seq_dashlet) VALUES (3, 3);
 INSERT INTO plataforma.dashboard_dashlet (seq_dashboard, seq_dashlet) VALUES (4, 2);
 INSERT INTO plataforma.dashboard_dashlet (seq_dashboard, seq_dashlet) VALUES (4, 3);
 INSERT INTO plataforma.dashboard_dashlet (seq_dashboard, seq_dashlet) VALUES (5, 2);

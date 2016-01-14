@@ -25,6 +25,7 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.ProcessoWorkflow;
 
 
 /**
@@ -141,6 +142,18 @@ public class PeticaoServiceFacade {
 	}
 	
 	/**
+	 * Consulta uma lista de petições
+	 * 
+	 * @param peticaoIds
+	 * @return dto
+	 */
+	public List<PeticaoDto> consultar(List<Long> peticaoIds){
+		return Optional.ofNullable(peticaoIds)
+				.map(ids -> ids.stream().map(id -> consultar(id)).collect(Collectors.toList()))
+				.orElse(null);
+	}
+	
+	/**
 	 * Retorna os possíveis status que podem ser atribuídos a uma petição.
 	 * 
 	 * @return Lista de status.
@@ -155,6 +168,21 @@ public class PeticaoServiceFacade {
 		
 		return statusPeticao.stream().sorted((s1, s2) -> s1.getNome().compareTo(s2.getNome())).collect(Collectors.toList());
 	}
+	
+	/**
+	 * Retorna os processo de workflow associado a uma petição
+	 * 
+	 * @param peticaoId
+	 * @return
+	 */
+	public Long consultarProcessoWorkflow(Long peticaoId) {
+		Peticao peticao = carregarPeticao(peticaoId);
+		Optional<ProcessoWorkflow> processoWorkflow = peticao.processosWorkflow().stream().findFirst();
+		if (processoWorkflow.isPresent()) {
+			return processoWorkflow.get().id().toLong();
+		}
+		return null;
+	}
 
 	/**
 	 * Carrega um petição pelo id, ou lança um exceção se não existir
@@ -168,4 +196,5 @@ public class PeticaoServiceFacade {
 		return (T) Optional.ofNullable(peticaoRepository.findOne(id))
 					.orElseThrow(IllegalArgumentException::new);
 	}
+	
 }

@@ -12,7 +12,8 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-        <form name="taskForm" ng-submit="finalizar()" novalidate>
+		<div tarefa-actions processo="processoWorkflowId" tarefa="tarefa" />
+        <form name="taskForm" novalidate>
 			<div class="row">
 				<div class="col-md-6">
 					<div class="card share" data-social="item" style="width: 100%">
@@ -141,9 +142,7 @@
 			</div>
             <p>
             	<action-executor id="distribuir-processo" resources="recursos" fn-validate="validar"
-	 				fn-result="finalizar" btn-class="btn btn-complete btn-cons m-t-10" description="Distribuir"
-	 				show-description="true" verify-if-allowed="true" /> 
-<!--                 <input id="finalizar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Distribuir"> -->
+	 				fn-result="finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
             </p>
         </form>
 	</div>
