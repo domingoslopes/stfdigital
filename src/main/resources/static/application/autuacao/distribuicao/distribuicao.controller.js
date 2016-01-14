@@ -9,28 +9,18 @@
 
 	angular.plataforma.controller('DistribuicaoController', function (data, $scope, $stateParams, messages, properties, $state, PeticaoService, PesquisaService) {
 		
-		$scope.idPeticao = $stateParams.resources[0];
-		
+		var resource = $stateParams.resources[0];
+		$scope.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
 		$scope.ministrosCandidados = data.data;
-		
 		$scope.relator = '';
-		
 		$scope.partes = [];
-		
 		$scope.processosParte = [];
-		
 		$scope.nomeParteRelacionada = '';
-		
 		$scope.tiposDistribuicao = [{id: 'COMUM', nome: 'Comum'}, {id: 'PREVENCAO', nome: 'Prevenção Relator/Sucessor'}];
-		
 		$scope.ministrosImpedidos = [];
-		
 		$scope.processo;
-		
 		$scope.tipoDistribuicao;
-		
 		$scope.processosPreventos = [];
-		
 		$scope.justificativa = '';
 		
 		$scope.$watch('processo', function(novo){
@@ -40,18 +30,13 @@
 		});
 		
 		$scope.exibePainelMinistroImpedimento = false;
-		
 		$scope.exibeJustificativa = false;
-		
 		$scope.exibePesquisaProcessoPrevencao = false;
 
 		var partesPeticao = {};
-		
 		var peticao;
-
 		var commandPartesPeticao;
-		
-		$scope.recursos = [{}];
+		$scope.recursos = [];
 		
 		$scope.pesquisaProcesso = {
 				texto : 'identificacao',
@@ -84,7 +69,11 @@
 			$scope.processosPreventos.splice($index,1);
 		}
 		
-		PeticaoService.consultarPartes($scope.idPeticao).success(function(partesP) {
+		PeticaoService.consultarProcessoWorkflow($scope.peticaoId).then(function(data) {
+			$scope.processoWorkflowId = data;
+		});
+		
+		PeticaoService.consultarPartes($scope.peticaoId).success(function(partesP) {
 			partesPeticao = partesP;
 			
 			var idsPartes = partesPeticao.PoloAtivo.concat(partesPeticao.PoloPassivo);
@@ -135,40 +124,40 @@
 		$scope.validar = function(){
 			var errors = null;
 			
+			if (!angular.isString($scope.tipoDistribuicao)) {
+				errors = 'Selecione um tipo de distribuição.<br/>';
+			}
+			
 			//Caso o usuário selecione o tipo de distribuição "Comum", a lista de ministros candidatos não
 			//deve estar vazia
-			if ($scope.tipoDistribuicao == 'COMUM'){
-				if($scope.ministrosCandidados.length == 0){
-					errors = 'A lista deve possuir ao menos um Ministro para sorteio.';
-				}
+			if ($scope.tipoDistribuicao == 'COMUM' && $scope.ministrosCandidados.length == 0) {
+				errors += 'A lista deve possuir ao menos um Ministro para sorteio.<br/>';
 			}
 			
 			//Caso o usuário selecione o tipo de distribuição "Prevenção", será necessário existir pelo menos
 			// um processo adicionado
-			if ($scope.tipoDistribuicao == 'PREVENCAO'){
-				if ($scope.processosPreventos.length == 0){
-					errors += 'Você precisa adicionar ao menos um processo na lista de preventos.';
-				}
-			}
-			
-			//A justificativa deve ser obrigatória quando o tipo de distribuição for 'PREVENCAO'
-			if ($scope.justificativa.length == 0 && $scope.tipoDistribuicao == 'PREVENCAO' ){
-				errors += 'Você precisa inserir uma justificativa.';
-			}
-			
-			//Se o tipo de distribuição for 'PREVENCAO' a lista de ministros candidatos e impedidos
-			//deverão estar vazias já que o relator do processo prevento será o relator da petição
-			if ($scope.tipoDistribuicao == 'PREVENCAO'){
+			if ($scope.tipoDistribuicao == 'PREVENCAO') {
+				//Se o tipo de distribuição for 'PREVENCAO' a lista de ministros candidatos e impedidos
+				//deverão estar vazias já que o relator do processo prevento será o relator da petição
 				$scope.ministrosCandidados = [];
 				$scope.ministrosImpedidos = [];
+				
+				if ($scope.processosPreventos.length == 0) {
+					errors += 'Você precisa adicionar ao menos um processo na lista de preventos.<br/>';
+				}
+				
+				//A justificativa deve ser obrigatória quando o tipo de distribuição for 'PREVENCAO'
+				if ($scope.justificativa.length == 0) {
+					errors += 'Você precisa inserir uma justificativa.<br/>';
+				}
 			}
 			
 			if (errors) {
 				messages.error(errors);
 				return false;
 			}
-			$scope.recursos[0] = new DistribuirCommand($scope.tipoDistribuicao, $scope.idPeticao, $scope.justificativa, 
-					$scope.ministrosCandidados, $scope.ministrosImpedidos, $scope.processosPreventos);
+			$scope.recursos.push(new DistribuirCommand($scope.tipoDistribuicao, $scope.peticaoId, $scope.justificativa, 
+					$scope.ministrosCandidados, $scope.ministrosImpedidos, $scope.processosPreventos));
 			return true;
 			
 		};
@@ -179,14 +168,14 @@
 		};
 		
 		
-    	function DistribuirCommand(idTipoDistribuicao, idPeticao, justificativa, ministrosCandidatos, 
+    	function DistribuirCommand(idTipoDistribuicao, peticaoId, justificativa, ministrosCandidatos, 
     			ministrosImpedidos, processosPreventos){
     		var dto = {};
     		dto.ministrosCandidatos = [];
     		dto.ministrosImpedidos = [];
     		dto.processosPreventos = [];
 			dto.tipoDistribuicao = idTipoDistribuicao;
-			dto.peticaoId = parseInt(idPeticao);
+			dto.peticaoId = parseInt(peticaoId);
 			dto.justificativa = justificativa;
 			
 			if (ministrosCandidatos.length > 0){

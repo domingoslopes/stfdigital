@@ -19,7 +19,7 @@
 		}));
 		
 		it('Deveria ter retornado um layout tabular de duas colunas corretamente', function() {
-			var layout = DashboardLayoutManager.defaultLayout(["dashlet-01", "dashlet-02", "dashlet-03"]);
+			var layout = DashboardLayoutManager.defaultLayout([{nome : "dashlet-01"}, {nome : "dashlet-02"}, {nome : "dashlet-03"}]);
 			
 			expect(layout.linhas.length).toBe(2);
 			expect(layout.linhas[0].colunas.length).toBe(2);

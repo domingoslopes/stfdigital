@@ -1,7 +1,6 @@
 package br.jus.stf.plataforma.dashboards.domain.model;
 
-
-
+import java.util.List;
 
 /**
  * Repositório para Dashboard.
@@ -11,6 +10,10 @@ package br.jus.stf.plataforma.dashboards.domain.model;
  */
 public interface DashboardRepository {
 
-	public Dashboard consultarPadrao();
+	public List<Dashboard> listar();
+	
+	public Dashboard findOne(DashboardId id);
+	
+	public DashboardId proximoId();
 
 }

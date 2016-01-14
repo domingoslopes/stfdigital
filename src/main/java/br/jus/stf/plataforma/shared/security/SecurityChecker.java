@@ -41,6 +41,6 @@ public class SecurityChecker {
 	
 	private Set<GrantedAuthority> neededAuthorities(Secured targetObject) {
 		return acessosRestAdapter
-				.carregarPermissoesRecurso(targetObject.id(), targetObject.type());
+				.carregarPermissoesRecurso(targetObject.resourceId(), targetObject.type());
 	}
 }
