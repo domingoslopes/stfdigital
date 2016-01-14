@@ -33,5 +33,10 @@ public interface TeseRepository {
 	 * @param tese
 	 */
 	public <T extends Tese> T save(Tese tese);
+	
+	/**
+	 * @return
+	 */
+	public TeseId nextId();
 
 }
