@@ -78,9 +78,9 @@ public class PeticaoServiceFacade {
 	 * @param numeroSedex Nº do Sedex, caso a forma de recebimento seja Sedex.
 	 * @return Id da petição gerado automaticamente.
 	 */
-	public Long registrar(Integer volumes, Integer apensos, String formaRecebimento, String numeroSedex) {
+	public Long registrar(Integer volumes, Integer apensos, String formaRecebimento, String numeroSedex, String tipoProcesso) {
 		FormaRecebimento forma = FormaRecebimento.valueOf(formaRecebimento.toUpperCase());
-		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex);
+		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex, tipoProcesso);
 		return peticao.id().toLong();
 	}
 	
