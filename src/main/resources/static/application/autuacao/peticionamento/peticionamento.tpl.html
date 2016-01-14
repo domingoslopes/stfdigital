@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-		<form id="taskForm" ng-submit="finalizar()" novalidate>
+		<form id="taskForm" novalidate>
 			<div class="row" ui-view></div>
 			<div class="row">
 				<div class="col-md-6">
@@ -138,9 +138,9 @@
              	</div>
             </div>
 			<br />
-
 			<p>
-				<input id="botaoPeticionar" class="btn btn-complete btn-cons m-t-10" type="submit" value="Enviar">
+				<action-executor id="{{child.actionId}}" resources="recursos" fn-validate="validar"
+	 				fn-result="finalizar" btn-class="btn btn-complete btn-cons m-t-10" description="Peticionar" /> 
 			</p>
 		</form>
 	</div>

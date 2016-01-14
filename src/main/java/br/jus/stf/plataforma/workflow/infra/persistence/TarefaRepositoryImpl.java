@@ -41,17 +41,19 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 	
 	@Override
 	public List<Tarefa> listarMinhas() {
-		UsuarioId usuarioId = userDetails().getUserId();
+		UsuarioId usuarioId = userDetails().getUsuarioId();
 		return listarPor(usuarioId);
 	}
 
 	@Override
 	public List<Tarefa> listarPorMeusPapeis() {
-		List<String> papeis = userDetails().getRoles();
+		List<String> papeis = userDetails().getPapeis();
 		StringBuilder sql = new StringBuilder("SELECT task.* FROM ACT_RU_TASK task");
 		sql.append(" JOIN ACT_RU_IDENTITYLINK link ON task.ID_ = link.TASK_ID_");
 		sql.append(" WHERE link.GROUP_ID_ IN(");
-		IntStream.range(0, papeis.size()).mapToObj(i -> "'" + papeis.get(i) + "'" + (i < papeis.size()-1 ? "," : ")")).forEach(sql::append);
+		IntStream.range(0, papeis.size())
+				 .mapToObj(i -> "'" + papeis.get(i) + "'" + (i < papeis.size()-1 ? "," : ")"))
+				 .forEach(sql::append);
 
 		return taskService.createNativeTaskQuery().sql(sql.toString()).list()
 				.stream()
@@ -89,7 +91,7 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 	}
 	
 	@Override
-	public Tarefa consultarPorProcesso(ProcessoWorkflowId id) {
+	public Tarefa consultarPor(ProcessoWorkflowId id) {
 		return Optional.ofNullable(
 					taskService.createTaskQuery().processInstanceId(id.toString()).includeProcessVariables().singleResult())
 				.map(task -> newTarefa(task, task.getProcessVariables()))
@@ -137,7 +139,7 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 		UsuarioId id = new UsuarioId(Long.valueOf(usuarioId));
 		Optional<UserDetails> userDetails = acessosRestAdapter.recuperarUsuario(id);
 		if (userDetails.isPresent()) {
-			String nome = userDetails.get().getName();
+			String nome = userDetails.get().getNome();
 			return new Responsavel(id, nome);
 		}
 		return null;
@@ -155,7 +157,7 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 	 * @return se o usuário é o responsável pela tarefa
 	 */
 	private boolean isUserAssignee(Tarefa tarefa) {
-		return tarefa.reponsavel().usuarioId().sameValueAs(userDetails().getUserId());
+		return tarefa.reponsavel().usuarioId().sameValueAs(userDetails().getUsuarioId());
 	}
 	
 }

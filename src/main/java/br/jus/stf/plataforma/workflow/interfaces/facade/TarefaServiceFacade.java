@@ -61,8 +61,14 @@ public class TarefaServiceFacade {
 	
 	public TarefaDto consultarPorProcesso(Long id) {
 		ProcessoWorkflowId processoId = new ProcessoWorkflowId(id);
-		return Optional.ofNullable(tarefaRepository.consultarPorProcesso(processoId))
+		return Optional.ofNullable(tarefaRepository.consultarPor(processoId))
 				.map(tarefaDtoAssembler::toDto)
+				.orElse(null);
+	}
+
+	public List<TarefaDto> consultarPorProcessos(List<Long> ids) {
+		return Optional.ofNullable(ids)
+				.map(pids -> pids.stream().map(id -> consultarPorProcesso(id)).collect(Collectors.toList()))
 				.orElse(null);
 	}
 

@@ -61,11 +61,7 @@
 		}).state('action.autuacao', { // estado abstrato para agrupar as ações do contexto
 			abstract : true,
 			views: {
-				'modal@root' : {},
-				'content@root': {
-					templateUrl: 'application/plataforma/workflow/tarefa/template/default.tpl.html',
-					controller: 'TemplateController'
-				}
+				'modal@root' : {}
 			}
 		}).state('registrar-peticao', {
 			parent: 'action.autuacao',

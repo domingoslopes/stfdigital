@@ -14,26 +14,30 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Classe responsável por transportar os dados de usuário do back-end para o front-end.")
 public class UsuarioDto {
 
-	@ApiModelProperty(value="Id do usuário.")
+	@ApiModelProperty("Id do usuário.")
 	private Long id;
 	
-	@ApiModelProperty(value="Login do usuário.")
+	@ApiModelProperty("Login do usuário.")
 	private String login;
 	
-	@ApiModelProperty(value="Nome do usuário.")
+	@ApiModelProperty("Nome do usuário.")
 	private String nome;
 	
-	@ApiModelProperty(value="Setor de lotação do usuário.")
+	@ApiModelProperty("Identificador da pessoa.")
+	private Long pessoaId;
+	
+	@ApiModelProperty("Setor de lotação do usuário.")
 	private SetorDto setorLotacao;
 	
 	public UsuarioDto() {
 		
 	}
 	
-	public UsuarioDto(Long id, String login, String nome, SetorDto setorLotacao) {
+	public UsuarioDto(Long id, String login, String nome, Long pessoaId, SetorDto setorLotacao) {
 		this.id = id;
 		this.login = login;
 		this.nome = nome;
+		this.pessoaId = pessoaId;
 		this.setorLotacao = setorLotacao;
 	}
 	
@@ -59,6 +63,14 @@ public class UsuarioDto {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public Long getPessoaId() {
+		return this.pessoaId;
+	}
+
+	public void setPessoaId(Long pessoaId) {
+		this.pessoaId = pessoaId;
 	}
 
 	public SetorDto getSetorLotacao() {

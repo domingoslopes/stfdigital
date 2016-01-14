@@ -18,6 +18,17 @@
 			},
 			listarPorMeusPapeis : function() {
 				return $http.get(properties.apiUrl + '/workflow/tarefas/papeis');
+			},
+			consultarPorProcesso : function(processoId) {
+				return $http.get(properties.apiUrl + '/workflow/tarefas/processos/' + processoId).then(function(response) {
+					return response.data;
+				});
+			},
+			consultarPorProcessos : function(processosId) {
+				var params = {ids : processosId };
+				return $http.get(properties.apiUrl + '/workflow/tarefas/processos', { params : params }).then(function(response) {
+					return response.data;
+				});
 			}
 		};
 	});
