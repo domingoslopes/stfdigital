@@ -30,7 +30,7 @@ public class NovaPeticaoActionsResource {
 	
 	@ActionMapping(id = "registrar-peticao-fisica", name = "Petição Física")
 	public Long registrar(RegistrarPeticaoFisicaCommand command) {		
-    	return peticaoServiceFacade.registrar(command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex());
+    	return peticaoServiceFacade.registrar(command.getQuantidadeVolumes(), command.getQuantidadeApensos(), command.getFormaRecebimento(), command.getNumeroSedex(), command.getTipoProcesso());
 	}
 	
 }
