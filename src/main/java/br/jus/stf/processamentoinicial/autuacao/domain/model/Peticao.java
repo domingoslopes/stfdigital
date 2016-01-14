@@ -13,8 +13,10 @@ import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.EnumType;
@@ -103,10 +105,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@Enumerated(EnumType.STRING)
 	private TipoProcesso tipoProcesso;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "PETICAO_PREFERENCIA", schema = "AUTUACAO",
-		joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "COD_PREFERENCIA", nullable = false))
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PETICAO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
 	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
 		
 	@Transient

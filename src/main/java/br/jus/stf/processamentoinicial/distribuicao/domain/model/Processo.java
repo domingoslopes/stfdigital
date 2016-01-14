@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.EnumType;
@@ -20,7 +22,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
@@ -93,10 +94,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@Transient
 	private String identificacao;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "PROCESSO_PREFERENCIA", schema = "AUTUACAO",
-		joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "COD_PREFERENCIA", nullable = false))
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PROCESSO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
 	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
 	
 	Processo() {
