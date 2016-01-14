@@ -17,7 +17,7 @@ public class IniciarProcessoCommand {
 	private String mensagem;
 	
 	@NotNull
-	private Long informacao;
+	private String informacao;
 	
 	@NotNull
 	private String tipoInformacao;
@@ -42,11 +42,11 @@ public class IniciarProcessoCommand {
 		return this.mensagem;
 	}
 	
-	public void setInformacao(Long informacao) {
+	public void setInformacao(String informacao) {
 		this.informacao = informacao;
 	}
 	
-	public Long getInformacao() {
+	public String getInformacao() {
 		return informacao;
 	}
 	

@@ -15,7 +15,7 @@
 		registro.qtdApensos = "";
 		registro.qtdVolumes = "";
 		registro.numSedex = "";
-		registro.recursos = [{}];
+		registro.recursos = [];
 		registro.tipoProcesso = '';
 		
 		registro.tipoRecebimentos = [{ id : 'BALCAO', nome : "Balcão" }, { id : 'SEDEX', nome : "Sedex" }, { id : 'MALOTE', nome : "Malote" }, { id : 'FAX', nome : "Fax" }, { id : 'EMAIL', nome : "E-mail" }];

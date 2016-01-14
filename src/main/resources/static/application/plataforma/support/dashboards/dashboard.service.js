@@ -17,16 +17,16 @@
 	angular.plataforma.service('DashboardService', ['$http', '$q', '$window', 'properties', function($http, $q, $window, properties) {
 
 		/**
-		 * @function getDashlets
+		 * @function getDashboards
 		 * @memberOf DashboardService
 		 * 
-		 * @description Recupera os dashlets do papel atual.
+		 * @description Recupera os dashboards do usuário.
 		 * 
 		 */
-		this.getDashlets = function() {
+		this.getDashboards = function() {
 			var deferred = $q.defer();
-			$http.get(properties.apiUrl + '/dashboards/padrao').success(function(dashboardDto) {
-				deferred.resolve(dashboardDto.dashlets);
+			$http.get(properties.apiUrl + '/dashboards').success(function(dashboards) {
+				deferred.resolve(dashboards);
 			}).error(function() {
 				deferred.reject();
 			});
