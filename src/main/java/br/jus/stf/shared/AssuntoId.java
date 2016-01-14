@@ -19,25 +19,21 @@ public class AssuntoId implements ValueObject<AssuntoId>{
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "COD_ASSUNTO", nullable = false)
-	private Long codigo;
+	private String codigo;
 
 	AssuntoId() {
 
 	}
 
-	public AssuntoId(final Long codigo){
-		Validate.notNull(codigo, "assuntoId.codigo.required");
+	public AssuntoId(final String codigo){
+		Validate.notBlank(codigo, "assuntoId.codigo.required");
 		
 		this.codigo = codigo;
 	}
 
-	public Long toLong(){
-		return codigo;
-	}
-	
 	@Override
 	public String toString(){
-		return codigo.toString();
+		return codigo;
 	}
 
 	@Override

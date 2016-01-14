@@ -18,31 +18,31 @@ public class TeseId implements ValueObject<TeseId>{
 
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "COD_TESE", nullable = false)
-	private Long codigo;
+	@Column(name = "SEQ_TESE", nullable = false)
+	private Long sequencia;
 
 	TeseId() {
 
 	}
 
-	public TeseId(final Long codigo){
-		Validate.notNull(codigo, "teseId.codigo.required");
+	public TeseId(final Long sequencia){
+		Validate.notNull(sequencia, "teseId.sequencia.required");
 		
-		this.codigo = codigo;
+		this.sequencia = sequencia;
 	}
 
 	public Long toLong(){
-		return codigo;
+		return sequencia;
 	}
 	
 	@Override
 	public String toString(){
-		return codigo.toString();
+		return sequencia.toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(codigo).toHashCode();
+		return new HashCodeBuilder().append(sequencia).toHashCode();
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class TeseId implements ValueObject<TeseId>{
 
 	@Override
 	public boolean sameValueAs(final TeseId other){
-		return other != null && this.codigo.equals(other.codigo);
+		return other != null && sequencia.equals(other.sequencia);
 	}
 	
 }
