@@ -30,13 +30,13 @@
                     },
                     'autuacoes@app.gestao.meus-paineis': {
                         templateUrl: 'app/main/gestao/meus-paineis/autuacoes/autuacoes.html',
-                        //controller: 'GestaoMeusPaineisAutuacoesController',
-                        //controllerAs: 'vm'
+                        controller: 'GestaoMeusPaineisAutuacoesController',
+                        controllerAs: 'vm'
                     },
                     'produtividade-do-time@app.gestao.meus-paineis': {
                         templateUrl: 'app/main/gestao/meus-paineis/produtividade-do-time/produtividade-do-time.html',
-                        //controller: 'GestaoMeusPaineisProdutividadeDoTimeController',
-                        //controllerAs: 'vm'
+                        controller: 'GestaoMeusPaineisProdutividadeDoTimeController',
+                        controllerAs: 'vm'
                     }
 				}
 			})
