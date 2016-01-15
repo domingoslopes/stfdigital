@@ -14,6 +14,12 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 
+/**
+ * Aspecto para monitoramento do armazenamento de documentos.
+ * 
+ * @author Tomas.Godoi
+ *
+ */
 @Aspect
 @Component
 public class DocumentoMonitoringAspect {
