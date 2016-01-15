@@ -93,7 +93,7 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	private String identificacao;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PROCESSO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
+	@CollectionTable(name = "PROCESSO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
 	
 	Processo() {
@@ -144,6 +144,7 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		this.relator = relator;
 		this.partes.addAll(partes);
 		this.pecas.addAll(pecas);
+		this.identificacao = montarIdentificacao();
 	}
 	
 	public abstract TipoProcesso tipoProcesso();

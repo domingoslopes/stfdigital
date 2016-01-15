@@ -10,9 +10,14 @@
     function runBlock($rootScope, $timeout, $state)
     {
         // Activate loading indicator
-        var stateChangeStartEvent = $rootScope.$on('$stateChangeStart', function ()
+        var stateChangeStartEvent = $rootScope.$on('$stateChangeStart', function (event, toState, toParams)
         {
             $rootScope.loadingProgress = true;
+
+            if (toState.redirectTo) {
+                event.preventDefault();
+                $state.go(toState.redirectTo, toParams)
+            }
         });
 
         // De-activate loading indicator

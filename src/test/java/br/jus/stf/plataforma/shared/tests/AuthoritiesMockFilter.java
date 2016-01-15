@@ -44,10 +44,11 @@ public class AuthoritiesMockFilter extends OncePerRequestFilter {
 		Optional<String> login = Optional.ofNullable(request.getHeader("login"));
 		
 		if (login.isPresent()) {
-			Set<GrantedAuthority> authorities = acessoAdapter.carregarPermissoesUsuario(login.get());
+			Set<GrantedAuthority> permissoes = acessoAdapter.carregarPermissoesUsuario(login.get());
 			UserDetails userDetails = new UserDetails(new UsuarioId(1L), new PessoaId(1L), login.get());
-			UserImpl principal = new UserImpl(login.get(), "N/A", userDetails, authorities);
-			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(login.get(), principal, authorities);
+			userDetails.getPapeis().addAll(acessoAdapter.carregarPapeisUsuario(login.get()));
+			UserImpl principal = new UserImpl(login.get(), "N/A", userDetails, permissoes);
+			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(login.get(), principal, permissoes);
 	
 	        SecurityContextHolder.setContext(SecurityContextHolder.createEmptyContext());
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
