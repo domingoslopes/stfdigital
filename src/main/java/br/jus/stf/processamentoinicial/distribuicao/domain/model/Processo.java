@@ -124,6 +124,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 				atribuirPreferencias(prefs);
 			}
 		});
+		
+		this.identificacao = montarIdentificacao();
 	}
 
 	/**

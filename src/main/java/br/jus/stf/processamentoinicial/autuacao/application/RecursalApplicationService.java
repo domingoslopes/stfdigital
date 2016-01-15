@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.ProcessoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.MotivoInaptidaoProcesso;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ParteProcesso;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRecursal;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.shared.AssuntoId;
 
 /**
@@ -51,6 +53,28 @@ public class RecursalApplicationService {
 	public void autuar(ProcessoRecursal processo, Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
 		// TODO: Verificar possíveis chamadas a eventos e ao workflow.
 		processo.autuar(assuntos, poloAtivo, poloPassivo);
+	}
+	
+	/**
+	 * Realiza análise de pressupostos formais para processo recursal.
+	 * 
+	 * @param processo Processo recursal a ser autuado
+	 * @param classificacao Classificação (APTO/INAPTO)
+	 * @param motivosInaptidao Lista de motivos de inaptidão do processo
+	 * @param observacao Observação da análise
+	 */
+	public void analisarPressupostosFormais(ProcessoRecursal processo, Classificacao classificacao, Set<MotivoInaptidaoProcesso> motivosInaptidao, String observacao) {
+		// TODO: Verificar possíveis chamadas a eventos e ao workflow.
+		switch (classificacao) {
+			case APTO:
+				processo.analisar(observacao);
+				break;
+			case INAPTO:
+				processo.analisarInapto(motivosInaptidao, observacao);
+				break;
+			default:
+				throw new IllegalArgumentException("Classificacao inexistente: " + classificacao);
+		}
 	}
 	
 }
