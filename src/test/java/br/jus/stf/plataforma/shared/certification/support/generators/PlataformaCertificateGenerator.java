@@ -34,7 +34,7 @@ public class PlataformaCertificateGenerator {
 	 */
 	public static void main(String[] args) throws Exception {
 		if (args.length != 5) {
-			System.err.println("Informe exatamente três parâmetros: <pki-name> <person-name> <person-cpf>");
+			System.err.println("Informe exatamente cinco parâmetros: <pki-name> <person-name> <person-cpf> <person-email> <validity-years>");
 			System.exit(1);
 		}
 		String pkiName = args[0];
