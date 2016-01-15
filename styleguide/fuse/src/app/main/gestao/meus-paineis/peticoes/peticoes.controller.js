@@ -18,9 +18,6 @@
         },
 
         methods: {
-            foo: function() {
-                console.log("bar");
-            }
         }
     })
 })();
