@@ -8,15 +8,16 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.ClasseId;
@@ -43,10 +44,15 @@ public class ProcessoRecursal extends Processo {
 	@CollectionTable(name = "PROCESSO_TESE", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<TeseId> teses = new HashSet<TeseId>(0);
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "PROCESSO_MOTIVO_INAPTIDAO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "COD_MOTIVO_INAPTIDAO", nullable = false))
-	private Set<MotivoInaptidao> motivosInaptidao = new HashSet<MotivoInaptidao>(0);
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = MotivoInaptidaoProcesso.class)
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	private Set<MotivoInaptidaoProcesso> motivosInaptidao = new HashSet<MotivoInaptidaoProcesso>(0);
+	
+	@Column(name = "DSC_ANALISE")
+	private String observacaoAnalise;
+	
+	@Column(name = "TIP_CLASSIFICACAO")
+	private Classificacao classificacao;
 
 	ProcessoRecursal() {
 
@@ -108,7 +114,7 @@ public class ProcessoRecursal extends Processo {
 		}
 	}
 	
-	public Set<MotivoInaptidao> motivosInaptidao(){
+	public Set<MotivoInaptidaoProcesso> motivosInaptidao(){
 		return Collections.unmodifiableSet(motivosInaptidao);
 	}
 	
@@ -122,10 +128,15 @@ public class ProcessoRecursal extends Processo {
 		poloPassivo.forEach(parte -> super.adicionarParte(parte));
 	}
 	
-	public void analisarPressupostosFormais(boolean processoApto, Set<MotivoInaptidao> motivosInaptidao, String observacaoAnalise) {
-		
+	public void analisar(String observacaoAnalise) {
+		this.observacaoAnalise = observacaoAnalise;
 	}
 	
-	
+	public void analisarInapto(Set<MotivoInaptidaoProcesso> motivosInaptidao, String observacaoAnalise) {
+		Validate.notEmpty(motivosInaptidao, "processoRecursal.motivosInaptidao.required");
+		
+		this.motivosInaptidao.addAll(motivosInaptidao);
+		analisar(observacaoAnalise);
+	}
 
 }
