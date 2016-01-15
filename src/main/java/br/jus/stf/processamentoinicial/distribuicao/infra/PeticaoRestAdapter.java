@@ -1,7 +1,9 @@
 package br.jus.stf.processamentoinicial.distribuicao.infra;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,9 +66,11 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 	}
 	
 	private Set<PreferenciaId> carregarPreferencias(List<PreferenciaDto> preferenciasDto) {
-		Set<PreferenciaId> preferencias = preferenciasDto.stream()
-				.map(preferenciaDto -> new PreferenciaId(preferenciaDto.getCodigo()))
-				.collect(Collectors.toSet());
+		Set<PreferenciaId> preferencias = Optional.ofNullable(preferenciasDto)
+				.map(p -> p.stream()
+						.map(preferenciaDto -> new PreferenciaId(preferenciaDto.getCodigo()))
+						.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
 		
 		return preferencias;
 	}
