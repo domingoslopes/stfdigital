@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;

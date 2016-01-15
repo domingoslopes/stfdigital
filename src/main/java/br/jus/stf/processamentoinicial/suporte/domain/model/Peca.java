@@ -1,4 +1,4 @@
-package br.jus.stf.processamentoinicial.autuacao.domain.model;
+package br.jus.stf.processamentoinicial.suporte.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -28,7 +28,7 @@ public abstract class Peca implements ValueObject<Peca> {
 	@Column(name = "DSC_PECA", nullable = false)
 	private String descricao;
 	
-	Peca() {
+	protected Peca() {
 
 	}
 	
