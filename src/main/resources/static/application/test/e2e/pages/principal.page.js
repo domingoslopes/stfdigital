@@ -54,10 +54,12 @@
 		};
 		
 		this.tarefas = function () {
+			browser.waitForAngular();
 			return element.all(by.repeater('tarefa in tarefas'));
 		};
 		
 		this.peticoes = function () {
+			browser.waitForAngular();
 			return element.all(by.repeater('peticao in peticoes'));
 		};
 		
