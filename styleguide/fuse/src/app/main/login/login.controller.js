@@ -12,7 +12,7 @@
 		methods: {
 			entrar: function() {
 				console.log("TODO: Fazer login. Detalhes do usuário: ", this.form);
-				this.$state.go('app.gestao.meus-paineis.principal');
+				this.$state.go('app.gestao.meus-paineis');
 			}
 		}
 	});
