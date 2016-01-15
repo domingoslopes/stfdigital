@@ -3,6 +3,7 @@ package br.jus.stf.processamentoinicial.autuacao.domain.model;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.stereotype.ValueObject;
 

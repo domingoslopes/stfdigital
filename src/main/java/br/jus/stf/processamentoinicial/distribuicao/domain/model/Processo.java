@@ -31,11 +31,9 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
@@ -304,6 +302,12 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	private String montarIdentificacao() {
 		return new StringBuilder()
 			.append(classe.toString()).append(" ").append(numero).toString();
+	}
+	
+	public boolean isCriminalEleitoral() {
+		// TODO: Melhorar forma de implementação dessa verificação.
+		return preferencias.contains(new PreferenciaId(2L)) ||
+				preferencias.contains(new PreferenciaId(3L));
 	}
 
 }
