@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.interfaces.facade;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -78,23 +79,19 @@ public class ProcessoServiceFacade {
 	}
 	
 	private Set<MinistroId> carregarMinistros(Set<Long> listaMinistros) {
-		if (!Optional.ofNullable(listaMinistros).isPresent()) {
-			return null;
-		}
-		
-		return listaMinistros.stream()
-				.map(id -> new MinistroId(id))
-				.collect(Collectors.toSet());
+		return Optional.ofNullable(listaMinistros)
+				.map(lista -> lista.stream()
+					.map(id -> new MinistroId(id))
+					.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
 	}
 	
 	private Set<Processo> carregarProcessos(Set<Long> listaProcessos) {
-		if (!Optional.ofNullable(listaProcessos).isPresent()) {
-			return null;
-		}
-
-		return listaProcessos.stream()
-				.map(id -> processoRepository.findOne(new ProcessoId(id)))
-				.collect(Collectors.toSet());
+		return Optional.ofNullable(listaProcessos)
+				.map(lista -> lista.stream()
+						.map(id -> processoRepository.findOne(new ProcessoId(id)))
+						.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
 	}
 
 	/**
