@@ -503,5 +503,35 @@
 			}
 			]
 		}
+	},
+	"chart1": {
+		"columns": [
+			{
+				"id"    : "x",
+                "values": "1,2,3,4,5,6,7,8,9,A,B,C,D,E"
+			},
+			{
+                "id"    : "processos",
+                "name"  : "Entrada de Processos",
+                "color" : "steelblue",
+                "values": "300,750,2900,4000,1500,2500,750,2100,1250,920,300,750,2900,4000,1342",
+                "type"  : "bar"
+            }
+		]
+	},
+	"chart2": {
+		"columns": [
+			{
+				"id"    : "x",
+                "values": "JAN,FEV,MAR,MAI,ABR"
+			},
+			{
+                "id"    : "processos",
+                "name"  : "Processos Peticionados",
+                "color" : "green",
+                "values": "300,750,2900,4000,1500",
+                "type"  : "line"
+            }
+		]
 	}
 }
