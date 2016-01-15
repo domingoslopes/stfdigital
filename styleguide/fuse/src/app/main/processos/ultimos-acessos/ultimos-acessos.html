@@ -1,1 +1,118 @@
-ÚLTIMOS ACESSOS
+<stf-header fab-action="vm.foo()" fab-icon="icon-cog">
+</stf-header>
+
+<div class="content" layout="column" ms-scroll>
+    <md-tabs md-dynamic-height flex layout="column">
+        <md-tab
+            label="{{ 'PROCESSOS.ULTIMOS-ACESSOS.TODOS' | translate }}"
+            ui-sref="app.processos.ultimos-acessos.todos"
+            md-active="vm.isTabActive('app.processos.ultimos-acessos.todos', 0)"
+            ng-click="vm.setActiveFilter(0)">
+            <div class="bt"></div>
+        </md-tab>
+
+        <md-tab
+            label="{{ 'PROCESSOS.ULTIMOS-ACESSOS.PETICOES' | translate }}"
+            ui-sref="app.processos.ultimos-acessos.peticoes"
+            md-active="vm.isTabActive('app.processos.ultimos-acessos.peticoes', 1)"
+            ng-click="vm.setActiveFilter(1)">
+
+            <div class="bt"></div>
+
+        </md-tab>
+
+        <md-tab
+            label="{{ 'PROCESSOS.ULTIMOS-ACESSOS.PROCESSOS' | translate }}"
+            ui-sref="app.processos.ultimos-acessos.processos"
+            md-active="vm.isTabActive('app.processos.ultimos-acessos.processos', 2)"
+            ng-click="vm.setActiveFilter(2)">
+
+            <div class="bt"></div>
+
+        </md-tab>
+
+        <md-tab
+            label="{{ 'PROCESSOS.ULTIMOS-ACESSOS.PECAS' | translate }}"
+            ui-sref="app.processos.ultimos-acessos.pecas"
+            md-active="vm.isTabActive('app.processos.ultimos-acessos.pecas', 3)"
+            ng-click="vm.setActiveFilter(3)">
+
+            <div class="bt"></div>
+
+        </md-tab>
+    </md-tabs>
+
+    <table class=" row-border hover" datatable="ng" dt-options="vm.ultimosAcessosDtOptions">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="PROCESSOS.ULTIMOS-ACESSOS.PROCESSO">Processo</span>
+                    </div>
+                </th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="PROCESSOS.ULTIMOS-ACESSOS.TIPO">Tipo</span>
+                    </div>
+                </th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="PROCESSOS.ULTIMOS-ACESSOS.ULTIMA-ALTERACAO-POR">Última alteração por</span>
+                    </div>
+                </th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="PROCESSOS.ULTIMOS-ACESSOS.TAMANHO">Tamanho</span>
+                    </div>
+                </th>
+                <th ng-hide="true"></th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="PROCESSOS.ULTIMOS-ACESSOS.ULTIMA-ALTERACAO-EM">Última alteração em</span>
+                    </div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in vm.ultimosAcessos">
+                <td>
+                    <md-icon
+                        md-font-icon="{{ row.type.icon.name }}"
+                        ng-style="{ color : row.type.icon.color }">
+                    </md-icon>
+                </td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.type.name }}</td>
+                <td>{{ row.last_update_by }}</td>
+                <td>{{ row.size | readableFilesize:2 }}</td>
+                <td ng-hide="true">{{ row.size }}</td>
+                <td>{{ row.updated_at * 1000 | date:'longDate' }}</td>
+                <td>
+                    <md-menu>
+                        <md-button
+                            class="md-icon-button"
+                            aria-label="{{ 'TRAITS.UI.OPTIONS' | translate}}">
+
+                            <md-icon
+                                md-menu-origin
+                                md-font-icon="icon-dots-vertical"
+                                ng-click="$mdOpenMenu($event)">
+                            </md-icon>
+                        </md-button>
+
+                        <md-menu-content width="2">
+                            <md-menu-item>
+                                <md-button>
+                                    <md-icon md-menu-align-target md-font-icon="icon-trash"></md-icon>
+                                    Opção 1
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

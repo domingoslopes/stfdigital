@@ -23,10 +23,9 @@
             // Pages
             'app.login',
             'app.cadastro',
-            
-            'app.gestao.meus-paineis.principal',
-            'app.gestao.meus-paineis.peticoes',
-            
+
+            'app.gestao.meus-paineis',
+
             'app.processos.ultimos-acessos',
             'app.processos.pesquisa-avancada',
 
