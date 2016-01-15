@@ -12,6 +12,7 @@
 		$stateProvider
 			.state('app.gestao.meus-paineis', {
 				url: '/meus-paineis',
+                redirectTo: 'app.gestao.meus-paineis.principal',
 				views: {
 					'content@app.autenticado': {
 						templateUrl: 'app/main/gestao/meus-paineis/meus-paineis.html',
