@@ -21,15 +21,16 @@
     <logger name="org.springframework.scheduling" level="WARN"/>
     <logger name="org.springframework.messaging" level="WARN"/>
     <logger name="org.activiti.engine" level="WARN"/>
-    <logger name="org.hibernate.SQL" level="TRACE"/>
-    <logger name="org.hibernate.type" level="TRACE"/>
-    <logger name="de.flapdoodle.embed.mongo.tests" level="INFO"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="WARN"/>
+    <logger name="org.hibernate.type" level="WARN"/>
+    <logger name="de.flapdoodle.embed.mongo.tests" level="WARN"/>
     <logger name="de.flapdoodle.embed.process.runtime" level="WARN"/>
     <logger name="org.elasticsearch" level="WARN"/>
     <logger name="org.apache.catalina.core" level="WARN"/>
     <logger name="org.apache.coyote" level="WARN"/>
     <logger name="org.apache.tomcat" level="WARN"/>
-    <logger name="org.flywaydb.core.internal" level="INFO"/>
+    <logger name="org.flywaydb.core.internal" level="WARN"/>
     <logger name="com.mangofactory.swagger" level="WARN"/>
     
 </configuration>
