@@ -3,14 +3,17 @@ package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
@@ -32,13 +35,18 @@ import br.jus.stf.shared.TeseId;
 @DiscriminatorValue("RECURSAL")
 public class ProcessoRecursal extends Processo {
 	
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection
 	@CollectionTable(name = "PROCESSO_ASSUNTO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<AssuntoId> assuntos = new HashSet<AssuntoId>(0);
 	
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection
 	@CollectionTable(name = "PROCESSO_TESE", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<TeseId> teses = new HashSet<TeseId>(0);
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "PROCESSO_MOTIVO_INAPTIDAO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "COD_MOTIVO_INAPTIDAO", nullable = false))
+	private Set<MotivoInaptidao> motivosInaptidao = new HashSet<MotivoInaptidao>(0);
 
 	ProcessoRecursal() {
 
@@ -99,5 +107,25 @@ public class ProcessoRecursal extends Processo {
 			}
 		}
 	}
+	
+	public Set<MotivoInaptidao> motivosInaptidao(){
+		return Collections.unmodifiableSet(motivosInaptidao);
+	}
+	
+	public void autuar(Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
+		Optional.ofNullable(assuntos).ifPresent(a -> {
+			if (!a.isEmpty()) {
+				atribuirAssuntos(a);
+			}
+		});
+		poloAtivo.forEach(parte -> super.adicionarParte(parte));
+		poloPassivo.forEach(parte -> super.adicionarParte(parte));
+	}
+	
+	public void analisarPressupostosFormais(boolean processoApto, Set<MotivoInaptidao> motivosInaptidao, String observacaoAnalise) {
+		
+	}
+	
+	
 
 }
