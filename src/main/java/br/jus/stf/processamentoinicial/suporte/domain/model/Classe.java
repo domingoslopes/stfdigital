@@ -1,13 +1,25 @@
 package br.jus.stf.processamentoinicial.suporte.domain.model;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.stereotype.Entity;
 
 /**
@@ -24,17 +36,29 @@ public class Classe implements Entity<Classe, ClasseId> {
 	
 	@Column(name = "NOM_CLASSE", nullable = false)
 	private String nome;
+	
+	@Column(name = "TIP_PROCESSO")
+	@Enumerated(EnumType.STRING)
+	private TipoProcesso tipo;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "CLASSE_PREFERENCIA", schema = "AUTUACAO",
+		joinColumns = @JoinColumn(name = "SIG_CLASSE", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "COD_PREFERENCIA", nullable = false))
+	private Set<Preferencia> preferencias = new HashSet<Preferencia>(0);
 
 	Classe() {
 
 	}
 	
-	public Classe(final ClasseId sigla, final String nome){
+	public Classe(final ClasseId sigla, final String nome, final TipoProcesso tipo){
 		Validate.notNull(sigla, "classe.sigla.required");
 		Validate.notBlank(nome, "classe.nome.required");
+		Validate.notNull(tipo, "classe.tipo.required");
 		
 		this.sigla = sigla;
 		this.nome = nome;
+		this.tipo = tipo;
 	}
 
 	@Override
@@ -44,6 +68,34 @@ public class Classe implements Entity<Classe, ClasseId> {
 
 	public String nome(){
 		return this.nome;
+	}
+	
+	public TipoProcesso tipo() {
+		return tipo;
+	}
+	
+	public Set<Preferencia> preferencias() {
+		return Collections.unmodifiableSet(preferencias);
+	}
+	
+	public void atribuirPreferencias(final Set<Preferencia> preferencias) {
+		Validate.notEmpty(preferencias, "classe.preferencias.required");
+		
+		this.preferencias.addAll(preferencias);
+	}
+	
+	public void removerPreferencias(final Set<PreferenciaId> preferencias) {
+		Validate.notEmpty(preferencias, "classe.preferencias.required");
+		
+		Iterator<Preferencia> preferenciaIterator = this.preferencias.iterator();
+		
+		while(preferenciaIterator.hasNext()) {
+			Preferencia preferencia = preferenciaIterator.next();
+			
+			if (preferencias.contains(preferencia.toLong())) {
+				preferenciaIterator.remove();
+			}
+		}
 	}
 	
 	@Override

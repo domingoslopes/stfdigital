@@ -19,15 +19,18 @@
 		}));
 		
 		it('Deveria ter retornado um layout tabular de duas colunas corretamente', function() {
-			var layout = DashboardLayoutManager.defaultLayout([{nome : "dashlet-01"}, {nome : "dashlet-02"}, {nome : "dashlet-03"}]);
+			var dashlet01 = {nome : "dashlet-01"};
+			var dashlet02 = {nome : "dashlet-02"};
+			var dashlet03 = {nome : "dashlet-03"};
+			var layout = DashboardLayoutManager.defaultLayout([dashlet01, dashlet02, dashlet03]);
 			
 			expect(layout.linhas.length).toBe(2);
 			expect(layout.linhas[0].colunas.length).toBe(2);
 			expect(layout.linhas[1].colunas.length).toBe(1);
 			
-			expect(layout.linhas[0].colunas[0].dashlet).toBe('dashlet-01');
-			expect(layout.linhas[0].colunas[1].dashlet).toBe('dashlet-02');
-			expect(layout.linhas[1].colunas[0].dashlet).toBe('dashlet-03');
+			expect(layout.linhas[0].colunas[0].dashlet).toBe(dashlet01);
+			expect(layout.linhas[0].colunas[1].dashlet).toBe(dashlet02);
+			expect(layout.linhas[1].colunas[0].dashlet).toBe(dashlet03);
 		});
 		
 		it('Deveria ter retornado um layout sem nenhum dashlet corretamente', function() {

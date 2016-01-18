@@ -34,6 +34,7 @@ public class ProcessoDtoAssembler {
 		List<PecaDto> pecas = new LinkedList<PecaDto>();
 		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
 		String situacao = processo.situacao().descricao();
+		List<Long> preferencias = new LinkedList<Long>();
 		
 		processo.partesPoloAtivo().forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
 		
@@ -43,8 +44,9 @@ public class ProcessoDtoAssembler {
 		partes.put("Polo Passivo", partesPoloPassivo);
 		
 		processo.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
+		processo.preferencias().forEach(preferencia -> preferencias.add(preferencia.toLong()));
 		
-		return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao);
+		return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias);
 	}
 
 }

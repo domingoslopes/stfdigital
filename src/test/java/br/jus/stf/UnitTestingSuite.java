@@ -26,7 +26,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoUnitTests;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.DistribuicaoComumUnitTests;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.DistribuicaoPrevencaoUnitTests;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepositoryUnitTests;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoUnitTests;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoOriginarioUnitTests;
 import br.jus.stf.processamentoinicial.suporte.domain.model.ClasseUnitTests;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MinistroUnitTests;
 import br.jus.stf.shared.ClasseIdUnitTests;
@@ -69,7 +69,7 @@ import br.jus.stf.shared.TarefaIdUnitTests;
 	ActionServiceUnitTests.class,
 	DashboardDtoAssemblerUnitTests.class,
 	OrgaoUnitTests.class,
-	ProcessoUnitTests.class,
+	ProcessoOriginarioUnitTests.class,
 	ProcessoRepositoryUnitTests.class,
 	DistribuicaoComumUnitTests.class,
 	DistribuicaoPrevencaoUnitTests.class,
