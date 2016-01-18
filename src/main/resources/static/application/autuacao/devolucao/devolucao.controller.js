@@ -7,30 +7,40 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('DevolucaoController', function ($log, PeticaoService, $state, $stateParams, messages, properties) {
+	angular.autuacao.controller('DevolucaoController', function (PeticaoService, $state, $stateParams, messages) {
 		var devolucao = this;
 		
-		devolucao.peticaoId = $stateParams.resources[0];
-		
+		var resource = $stateParams.resources[0];
+		devolucao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
+		devolucao.recursos = [];
 		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, {id : 'TRANSITADO', nome : "Transitado"}, {id : 'BAIXADO', nome : "Baixado"}];
-		
 		devolucao.tipoDevolucao = '';
 		
-		devolucao.finalizar = function() {
+		PeticaoService.consultarProcessoWorkflow(devolucao.peticaoId).then(function(data) {
+			devolucao.processoWorkflowId = data;
+		});
+		
+		devolucao.validar = function() {
+			var errors = null;
 			if (devolucao.tipoDevolucao.length === 0) {
-				messages.error('Você precisa selecionar <b>o tipo de devolução</b>.');
-				return;
+				errors = 'Você precisa selecionar <b>o tipo de devolução</b>.<br/>';
 			}
 			
 			if (!angular.isNumber(devolucao.numeroOficio)) {
-				messages.error('Você precisa informar <b>o número do ofício</b>.');
-				return;
+				errors += 'Você precisa informar <b>o número do ofício</b>.<br/>';
 			}
 			
-			PeticaoService.devolver(devolucao.peticaoId, new DevolverCommand(devolucao.peticaoId, devolucao.tipoDevolucao, devolucao.numeroOficio)).success(function(data) {
-				$state.go('visualizar.peticao', {peticaoId: devolucao.peticaoId});
-				messages.success('Petição devolvida com sucesso.');
-			});
+			if (errors) {
+				messages.error(errors);
+				return false;
+			}
+			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.tipoDevolucao, devolucao.numeroOficio));
+			return true;
+		};
+		
+		devolucao.completar = function() {
+			$state.go('visualizar.peticao', {peticaoId: devolucao.peticaoId});
+			messages.success('Petição devolvida com sucesso.');
 		};
 		
 		function DevolverCommand(peticaoId, tipoDevolucao, numeroOficio) {
@@ -40,8 +50,5 @@
 			command.numeroOficio = numeroOficio;
 			return command;
 		}
-		
 	});
-
 })();
-

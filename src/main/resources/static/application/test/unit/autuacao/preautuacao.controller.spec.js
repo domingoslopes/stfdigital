@@ -49,8 +49,9 @@
 		
 		it('Deveria carregar a petição a preautuar no escopo do controlador', function() {
 			controller.classe = 'HC';
+			controller.peticao.identificacao = '1/2016';
 			controller.finalizar();
-			expect(mockMessages.success).toHaveBeenCalledWith('Petição pré-autuada com sucesso.');
+			expect(mockMessages.success).toHaveBeenCalledWith('Petição <b>1/2016</b> pré-autuada com sucesso.');
 			// TODO Complementar esse teste assim que a controller estiver com essa implementação completa.
 //			expect(controller.peticao.tipoRecebimento).toEqual('Sedex');
 		});
