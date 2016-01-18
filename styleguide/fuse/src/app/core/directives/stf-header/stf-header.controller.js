@@ -71,7 +71,7 @@
             	return {
             		label: part.translation,
             		link: part.uisref 
-            	}
+            	};
             }
 		}
 	});

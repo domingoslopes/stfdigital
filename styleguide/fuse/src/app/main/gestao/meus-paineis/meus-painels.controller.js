@@ -21,5 +21,5 @@
 				return this.$state.current.name == stateName;
 			}
 		}
-	})
+	});
 })();
