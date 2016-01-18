@@ -33,9 +33,10 @@ public class DocumentoMonitoringAspect {
 	 * 
 	 * @param proceedingJoinPoint
 	 * @return
+	 * @throws Throwable 
 	 */
 	@Around("execution(* br.jus.stf.plataforma.documentos.infra.persistence.ConteudoDocumentoRepository.save(..))")
-	public Object saveMonitoringAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+	public Object saveMonitoringAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		DocumentoOperation documentoOperation = new DocumentoOperation();
 		try {
 			Object[] args = proceedingJoinPoint.getArgs();
@@ -56,9 +57,10 @@ public class DocumentoMonitoringAspect {
 	 * 
 	 * @param proceedingJoinPoint
 	 * @return
+	 * @throws Throwable 
 	 */
 	@Around("execution(* br.jus.stf.plataforma.documentos.infra.persistence.ConteudoDocumentoRepository.downloadConteudo(..))")
-	public Object downloadMonitoringAdvice(ProceedingJoinPoint proceedingJoinPoint) {
+	public Object downloadMonitoringAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		DocumentoOperation documentoOperation = new DocumentoOperation();
 		try {
 			Object[] args = proceedingJoinPoint.getArgs();
@@ -81,8 +83,9 @@ public class DocumentoMonitoringAspect {
 	 * @param proceedingJoinPoint
 	 * @param documentoOperation
 	 * @return
+	 * @throws Throwable 
 	 */
-	private Object monitorOperation(ProceedingJoinPoint proceedingJoinPoint, DocumentoOperation documentoOperation) {
+	private Object monitorOperation(ProceedingJoinPoint proceedingJoinPoint, DocumentoOperation documentoOperation) throws Throwable {
 		Instant start = null;
 		Instant end = null;
 		Object value = null;
@@ -95,7 +98,7 @@ public class DocumentoMonitoringAspect {
 		} catch (Throwable e) {
 			end = Instant.now(); // Não foi colocado no finally para não contabilizar a possível exceção.
 			documentoOperation.setErrorOcurred(true);
-			throw new RuntimeException("Erro ao monitorar duração do armazenamento do documento.", e);
+			throw e;
 		} finally {
 			if (start != null && end != null) {
 				documentoOperation.setDurationInMillis(Duration.between(start, end).toMillis());
