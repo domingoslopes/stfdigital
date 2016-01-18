@@ -27,6 +27,7 @@
 		var ID_TIPO_PECA_DEVOLUCAO = 8;
 		
 		$scope.peticoes = [];
+		$scope.processoWorkflowIds = [];
 		
 		// Lógica de seleção de petições
 		var selectAll = function() {
@@ -63,11 +64,14 @@
 		
 		var signingManager = SignatureService.signingManager();
 		
-		angular.forEach(idsPeticoes, function(id) {
-			PeticaoService.consultar(id).then(function(peticao) {
-				$scope.peticoes.push(peticao);
-				$scope.selecao.peticoes.push(peticao);
+		PeticaoService.consultarVarias(idsPeticoes).then(function(peticoes) {
+			var pwIds = [];
+			$scope.peticoes = peticoes;
+			$scope.selecao.peticoes = peticoes;
+			angular.forEach(peticoes, function(peticao) {
+				pwIds.push(peticao.processoWorkflowId);
 			});
+			$scope.processoWorkflowIds = pwIds;
 		});
 		
 		$scope.pecaDocumentoDevolucao = function(peticao) {

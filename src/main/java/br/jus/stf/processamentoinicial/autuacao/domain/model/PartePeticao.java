@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.shared.PessoaId;
 
 /**

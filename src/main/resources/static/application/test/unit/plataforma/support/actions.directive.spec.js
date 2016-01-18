@@ -12,8 +12,7 @@
 	    description: "Dummy Action",
 	    groups: ["DummyObj"],
 	    hasConditionHandlers: true,
-	    resourcesMode: "Many",
-	    neededAuthorities: ["peticionador"]
+	    resourcesMode: "Many"
 	}];
 
 	describe('Directive: Actions', function() {

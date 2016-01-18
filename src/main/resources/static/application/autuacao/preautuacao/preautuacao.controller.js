@@ -10,19 +10,14 @@
 	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var preautuacao = this;
 		
-		preautuacao.peticaoId = $stateParams.resources[0];
-		
+		var resource = $stateParams.resources[0];
+		preautuacao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
 		preautuacao.valida = 'true';
-		
 		preautuacao.motivo = '';
-
 		preautuacao.classe = "";
-		
 		preautuacao.classes = [];
-		
 		preautuacao.peticao = {};
-		
-		preautuacao.recursos = [{}];
+		preautuacao.recursos = [];
 		
 		PeticaoService.consultar(preautuacao.peticaoId).then(function(data) {
 			preautuacao.peticao = data;
@@ -47,15 +42,13 @@
 				messages.error(errors);
 				return false;
 			}
-			
-			preautuacao.recursos[0] = new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, preautuacao.valida, preautuacao.motivo);
-			
+			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, preautuacao.valida, preautuacao.motivo));
 			return true;
 		};
 		
 		preautuacao.finalizar = function() {
 			$state.go('dashboard');
-			messages.success('Petição pré-autuada com sucesso.');
+			messages.success('Petição <b>' + preautuacao.peticao.identificacao + '</b> pré-autuada com sucesso.');
 		};
 		
     	function PreautuarCommand(peticaoId, classeId, valida, motivo){
@@ -68,6 +61,4 @@
     	}
     	
 	});
-
 })();
-

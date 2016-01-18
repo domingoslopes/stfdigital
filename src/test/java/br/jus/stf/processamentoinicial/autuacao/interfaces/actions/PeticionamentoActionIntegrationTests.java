@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.UnsupportedEncodingException;
 
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusIndexadorConsumer;
 import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
 
 /**
@@ -44,6 +46,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
 	private String peticaoInvalidaParaAutuacao;
+	private String tarefaParaAssumir;
 	
 	@Spy
 	private IndexadorRestAdapter indexadorRestAdapter;
@@ -56,10 +59,15 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	@InjectMocks
 	private PeticaoIndexadorConsumer peticaoIndexadorConsumer;
 	
+	@Autowired
+	@InjectMocks
+	private PeticaoStatusIndexadorConsumer peticaoStatusIndexadorConsumer;
+	
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		doNothing().when(indexadorRestAdapter).indexar(any(), any());
+		doNothing().when(indexadorRestAdapter).atualizarItemDeColecao(any(), any(), any(), any(), any(), any(), any());
 	}
 	
 	@Before
@@ -129,28 +137,35 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoInValidaParaAutuacao.append("\"valida\":false,");
 		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}]}");
 		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
+		
+		this.tarefaParaAssumir = "{\"resources\": [{\"tarefaId\": @}]}";
 	}
 	
 	@Test
     public void executarAcaoDistribuirPeticaoEletronica() throws Exception {
     	
     	String peticaoId = "";
+    	String tarefaObject = "";
     	
     	//Envia a petição eletrônica.
     	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-eletronica/execute").header("login", "peticionador").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("autuar")));
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
+		
+		assumirTarefa(tarefaObject);
 		
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "distribuidor")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("distribuir-processo")));
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "distribuidor")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("distribuir-processo"))).andReturn().getResponse().getContentAsString();
+		
+		assumirTarefa(tarefaObject);
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").header("login", "distribuidor").contentType(MediaType.APPLICATION_JSON)
@@ -162,30 +177,40 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     public void executarAcaoRegistroPeticaoFisica() throws Exception {
     	
     	String peticaoId = "";
+    	String tarefaObject = "";
     	
     	//Envia a petição eletrônica.
     	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-fisica/execute").header("login", "recebedor").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("preautuar")));
+    	tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "preautuador-originario")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("preautuar"))).andReturn().getResponse().getContentAsString();
     	
+    	//Assumir a(s) tarefa(s) do préautuador.
+    	assumirTarefa(tarefaObject);
+    	    	
 		//Realiza a préautuação da petição física.
 		super.mockMvc.perform(post("/api/actions/preautuar/execute").contentType(MediaType.APPLICATION_JSON)
-	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do autuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("autuar")));
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
+		
+    	//Assumir a(s) tarefa(s) do autuador.
+		assumirTarefa(tarefaObject);
 		
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do distribuidor.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "distribuidor")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("distribuir-processo")));
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "distribuidor")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("distribuir-processo"))).andReturn().getResponse().getContentAsString();
+		
+    	//Assumir a(s) tarefa(s) do distribuidor.
+		assumirTarefa(tarefaObject);
 		
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").contentType(MediaType.APPLICATION_JSON)
@@ -197,18 +222,31 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     public void executarAcaoRejeitarPeticao() throws Exception {
     	
     	String peticaoId = "";
+    	String tarefaObject = "";
     	
     	//Envia a petição eletrônica.
     	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-eletronica/execute").header("login", "peticionador").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
 		//Recupera a(s) tarefa(s) do autuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("autuar")));
+    	tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
+		
+		assumirTarefa(tarefaObject);
 		
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoInvalidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
+    }
+    
+    private void assumirTarefa(String tarefaObject) throws Exception {
+    	String tarefaId = getTarefaId(tarefaObject);
+		super.mockMvc.perform(post("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
+	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
+    }
+    
+    private String getTarefaId(String json) {
+    	return ((Integer) new JSONArray(json).getJSONObject(0).get("id")).toString();
     }
 }
