@@ -6,16 +6,13 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -23,17 +20,15 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.plataforma.shared.security.resource.ResourceType;
+import br.jus.stf.shared.RecursoId;
 import br.jus.stf.shared.stereotype.Entity;
 
 @javax.persistence.Entity
 @Table(name = "RECURSO", schema = "PLATAFORMA", uniqueConstraints = @UniqueConstraint(columnNames = {"NOM_RECURSO", "TIP_RECURSO"}))
-public class Recurso implements Entity<Recurso, Long> {
+public class Recurso implements Entity<Recurso, RecursoId> {
 	
-	@Id
-	@Column(name = "SEQ_RECURSO")
-	@SequenceGenerator(name = "RECURSOID", sequenceName = "PLATAFORMA.SEQ_RECURSO", allocationSize = 1)
-	@GeneratedValue(generator = "RECURSOID", strategy=GenerationType.SEQUENCE)
-	private Long sequencial;
+	@EmbeddedId
+	private RecursoId id;
 	
 	@Column(name = "NOM_RECURSO", nullable = false)
 	private String nome;
@@ -52,21 +47,21 @@ public class Recurso implements Entity<Recurso, Long> {
 		
 	}
 	
-	public Recurso(final Long sequencial, final String nome, final ResourceType tipo, final Set<Permissao> permissoesExigidas) {
-		Validate.notNull(sequencial, "recurso.sequencial.required");
+	public Recurso(final RecursoId id, final String nome, final ResourceType tipo, final Set<Permissao> permissoesExigidas) {
+		Validate.notNull(id, "recurso.id.required");
 		Validate.notBlank(nome, "recurso.nome.required");
 		Validate.notNull(tipo, "recurso.tipo.required");
 		Validate.notEmpty(permissoesExigidas, "recurso.permissoesExigidas.required");
 		
-		this.sequencial = sequencial;
+		this.id = id;
 		this.nome = nome;
 		this.tipo = tipo;
 		this.permissoesExigidas = permissoesExigidas;
 	}
 	
 	@Override
-	public Long id() {
-		return sequencial;
+	public RecursoId id() {
+		return id;
 	}
 	
 	public String nome() {
@@ -83,7 +78,7 @@ public class Recurso implements Entity<Recurso, Long> {
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(sequencial).hashCode();
+		return new HashCodeBuilder().append(id).hashCode();
 	}
 	
 	@Override
@@ -99,14 +94,12 @@ public class Recurso implements Entity<Recurso, Long> {
 	
 		Recurso other = (Recurso) obj;
 		
-		return sequencial.equals(other.sequencial);
+		return id.equals(other.id);
 	}
 	
 	@Override
 	public boolean sameIdentityAs(final Recurso other) {
-		return other != null
-				&& nome.equals(other.nome)
-				&& tipo.equals(other.tipo);
+		return other != null && id.equals(other.id);
 	}
 
 }
