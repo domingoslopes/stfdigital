@@ -60,6 +60,7 @@ public class PeticaoDtoAssembler {
 		List<PecaDto> pecas = new LinkedList<PecaDto>();
 		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
 		Long processoWorkflowId = peticao.processosWorkflow().iterator().next().id().toLong();
+		String tipoProcesso = peticao.tipoProcesso().toString();
 		
 		peticao.partesPoloAtivo().forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
 		
@@ -71,9 +72,9 @@ public class PeticaoDtoAssembler {
 		peticao.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
 		
 		if (isFisica) {
-			return new PeticaoFisicaDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId);
+			return new PeticaoFisicaDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId, tipoProcesso);
 		} else {
-			return new PeticaoDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId);
+			return new PeticaoDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId, tipoProcesso);
 		}
 
 	}

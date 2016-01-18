@@ -58,7 +58,7 @@ public class NotificadorConsumer implements Consumer<Event<PeticaoRecebida>>, In
 		NotificarCommand command = new NotificarCommand();
 		command.setMensagem("Petição " + peticao.identificacao() + " recebida.");
 		List<String> notificados = new ArrayList<String>();
-		notificados.add(peticao.isEletronica() ? "autuador" : "preautuador");
+		notificados.add(peticao.isEletronica() ? "autuador" : "preautuador-originario");
 		command.setNotificados(notificados);
 		command.setTipo("UI");
 		return command;
