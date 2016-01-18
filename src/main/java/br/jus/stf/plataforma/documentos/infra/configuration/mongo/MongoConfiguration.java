@@ -24,7 +24,7 @@ import br.jus.stf.plataforma.shared.settings.Profiles;
  *
  */
 @Configuration
-@Profile({Profiles.PRODUCAO, Profiles.DOCUMENTO_MONGO})
+@Profile({Profiles.MONGO_SERVER, Profiles.DOCUMENTO_MONGO})
 @Conditional(AndProfilesCondition.class)
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
