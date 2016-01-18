@@ -687,7 +687,7 @@
 
             // Has children?
             vm.hasChildren = vm.node.children.length > 0;
-            vm.hasVisibleChildren = vm.node.children.filter(function(child) { return (child.hidden == undefined ? true : !child.hidden) }).length > 0;
+            vm.hasVisibleChildren = vm.node.children.filter(function(child) { return (child.hidden === undefined ? true : !child.hidden); }).length > 0;
             vm.transcientActive = new RegExp(vm.node.uisref.replace('*', '.*')).test($state.current.name);
 
             // Is group?
