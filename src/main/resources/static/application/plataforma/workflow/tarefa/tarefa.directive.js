@@ -11,13 +11,10 @@
 	/**
 	 * Botão de uma ação específica
 	 * Ex. de uso: 
-	 * <action id="excluir_recurso" resources="recursos"
-	 * 	btn-class="btn-success"	icon-class="fa fa-hand-peace-o"
-	 * 	show-description="false" show-not-allowed="false" /> 
+	 * <tarefa-actions processo="workflowId" tarefa="tarefa" /> 
 	 */
 	angular.plataforma.directive('tarefaActions', ['$q', 'TarefaService', function ($q, TarefaService) {
 		return {
-			require: '^action',
 			restrict : 'AE',
 			scope : {
 				processo : '=', //obrigatório, utilizado para pesquisar a tarefa ativa
