@@ -6,19 +6,19 @@
   <message id="peticionamentoOrgao" name="Peticionamento por Órgão"/>
   <process id="autuarOriginarios" isExecutable="true">
     <subProcess id="analise" name="Análise">
-      <userTask id="autuar" name="Autuar Processo" activiti:candidateGroups="autuador"></userTask>
+      <userTask id="autuar" name="Autuar Processo" activiti:candidateGroups="${grupoCandidatoService.grupos('autuar')}"></userTask>
       <startEvent id="sid-F52E21D9-3C7F-4E32-A3A6-84AAC338F411"/>
       <endEvent id="sid-B0AAF0F4-CEE2-43F6-B6ED-9E6175DCE7D2"/>
       <sequenceFlow id="sid-E069A95A-245D-4327-AE1A-C8740AD2F6DE" sourceRef="sid-F52E21D9-3C7F-4E32-A3A6-84AAC338F411" targetRef="autuar"/>
       <sequenceFlow id="sid-C13511CC-43BA-438F-8AA8-5236214B84E0" sourceRef="autuar" targetRef="sid-B0AAF0F4-CEE2-43F6-B6ED-9E6175DCE7D2"/>
     </subProcess>
-    <userTask id="devolver-peticao" name="Registrar Motivação da Devolução" activiti:candidateGroups="cartoraria">
+    <userTask id="devolver-peticao" name="Registrar Motivação da Devolução" activiti:candidateGroups="${grupoCandidatoService.grupos('devolver-peticao')}">
     </userTask>
-    <userTask id="assinar-devolucao-peticao" name="Assinar Documento de Devolução" activiti:candidateGroups="gestor-recebimento">
+    <userTask id="assinar-devolucao-peticao" name="Assinar Documento de Devolução" activiti:candidateGroups="${grupoCandidatoService.grupos('assinar-devolucao-peticao')}">
     </userTask>
     <sequenceFlow id="finalizardevolucao" sourceRef="devolver-peticao" targetRef="devolvido"/>
     <endEvent id="devolvido" name="Petição Devolvida"/>
-    <userTask id="distribuir-processo" name="Distribuir Processo" activiti:candidateGroups="distribuidor">
+    <userTask id="distribuir-processo" name="Distribuir Processo" activiti:candidateGroups="${grupoCandidatoService.grupos('distribuir-processo')}">
     </userTask>
     <sequenceFlow id="finalizardistribuicao" sourceRef="distribuir-processo" targetRef="distribuido"/>
     <endEvent id="distribuido" name="Processo &#xa;Distribuído"/>
@@ -31,7 +31,7 @@
     </startEvent>
     <subProcess id="sid-1D5D17F1-3404-430A-925C-8C480DE4D604" name="Recebimento">
       <startEvent id="sid-17BD91B5-A4EE-4ACA-A1E7-9B87D218CA45"/>
-      <userTask id="preautuar" name="Pré-Autuar Processo" activiti:candidateGroups="preautuador-originario">
+      <userTask id="preautuar" name="Pré-Autuar Processo" activiti:candidateGroups="${grupoCandidatoService.grupos('preautuar')}">
       </userTask>
       <endEvent id="sid-38F5A9D5-D501-4CAD-9A9E-D16CB66258E5"/>
       <sequenceFlow id="sid-6A1030CA-E8E9-48F7-B335-B4BBFD5CE456" sourceRef="sid-17BD91B5-A4EE-4ACA-A1E7-9B87D218CA45" targetRef="preautuar"/>

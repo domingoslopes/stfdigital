@@ -206,5 +206,16 @@ public class AcessosApplicationService {
 		
 		return principal;
 	}
+	
+	/**
+	 * @param nome
+	 * @param tipo
+	 * @return
+	 */
+	public List<Papel> carregarPapeisRecurso(String nome, String tipo) {
+		return Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
+				.map(recurso -> papelRepository.findPapelByRecurso(recurso.id()))
+				.orElse(Collections.emptyList());
+    }
 
 }
