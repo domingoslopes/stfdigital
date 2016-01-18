@@ -22,12 +22,11 @@ import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
  * @author Rafael.Alencar
  */
 @Configuration
-@Profile({Profiles.DESENVOLVIMENTO, Profiles.DOCUMENTO_MONGO})
+@Profile({ "!" + Profiles.MONGO_SERVER, Profiles.DOCUMENTO_MONGO })
 @Conditional(AndProfilesCondition.class)
 public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 
 	private MongodForTestsFactory factory;
-
 	@Autowired
 	private Environment env;
 
@@ -58,5 +57,4 @@ public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 	public Mongo mongo() throws Exception {
 		return factory().newMongo();
 	}
-
 }
