@@ -31,7 +31,7 @@
     </startEvent>
     <subProcess id="sid-1D5D17F1-3404-430A-925C-8C480DE4D604" name="Recebimento">
       <startEvent id="sid-17BD91B5-A4EE-4ACA-A1E7-9B87D218CA45"/>
-      <userTask id="preautuar" name="Pré-Autuar Processo" activiti:candidateGroups="preautuador">
+      <userTask id="preautuar" name="Pré-Autuar Processo" activiti:candidateGroups="preautuador-originario">
       </userTask>
       <endEvent id="sid-38F5A9D5-D501-4CAD-9A9E-D16CB66258E5"/>
       <sequenceFlow id="sid-6A1030CA-E8E9-48F7-B335-B4BBFD5CE456" sourceRef="sid-17BD91B5-A4EE-4ACA-A1E7-9B87D218CA45" targetRef="preautuar"/>

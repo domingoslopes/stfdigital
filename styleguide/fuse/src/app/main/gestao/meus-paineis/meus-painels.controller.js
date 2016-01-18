@@ -6,7 +6,7 @@
 	app.classy.controller({
 		name: 'GestaoMeusPaineisController',
 
-		inject: [],
+		inject: ['$state'],
 
 		init: function() {
 
@@ -15,6 +15,10 @@
 		methods: {
 			foo: function() {
 				console.log("bar");
+			},
+
+			isTabActive: function(stateName) {
+				return this.$state.current.name == stateName;
 			}
 		}
 	})

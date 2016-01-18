@@ -13,6 +13,9 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.PessoaId;
@@ -36,7 +39,7 @@ public class PeticaoEletronicaUnitTests {
 
 	@Test
 	public void criaPeticaoEletronicaSemRepresentacaoValida() {
-		PeticaoEletronica peticaoEletronica = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas);
+		PeticaoEletronica peticaoEletronica = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
 
 	    assertNotNull(peticaoEletronica);
 	    assertEquals(peticaoEletronica.id(), new PeticaoId(1L));
@@ -52,7 +55,7 @@ public class PeticaoEletronicaUnitTests {
 	
 	@Test
 	public void criaPeticaoEletronicaComRepresentacaoValida() {
-		PeticaoEletronica peticaoEletronica = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, new Orgao(1L, "PGR"));
+		PeticaoEletronica peticaoEletronica = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, new Orgao(1L, "PGR"), TipoProcesso.ORIGINARIO);
 
 	    assertNotNull(peticaoEletronica);
 	    assertEquals(peticaoEletronica.id(), new PeticaoId(1L));
@@ -67,35 +70,35 @@ public class PeticaoEletronicaUnitTests {
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarPeticaoEletronicaComRepresentacaoSemOrgao() {
-		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, null);
+		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, null, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarPeticaoEletronicaSemClasseSugerida() {
-		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", null, partes, pecas);
+		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", null, partes, pecas, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarPeticaoEletronicaComPartesNulo() {
-		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), null, pecas);
+		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), null, pecas, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaCriarPeticaoEletronicaComPartesVazio() {
 		partes.clear();
 		
-		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas);
+		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarPeticaoEletronicaComPecasNulo() {
-		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, null);
+		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, null, TipoProcesso.ORIGINARIO);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaCriarPeticaoEletronicaComPecasVazio() {
 		pecas.clear();
 		
-		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas);
+		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
 	}
 }
