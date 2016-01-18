@@ -24,6 +24,8 @@
             'app.login',
             'app.cadastro',
 
+            'app.novo-processo',
+
             'app.gestao.meus-paineis',
 
             'app.processos.ultimos-acessos',
