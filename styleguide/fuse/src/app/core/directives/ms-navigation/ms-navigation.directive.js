@@ -666,6 +666,7 @@
         vm.collapsable = undefined;
         vm.group = undefined;
         vm.animateHeightClass = 'animate-height';
+        vm.transcientActive = false;
 
         // Methods
         vm.toggleCollapsed = toggleCollapsed;
@@ -686,6 +687,8 @@
 
             // Has children?
             vm.hasChildren = vm.node.children.length > 0;
+            vm.hasVisibleChildren = vm.node.children.filter(function(child) { return (child.hidden == undefined ? true : !child.hidden) }).length > 0;
+            vm.transcientActive = new RegExp(vm.node.uisref.replace('*', '.*')).test($state.current.name);
 
             // Is group?
             vm.group = !!(angular.isDefined(vm.node.group) && vm.node.group === true);
@@ -823,6 +826,10 @@
          */
         function collapse()
         {
+            if (!vm.hasVisibleChildren) {
+                return;
+            }
+
             // Grab the element that we are going to collapse
             var collapseEl = vm.element.children('ul');
 
@@ -871,6 +878,10 @@
          */
         function expand()
         {
+            if (!vm.hasVisibleChildren) {
+                return;
+            }
+
             // Grab the element that we are going to expand
             var expandEl = vm.element.children('ul');
 

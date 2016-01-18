@@ -15,7 +15,7 @@
 
 		this.conteudo = element(by.css('body'));
 		
-		this.titleGestaoAutuacao = element(by.id('gestaoAutuacaoId'));
+		this.dashletGestaoAutuacao = element(by.cssContainingText('.panel-title', 'Gráfico de Autuações'));
 
 		this.iniciarProcesso = function (idIcon) {
 			browser.waitForAngular();
@@ -37,23 +37,35 @@
 		};
 		
 		this.executarTarefa = function() {
-			element(by.repeater('tarefa in tarefas').row(0)).element(by.css('a')).click();
+
+			var tarefa = element(by.repeater('tarefa in tarefas').row(0));
+			tarefa.element(by.css('input')).click();
+			browser.waitForAngular();
+			
+			var acao = element(by.css('actions'));
+			acao.element(by.css('a.dropdown-toggle')).click();
+			acao.element(by.repeater('action in actions').row(0)).click();
+			browser.waitForAngular();
+			
+			browser.wait(element(by.id('btn_exec_assumir-tarefa')).isDisplayed, 3000);
+			element(by.id('btn_exec_assumir-tarefa')).click();
+			tarefa.element(by.css('a')).click();
 			browser.waitForAngular();
 		};
 		
 		this.tarefas = function () {
+			browser.waitForAngular();
 			return element.all(by.repeater('tarefa in tarefas'));
 		};
 		
 		this.peticoes = function () {
+			browser.waitForAngular();
 			return element.all(by.repeater('peticao in peticoes'));
 		};
 		
-		this.dashletMinhasTarefas = element.all(by.css('.dashlet'))
-				.all(by.cssContainingText('.panel-title', 'Minhas Tarefas'));
+		this.dashletMinhasTarefas = element(by.cssContainingText('.panel-title', 'Tarefas dos meus papéis'));
 		
-		this.dashletMinhasPeticoes = element.all(by.css('.dashlet'))
-			.all(by.cssContainingText('.panel-title', 'Minhas Petições'));
+		this.dashletMinhasPeticoes = element(by.cssContainingText('.panel-title', 'Minhas Petições'));
 	};
 
 	module.exports = PrincipalPage;

@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -12,10 +13,14 @@ import java.util.stream.Collectors;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -34,9 +39,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.stereotype.Entity;
 
@@ -93,6 +103,14 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	
 	@Column(name = "SIG_USUARIO_CADASTRAMENTO")
 	private String usuarioCadastramento;
+	
+	@Column(name = "TIP_PROCESSO")
+	@Enumerated(EnumType.STRING)
+	private TipoProcesso tipoProcesso;
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PETICAO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
+	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
 		
 	@Transient
 	private String identificacao;
@@ -101,7 +119,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 
 	}
 	
-	public Peticao(final PeticaoId id, final Long numero, final String usuarioCadastramento) {
+	public Peticao(final PeticaoId id, final Long numero, final String usuarioCadastramento, final TipoProcesso tipoProcesso) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
 		Validate.notBlank(usuarioCadastramento, "peticao.usuarioCadastramento.required");
@@ -112,6 +130,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.identificacao = montarIdentificacao();
 		this.dataCadastramento = new Date();
 		this.usuarioCadastramento = usuarioCadastramento;
+		this.tipoProcesso = Optional.ofNullable(tipoProcesso).orElse(TipoProcesso.RECURSAL);
 	}
 
 	@PostLoad
@@ -170,7 +189,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public boolean adicionarParte(final Parte parte) {
 		Validate.notNull(parte, "peticao.parte.required");
 		
-		return this.partes.add(parte);
+		return partes.add(parte);
 	}
 	
 	/**
@@ -180,11 +199,11 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public boolean removerParte(final Parte parte) {
 		Validate.notNull(parte, "peticao.parte.required");
 		
-		return this.partes.remove(parte);
+		return partes.remove(parte);
 	}
 	
 	public Set<Peca> pecas(){
-		return Collections.unmodifiableSet(this.pecas);
+		return Collections.unmodifiableSet(pecas);
 	}
 
 	/**
@@ -194,7 +213,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public boolean juntar(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
 	
-		return this.pecas.add(peca);
+		return pecas.add(peca);
 	}
 	
 	public void substituirPeca(Peca pecaOriginal, Peca pecaSubstituta) {
@@ -211,19 +230,47 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public boolean removerPeca(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
 	
-		return this.pecas.remove(peca);
+		return pecas.remove(peca);
 	}
 
 	public ClasseId classeProcessual() {
-		return this.classeProcessual;
+		return classeProcessual;
 	}
 	
 	public String motivoRejeicao() {
-		return this.motivoRejeicao;
+		return motivoRejeicao;
 	}
 	
 	public String motivoDevolucao() {
-		return this.motivoDevolucao;
+		return motivoDevolucao;
+	}
+	
+	public TipoProcesso tipoProcesso() {
+		return tipoProcesso;
+	}
+	
+	public Set<PreferenciaId> preferencias(){
+		return Collections.unmodifiableSet(preferencias);
+	}
+
+	public void atribuirPreferencias(final Set<PreferenciaId> preferencias) {
+		Validate.notEmpty(preferencias, "peticao.preferencias.required");
+		
+		this.preferencias.addAll(preferencias);
+	}
+	
+	public void removerPreferencias(final Set<PreferenciaId> preferencias) {
+		Validate.notEmpty(preferencias, "peticao.preferencias.required");
+		
+		Iterator<PreferenciaId> preferenciaIterator = this.preferencias.iterator();
+		
+		while(preferenciaIterator.hasNext()) {
+			PreferenciaId preferenciaId = preferenciaIterator.next();
+			
+			if (preferencias.contains(preferenciaId)) {
+				preferenciaIterator.remove();
+			}
+		}
 	}
 
 	/**
@@ -232,8 +279,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 */
 	public void aceitar(final ClasseId classeProcessual) {
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
-		Validate.notNull(this.classeSugerida, "peticao.aceitar.classeSugerida.invalid");
-
+		Validate.notNull(classeSugerida, "peticao.aceitar.classeSugerida.invalid");
+		
 		this.classeProcessual = classeProcessual;
 	}
 
@@ -243,8 +290,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 */
 	public void rejeitar(final String motivoRejeicao) {
 		Validate.notBlank(motivoRejeicao, "peticao.motivoRejeicao.required");
-		Validate.notNull(this.classeSugerida, "peticao.rejeitar.classeSugerida.invalid");
-		Validate.isTrue(this.classeProcessual == null, "peticao.rejeitar.classeProcessual.invalid");
+		Validate.notNull(classeSugerida, "peticao.rejeitar.classeSugerida.invalid");
+		Validate.isTrue(classeProcessual == null, "peticao.rejeitar.classeProcessual.invalid");
 	
 		this.motivoRejeicao = motivoRejeicao;
 	}
@@ -267,9 +314,9 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 */
 	public Processo distribuir(final MinistroId relator) {
 		Validate.notNull(relator, "peticao.ministroRelator.required");
-		Validate.notNull(this.classeProcessual, "peticao.distribuir.classeProcessual.invalid");
+		Validate.notNull(classeProcessual, "peticao.distribuir.classeProcessual.invalid");
 		
-		return ProcessoFactory.criarProcesso(this.classeProcessual, relator, this.partes, this.pecas, this.id);
+		return ProcessoFactory.criarProcesso(classeProcessual, relator, partes, pecas, id, tipoProcesso, preferencias);
 	}
 
 	public Set<ProcessoWorkflow> processosWorkflow() {

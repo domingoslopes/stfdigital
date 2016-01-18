@@ -28,7 +28,7 @@
 		};
 		
 		this.finalizar = function() {
-			element(by.id('botaoAutuar')).click();
+			element(by.id('btn_exec_autuar')).click();
 		};
 		
 	};

@@ -1,5 +1,8 @@
 package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
+import java.util.Optional;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -9,8 +12,10 @@ import javax.persistence.Enumerated;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 
 /**
  * @author Lucas.Rodrigues
@@ -38,8 +43,8 @@ public class PeticaoFisica extends Peticao {
 	}
 	
 	public PeticaoFisica(final PeticaoId id, final Long numero, final String usuarioCadastramento, final Integer volumes, 
-			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex) {
-		super(id, numero, usuarioCadastramento);
+			final Integer apensos, final FormaRecebimento formaRecebimento, final String numeroSedex, final TipoProcesso tipoProcesso) {
+		super(id, numero, usuarioCadastramento, tipoProcesso);
 		
 		Validate.isTrue(volumes != null && volumes > 0, "peticaoFisica.volumes.maiorQueZero");
 		Validate.isTrue(apensos != null && apensos >= 0, "peticaoFisica.apensos.maiorIgualAZero");
@@ -70,10 +75,16 @@ public class PeticaoFisica extends Peticao {
 		return numeroSedex;
 	}
 	
-	public void preautuar(final ClasseId classeSugerida) {
+	public void preautuar(final ClasseId classeSugerida, final Set<PreferenciaId> preferencias) {
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		
 		super.sugerirClasse(classeSugerida);
+		
+		Optional.ofNullable(preferencias).ifPresent(prefs -> {
+			if (!prefs.isEmpty()) {
+				super.atribuirPreferencias(prefs);
+			}
+		});
 	}
 		
 	@Override

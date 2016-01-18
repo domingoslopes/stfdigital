@@ -18,8 +18,9 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -65,7 +66,7 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(1L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
 		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
 		Distribuicao distribuicao = new DistribuicaoComum(parametros);
 		MinistroId relator = distribuicao.executar().relator();
@@ -97,7 +98,7 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(48L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
 		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
 		new DistribuicaoComum(parametros);
 	}
@@ -119,18 +120,18 @@ public class DistribuicaoComumUnitTests {
 		ministrosCanditatos.add(new MinistroId(1L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id());
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
 		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, null, null);
 		new DistribuicaoComum(parametros);
 	}
 
 	private PeticaoFisica preparaPeticao() {
-		PeticaoFisica peticao = new PeticaoFisica(new PeticaoId(1L), 1L, "DISTRIBUIDOR", 1, 1, FormaRecebimento.SEDEX, "BR123456789AD");
+		PeticaoFisica peticao = new PeticaoFisica(new PeticaoId(1L), 1L, "DISTRIBUIDOR", 1, 1, FormaRecebimento.SEDEX, "BR123456789AD", TipoProcesso.ORIGINARIO);
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
 		
 		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
-		peticao.preautuar(new ClasseId("ADI"));
+		peticao.preautuar(new ClasseId("ADI"), null);
 		peticao.aceitar(new ClasseId("ADI"));
 		peticao.associarProcessoWorkflow(new ProcessoWorkflow(new ProcessoWorkflowId(1L), "A_PREAUTUAR"));
 		return peticao;

@@ -14,7 +14,6 @@ import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
@@ -23,7 +22,9 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -46,12 +47,12 @@ public class PeticaoApplicationService {
 	private WorkflowAdapter processoAdapter;
 	
 	@Autowired
-	@Qualifier("peticaoTarefaRestAdapter")
-	private TarefaAdapter tarefaAdapter;
-	
-	@Autowired
 	private PeticaoFactory peticaoFactory;
 	
+	@Autowired
+	@Qualifier("peticaoTarefaRestAdapter")
+	private TarefaAdapter tarefaAdapter;
+
 	@Autowired
 	private PeticaoApplicationEvent peticaoApplicationEvent;
 	
@@ -60,16 +61,16 @@ public class PeticaoApplicationService {
 	
 	@Autowired
 	private PecaDevolucaoBuilder pecaDevolucaoBuilder;
-
+	
 	/**
-	 * Registra uma nova petilçao.
+	 * Registra uma nova petição.
 	 * 
 	 * @param peticaoEletronica Petição eletrônica recebida.
 	 * @param orgaoId o órgão do representante
 	 * @return Id da petição eletrônica registrada.
 	 */
 	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas, Optional<Long> orgaoId) {
-		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId);
+		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId, TipoProcesso.ORIGINARIO);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
@@ -84,7 +85,7 @@ public class PeticaoApplicationService {
 	 * @return Id da petição física registrada.
 	 */
 	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
-		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex);
+		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, TipoProcesso.ORIGINARIO);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
@@ -102,12 +103,12 @@ public class PeticaoApplicationService {
 	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
 		if (peticaoValida) {
 			tarefaAdapter.completarPreautuacao(peticao);
-			peticao.preautuar(classeSugerida);
+			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
 			peticaoApplicationEvent.peticaoPreautuada(peticao);
 		} else {
 			peticao.devolver(motivoDevolucao);
-			peticao.preautuar(classeSugerida);
+			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
 			processoAdapter.devolver(peticao);
 			peticaoApplicationEvent.remessaInvalida(peticao);
@@ -128,12 +129,12 @@ public class PeticaoApplicationService {
 			peticao.aceitar(classe);
 			peticaoRepository.save(peticao);
 			tarefaAdapter.completarAutuacao(peticao);
-			this.peticaoApplicationEvent.peticaoAutuada(peticao);
+			peticaoApplicationEvent.peticaoAutuada(peticao);
 		} else {
 			peticao.rejeitar(motivoRejeicao);
 			peticaoRepository.save(peticao);
 			processoAdapter.rejeitarAutuacao(peticao);
-			this.peticaoApplicationEvent.peticaoRejeitada(peticao);
+			peticaoApplicationEvent.peticaoRejeitada(peticao);
 		}
 	}
 

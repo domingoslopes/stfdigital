@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.interfaces.facade;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,7 +22,10 @@ import br.jus.stf.processamentoinicial.distribuicao.infra.PeticaoRestAdapter;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoStatusDto;
+import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
+import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 
 @Component
@@ -65,7 +69,7 @@ public class ProcessoServiceFacade {
 	public ProcessoDto distribuir(String tipoDistribuicao, Long peticaoId, String justificativa,
 			Set<Long> ministrosCandidatos, Set<Long> ministrosImpedidos, Set<Long> processosPreventos) {
 		Peticao peticao = peticaoRestAdapter.consultar(peticaoId);
-		String usuarioCadastramento = SecurityContextUtil.getUsername();
+		String usuarioCadastramento = SecurityContextUtil.getUser().getUsername();
 		TipoDistribuicao tipo = TipoDistribuicao.valueOf(tipoDistribuicao); 
 		ParametroDistribuicao parametroDistribuicao = new ParametroDistribuicao(peticao, justificativa, usuarioCadastramento,
 				this.carregarMinistros(ministrosCandidatos), this.carregarMinistros(ministrosImpedidos), this.carregarProcessos(processosPreventos));
@@ -75,23 +79,19 @@ public class ProcessoServiceFacade {
 	}
 	
 	private Set<MinistroId> carregarMinistros(Set<Long> listaMinistros) {
-		if (!Optional.ofNullable(listaMinistros).isPresent()) {
-			return null;
-		}
-		
-		return listaMinistros.stream()
-				.map(id -> new MinistroId(id))
-				.collect(Collectors.toSet());
+		return Optional.ofNullable(listaMinistros)
+				.map(lista -> lista.stream()
+					.map(id -> new MinistroId(id))
+					.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
 	}
 	
 	private Set<Processo> carregarProcessos(Set<Long> listaProcessos) {
-		if (!Optional.ofNullable(listaProcessos).isPresent()) {
-			return null;
-		}
-
-		return listaProcessos.stream()
-				.map(id -> processoRepository.findOne(new ProcessoId(id)))
-				.collect(Collectors.toSet());
+		return Optional.ofNullable(listaProcessos)
+				.map(lista -> lista.stream()
+						.map(id -> processoRepository.findOne(new ProcessoId(id)))
+						.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
 	}
 
 	/**
@@ -109,4 +109,29 @@ public class ProcessoServiceFacade {
 		
 		return statusProcesso.stream().sorted((s1, s2) -> s1.getNome().compareTo(s2.getNome())).collect(Collectors.toList());
     }
+	
+	/**
+	 * Cadastra um processo recursal
+	 * 
+	 */
+	public ProcessoDto cadastrarRecursal(Long processoId, String classeId, Long numero, Long peticaoId, String situacao, Set<Long> preferencias) {
+		ProcessoId procId = new ProcessoId(processoId);
+		ClasseId clasId = new ClasseId(classeId);
+		PeticaoId petiId = new PeticaoId(peticaoId);
+		ProcessoSituacao procSituacao = ProcessoSituacao.valueOf(situacao);
+		Processo processo = processoApplicationService.cadastrarRecursal(procId, clasId, numero, petiId, procSituacao, carregarPreferencias(preferencias));
+		
+		return processoDtoAssembler.toDto(processo);
+	}
+	
+	private Set<PreferenciaId> carregarPreferencias(Set<Long> listaPreferencias) {
+		if (!Optional.ofNullable(listaPreferencias).isPresent()) {
+			return null;
+		}
+
+		return listaPreferencias.stream()
+				.map(id -> new PreferenciaId(id))
+				.collect(Collectors.toSet());
+	}
+	
 }

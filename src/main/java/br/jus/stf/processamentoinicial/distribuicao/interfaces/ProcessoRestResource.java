@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.stf.processamentoinicial.distribuicao.interfaces.commands.CadastrarRecursalCommand;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.distribuicao.interfaces.dto.ProcessoStatusDto;
@@ -47,4 +48,11 @@ public class ProcessoRestResource {
     public List<ProcessoStatusDto> consultarStatus() {
     	return this.processoServiceFacade.consultarStatus();
     }
+	
+	@ApiOperation("Realiza cadastro de processo recursal.")
+	@RequestMapping(value = "/processos-recursais", method = RequestMethod.POST)
+	public ProcessoDto cadastrarRecursal(@RequestBody CadastrarRecursalCommand command) {
+		return processoServiceFacade.cadastrarRecursal(command.getProcessoId(), command.getClasseId(), command.getNumero(),
+				command.getPeticaoId(), command.getSituacao(), command.getPreferencias());
+	}
 }
