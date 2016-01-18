@@ -17,7 +17,7 @@ import br.jus.stf.plataforma.shared.settings.Profiles;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
 @WebIntegrationTest
-@ActiveProfiles(Profiles.DESENVOLVIMENTO)
+@ActiveProfiles({Profiles.DESENVOLVIMENTO, Profiles.DOCUMENTO_MONGO})
 public abstract class AbstractIntegrationTests {
 
 	@Autowired
