@@ -1,0 +1,31 @@
+<div id="novo-processo" class="md-accent-bg" layout="column">
+	<div flex="100">
+		<md-input-container id="processo-search" class="text-center">
+	        <md-icon class="s32 ml-16 mr-16" md-font-icon="icon-magnify"></md-icon>
+			
+			<label translate="NOVO-PROCESSO.QUAL-SOLICITACAO-INICIAR">Qual solicitação você deseja iniciar?</label>
+			<input class="bn" ng-model="vm.buscaProcesso" ng-model-options="{ debounce: 500 }">
+	    </md-input-container>
+	</div>
+
+    <div id="processo-selector" layout="column" layout-align="start center" flex>
+        <div class="processo-list" layout="row" layout-align="center center" layout-wrap>
+            <div 
+            	class="processo-list-item"
+            	ng-if="vm.processos.length > 0"
+            	ng-repeat="processo in vm.processos"
+            	ng-click="vm.itemClick(processo.id)"
+            	layout="column"
+            	layout-align="center center"
+            	layout-wrap>
+
+                <md-icon md-font-icon="icon-plus-circle" class="icon s64"></md-icon>
+                <div class="processo-name">{{processo.name}}</div>
+            </div>
+
+            <div ng-if="vm.processos.length === 0">
+            	<h1 translate="NOVO-PROCESSO.NAO-HA-PROCESSOS">Não há processos que coincidem com a pesquisa</h1>
+            </div>
+        </div>
+    </div>
+</div>
