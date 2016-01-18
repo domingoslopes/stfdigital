@@ -1,8 +1,11 @@
 package br.jus.stf.plataforma.shared.settings;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Profile;
@@ -15,6 +18,7 @@ import org.springframework.util.MultiValueMap;
  * não suporta essa funcionalidade diretamente na anotação @Profile ainda).
  * 
  * Classe reaproveitada de https://jira.spring.io/browse/SPR-12458
+ * com algumas alterações.
  * 
  * @author Tomas.Godoi
  *
@@ -22,7 +26,6 @@ import org.springframework.util.MultiValueMap;
 public class AndProfilesCondition implements Condition {
 
 	public static final String VALUE = "value";
-	public static final String DEFAULT_PROFILE = "default";
 
 	@Override
 	public boolean matches(final ConditionContext context, final AnnotatedTypeMetadata metadata) {
@@ -33,7 +36,7 @@ public class AndProfilesCondition implements Condition {
 		if (attrs == null) {
 			return true;
 		}
-		String[] activeProfiles = context.getEnvironment().getActiveProfiles();
+		List<String> activeProfiles = Arrays.asList(context.getEnvironment().getActiveProfiles());
 		String[] definedProfiles = (String[]) attrs.getFirst(VALUE);
 		Set<String> allowedProfiles = new HashSet<>(1);
 		Set<String> restrictedProfiles = new HashSet<>(1);
@@ -44,17 +47,7 @@ public class AndProfilesCondition implements Condition {
 			}
 			allowedProfiles.add(nextDefinedProfile);
 		}
-
-		for (String nextActiveProfile : activeProfiles) {
-			if (DEFAULT_PROFILE.equals(nextActiveProfile) && allowedProfiles.isEmpty()) {
-				continue;
-			}
-			if (!allowedProfiles.contains(nextActiveProfile) || restrictedProfiles.contains(nextActiveProfile)
-					|| allowedProfiles.size() != activeProfiles.length) {
-				return false;
-			}
-		}
-		return true;
+		return activeProfiles.containsAll(allowedProfiles) && !CollectionUtils.containsAny(activeProfiles, restrictedProfiles);
 	}
 
 }
