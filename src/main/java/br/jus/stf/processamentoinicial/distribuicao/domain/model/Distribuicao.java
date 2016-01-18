@@ -92,7 +92,7 @@ public abstract class Distribuicao implements ValueObject<Distribuicao> {
 	}
 	
 	public Processo executar() {
-		return ProcessoFactory.criarProcesso(this.peticao.classeProcessual(), sorteio(), this.peticao.partes(), this.peticao.pecas(), this.peticaoId);
+		return ProcessoFactory.criarProcesso(peticao.classeProcessual(), sorteio(), peticao.partes(), peticao.pecas(), peticaoId, peticao.tipoProcesso(), peticao.preferencias());
 	}
 	
 	@Override

@@ -52,9 +52,10 @@ public class TarefaRepositoryImpl implements TarefaRepository {
 		sql.append(" JOIN ACT_RU_IDENTITYLINK link ON task.ID_ = link.TASK_ID_");
 		sql.append(" WHERE link.GROUP_ID_ IN(");
 		IntStream.range(0, papeis.size())
-				 .mapToObj(i -> "'" + papeis.get(i) + "'" + (i < papeis.size()-1 ? "," : ")"))
+				 .mapToObj(i -> "'" + papeis.get(i) + "'" + (i < papeis.size()-1 ? "," : ""))
 				 .forEach(sql::append);
-
+		sql.append(")");
+		
 		return taskService.createNativeTaskQuery().sql(sql.toString()).list()
 				.stream()
 				.map(task -> newTarefa(task, taskService.getVariables(task.getId())))

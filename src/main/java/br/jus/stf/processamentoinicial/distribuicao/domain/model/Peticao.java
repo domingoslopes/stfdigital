@@ -5,10 +5,12 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflowId;
 import br.jus.stf.shared.stereotype.ValueObject;
 
@@ -22,12 +24,15 @@ public class Peticao implements ValueObject<Peticao> {
 	private Set<Parte> partes;
 	private Set<Peca> pecas;
 	private ProcessoWorkflowId processoWorkflowId;
+	private TipoProcesso tipoProcesso;
+	private Set<PreferenciaId> preferencias;
 	
-	public Peticao(final PeticaoId id, final ClasseId classeProcessual, final String tipo, final Set<Parte> partes, final Set<Peca> pecas, final ProcessoWorkflowId processoWorkflowId) {
+	public Peticao(final PeticaoId id, final ClasseId classeProcessual, final String tipo, final Set<Parte> partes, final Set<Peca> pecas, final ProcessoWorkflowId processoWorkflowId, final TipoProcesso tipoProcesso, final Set<PreferenciaId> preferencias) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
 		Validate.notBlank(tipo, "peticao.tipo.required");
 		Validate.notNull(processoWorkflowId, "peticao.processoWorkflowId.required");
+		Validate.notNull(tipoProcesso, "peticao.tipoProcesso.required");
 		
 		this.id = id;
 		this.classeProcessual = classeProcessual;
@@ -35,6 +40,8 @@ public class Peticao implements ValueObject<Peticao> {
 		this.partes = partes;
 		this.pecas = pecas;
 		this.processoWorkflowId = processoWorkflowId;
+		this.tipoProcesso = tipoProcesso;
+		this.preferencias = preferencias;
 	}
 	
 	public PeticaoId id() {
@@ -50,20 +57,28 @@ public class Peticao implements ValueObject<Peticao> {
 	}
 
 	public Set<Parte> partes() {
-		return Collections.unmodifiableSet(this.partes);
+		return Collections.unmodifiableSet(partes);
 	}
 	
 	public Set<Peca> pecas() {
-		return Collections.unmodifiableSet(this.pecas);
+		return Collections.unmodifiableSet(pecas);
 	}
 	
 	public ProcessoWorkflowId processoWorkflowId() {
 		return this.processoWorkflowId;
 	}
 	
+	public TipoProcesso tipoProcesso() {
+		return tipoProcesso;
+	}
+	
+	public Set<PreferenciaId> preferencias() {
+		return Collections.unmodifiableSet(preferencias);
+	}
+	
 	@Override
 	public boolean sameValueAs(Peticao other) {
-		return this.id.sameValueAs(other.id);
+		return id.sameValueAs(other.id);
 	}
 
 }

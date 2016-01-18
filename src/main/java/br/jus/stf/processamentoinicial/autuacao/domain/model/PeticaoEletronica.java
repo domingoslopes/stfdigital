@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
 
@@ -29,8 +30,8 @@ public class PeticaoEletronica extends Peticao {
 
 	public PeticaoEletronica(final PeticaoId id, final Long numero, final String usuarioCadastramento,
 			final ClasseId classeSugerida, final Set<PartePeticao> partes,
-			final Set<PecaPeticao> pecas) {
-		super(id, numero, usuarioCadastramento);
+			final Set<PecaPeticao> pecas, final TipoProcesso tipoProcesso) {
+		super(id, numero, usuarioCadastramento, tipoProcesso);
 
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		Validate.notEmpty(partes, "peticao.partes.notEmpty");
@@ -43,8 +44,8 @@ public class PeticaoEletronica extends Peticao {
 
 	public PeticaoEletronica(final PeticaoId id, final Long numero, final String usuarioCadastramento,
 			final ClasseId classeSugerida, final Set<PartePeticao> partes,
-			final Set<PecaPeticao> pecas, final Orgao orgaoRepresentado) {
-		super(id, numero, usuarioCadastramento);
+			final Set<PecaPeticao> pecas, final Orgao orgaoRepresentado, final TipoProcesso tipoProcesso) {
+		super(id, numero, usuarioCadastramento, tipoProcesso);
 
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
 		Validate.notEmpty(partes, "peticao.partes.notEmpty");

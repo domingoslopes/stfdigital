@@ -55,5 +55,18 @@ public interface ProcessoRepository {
 	 * @return a lista de processos
 	 */
 	public List<Processo> findByPessoaInPartes(PessoaId pessoaId);
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	public MotivoInaptidao findOneMotivoInaptidao(Long id);
+	
+	/**
+	 * Recupera a lista de motivos de inaptidão
+	 * 
+	 * @return a lista de motivos de inaptidão
+	 */
+	public List<MotivoInaptidao> findAllMotivoInaptidao();
 
 }
