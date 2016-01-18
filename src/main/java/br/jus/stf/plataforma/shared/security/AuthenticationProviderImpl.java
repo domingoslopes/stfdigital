@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.shared.security;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,13 +30,16 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String login = authentication.getName();
-        Set<GrantedAuthority> permissoes = acessosRestAdapter.carregarPermissoesUsuario(login);
-        if (permissoes.isEmpty()) {
-        	return null;
-        } else {
-        	User user = new User(login, PASS, permissoes);
+        Optional<UserDetails> userDetails = acessosRestAdapter.recuperarUsuario(login);
+        
+        if (userDetails.isPresent()) {
+        	Set<GrantedAuthority> permissoes = acessosRestAdapter.carregarPermissoesUsuario(login);
+        	userDetails.get().getPapeis().addAll(acessosRestAdapter.carregarPapeisUsuario(login));
+        	
+        	UserImpl user = new UserImpl(login, PASS, userDetails.get(), permissoes);
             return new UsernamePasswordAuthenticationToken(user, PASS, permissoes);
         }
+        return null;
 	}
 
 	@Override

@@ -22,6 +22,8 @@
     <logger name="org.springframework.messaging" level="WARN"/>
     <logger name="org.activiti.engine" level="WARN"/>
     <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.SQL" level="WARN"/>
+    <logger name="org.hibernate.type" level="WARN"/>
     <logger name="de.flapdoodle.embed.mongo.tests" level="WARN"/>
     <logger name="de.flapdoodle.embed.process.runtime" level="WARN"/>
     <logger name="org.elasticsearch" level="WARN"/>

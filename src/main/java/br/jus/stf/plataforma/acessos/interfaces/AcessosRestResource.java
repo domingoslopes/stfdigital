@@ -8,8 +8,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -114,19 +114,41 @@ public class AcessosRestResource {
 	
 	/**
 	 * Recupera as informações do usuário logado.
-	 * 
-	 * @param id Id do usuário.
+	 *
 	 * @return Informações do usuário.
 	 */
 	@ApiOperation("Recupera as informações do usuário logado.")
 	@RequestMapping(value="/usuario", method = RequestMethod.GET)
-	public UsuarioDto recuperarInformacoes() {
-		
-		String login = SecurityContextUtil.getUsername();
-		Set<GrantedAuthority> authorities = SecurityContextUtil.getAuthorities();
-		Usuario usuario = this.acessosApplicationService.recuperarInformacoesUsuario(login);
-		
-		return this.usuarioDtoAssembler.toDto(usuario, authorities);
+	public UsuarioDto recuperarUsuario() {
+		String login = SecurityContextUtil.getUser().getUsername();
+		return usuarioDtoAssembler.toDto(
+				acessosApplicationService.recuperarUsuario(login));
+	}
+	
+	/**
+	 * Recupera as informações do usuário informado.
+	 * 
+	 * @param usuarioId Id do usuário.
+	 * @return Informações do usuário.
+	 */
+	@ApiOperation("Recupera as informações do usuário informado.")
+	@RequestMapping(value="/usuarios/:usuarioId", method = RequestMethod.GET)
+	public UsuarioDto recuperarUsuario(@PathVariable("usuarioId") Long usuarioId) {
+		return usuarioDtoAssembler.toDto(
+				acessosApplicationService.recuperarUsuario(usuarioId));
+	}
+	
+	/**
+	 * Recupera as informações do usuário informado.
+	 * 
+	 * @param login do usuário.
+	 * @return Informações do usuário.
+	 */
+	@ApiOperation("Recupera as informações do usuário informado.")
+	@RequestMapping(value="/usuarios/:login.+", method = RequestMethod.GET)
+	public UsuarioDto recuperarUsuario(@PathVariable("login") String login) {
+		return usuarioDtoAssembler.toDto(
+				acessosApplicationService.recuperarUsuario(login));
 	}
 	
 	/**
@@ -138,11 +160,10 @@ public class AcessosRestResource {
 	@ApiOperation("Recupera o ID de um usuário.")
 	@RequestMapping("/usuarios/id")
 	public Long recuperarId(@RequestParam("login") String login) {
-		Usuario usuario = this.acessosApplicationService.recuperarInformacoesUsuario(login);
+		Usuario usuario = acessosApplicationService.recuperarUsuario(login);
 		return usuario.id().toLong();
 	}
 	
-
 	/**
 	 * Cadastra um novo usuário
 	 * 
@@ -167,6 +188,6 @@ public class AcessosRestResource {
 			command.getTelefone()
 		);
 		
-		return this.usuarioDtoAssembler.toDto(usuario, null);
+		return usuarioDtoAssembler.toDto(usuario);
 	}
 }

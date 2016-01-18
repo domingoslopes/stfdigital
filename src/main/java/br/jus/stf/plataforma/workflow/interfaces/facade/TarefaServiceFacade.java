@@ -32,8 +32,14 @@ public class TarefaServiceFacade {
     @Autowired 
     private TarefaApplicationService tarefaApplicationService;
     
-	public List<TarefaDto> tarefas() {    	
-        return tarefaRepository.listar().stream()
+	public List<TarefaDto> tarefas() {
+        return tarefaRepository.listarMinhas().stream()
+        		.map(tarefa -> tarefaDtoAssembler.toDto(tarefa))
+        		.collect(Collectors.toList());
+	}
+	
+	public List<TarefaDto> tarefasPorMeusPapeis() {
+		return tarefaRepository.listarPorMeusPapeis().stream()
         		.map(tarefa -> tarefaDtoAssembler.toDto(tarefa))
         		.collect(Collectors.toList());
 	}
@@ -55,8 +61,14 @@ public class TarefaServiceFacade {
 	
 	public TarefaDto consultarPorProcesso(Long id) {
 		ProcessoWorkflowId processoId = new ProcessoWorkflowId(id);
-		return Optional.ofNullable(tarefaRepository.consultarPorProcesso(processoId))
+		return Optional.ofNullable(tarefaRepository.consultarPor(processoId))
 				.map(tarefaDtoAssembler::toDto)
+				.orElse(null);
+	}
+
+	public List<TarefaDto> consultarPorProcessos(List<Long> ids) {
+		return Optional.ofNullable(ids)
+				.map(pids -> pids.stream().map(id -> consultarPorProcesso(id)).collect(Collectors.toList()))
 				.orElse(null);
 	}
 

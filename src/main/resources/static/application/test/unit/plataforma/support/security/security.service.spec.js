@@ -15,26 +15,7 @@
 			"id": 12,
 			"login": "gestor-cadastro",
 			"nome": "gestor-cadastro",
-			"setorLotacao": "CPIN",
-			"papeis": [
-	            {
-	            	"id": 10,
-	            	"nome": "gestor-cadastro",
-	            	"setor": ""
-        		}
-            ],
-            
-            "authorities": [
-                {
-                	"authority": "VISUALIZAR_NOTIFICACAO"
-        		},
-        		{
-        			"authority": "CRIAR_ASSOCIADO"
-				},
-				{
-					"authority": "CRIAR_NOTIFICACAO"
-				}
-			]
+			"setorLotacao": "CPIN"
 		};
 
 		beforeEach(module('appDev'));
@@ -56,15 +37,5 @@
 			expect(securityService).not.toEqual(null);
 		});
 		
-		
-		it('Deveria retornar falso quando um usuário não está logado', function() {
-			desativarMockUsuario = true;
-			expect(securityService.hasPapel("gestor-cadastro")).toBeFalsy();
-		});
-		
-		it('Deveria verificar se um usuário possui as permissões corretas', function() {
-			expect(securityService.hasPapel("gestor-cadastro")).toBeTruthy();
-			expect(securityService.hasPapel("sayajin")).toBeFalsy();
-		});
 	});
 })();

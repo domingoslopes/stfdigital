@@ -8,11 +8,14 @@
 		inject: ['$scope', 'msNavigationService'],
 
 		init: function() {
-			console.log(this.$scope.fabAction);
 			this.$scope.info = {};
-
 			this.$scope.info.breadcrumbs = this.generateBreadcrumbs();
 			this.$scope.info.title = this.$scope.info.breadcrumbs.current.label;
+
+			this.$scope.$on('$stateChangeSuccess', function () {
+				this.$scope.info.breadcrumbs = this.generateBreadcrumbs();
+				this.$scope.info.title = this.$scope.info.breadcrumbs.current.label;				
+			}.bind(this));
 		},
 
 		methods: {

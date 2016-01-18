@@ -15,25 +15,25 @@ public class Metadado implements ValueObject<Metadado>{
 	private static final long serialVersionUID = -5599873356967540055L;
 	
 	private String tipoInformacao;
-	private Object informacao;
+	private String informacao;
 	private String status;
 	private String descricao;
-	
-	public Metadado(Object informacao, String tipoInformacao, String status, String descricao) {
-		Validate.notNull(informacao, "metadado.informacao.required");
-		Validate.notBlank(tipoInformacao, "metadado.tipoInformacao.required");
-		Validate.notBlank(status, "metadado.status.required");
-		Validate.notNull(descricao, "metadado.descricao.required");
-		
-		this.informacao = informacao;
-		this.tipoInformacao = tipoInformacao;
-		this.status = status;
-		this.descricao = descricao;
-	}
 	
 	public Metadado(String status, String descricao) {
 		Validate.notBlank(status, "metadado.status.required");
 		
+		this.status = status;
+		this.descricao = descricao;
+	}
+	
+	public Metadado(String informacao, String tipoInformacao, String status, String descricao) {
+		Validate.notBlank(informacao, "metadado.informacao.required");
+		Validate.notBlank(tipoInformacao, "metadado.tipoInformacao.required");
+		Validate.notBlank(status, "metadado.status.required");
+		Validate.notBlank(descricao, "metadado.descricao.required");
+		
+		this.informacao = informacao;
+		this.tipoInformacao = tipoInformacao;
 		this.status = status;
 		this.descricao = descricao;
 	}
@@ -55,7 +55,7 @@ public class Metadado implements ValueObject<Metadado>{
 	}
 	
 	public static Metadado converte(Map<String, Object> variaveis) {
-		Object informacao = variaveis.get("informacao");
+		String informacao = (String) variaveis.get("informacao");
 		String tipoInformacao = (String) variaveis.get("tipoInformacao");
 		String status = (String) variaveis.get("status");
 		String descricao = (String) variaveis.get("descricao");

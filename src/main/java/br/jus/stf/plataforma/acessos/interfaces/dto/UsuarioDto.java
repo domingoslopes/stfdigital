@@ -1,9 +1,5 @@
 package br.jus.stf.plataforma.acessos.interfaces.dto;
 
-import java.util.Set;
-
-import org.springframework.security.core.GrantedAuthority;
-
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -18,31 +14,31 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Classe responsável por transportar os dados de usuário do back-end para o front-end.")
 public class UsuarioDto {
 
-	@ApiModelProperty(value="Id do usuário.")
+	@ApiModelProperty("Id do usuário.")
 	private Long id;
 	
-	@ApiModelProperty(value="Login do usuário.")
+	@ApiModelProperty("Login do usuário.")
 	private String login;
 	
-	@ApiModelProperty(value="Nome do usuário.")
+	@ApiModelProperty("Nome do usuário.")
 	private String nome;
 	
-	@ApiModelProperty(value="Setor de lotação do usuário.")
+	@ApiModelProperty("Identificador da pessoa.")
+	private Long pessoaId;
+	
+	@ApiModelProperty("Setor de lotação do usuário.")
 	private SetorDto setorLotacao;
 	
-	@ApiModelProperty(value="Lista de papéis associados ao usuário.")
-	private Set<PapelDto> papeis;
+	public UsuarioDto() {
+		
+	}
 	
-	@ApiModelProperty(value="Lista de permissões do usuário.")
-	private Set<GrantedAuthority> authorities;
-	
-	public UsuarioDto(Long id, String login, String nome, SetorDto setorLotacao, Set<PapelDto> papeis, Set<GrantedAuthority> authorities) {
+	public UsuarioDto(Long id, String login, String nome, Long pessoaId, SetorDto setorLotacao) {
 		this.id = id;
 		this.login = login;
 		this.nome = nome;
+		this.pessoaId = pessoaId;
 		this.setorLotacao = setorLotacao;
-		this.papeis = papeis;
-		this.authorities = authorities;
 	}
 	
 	public Long getId() {
@@ -68,6 +64,14 @@ public class UsuarioDto {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public Long getPessoaId() {
+		return this.pessoaId;
+	}
+
+	public void setPessoaId(Long pessoaId) {
+		this.pessoaId = pessoaId;
+	}
 
 	public SetorDto getSetorLotacao() {
 		return this.setorLotacao;
@@ -75,22 +79,6 @@ public class UsuarioDto {
 
 	public void setSetorLotacao(SetorDto setorLotacao) {
 		this.setorLotacao = setorLotacao;
-	}
-
-	public Set<PapelDto> getPapeis() {
-		return this.papeis;
-	}
-
-	public void setPapeis(Set<PapelDto> papeis) {
-		this.papeis = papeis;
-	}
-
-	public Set<GrantedAuthority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<GrantedAuthority> authorities) {
-		this.authorities = authorities;
 	}
 	
 }

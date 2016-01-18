@@ -104,7 +104,7 @@ public class MonitoredRequest {
 	 * @return o usuário logado na aplicação
 	 */
 	public String username() {
-		return SecurityContextUtil.getUsername();
+		return SecurityContextUtil.getUser().getUsername();
 	}
 
 	/**
