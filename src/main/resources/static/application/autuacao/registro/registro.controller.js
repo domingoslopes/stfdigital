@@ -64,7 +64,7 @@
 			dto.quantidadeApensos = quantidadeApensos;
 			dto.formaRecebimento = formaRecebimento;
 			dto.numeroSedex = numeroSedex;
-			dto.tipoProcesso = tipoProcesso;
+			dto.tipoProcesso = tipoProcesso.id;
 			
 			return dto;
 		}
