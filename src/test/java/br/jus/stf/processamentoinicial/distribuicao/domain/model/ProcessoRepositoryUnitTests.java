@@ -16,10 +16,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -60,7 +58,7 @@ public class ProcessoRepositoryUnitTests {
 	}
 
 	private Processo processo() {
-		return new Processo(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO);
+		return new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, new MinistroId(1L), new PeticaoId(1L), partes, pecas, ProcessoSituacao.DISTRIBUIDO, null);
 	}
 	
 	@Test

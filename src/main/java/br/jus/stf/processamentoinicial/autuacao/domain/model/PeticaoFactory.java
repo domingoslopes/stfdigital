@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -47,7 +50,7 @@ public class PeticaoFactory {
 	 * @param orgaoId o ID do órgão do representante
 	 * @return a petição
 	 */
-	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecasTemporarias, Optional<Long> orgaoId) {
+	public PeticaoEletronica criarPeticaoEletronica(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecasTemporarias, Optional<Long> orgaoId, TipoProcesso tipoProcesso) {
 		
 		Set<PartePeticao> partes = new HashSet<PartePeticao>();
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
@@ -62,10 +65,10 @@ public class PeticaoFactory {
 		if (orgaoId.isPresent()) {
 			Orgao orgao = peticaoRepository.findOneOrgao(orgaoId.get());
 			
-			return new PeticaoEletronica(id, numero, usuarioCadastramento, classeSugerida, partes, pecas, orgao);
+			return new PeticaoEletronica(id, numero, usuarioCadastramento, classeSugerida, partes, pecas, orgao, tipoProcesso);
 		}
 		
-		return new PeticaoEletronica(id, numero, usuarioCadastramento, classeSugerida, partes, pecas);
+		return new PeticaoEletronica(id, numero, usuarioCadastramento, classeSugerida, partes, pecas, tipoProcesso);
 	}
 
 	/**
@@ -77,12 +80,12 @@ public class PeticaoFactory {
 	 * @param numeroSedex
 	 * @return a petição
 	 */
-	public PeticaoFisica criarPeticaoFisica(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex) {
+	public PeticaoFisica criarPeticaoFisica(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex, TipoProcesso tipoProcesso) {
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
 		String usuarioCadastramento = SecurityContextUtil.getUser().getUsername();
 		
-		return new PeticaoFisica(id, numero, usuarioCadastramento, volumes, apensos, formaRecebimento, numeroSedex);
+		return new PeticaoFisica(id, numero, usuarioCadastramento, volumes, apensos, formaRecebimento, numeroSedex, tipoProcesso);
 	}
 	
 	/**

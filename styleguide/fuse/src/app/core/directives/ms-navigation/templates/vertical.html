@@ -13,20 +13,21 @@
             <i class="icon s16 {{node.icon}}" ng-if="node.icon"></i>
             <span class="title" translate="{{node.translate}}" flex>{{node.title}}</span>
             <span class="badge white-fg" ng-style="{'background': node.badge.color}" ng-if="node.badge">{{node.badge.content}}</span>
-            <i class="icon-chevron-right s16 arrow" ng-if="vm.collapsable && vm.hasChildren"></i>
+            <i class="icon-chevron-right s16 arrow" ng-if="vm.collapsable && vm.hasVisibleChildren"></i>
         </div>
 
         <a class="ms-navigation-button" ui-sref="{{node.uisref}}" ui-sref-active="active md-accent-bg"
+           ng-class="{'active md-accent-bg': vm.transcientActive}"
            ng-if="node.uisref && node.title">
             <i class="icon s16 {{node.icon}}" ng-if="node.icon"></i>
             <span class="title" translate="{{node.translate}}" flex>{{node.title}}</span>
             <span class="badge white-fg" ng-style="{'background': node.badge.color}" ng-if="node.badge">{{node.badge.content}}</span>
-            <i class="icon-chevron-right s16 arrow" ng-if="vm.collapsable && vm.hasChildren"></i>
+            <i class="icon-chevron-right s16 arrow" ng-if="vm.collapsable && vm.hasVisibleChildren"></i>
         </a>
 
     </div>
 
-    <ul ng-if="vm.hasChildren">
+    <ul ng-if="vm.hasVisibleChildren">
         <li ng-repeat="node in node.children" ms-navigation-node="node"
             ng-class="{'collapsed': vm.collapsed, 'has-children': vm.hasChildren}"
             ng-include="'navigation-nested.html'"></li>

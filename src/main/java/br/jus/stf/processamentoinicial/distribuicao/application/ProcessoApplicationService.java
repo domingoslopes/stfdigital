@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.application;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -10,8 +12,14 @@ import br.jus.stf.processamentoinicial.distribuicao.domain.model.DistribuicaoCom
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.DistribuicaoPrevencao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoSituacao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
+import br.jus.stf.shared.ProcessoId;
 
 /**
  * @author Lucas Rodrigues
@@ -59,6 +67,17 @@ public class ProcessoApplicationService {
 		processoRepository.save(processo);
 		tarefaAdapter.completarDistribuicao(parametroDistribuicao.peticao());
 		processoApplicationEvent.processoDistribuido(processo);
+		return processo;
+	}
+	
+	/**
+	 * Cadastra um processo recursal.
+	 * 
+	 */
+	public ProcessoRecursal cadastrarRecursal(ProcessoId processoId, ClasseId classeId, Long numero, PeticaoId peticaoId, ProcessoSituacao situacao, Set<PreferenciaId> preferencias) {
+		ProcessoRecursal processo = new ProcessoRecursal(processoId, classeId, numero, peticaoId, situacao, preferencias);
+		
+		processoRepository.save(processo);
 		return processo;
 	}
 

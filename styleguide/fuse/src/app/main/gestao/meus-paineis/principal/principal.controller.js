@@ -11,7 +11,7 @@
 		init: function() {
 			this.$http.get('app/data/sample/gestao/meus-paineis/dashboard-widgets.json').then(function(response) {
 				var dashboardData = response.data;
-				
+
 				this.widget1 = dashboardData.widget1;
 				this.widget2 = dashboardData.widget2;
 				this.widget3 = dashboardData.widget3;
@@ -19,9 +19,9 @@
 
 				// Widget 5
 		        this.widget5 = {
-		            title: dashboardData.widget5.title,
-		            mainChart: {
-		                config: {
+		            title       : dashboardData.widget5.title,
+		            mainChart   : {
+		                config : {
 		                    refreshDataOnly: true,
 		                    deepWatchData  : true
 		                },
@@ -151,7 +151,7 @@
 		                                tickFormat: function (d)
 		                                {
 		                                    return this.widget5.days[d];
-		                                }
+		                                }.bind(this)
 		                            },
 		                            interactiveLayer       : {
 		                                tooltip: {
@@ -167,25 +167,47 @@
 		            days        : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 		            ranges      : dashboardData.widget5.ranges,
 		            currentRange: '',
-		            changeRange : function (range) {
+		            changeRange : function (range)
+		            {
 		                this.widget5.currentRange = range;
 
+		                /**
+		                 * Update main chart data by iterating through the
+		                 * chart dataset and separately adding every single
+		                 * dataset by hand.
+		                 *
+		                 * You MUST NOT swap the entire data object by doing
+		                 * something similar to this:
+		                 * this.widget.mainChart.data = chartData
+		                 *
+		                 * It would be easier but it won't work with the
+		                 * live updating / animated charts due to how d3
+		                 * works.
+		                 *
+		                 * If you don't need animated / live updating charts,
+		                 * you can simplify these greatly.
+		                 */
 		                angular.forEach(dashboardData.widget5.mainChart, function (chartData, index)
 		                {
 		                    this.widget5.mainChart.data[index] = {
 		                        key   : chartData.key,
 		                        values: chartData.values[range]
 		                    };
-		                });
+		                }.bind(this));
 
+		                /**
+		                 * Do the same thing for the supporting widgets but they
+		                 * only have 1 dataset so we can do [0] without needing to
+		                 * iterate through in their data arrays
+		                 */
 		                angular.forEach(dashboardData.widget5.supporting, function (widget, name)
 		                {
 		                    this.widget5.supporting.widgets[name].chart.data[0] = {
 		                        key   : widget.chart.key,
 		                        values: widget.chart.values[range]
 		                    };
-		                });
-		            },
+		                }.bind(this));
+		            }.bind(this),
 		            init        : function ()
 		            {
 		                // Run this function once to initialize widget
@@ -194,7 +216,7 @@
 		                 * Update the range for the first time
 		                 */
 		                this.widget5.changeRange('TW');
-		            }
+		            }.bind(this)
 		        };
 
 		        // Widget 6
@@ -267,8 +289,8 @@
 		                        label: data.label,
 		                        value: data.values[range]
 		                    };
-		                });
-		            },
+		                }.bind(this));
+		            }.bind(this),
 		            init        : function ()
 		            {
 		                // Run this function once to initialize widget
@@ -277,7 +299,7 @@
 		                 * Update the range for the first time
 		                 */
 		                this.widget6.changeRange('TW');
-		            }
+		            }.bind(this)
 		        };
 
 		        // Widget 7
@@ -287,13 +309,13 @@
 		            schedule    : dashboardData.widget7.schedule,
 		            currentRange: 'T'
 		        };
+
+		        this.widget5.init();
+		        this.widget6.init();
 			}.bind(this));
 		},
 
 		methods: {
-			foo: function() {
-				console.log("bar");
-			}
 		}
 	})
 })();

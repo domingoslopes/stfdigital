@@ -32,7 +32,7 @@
 		}));
 
 		it('Deveria carregar o identificador da petição no escopo do controlador', function() {
-			expect(scope.idPeticao).toEqual(1);
+			expect(scope.peticaoId).toEqual(1);
 		});
 		
 		it('Deveria carregar a lista de ministros no escopo do controlador', function() {

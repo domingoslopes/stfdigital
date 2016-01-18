@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.processamentoinicial.distribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.shared.ClasseId;
@@ -60,6 +61,22 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 	public List<Processo> findByPessoaInPartes(PessoaId pessoaId) {
 		Query query = entityManager.createQuery("SELECT proc FROM Processo proc INNER JOIN proc.partes part WITH part.pessoaId = :pessoaId");
 		query.setParameter("pessoaId", pessoaId);
+		
+		return query.getResultList();
+	}
+	
+	@Override
+	public MotivoInaptidao findOneMotivoInaptidao(Long id) {
+		Query query = entityManager.createQuery("SELECT motivo FROM MotivoInaptidao motivo WHERE motivo.sequencial = :id");
+		query.setParameter("id", id);
+		
+		return (MotivoInaptidao)query.getSingleResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MotivoInaptidao> findAllMotivoInaptidao() {
+		Query query = entityManager.createQuery("SELECT motivo FROM MotivoInaptidao motivo ORDER BY motivo.descricao");
 		
 		return query.getResultList();
 	}

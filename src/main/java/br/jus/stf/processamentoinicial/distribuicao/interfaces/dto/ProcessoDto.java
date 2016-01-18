@@ -34,13 +34,16 @@ public class ProcessoDto {
 	@ApiModelProperty(value = "A lista de partes do polo ativo e a lista de partes do polo passivo")
 	private Map<String, List<Long>> partes;
 	
-	@ApiModelProperty(value = "A lista de peças anexadas")
+	@ApiModelProperty(value = "A lista de peças anexadas.")
 	private List<PecaDto> pecas;
 	
 	@ApiModelProperty(value = "Dituação do processo.")
 	private String situacao;
 	
-	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao) {
+	@ApiModelProperty(value = "A lista de preferências.")
+	private List<Long> preferencias;
+	
+	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, List<Long> preferencias) {
 		this.id = id;
 		this.classe = classe;
 		this.numero = numero;
@@ -48,6 +51,7 @@ public class ProcessoDto {
 		this.partes = partes;
 		this.pecas = pecas;
 		this.situacao = situacao;
+		this.preferencias = preferencias;
 	}
 	
 	public Long getId() {
@@ -75,7 +79,11 @@ public class ProcessoDto {
 	}
 	
 	public String getSituacao(){
-		return this.situacao;
+		return situacao;
+	}
+	
+	public List<Long> getPreferencias() {
+		return preferencias;
 	}
 	
 }

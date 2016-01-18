@@ -26,7 +26,7 @@
 				var stateParams = {'resources': resources};
 				
 				fakePeticaoService = {
-					consultar: function(){},
+					consultarVarias: function(){},
 					assinarDevolucao: function(){}
 				};
 				
@@ -131,7 +131,7 @@
 					"numeroSedex" : "10"
 				};
 				
-				spyOn(fakePeticaoService, 'consultar').and.returnValue($q.when(fakePeticao));
+				spyOn(fakePeticaoService, 'consultarVarias').and.returnValue($q.when([fakePeticao]));
 				spyOn(fakePeticaoService, 'assinarDevolucao').and.returnValue($q.when());
 				
 				spyOn(fakePecaService, 'montarUrlConteudo').and.returnValue('url-fake');
@@ -158,7 +158,7 @@
 			
 			it('Deveria detectar resources como ids a partir de objetos', function() {
 				scope.$apply();
-				expect(fakePeticaoService.consultar).toHaveBeenCalledWith(6);
+				expect(fakePeticaoService.consultarVarias).toHaveBeenCalledWith([6]);
 			});
 		});
 		
