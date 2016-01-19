@@ -39,6 +39,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;

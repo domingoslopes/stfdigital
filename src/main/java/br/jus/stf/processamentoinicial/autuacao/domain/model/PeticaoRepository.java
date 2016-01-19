@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.shared.PeticaoId;
 
 /**

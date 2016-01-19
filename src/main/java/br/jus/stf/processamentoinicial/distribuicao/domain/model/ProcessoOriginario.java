@@ -5,8 +5,6 @@ import java.util.Set;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;

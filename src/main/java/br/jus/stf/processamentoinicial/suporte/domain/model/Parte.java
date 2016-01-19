@@ -1,4 +1,4 @@
-package br.jus.stf.processamentoinicial.autuacao.domain.model;
+package br.jus.stf.processamentoinicial.suporte.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -30,7 +30,7 @@ public abstract class Parte implements ValueObject<Parte> {
 	@Enumerated(EnumType.STRING)
 	private TipoPolo polo;
 
-	Parte() {
+	protected Parte() {
 
 	}
 	

@@ -2,7 +2,7 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces.dto;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 
 /**
  * Contém a lógica de transformação da peça armazenada na base de dados

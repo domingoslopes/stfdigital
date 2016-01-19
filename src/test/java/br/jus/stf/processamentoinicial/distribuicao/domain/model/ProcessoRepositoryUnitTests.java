@@ -16,10 +16,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPeca;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
