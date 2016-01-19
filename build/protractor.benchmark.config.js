@@ -1,0 +1,37 @@
+/**
+ * Configurações para o Protractor, usado para testes de benchmark e2e.
+ * 
+ * @author Tomas.Godoi
+ */
+'use strict';
+
+var HtmlReporter = require('protractor-html-screenshot-reporter');
+var baseDir = 'src/main/resources/static';
+var port = 3000;
+
+exports.config = {
+	jasmineNodeOpts : {
+		showColors : true,
+		defaultTimeoutInterval : 600000
+	},
+
+	specs : [ baseDir + '/application/test/benchmark/**/{pattern}.benchmark.js' ],
+
+	capabilities : {
+		'browserName' : 'chrome'
+	},
+	
+	seleniumArgs : [ 
+	    '-browserTimeout=60' 
+	],
+	
+	baseUrl : 'https://127.0.0.1:' + port,
+	
+	onPrepare: function() {
+		browser.driver.manage().window().maximize();
+		jasmine.getEnv().addReporter(new HtmlReporter({
+			baseDirectory : 'src/main/resources/static/application/test/benchmark/results',
+			takeScreenShotsOnlyForFailedSpecs: true
+		}));
+	}
+};

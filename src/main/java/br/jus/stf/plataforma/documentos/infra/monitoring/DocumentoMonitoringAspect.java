@@ -1,54 +1,51 @@
 package br.jus.stf.plataforma.documentos.infra.monitoring;
 
-import java.time.Duration;
-import java.time.Instant;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.monitoring.method.MethodCall;
+import br.jus.stf.plataforma.monitoring.method.MethodMonitoringAspect;
 
 /**
- * Aspecto para monitoramento do armazenamento de documentos.
+ * Aspecto para monitoramento de chamadas de métodos de armazenamento/recuperação de documentos.
  * 
  * @author Tomas.Godoi
  *
  */
 @Aspect
 @Component
-public class DocumentoMonitoringAspect {
+public class DocumentoMonitoringAspect extends MethodMonitoringAspect {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DocumentoMonitoringAspect.class);
-	@Autowired
-	private DocumentoMonitoringReporter monitoringReporter;
-
+	private static final String MONITOR_GROUP = "PersistenciaDocumento";
+	
 	/**
 	 * Monitora a operação save().
 	 * 
 	 * @param proceedingJoinPoint
 	 * @return
-	 * @throws Throwable 
+	 * @throws Throwable
 	 */
 	@Around("execution(* br.jus.stf.plataforma.documentos.infra.persistence.ConteudoDocumentoRepository.save(..))")
 	public Object saveMonitoringAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-		DocumentoOperation documentoOperation = new DocumentoOperation();
+		MethodCall methodCall = new MethodCall();
 		try {
 			Object[] args = proceedingJoinPoint.getArgs();
 			DocumentoTemporario temp = (DocumentoTemporario) args[1];
-			documentoOperation.setSize(temp.tamanho());
-			documentoOperation.setOperation("save()");
-			Object value = monitorOperation(proceedingJoinPoint, documentoOperation);
+			methodCall.setResourceSize(temp.tamanho());
+			methodCall.setMethod("save()");
+			methodCall.setMonitorGroup(MONITOR_GROUP);
+			
+			Object value = monitorMethodCall(proceedingJoinPoint, methodCall);
+			
 			String id = (String) value;
-			documentoOperation.setId(id);
+			methodCall.setResourceId(id);
 			return value;
 		} finally {
-			monitoringReporter.reportDocumentoOperation(documentoOperation);
+			monitoringReporter.reportDocumentoOperation(methodCall);
 		}
 	}
 
@@ -57,55 +54,25 @@ public class DocumentoMonitoringAspect {
 	 * 
 	 * @param proceedingJoinPoint
 	 * @return
-	 * @throws Throwable 
+	 * @throws Throwable
 	 */
 	@Around("execution(* br.jus.stf.plataforma.documentos.infra.persistence.ConteudoDocumentoRepository.downloadConteudo(..))")
 	public Object downloadMonitoringAdvice(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-		DocumentoOperation documentoOperation = new DocumentoOperation();
+		MethodCall methodCall = new MethodCall();
 		try {
 			Object[] args = proceedingJoinPoint.getArgs();
 			String id = (String) args[0];
-			documentoOperation.setId(id);
-			documentoOperation.setOperation("downloadConteudo()");
-			Object value = monitorOperation(proceedingJoinPoint, documentoOperation);
+			methodCall.setResourceId(id);
+			methodCall.setMethod("downloadConteudo()");
+			methodCall.setMonitorGroup(MONITOR_GROUP);
+			
+			Object value = monitorMethodCall(proceedingJoinPoint, methodCall);
+			
 			ConteudoDocumentoDownload cdd = (ConteudoDocumentoDownload) value;
-			documentoOperation.setSize(cdd.tamanho());
+			methodCall.setResourceSize(cdd.tamanho());
 			return value;
 		} finally {
-			monitoringReporter.reportDocumentoOperation(documentoOperation);
+			monitoringReporter.reportDocumentoOperation(methodCall);
 		}
-	}
-
-	/**
-	 * 
-	 * Monitora a duração da operação.
-	 * 
-	 * @param proceedingJoinPoint
-	 * @param documentoOperation
-	 * @return
-	 * @throws Throwable 
-	 */
-	private Object monitorOperation(ProceedingJoinPoint proceedingJoinPoint, DocumentoOperation documentoOperation) throws Throwable {
-		Instant start = null;
-		Instant end = null;
-		Object value = null;
-		documentoOperation.setPersisterClass(proceedingJoinPoint.getTarget().getClass().getSimpleName());
-		try {
-			start = Instant.now();
-			value = proceedingJoinPoint.proceed();
-			end = Instant.now();
-			documentoOperation.setErrorOcurred(false);
-		} catch (Throwable e) {
-			end = Instant.now(); // Não foi colocado no finally para não contabilizar a possível exceção.
-			documentoOperation.setErrorOcurred(true);
-			throw e;
-		} finally {
-			if (start != null && end != null) {
-				documentoOperation.setDurationInMillis(Duration.between(start, end).toMillis());
-				long durationInMillis = Duration.between(start, end).toMillis();
-				LOGGER.debug("Demorou " + durationInMillis + "ms ");
-			}
-		}
-		return value;
 	}
 }
