@@ -7,11 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.ParteProcesso;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;

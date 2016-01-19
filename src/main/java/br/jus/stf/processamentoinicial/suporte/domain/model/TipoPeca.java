@@ -1,4 +1,4 @@
-package br.jus.stf.processamentoinicial.autuacao.domain.model;
+package br.jus.stf.processamentoinicial.suporte.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
