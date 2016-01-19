@@ -12,6 +12,7 @@ import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 import br.jus.stf.shared.GrupoId;
 import br.jus.stf.shared.PapelId;
 import br.jus.stf.shared.PessoaId;
+import br.jus.stf.shared.RecursoId;
 import br.jus.stf.shared.SegmentoId;
 import br.jus.stf.shared.UsuarioId;
 
@@ -58,7 +59,7 @@ public class PermissaoUsuarioUnitTests {
 		permissoes.add(criarPessoa);
 		permissoes.add(criarPeca);
 		
-		Recurso autuar = new Recurso(2L, "Autuar", ResourceType.ACAO, permissoes);
+		Recurso autuar = new Recurso(new RecursoId(2L), "Autuar", ResourceType.ACAO, permissoes);
 		
 		Assert.assertTrue(usuario.possuiAcessoNo(autuar));
 	}
@@ -75,7 +76,7 @@ public class PermissaoUsuarioUnitTests {
 		permissoes.add(pesquisarPeticaoEletronica);
 		
 		
-		Recurso distribuir = new Recurso(1L, "Distribuir", ResourceType.ACAO, permissoes);
+		Recurso distribuir = new Recurso(new RecursoId(1L), "Distribuir", ResourceType.ACAO, permissoes);
 		
 		Assert.assertFalse(usuario.possuiAcessoNo(distribuir));
 	}
@@ -98,7 +99,7 @@ public class PermissaoUsuarioUnitTests {
 		distribuidor.atribuirPermissoes(permissoes);
 		usuario.atribuirPapeis(papeis);
 		
-		Recurso distribuir = new Recurso(1L, "Distribuir", ResourceType.ACAO, permissoes);
+		Recurso distribuir = new Recurso(new RecursoId(1L), "Distribuir", ResourceType.ACAO, permissoes);
 		
 		Assert.assertTrue(usuario.possuiAcessoNo(distribuir));
 	}
@@ -121,7 +122,7 @@ public class PermissaoUsuarioUnitTests {
 		agu.atribuirPermissoes(permissoes);
 		usuario.atribuirGrupos(grupos);
 		
-		Recurso distribuir = new Recurso(1L, "Distribuir", ResourceType.ACAO, permissoes);
+		Recurso distribuir = new Recurso(new RecursoId(1L), "Distribuir", ResourceType.ACAO, permissoes);
 		
 		Assert.assertTrue(usuario.possuiAcessoNo(distribuir));
 	}
