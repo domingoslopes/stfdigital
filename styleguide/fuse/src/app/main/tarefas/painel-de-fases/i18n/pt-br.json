@@ -5,7 +5,45 @@
 			"PROCESSO-DE-AUTUACAO": "Processo de Atuaução",
 			"RECEBIMENTO-DE-REMESSAS": "Recebimento de Remessas",
 			"DISTRIBUICAO-DE-PROCESSOS": "Distribuição de Processos",
-			"QUAL-PAINEL-VISUALIZAR": "Qual painel deseja visualizar?"
+			"QUAL-PAINEL-VISUALIZAR": "Qual painel deseja visualizar?",
+			"FASES": "Fases",
+
+			"LIMPAR-FILTROS": "Limpar filtros",
+			"FILTRAR-CARTOES": "Filtrar cartões",
+
+			"CONFIGURACOES": "Configurações",
+
+			"SIDEBAR": {
+				"TITULO": {
+					"CONFIGURACOES": "Configurações",
+					"COR-DO-PAINEL": "Cor do Painel",
+					"ROTULOS": "Rótulos",
+					"MEMBROS": "Membros",
+					"FILTRAR-CARTOES": "Filtrar cartões"
+				},
+
+				"COR-DO-PAINEL": {
+					"COR-SELECIONADA": "Cor Selecionada: "
+				},
+
+				"ROTULOS": {
+					"ADICIONAR-ROTULO": "Adicionar rótulo",
+					"DIGITE-NOVO-ROTULO": "Digite um novo rótulo"
+				},
+
+				"MEMBROS": {
+					"ADICIONAR-NOVO-MEMBRO": "Adicionar novo membro",
+					"ADICIONAR": "Adicionar",
+					"DIGITE-NOME": "Digite o nome"
+				},
+
+				"FILTRO": {
+					"POR-NOME": "Filtrar pelo nome",
+					"LIMPAR-FILTROS": "Filtrar cartões",
+					"DIGITE-NOME": "Digite o nome",
+					"POR-ROTULO": "Filtrar por rótulos"
+				}
+			}
 		}
 	}	
 }
