@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Parte;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
