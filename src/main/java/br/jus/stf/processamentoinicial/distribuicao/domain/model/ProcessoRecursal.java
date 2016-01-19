@@ -3,17 +3,21 @@ package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.ClasseId;
@@ -32,13 +36,23 @@ import br.jus.stf.shared.TeseId;
 @DiscriminatorValue("RECURSAL")
 public class ProcessoRecursal extends Processo {
 	
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection
 	@CollectionTable(name = "PROCESSO_ASSUNTO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<AssuntoId> assuntos = new HashSet<AssuntoId>(0);
 	
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection
 	@CollectionTable(name = "PROCESSO_TESE", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<TeseId> teses = new HashSet<TeseId>(0);
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = MotivoInaptidaoProcesso.class)
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	private Set<MotivoInaptidaoProcesso> motivosInaptidao = new HashSet<MotivoInaptidaoProcesso>(0);
+	
+	@Column(name = "DSC_ANALISE")
+	private String observacaoAnalise;
+	
+	@Column(name = "TIP_CLASSIFICACAO")
+	private Classificacao classificacao;
 
 	ProcessoRecursal() {
 
@@ -98,6 +112,31 @@ public class ProcessoRecursal extends Processo {
 				teseIterator.remove();
 			}
 		}
+	}
+	
+	public Set<MotivoInaptidaoProcesso> motivosInaptidao(){
+		return Collections.unmodifiableSet(motivosInaptidao);
+	}
+	
+	public void autuar(Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
+		Optional.ofNullable(assuntos).ifPresent(a -> {
+			if (!a.isEmpty()) {
+				atribuirAssuntos(a);
+			}
+		});
+		poloAtivo.forEach(parte -> super.adicionarParte(parte));
+		poloPassivo.forEach(parte -> super.adicionarParte(parte));
+	}
+	
+	public void analisar(String observacaoAnalise) {
+		this.observacaoAnalise = observacaoAnalise;
+	}
+	
+	public void analisarInapto(Set<MotivoInaptidaoProcesso> motivosInaptidao, String observacaoAnalise) {
+		Validate.notEmpty(motivosInaptidao, "processoRecursal.motivosInaptidao.required");
+		
+		this.motivosInaptidao.addAll(motivosInaptidao);
+		analisar(observacaoAnalise);
 	}
 
 }
