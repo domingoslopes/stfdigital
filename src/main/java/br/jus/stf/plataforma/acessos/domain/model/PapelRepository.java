@@ -3,6 +3,7 @@ package br.jus.stf.plataforma.acessos.domain.model;
 import java.util.List;
 
 import br.jus.stf.shared.PapelId;
+import br.jus.stf.shared.RecursoId;
 
 
 /**
@@ -44,5 +45,13 @@ public interface PapelRepository {
 	 * @return
 	 */
 	public PapelId nextId();
+
+	/**
+	 * Consulta papeis relacionados a um recurso
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<Papel> findPapelByRecurso(RecursoId id);
 
 }
