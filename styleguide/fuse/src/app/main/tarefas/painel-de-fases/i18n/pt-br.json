@@ -1,7 +1,11 @@
 {
 	"TAREFAS": {
 		"PAINEL-DE-FASES": {
-			"PAINEL-DE-FASES": "Painel de Fases"
+			"PAINEL-DE-FASES": "Painel de Fases",
+			"PROCESSO-DE-AUTUACAO": "Processo de Atuaução",
+			"RECEBIMENTO-DE-REMESSAS": "Recebimento de Remessas",
+			"DISTRIBUICAO-DE-PROCESSOS": "Distribuição de Processos",
+			"QUAL-PAINEL-VISUALIZAR": "Qual painel deseja visualizar?"
 		}
 	}	
 }
