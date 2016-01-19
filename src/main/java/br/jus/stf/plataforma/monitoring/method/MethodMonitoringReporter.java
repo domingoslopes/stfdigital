@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.documentos.infra.monitoring;
+package br.jus.stf.plataforma.monitoring.method;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -13,28 +13,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.jus.stf.plataforma.documentos.infra.configuration.DocumentoMonitoringConfiguration;
 import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 
 /**
- * Componente para indexação das operações de monitoramento de documento.
+ * Componente para indexação das operações de monitoramento de métodos.
  * 
  * @author Tomas.Godoi
  *
  */
 @Component
-public class DocumentoMonitoringReporter {
+public class MethodMonitoringReporter {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DocumentoMonitoringReporter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MethodMonitoringReporter.class);
 	@Autowired
 	private IndexadorRestResource indexadorRestResource;
 
-	public void reportDocumentoOperation(DocumentoOperation documentoOperation) {
+	public void reportDocumentoOperation(MethodCall documentoOperation) {
 		IndexarCommand command = new IndexarCommand();
 		command.setId(UUID.randomUUID().toString());
 		command.setTipo(documentoOperation.getClass().getSimpleName());
-		command.setIndice(DocumentoMonitoringConfiguration.INDICE_MONITORING_DOCUMENTO);
+		command.setIndice(MethodMonitoringConfiguration.INDICE_MONITORING_METHOD);
 		try {
 			command.setObjeto(parseToJson(documentoOperation));
 			indexadorRestResource.indexar(command, new BeanPropertyBindingResult(command, "indexarCommand"));
@@ -43,7 +42,7 @@ public class DocumentoMonitoringReporter {
 		}
 	}
 
-	private JsonNode parseToJson(DocumentoOperation documentoOperation) throws IOException, JsonProcessingException {
+	private JsonNode parseToJson(MethodCall documentoOperation) throws IOException, JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		return objectMapper.readTree(objectMapper.writeValueAsString(documentoOperation));
 	}

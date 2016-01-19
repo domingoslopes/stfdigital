@@ -30,6 +30,7 @@ application.log
 # Tests
 src/main/resources/static/application/test/e2e/results/*
 src/main/resources/static/application/test/unit/results/*
+src/main/resources/static/application/test/benchmark/results/*
 
 /data/
 
