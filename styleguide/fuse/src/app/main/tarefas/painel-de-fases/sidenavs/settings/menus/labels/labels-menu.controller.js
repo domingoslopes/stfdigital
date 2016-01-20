@@ -7,7 +7,7 @@
 
         name: 'LabelsMenuController',
 
-        inject: ['$document', '$mdColorPalette', '$mdDialog', 'fuseGenerator', 'msUtils', 'BoardService'],
+        inject: ['$document', '$mdColorPalette', '$mdDialog', '$filter', 'fuseGenerator', 'msUtils', 'BoardService'],
     
         init: function() {
             this.board = this.BoardService.data;
@@ -16,7 +16,7 @@
             this.hue = 500;
             this.newLabelColor = 'red';
             this.newLabelName = '';
-
+            this.translate = this.$filter('translate');
         },
         
         methods: {
@@ -40,15 +40,15 @@
              */
             removeLabel: function(ev, labelId) {
                 var confirm = this.$mdDialog.confirm({
-                    title              : 'Remove Label',
+                    title              : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER-ROTULO'),
                     parent             : this.$document.find('#scrumboard'),
-                    textContent        : 'Are you sure want to remove label?',
-                    ariaLabel          : 'remove label',
+                    textContent        : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER-ROTULO-CONFIRMACAO'),
+                    ariaLabel          : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER-ROTULO'),
                     targetEvent        : ev,
                     clickOutsideToClose: true,
                     escapeToClose      : true,
-                    ok                 : 'Remove',
-                    cancel             : 'Cancel'
+                    ok                 : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER'),
+                    cancel             : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.CANCELAR')
                 });
 
                 this.$mdDialog.show(confirm).then(function () {
