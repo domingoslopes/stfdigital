@@ -116,6 +116,15 @@
 					templateUrl: 'application/autuacao/preautuacao/preautuacao.tpl.html'
 				}
 			}
+		}).state('preautuar-recursal', {
+			parent: 'action.autuacao',
+			url: '/peticao/preautuacao/recursal',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao.tpl.html'
+				}
+			}
 		}).state('autuar', {
 			parent: 'action.autuacao',
 			url: '/peticao/autuacao',
