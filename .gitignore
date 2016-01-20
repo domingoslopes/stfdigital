@@ -37,4 +37,4 @@ src/main/resources/static/application/test/unit/results/*
 styleguide/fuse/bower_components
 styleguide/fuse/node_modules
 styleguide/fuse/.tmp
-styleguide/fuse/dist/
+styleguide/fuse/dist

@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.acessos.interfaces;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,6 +71,13 @@ public class AcessosRestResource {
 		return acessosApplicationService.carregarPermissoesRecurso(nome, tipo).stream()
 				.map(permissao -> permissaoDtoAssembler.toDto(permissao))
 				.collect(Collectors.toSet());
+	}
+	
+	@RequestMapping("/recursos/papeis")
+	public List<PapelDto> papeis(@RequestParam("nome") String nome, @RequestParam("tipo") String tipo) {
+		return acessosApplicationService.carregarPapeisRecurso(nome, tipo).stream()
+				.map(papel -> papelDtoAssembler.toDto(papel))
+				.collect(Collectors.toList());
 	}
 
 	@RequestMapping("/usuarios/papeis")

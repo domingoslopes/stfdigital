@@ -240,7 +240,8 @@
         /* Service           */
         /* ----------------- */
         /*jshint validthis:true */
-        this.$get = function ()
+        /** @ngInject **/
+        this.$get = function ($rootScope)
         {
             var activeItem = null,
                 navigationScope = null,
@@ -687,8 +688,8 @@
 
             // Has children?
             vm.hasChildren = vm.node.children.length > 0;
-            vm.hasVisibleChildren = vm.node.children.filter(function(child) { return (child.hidden == undefined ? true : !child.hidden) }).length > 0;
-            vm.transcientActive = new RegExp(vm.node.uisref.replace('*', '.*')).test($state.current.name);
+            vm.hasVisibleChildren = vm.node.children.filter(function(child) { return (child.hidden === undefined ? true : !child.hidden); }).length > 0;
+            vm.transcientActive = $state.includes(vm.node.state);
 
             // Is group?
             vm.group = !!(angular.isDefined(vm.node.group) && vm.node.group === true);
@@ -788,7 +789,8 @@
             // Listen for $stateChangeSuccess event
             $scope.$on('$stateChangeSuccess', function ()
             {
-                if ( vm.node.state === $state.current.name )
+                vm.transcientActive = $state.includes(vm.node.state);
+                if (( vm.node.state === $state.current.name ) || (!vm.hasVisibleChildren && $state.includes(vm.node.state)))
                 {
                     // If state params are defined, make sure they are
                     // equal, otherwise do not set the active item
