@@ -97,7 +97,7 @@
 
 		methods: {
 			itemClick: function(id) {
-				var item = this.processos.find(function(item) { return item.id === id });
+				var item = this.processos.find(function(item) { return item.id === id; });
 				console.log("Clique no item: " + item.name);
 
 				if (item.id === 5) {
@@ -112,7 +112,7 @@
 				var busca = this.buscaProcesso.toLowerCase();
                 var origem = (this.processos_origem === 0 ? this.poucos_processos : this.muitos_processos);
 
-                if (busca.length == 0) {
+                if (busca.length === 0) {
                 	this.processos = origem;
                 } else {
 	                this.processos = origem.filter(function(processo) {
@@ -121,5 +121,5 @@
 				}
 			}
 		}
-	})
+	});
 })();
