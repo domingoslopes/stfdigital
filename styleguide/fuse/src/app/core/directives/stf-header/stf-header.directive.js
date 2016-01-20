@@ -18,7 +18,7 @@
         .directive('stfHeader', stfHeader);
 
     /** @ngInject */
-    function stfHeader() {
+    function stfHeader(msNavigationService) {
         return {
             scope: {
                 'layoutOnly': '=',
