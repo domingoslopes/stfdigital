@@ -9,6 +9,13 @@
 	
 	var path = require('path');
 	
+	var uploadFiles = {
+		'100k': '../files/Doc002-083726B-Assinado-A1.pdf',
+		'1MB': '../files/Doc001-1048385B-Assinado-01.pdf',
+		'10MB': '../files/Doc001-10286212B-Assinado-01.pdf',
+		'100MB': '/Arquivos/Doc001-104365992B.pdf',
+	};
+	
 	var PeticionamentoPageForBenchmark = function () {
 		PeticionamentoPage.call(this);
 	};
@@ -28,8 +35,16 @@
 	    browser.waitForAngular();
 	};
 	
-	PeticionamentoPageForBenchmark.prototype.uploadPeca1MB = function() {
-		uploadPecas('../files/Doc001-1048385B-Assinado-01.pdf');
+	PeticionamentoPageForBenchmark.prototype.uploadPecaDeTamanho = function(size) {
+		uploadPecas(uploadFiles[size]);
+	};
+	
+	PeticionamentoPageForBenchmark.prototype.waitGoToDashboard = function() {
+		browser.wait(function() {
+			return browser.getCurrentUrl().then(function(url) {
+				return /dashboard/.test(url);
+			});
+		}, 60000);
 	};
 	
 	module.exports = PeticionamentoPageForBenchmark;

@@ -21,6 +21,8 @@ exports.config = {
 		'browserName' : 'chrome'
 	},
 	
+	allScriptsTimeout: 300000,
+	
 	seleniumArgs : [ 
 	    '-browserTimeout=60' 
 	],

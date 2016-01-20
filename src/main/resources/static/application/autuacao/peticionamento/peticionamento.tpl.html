@@ -106,7 +106,7 @@
 		                            <tr ng-repeat="peca in pecas">
 		                            	<td data-ng-click="visualizar(peca)" class="force-pointer"><strong>{{ peca.fileItem.file.name }}</strong></td>
 		                                <td ng-show="uploader.isHTML5" nowrap>{{ peca.fileItem.file.size/1024/1024|number:2 }} MB</td>
-		                                <td class="progress-row" ng-show="uploader.isHTML5" ng-class="{'upload-finished': peca.fileItem.progress == 100}">
+		                                <td class="progress-row" ng-show="uploader.isHTML5" ng-class="{'upload-finished': peca.uploadFinished}">
 		                                    <div class="progress" style="margin-bottom: 0;">
 		                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': peca.fileItem.progress + '%' }"></div>
 		                                    </div>
