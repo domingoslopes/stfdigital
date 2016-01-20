@@ -6,11 +6,12 @@
     app.classy.controller({
         name: 'MembersMenuController',
 
-        inject: ['$document', '$mdDialog', 'BoardService'],
+        inject: ['$document', '$mdDialog', '$filter', 'BoardService'],
 
         init: function() {
             this.board = this.BoardService.data;
             this.newMemberSearchInput = '';
+            this.translate = this.$filter('translate');
         },
 
         methods: {
@@ -29,19 +30,19 @@
              * @param memberId
              */
             removeMember: function(ev, memberId) {
-                var confirm = $mdDialog.confirm({
-                    title              : 'Remove Member',
-                    parent             : $document.find('#scrumboard'),
-                    textContent        : 'Are you sure want to remove member?',
-                    ariaLabel          : 'remove member',
+                var confirm = this.$mdDialog.confirm({
+                    title              : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER-MEMBRO'),
+                    parent             : this.$document.find('#scrumboard'),
+                    textContent        : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER-MEMBRO-CONFIRMACAO'),
+                    ariaLabel          : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER-MEMBRO'),
                     targetEvent        : ev,
                     clickOutsideToClose: true,
                     escapeToClose      : true,
-                    ok                 : 'Remove',
-                    cancel             : 'Cancel'
+                    ok                 : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.REMOVER'),
+                    cancel             : this.translate('TAREFAS.PAINEL-DE-FASES.DIALOGO.CANCELAR')
                 });
 
-                $mdDialog.show(confirm).then(function () {
+                this.$mdDialog.show(confirm).then(function () {
                     var arr = this.board.members;
                     arr.splice(arr.indexOf(arr.getById(memberId)), 1);
 

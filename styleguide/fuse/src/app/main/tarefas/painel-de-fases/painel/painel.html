@@ -117,6 +117,13 @@
 	                         ng-repeat="cardId in list.idCards | filter: vm.cardFilter track by $index"
 	                         ng-click="vm.openCardDialog($event, cardId)">
 
+							<!-- CARD COVER -->
+	                        <div ng-if="vm.board.settings.cardCoverImages && vm.board.cards.getById(cardId).idAttachmentCover"
+	                             class="list-card-cover">
+	                            <img ng-src="{{vm.board.cards.getById(cardId).attachments.getById(vm.board.cards.getById(cardId).idAttachmentCover).src}}">
+	                        </div>
+	                        <!-- / CARD COVER -->
+
 	                        <!-- CARD DETAILS -->
 	                        <div class="list-card-details">
 
@@ -140,7 +147,7 @@
 	                            <!-- / CARD LABELS -->
 
 	                            <!-- CARD NAME -->
-	                            <div class="list-card-name">{{vm.board.cards.getById(cardId).name}}</div>
+	                            <div class="list-card-name md-accent-bg">{{vm.board.cards.getById(cardId).name}}</div>
 	                            <!-- / CARD NAME -->
 
 	                            <div ng-if="vm.board.cards.getById(cardId).due || vm.board.cards.getById(cardId).checkItems"
@@ -188,11 +195,27 @@
 	                            </div>
 	                            <!-- / CARD MEMBERS -->
 
+	                            <!-- CARD MEMBERS -->
+	                            <div ng-if="vm.board.cards.getById(cardId).additionalInfo" class="list-card-addition-info"
+	                                 layout="row">
+
+	                                <div flex>
+	                                	<i class="icon s18 {{ vm.board.cards.getById(cardId).additionalInfo.icon }}"></i>
+	                                	<span>{{ vm.board.cards.getById(cardId).additionalInfo.left }}</span>
+	                                </div>
+
+	                                <div flex class="text-right">
+	                                	<span>{{ vm.board.cards.getById(cardId).additionalInfo.right }}</span>
+	                                </div>
+
+	                            </div>
+	                            <!-- / CARD MEMBERS -->
+
 	                        </div>
 	                        <!-- / CARD DETAILS -->
 
 	                        <!-- CARD FOOTER -->
-	                        <div class="list-card-footer" layout="row" layout-align="space-between center">
+	                        <div class="list-card-footer" layout="row">
 
 	                            <div layout="row" layout-align="start center">
 
@@ -210,6 +233,14 @@
 	                                </span>
 	                                <!-- / CARD DETAILS -->
 
+	                            </div>
+
+	                            <div flex>
+	                            	<div ng-if="vm.board.cards.getById(cardId).location" layout="row">
+		                            	<img class="list-card-footer-location-avatar m-8"
+	                                         ng-src="{{ vm.board.cards.getById(cardId).location.avatar }}">
+	                                    <span class="mv-8">{{ vm.board.cards.getById(cardId).location.name }}</span>
+                                   	</div>
 	                            </div>
 
 	                            <div layout="row" layout-align="end center">
@@ -238,17 +269,6 @@
 	                </div>
 	            </div>
 	            <!-- / LIST CONTENT -->
-
-	            <!-- NEW CARD BUTTON-->
-	            <div class="list-footer list-add-card" ms-sb-add-card ms-list-id="list.id" md-ink-ripple
-	                 layout="row" layout-align="start center">
-	                <div>
-	                    <i class="icon-plus s20"></i>
-	                </div>
-	                <span transalte="SB.ADD_A_CART">Add a card</span>
-	            </div>
-	            <!-- / NEW CARD BUTTON-->
-
 	        </div>
 	    </div>
 	    <!-- / LIST -->

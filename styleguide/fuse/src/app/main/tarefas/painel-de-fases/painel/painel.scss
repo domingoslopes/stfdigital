@@ -197,7 +197,8 @@
         .list-card-name {
             font-size: 14px;
             font-weight: 500;
-            margin-bottom: 12px;
+            margin: 0 -16px 12px;
+            padding: 4px 16px;
         }
 
         .list-card-badges {
@@ -244,6 +245,21 @@
                 }
             }
         }
+
+        .list-card-addition-info {
+            font-size: 0.9em;
+            margin-bottom: 12px;
+
+            .icon {
+                display: inline-block;
+                margin-top: -1px;
+                vertical-align: sub;
+            }
+
+            span {
+                vertical-align: middle;
+            }
+        }
     }
 
     .list-card-footer {
@@ -262,6 +278,12 @@
             &:last-of-type {
                 margin-right: 0;
             }
+        }
+
+        .list-card-footer-location-avatar {
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
         }
     }
 }
