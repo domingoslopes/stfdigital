@@ -16,6 +16,8 @@
             this.board = this.BoardService.data;
             this.boardList = this.BoardList.data;
             this.cardFilters = this.CardFilters;
+            this.filteringIsOn = this.CardFilters.isOn;
+            this.clearFilters = this.CardFilters.clear;
             this.card = {};
             this.cardOptions = {};
             this.newListName = '';
@@ -133,27 +135,15 @@
                 var card = this.board.cards.find(function(card) { return card.id === cardId; });
 
                 try {
-                    if ( angular.lowercase(card.name).indexOf(angular.lowercase(this.cardFilters.name)) < 0 )
-                    {
+                    if ( angular.lowercase(card.name).indexOf(angular.lowercase(this.cardFilters.name)) < 0 ) {
                         throw false;
                     }
 
-                    angular.forEach(this.cardFilters.labels, function (label)
-                    {
-                        if ( !this.msUtils.exists(label, card.idLabels) )
-                        {
+                    angular.forEach(this.cardFilters.labels, function (label) {
+                        if ( !this.msUtils.exists(label, card.idLabels) ) {
                             throw false;
                         }
-                    });
-
-                    angular.forEach(this.cardFilters.members, function (member)
-                    {
-                        if ( !this.msUtils.exists(member, card.idMembers) )
-                        {
-                            throw false;
-                        }
-                    });
-
+                    }.bind(this));
 
                 } catch ( err ) {
                     return err;

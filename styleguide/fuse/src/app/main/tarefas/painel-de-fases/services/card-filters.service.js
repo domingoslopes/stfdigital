@@ -11,7 +11,6 @@
         var service = {
             name   : '',
             labels : [],
-            members: [],
             clear  : clear,
             isOn   : isOn
         };
@@ -22,7 +21,6 @@
         function clear() {
             service.name = '';
             service.labels = [];
-            service.members = [];
         }
 
         /**
@@ -31,7 +29,10 @@
          * @returns {boolean}
          */
         function isOn() {
-            return (service.name === '' && service.labels.length === 0 && service.members.length === 0 ) ? false : true;
+            return (
+                (service.name !== '') || 
+                (service.labels.length !== 0)
+            );
         }
 
         return service;
