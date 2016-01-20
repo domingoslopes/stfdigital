@@ -5,14 +5,14 @@
 	app.classy.controller({
 		name: 'StfHeaderController',
 
-		inject: ['$scope', 'msNavigationService'],
+		inject: ['$scope', '$rootScope', 'msNavigationService'],
 
 		init: function() {
 			this.$scope.info = {};
 			this.$scope.info.breadcrumbs = this.generateBreadcrumbs();
 			this.$scope.info.title = this.$scope.info.breadcrumbs.current.label;
 
-			this.$scope.$on('$stateChangeSuccess', function () {
+			this.$rootScope.$on('$stateChangeSuccess', function () {
 				this.$scope.info.breadcrumbs = this.generateBreadcrumbs();
 				this.$scope.info.title = this.$scope.info.breadcrumbs.current.label;				
 			}.bind(this));
@@ -71,7 +71,7 @@
             	return {
             		label: part.translation,
             		link: part.uisref 
-            	}
+            	};
             }
 		}
 	});
