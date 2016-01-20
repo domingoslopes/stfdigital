@@ -99,8 +99,9 @@ public class PeticaoApplicationService {
 	 * @param classeSugerida Classe processual sugerida.
 	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
 	 */
-	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, String motivoDevolucao) {
-		if (motivoDevolucao == null || motivoDevolucao.isEmpty()) {
+	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean valida, String motivoDevolucao) {
+		
+		if (valida) {
 			tarefaAdapter.completarPreautuacao(peticao);
 			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
@@ -112,7 +113,6 @@ public class PeticaoApplicationService {
 			processoAdapter.devolver(peticao);
 			peticaoApplicationEvent.remessaInvalida(peticao);
 		}
-		
 	}
 
 	/**
