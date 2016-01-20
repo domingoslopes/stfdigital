@@ -80,21 +80,20 @@
                             <h6>Informe se a petição está <b>Correta ou Indevida</b>.</h6>
                         </div>
                         <div class="card-description">
-                            <div class="radio radio-success">
-                                <input type="radio" ng-model="preautuacao.valida" value="true" id="yes"> 
-                                <label for="yes">Correta</label> 
-                                <input type="radio" ng-model="preautuacao.valida" value="false" id="no"> 
-                                <label for="no">Indevida</label>
-                            </div>
-                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" ng-hide="preautuacao.valida === 'true'" placeholder="Informe os motivos que levam a petição a ser indevida" aria-invalid="false"></textarea>
+                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" placeholder="Informe os motivos que levam a petição a ser indevida" aria-invalid="false"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-            <p>
+            
             	<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validar"
-	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" /> 
-            </p>
+	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono"></action-executor>
+            
+	 			
+	 			<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validarDevolucao"
+	 				fn-result="preautuacao.finalizarDevolucao" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Devolver Petição"></action-executor>
+            
+            
         </form>
 	</div>
 </div>

@@ -8,7 +8,7 @@ INSERT INTO plataforma.papel(seq_papel, nom_papel, seq_grupo) VALUES (14, 'preau
 
 INSERT INTO plataforma.papel_usuario(seq_papel, seq_usuario) VALUES (14, plataforma.seq_usuario.currval);
 
-INSERT INTO plataforma.segmento(seq_segmento, nom_segmento, seq_tipo_informacao) VALUES (26, 'preautuacao-recursal', 5);
+INSERT INTO plataforma.segmento(seq_segmento, nom_segmento, seq_tipo_informacao) VALUES (26, 'PREAUTUACAO-RECURSAL', 5);
 INSERT INTO plataforma.permissao(seq_permissao, seq_tipo_informacao, seq_segmento, tip_permissao) VALUES (35, 5, 26, 'EXECUTAR');
 
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (7, 14);  /* DASHLET   -> TAREFA               -> VISUALIZAR */  
@@ -16,11 +16,8 @@ INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (22, 14
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (23, 14); /* CLASSE    -> INTERNO              -> PESQUISAR  */
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (29, 14); /* DASHBORAD -> AUTUACAO             -> VISUALIZAR */
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (33, 14); /* TAREFA    -> ASSUMIR              -> VISUALIZAR */
-INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (35, 14); /* TAREFA    -> PREAUTUACAO-RECURSAL -> EXECUTAR   */
+INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (35, 14); /* TAREFA    -> PREAUTUAR-RECURSAL -> EXECUTAR   */
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (29, 'preautuar-peticao-recursal', 'ACAO');
-
-INSERT INTO plataforma.permissao_recurso (seq_permissao, seq_recurso) VALUES (7, 8);
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (29, 'preautuar-recursal', 'ACAO');
 INSERT INTO plataforma.permissao_recurso (seq_permissao, seq_recurso) VALUES (35, 29);
-INSERT INTO plataforma.permissao_recurso (seq_permissao, seq_recurso) VALUES (29, 23);
-INSERT INTO plataforma.permissao_recurso (seq_permissao, seq_recurso) VALUES (33, 27);
+/* Falta a permissão para os recursos de devolução de recursal*/

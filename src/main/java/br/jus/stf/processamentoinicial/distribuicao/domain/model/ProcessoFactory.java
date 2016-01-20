@@ -34,12 +34,7 @@ public class ProcessoFactory {
 	}
 	
 	public static Processo criarProcesso(ClasseId classe, MinistroId relator, Set<Parte> partes, Set<Peca> pecas, PeticaoId peticaoId, TipoProcesso tipo, Set<PreferenciaId> preferencias) {
-		Set<ParteProcesso> partesProcesso = new HashSet<ParteProcesso>();
-		partesProcesso.addAll(coletarPartes(partes));
-		
-		Set<PecaProcesso> pecasProcesso = new HashSet<PecaProcesso>();
-		pecasProcesso.addAll(coletarPecas(pecas));
-		
+				
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(classe);
 		
@@ -47,6 +42,12 @@ public class ProcessoFactory {
 		
 		switch (tipo) {
 			case ORIGINARIO:
+				Set<ParteProcesso> partesProcesso = new HashSet<ParteProcesso>();
+				partesProcesso.addAll(coletarPartes(partes));
+				
+				Set<PecaProcesso> pecasProcesso = new HashSet<PecaProcesso>();
+				pecasProcesso.addAll(coletarPecas(pecas));
+				
 				processo = new ProcessoOriginario(id, classe, numero, relator, peticaoId, partesProcesso, pecasProcesso, ProcessoSituacao.DISTRIBUIDO, preferencias);
 				break;
 			case RECURSAL:
