@@ -16,7 +16,7 @@
 
             if (toState.redirectTo) {
                 event.preventDefault();
-                $state.go(toState.redirectTo, toParams)
+                $state.go(toState.redirectTo, toParams);
             }
         });
 

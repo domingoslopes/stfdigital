@@ -15,6 +15,7 @@ import br.jus.stf.plataforma.acessos.domain.model.Papel;
 import br.jus.stf.plataforma.acessos.domain.model.PapelRepository;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
 import br.jus.stf.shared.PapelId;
+import br.jus.stf.shared.RecursoId;
 
 @Repository
 public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> implements PapelRepository {
@@ -55,6 +56,18 @@ public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> imp
 	@Override
 	public Papel save(Papel papel) {
 		return super.save(papel);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Papel> findPapelByRecurso(RecursoId id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT papel FROM Papel papel INNER JOIN papel.permissoes permiss WHERE permiss.id IN (");
+		sql.append("SELECT perm.id FROM Recurso recu INNER JOIN recu.permissoesExigidas perm WITH recu.id = :id))");
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("id", id);
+		
+		return query.getResultList();
 	}
 
 }
