@@ -29,7 +29,37 @@
 		browser.ignoreSynchronization = false;
 	};
 
-	describe('Autuação de Petições Digitais Originárias:', function() {
+	var peticionar = function(siglaClasse, qtdePecas, uploadSize) {
+
+		var peticionamentoPage = new PeticionamentoPage();
+
+		peticionamentoPage.classificarClasse(siglaClasse);
+
+		peticionamentoPage.partePoloAtivo('João da Silva');
+
+		peticionamentoPage.partePoloPassivo('Maria da Silva');
+
+		var i;
+		for (i = 0; i < qtdePecas; i++) {
+			peticionamentoPage.uploadPecaDeTamanho(uploadSize);
+		}
+		
+		for (i = 0; i < qtdePecas; i++) {
+			peticionamentoPage.selecionarTipoPeca('Ato coator', i);
+		}
+
+		for (i = 0; i < qtdePecas; i++) {
+			peticionamentoPage.waitUploadFinished(i, 30000);
+		}
+		
+		peticionamentoPage.registrar('registrar-peticao-eletronica');
+		
+		peticionamentoPage.waitGoToDashboard();
+		
+//		expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+	};
+	
+	describe('Benchmark Peticionar-Preparação:', function() {
 
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
@@ -53,45 +83,38 @@
 			// petições físicas
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao/);
 		});
-
-		for (var k = 0; k < 10; k++) {
-			it('Deveria enviar uma nova petição digital ' + (k + 1), function() {
-				peticionar('RE', 10, 'uploadPeca1MB');
-				principalPage.iniciarProcesso('link_registrar-peticao-eletronica');
+	});
+	
+//	var uploadSizes = ['100k', '1MB', '10MB', '100MB'];
+	var uploadSizes = ['100MB'];
+	
+	uploadSizes.map(function(uploadSize) {
+		for (var k = 0; k < 2; k++) {
+			describe('Benchmark Peticionar-Execução-' + uploadSize + ':' , function() {
+				
+				beforeEach(function() {
+					console.info('\nrodando: Benchmark: ' + uploadSize + ':', jasmine.getEnv().currentSpec.description);
+				});
+				
+				it('Deveria enviar uma nova petição digital ' + (k + 1), function() {
+					peticionar('RE', 10, uploadSize);
+					principalPage.iniciarProcesso('link_registrar-peticao-eletronica');
+				});
+				
 			});
 		}
+	});
+	
+		
+	describe('Benchmark Peticionar-Depois:', function() {
+		
+		beforeEach(function() {
+			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
+		});
 		
 		it('Deveria fazer logout', function() {
 			loginPage.logout();
 		});
-
-		var peticionar = function(siglaClasse, qtdePecas, uploadMethodName) {
-
-			var peticionamentoPage = new PeticionamentoPage();
-
-			peticionamentoPage.classificarClasse(siglaClasse);
-
-			peticionamentoPage.partePoloAtivo('João da Silva');
-
-			peticionamentoPage.partePoloPassivo('Maria da Silva');
-
-			var i;
-			for (i = 0; i < qtdePecas; i++) {
-				peticionamentoPage[uploadMethodName]();
-			}
-			
-			for (i = 0; i < qtdePecas; i++) {
-				peticionamentoPage.selecionarTipoPeca('Ato coator', i);
-			}
-
-			for (i = 0; i < qtdePecas; i++) {
-				peticionamentoPage.waitUploadFinished(i);
-			}
-			
-			peticionamentoPage.registrar('registrar-peticao-eletronica');
-			
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-		};
 
 	});
 })();

@@ -48,14 +48,23 @@
 
 		    // Envia o caminho e o arquivo para o input fazer a submissão. Não é necessário clicar no botão
 		    fileElem.sendKeys(absolutePath);
-//		    browser.sleep(2000);
 		    browser.waitForAngular();
 		};
 		
-		this.waitUploadFinished = function(index) {
+		var hasClass = function (element, cls) {
+		    return element.getAttribute('class').then(function (classes) {
+		        return classes.split(' ').indexOf(cls) !== -1;
+		    });
+		};
+		
+		this.waitUploadFinished = function(index, timeout) {
 			var uploadedRow = element.all(by.repeater('peca in pecas')).get(index);
-			var finishedMark = uploadedRow.element(by.css('td.progress-row.upload-finished'));
-			browser.wait(finishedMark.isDisplayed, 3000);
+			var finishedMark = uploadedRow.element(by.css('td.progress-row'));
+			browser.wait(function() {
+				return hasClass(finishedMark, 'upload-finished');
+			}, (!timeout) ? 3000 : timeout).then(function() {
+				browser.waitForAngular();
+			});
 		};
 		
 		this.removePecas = function() {
