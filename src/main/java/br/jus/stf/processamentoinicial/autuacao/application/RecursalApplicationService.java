@@ -87,7 +87,6 @@ public class RecursalApplicationService {
 		ClasseId classeSugerida = new ClasseId(classeId);
 		PeticaoId peticaoId = new PeticaoId(id);
 		PeticaoFisica peticao = peticaoRepository.findOne(peticaoId);
-		
 		peticao.preautuar(classeSugerida, peticao.preferencias());
 		peticaoRepository.save(peticao);
 		processoRest.cadastrarRecursal((ProcessoRecursal)ProcessoFactory.criarProcesso(peticao.classeSugerida(), null, null, null, peticao.id(), peticao.tipoProcesso(), peticao.preferencias()));
