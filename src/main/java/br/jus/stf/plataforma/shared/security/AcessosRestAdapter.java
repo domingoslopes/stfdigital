@@ -41,6 +41,11 @@ public class AcessosRestAdapter {
 				.map(p -> p.getNome()).collect(Collectors.toSet());
 	}
 	
+	public Set<String> carregarPapeisRecurso(String recurso, String tipoRecurso) {
+		return acessosRestResouce.papeis(recurso, tipoRecurso).stream()
+				.map(p -> p.getNome()).collect(Collectors.toSet());
+	}
+	
 	public Optional<UserDetails> recuperarUsuario(UsuarioId usuarioId) {
 		return Optional.ofNullable(acessosRestResouce.recuperarUsuario(usuarioId.toLong()))
 				.map(dto -> newUser(dto)).orElse(Optional.empty());
