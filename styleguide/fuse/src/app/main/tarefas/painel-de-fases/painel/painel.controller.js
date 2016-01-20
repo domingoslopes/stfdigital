@@ -17,6 +17,7 @@
             this.boardList = this.BoardList.data;
             this.cardFilters = this.CardFilters;
             this.filteringIsOn = this.CardFilters.isOn;
+            this.openCardDialog = this.DialogService.openCardDialog;
             this.clearFilters = this.CardFilters.clear;
             this.card = {};
             this.cardOptions = {};
