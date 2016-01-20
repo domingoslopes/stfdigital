@@ -1,13 +1,13 @@
 /**
- * @author Rodrigo Barreiros
+ * @author Anderson.Araujo
  * 
  * @since 1.0.0
- * @since 10.07.2015
+ * @since 15.01.2016
  */ 
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
+	angular.autuacao.controller('PreautuacaoRecursalController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var preautuacao = this;
 		
 		var resource = $stateParams.resources[0];
