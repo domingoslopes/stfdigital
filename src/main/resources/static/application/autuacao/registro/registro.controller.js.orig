@@ -15,8 +15,12 @@
 		registro.qtdApensos = "";
 		registro.qtdVolumes = "";
 		registro.numSedex = "";
-		registro.recursos = [];
+<<<<<<< HEAD
+		registro.recursos = [{}];
 		registro.tipoProcesso = '';
+=======
+		registro.recursos = [];
+>>>>>>> 75d0df68838556cf80bca6197cfd7f9e9faa6de6
 		
 		registro.tipoRecebimentos = [{ id : 'BALCAO', nome : "Balcão" }, { id : 'SEDEX', nome : "Sedex" }, { id : 'MALOTE', nome : "Malote" }, { id : 'FAX', nome : "Fax" }, { id : 'EMAIL', nome : "E-mail" }];
 		registro.tiposProcessos = [{ id : 'ORIGINARIO', nome : "Originário" }, { id : 'RECURSAL', nome : "Recursal" } ];
@@ -46,9 +50,13 @@
 				messages.error(errors);
 				return false;
 			}
+<<<<<<< HEAD
 			
 			registro.recursos[0] = new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, registro.tipoRecebimento, registro.numSedex, registro.tipoProcesso);
 			
+=======
+			registro.recursos.push(new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, registro.tipoRecebimento, registro.numSedex));
+>>>>>>> 75d0df68838556cf80bca6197cfd7f9e9faa6de6
 			return true;
 		};
 		
@@ -64,7 +72,7 @@
 			dto.quantidadeApensos = quantidadeApensos;
 			dto.formaRecebimento = formaRecebimento;
 			dto.numeroSedex = numeroSedex;
-			dto.tipoProcesso = tipoProcesso.id;
+			dto.tipoProcesso = tipoProcesso;
 			
 			return dto;
 		}

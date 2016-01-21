@@ -1,17 +1,18 @@
 /**
- * @author Rodrigo Barreiros
+ * @author Anderson.Araujo
  * 
  * @since 1.0.0
- * @since 10.07.2015
+ * @since 15.01.2016
  */ 
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PreautuacaoController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
+	angular.autuacao.controller('PreautuacaoRecursalController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 		var preautuacao = this;
 		
 		var resource = $stateParams.resources[0];
 		preautuacao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
+		preautuacao.valida = 'true';
 		preautuacao.motivo = '';
 		preautuacao.classe = "";
 		preautuacao.classes = [];
@@ -33,43 +34,14 @@
 				errors = 'Você precisa selecionar <b>a classe processual sugerida</b>.';
 			}
 			
-			if (errors) {
-				messages.error(errors);
-				return false;
-			}
-			
-			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, true, preautuacao.motivo));
-			return true;
-		};
-		
-		preautuacao.validarDevolucao = function(){
-			var errors = null;
-			
-			if (preautuacao.motivo.length === 0) {
-				errors = 'Para petição incorreta, você precisa informar os detalhes do motivo.';
+			if (preautuacao.valida === 'false' && preautuacao.motivo.length === 0) {
+				errors += 'Para petição incorretas, você precisa informar os detalhes do motivo.';
 			}
 			
 			if (errors) {
 				messages.error(errors);
 				return false;
 			}
-			
-			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, false, preautuacao.motivo));
-			return true;
-		};
-		
-		preautuacao.devolver = function(){
-			var errors = null;
-			
-			if (preautuacao.classe.length === 0) {
-				errors = 'Você precisa selecionar <b>a classe processual sugerida</b>.';
-			}
-			
-			if (errors) {
-				messages.error(errors);
-				return false;
-			}
-			
 			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, preautuacao.valida, preautuacao.motivo));
 			return true;
 		};
@@ -79,18 +51,14 @@
 			messages.success('Petição <b>' + preautuacao.peticao.identificacao + '</b> pré-autuada com sucesso.');
 		};
 		
-		preautuacao.finalizarDevolucao = function() {
-			$state.go('dashboard');
-			messages.success('Petição devolvida com sucesso.');
-		};
-		
     	function PreautuarCommand(peticaoId, classeId, valida, motivo){
     		var command = {};
     		command.peticaoId = peticaoId;
     		command.classeId = classeId;
-    		preautuacao.valida = valida;
+    		command.valida = valida;
     		command.motivo = motivo;
     		return command;
     	}
+    	
 	});
 })();
