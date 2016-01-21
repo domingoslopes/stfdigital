@@ -12,8 +12,7 @@
 	var utils = new Utils();
 	
 	var PesquisaPeticaoPage = function () {
-		browser.get('/');
-				
+		
 		this.iniciarPesquisa = function() {
 			var linkPesquisa = element(by.id('pesquisas'));
 			var linkPesquisaPeticoes = element(by.id('pesquisar-peticoes'));
@@ -51,6 +50,11 @@
 		
 		this.resultados = function () {
 			return element.all(by.repeater('resultado in resultados'));
+		};
+		
+		this.detalhar = function(index) {
+			var row = element.all(by.repeater('resultado in resultados')).get(index);
+			row.element(by.css('a[title=Visualizar]')).click();
 		};
 		
 	};
