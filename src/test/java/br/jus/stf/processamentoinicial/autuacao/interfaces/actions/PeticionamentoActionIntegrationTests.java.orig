@@ -15,8 +15,11 @@ import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.cert.CertificateEncodingException;
 
+<<<<<<< HEAD
 import org.apache.commons.codec.binary.Hex;
+=======
 import org.activiti.engine.impl.util.json.JSONArray;
+>>>>>>> 5ce903eca25bf75d6ac8c880a9475f476f7d48f9
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,15 +59,18 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	private String peticaoEletronica;
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
+<<<<<<< HEAD
 	private String peticaoFisicaParaDevolucao;
-	private String peticaoInvalidaParaAutuacao;
-	private String tarefaParaAssumir;
 	
 	private String prepareCommand;
 	private String provideToSignCommand;
 	private String preSignCommand;
 	private String postSignCommand;
 	private String assinarDevolucaoPeticaoCommand;
+=======
+	private String peticaoInvalidaParaAutuacao;
+	private String tarefaParaAssumir;
+>>>>>>> 5ce903eca25bf75d6ac8c880a9475f476f7d48f9
 	
 	@Spy
 	private IndexadorRestAdapter indexadorRestAdapter;
@@ -90,16 +96,6 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	
 	@Before
 	public void criarObjetosJSON() throws UnsupportedEncodingException, Exception{
-		
-		//Cria um objeto para ser usado no processo de rejeição de uma petição.
-		StringBuilder peticaoInValidaParaAutuacao =  new StringBuilder();
-		peticaoInValidaParaAutuacao.append("{\"resources\": ");
-		peticaoInValidaParaAutuacao.append("[{\"peticaoId\": @,");
-		peticaoInValidaParaAutuacao.append("\"classeId\":\"ADI\",");
-		peticaoInValidaParaAutuacao.append("\"valida\":false,");
-		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}]}");
-		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
-		
 		//Cria um objeto para ser usado no processo de autuação de uma petição válida.
 		StringBuilder peticaoEletronicaValidaParaAutuacao =  new StringBuilder();
 		peticaoEletronicaValidaParaAutuacao.append("{\"resources\": ");
@@ -157,6 +153,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoFisicaParaPreautuacao.append("\"valida\":true}]}");
 		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
+<<<<<<< HEAD
 		//Cria um objeto para ser usado no processo de devolução de uma petição física.
 		StringBuilder peticaoFisicaParaDevolucao =  new StringBuilder();
 		peticaoFisicaParaDevolucao.append("{\"numeroOficio\":1234,");
@@ -168,8 +165,18 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		this.preSignCommand = "{\"signerId\":\"@\"}";
 		this.postSignCommand = "{\"signatureAsHex\":\"@signatureAsHex\",\"signerId\":\"@signerId\"}";
 		this.assinarDevolucaoPeticaoCommand = "{\"resources\":[{\"peticaoId\":@peticaoId,\"documentoId\":\"@documentoId\"}]}";
+=======
+		//Cria um objeto para ser usado no processo de rejeição de uma petição.
+		StringBuilder peticaoInValidaParaAutuacao =  new StringBuilder();
+		peticaoInValidaParaAutuacao.append("{\"resources\": ");
+		peticaoInValidaParaAutuacao.append("[{\"peticaoId\": @,");
+		peticaoInValidaParaAutuacao.append("\"classeId\":\"ADI\",");
+		peticaoInValidaParaAutuacao.append("\"valida\":false,");
+		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}]}");
+		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
 		
 		this.tarefaParaAssumir = "{\"resources\": [{\"tarefaId\": @}]}";
+>>>>>>> 5ce903eca25bf75d6ac8c880a9475f476f7d48f9
 	}
 	
 	@Test
@@ -250,6 +257,11 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
     }
     
     @Test
+<<<<<<< HEAD
+	public void devolverPeticao() throws Exception{
+		
+		String peticaoId = "";
+=======
     public void executarAcaoRejeitarPeticao() throws Exception {
     	
     	String peticaoId = "";
@@ -264,10 +276,11 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
 		
 		assumirTarefa(tarefaObject);
+>>>>>>> 5ce903eca25bf75d6ac8c880a9475f476f7d48f9
 		
-		//Realiza a autuação.
-		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoInvalidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
+		//Envia a petição eletrônica.
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-fisica/execute").header("login", "recebedor").contentType(MediaType.APPLICATION_JSON)
+    		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
 		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador")).andExpect(status().isOk())
@@ -293,16 +306,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		assinarDevolucaoPeticao(peticaoId);
     }
     
-    private void assumirTarefa(String tarefaObject) throws Exception {
-    	String tarefaId = getTarefaId(tarefaObject);
-		super.mockMvc.perform(post("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
-	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
-    }
-    
-    private String getTarefaId(String json) {
-    	return ((Integer) new JSONArray(json).getJSONObject(0).get("id")).toString();
-    }
-    
+<<<<<<< HEAD
     private void assinarDevolucaoPeticao(String peticaoId)
 			throws UnsupportedEncodingException, Exception, CertificateEncodingException {
 		String peticaoJson = this.mockMvc.perform(get("/api/peticoes/" + peticaoId).header("login", "gestor-recebimento"))
@@ -355,4 +359,15 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 
 		return Hex.encodeHexString(signed);
 	}
+=======
+    private void assumirTarefa(String tarefaObject) throws Exception {
+    	String tarefaId = getTarefaId(tarefaObject);
+		super.mockMvc.perform(post("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
+	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
+    }
+    
+    private String getTarefaId(String json) {
+    	return ((Integer) new JSONArray(json).getJSONObject(0).get("id")).toString();
+    }
+>>>>>>> 5ce903eca25bf75d6ac8c880a9475f476f7d48f9
 }

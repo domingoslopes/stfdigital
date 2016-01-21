@@ -15,8 +15,8 @@ import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.cert.CertificateEncodingException;
 
-import org.apache.commons.codec.binary.Hex;
 import org.activiti.engine.impl.util.json.JSONArray;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,15 +41,14 @@ import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusInde
 import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
 
 /**
- * Realiza os testes de integração do peticionamento usando o mecanismo de ações da plataforma STF Digital.
+ * Executa os testes de integração do processo de autuação de recursais.
  * 
  * @author Anderson.Araujo
  * 
- * @version 1.0.0
- * 
- * @since 17.09.2015
+ * @since 19.01.2016
+ *
  */
-public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTests {
+public class AutuacaoRecursalActionIntegrationTests extends AbstractIntegrationTests {
 	
 	private String peticaoValidaParaAutuacao;
 	private String peticaoAutuadaParaDistribuicao;
@@ -153,8 +152,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		StringBuilder peticaoFisicaParaPreautuacao =  new StringBuilder();
 		peticaoFisicaParaPreautuacao.append("{\"resources\": ");
 		peticaoFisicaParaPreautuacao.append("[{\"peticaoId\": @,");
-		peticaoFisicaParaPreautuacao.append("\"classeId\":\"ADI\",");
-		peticaoFisicaParaPreautuacao.append("\"valida\":true}]}");
+		peticaoFisicaParaPreautuacao.append("\"classeId\":\"ADI\"}]}");
 		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
 		//Cria um objeto para ser usado no processo de devolução de uma petição física.
@@ -172,61 +170,32 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		this.tarefaParaAssumir = "{\"resources\": [{\"tarefaId\": @}]}";
 	}
 	
-	@Test
-    public void executarAcaoDistribuirPeticaoEletronica() throws Exception {
-    	
-    	String peticaoId = "";
-    	String tarefaObject = "";
-    	
-    	//Envia a petição eletrônica.
-    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-eletronica/execute").header("login", "peticionador").contentType(MediaType.APPLICATION_JSON)
-    		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-		
-		//Recupera a(s) tarefa(s) do autuador.
-		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
-		
-		assumirTarefa(tarefaObject);
-		
-		//Realiza a autuação.
-		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
-		
-		//Recupera a(s) tarefa(s) do distribuidor.
-		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "distribuidor")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("distribuir-processo"))).andReturn().getResponse().getContentAsString();
-		
-		assumirTarefa(tarefaObject);
-		
-		//Realiza a distribuição.
-		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").header("login", "distribuidor").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)));
-		
-    }
-	
     @Test
-    public void executarAcaoRegistroPeticaoFisica() throws Exception {
+    public void executarAcaoRegistroPeticaoRecursal() throws Exception {
     	
     	String peticaoId = "";
-    	String tarefaObject = "";
+    	//String tarefaObject = "";
     	
     	//Envia a petição eletrônica.
     	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-fisica/execute").header("login", "recebedor").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
-    	tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "preautuador-originario")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("preautuar"))).andReturn().getResponse().getContentAsString();
+    	/*tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "preautuador-recursal")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("preautuar"))).andReturn().getResponse().getContentAsString();*/
     	
     	//Assumir a(s) tarefa(s) do préautuador.
-    	assumirTarefa(tarefaObject);
+    	//assumirTarefa(tarefaObject);
     	    	
+    	/*super.mockMvc.perform(post("/api/actions/preautuar/execute").header("login", "preautuador-originario").contentType(MediaType.APPLICATION_JSON)
+	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk());
+    	*/
 		//Realiza a préautuação da petição física.
-		super.mockMvc.perform(post("/api/actions/preautuar/execute").contentType(MediaType.APPLICATION_JSON)
+		super.mockMvc.perform(post("/api/actions/preautuar-recursal/execute").header("login", "preautuador-recursal").contentType(MediaType.APPLICATION_JSON)
 	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recupera a(s) tarefa(s) do autuador.
-		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador")).andExpect(status().isOk())
+		/*tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
 		
     	//Assumir a(s) tarefa(s) do autuador.
@@ -246,11 +215,12 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		//Realiza a distribuição.
 		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)));
-
+	*/
     }
     
+    /*
     @Test
-    public void executarAcaoRejeitarPeticao() throws Exception {
+    public void executarAcaoDevolverPeticao() throws Exception {
     	
     	String peticaoId = "";
     	String tarefaObject = "";
@@ -355,4 +325,5 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 
 		return Hex.encodeHexString(signed);
 	}
+	*/
 }
