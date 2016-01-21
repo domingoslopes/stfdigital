@@ -236,10 +236,16 @@
 	                            </div>
 
 	                            <div flex>
-	                            	<div ng-if="vm.board.cards.getById(cardId).location" layout="row">
+	                            	<div ng-if="vm.board.cards.getById(cardId).additionalInfo.footer" layout="row">
 		                            	<img class="list-card-footer-location-avatar m-8"
-	                                         ng-src="{{ vm.board.cards.getById(cardId).location.avatar }}">
-	                                    <span class="mv-8">{{ vm.board.cards.getById(cardId).location.name }}</span>
+	                                         ng-if="vm.board.cards.getById(cardId).additionalInfo.footer.avatar"
+	                                         ng-src="{{ vm.board.cards.getById(cardId).additionalInfo.footer.avatar }}">
+                                     	
+                                     	<div>
+                                     		<div class="list-card-footer-additional-info-container">
+	                                    		<span>{{ vm.board.cards.getById(cardId).additionalInfo.footer.name }}</span>
+	                                    	</div>
+	                                    </div>
                                    	</div>
 	                            </div>
 
