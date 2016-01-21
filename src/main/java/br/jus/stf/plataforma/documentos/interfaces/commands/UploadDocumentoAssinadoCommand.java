@@ -6,7 +6,7 @@ import br.jus.stf.plataforma.shared.certification.interfaces.validators.SignedDo
 
 public class UploadDocumentoAssinadoCommand {
 
-	@SignedDocument
+//	@SignedDocument // TODO Benchmark-Tomas Remover comentário depois do benchmark
 	private MultipartFile file;
 
 	public UploadDocumentoAssinadoCommand() {
