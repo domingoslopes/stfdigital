@@ -20,12 +20,11 @@
 		};
 		
 		preautuacao.finalizar = function() {
-			element(by.id('btn_exec_preautuar')).click();
+			element(by.css('action-executor[fn-result="preautuacao.finalizar"] > a')).click();
 		};
 		
-		preautuacao.invalidarPeticaoRadio = function(){
-			element(by.css('label[for=no]')).click();
-			browser.waitForAngular();
+		preautuacao.devolver = function(){
+			element(by.css('action-executor[fn-result="preautuacao.finalizarDevolucao"] > a')).click();
 		};
 		
 		preautuacao.preencherMotivoIndevida = function(){
