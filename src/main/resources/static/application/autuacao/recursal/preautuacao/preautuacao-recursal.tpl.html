@@ -1,0 +1,100 @@
+<div class="content" ng-controller="PreautuacaoRecursalController as preautuacao">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Petições Físicas</p>
+					</li>
+					<li><a href="#" class="active">Pré-autuação de Recursal</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<div tarefa-actions processo="preautuacao.peticao.processoWorkflowId" tarefa="tarefa" />
+        <form>
+        	<div class="row">
+        		<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					        <h5>Quantidade de volumes: {{preautuacao.peticao.volumes}}</h5>
+					        <h6>Essa é quantidade de volumes <strong>inseridas pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					    	<h5>Quantidade de apensos: {{preautuacao.peticao.apensos}} </h5>
+					    	<h6>Esse é a quantidade de apensos <strong>inseridas pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+	        	</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-md-6">
+	        		<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					        <h5>Tipo de recebimento: {{preautuacao.peticao.formaRecebimento}}</h5>
+					        <h6>Essa é tipo de recebimento do processo<strong>inserido pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					    	<h5>Numero do Sedex: {{preautuacao.peticao.numeroSedex}} </h5>
+					    	<h6>Esse é o numero do sedex <strong>inserido pelo recebedor</strong>.</h6>
+					    </div>
+					</div>
+		        </div>
+        	</div>
+        	<div class="row">
+				<div class="col-md-12">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix ">
+							<h5>Classificação</h5>
+							<h6>Qual Classe Processual você<strong> sugere </strong> para sua petição?</h6>
+						</div>
+						<div class="card-description">
+							<select ui-select2 id="classe" ng-model="preautuacao.classe" data-placeholder="Selecione a Classe Sugerida" style="width: 450px;">
+								<option value=""></option>
+								<option ng-repeat="classe in preautuacao.classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Análise</h5>
+                            <h6>Informe se a petição está <b>Correta ou Indevida</b>.</h6>
+                        </div>
+                        <div class="card-description">
+                            <div class="radio radio-success">
+                                <input type="radio" ng-model="preautuacao.valida" value="true" id="yes"> 
+                                <label for="yes">Correta</label> 
+                                <input type="radio" ng-model="preautuacao.valida" value="false" id="no"> 
+                                <label for="no">Indevida</label>
+                            </div>
+                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" ng-hide="preautuacao.valida === 'true'" placeholder="Informe os motivos que levam a petição a ser indevida" aria-invalid="false"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>
+            	<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validar"
+	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" /> 
+            </p>
+        </form>
+	</div>
+</div>

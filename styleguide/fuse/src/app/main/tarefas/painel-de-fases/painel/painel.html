@@ -1,0 +1,293 @@
+<div id="scrumboard" class="page-layout simple fullwidth" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" ng-class="'md-'+vm.board.settings.color+'-bg'" layout="column">
+
+        <div class="header-content" layout="row" layout-align="space-between" layout-wrap flex>
+
+            <!-- BOARD SELECTION BUTTON -->
+            <div layout="row" layout-align="center center" flex-order="1" flex-order-xs="2">
+                <md-button class="md-accent md-raised md-hue-2 header-boards-button"
+                           ng-class="'md-'+vm.board.settings.color+'-700-bg'"
+                           ng-click="vm.boardSelectorVisible = !vm.boardSelectorVisible"
+                           aria-label="boards button" translate translate-attr-aria-label="SB.BOARDS_BUTTON">
+                    <md-icon md-font-icon="icon-trello" class="icon"></md-icon>
+                    <span translate="TAREFAS.PAINEL-DE-FASES.FASES">Fases</span>
+                </md-button>
+            </div>
+            <!-- / BOARD SELECTION BUTTON -->
+
+            <!-- BOARD NAME -->
+            <div class="header-board-name" layout="row" layout-align="center center" flex-order="2" flex-order-xs="1"
+                 flex-xs="100">
+                <i ng-if="vm.board.settings.subscribed" class="board-subscribe s16 icon-eye"></i>
+                <span>{{vm.board.name}}</span>
+            </div>
+            <!-- / BOARD NAME -->
+
+            <!-- TOOLBAR -->
+            <div class="toolbar" layout="row" layout-align="space-between center" flex-order="3">
+                <!-- CLEAR FILTERS BUTTON -->
+                <md-button ng-if="vm.filteringIsOn()"
+                           class="md-icon-button"
+                           ng-click="vm.clearFilters()"
+                           aria-label="Clear Filters" translate translate-attr-aria-label="SB.CLEAR_FILTERS">
+                    <md-icon md-font-icon="icon-filter-remove"></md-icon>
+                    <md-tooltip><span translate="TAREFAS.PAINEL-DE-FASES.LIMPAR-FILTROS">Limpar Filtros</span></md-tooltip>
+                </md-button>
+                <!-- / CLEAR FILTERS BUTTON -->
+
+                <!-- FILTERS SIDENAV BUTTON -->
+                <md-button class="md-icon-button"
+                           ng-click="vm.toggleSidenav('filters-sidenav')"
+                           aria-label="Filter Cards" translate translate-attr-aria-label="SB.FILTER_CARDS">
+                    <md-icon md-font-icon="icon-filter-variant"></md-icon>
+                    <md-tooltip><span translate="TAREFAS.PAINEL-DE-FASES.FILTRAR-CARTOES">Filtrar Cartões</span></md-tooltip>
+                </md-button>
+                <!-- / FILTERS SIDENAV BUTTON -->
+
+                <!-- BOARD SETTINGS BUTTON -->
+                <md-button class="md-icon-button"
+                           ng-click="vm.toggleSidenav('settings-sidenav')"
+                           aria-label="Settings" translate translate-attr-aria-label="SB.SETTINGS">
+                    <md-icon md-font-icon="icon-cog"></md-icon>
+                    <md-tooltip><span translate="TAREFAS.PAINEL-DE-FASES.CONFIGURACOES">Configurações</span></md-tooltip>
+                </md-button>
+                <!-- / BOARD SETTINGS BUTTON -->
+            </div>
+            <!-- / TOOLBAR -->
+
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- BOARD SELECTION -->
+    <div ng-show="vm.boardSelectorVisible"
+         id="board-selector"
+         class="md-accent-bg animate-slide-down board-list md-whiteframe-3dp"
+         ng-class="'md-'+vm.board.settings.color+'-bg'"
+         layout="row" layout-align="start center">
+
+        <div class="board-list-item" ng-repeat="board in vm.BoardList"
+             ng-attr-ui-sref="{{ 'app.tarefas.painel-de-fases.' + board.id }}"
+             layout="column" layout-align="space-between center">
+
+            <div class="board-icon">
+                <i class="icon-trello s64"></i>
+            </div>
+
+            <div flex class="board-name">{{board.name}}</div>
+
+            <div ng-if="board.id === vm.board.id" class="selected-icon green-bg">
+                <i class="icon-check s24"></i>
+            </div>
+        </div>
+    </div>
+
+    <md-backdrop class="board-selector-backdrop md-dialog-backdrop md-opaque" ng-show="vm.boardSelectorVisible"
+                 ng-click="vm.boardSelectorVisible = false" aria-hidden="true">
+    </md-backdrop>
+    <!-- / BOARD SELECTION -->
+
+    <!-- CONTENT -->
+	<div id="board" ng-class="vm.board.settings.color+'-100-bg'" ui-sortable="vm.sortableListOptions"
+	     ng-model="vm.board.lists" layout="row">
+
+	    <!-- LIST -->
+	    <div class="list-wrapper" ng-repeat="list in vm.board.lists track by list.id">
+
+	        <div class="list md-whiteframe-1dp" layout="column">
+
+	            <!-- LIST HEADER -->
+	            <div class="list-header" layout="row" layout-align="space-between center">
+	                <div class="list-header-name">
+	                    <span>{{ list.name }}</span>
+	                </div>
+	            </div>
+	            <!-- / LIST HEADER -->
+
+	            <!-- LIST CONTENT -->
+	            <div class="list-content" ms-scroll>
+
+	                <div class="list-cards" ui-sortable="vm.sortableCardOptions" ng-model="list.idCards">
+
+	                    <!-- CARD -->
+	                    <div ng-if="cardId" class="list-card md-whiteframe-3dp"
+	                         ng-repeat="cardId in list.idCards | filter: vm.cardFilter track by $index"
+	                         ng-click="vm.openCardDialog($event, cardId)">
+
+							<!-- CARD COVER -->
+	                        <div ng-if="vm.board.settings.cardCoverImages && vm.board.cards.getById(cardId).idAttachmentCover"
+	                             class="list-card-cover">
+	                            <img ng-src="{{vm.board.cards.getById(cardId).attachments.getById(vm.board.cards.getById(cardId).idAttachmentCover).src}}">
+	                        </div>
+	                        <!-- / CARD COVER -->
+
+	                        <!-- CARD DETAILS -->
+	                        <div class="list-card-details">
+
+	                            <!-- CARD SORT HANDLE -->
+	                            <div class="list-card-sort-handle">
+	                                <md-icon md-font-icon="icon-cursor-move" class="icon s16"></md-icon>
+	                            </div>
+	                            <!-- /CARD SORT HANDLE -->
+
+	                            <!-- CARD LABELS -->
+	                            <div ng-if="vm.board.cards.getById(cardId).idLabels.length > 0" class="list-card-labels"
+	                                 layout="row" layout-wrap>
+	                                <span class="list-card-label"
+	                                      ng-class="'md-'+vm.board.labels.getById(labelId).color+'-bg'"
+	                                      ng-repeat="labelId in vm.board.cards.getById(cardId).idLabels">
+	                                    <md-tooltip>
+	                                        {{vm.board.labels.getById(labelId).name}}
+	                                    </md-tooltip>
+	                                </span>
+	                            </div>
+	                            <!-- / CARD LABELS -->
+
+	                            <!-- CARD NAME -->
+	                            <div class="list-card-name md-accent-bg">{{vm.board.cards.getById(cardId).name}}</div>
+	                            <!-- / CARD NAME -->
+
+	                            <div ng-if="vm.board.cards.getById(cardId).due || vm.board.cards.getById(cardId).checkItems"
+	                                 class="list-card-badges" layout="row" layout-align="start center">
+
+	                                <!-- CARD DUE -->
+	                                <span class="badge due-date"
+	                                      ng-class="{'overdue': vm.isOverdue(vm.board.cards.getById(cardId).due)}"
+	                                      ng-if="vm.board.cards.getById(cardId).due" layout="row"
+	                                      layout-align="start center">
+	                                    <i class="icon-clock s16"></i>
+	                                    <span>{{vm.board.cards.getById(cardId).due | date}}</span>
+	                                </span>
+	                                <!-- / CARD DUE -->
+
+	                                <!-- CARD CHECK ITEMS STATUS -->
+	                                <span ng-if="vm.board.cards.getById(cardId).checkItems"
+	                                      class="badge check-items"
+	                                      ng-class="{'completed': vm.board.cards.getById(cardId).checkItemsChecked === vm.board.cards.getById(cardId).checkItems}"
+	                                      layout="row" layout-align="start center">
+	                                    <i class="icon-checkbox-marked-circle s16"></i>
+	                                    <span>{{vm.board.cards.getById(cardId).checkItemsChecked}}</span>
+	                                    <span>/</span>
+	                                    <span>{{vm.board.cards.getById(cardId).checkItems}}</span>
+	                                </span>
+	                                <!-- / CARD CHECK ITEMS STATUS -->
+
+	                            </div>
+
+	                            <!-- CARD MEMBERS -->
+	                            <div ng-if="vm.board.cards.getById(cardId).idMembers.length > 0" class="list-card-members"
+	                                 layout="row">
+
+	                                <div class="list-card-member"
+	                                     ng-repeat="memberId in vm.board.cards.getById(cardId).idMembers">
+
+	                                    <img class="list-card-member-avatar"
+	                                         ng-src="{{vm.board.members.getById(memberId).avatar}}">
+
+	                                    <md-tooltip>
+	                                        <div class="name">{{ vm.board.members.getById(memberId).name}}</div>
+	                                    </md-tooltip>
+	                                </div>
+
+	                            </div>
+	                            <!-- / CARD MEMBERS -->
+
+	                            <!-- CARD MEMBERS -->
+	                            <div ng-if="vm.board.cards.getById(cardId).additionalInfo" class="list-card-addition-info"
+	                                 layout="row">
+
+	                                <div flex>
+	                                	<i class="icon s18 {{ vm.board.cards.getById(cardId).additionalInfo.icon }}"></i>
+	                                	<span>{{ vm.board.cards.getById(cardId).additionalInfo.left }}</span>
+	                                </div>
+
+	                                <div flex class="text-right">
+	                                	<span>{{ vm.board.cards.getById(cardId).additionalInfo.right }}</span>
+	                                </div>
+
+	                            </div>
+	                            <!-- / CARD MEMBERS -->
+
+	                        </div>
+	                        <!-- / CARD DETAILS -->
+
+	                        <!-- CARD FOOTER -->
+	                        <div class="list-card-footer" layout="row">
+
+	                            <div layout="row" layout-align="start center">
+
+	                                <!-- CARD SUBSCRIBE -->
+	                                <span ng-if="vm.board.cards.getById(cardId).subscribed" class="list-card-footer-item"
+	                                      layout="row" layout-align="start center">
+	                                    <i class="icon-eye s18"></i>
+	                                </span>
+	                                <!-- / CARD SUBSCRIBE -->
+
+	                                <!-- CARD DETAILS -->
+	                                <span ng-if="vm.board.cards.getById(cardId).description !== ''"
+	                                      class="list-card-footer-item" layout="row" layout-align="start center">
+	                                    <i class="icon-document s18"></i>
+	                                </span>
+	                                <!-- / CARD DETAILS -->
+
+	                            </div>
+
+	                            <div flex>
+	                            	<div ng-if="vm.board.cards.getById(cardId).location" layout="row">
+		                            	<img class="list-card-footer-location-avatar m-8"
+	                                         ng-src="{{ vm.board.cards.getById(cardId).location.avatar }}">
+	                                    <span class="mv-8">{{ vm.board.cards.getById(cardId).location.name }}</span>
+                                   	</div>
+	                            </div>
+
+	                            <div layout="row" layout-align="end center">
+
+	                                <!-- CARD ATTACHMENT -->
+	                                <span class="list-card-footer-item" ng-if="vm.board.cards.getById(cardId).attachments"
+	                                      layout="row" layout-align="start center">
+	                                    <i class="icon-attachment s18"></i>
+	                                    <span class="value">{{vm.board.cards.getById(cardId).attachments.length}}</span>
+	                                </span>
+	                                <!-- / CARD ATTACHMENT -->
+
+	                                <!-- CARD COMMENTS -->
+	                                <span class="list-card-footer-item" ng-if="vm.board.cards.getById(cardId).comments"
+	                                      layout="row" layout-align="start center">
+	                                    <i class="icon-comment s18"></i>
+	                                    <span class="value">{{vm.board.cards.getById(cardId).comments.length}}</span>
+	                                </span>
+	                                <!-- / CARD COMMENTS -->
+
+	                            </div>
+	                        </div>
+	                        <!-- CARD FOOTER -->
+	                    </div>
+	                    <!-- / CARD -->
+	                </div>
+	            </div>
+	            <!-- / LIST CONTENT -->
+	        </div>
+	    </div>
+	    <!-- / LIST -->
+
+	</div>
+    <!-- / CONTENT -->
+
+    <!-- SETTINGS SIDENAV -->
+    <md-sidenav class="settings-sidenav md-sidenav-right" md-component-id="settings-sidenav"
+                ng-include="'app/main/tarefas/painel-de-fases/sidenavs/settings/settings-sidenav.html'"
+                ng-controller="SettingsSidenavController as vm" ms-sidenav-helper>
+    </md-sidenav>
+    <!-- / SETTINGS SIDENAV -->
+
+    <!-- FILTERS SIDENAV -->
+    <md-sidenav class="filters-sidenav md-sidenav-right" md-component-id="filters-sidenav"
+                ng-include="'app/main/tarefas/painel-de-fases/sidenavs/filters/filters-sidenav.html'"
+                ng-controller="FiltersSidenavController as vm" ms-sidenav-helper>
+    </md-sidenav>
+    <!-- / FILTERS SIDENAV -->
+
+</div>

@@ -79,9 +79,9 @@ public class PeticaoServiceFacade {
 	 * @param numeroSedex Nº do Sedex, caso a forma de recebimento seja Sedex.
 	 * @return Id da petição gerado automaticamente.
 	 */
-	public Long registrar(Integer volumes, Integer apensos, String formaRecebimento, String numeroSedex) {
+	public Long registrar(Integer volumes, Integer apensos, String formaRecebimento, String numeroSedex, String tipoProcesso) {
 		FormaRecebimento forma = FormaRecebimento.valueOf(formaRecebimento.toUpperCase());
-		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex);
+		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex, tipoProcesso);
 		return peticao.id().toLong();
 	}
 	
@@ -89,14 +89,13 @@ public class PeticaoServiceFacade {
 	 * Realiza a preautuação de uma petição física.
 	 * 
 	 * @param peticaoId Id da petição física.
-	 * @param classeId Classe processual sugerida.
-	 * @param peticaoValida indica se a petição está correta ou indevida 
+	 * @param classeId Classe processual sugerida. 
 	 * @param motivoDevolucao o motivo da devolução, no caso de petições indevidas 
 	 */
-	public void preautuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoDevolucao) {
+	public void preautuar(Long peticaoId, String classeId, String motivoDevolucao) {
 		ClasseId classe = new ClasseId(classeId);
 		PeticaoFisica peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.preautuar(peticao, classe, peticaoValida, motivoDevolucao);
+		peticaoApplicationService.preautuar(peticao, classe, motivoDevolucao);
 	}
 	
 	/**
