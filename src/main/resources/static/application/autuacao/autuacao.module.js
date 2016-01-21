@@ -125,6 +125,15 @@
 					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html'
 				}
 			}
+		}).state('autuar-criminal', {
+			parent: 'action.autuacao',
+			url: '/processo/autuacao-criminal',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/autuacao/autuacao-criminal.tpl.html'
+				}
+			}
 		}).state('devolver-peticao', {
 			parent: 'action.autuacao',
 			url: '/peticao/devolucao',
@@ -167,7 +176,7 @@
 		}).dashlet('grafico-gestao', {
 			view: 'application/autuacao/dashlets/gestao-autuacao.tpl.html',
 			controller: 'GestaoAutuacaoDashletController'
-		}).dashlet('peticoes-para-preautuar', {
+		}).dashlet('peticoes-para-preautuar' , {
 			view: 'application/autuacao/dashlets/peticoes-preautuar.tpl.html',
 			controller: 'MinhasPeticoesParaAutuarDashletController'
 		}).dashlet('grafico-peticoes', {
