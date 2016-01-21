@@ -99,7 +99,7 @@
 		    	pos = text.search("#");
 		    	pos = pos + 1;
 		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo #' + peticaoId);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo Originário #' + peticaoId);
 		    });
 			
 		    principalPage.executarTarefa();
