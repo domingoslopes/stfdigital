@@ -1,0 +1,36 @@
+<md-toolbar class="md-accent" ng-class="'md-'+vm.board.settings.color+'-bg'">
+    <div class="md-toolbar-tools">
+        <span flex class="menu-title" translate="TAREFAS.PAINEL-DE-FASES.SIDEBAR.TITULO.FILTRAR-CARTOES">Filtrar cartões</span>
+        <md-button ng-if="vm.filteringIsOn()" ng-click="vm.clearFilters()" class="md-icon-button"
+                   aria-label="clear filters">
+            <md-icon md-font-icon="icon-filter-remove"></md-icon>
+            <md-tooltip>
+                <span translate="TAREFAS.PAINEL-DE-FASES.SIDEBAR.FILTRO.LIMPAR-FILTROS">Limpar filtros</span>
+            </md-tooltip>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<md-content class="" ms-scroll>
+    <md-list>
+
+        <md-subheader class="md-no-sticky" translate="TAREFAS.PAINEL-DE-FASES.SIDEBAR.FILTRO.POR-NOME">Filtrar pelo nome</md-subheader>
+
+        <md-list-item>
+            <input flex placeholder="Type Card Name" type="text" ng-model="vm.cardFilters.name"
+                   translate translate-attr-placeholder="TAREFAS.PAINEL-DE-FASES.SIDEBAR.FILTRO.DIGITE-NOME">
+        </md-list-item>
+
+        <md-divider></md-divider>
+
+        <md-subheader class="md-no-sticky" translate="TAREFAS.PAINEL-DE-FASES.SIDEBAR.FILTRO.POR-ROTULO">Filtrar por rótulos</md-subheader>
+
+        <md-list-item class="label" ng-repeat="label in vm.labels"
+                      ng-click="vm.toggleInArray(label.id, vm.cardFilters.labels)">
+            <md-icon md-font-icon="icon-label" ng-class="label.color+'-fg'" class="label-icon"></md-icon>
+            <p>{{label.name}}</p>
+            <i class="icon-check s16" ng-if="vm.exists(label.id, vm.cardFilters.labels)"></i>
+        </md-list-item>
+
+    </md-list>
+</md-content>
