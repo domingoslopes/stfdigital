@@ -93,7 +93,7 @@ public class PeticaoServiceFacade {
 	 * 
 	 * @param peticaoId Id da petição física.
 	 * @param classeId Classe processual sugerida.
-	 * @param peticaoValida indica se a petição está correta ou indevida 
+	 * @param peticaoValida indica se a petição está correta ou indevida
 	 * @param motivoDevolucao o motivo da devolução, no caso de petições indevidas 
 	 */
 	public void preautuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoDevolucao) {
