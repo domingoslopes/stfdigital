@@ -98,6 +98,7 @@ public class PeticaoApplicationService {
 	 * 
 	 * @param peticao Dados da petição física.
 	 * @param classeSugerida Classe processual sugerida.
+	 * @param peticaoValida Indica se a petição é válida ou inválida.
 	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
 	 */
 	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
