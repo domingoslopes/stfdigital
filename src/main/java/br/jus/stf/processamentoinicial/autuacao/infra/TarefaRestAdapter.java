@@ -3,6 +3,8 @@ package br.jus.stf.processamentoinicial.autuacao.infra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import reactor.bus.Event;
+import reactor.bus.EventBus;
 import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
@@ -13,8 +15,6 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.shared.PeticaoStatusModificado;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
-import reactor.bus.Event;
-import reactor.bus.EventBus;
 
 /**
  * @author Rodrigo Barreiros
@@ -43,10 +43,20 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	public void completarAutuacao(Peticao peticao) {
 		completarTarefaPorProcesso(peticao, PeticaoStatus.ACEITA);		
 	}
+	
+	@Override
+	public void completarAutuacaoRejeitada(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.REJEITADA);		
+	}
 
 	@Override
 	public void completarPreautuacao(Peticao peticao) {
 		completarTarefaPorProcesso(peticao, PeticaoStatus.A_AUTUAR);
+	}
+	
+	@Override
+	public void completarPreautuacaoIndevida(Peticao peticao) {
+		completarTarefaPorProcesso(peticao, PeticaoStatus.A_DEVOLVER);
 	}
 
 	@Override

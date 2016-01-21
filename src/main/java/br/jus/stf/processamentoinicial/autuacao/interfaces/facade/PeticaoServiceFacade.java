@@ -183,6 +183,17 @@ public class PeticaoServiceFacade {
 		}
 		return null;
 	}
+	
+	/**
+	 * Retorna o tipo de processo da petição
+	 * 
+	 * @param peticaoId
+	 * @return ORIGINARIO ou RECURSAL
+	 */
+	public String tipoProcesso(String peticaoId) {
+		Peticao peticao = carregarPeticao(Long.valueOf(peticaoId));
+		return peticao.tipoProcesso().name();
+	}
 
 	/**
 	 * Carrega um petição pelo id, ou lança um exceção se não existir
