@@ -1,4 +1,4 @@
-<div class="content" ng-controller="PreautuacaoController as preautuacao">
+<div class="content" ng-controller="PreautuacaoRecursalController as preautuacao">
 	<div class="jumbotron" data-pages="parallax">
 		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
 			<div class="inner">
@@ -6,7 +6,7 @@
 					<li>
 						<p>Petições Físicas</p>
 					</li>
-					<li><a href="#" class="active">Pré-autuação</a></li>
+					<li><a href="#" class="active">Pré-autuação de Recursal</a></li>
 				</ul>
 			</div>
 		</div>
@@ -80,20 +80,21 @@
                             <h6>Informe se a petição está <b>Correta ou Indevida</b>.</h6>
                         </div>
                         <div class="card-description">
-                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" placeholder="Informe os motivos que levam a petição a ser indevida" aria-invalid="false"></textarea>
+                            <div class="radio radio-success">
+                                <input type="radio" ng-model="preautuacao.valida" value="true" id="yes"> 
+                                <label for="yes">Correta</label> 
+                                <input type="radio" ng-model="preautuacao.valida" value="false" id="no"> 
+                                <label for="no">Indevida</label>
+                            </div>
+                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" ng-hide="preautuacao.valida === 'true'" placeholder="Informe os motivos que levam a petição a ser indevida" aria-invalid="false"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-            
+            <p>
             	<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validar"
-	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono"></action-executor>
-            
-	 			
-	 			<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validarDevolucao"
-	 				fn-result="preautuacao.finalizarDevolucao" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Devolver Petição"></action-executor>
-            
-            
+	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" /> 
+            </p>
         </form>
 	</div>
 </div>
