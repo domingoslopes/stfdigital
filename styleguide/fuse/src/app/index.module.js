@@ -33,9 +33,6 @@
 
             'app.tarefas.minhas-tarefas',
             'app.tarefas.painel-de-fases',
-            'app.tarefas.painel-de-fases.processo-de-autuacao',
-            'app.tarefas.painel-de-fases.recebimento-de-remessas',
-            'app.tarefas.painel-de-fases.distribuicao-de-processos',
             'app.tarefas.notificacoes',
 
             'app.configuracoes.meu-perfil',

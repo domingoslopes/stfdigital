@@ -36,6 +36,9 @@ public class RegistrarPeticaoFisicaCommand {
 	@ApiModelProperty(value = "Número do Sedex, caso a forma de recebimento seja Sedex")
 	private String numeroSedex;
 	
+	@ApiModelProperty(value = "Tipo de processo (Origiário ou Recursal)")
+	private String tipoProcesso;
+	
 	@AssertTrue
 	public boolean isValid() {
 		if (FormaRecebimento.SEDEX.equals(FormaRecebimento.valueOf(formaRecebimento))) {
@@ -58,6 +61,10 @@ public class RegistrarPeticaoFisicaCommand {
 
 	public String getNumeroSedex() {
 		return numeroSedex;
+	}
+	
+	public String getTipoProcesso(){
+		return this.tipoProcesso;
 	}
 	
 }
