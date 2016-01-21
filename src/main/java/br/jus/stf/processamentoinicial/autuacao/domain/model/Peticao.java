@@ -120,6 +120,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
 		Validate.notBlank(usuarioCadastramento, "peticao.usuarioCadastramento.required");
+		Validate.notNull(usuarioCadastramento, "peticao.tipoProcesso.required");
 		
 		this.id = id;
 		this.numero = numero;
@@ -127,7 +128,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.identificacao = montarIdentificacao();
 		this.dataCadastramento = new Date();
 		this.usuarioCadastramento = usuarioCadastramento;
-		this.tipoProcesso = Optional.ofNullable(tipoProcesso).orElse(TipoProcesso.RECURSAL);
+		this.tipoProcesso = tipoProcesso;
 	}
 
 	@PostLoad
