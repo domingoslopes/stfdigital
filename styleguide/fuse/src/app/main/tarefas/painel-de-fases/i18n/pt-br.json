@@ -8,6 +8,8 @@
 			"QUAL-PAINEL-VISUALIZAR": "Qual painel deseja visualizar?",
 			"PAINEIS": "Paineis",
 
+			"OUTRO_S": "Outro{{count == 1 ? '' : 's'}}",
+
 			"LIMPAR-FILTROS": "Limpar filtros",
 			"FILTRAR-CARTOES": "Filtrar cartões",
 
