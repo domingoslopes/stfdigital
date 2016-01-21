@@ -88,7 +88,7 @@
     		var command = {};
     		command.peticaoId = peticaoId;
     		command.classeId = classeId;
-    		preautuacao.valida = valida;
+    		command.valida = valida;
     		command.motivo = motivo;
     		return command;
     	}
