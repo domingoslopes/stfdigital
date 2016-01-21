@@ -207,7 +207,7 @@
 	                            <!-- / CARD MEMBERS -->
 
 	                            <!-- CARD MEMBERS -->
-	                            <div ng-if="vm.board.cards.getById(cardId).additionalInfo" class="list-card-addition-info"
+	                            <div ng-if="vm.board.cards.getById(cardId).additionalInfo && (vm.board.cards.getById(cardId).additionalInfo.icon || vm.board.cards.getById(cardId).additionalInfo.left || vm.board.cards.getById(cardId).additionalInfo.right) " class="list-card-addition-info"
 	                                 layout="row">
 
 	                                <div flex>
