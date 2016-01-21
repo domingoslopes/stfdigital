@@ -85,11 +85,11 @@
 		});
 	});
 	
-//	var uploadSizes = ['100k', '1MB', '10MB', '100MB'];
-	var uploadSizes = ['100MB'];
+	var uploadSizes = ['100k', '1MB', '10MB', '100MB'];
+//	var uploadSizes = ['100k'];
 	
 	uploadSizes.map(function(uploadSize) {
-		for (var k = 0; k < 2; k++) {
+		for (var k = 0; k < 10; k++) {
 			describe('Benchmark Peticionar-Execução-' + uploadSize + ':' , function() {
 				
 				beforeEach(function() {
