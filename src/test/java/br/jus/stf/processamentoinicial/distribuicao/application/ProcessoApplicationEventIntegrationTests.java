@@ -13,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
-import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationEvent;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.eventbus.ProcessoDistribuidoIndexadorConsumer;
 
 /**
  * @author Lucas Rodrigues
@@ -32,7 +33,7 @@ public class ProcessoApplicationEventIntegrationTests extends AbstractIntegratio
 	
 	@Autowired
 	@InjectMocks
-	private ProcessoIndexadorConsumer processoIndexadorConsumer;
+	private ProcessoDistribuidoIndexadorConsumer processoIndexadorConsumer;
 	
 	@Before
 	public void setUp() throws Exception {
