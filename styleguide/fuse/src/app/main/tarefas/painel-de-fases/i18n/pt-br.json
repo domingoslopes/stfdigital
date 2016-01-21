@@ -1,7 +1,114 @@
 {
 	"TAREFAS": {
 		"PAINEL-DE-FASES": {
-			"PAINEL-DE-FASES": "Painel de Fases"
+			"PAINEL-DE-FASES": "Painel de Fases",
+			"PROCESSO-DE-AUTUACAO": "Processo de Atuaução",
+			"RECEBIMENTO-DE-REMESSAS": "Recebimento de Remessas",
+			"DISTRIBUICAO-DE-PROCESSOS": "Distribuição de Processos",
+			"QUAL-PAINEL-VISUALIZAR": "Qual painel deseja visualizar?",
+			"PAINEIS": "Paineis",
+
+			"OUTRO_S": "Outro{{count == 1 ? '' : 's'}}",
+
+			"LIMPAR-FILTROS": "Limpar filtros",
+			"FILTRAR-CARTOES": "Filtrar cartões",
+
+			"CONFIGURACOES": "Configurações",
+
+			"SIDEBAR": {
+				"TITULO": {
+					"CONFIGURACOES": "Configurações",
+					"COR-DO-PAINEL": "Cor do Painel",
+					"ROTULOS": "Rótulos",
+					"MEMBROS": "Membros",
+					"FILTRAR-CARTOES": "Filtrar cartões"
+				},
+
+				"COR-DO-PAINEL": {
+					"COR-SELECIONADA": "Cor Selecionada: "
+				},
+
+				"ROTULOS": {
+					"ADICIONAR-ROTULO": "Adicionar rótulo",
+					"DIGITE-NOVO-ROTULO": "Digite um novo rótulo"
+				},
+
+				"MEMBROS": {
+					"ADICIONAR-NOVO-MEMBRO": "Adicionar novo membro",
+					"ADICIONAR": "Adicionar",
+					"DIGITE-NOME": "Digite o nome"
+				},
+
+				"FILTRO": {
+					"POR-NOME": "Filtrar pelo nome",
+					"LIMPAR-FILTROS": "Filtrar cartões",
+					"DIGITE-NOME": "Digite o nome",
+					"POR-ROTULO": "Filtrar por rótulos"
+				}
+			},
+
+			"DIALOGO": {
+				"ROTULOS": "Rótulos",
+				"BUSCAR-ROTULOS": "Buscar rótulos...",
+				"ALTERNAR-ROTULO": "Alternar rótulo",
+				"EDITAR-ROTULO": "Editar rótulo",
+				"ADICIONAR-NOVO-ROTULO": "Adicionar novo rótulo",
+				"NOME-ROTULO": "Nome do rótulo",
+
+				"MEMBROS": "Membros",
+				"PROCURAR-MEMBRO": "Procurar membro...",
+
+				"ANEXOS": "Anexos",
+
+				"CHECKLIST": "Checklist",
+				"TITULO-CHECKLIST": "Título da checklist",
+				"ADICIONAR-CHECKLIST": "Adicionar Checklist",
+
+				"INSCRICAO": "Inscrição",
+				"INSCREVER": "Inscrever-se",
+				"DESINSCREVER": "Desinscrever-se",
+
+				"OPCOES": "Opções",
+				"REMOVER-CARTAO": "Remover cartão",
+
+				"FECHAR-DIALOGO": "Fechar diálogo",
+
+				"DESCRICAO": "Descrição",
+				"BUSCAR-ROTULO": "Buscar por um rótulo...",
+				"BUSCAR-MEMBRO": "Buscar por um membro...",
+
+				"ACOES": "Ações",
+				"ALTERNAR-IMAGEM-CAPA": "Alternar imagem de capa",
+				"TORNAR-IMAGEM-CAPA": "Tornar imagem de capa",
+				"REMOVER-IMAGEM-CAPA": "Remover imagem de capa",
+				"REMOVER-ANEXO": "Remover anexo",
+
+				"LINK": "Link",
+				"ADICIONAR-ANEXO": "Adicionar Anexo",
+
+				"REMOVER-CHECKLIST": "Remover checklist",
+				"ADICIONAR-UM-ITEM": "Adicionar um item",
+				"ADICIONAR": "Adicionar",
+
+				"COMENTARIOS": "Comentários",
+				"ESCREVA-UM-COMENTARIO": "Escreva um comentário",
+
+				"ATIVIDADE": "Atividade",
+
+				"REMOVER-CARTAO": "Remover cartão",
+				"REMOVER-CARTAO-CONFIRMACAO": "Você tem certeza que deseja remover este cartão?",
+
+				"REMOVER-ROTULO": "Remover rótulo",
+				"REMOVER-ROTULO-CONFIRMACAO": "Você tem certeza que deseja remover este rótulo?",
+
+				"REMOVER-MEMBRO": "Remover membro",
+				"REMOVER-MEMBRO-CONFIRMACAO": "Você tem certeza que deseja remover este membro?",
+
+				"CANCELAR": "Cancelar",
+				"REMOVER": "Remover",
+				"VOLTAR": "Voltar",
+				"CRIAR": "Criar"
+			}
 		}
 	}	
 }

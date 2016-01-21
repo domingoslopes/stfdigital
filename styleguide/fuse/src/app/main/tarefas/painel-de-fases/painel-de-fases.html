@@ -1,1 +1,25 @@
-PAINEL DE FASES
+<div id="painel-de-fases" class="md-accent-bg" layout="column">
+    <div id="painel-selector" layout="column" layout-align="start center" flex>
+		
+		<h1 translate="TAREFAS.PAINEL-DE-FASES.QUAL-PAINEL-VISUALIZAR" class="text-center">Qual painel deseja visualizar?</h1>
+
+        <div class="painel-list" layout="row" layout-align="center center" layout-wrap>
+            <div 
+                ng-repeat="board in vm.BoardList"
+            	class="painel-list-item"
+            	layout="column"
+            	layout-align="center center"
+            	layout-wrap
+            	ng-attr-ui-sref="{{ 'app.tarefas.painel-de-fases.' + board.id }}">
+
+                <md-icon md-font-icon="icon-trello" class="icon s64"></md-icon>
+                
+                <div 
+                	class="painel-name"
+                	ng-attr-translate="{{ 'TAREFAS.PAINEL-DE-FASES.' + board.id.toUpperCase() }}">
+                	{{ board.name }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

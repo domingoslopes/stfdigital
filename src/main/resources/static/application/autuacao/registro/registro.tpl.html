@@ -72,6 +72,21 @@
                     </div>
                 </div>
 			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width:99%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix ">
+								<h5>Tipo de Processo</h5>
+								<h6>Tipo de processo da petição física</h6>
+							</div>
+						<div class="card-description">
+							<select id="tipoProcesso" ng-model="registro.tipoProcesso" ng-options="tipo.nome for tipo in registro.tiposProcessos track by tipo.id" style="width: 450px;">
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
 			<br />
 			<p>
     			<action-executor id="registrar-peticao-fisica" resources="registro.recursos" fn-validate="registro.validar"
