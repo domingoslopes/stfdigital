@@ -1,8 +1,8 @@
 {
-    "id": "recebimento-de-remessas",
-    "name": "Recebimento de Remessas",
+    "id": "distribuicao-de-processos",
+    "name": "Distribuição de Processos",
     "settings": {
-        "color": "brown",
+        "color": "blue-grey",
         "subscribed": false,
         "cardCoverImages": false
     },
