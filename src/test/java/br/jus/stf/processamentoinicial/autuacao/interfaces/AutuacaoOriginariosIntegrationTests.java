@@ -37,7 +37,7 @@ import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusIndexadorConsumer;
-import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.eventbus.ProcessoDistribuidoIndexadorConsumer;
 
 /**
  * @author Rodrigo Barreiros
@@ -68,7 +68,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	
 	@Autowired
 	@InjectMocks
-	private ProcessoIndexadorConsumer processoIndexadorConsumer;
+	private ProcessoDistribuidoIndexadorConsumer processoIndexadorConsumer;
 	
 	@Autowired
 	@InjectMocks
