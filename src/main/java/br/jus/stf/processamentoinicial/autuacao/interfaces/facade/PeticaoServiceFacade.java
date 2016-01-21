@@ -22,6 +22,7 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PeticaoId;
@@ -77,11 +78,13 @@ public class PeticaoServiceFacade {
 	 * @param apensos Quantidades de apensos recebidos.
 	 * @param formaRecebimento Forma de recebimento da petição física.
 	 * @param numeroSedex Nº do Sedex, caso a forma de recebimento seja Sedex.
+	 * @param tipoProcesso Define se o processo físico é recursal ou originário
 	 * @return Id da petição gerado automaticamente.
 	 */
-	public Long registrar(Integer volumes, Integer apensos, String formaRecebimento, String numeroSedex) {
+	public Long registrar(Integer volumes, Integer apensos, String formaRecebimento, String numeroSedex, String tipoProcesso) {
 		FormaRecebimento forma = FormaRecebimento.valueOf(formaRecebimento.toUpperCase());
-		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex);
+		TipoProcesso tipo = TipoProcesso.valueOf(tipoProcesso.toUpperCase());
+		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex, tipo);
 		return peticao.id().toLong();
 	}
 	

@@ -75,8 +75,8 @@ public class ProcessoRecursal extends Processo {
 	public void atribuirAssuntos(final Set<AssuntoId> assuntos) {
 		Validate.notNull(assuntos, "processoRecursal.assuntos.required");
 		
-		this.assuntos.addAll(assuntos);
 		this.assuntos.retainAll(assuntos);
+		this.assuntos.addAll(assuntos);
 	}
 	
 	public Set<TeseId> teses(){
@@ -86,8 +86,8 @@ public class ProcessoRecursal extends Processo {
 	public void atribuirTeses(final Set<TeseId> teses) {
 		Validate.notNull(teses, "processoRecursal.teses.required");
 		
-		this.teses.addAll(teses);
 		this.teses.retainAll(teses);
+		this.teses.addAll(teses);
 	}
 	
 	public Set<MotivoInaptidaoProcesso> motivosInaptidao(){
