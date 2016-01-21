@@ -1,8 +1,8 @@
 {
-    "id": "recebimento-de-remessas",
-    "name": "Recebimento de Remessas",
+    "id": "processo-de-autuacao",
+    "name": "Processo de Autuação",
     "settings": {
-        "color": "brown",
+        "color": "blue",
         "subscribed": false,
         "cardCoverImages": false
     },
