@@ -84,8 +84,9 @@ public class PeticaoApplicationService {
 	 * 
 	 * @return Id da petição física registrada.
 	 */
-	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
-		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, TipoProcesso.ORIGINARIO);
+	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento,
+			String numeroSedex, TipoProcesso tipoProcesso){
+		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, tipoProcesso);
 		peticaoRepository.save(peticao);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
