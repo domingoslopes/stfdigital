@@ -4,21 +4,28 @@
     "settings": {
         "color": "blue-grey",
         "subscribed": false,
-        "cardCoverImages": true
+        "cardCoverImages": false
     },
     "lists": [
         {
             "id": "56027cf5a2ca3839a5d36103",
-            "name": "Designs",
+            "name": "Peticionados e Recebidos",
             "idCards": [
                 "5603a2a3cab0c8300f6096b3"
             ]
         },
         {
             "id": "56127cf2a2ca3539g7d36103",
-            "name": "Development",
+            "name": "Analisados",
             "idCards": [
                 "5637273da9b93bb84743a0f9"
+            ]
+        },
+        {
+            "id": "19ff2df00b2f48f0a934a79d",
+            "name": "Distribuídos",
+            "idCards": [
+                
             ]
         }
     ],
@@ -128,14 +135,14 @@
                 }
             ],
             "due": null,
-            "location": {
-                "avatar": "assets/images/avatars/profile.jpg",
-                "name": "Gab. Min. Carmém Lúcia"
-            },
             "additionalInfo": {
                 "icon": "icon-email",
                 "left": "Correio: 2345325",
-                "right": "2 Volumes e 3 Apensos"
+                "right": "2 Volumes e 3 Apensos",
+                "footer": {
+                    "avatar": "assets/images/avatars/profile.jpg",
+                    "name": "Gab. Min. Carmém Lúcia"
+                }
             }
         },
         {
@@ -190,18 +197,18 @@
     "labels": [
         {
             "id": "56027e4119ad3a5dc28b36cd",
-            "name": "Design",
+            "name": "Liminar",
             "color": "red"
         },
         {
             "id": "5640635e19ad3a5dc21416b2",
-            "name": "App",
-            "color": "blue"
+            "name": "Criminal",
+            "color": "amber"
         },
         {
             "id": "6540635g19ad3s5dc31412b2",
-            "name": "Feature",
-            "color": "green"
+            "name": "Maior de 65 anos",
+            "color": "blue"
         }
     ]
 }
