@@ -9,6 +9,8 @@ var HtmlReporter = require('protractor-html-screenshot-reporter');
 var baseDir = 'src/main/resources/static';
 var port = 3000;
 
+var path = require('path');
+
 exports.config = {
 	jasmineNodeOpts : {
 		showColors : true,
@@ -18,7 +20,15 @@ exports.config = {
 	specs : [ baseDir + '/application/test/benchmark/**/{pattern}.benchmark.js' ],
 
 	capabilities : {
-		'browserName' : 'chrome'
+		'browserName' : 'chrome',
+		'chromeOptions': {
+			prefs: {
+				'download': {
+					'prompt_for_download': false,
+					'default_directory': path.resolve('/tmp')
+				}
+			}
+		}
 	},
 	
 	allScriptsTimeout: 300000,
