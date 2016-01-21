@@ -84,7 +84,7 @@ public class PeticaoApplicationService {
 	 * 
 	 * @return Id da petição física registrada.
 	 */
-	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
+	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex, String tipoProcesso){
 		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, TipoProcesso.ORIGINARIO);
 		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
@@ -98,10 +98,9 @@ public class PeticaoApplicationService {
 	 * @param peticao Dados da petição física.
 	 * @param classeSugerida Classe processual sugerida.
 	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
-	 * @param peticaoValida Indica se a petição é valida ou inválida.
 	 */
-	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
-		if (peticaoValida) {
+	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, String motivoDevolucao) {
+		if (motivoDevolucao == null || motivoDevolucao.isEmpty()) {
 			tarefaAdapter.completarPreautuacao(peticao);
 			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);

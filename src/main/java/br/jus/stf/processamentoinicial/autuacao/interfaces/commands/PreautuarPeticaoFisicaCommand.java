@@ -11,7 +11,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 /**
  * Objeto usado para enviar os dados necessários para préautuar uma petição física.
  * 
- * @author Anderson Araújo
+ * @author Anderson.Araujo
  * @author Rodrigo Barreiros
  * 
  * @version 1.0.0
