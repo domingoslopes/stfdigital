@@ -1,24 +1,22 @@
 package br.jus.stf.plataforma.acessos.interfaces;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import net.minidev.json.JSONArray;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 /**
  * Classe responsável pelos testes de integração da API de acessos da Plataforma.
@@ -56,9 +54,7 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 			.andExpect(jsonPath("$.nome", is("autuador")))
 			.andExpect(jsonPath("$.setorLotacao.codigo", is(600000627)))
 			.andExpect(jsonPath("$.setorLotacao.sigla", is("SEJ")))
-			.andExpect(jsonPath("$.setorLotacao.nome", is("SECRETARIA JUDICIÁRIA")))
-			.andExpect(jsonPath("$.papeis[0].nome", is("autuador")))
-			.andExpect(jsonPath("$.papeis[0].setor", is("SEJ")));
+			.andExpect(jsonPath("$.setorLotacao.nome", is("SECRETARIA JUDICIÁRIA")));
 	}
 
 	@Test

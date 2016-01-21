@@ -71,8 +71,8 @@ public class PeticaoApplicationService {
 	 */
 	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas, Optional<Long> orgaoId) {
 		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId, TipoProcesso.ORIGINARIO);
-		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
+		processoAdapter.iniciarWorkflow(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
 	}
@@ -86,8 +86,8 @@ public class PeticaoApplicationService {
 	 */
 	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento, String numeroSedex){
 		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, TipoProcesso.ORIGINARIO);
-		processoAdapter.iniciarWorkflow(peticao);
 		peticaoRepository.save(peticao);
+		processoAdapter.iniciarWorkflow(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
 	}
@@ -102,15 +102,15 @@ public class PeticaoApplicationService {
 	 */
 	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
 		if (peticaoValida) {
-			tarefaAdapter.completarPreautuacao(peticao);
 			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
+			tarefaAdapter.completarPreautuacao(peticao);
 			peticaoApplicationEvent.peticaoPreautuada(peticao);
 		} else {
 			peticao.devolver(motivoDevolucao);
 			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
-			processoAdapter.devolver(peticao);
+			tarefaAdapter.completarPreautuacaoIndevida(peticao);
 			peticaoApplicationEvent.remessaInvalida(peticao);
 		}
 		
@@ -133,7 +133,7 @@ public class PeticaoApplicationService {
 		} else {
 			peticao.rejeitar(motivoRejeicao);
 			peticaoRepository.save(peticao);
-			processoAdapter.rejeitarAutuacao(peticao);
+			tarefaAdapter.completarAutuacaoRejeitada(peticao);
 			peticaoApplicationEvent.peticaoRejeitada(peticao);
 		}
 	}
@@ -172,17 +172,13 @@ public class PeticaoApplicationService {
 	public void assinarDevolucao(Peticao peticao, DocumentoTemporarioId documentoTemporarioId) {
 		// Salva definitivamente o documento assinado.
 		DocumentoId documentoId = documentoAdapter.salvar(documentoTemporarioId);
-		
 		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8));
 		Peca pecaOriginal = peticao.pecas().stream().filter(p -> p.tipo().equals(tipo)).findFirst().get();
 		Peca pecaAssinada = new PecaPeticao(documentoId, tipo, pecaOriginal.descricao());
 		
 		peticao.substituirPeca(pecaOriginal, pecaAssinada);
-		
 		peticaoRepository.save(peticao);
-
 		tarefaAdapter.completarDevolucao(peticao);
-		
 		peticaoApplicationEvent.peticaoDevolucaoAssinada(peticao);
 	}
 	

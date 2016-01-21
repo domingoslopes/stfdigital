@@ -27,7 +27,7 @@ import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusIndexadorConsumer;
-import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.eventbus.ProcessoDistribuidoIndexadorConsumer;
 
 /**
  * Realiza os testes de integração do peticionamento usando o mecanismo de ações da plataforma STF Digital.
@@ -53,7 +53,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	
 	@Autowired
 	@InjectMocks
-	private ProcessoIndexadorConsumer processoIndexadorConsumer;
+	private ProcessoDistribuidoIndexadorConsumer processoIndexadorConsumer;
 	
 	@Autowired
 	@InjectMocks
