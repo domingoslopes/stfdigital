@@ -14,6 +14,7 @@ public enum PeticaoStatus {
 	DISTRIBUIDA("Distribuída"),
 	A_DEVOLVER("A devolver"),
 	ASSINAR_DEVOLUCAO("Assinar devolução"),
+	A_ANALISAR("A analisar"),
 	DEVOLVIDA("Devolvida");
 	
 	private String descricao;
