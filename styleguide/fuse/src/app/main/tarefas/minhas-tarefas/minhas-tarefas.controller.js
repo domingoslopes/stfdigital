@@ -6,7 +6,7 @@
     app.classy.controller({
         name: 'TarefasMinhasTarefasController',
 
-        inject: ['$document', '$mdDialog', '$mdSidenav', 'Tasks', 'Tags', '$scope'],
+        inject: ['$document', '$mdDialog', '$mdSidenav', '$filter', 'Tasks', 'Tags', '$scope'],
 
 
         init: function() {
@@ -14,15 +14,10 @@
             this.tags = this.Tags;
             this.completed = [];
             this.colors = ['blue', 'blue-grey', 'orange', 'pink', 'purple'];
-            this.projects = {
-                'creapond'    : 'Project Creapond',
-                'withinpixels': 'Project Withinpixels'
-            };
             this.selectedFilter = {
                 filter : 'Start Date',
                 dueDate: 'Next 3 days'
             };
-            this.selectedProject = 'creapond';
 
             // Tasks will be filtered against these models
             this.taskFilters = {
@@ -89,7 +84,7 @@
                 this.$mdDialog.show({
                     controller         : 'TaskDialogController',
                     controllerAs       : 'vm',
-                    templateUrl        : 'app/main/apps/todo/dialogs/task/task-dialog.html',
+                    templateUrl        : 'app/main/tarefas/minhas-tarefas/dialogs/task/task-dialog.html',
                     parent             : angular.element(this.$document.body),
                     targetEvent        : ev,
                     clickOutsideToClose: true,
@@ -215,6 +210,25 @@
              */
             isTagFilterExists: function(tag) {
                 return this.taskFilters.tags.indexOf(tag) > -1;
+            },
+
+            processNewTagKeydown: function(event) {
+                if (event.keyCode !== 13) {
+                    return;
+                }
+
+                this.tags.unshift({
+                    "id": this.tags.length + 1,
+                    "name": this.newTag.toLowerCase().replace(/\s/, '-'),
+                    "label": this.newTag,
+                    "color": "#BBBBBB"
+                });
+
+                this.newTag = "";
+            },
+
+            countTagsWithFilter: function(filter) {
+                return this.$filter('filter')(this.tasks, filter).length;
             }
         }
     });
