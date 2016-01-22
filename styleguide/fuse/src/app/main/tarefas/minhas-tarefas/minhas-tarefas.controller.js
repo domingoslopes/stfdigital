@@ -16,7 +16,7 @@
             this.colors = ['blue', 'blue-grey', 'orange', 'pink', 'purple'];
             this.selectedFilter = {
                 filter : 'Start Date',
-                dueDate: 'Next 3 days'
+                dueDate: 1
             };
 
             // Tasks will be filtered against these models
