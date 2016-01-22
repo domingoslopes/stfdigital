@@ -21,25 +21,40 @@
                 <div class="title">
                     {{task.title}}
                 </div>
-
-                <div class="notes">
-                    {{task.notes}}
-                </div>
-
-                <div class="tags" layout="row" layout-align="start center">
-                    <div class="tag" layout="row" layout-align="start center" data-ng-repeat="tag in task.tags">
-                        <div class="tag-color" ng-style="{'background-color': tag.color}"></div>
-                        <div class="tag-label">{{tag.label}}</div>
-                    </div>
-                </div>
             </div>
 
             <div class="buttons" layout="row" layout-align="start center">
-                <md-icon md-font-icon="icon-alert-circle" class="is-important red-600-fg"
-                         ng-if="task.important"></md-icon>
+                <div class="tags" layout="row" layout-align="start center">
+                    <div class="tag" layout="row" layout-align="start center" data-ng-repeat="tag in task.tags" ng-style="{'background-color': tag.color}">
+                        <div class="tag-label">{{tag.label}}</div>
+                    </div>
+                </div>
 
-                <md-icon md-font-icon="icon-star" class="is-starred amber-600-fg"
-                         ng-if="task.starred"></md-icon>
+                <md-button
+                    class="md-icon-button"
+                    aria-label="More"
+                    translate translate-attr-aria-label="TODO.MORE"
+                    ng-click="$event.stopPropagation(); task.important = !task.important">
+
+                    <md-icon md-font-icon="icon-alert-circle"
+                             ng-if="!task.important"></md-icon>
+
+                    <md-icon md-font-icon="icon-alert-circle" class="red-600-fg"
+                             ng-if="task.important"></md-icon>
+                </md-button>
+
+                <md-button
+                    class="md-icon-button"
+                    aria-label="More"
+                    translate translate-attr-aria-label="TODO.MORE"
+                    ng-click="$event.stopPropagation(); task.starred = !task.starred">
+
+                    <md-icon md-font-icon="icon-star-outline"
+                             ng-if="!task.starred"></md-icon>
+
+                    <md-icon md-font-icon="icon-star" class="amber-600-fg"
+                             ng-if="task.starred"></md-icon>
+                </md-button>
 
                 <md-menu>
                     <md-button class="md-icon-button" aria-label="More" translate
@@ -47,37 +62,28 @@
                         <md-icon md-font-icon="icon-dots-vertical" ng-click="$mdOpenMenu($event)"></md-icon>
                     </md-button>
 
-                    <md-menu-content width="3">
+                    <md-menu-content width="1">
                         <md-menu-item>
-                            <md-button ng-click="task.completed = !task.completed" aria-label="Toggle done"
-                                       translate-attr-aria-label="TODO.TOGGLE_DONE">
-                                <md-icon ng-class="task.completed === false ? 'grey-fg' : 'blue-fg'"
-                                         md-font-icon="icon-checkbox-marked-circle" class="s18"></md-icon>
-                                <span ng-show="!task.completed" translate="TODO.MARK_AS_DONE">Mark as done</span>
-                                <span ng-show="task.completed" translate="TODO.MARK_AS_UNDONE">Mark as undone</span>
+                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                                Assumir
                             </md-button>
                         </md-menu-item>
 
                         <md-menu-item>
-                            <md-button ng-click="task.important = !task.important" aria-label="Toggle important"
-                                       translate-attr-aria-label="TODO.TOGGLE_IMPORTANT">
-                                <md-icon ng-class="task.important === false ? 'grey-fg' : 'red-600-fg'"
-                                         md-font-icon="icon-alert-circle" class="s18"></md-icon>
-                                    <span ng-show="!task.important" translate="TODO.MARK_AS_IMPORTANT"> Mark as
-                                        important</span>
-                                    <span ng-show="task.important" translate="TODO.REMOVE_IMPORTANT">Remove
-                                        important</span>
+                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                                Delegar
                             </md-button>
                         </md-menu-item>
 
                         <md-menu-item>
-                            <md-button ng-click="task.starred = !task.starred" aria-label="Toggle star"
-                                       translate-attr-aria-label="TODO.TOGGLE_STAR">
-                                <md-icon ng-class="task.starred === false ? 'grey-fg' : 'amber-600-fg'"
-                                         md-font-icon="icon-star"
-                                         class="s18"></md-icon>
-                                <span ng-show="!task.starred" translate="TODO.ADD_STAR">Add star</span>
-                                <span ng-show="task.starred" translate="TODO.REMOVE_STAR">Remove star</span>
+                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                                Concluir
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item>
+                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                                Incluir tag
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
