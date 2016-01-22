@@ -82,11 +82,12 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 		return query.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
     public Processo findByPeticao(PeticaoId peticaoId) {
 		Query query = entityManager.createQuery("SELECT processo FROM Processo processo WHERE processo.peticao = :id");
 		query.setParameter("id", peticaoId);
-		return (Processo) query.getSingleResult();
+		return (Processo) query.getResultList().stream().findFirst().orElse(null);
     }
 	
 }

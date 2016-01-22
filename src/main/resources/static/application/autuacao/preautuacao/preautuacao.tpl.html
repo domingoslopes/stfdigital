@@ -99,16 +99,14 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
+            </div>            
             	<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validar"
-	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono"></action-executor>
-            
-	 			
+	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono">
+ 				</action-executor>
+
 	 			<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validarDevolucao"
-	 				fn-result="preautuacao.finalizarDevolucao" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Devolver Petição"></action-executor>
-            
-            
+	 				fn-result="preautuacao.finalizarDevolucao" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Devolver Petição">
+ 				</action-executor>
         </form>
 	</div>
 </div>
