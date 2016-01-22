@@ -37,14 +37,11 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
-import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
@@ -123,6 +120,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(numero, "peticao.numero.required");
 		Validate.notBlank(usuarioCadastramento, "peticao.usuarioCadastramento.required");
+		Validate.notNull(usuarioCadastramento, "peticao.tipoProcesso.required");
 		
 		this.id = id;
 		this.numero = numero;
@@ -130,7 +128,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.identificacao = montarIdentificacao();
 		this.dataCadastramento = new Date();
 		this.usuarioCadastramento = usuarioCadastramento;
-		this.tipoProcesso = Optional.ofNullable(tipoProcesso).orElse(TipoProcesso.RECURSAL);
+		this.tipoProcesso = tipoProcesso;
 	}
 
 	@PostLoad
@@ -305,18 +303,6 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notBlank(motivoDevolucao, "peticao.motivoDevolucao.required");
 			
 		this.motivoDevolucao = motivoDevolucao;
-	}
-
-	/**
-	 * @param ministroRelator
-	 * @param processoRepository
-	 * @return o Processo
-	 */
-	public Processo distribuir(final MinistroId relator) {
-		Validate.notNull(relator, "peticao.ministroRelator.required");
-		Validate.notNull(classeProcessual, "peticao.distribuir.classeProcessual.invalid");
-		
-		return ProcessoFactory.criarProcesso(classeProcessual, relator, partes, pecas, id, tipoProcesso, preferencias);
 	}
 
 	public Set<ProcessoWorkflow> processosWorkflow() {

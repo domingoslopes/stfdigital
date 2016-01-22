@@ -22,6 +22,7 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PeticaoId;
@@ -77,11 +78,13 @@ public class PeticaoServiceFacade {
 	 * @param apensos Quantidades de apensos recebidos.
 	 * @param formaRecebimento Forma de recebimento da petição física.
 	 * @param numeroSedex Nº do Sedex, caso a forma de recebimento seja Sedex.
+	 * @param tipoProcesso Define se o processo físico é recursal ou originário
 	 * @return Id da petição gerado automaticamente.
 	 */
 	public Long registrar(Integer volumes, Integer apensos, String formaRecebimento, String numeroSedex, String tipoProcesso) {
 		FormaRecebimento forma = FormaRecebimento.valueOf(formaRecebimento.toUpperCase());
-		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex, tipoProcesso);
+		TipoProcesso tipo = TipoProcesso.valueOf(tipoProcesso.toUpperCase());
+		PeticaoFisica peticao = peticaoApplicationService.registrar(volumes, apensos, forma, numeroSedex, tipo);
 		return peticao.id().toLong();
 	}
 	
@@ -89,14 +92,15 @@ public class PeticaoServiceFacade {
 	 * Realiza a preautuação de uma petição física.
 	 * 
 	 * @param peticaoId Id da petição física.
-	 * @param classeId Classe processual sugerida. 
+	 * @param classeId Classe processual sugerida.
+	 * @param peticaoValida indica se a petição está correta ou indevida
 	 * @param motivoDevolucao o motivo da devolução, no caso de petições indevidas
 	 * @param preferencias Preferências.
 	 */
 	public void preautuar(Long peticaoId, String classeId, boolean valida, String motivoDevolucao, List<Long> preferencias) {
 		ClasseId classe = new ClasseId(classeId);
 		PeticaoFisica peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.preautuar(peticao, classe, valida, motivoDevolucao);
+		peticaoApplicationService.preautuar(peticao, classe, peticaoValida, motivoDevolucao);
 	}
 	
 	/**
@@ -182,6 +186,17 @@ public class PeticaoServiceFacade {
 			return processoWorkflow.get().id().toLong();
 		}
 		return null;
+	}
+	
+	/**
+	 * Retorna o tipo de processo da petição
+	 * 
+	 * @param peticaoId
+	 * @return ORIGINARIO ou RECURSAL
+	 */
+	public String tipoProcesso(String peticaoId) {
+		Peticao peticao = carregarPeticao(Long.valueOf(peticaoId));
+		return peticao.tipoProcesso().name();
 	}
 
 	/**
