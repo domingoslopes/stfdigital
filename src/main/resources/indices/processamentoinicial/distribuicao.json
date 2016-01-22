@@ -203,6 +203,181 @@
           }
         }
       }
-    }
+    },
+    "ProcessoRecursal": {
+      "_all": {
+          "index_analyzer": "nGram_analyzer",
+          "search_analyzer": "whitespace_analyzer"
+      },
+      "dynamic": false,
+      "properties": {
+        "id": {
+          "properties": {
+            "sequencial": {
+              "type": "long",
+          	  "index": "not_analyzed"              
+            }
+          }
+        },
+        "classe": {
+          "properties": {
+            "sigla": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },        
+        "numero": {        
+          "type": "long",
+          "index": "not_analyzed"
+        }, 
+        "identificacao": {
+          "type": "string",
+          "analyzer": "keyword_analyzer"
+        },
+        "relator": {
+          "properties": {
+            "codigo": {
+              "type": "long",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "peticao": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }             
+        },
+        "partes": {
+          "properties": {
+          	"sequencial": {
+          	  "type": "long",
+              "index": "no"          	  
+          	},
+            "pessoaId": {
+	          "properties": {
+	            "sequencial": {
+	              "type": "long",
+	              "index": "not_analyzed"
+	            }
+	          }             
+            },
+            "polo": {
+              "type": "string",
+              "index": "not_analyzed"
+            }
+          }
+        },
+        "pecas": {
+          "properties": {
+          	"documentoId": {
+              "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }
+	        },
+          	"tipo": {
+          	  "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed",
+		          "include_in_all" : false
+		        }
+		      }
+	        },
+	        "descricao": {
+          	  "type": "string",
+		      "analyzer": "whitespace_analyzer"
+	        }
+          }
+        },
+        "situacao": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "distribuicoes": {
+          "properties": {
+            "sequencial": {
+		      "type": "long",
+		      "index": "not_analyzed"
+		    },
+          	"peticaoId": {
+          	  "properties": {
+		        "sequencial": {
+		          "type": "long",
+		          "index": "not_analyzed"
+		        }
+		      }
+	        },
+	        "justificativa": {
+          	  "type": "string",
+		      "analyzer": "whitespace_analyzer"
+	        },
+	        "dataDistribuicao": {
+	          "type": "date",
+              "index": "not_analyzed"
+	        },
+	        "usuarioDistribuicao": {        
+              "type": "string",
+              "analyzer": "keyword_analyzer"
+            },
+            "ministrosCanditatos": {
+              "properties": {
+                "codigo": {
+                  "type": "long",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "ministrosImpedidos": {
+              "properties": {
+                "codigo": {
+                  "type": "long",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "processosPreventos": {
+              "properties": {
+                "id": {
+                  "properties": {
+                    "sequencial": {
+                      "type": "long",
+                      "index": "not_analyzed"
+                    }
+                  }
+                },
+                "classe": {
+                  "properties": {
+                    "sigla": {
+                      "type": "string",
+                      "index": "not_analyzed"
+                    }
+                  }
+                },
+                "numero": {
+                  "type": "long",
+                  "index": "not_analyzed"
+                },
+                "relator": {
+                  "properties": {
+                    "codigo": {
+                      "type": "long",
+                      "index": "not_analyzed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }    
   }
 }

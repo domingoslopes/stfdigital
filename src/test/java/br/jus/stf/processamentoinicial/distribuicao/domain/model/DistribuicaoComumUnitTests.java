@@ -18,6 +18,13 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.PeticaoAdapter;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Distribuicao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
@@ -38,12 +45,18 @@ public class DistribuicaoComumUnitTests {
 	@Mock
 	private ProcessoRepository mockProcessoRepository;
 	
+	@Mock
+	private PeticaoAdapter mockPeticaoAdapter;
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		
 		when(mockProcessoRepository.nextId()).thenReturn(new ProcessoId(1L));
 		when(mockProcessoRepository.nextNumero(new ClasseId("ADI"))).thenReturn(1L);
+		PeticaoFisica peticao = preparaPeticao();
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
+		when(mockPeticaoAdapter.consultar(1L)).thenReturn(peticaoVO);
 	}
 	
 	@Test
@@ -66,9 +79,8 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(1L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
-		Distribuicao distribuicao = new DistribuicaoComum(parametros);
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.COMUM, peticao.id(), "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
+		Distribuicao distribuicao = Distribuicao.criar(parametros);
 		MinistroId relator = distribuicao.executar().relator();
 		
 		Assert.assertTrue(ministrosCanditatos.contains(relator));
@@ -98,9 +110,8 @@ public class DistribuicaoComumUnitTests {
 		ministrosImpedidos.add(new MinistroId(48L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
-		new DistribuicaoComum(parametros);
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.COMUM, peticao.id(), "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
+		Distribuicao.criar(parametros);
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -120,9 +131,8 @@ public class DistribuicaoComumUnitTests {
 		ministrosCanditatos.add(new MinistroId(1L));
 		
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, null, null);
-		new DistribuicaoComum(parametros);
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.COMUM, peticao.id(), "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, null, null);
+		Distribuicao.criar(parametros);
 	}
 
 	private PeticaoFisica preparaPeticao() {

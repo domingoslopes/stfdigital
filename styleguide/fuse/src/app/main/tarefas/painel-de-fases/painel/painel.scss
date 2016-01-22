@@ -284,6 +284,22 @@
             border-radius: 50%;
             width: 32px;
             height: 32px;
+
+            & + div .list-card-footer-additional-info-container span {
+                padding-left: 0 !important;
+            }
+        }
+
+        .list-card-footer-additional-info-container {
+            display: table;
+            min-height: 48px;
+
+            span {
+                display: table-cell;
+                vertical-align: middle;
+
+                padding-left: 8px;
+            }
         }
     }
 }
