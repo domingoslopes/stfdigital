@@ -1,0 +1,79 @@
+<!-- SIDENAV HEADER -->
+<div class="header" layout="column" layout-align="space-between">
+
+    <div class="logo" layout="row" layout-align="start center">
+        <span class="logo-text" translate="TAREFAS.MINHAS-TAREFAS.MINHAS-TAREFAS">Minhas Tarefas</span>
+    </div>
+</div>
+<!-- / SIDENAV HEADER -->
+
+<!-- SIDENAV CONTENT -->
+<md-content class="content" flex ms-scroll>
+
+    <div class="navigation-simple" layout="column">
+        <md-button class="item" aria-label="Todas Tarefas" translate translate-attr-aria-label="TAREFAS.MINHAS-TAREFAS.TODAS-TAREFAS"
+                   ng-class="{'selected':vm.showAllTasks}" ng-click="vm.resetFilters()">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-view-headline" class="s16"></md-icon>
+                <span class="title" translate="TAREFAS.MINHAS-TAREFAS.TODAS-TAREFAS">Todas Tarefas</span>
+                <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({}) }}</span>
+            </div>
+        </md-button>
+
+        <md-button class="item" aria-label="Minhas Tarefas" translate translate-attr-aria-label="TAREFAS.MINHAS-TAREFAS.MINHAS-TAREFAS"
+                   ng-click="vm.toggleFilterWithEmpty('starred')"
+                   ng-class="{'selected':vm.taskFilters.starred}">
+            <div layout="row" layout-align="start center">
+              <md-icon md-font-icon="icon-star" class="s16"></md-icon>
+              <span class="title" translate="TAREFAS.MINHAS-TAREFAS.MINHAS-TAREFAS">Minhas Tarefas</span>
+              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({starred: true}) }}</span>
+            </div>
+        </md-button>
+
+        <md-button class="item" aria-label="Priorizadas" translate translate-attr-aria-label="TAREFAS.MINHAS-TAREFAS.PRIORIZADAS"
+                   ng-click="vm.toggleFilterWithEmpty('important')"
+                   ng-class="{'selected':vm.taskFilters.important}">
+            <div layout="row" layout-align="start center">
+              <md-icon md-font-icon="icon-alert-circle" class="s16"></md-icon>
+              <span class="title" translate="TAREFAS.MINHAS-TAREFAS.PRIORIZADAS">Priorizadas</span>
+              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({important: true}) }}</span>
+            </div>
+        </md-button>
+
+        <md-button class="item" aria-label="Realizadas" translate translate-attr-aria-label="TAREFAS.MINHAS-TAREFAS.REALIZADAS"
+                   ng-click="vm.toggleFilterWithEmpty('completed')"
+                   ng-class="{'selected':vm.taskFilters.completed}">
+            <div layout="row" layout-align="start center">
+              <md-icon md-font-icon="icon-check" class="s16"></md-icon>
+              <span class="title" translate="TAREFAS.MINHAS-TAREFAS.REALIZADAS">Realizadas</span>
+              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({completed: true}) }}</span>
+            </div>
+        </md-button>
+
+        <div class="item subheader" translate="TAREFAS.MINHAS-TAREFAS.ROTULOS">
+            Rótulos
+        </div>
+
+        <md-input-container class="add-tag m-0" md-no-float>
+          <label for=""><md-icon md-font-icon="icon-plus" class="s24"></md-icon></label>
+          <input 
+            type="text"
+            placeholder="Digite para adicionar..."
+            translate translate-attr-placeholder="TAREFAS.MINHAS-TAREFAS.DIGITE-PARA-ADICIONAR-ROTULO"
+            ng-model="vm.newTag"
+            ng-keydown="vm.processNewTagKeydown($event)" />
+        </md-input-container>
+
+        <md-button class="tag item" aria-label="tag {{tag.label}}" ng-repeat="tag in vm.tags"
+                   ng-click="vm.toggleTagFilter(tag)"
+                   ng-class="{'selected':vm.isTagFilterExists(tag)}">
+            <div layout="row" layout-align="start center">
+              <md-icon md-font-icon="icon-label" class="s16" ng-style="{'color' : tag.color}"></md-icon>
+              <span class="title">{{tag.label}}</span>
+              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({ tags: { id: tag.id } }) }}</span>
+            </div>
+        </md-button>
+    </div>
+
+</md-content>
+<!-- / SIDENAV CONTENT -->
