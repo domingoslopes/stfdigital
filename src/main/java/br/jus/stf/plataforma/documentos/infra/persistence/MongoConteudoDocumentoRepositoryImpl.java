@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.documentos.infra.persistence;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -38,8 +39,9 @@ public class MongoConteudoDocumentoRepositoryImpl implements ConteudoDocumentoRe
 		try {
 			GridFSDBFile gridFile = gridOperations.findOne(
 					new Query().addCriteria(Criteria.where("_id").is(new ObjectId(numeroConteudo))));
-
-			return new ConteudoDocumentoDownload(gridFile.getInputStream(), gridFile.getLength());
+			byte[] bytes = IOUtils.toByteArray(gridFile.getInputStream()); // TODO Benchmark-Tomas voltar para comentário abaixo depois do benchmark
+			return new ConteudoDocumentoDownload(new ByteArrayInputStream(bytes), gridFile.getLength()); // TODO Benchmark-Tomas voltar para comentário depois do benchmark
+//			return new ConteudoDocumentoDownload(gridFile.getInputStream(), gridFile.getLength());
 		} catch (Exception t) {
 			throw new RuntimeException("Não foi possível carregar o stream do arquivo ", t);
 		}

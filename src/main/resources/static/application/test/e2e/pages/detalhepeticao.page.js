@@ -36,7 +36,7 @@
 			
 			return browser.wait(function() {
 				return fs.existsSync(filename);
-			}, 30000);
+			}, 120000);
 		};
 		
 	};
