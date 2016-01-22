@@ -12,7 +12,7 @@
                            ng-click="vm.boardSelectorVisible = !vm.boardSelectorVisible"
                            aria-label="boards button" translate translate-attr-aria-label="SB.BOARDS_BUTTON">
                     <md-icon md-font-icon="icon-trello" class="icon"></md-icon>
-                    <span translate="TAREFAS.PAINEL-DE-FASES.FASES">Fases</span>
+                    <span translate="TAREFAS.PAINEL-DE-FASES.PAINEIS">PAINEIS</span>
                 </md-button>
             </div>
             <!-- / BOARD SELECTION BUTTON -->
@@ -182,21 +182,32 @@
 	                                 layout="row">
 
 	                                <div class="list-card-member"
-	                                     ng-repeat="memberId in vm.board.cards.getById(cardId).idMembers">
+	                                     ng-repeat="memberId in vm.board.cards.getById(cardId).idMembers | limitTo:3">
 
 	                                    <img class="list-card-member-avatar"
 	                                         ng-src="{{vm.board.members.getById(memberId).avatar}}">
 
 	                                    <md-tooltip>
-	                                        <div class="name">{{ vm.board.members.getById(memberId).name}}</div>
+	                                        <div class="name">{{ vm.board.members.getById(memberId).name }}</div>
 	                                    </md-tooltip>
+	                                </div>
+
+	                                <div ng-if="vm.board.cards.getById(cardId).idMembers.length > 3" class="pt-8 secondary-text">
+	                                	<span>+ {{ vm.board.cards.getById(cardId).idMembers.length - 3 }}</span>
+	                                	<span translate="TAREFAS.PAINEL-DE-FASES.OUTRO_S" translate-values="{count: vm.board.cards.getById(cardId).idMembers.length - 3}">outro{{ vm.board.cards.getById(cardId).idMembers.length - 3 == 1 ? '' : 's'}}</span>
+
+	                                	<md-tooltip>
+	                                		<span ng-repeat="memberId in vm.board.cards.getById(cardId).idMembers | limitTo: vm.board.cards.getById(cardId).idMembers.length | limitTo: 3 - vm.board.cards.getById(cardId).idMembers.length track by $index">
+	                                			{{ vm.board.members.getById(memberId).name }}{{ ($index + 4) < vm.board.cards.getById(cardId).idMembers.length ? ', ' : ''}}
+	                                		</span>
+	                                	</md-tooltip>
 	                                </div>
 
 	                            </div>
 	                            <!-- / CARD MEMBERS -->
 
 	                            <!-- CARD MEMBERS -->
-	                            <div ng-if="vm.board.cards.getById(cardId).additionalInfo" class="list-card-addition-info"
+	                            <div ng-if="vm.board.cards.getById(cardId).additionalInfo && (vm.board.cards.getById(cardId).additionalInfo.icon || vm.board.cards.getById(cardId).additionalInfo.left || vm.board.cards.getById(cardId).additionalInfo.right) " class="list-card-addition-info"
 	                                 layout="row">
 
 	                                <div flex>
@@ -236,10 +247,16 @@
 	                            </div>
 
 	                            <div flex>
-	                            	<div ng-if="vm.board.cards.getById(cardId).location" layout="row">
+	                            	<div ng-if="vm.board.cards.getById(cardId).additionalInfo.footer" layout="row">
 		                            	<img class="list-card-footer-location-avatar m-8"
-	                                         ng-src="{{ vm.board.cards.getById(cardId).location.avatar }}">
-	                                    <span class="mv-8">{{ vm.board.cards.getById(cardId).location.name }}</span>
+	                                         ng-if="vm.board.cards.getById(cardId).additionalInfo.footer.avatar"
+	                                         ng-src="{{ vm.board.cards.getById(cardId).additionalInfo.footer.avatar }}">
+                                     	
+                                     	<div>
+                                     		<div class="list-card-footer-additional-info-container">
+	                                    		<span>{{ vm.board.cards.getById(cardId).additionalInfo.footer.name }}</span>
+	                                    	</div>
+	                                    </div>
                                    	</div>
 	                            </div>
 

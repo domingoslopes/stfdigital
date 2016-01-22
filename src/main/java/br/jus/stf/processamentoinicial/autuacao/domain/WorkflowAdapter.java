@@ -2,7 +2,6 @@ package br.jus.stf.processamentoinicial.autuacao.domain;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 
@@ -27,19 +26,5 @@ public interface WorkflowAdapter {
 	 * @param peticaoFisica
 	 */
 	void iniciarWorkflow(PeticaoFisica peticaoFisica);
-	
-	/**
-	 * Emite um sinal para o processo que rejeita a autução da petição
-	 * 
-	 * @param peticao
-	 */
-	void rejeitarAutuacao(Peticao peticao);
-	
-	/**
-	 * Emite um sinal para o processo que devolve autuação da petição
-	 * 
-	 * @param peticao
-	 */
-	void devolver(Peticao peticao);
 	
 }
