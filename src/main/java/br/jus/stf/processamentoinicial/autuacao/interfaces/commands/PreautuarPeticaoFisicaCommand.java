@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.commands;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -35,6 +37,9 @@ public class PreautuarPeticaoFisicaCommand {
 	@ApiModelProperty(value = "Contém o motivo da recusa da petição, no caso de petições indevidas", required=true)
 	private String motivo;
 	
+	@ApiModelProperty(value = "Lista de preferências")
+	private List<Long> preferencias;
+	
 	public Long getPeticaoId() {
 		return peticaoId;
 	}
@@ -49,6 +54,10 @@ public class PreautuarPeticaoFisicaCommand {
 	
 	public String getMotivo() {
 		return motivo;
+	}
+	
+	public List<Long> getPreferencias() {
+		return preferencias;
 	}
 
 	@Override
