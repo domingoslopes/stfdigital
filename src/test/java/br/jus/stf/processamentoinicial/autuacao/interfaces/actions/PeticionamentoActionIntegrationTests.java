@@ -38,7 +38,7 @@ import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusIndexadorConsumer;
-import br.jus.stf.processamentoinicial.distribuicao.infra.eventbus.ProcessoIndexadorConsumer;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.eventbus.ProcessoDistribuidoIndexadorConsumer;
 
 /**
  * Realiza os testes de integração do peticionamento usando o mecanismo de ações da plataforma STF Digital.
@@ -56,6 +56,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	private String peticaoEletronica;
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
+	private String peticaoFisicaInvalidaParaPreautuacao;
 	private String peticaoFisicaParaDevolucao;
 	private String peticaoInvalidaParaAutuacao;
 	private String tarefaParaAssumir;
@@ -71,7 +72,7 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 	
 	@Autowired
 	@InjectMocks
-	private ProcessoIndexadorConsumer processoIndexadorConsumer;
+	private ProcessoDistribuidoIndexadorConsumer processoIndexadorConsumer;
 	
 	@Autowired
 	@InjectMocks
@@ -146,7 +147,8 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoFisica.append("{\"resources\": [{\"formaRecebimento\":\"SEDEX\",");
 		peticaoFisica.append("\"quantidadeVolumes\":2,");
 		peticaoFisica.append("\"quantidadeApensos\":1,");
-		peticaoFisica.append("\"numeroSedex\":\"SR123456789BR\"}]}");
+		peticaoFisica.append("\"numeroSedex\":\"SR123456789BR\",");
+		peticaoFisica.append("\"tipoProcesso\":\"ORIGINARIO\"}]}");
 		this.peticaoFisicaParaRegistro = peticaoFisica.toString();
 		
 		//Cria um objeto contendo os dados de uma petição física a ser usado no processo de préautuação.
@@ -157,10 +159,21 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoFisicaParaPreautuacao.append("\"valida\":true}]}");
 		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
+		//Cria um objeto contendo os dados de uma petição física a ser usado no processo de préautuação.
+		StringBuilder peticaoFisicaInvalidaParaPreautuacao =  new StringBuilder();
+		peticaoFisicaInvalidaParaPreautuacao.append("{\"resources\": ");
+		peticaoFisicaInvalidaParaPreautuacao.append("[{\"peticaoId\": @,");
+		peticaoFisicaInvalidaParaPreautuacao.append("\"classeId\":\"ADI\",");
+		peticaoFisicaInvalidaParaPreautuacao.append("\"motivo\":\"Teste\",");
+		peticaoFisicaInvalidaParaPreautuacao.append("\"valida\":false}]}");
+		this.peticaoFisicaInvalidaParaPreautuacao = peticaoFisicaInvalidaParaPreautuacao.toString();
+		
 		//Cria um objeto para ser usado no processo de devolução de uma petição física.
 		StringBuilder peticaoFisicaParaDevolucao =  new StringBuilder();
-		peticaoFisicaParaDevolucao.append("{\"numeroOficio\":1234,");
-		peticaoFisicaParaDevolucao.append("\"tipoDevolucao\":\"REMESSA_INDEVIDA\"}");
+		peticaoFisicaParaDevolucao.append("{\"resources\": ");
+		peticaoFisicaParaDevolucao.append("[{\"peticaoId\": @,");		
+		peticaoFisicaParaDevolucao.append("\"numeroOficio\":1234,");
+		peticaoFisicaParaDevolucao.append("\"tipoDevolucao\":\"REMESSA_INDEVIDA\"}]}");
 		this.peticaoFisicaParaDevolucao = peticaoFisicaParaDevolucao.toString();
 		
 		this.prepareCommand = "{\"certificateAsHex\":\"@\"}";
@@ -268,26 +281,44 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		//Realiza a autuação.
 		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
 			.content(this.peticaoInvalidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
+    }
+    
+    @Test
+    public void devolverPeticaoFisica() throws Exception {
+    	
+    	String peticaoId = "";
+    	String tarefaObject = "";
+    	
+    	//Envia a petição eletrônica.
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-fisica/execute").header("login", "recebedor").contentType(MediaType.APPLICATION_JSON)
+    		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
-		super.mockMvc.perform(get("/api/workflow/tarefas").header("login", "preautuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("preautuar")));
+    	tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "preautuador-originario")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("preautuar"))).andReturn().getResponse().getContentAsString();
+    	
+    	//Assumir a(s) tarefa(s) do préautuador.
+    	assumirTarefa(tarefaObject);
     	    	
 		//Realiza a préautuação da petição física.
 		super.mockMvc.perform(post("/api/actions/preautuar/execute").contentType(MediaType.APPLICATION_JSON)
-	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+	    		.content(this.peticaoFisicaInvalidaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk());
 		
 		//Recuperar as tarefas de cartoraria.
-		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "cartoraria")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("devolver-peticao")));
+		tarefaObject = this.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "cartoraria")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("devolver-peticao"))).andReturn().getResponse().getContentAsString();
+		
+    	assumirTarefa(tarefaObject);
 		
 		//Devolve a petição.
-		this.mockMvc.perform(post("/api/actions/devolver-peticao/execute").header("login", "cartoraria").contentType(MediaType.APPLICATION_JSON)
-				.content(this.peticaoFisicaParaDevolucao.toString())).andExpect(status().isOk());
+		this.mockMvc.perform(post("/api/actions/devolver-peticao/execute").contentType(MediaType.APPLICATION_JSON)
+				.content(this.peticaoFisicaParaDevolucao.replace("@", peticaoId))).andExpect(status().isOk());
 		
-		//Tenta recuperar as tarefas do cartoraria. A ideia é receber uma lista vazia, já que a instância do processo foi encerrada.
-		this.mockMvc.perform(get("/api/workflow/tarefas").header("login", "cartoraria")).andExpect(status().isOk())
-			.andExpect((jsonPath("$", hasSize(0))));
+		//Tenta recuperar as tarefas do cartoraria.
+		tarefaObject = this.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "gestor-recebimento")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("assinar-devolucao-peticao"))).andReturn().getResponse().getContentAsString();
+		
+		assumirTarefa(tarefaObject);
 		
 		// Realiza a assinatura do documento de devolução e finalizando, portanto, a devolução.
 		assinarDevolucaoPeticao(peticaoId);
