@@ -81,7 +81,7 @@
 								<h6>Tipo de processo da petição física</h6>
 							</div>
 						<div class="card-description">
-							<select id="tipoProcesso" ng-model="registro.tipoProcesso" ng-options="tipo.nome for tipo in registro.tiposProcessos track by tipo.id" style="width: 450px;">
+							<select select2-default value="registro.tipoProcesso.id" id="tipoProcesso" ng-model="registro.tipoProcesso" ng-options="tipo.nome for tipo in registro.tiposProcessos track by tipo.id" style="width: 450px;">
 							</select>
 						</div>
 					</div>
