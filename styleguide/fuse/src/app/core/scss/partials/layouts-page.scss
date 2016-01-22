@@ -21,8 +21,18 @@ $card-header-height-sm: $header-height-xs - $card-toolbar-height;
         right: 0;
         left: 0;
         height: $header-height;
-        background-image: url('/assets/images/backgrounds/header-bg.png');
+        background-image: url('/assets/images/backgrounds/stf-fachada-bigger.jpg');
         background-size: cover;
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: $header-height;
+            background: rgba(28, 111, 151, 0.7);
+        }
     }
 
     md-backdrop {
