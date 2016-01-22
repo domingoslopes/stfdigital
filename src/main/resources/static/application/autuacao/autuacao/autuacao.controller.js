@@ -60,7 +60,6 @@
 					autuacao.partesPoloAtivo.splice(indice,1);
 				}
 			});
-			autuacao.poloAtivoController.remover(parteSelecionada);
 		};
 
 		autuacao.adicionarPoloPassivo = function() {
@@ -73,7 +72,6 @@
 					autuacao.partesPoloPassivo.splice(indice,1);
 				}
 			});
-			autuacao.poloPassivoController.remover(parteSelecionada);
 		};
         
         var adicionarPartePolo = function(polo){
@@ -81,13 +79,11 @@
             if (polo === 'ativo'){
                 parte.pessoa.nome = autuacao.partePoloAtivo;
                 autuacao.partesPoloAtivo.push(parte);
-                autuacao.poloAtivoController.adicionar(parte);
                 autuacao.partePoloAtivo = '';
                 $('partePoloAtivo').focus();      
             }else{
                 parte.pessoa.nome = autuacao.partePoloPassivo;
                 autuacao.partesPoloPassivo.push(parte);
-                autuacao.poloPassivoController.adicionar(parte);
                 autuacao.partePoloPassivo = '';
                 $('partePoloPassivo').focus();  
             }
@@ -107,7 +103,7 @@
 				messages.error(errors);
 				return false;
 			}
-			autuacao.recursos.push(new AutuarCommand(autuacao.peticaoId, autuacao.classe, poloAtivo, poloPassivo, autuacao.valida, autuacao.motivo));
+			autuacao.recursos.push(new AutuarCommand(autuacao.peticaoId, autuacao.classe, autuacao.partesPoloAtivo, autuacao.partesPoloPassivo, autuacao.valida, autuacao.motivo));
 			return true;
 		}
 		
@@ -122,12 +118,10 @@
     		partesController.adicionar = function(parte) {
 				polo.adicionados.push({
 					text : parte.pessoa.nome,
-					//selected : false
 				});
 			};
 		
 			partesController.remover = function(parteSelecionada) {
-				
 				if (parteSelecionada.id){
 					polo.removidos.push(parteSelecionada);
 				}else{
@@ -138,14 +132,6 @@
 						}
 					}
 				}
-				//parteSelecionada.selected = true;
-				//var partesAtuais = polo.removidos.slice(0);
-				//partesController.clear(partes.removidos);
-/*				angular.forEach(partesAtuais, function(parte) {
-					if (!parte.selected) {
-						partes.removidos.push(parte);
-					}
-				});*/
 			};
 			
 			partesController.clear = function(array) {
@@ -157,14 +143,22 @@
 		}
 		
 
-    	function AutuarCommand(id, classe, poloAtivo, poloPassivo, valida, motivo){
+    	function AutuarCommand(id, classe, partesPoloAtivo, partesPoloPassivo, valida, motivo){
     		var dto = {};
     		dto.peticaoId = id;
     		dto.classeId = classe;
-    		dto.poloAtivo = poloAtivo;
-    		dto.poloPassivo = poloPassivo;
+    		dto.partesPoloAtivo = [];
+    		dto.partesPoloPassivo = [];
     		dto.valida = valida;
     		dto.motivo = motivo;
+    		
+    		angular.forEach(partesPoloAtivo, function(parte) {
+    			dto.partesPoloAtivo.push(parte.text);
+    		});
+    		
+    		angular.forEach(partesPoloPassivo, function(parte) {
+    			dto.partesPoloPassivo.push(parte.text);
+    		});
     		
     		return dto;
     	}

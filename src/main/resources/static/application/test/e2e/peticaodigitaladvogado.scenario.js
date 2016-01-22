@@ -177,6 +177,10 @@
 			
 			autuacaoPage.classificar('AP');
 			
+			autuacaoPage.partePoloAtivo('João da Silva');
+		    
+			autuacaoPage.partePoloPassivo('Maria da Silva');
+			
 			autuacaoPage.finalizar();
 		}
 		
