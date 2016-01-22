@@ -22,8 +22,8 @@ public class DashboardIntegrationTests extends AbstractIntegrationTests {
 		mockMvc.perform(get("/api/dashboards").header("login", "peticionador")).andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-peticoes")));
 
-		mockMvc.perform(get("/api/dashboards/padrao").header("login", "preautuador-originario")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.dashlets[0]", is("minhas-tarefas")));
+		mockMvc.perform(get("/api/dashboards").header("login", "preautuador-originario")).andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-tarefas")));
 				
 		mockMvc.perform(get("/api/dashboards").header("login", "autuador")).andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-tarefas")));
@@ -35,13 +35,13 @@ public class DashboardIntegrationTests extends AbstractIntegrationTests {
 				.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-peticoes")));
 		
 		mockMvc.perform(get("/api/dashboards").header("login", "cartoraria")).andExpect(status().isOk())
-		.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-tarefas")));
+				.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-tarefas")));
 		
 		mockMvc.perform(get("/api/dashboards").header("login", "representante")).andExpect(status().isOk())
-		.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-peticoes")));
+				.andExpect(jsonPath("$[0].dashlets[0].nome", is("minhas-peticoes")));
 		
 		mockMvc.perform(get("/api/dashboards").header("login", "gestor-autuacao")).andExpect(status().isOk())
-		.andExpect(jsonPath("$[1].dashlets[2].nome", is("grafico-gestao")));
+				.andExpect(jsonPath("$[1].dashlets[2].nome", is("grafico-gestao")));
 	}
 
 }

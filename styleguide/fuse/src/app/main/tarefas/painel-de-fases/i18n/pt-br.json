@@ -6,7 +6,9 @@
 			"RECEBIMENTO-DE-REMESSAS": "Recebimento de Remessas",
 			"DISTRIBUICAO-DE-PROCESSOS": "Distribuição de Processos",
 			"QUAL-PAINEL-VISUALIZAR": "Qual painel deseja visualizar?",
-			"FASES": "Fases",
+			"PAINEIS": "Paineis",
+
+			"OUTRO_S": "Outro{{count == 1 ? '' : 's'}}",
 
 			"LIMPAR-FILTROS": "Limpar filtros",
 			"FILTRAR-CARTOES": "Filtrar cartões",
