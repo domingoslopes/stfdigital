@@ -90,9 +90,10 @@ public class PeticaoServiceFacade {
 	 * 
 	 * @param peticaoId Id da petição física.
 	 * @param classeId Classe processual sugerida. 
-	 * @param motivoDevolucao o motivo da devolução, no caso de petições indevidas 
+	 * @param motivoDevolucao o motivo da devolução, no caso de petições indevidas
+	 * @param preferencias Preferências.
 	 */
-	public void preautuar(Long peticaoId, String classeId, boolean valida, String motivoDevolucao) {
+	public void preautuar(Long peticaoId, String classeId, boolean valida, String motivoDevolucao, List<Long> preferencias) {
 		ClasseId classe = new ClasseId(classeId);
 		PeticaoFisica peticao = carregarPeticao(peticaoId);
 		peticaoApplicationService.preautuar(peticao, classe, valida, motivoDevolucao);
