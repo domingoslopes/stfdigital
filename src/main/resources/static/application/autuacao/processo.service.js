@@ -15,6 +15,10 @@
 			
 			listarStatus : function() {
 				return $http.get(properties.apiUrl + '/processos/status');
+			},
+			
+			consultarMotivos : function(){
+				return $http.gest(properties.apiUrl + '/processos/motivos');
 			}
 		};
 	});
