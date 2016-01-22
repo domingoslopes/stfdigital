@@ -44,7 +44,7 @@
 			return browser.getCurrentUrl().then(function(url) {
 				return /dashboard/.test(url);
 			});
-		}, 60000);
+		}, 300000);
 	};
 	
 	module.exports = PeticionamentoPageForBenchmark;
