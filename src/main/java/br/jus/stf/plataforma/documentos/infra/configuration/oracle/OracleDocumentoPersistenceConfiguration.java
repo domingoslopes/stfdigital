@@ -2,11 +2,11 @@ package br.jus.stf.plataforma.documentos.infra.configuration.oracle;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import br.jus.stf.plataforma.shared.settings.Profiles;
 
@@ -21,11 +21,16 @@ public class OracleDocumentoPersistenceConfiguration {
 
 	@Bean(name = "dataSourceDocumento")
 	public DataSource documentoOracleDataSource() {
-		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-		dataSource.setDriver(new oracle.jdbc.OracleDriver());
+		BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setDriverClassName("oracle.jdbc.OracleDriver");
 		dataSource.setUrl("jdbc:oracle:thin:@10.200.3.129:1521:documento");
 		dataSource.setUsername("sys as sysdba");
 		dataSource.setPassword("oracle123");
+		
+		dataSource.setRemoveAbandoned(true);
+		dataSource.setInitialSize(10);
+		dataSource.setMaxActive(50);
+		
 		return dataSource;
 	}
 

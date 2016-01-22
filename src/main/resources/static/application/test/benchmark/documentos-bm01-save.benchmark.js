@@ -49,7 +49,7 @@
 		}
 
 		for (i = 0; i < qtdePecas; i++) {
-			peticionamentoPage.waitUploadFinished(i, 30000);
+			peticionamentoPage.waitUploadFinished(i, 120000);
 		}
 		
 		peticionamentoPage.registrar('registrar-peticao-eletronica');
@@ -85,19 +85,23 @@
 		});
 	});
 	
-	var uploadSizes = ['100k', '1MB', '10MB', '100MB'];
-//	var uploadSizes = ['100k'];
+	var uploadSpecs = [
+		{'size': '100k', 'peticoes': 25, 'pecasPorPeticao': 4},
+		{'size': '1MB', 'peticoes': 25, 'pecasPorPeticao': 4},
+		{'size': '10MB', 'peticoes': 25, 'pecasPorPeticao': 4},
+//		{'size': '100MB', 'peticoes': 50, 'pecasPorPeticao': 2},
+	];
 	
-	uploadSizes.map(function(uploadSize) {
-		for (var k = 0; k < 10; k++) {
-			describe('Benchmark Peticionar-Execução-' + uploadSize + ':' , function() {
+	uploadSpecs.map(function(spec) {
+		for (var k = 0; k < spec.peticoes; k++) {
+			describe('Benchmark Peticionar-Execução-' + spec.size + ':' , function() {
 				
 				beforeEach(function() {
-					console.info('\nrodando: Benchmark: ' + uploadSize + ':', jasmine.getEnv().currentSpec.description);
+					console.info('\nrodando: Benchmark: ' + spec.size + ':', jasmine.getEnv().currentSpec.description);
 				});
 				
 				it('Deveria enviar uma nova petição digital ' + (k + 1), function() {
-					peticionar('RE', 10, uploadSize);
+					peticionar('RE', spec.pecasPorPeticao, spec.size);
 					principalPage.iniciarProcesso('link_registrar-peticao-eletronica');
 				});
 				
