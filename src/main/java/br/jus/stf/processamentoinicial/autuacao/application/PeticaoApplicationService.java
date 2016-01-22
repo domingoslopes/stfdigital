@@ -1,7 +1,9 @@
 package br.jus.stf.processamentoinicial.autuacao.application;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -28,6 +30,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+import br.jus.stf.shared.PreferenciaId;
 
 /**
  * @author Rodrigo Barreiros
@@ -100,10 +103,13 @@ public class PeticaoApplicationService {
 	 * @param classeSugerida Classe processual sugerida.
 	 * @param peticaoValida Indica se a petição é válida ou inválida.
 	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
+	 * @param preferencias Preferências processuais.
 	 */
-	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao) {
+	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao, List<Long> preferencias) {
 		if (peticaoValida) {
-			peticao.preautuar(classeSugerida, peticao.preferencias());
+			Set<PreferenciaId> preferenciasSel = new HashSet<PreferenciaId>();
+			Optional.ofNullable(preferencias).ifPresent(p -> p.forEach(p1 -> preferenciasSel.add(new PreferenciaId(p1))));
+			peticao.preautuar(classeSugerida, preferenciasSel);
 			peticaoRepository.save(peticao);
 			tarefaAdapter.completarPreautuacao(peticao);
 			peticaoApplicationEvent.peticaoPreautuada(peticao);
