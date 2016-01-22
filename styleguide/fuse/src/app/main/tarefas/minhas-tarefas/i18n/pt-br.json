@@ -1,7 +1,29 @@
 {
 	"TAREFAS": {
 		"MINHAS-TAREFAS": {
-			"MINHAS-TAREFAS": "Minhas Tarefas"
+			"MINHAS-TAREFAS": "Minhas Tarefas",
+			"TODAS-TAREFAS": "Todas Tarefas",
+			"PRIORIZADAS": "Priorizadas",
+			"REALIZADAS": "Realizadas",
+
+			"ROTULOS": "Rótulos",
+			"DIGITE-PARA-ADICIONAR-ROTULO": "Digite para adicionar...",
+
+			"ORDENACAO": {
+				"DATA-DE-RECEBIMENTO": "Data de Recebimento",
+				"MANUAL": "Manual",
+				"TITULO": "Título",
+
+				"ORDEM-CRESCENTE": "Crescente",
+				"ORDEM-DECRESCENTE": "Decrescente"
+			},
+
+			"PRAZO": {
+				"PROXIMOS-3-DIAS": "Próximos 3 dias",
+				"PROXIMOS-7-DIAS": "Próximos 7 dias",
+				"PROXIMAS-2-SEMANAS": "Próximas 2 semanas",
+				"PROXIMO-MES": "Próximo mês"
+			}
 		}
 	}	
 }
