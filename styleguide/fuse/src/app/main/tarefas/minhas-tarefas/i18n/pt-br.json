@@ -1,7 +1,12 @@
 {
 	"TAREFAS": {
 		"MINHAS-TAREFAS": {
-			"MINHAS-TAREFAS": "Minhas Tarefas"
+			"MINHAS-TAREFAS": "Minhas Tarefas",
+			"TODAS-TAREFAS": "Todas Tarefas",
+			"PRIORIZADAS": "Priorizadas",
+			"REALIZADAS": "Realizadas",
+
+			"ROTULOS": "Rótulos"
 		}
 	}	
 }
