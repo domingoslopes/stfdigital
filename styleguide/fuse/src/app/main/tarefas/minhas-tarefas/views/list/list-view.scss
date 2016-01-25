@@ -22,11 +22,13 @@
                     }
                 }
             }
-        }
 
-        .todo-items {
-            overflow-x: hidden;
-
+            &.collapsed {
+                .todo-item {
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+            }
         }
     }
 }
@@ -37,6 +39,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     text-transform: none;
     cursor: pointer;
+    transition: 400ms padding;
 
     &.todo-item-placeholder {
         background: rgba(0, 0, 0, 0.12);
