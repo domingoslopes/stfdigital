@@ -16,7 +16,7 @@
         <modeler:allow-send-email>false</modeler:allow-send-email>
       </extensionElements>
     </userTask>
-    <serviceTask id="criar-processo-recursal" name="Gerar Número do Processo" default="sid-786F6E7A-7AF9-48E3-9A84-2D6C88E22798" activiti:expression="${processoServiceFacade.criarProcessoRecursal(execution.getVariable('informacao'))}"/>
+    <serviceTask id="criar-processo-recursal" name="Gerar Número do Processo" default="sid-786F6E7A-7AF9-48E3-9A84-2D6C88E22798" activiti:expression="${processoServiceFacade.cadastrarRecursal(execution.getVariable('informacao'))}"/>
     <exclusiveGateway id="sid-2691DD25-D69A-4158-BEDE-9B48B2348364" default="sid-BBC1B294-97F3-4666-8DF6-9151D5EE6CAB"/>
     <userTask id="preautuar" name="Pré-Autuar Processo Originário" default="sid-E3F6E022-3BB8-44D9-ACB6-25361842F225" activiti:candidateGroups="${grupoCandidatoService.grupos('preautuar')}">
       <extensionElements>

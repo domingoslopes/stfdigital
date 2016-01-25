@@ -323,6 +323,17 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return this.getClass().equals(PeticaoEletronica.class);
 	}
 	
+	/**
+	 * Verifica se o processo é criminal e/ou eleitoral
+	 * 
+	 * @return
+	 */
+	public boolean isCriminalEleitoral() {
+		// TODO: Melhorar forma de implementação dessa verificação.
+		return preferencias.contains(new PreferenciaId(2L)) ||
+				preferencias.contains(new PreferenciaId(3L));
+	}
+	
 	public abstract boolean hasRepresentacao();
 	
 	/**

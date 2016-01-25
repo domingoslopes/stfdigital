@@ -20,18 +20,16 @@
 		};
 		
 		preautuacao.finalizar = function() {
-			element(by.id('btn_exec_preautuar')).click();
+			element(by.css('label[for=no]')).click();
 		};
 		
-		preautuacao.invalidarPeticaoRadio = function(){
-			element(by.css('label[for=no]')).click();
-			browser.waitForAngular();
+		preautuacao.finalizarDevolucao = function() {
+			element(by.css('action-executor[description="Devolver Petição"] > button')).click();
 		};
 		
 		preautuacao.preencherMotivoIndevida = function(){
 			element(by.model('preautuacao.motivo')).sendKeys('Peticao indevida');
 		};
-		
 	};
 
 	module.exports = PreautuacaoPage;
