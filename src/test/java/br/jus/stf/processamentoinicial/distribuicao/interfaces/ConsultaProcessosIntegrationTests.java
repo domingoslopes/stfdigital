@@ -39,7 +39,7 @@ public class ConsultaProcessosIntegrationTests extends AbstractIntegrationTests 
 		//Recupera a lista de status do processo.
 		this.mockMvc.perform(get("/api/processos/status")
 			.header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(1)));
+			.andExpect(jsonPath("$", hasSize(5)));
 	}
 	
 }

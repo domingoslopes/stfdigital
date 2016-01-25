@@ -17,6 +17,10 @@ public interface TarefaAdapter {
 	
 	void completarPreautuacao(Peticao peticao);
 	
+	void completarPreautuacaoIndevida(Peticao peticao);
+	
+	void completarAutuacaoRejeitada(Peticao peticao);
+	
 	void completarDistribuicao(Peticao peticao);
 	
 	void completarDevolucao(Peticao peticao);

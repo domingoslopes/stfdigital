@@ -29,7 +29,9 @@
 				url: '/painel-de-fases',
 				views: {
 					'content@app.autenticado': {
-						templateUrl: 'app/main/tarefas/painel-de-fases/painel-de-fases.html'
+						templateUrl: 'app/main/tarefas/painel-de-fases/painel-de-fases.html',
+						controller: 'PainelDeFasesController',
+						controllerAs: 'vm'
 					}
 				},
 				resolve: {

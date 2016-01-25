@@ -5,55 +5,20 @@
 
         <div class="painel-list" layout="row" layout-align="center center" layout-wrap>
             <div 
+                ng-repeat="board in vm.BoardList"
             	class="painel-list-item"
             	layout="column"
             	layout-align="center center"
             	layout-wrap
-            	ui-sref="app.tarefas.painel-de-fases.processo-de-autuacao">
+            	ng-attr-ui-sref="{{ 'app.tarefas.painel-de-fases.' + board.id }}">
 
                 <md-icon md-font-icon="icon-trello" class="icon s64"></md-icon>
                 
                 <div 
                 	class="painel-name"
-                	translate="TAREFAS.PAINEL-DE-FASES.PROCESSO-DE-AUTUACAO">
-                	Processo de Autuação
+                	ng-attr-translate="{{ 'TAREFAS.PAINEL-DE-FASES.' + board.id.toUpperCase() }}">
+                	{{ board.name }}
                 </div>
-            </div>
-
-            <div 
-            	class="painel-list-item"
-            	layout="column"
-            	layout-align="center center"
-            	layout-wrap
-            	ui-sref="app.tarefas.painel-de-fases.recebimento-de-remessas">
-
-                <md-icon md-font-icon="icon-trello" class="icon s64"></md-icon>
-                
-                <div 
-                	class="painel-name"
-                	translate="TAREFAS.PAINEL-DE-FASES.RECEBIMENTO-DE-REMESSAS">
-                	Recebimento de Remessas
-                </div>
-            </div>
-
-            <div 
-            	class="painel-list-item"
-            	layout="column"
-            	layout-align="center center"
-            	layout-wrap
-            	ui-sref="app.tarefas.painel-de-fases.distribuicao-de-processos">
-
-                <md-icon md-font-icon="icon-trello" class="icon s64"></md-icon>
-                
-                <div 
-                	class="painel-name"
-                	translate="TAREFAS.PAINEL-DE-FASES.DISTRIBUICAO-DE-PROCESSOS">
-                	Distribuição de Processos
-                </div>
-            </div>
-
-            <div ng-if="vm.painels.length === 0">
-            	<h1 translate="NOVO-PROCESSO.NAO-HA-PROCESSOS">Não há painels que coincidem com a pesquisa</h1>
             </div>
         </div>
     </div>

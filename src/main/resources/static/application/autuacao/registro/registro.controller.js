@@ -21,7 +21,7 @@
 		registro.tipoRecebimentos = [{ id : 'BALCAO', nome : "Balcão" }, { id : 'SEDEX', nome : "Sedex" }, { id : 'MALOTE', nome : "Malote" }, { id : 'FAX', nome : "Fax" }, { id : 'EMAIL', nome : "E-mail" }];
 		registro.tiposProcessos = [{ id : 'ORIGINARIO', nome : "Originário" }, { id : 'RECURSAL', nome : "Recursal" } ];
 		
-		registro.tipoProcesso = registro.tiposProcessos[1];
+		registro.tipoProcesso = registro.tiposProcessos[0];
 		
 		registro.validar = function() {
 			var errors = null;
@@ -46,9 +46,7 @@
 				messages.error(errors);
 				return false;
 			}
-			
 			registro.recursos[0] = new RegistrarCommand(registro.qtdVolumes, registro.qtdApensos, registro.tipoRecebimento, registro.numSedex, registro.tipoProcesso);
-			
 			return true;
 		};
 		
