@@ -1,5 +1,5 @@
 <!-- TODO LIST ITEMS -->
-<div class="todo-items" ng-sortable="vm.sortableOptions" ng-model="vm.tasks" ng-class="{'sortable': vm.taskOrder == ''}">
+<div class="todo-items" ng-sortable="vm.sortableOptions" ng-model="vm.tasks" ng-class="{'sortable': vm.taskOrder == '', 'collapsed': vm.collapsed}">
 
     <div class="todo-item" md-ink-ripple layout="row" layout-align="start center"
          ng-click="vm.openTaskDialog($event, task)"
@@ -62,26 +62,32 @@
                     </md-button>
 
                     <md-menu-content width="2">
-                        <md-menu-item>
-                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                        <md-menu-item ng-if="!task.completed">
+                            <md-button aria-label="" translate translate-attr-aria-label="">
                                 <span translate="TAREFAS.MINHAS-TAREFAS.ACOES.ASSUMIR">Assumir</span>
                             </md-button>
                         </md-menu-item>
 
-                        <md-menu-item>
-                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                        <md-menu-item ng-if="!task.completed">
+                            <md-button aria-label="" translate translate-attr-aria-label="">
                                 <span translate="TAREFAS.MINHAS-TAREFAS.ACOES.DELEGAR">Delegar</span>
                             </md-button>
                         </md-menu-item>
 
-                        <md-menu-item ng-click="vm.complete(task, $event)">
-                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                        <md-menu-item ng-if="!task.completed" ng-click="vm.toggleCompleted(task, $event)">
+                            <md-button aria-label="" translate translate-attr-aria-label="">
                                 <span translate="TAREFAS.MINHAS-TAREFAS.ACOES.CONCLUIR">Concluir</span>
                             </md-button>
                         </md-menu-item>
 
-                        <md-menu-item>
-                            <md-button ng-click="" aria-label="" translate translate-attr-aria-label="">
+                        <md-menu-item ng-if="task.completed" ng-click="vm.toggleCompleted(task, $event)">
+                            <md-button aria-label="" translate translate-attr-aria-label="">
+                                <span translate="TAREFAS.MINHAS-TAREFAS.ACOES.REABRIR">Re-abrir</span>
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-if="!task.completed">
+                            <md-button aria-label="" translate translate-attr-aria-label="">
                                 <span translate="TAREFAS.MINHAS-TAREFAS.ACOES.INCLUIR-TAG">Incluir Tag</span>
                             </md-button>
                         </md-menu-item>
