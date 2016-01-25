@@ -16,7 +16,7 @@
             <div layout="row" layout-align="start center">
                 <md-icon md-font-icon="icon-view-headline" class="s16"></md-icon>
                 <span class="title" translate="TAREFAS.MINHAS-TAREFAS.TODAS-TAREFAS">Todas Tarefas</span>
-                <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({}) }}</span>
+                <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({completed: false}) }}</span>
             </div>
         </md-button>
 
@@ -41,7 +41,7 @@
         </md-button>
 
         <md-button class="item" aria-label="Realizadas" translate translate-attr-aria-label="TAREFAS.MINHAS-TAREFAS.REALIZADAS"
-                   ng-click="vm.toggleFilterWithEmpty('completed')"
+                   ng-click="vm.toggleFilter('completed')"
                    ng-class="{'selected':vm.taskFilters.completed}">
             <div layout="row" layout-align="start center">
               <md-icon md-font-icon="icon-check" class="s16"></md-icon>
