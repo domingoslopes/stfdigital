@@ -21,7 +21,7 @@ public class PeticaoRecursalActionsResource {
 	
 	@ActionMapping(id = "preautuar-recursal", name = "Preautuar Petição Física Recursal")
 	public void preautuar(PreautuarPeticaoFisicaCommand command) {
-		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo());
+		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPreferencias());
 	}
 	
 }

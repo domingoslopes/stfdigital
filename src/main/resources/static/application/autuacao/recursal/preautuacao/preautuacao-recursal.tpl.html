@@ -55,7 +55,7 @@
 		        </div>
         	</div>
         	<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-6">
 					<div class="card share" data-social="item" style="width: 100%">
 						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 						<div class="card-header clearfix ">
@@ -63,9 +63,24 @@
 							<h6>Qual Classe Processual você<strong> sugere </strong> para sua petição?</h6>
 						</div>
 						<div class="card-description">
-							<select ui-select2 id="classe" ng-model="preautuacao.classe" data-placeholder="Selecione a Classe Sugerida" style="width: 450px;">
+							<select ui-select2 id="classe" ng-model="preautuacao.classe" ng-change="preautuacao.carregarPreferencias()" data-placeholder="Selecione a Classe Sugerida" style="width: 450px;">
 								<option value=""></option>
 								<option ng-repeat="classe in preautuacao.classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix ">
+							<h5>Preferências</h5>
+							<h6>Clique no campo abaixo para escolher algumas preferências</h6>
+						</div>
+						<div class="card-description">
+							<select ui-select2 id="preferencia" ng-model="preautuacao.preferenciasSelecionadas" data-placeholder="Selecione uma preferência" multiple="multiple" style="width: 450px;">
+								<option value=""></option>
+								<option ng-repeat="preferencia in preautuacao.preferencias" value="{{preferencia.codigo}}">{{preferencia.descricao}}</option>
 							</select>
 						</div>
 					</div>
@@ -80,21 +95,18 @@
                             <h6>Informe se a petição está <b>Correta ou Indevida</b>.</h6>
                         </div>
                         <div class="card-description">
-                            <div class="radio radio-success">
-                                <input type="radio" ng-model="preautuacao.valida" value="true" id="yes"> 
-                                <label for="yes">Correta</label> 
-                                <input type="radio" ng-model="preautuacao.valida" value="false" id="no"> 
-                                <label for="no">Indevida</label>
-                            </div>
-                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" ng-hide="preautuacao.valida === 'true'" placeholder="Informe os motivos que levam a petição a ser indevida" aria-invalid="false"></textarea>
+                            <textarea class="form-control" id="motivo" ng-model="preautuacao.motivo" placeholder="Informe o resultado da análise" aria-invalid="false"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-            <p>
-            	<action-executor id="preautuar" resources="preautuacao.recursos" fn-validate="preautuacao.validar"
-	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" /> 
-            </p>
+            	<action-executor id="preautuar-recursal" resources="preautuacao.recursos" fn-validate="preautuacao.validar"
+	 				fn-result="preautuacao.finalizar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono">
+ 				</action-executor>
+	 			
+	 			<action-executor id="preautuar-recursal" resources="preautuacao.recursos" fn-validate="preautuacao.validarDevolucao"
+	 				fn-result="preautuacao.finalizarDevolucao" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Devolver Petição">
+ 				</action-executor>
         </form>
 	</div>
 </div>

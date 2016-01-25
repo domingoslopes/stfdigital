@@ -12,6 +12,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.PeticaoStatusModificado;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
@@ -51,7 +52,11 @@ public class TarefaRestAdapter implements TarefaAdapter {
 
 	@Override
 	public void completarPreautuacao(Peticao peticao) {
-		completarTarefaPorProcesso(peticao, PeticaoStatus.A_AUTUAR);
+		if (peticao.isCriminalEleitoral() || peticao.tipoProcesso().equals(TipoProcesso.ORIGINARIO)){
+			completarTarefaPorProcesso(peticao, PeticaoStatus.A_AUTUAR);
+		} else {
+			completarTarefaPorProcesso(peticao, PeticaoStatus.A_ANALISAR);
+		}
 	}
 	
 	@Override
