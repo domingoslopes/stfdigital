@@ -125,6 +125,24 @@
 					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao-recursal.tpl.html'
 				}
 			}
+		}).state('autuar-criminal',{
+			parent: 'action.autuacao',
+			url: '/processo/autuacao-criminal',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
+				}
+			}	
+		}).state('analisar-pressuposto',{
+			parent: 'action.autuacao',
+			url: '/processo/analise',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/pressuposto/analise.tpl.html'
+				}
+			}	
 		}).state('autuar', {
 			parent: 'action.autuacao',
 			url: '/peticao/autuacao',
@@ -134,15 +152,6 @@
 					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html'
 				}
 			}
-		}).state('autuar-criminal',{
-			parent: 'action.autuacao',
-			url: '/processo/autuacao-criminal',
-			params : { resources : [] },
-			views: {
-				'content@root': {
-					templateUrl: 'application/autuacao/autuacao/autuacao-criminal.tpl.html'
-				}
-			}	
 		}).state('devolver-peticao', {
 			parent: 'action.autuacao',
 			url: '/peticao/devolucao',
