@@ -46,6 +46,7 @@
             this.msScrollOptions = {
                 suppressScrollX: true
             };
+            this.collapsed = false;
 
             angular.forEach(this.tasks, function (task) {
                 if ( task.startDate ) {
@@ -58,8 +59,6 @@
                     task.dueDateTimestamp = task.dueDate.getTime() / 1000;
                 }
             });
-
-            console.log(this.tasks);
         },
 
         methods: {
@@ -266,6 +265,12 @@
                         this.toggleCompleted(task, $event);
                         task.selected = false;
                     }
+                }
+            },
+
+            removeSelection: function() {
+                for (var i = 0; i < this.tasks.length; i++) {
+                    this.tasks[i].selected = false;
                 }
             }
         }
