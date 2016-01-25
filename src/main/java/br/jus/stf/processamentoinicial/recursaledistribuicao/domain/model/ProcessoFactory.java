@@ -73,16 +73,14 @@ public class ProcessoFactory {
 	 * @return
 	 */
 	private static ProcessoRecursal criarProcessoRecursal(Peticao peticao) {
-		ProcessoRecursal processo = null;
-		try {
-			processo = (ProcessoRecursal) processoRepository.findByPeticao(peticao.id());
-			
-		} catch(NoResultException nre) {
+		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findByPeticao(peticao.id());
+		
+		if (processo == null){
 			ProcessoId id = processoRepository.nextId();
 			Long numero = processoRepository.nextNumero(peticao.classeProcessual());
-			
 			processo = new ProcessoRecursal(id, peticao.classeProcessual(), numero, peticao.id(), peticao.preferencias());
 		}
+		
 		return processo;
 	}
 
