@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.commands;
 
+import java.util.List;
+
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
@@ -66,5 +68,4 @@ public class RegistrarPeticaoFisicaCommand {
 	public String getTipoProcesso(){
 		return this.tipoProcesso;
 	}
-	
 }
