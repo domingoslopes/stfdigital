@@ -30,6 +30,10 @@
 			element(by.id('numSedex')).sendKeys(qtd);
 		};
 		
+		this.selecionarTipoProcesso = function (tipo) {
+			utils.select('div#s2id_tipoProcesso', tipo);
+		};
+		
 		this.registrar = function () {
 			element(by.id('btn_exec_registrar-peticao-fisica')).click();
 		};

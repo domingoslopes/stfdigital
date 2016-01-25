@@ -72,6 +72,8 @@
 			
 			registroPage.preencherNumeroSedex(10);
 			
+			registroPage.selecionarTipoProcesso('Originário');
+			
 			registroPage.registrar();
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
@@ -101,14 +103,9 @@
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
-			preautuacaoPage.classificar('AP');
-			
-			//seta a peticao como indevida
-			preautuacaoPage.invalidarPeticaoRadio()
-			
 			preautuacaoPage.preencherMotivoIndevida();
 			
-			preautuacaoPage.finalizar();
+			preautuacaoPage.finalizarDevolucao();
 			
 			loginPage.logout();
 		    

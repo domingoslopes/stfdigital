@@ -122,7 +122,7 @@
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao.tpl.html'
+					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao-recursal.tpl.html'
 				}
 			}
 		}).state('autuar', {
