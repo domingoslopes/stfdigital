@@ -31,7 +31,7 @@
 			preautuacao.peticao = data;
 		});
 		
-		ClasseService.listar().success(function(classes) {
+		ClasseService.consultarPorTipoProcesso('originario').success(function(classes) {
 			preautuacao.classes = classes;
 		});
 			
