@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('DevolucaoController', function (PeticaoService, $state, $stateParams, messages) {
+	angular.autuacao.controller('DevolucaoController', function (PeticaoService, $state, $stateParams, $scope, messages) {
 		var devolucao = this;
 		
 		var resource = $stateParams.resources[0];
@@ -15,9 +15,27 @@
 		devolucao.recursos = [];
 		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, {id : 'TRANSITADO', nome : "Transitado"}, {id : 'BAIXADO', nome : "Baixado"}];
 		devolucao.tipoDevolucao = '';
+		devolucao.template = '';
+		
+		$scope.showCkeditor = false;
+		$scope.urlTemplate = '';
+		$scope.editorOptions = { language : 'pt-br', allowedContent : true, toolbar : null };
 		
 		PeticaoService.consultarProcessoWorkflow(devolucao.peticaoId).then(function(data) {
 			devolucao.processoWorkflowId = data;
+		});
+		
+		$scope.$watch('devolucao.tipoDevolucao', function() {
+			if (devolucao.tipoDevolucao != '') {
+				//ckeditor
+				PeticaoService.templateDevolucao(devolucao.tipoDevolucao)
+					.then(function(template) {
+						devolucao.template = template;
+						$scope.showCkeditor = true;
+					});
+				//wodotexteditor
+				$scope.urlTemplate = PeticaoService.urlTemplateDevolucao(devolucao.tipoDevolucao, 'odt');
+			}
 		});
 		
 		devolucao.validar = function() {

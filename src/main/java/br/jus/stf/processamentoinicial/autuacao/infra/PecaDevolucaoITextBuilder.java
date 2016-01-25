@@ -58,7 +58,7 @@ public class PecaDevolucaoITextBuilder implements PecaDevolucaoBuilder {
 	@Override
 	public byte[] build(String identificacao, TipoDevolucao tipoDevolucao, Long numero) {
 		// O path do template é determinado pelo tipo de devolução. TODO: Analisar a possibilidade de usar o banco para armazenamento
-		String templatePath = format("templates/devolucao/%s.pdf", tipoDevolucao.nome());
+		String templatePath = format("templates/devolucao/%s.pdf", tipoDevolucao.name().toLowerCase());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Document document = new Document();
 		

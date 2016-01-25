@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3', 'angularMoment', 'ngMask', 'checklist-model']);
+	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3', 'angularMoment', 'ngMask', 'checklist-model', 'ngCkeditor']);
 	angular.plataforma.config(function($stateProvider, DashletsProvider) {
 		$stateProvider.state('dashboard', {
 			parent: 'root',

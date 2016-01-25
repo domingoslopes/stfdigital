@@ -45,6 +45,17 @@
 				return $http.get(properties.apiUrl + '/peticoes/' + idPeticao +  '/processo-workflow').then(function(response) {
 					return response.data;
 				});
+			},
+			
+			templateDevolucao : function(tipoDevolucao) {
+				var params = { tipo : tipoDevolucao };
+				return $http.get(properties.apiUrl + '/peticoes/template-devolucao', { params : params }).then(function(response) {
+					return response.data;
+				});
+			},
+			
+			urlTemplateDevolucao : function(tipoDevolucao, extensao) {
+				return properties.apiUrl + '/peticoes/template-devolucao?tipo=' + tipoDevolucao + '&ext=' + extensao;
 			}
 		};
 	});

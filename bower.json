@@ -20,7 +20,10 @@
     "datatables.net-colreorder-bs": "~1.2.0",
     "datatables.net-rowreorder-bs": "~1.0.0",
     "datatables.net-buttons-bs": "~1.0.3",
-    "ckeditor": "~4.5.3",
+    "ckeditor": "4.5.6",
+    "ng-ckeditor": "~0.2.0",
+    "webodf.js": "0.5.9",
+    "wodo.texteditor": "0.5.9",
     "angular-file-upload": "~2.1.4",
     "angular-moment": "~0.10.3",
     "angular-nvd3": "~1.0.2",
@@ -30,6 +33,7 @@
     "hwcrypto": "~0.0.10",
     "ngMask": "angular-mask#~3.0.16"
   },
+  "resolutions": { "angular": "1.4.7" },
   "ignoredDependencies": [],
   "devDependencies": {}
 }

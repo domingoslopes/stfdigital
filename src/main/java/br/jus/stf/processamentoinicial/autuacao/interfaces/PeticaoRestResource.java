@@ -1,10 +1,15 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,5 +70,33 @@ public class PeticaoRestResource {
     @RequestMapping(value = "/{id}/processo-workflow", method = RequestMethod.GET)
     public Long consultarProcessoWorkflow(@PathVariable Long id) {
     	return peticaoServiceFacade.consultarProcessoWorkflow(id);
+    }
+    
+    @ApiOperation(value = "Retorna o template de documento de devolução.")
+    @RequestMapping(value = "/template-devolucao", method = RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> consultarTemplateDevolucao(@RequestParam("tipo") String tipoDevolucao, @RequestParam(value = "ext", defaultValue = "html") String extensao)
+    		throws Exception {
+    	InputStream is = peticaoServiceFacade.consultarTemplateDevolucao(tipoDevolucao, extensao);
+    	InputStreamResource isr = new InputStreamResource(is);
+    	HttpHeaders headers = createResponseHeaders(extensao);
+    	return new ResponseEntity<InputStreamResource>(isr, headers, HttpStatus.OK);
+    }
+
+	/**
+	 * Cria os headers da resposta da requisição do template de devolução
+	 * 
+     * @param extensao
+     * @return
+     */
+    private HttpHeaders createResponseHeaders(String extensao) {
+	    HttpHeaders headers = new HttpHeaders();
+    	MediaType mediaType = null;
+    	if (extensao.equalsIgnoreCase("odt")) {
+    		mediaType = MediaType.parseMediaType("application/vnd.oasis.opendocument.text");
+    	} else if (extensao.equalsIgnoreCase("html")) {
+    		mediaType = MediaType.TEXT_HTML;
+    	}
+    	headers.setContentType(mediaType);
+	    return headers;
     }
 }

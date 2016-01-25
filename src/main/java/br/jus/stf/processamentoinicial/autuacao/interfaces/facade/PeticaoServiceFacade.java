@@ -1,5 +1,6 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.facade;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
+import br.jus.stf.processamentoinicial.autuacao.domain.DevolucaoTemplateService;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
@@ -48,6 +50,9 @@ public class PeticaoServiceFacade {
 	
 	@Autowired
 	private PeticaoDtoAssembler peticaoDtoAssembler;
+	
+	@Autowired
+	private DevolucaoTemplateService devolucaoTemplateService;
 	
 	/**
 	 * Inicia o processo de peticionamento de uma petição eletônica.
@@ -186,6 +191,11 @@ public class PeticaoServiceFacade {
 		}
 		return null;
 	}
+	
+	public InputStream consultarTemplateDevolucao(String tipoDevolucao, String extensao) throws Exception {
+		TipoDevolucao tipo = TipoDevolucao.valueOf(tipoDevolucao.toUpperCase());
+	    return devolucaoTemplateService.carregarTemplate(tipo, extensao);
+    }
 	
 	/**
 	 * Retorna o tipo de processo da petição

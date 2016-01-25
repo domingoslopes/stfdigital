@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-		<div tarefa-actions processo="devolucao.processoWorkflowId" tarefa="tarefa" />
+		<div tarefa-actions processo="devolucao.processoWorkflowId" tarefa="tarefa"></div>
         <div class="row">
             <div class="col-lg-4">
                 <div class="panel panel-default">
@@ -33,14 +33,24 @@
                                     </div>
                                 </div>
                             </div>
-				            <p>
-				                <action-executor id="devolver-peticao" resources="devolucao.recursos" fn-validate="devolucao.validar"
-					 				fn-result="devolucao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
-				            </p>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+		<div class="row">
+			<div class="col-md-9" ng-show="showCkeditor">
+				<textarea ckeditor="editorOptions" name="ckeditor" id="ckeditor" rows="10" cols="80" ng-model="devolucao.template"></textarea>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div wodotexteditor="urlTemplate" id="wodotexteditor"></div>
+			</div>
+		</div>
+		<p>
+			<action-executor id="devolver-peticao" resources="devolucao.recursos" fn-validate="devolucao.validar" fn-result="devolucao.completar"
+				btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
+		</p>
 	</div>
 </div>
