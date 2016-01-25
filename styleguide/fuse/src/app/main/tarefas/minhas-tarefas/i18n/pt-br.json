@@ -11,6 +11,7 @@
 
 			"ORDENACAO": {
 				"DATA-DE-RECEBIMENTO": "Data de Recebimento",
+				"PRAZO": "Prazo",
 				"MANUAL": "Manual",
 				"TITULO": "Título",
 
@@ -23,6 +24,15 @@
 				"PROXIMOS-7-DIAS": "Próximos 7 dias",
 				"PROXIMAS-2-SEMANAS": "Próximas 2 semanas",
 				"PROXIMO-MES": "Próximo mês"
+			},
+
+			"ACOES": {
+				"ASSUMIR": "Assumir",
+				"DELEGAR": "Delegar",
+				"CONCLUIR": "Concluir",
+				"REABRIR": "Re-abrir",
+				"CONCLUIR-REABRIR": "Concluir/Re-abrir",
+				"INCLUIR-TAG": "Incluir Tag"
 			}
 		}
 	}	
