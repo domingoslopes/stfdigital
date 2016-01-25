@@ -43,8 +43,20 @@
 	                    <md-option ng-value="2419200" translate="TAREFAS.MINHAS-TAREFAS.PRAZO.PROXIMO-MES">Próximo mês</md-option>
 	                </md-select>
 
-	                <md-icon md-font-icon="icon-close" class="clickable" ng-click="vm.selectedFilter.dueDate = false"></md-icon>
+	                <md-icon
+	                	md-font-icon="icon-close"
+	                	class="clickable"
+	                	ng-click="vm.selectedFilter.dueDate = false"
+	                	ng-show="vm.selectedFilter.dueDate !== false">
+	                </md-icon>
                </div>
+
+            	<div flex class="text-right">
+            		<md-button class="md-raised" ng-click="vm.collapsed = !vm.collapsed">
+	            		<span translate="TAREFAS.MINHAS-TAREFAS.VISAO-REDUZIDA" ng-if="!vm.collapsed">Visão Reduzida</span>
+	            		<span translate="TAREFAS.MINHAS-TAREFAS.VISAO-EXPANDIDA" ng-if="vm.collapsed">Visão Expandida</span>
+	            	</md-button>
+            	</div>
             </div>
 
             <div class="toolbar" layout="row" layout-align="left center" ng-if="vm.hasSelectedTasks()">
@@ -62,6 +74,16 @@
             	<md-button class="md-raised">
             		<span translate="TAREFAS.MINHAS-TAREFAS.ACOES.INCLUIR-TAG">Incluir Tag</span>
             	</md-button>
+            	<div flex class="text-right">
+            		<md-button class="md-raised" ng-click="vm.removeSelection()">
+	            		<span translate="TAREFAS.MINHAS-TAREFAS.ACOES.REMOVER-SELECAO">Remover Seleção</span>
+	            	</md-button>
+
+	            	<md-button class="md-raised" ng-click="vm.collapsed = !vm.collapsed">
+	            		<span translate="TAREFAS.MINHAS-TAREFAS.VISAO-REDUZIDA" ng-if="!vm.collapsed">Visão Reduzida</span>
+	            		<span translate="TAREFAS.MINHAS-TAREFAS.VISAO-EXPANDIDA" ng-if="vm.collapsed">Visão Expandida</span>
+	            	</md-button>
+            	</div>
             </div>
             <!-- / CONTENT TOOLBAR -->
 
