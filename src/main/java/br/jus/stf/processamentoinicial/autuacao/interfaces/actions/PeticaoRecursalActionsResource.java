@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.plataforma.shared.actions.annotation.ActionController;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
-import br.jus.stf.processamentoinicial.autuacao.application.RecursalApplicationService;
-import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.ConfirmarDevolucaoCommand;
-import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.DevolverPeticaoRecursalCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
+import br.jus.stf.processamentoinicial.autuacao.interfaces.facade.PeticaoServiceFacade;
 
 /**
  * @author Anderson.Araujo
@@ -19,20 +17,11 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.PreautuarPet
 public class PeticaoRecursalActionsResource {
 
 	@Autowired
-	private RecursalApplicationService recursalApplicationService;
+	private PeticaoServiceFacade peticaoServiceFacade;
 	
 	@ActionMapping(id = "preautuar-recursal", name = "Preautuar Petição Física Recursal")
 	public void preautuar(PreautuarPeticaoFisicaCommand command) {
-		recursalApplicationService.preautuar(command.getPeticaoId(), command.getClasseId());
+		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPreferencias());
 	}
 	
-	@ActionMapping(id = "devolver-peticao-recursal", name = "Devolver Petição Recursal")
-	public void devolver(DevolverPeticaoRecursalCommand command) {
-		recursalApplicationService.devolver(command.getPeticaoId(), command.getMotivo()); 
-	}
-	
-	@ActionMapping(id = "finalizar-devolucao-recursal", name = "Finalizar Devolução Recursal")
-	public void devolver(ConfirmarDevolucaoCommand command) {
-		recursalApplicationService.confirmarDevolucao(command.getPeticaoId(), command.getTipoDevolucao(), command.getNumeroOficio()); 
-	}
 }
