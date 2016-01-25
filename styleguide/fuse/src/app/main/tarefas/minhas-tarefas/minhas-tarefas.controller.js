@@ -16,21 +16,19 @@
             this.colors = ['blue', 'blue-grey', 'orange', 'pink', 'purple'];
             this.selectedFilter = {
                 filter : 'Start Date',
-                dueDate: 1
+                dueDate: false
             };
 
             // Tasks will be filtered against these models
             this.taskFilters = {
                 search   : '',
                 tags     : [],
-                completed: '',
+                completed: false,
                 deleted  : false,
                 important: '',
-                starred  : '',
-                startDate: '',
-                dueDate  : ''
+                starred  : ''
             };
-            this.$scope.$watch('vm.taskFilters', function(value) { console.log(value); });
+            
             this.taskFiltersDefaults = angular.copy(this.taskFilters);
             this.showAllTasks = true;
 
@@ -48,16 +46,17 @@
             this.msScrollOptions = {
                 suppressScrollX: true
             };
+            this.collapsed = false;
 
             angular.forEach(this.tasks, function (task) {
                 if ( task.startDate ) {
                     task.startDate = new Date(task.startDate);
-                    task.startDateTimestamp = task.startDate.getTime();
+                    task.startDateTimestamp = task.startDate.getTime() / 1000;
                 }
 
                 if ( task.dueDate ) {
                     task.dueDate = new Date(task.dueDate);
-                    task.dueDateTimestamp = task.dueDate.getTime();
+                    task.dueDateTimestamp = task.dueDate.getTime() / 1000;
                 }
             });
         },
@@ -158,28 +157,19 @@
             },
 
             /**
-             * Filter by startDate
-             *
-             * @param item
-             * @returns {boolean}
-             */
-            filterByStartDate: function(item) {
-                if ( this.taskFilters.startDate === true ) {
-                    return item.startDate === new Date();
-                }
-
-                return true;
-            },
-
-            /**
              * Filter Due Date
              *
              * @param item
              * @returns {boolean}
              */
             filterByDueDate: function(item) {
-                if ( this.taskFilters.dueDate === true ) {
-                    return !(item.dueDate === null || item.dueDate.length === 0);
+                if ( this.selectedFilter.dueDate !== false ) {
+                    if (item.dueDate === null || item.dueDate.length === 0) {
+                        return false;
+                    }
+
+                    var now = (new Date()).getTime() / 1000;
+                    return (item.dueDateTimestamp <= (now + this.selectedFilter.dueDate));
                 }
 
                 return true;
@@ -229,6 +219,59 @@
 
             countTagsWithFilter: function(filter) {
                 return this.$filter('filter')(this.tasks, filter).length;
+            },
+
+            hasSelectedTasks: function() {
+                for (var i = 0; i < this.tasks.length; i++) {
+                    if (this.tasks[i].selected) {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
+
+            selectedCompleteDistribution: function() {
+                var
+                    selectedCount = 0,
+                    completedCount = 0;
+
+                for (var i = 0; i < this.tasks.length; i++) {
+                    var task = this.tasks[i];
+
+                    if (task.selected) {
+                        selectedCount++;
+
+                        if (task.completed) {
+                            completedCount++;
+                        }
+                    }
+                }
+                
+                if (completedCount == 0) {
+                    return 0;
+                } else if (completedCount == selectedCount) {
+                    return 1;
+                } else {
+                    return 0.5;
+                }
+            },
+
+            selectedToggleCompleted: function($event) {
+                for (var i = 0; i < this.tasks.length; i++) {
+                    var task = this.tasks[i];
+                    
+                    if (task.selected) {
+                        this.toggleCompleted(task, $event);
+                        task.selected = false;
+                    }
+                }
+            },
+
+            removeSelection: function() {
+                for (var i = 0; i < this.tasks.length; i++) {
+                    this.tasks[i].selected = false;
+                }
             }
         }
     });
