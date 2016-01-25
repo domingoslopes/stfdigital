@@ -13,6 +13,10 @@
 				return $http.get(properties.apiUrl + '/classes');
 			},
 			
+			consultarPorTipoProcesso : function(tipoProcesso) {
+				return $http.get(properties.apiUrl + '/classes/tipoprocesso/' + tipoProcesso);
+			},
+			
 			consultarPreferencias : function(classe) {
 				return $http.get(properties.apiUrl + '/classes/' + classe + '/preferencias');
 			}
