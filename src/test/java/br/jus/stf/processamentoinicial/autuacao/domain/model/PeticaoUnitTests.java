@@ -5,9 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,9 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.Processo;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoFactory;
-import br.jus.stf.processamentoinicial.distribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
@@ -25,10 +21,8 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
-import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
-import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
@@ -171,52 +165,6 @@ public class PeticaoUnitTests {
 		peticao.rejeitar("Dados incompletos.");
 	}
 
-	@Test
-	public void distribuiPeticaoValida() {
-		ClasseId classeProcessual = new ClasseId("ADI");
-		
-		when(mockProcessoRepository.nextId()).thenReturn(new ProcessoId(1L));
-		when(mockProcessoRepository.nextNumero(classeProcessual)).thenReturn(1L);
-		
-		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		
-		peticao.sugerirClasse(new ClasseId("ADO"));
-		peticao.aceitar(classeProcessual);
-		Processo processo = peticao.distribuir(new MinistroId(1L));
-		
-		assertNotNull(processo);
-		assertEquals(new MinistroId(1L), processo.relator());
-		assertEquals(new PeticaoId(1L), processo.peticao());
-		assertEquals(classeProcessual, processo.classe());
-		
-		verify(mockProcessoRepository, times(1)).nextId();
-		verify(mockProcessoRepository, times(1)).nextNumero(classeProcessual);
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void tentaDistribuirPeticaoSemRelator() {
-		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		
-		peticao.sugerirClasse(new ClasseId("ADI"));
-		peticao.aceitar(new ClasseId("ADI"));
-		peticao.distribuir(null);
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void tentaDistribuirPeticaoSemAceitacao() {
-		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		
-		peticao.distribuir(new MinistroId(1L));
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void tentaDistribuirPeticaoRejeitada() {
-		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		
-		peticao.sugerirClasse(new ClasseId("ADI"));
-		peticao.rejeitar("Dados incompletos.");
-		peticao.distribuir(new MinistroId(1L));
-	}
 	
 	@Test
 	public void comparaPeticoesIguais() {

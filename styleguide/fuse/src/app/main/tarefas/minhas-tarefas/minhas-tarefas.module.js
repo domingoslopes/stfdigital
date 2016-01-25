@@ -14,9 +14,19 @@
 				url: '/minhas-tarefas',
 				views: {
 					'content@app.autenticado': {
-						templateUrl: 'app/main/tarefas/minhas-tarefas/minhas-tarefas.html'
+						templateUrl: 'app/main/tarefas/minhas-tarefas/minhas-tarefas.html',
+						controller: 'TarefasMinhasTarefasController',
+						controllerAs: 'vm'
 					}
-				}
+				},
+				resolve  : {
+	                Tasks: /** @ngInject **/ function (TarefasService) {
+	                    return TarefasService.get();
+	                },
+	                Tags : /** @ngInject **/ function (RotulosService) {
+	                    return RotulosService.get();
+	                }
+	            },
 			});
 
         msNavigationServiceProvider.saveItem('tarefas.minhas-tarefas', {

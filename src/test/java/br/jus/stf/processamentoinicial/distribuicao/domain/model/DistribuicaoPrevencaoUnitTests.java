@@ -18,6 +18,14 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.PeticaoAdapter;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Distribuicao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
@@ -44,6 +52,9 @@ public class DistribuicaoPrevencaoUnitTests {
 	@Mock
 	private Processo mockPreventoRelator2;
 	
+	@Mock
+	private PeticaoAdapter mockPeticaoAdapter;
+	
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
@@ -54,6 +65,10 @@ public class DistribuicaoPrevencaoUnitTests {
 		when(mockPreventoRelator1.relator()).thenReturn(new MinistroId(1L));
 		
 		when(mockPreventoRelator2.relator()).thenReturn(new MinistroId(2L));
+		
+		PeticaoFisica peticao = preparaPeticao();
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
+		when(mockPeticaoAdapter.consultar(1L)).thenReturn(peticaoVO);
 	}
 	
 	@Test
@@ -63,9 +78,9 @@ public class DistribuicaoPrevencaoUnitTests {
 		
 		processosPreventos.add(mockPreventoRelator1);
 		
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Assuntos correlatos.", "DISTRIBUIDOR", null, null, processosPreventos);
-		Distribuicao distribuicao = new DistribuicaoPrevencao(parametros);
+		//Peticao peticaoVO = new Peticao(, peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.PREVENCAO, peticao.id(), "Assuntos correlatos.", "DISTRIBUIDOR", null, null, processosPreventos);
+		Distribuicao distribuicao = Distribuicao.criar(parametros);
 		
 		Assert.assertEquals(mockPreventoRelator1.relator(), distribuicao.executar().relator());
 		
@@ -81,10 +96,9 @@ public class DistribuicaoPrevencaoUnitTests {
 		
 		processosPreventos.add(mockPreventoRelator1);
 		
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, null, "DISTRIBUIDOR", null, null, processosPreventos);
-		
-		new DistribuicaoPrevencao(parametros);
+		//Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.PREVENCAO, peticao.id(), null, "DISTRIBUIDOR", null, null, processosPreventos);
+		Distribuicao.criar(parametros);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -94,10 +108,9 @@ public class DistribuicaoPrevencaoUnitTests {
 		
 		processosPreventos.add(mockPreventoRelator1);
 		
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "", "DISTRIBUIDOR", null, null, processosPreventos);
-		
-		new DistribuicaoPrevencao(parametros);
+		//Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.PREVENCAO, peticao.id(), "", "DISTRIBUIDOR", null, null, processosPreventos);
+		Distribuicao.criar(parametros);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -108,10 +121,9 @@ public class DistribuicaoPrevencaoUnitTests {
 		processosPreventos.add(mockPreventoRelator1);
 		processosPreventos.add(mockPreventoRelator2);
 		
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
-		ParametroDistribuicao parametros = new ParametroDistribuicao(peticaoVO, "Assuntos correlatos.", "DISTRIBUIDOR", null, null, processosPreventos);
-		
-		new DistribuicaoPrevencao(parametros);
+		//Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.PREVENCAO, peticao.id(), "Assuntos correlatos.", "DISTRIBUIDOR", null, null, processosPreventos);
+		Distribuicao.criar(parametros);
 	}
 
 	private PeticaoFisica preparaPeticao() {
