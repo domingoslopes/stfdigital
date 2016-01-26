@@ -118,5 +118,15 @@ public class ProcessoServiceFacade {
 		Processo processo = processoApplicationService.cadastrarRecursal(peticao);
 		return processo.id().toLong();
 	}
+
+	/**
+	 * Consulta um processo associado a uma petição.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ProcessoDto consultarPelaPeticao(Long id) {
+		return processoDtoAssembler.toDto(processoRepository.findByPeticao(new PeticaoId(id)));
+	}
 	
 }
