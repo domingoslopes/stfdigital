@@ -22,11 +22,4 @@ public interface AssuntoRepository {
 	 * @return a lista de assuntos
 	 */
 	public List<Assunto> findAll();
-	
-	/**
-	 * 
-	 * @param assunto
-	 */
-	public <T extends Assunto> T save(Assunto assunto);
-
 }
