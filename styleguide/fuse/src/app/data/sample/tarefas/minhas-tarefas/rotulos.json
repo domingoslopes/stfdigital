@@ -1,32 +1,26 @@
 [
     {
         "id": 1,
-        "name": "frontend",
-        "label": "Frontend",
+        "name": "criminal",
+        "label": "Criminal",
         "color": "#388E3C"
     },
     {
         "id": 2,
-        "name": "backend",
-        "label": "Backend",
+        "name": "liminar",
+        "label": "Liminar",
         "color": "#F44336"
     },
     {
         "id": 3,
-        "name": "API",
-        "label": "API",
+        "name": "maior-65-anos",
+        "label": "Maior de 65 anos",
         "color": "#FF9800"
     },
     {
         "id": 4,
-        "name": "issue",
-        "label": "Issue",
+        "name": "time-juliano",
+        "label": "Time do Juliano",
         "color": "#0091EA"
-    },
-    {
-        "id": 5,
-        "name": "mobile",
-        "label": "Mobile",
-        "color": "#9C27B0"
     }
 ]
