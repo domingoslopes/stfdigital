@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.ClasseRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.ClasseDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.ClasseDtoAssembler;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.PreferenciaDto;
@@ -38,6 +39,12 @@ public class ClasseRestResource {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<ClasseDto> listar() {
 		return classeRepository.findAll().stream().map(classe -> classeDtoAssembler.toDto(classe)).collect(Collectors.toList());
+	}
+	
+	@RequestMapping(value = "/tipoprocesso/{id}", method = RequestMethod.GET)
+	public List<ClasseDto> consultarPorTipoProcesso(@PathVariable String id) {
+		TipoProcesso tipoProcesso = TipoProcesso.valueOf(id.toUpperCase());  
+		return classeRepository.findClasseByTipo(tipoProcesso).stream().map(classe -> classeDtoAssembler.toDto(classe)).collect(Collectors.toList());
 	}
 	
 	@RequestMapping(value = "/{id}/preferencias", method = RequestMethod.GET)
