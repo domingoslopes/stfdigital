@@ -1,0 +1,30 @@
+<div class="criteria-summary" layout="row" slidebox flex>
+    <div ng-if="!(criterias) || criterias.length === 0">
+        <div class="criteria-thumb placeholder">
+            <span class="name" translate="PROCESSOS.PESQUISA-AVANCADA.SELECIONE-CRITERIO">Selecione um critério</span>
+            <div class="divider md-accent-bg"></div>
+            <span class="data-type" translate="PROCESSOS.PESQUISA-AVANCADA.CRITERIO">Critério</span>
+        </div>
+        <div class="criteria-thumb placeholder">
+            <div class="operator">
+                <span translate="PROCESSOS.PESQUISA-AVANCADA.OPERADOR-LOGICO.E">e</span>
+            </div>
+            <span class="name" translate="PROCESSOS.PESQUISA-AVANCADA.COMBINE-VARIOS-OUTROS">Combine vários outros</span>
+            <div class="divider md-accent-bg"></div>
+            <span class="data-type" translate="PROCESSOS.PESQUISA-AVANCADA.CRITERIO">Critério</span>
+        </div>
+    </div>
+
+    <div class="criteria-thumb" ng-repeat="criteria in criterias">
+        <div class="operator"
+             ng-if="$index !== 0"
+             operator-color="criteria.logicalOperator">
+            <span>{{ 'PROCESSOS.PESQUISA-AVANCADA.OPERADOR-LOGICO.' + criteria.logicalOperator | translate }}</span>
+        </div>
+
+        <span class="name" ng-if="criteria.value || criteria.comparisonOperator == 'EXISTE'">{{criteria | criteriaDisplayName}}</span>
+        <span class="name empty" ng-if="!criteria.value &&  criteria.comparisonOperator != 'EXISTE'">{{ criteria.trait.name }}</span>
+        <div class="divider" operator-color="criteria.logicalOperator"></div>
+        <span class="data-type">{{ criteria.trait.name }}</span>
+    </div>
+</div>
