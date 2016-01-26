@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDtoAssembler;
@@ -30,8 +31,8 @@ public class AssuntoRestResource {
 	@Autowired
 	private AssuntoDtoAssembler assuntoDtoAssembler;
 	
-	@RequestMapping(value = "/{termo}", method = RequestMethod.GET)
-	public List<AssuntoDto> listar(@PathVariable String termo) {
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public List<AssuntoDto> listar(@RequestParam("termo") String termo) {
 		List<AssuntoDto> assuntos = new ArrayList<AssuntoDto>();
 		
 		if (NumberUtils.isNumber(termo)) {
