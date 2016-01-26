@@ -24,9 +24,7 @@ public interface AssuntoRepository {
 	public List<Assunto> findAll();
 	
 	/**
-	 * 
-	 * @param assunto
+	 * @return a lista de assuntos
 	 */
-	public <T extends Assunto> T save(Assunto assunto);
-
+	public List<Assunto> findAssuntoByDescricao(String descricao);
 }
