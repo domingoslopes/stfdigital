@@ -22,4 +22,9 @@ public interface AssuntoRepository {
 	 * @return a lista de assuntos
 	 */
 	public List<Assunto> findAll();
+	
+	/**
+	 * @return a lista de assuntos
+	 */
+	public List<Assunto> findAssuntoByDescricao(String descricao);
 }
