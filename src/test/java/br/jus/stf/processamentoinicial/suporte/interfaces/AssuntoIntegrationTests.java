@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 /**
@@ -27,7 +29,12 @@ public class AssuntoIntegrationTests extends AbstractIntegrationTests {
 	}
 	
 	@Test
-	public void listarAssuntos() throws Exception {
-		mockMvc.perform(get("/api/assuntos")).andExpect(status().isOk()).andExpect(jsonPath("$[0].codigo").exists());
+	public void listarAssuntosPorDescricao() throws Exception {
+		mockMvc.perform(get("/api/assuntos/direito")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(4)));
+	}
+	
+	@Test
+	public void listarAssuntosPorCodigo() throws Exception {
+		mockMvc.perform(get("/api/assuntos/864")).andExpect(status().isOk()).andExpect(jsonPath("$[0].codigo", is("864")));
 	}
 }
