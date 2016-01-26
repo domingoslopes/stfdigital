@@ -12,7 +12,6 @@
         var vm = this;
 
         // Data
-        vm.title = 'Edit Task';
         vm.task = angular.copy(Task);
         vm.tasks = Tasks;
         vm.newTask = false;
@@ -33,7 +32,6 @@
                 'deleted'           : false,
                 'tags'              : []
             };
-            vm.title = 'New Task';
             vm.newTask = true;
             vm.task.tags = [];
         }
@@ -44,7 +42,8 @@
         vm.deleteTask = deleteTask;
         vm.newTag = newTag;
         vm.closeDialog = closeDialog;
-
+        vm.deleteAttachment = deleteAttachment;
+        
         //////////
 
         /**
@@ -129,6 +128,15 @@
         function closeDialog()
         {
             $mdDialog.hide();
+        }
+
+        function deleteAttachment(attachment, task)
+        {
+            var index = task.attachments.indexOf(attachment);
+
+            if (index > -1) {
+                task.attachments.splice(index, 1);
+            }
         }
     }
 })();

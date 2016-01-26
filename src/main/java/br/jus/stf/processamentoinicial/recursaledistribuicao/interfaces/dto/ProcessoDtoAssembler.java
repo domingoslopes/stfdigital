@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,7 @@ public class ProcessoDtoAssembler {
 		Long id = processo.id().toLong();
 		String classe = processo.classe().toString();
 		Long numero = processo.numero();
-		Long relator = processo.relator().toLong();
+		Long relator = Optional.ofNullable(processo.relator()).map(m -> m.toLong()).get();
 		List<Long> partesPoloAtivo = new LinkedList<Long>();
 		List<Long> partesPoloPassivo = new LinkedList<Long>();
 		List<PecaDto> pecas = new LinkedList<PecaDto>();

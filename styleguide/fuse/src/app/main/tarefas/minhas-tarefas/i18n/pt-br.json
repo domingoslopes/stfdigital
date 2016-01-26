@@ -12,6 +12,16 @@
 			"VISAO-REDUZIDA": "Visão reduzida",
 			"VISAO-EXPANDIDA": "Visão expandida",
 
+			"EDITAR-TAREFA": "Editar tarefa",
+			"TITULO": "Título",
+			"DATA-DE-RECEBIMENTO": "Data de Recebimento",
+			"DATA-LIMITE": "Data Limite",
+			"NOTAS": "Notas",
+			"SALVAR": "Salvar",
+			"ANEXAR-ARQUIVO": "Anexar arquivo",
+			"INSERIR-IMAGEM": "Inserir imagem",
+			"DELETAR": "Deletar",
+
 			"ORDENACAO": {
 				"DATA-DE-RECEBIMENTO": "Data de Recebimento",
 				"PRAZO": "Prazo",
