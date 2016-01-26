@@ -125,7 +125,7 @@
 					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao-recursal.tpl.html'
 				}
 			}
-		}).state('autuar-criminal',{
+		}).state('autuar-recursal-criminal-eleitoral',{
 			parent: 'action.autuacao',
 			url: '/processo/autuacao-criminal',
 			params : { resources : [] },
