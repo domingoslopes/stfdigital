@@ -58,13 +58,12 @@ public class ProcessoApplicationService {
 	/**
 	 * Realiza a autuação de processo recursal.
 	 * 
-	 * @param processo Processo recursal a ser autuado
-	 * @param assuntos Lista de assuntos do processo
-	 * @param poloAtivo Lista de partes do polo ativo
-	 * @param poloPassivo Lista de partes do polo passivo
+	 * @param processoId ID do processo recursal a ser autuado.
+	 * @param assuntos Lista de assuntos do processo.
+	 * @param poloAtivo Lista de partes do polo ativo.
+	 * @param poloPassivo Lista de partes do polo passivo.
 	 */
 	public void autuar(ProcessoId processoId, Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
-		// TODO: Verificar possíveis chamadas a eventos e ao workflow.
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(processoId);
 		processo.autuar(assuntos, poloAtivo, poloPassivo);
 		processoRepository.save(processo);
