@@ -1,1 +1,123 @@
-PESQUISA AVANÇADA
+<div id="pesquisa-avancada">
+	<stf-header></stf-header>
+
+	<div class="content" flex layout="column">
+		<criterias-summary class="md-whiteframe-1dp" criterias="vm.search.criterias"></criterias-summary>
+
+	    <div class="builder" layout="column">
+	        <div layout="row" layout-align="start center">
+	            <div class="search-wrapper md-whiteframe-1dp" layout="row" layout-align="start center" flex>
+
+	                <div class="search" flex layout="row" layout-align="start center">
+	                    <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>
+	                    <md-autocomplete md-selected-item="vm.newCriteria.trait"
+	                                     md-search-text-change="vm.searchTextChange(vm.traitSearchText)"
+	                                     md-search-text="vm.traitSearchText"
+	                                     md-selected-item-change="vm.selectedItemChange(item)"
+	                                     md-items="item in vm.querySearch(vm.traitSearchText)"
+	                                     md-item-text="item.name"
+	                                     md-min-length="0"
+	                                     md-select-on-match="true"
+	                                     md-menu-class="trait-autocomplete-menu"
+	                                     placeholder="Digite uma característica para pesquisar"
+	                                     flex>
+	                        <md-item-template>
+	                            <span md-highlight-text="vm.traitSearchText" md-highlight-flags="^i">{{item.name}}</span>
+	                        </md-item-template>
+	                        <md-not-found>Nenhuma característica encontrada com <strong>"{{vm.traitSearchText}}"</strong></md-not-found>
+	                    </md-autocomplete>
+	                    <div class="buttons">
+	                        <md-button
+	                                ng-repeat="op in vm.logicalOperators"
+	                                class="md-raised md-fab"
+	                                ng-class="{'selected': op === vm.newCriteria.operator, 'md-accent-fg': (op === vm.newCriteria.operator && op !== 'NAO'), 'md-warn-fg': (op === vm.newCriteria.operator && op === 'NAO')}"
+	                                aria-label="{{:: 'PROCESSOS.PESQUISA-AVANCADA.OPERADOR-LOGICO.' + op | translate}}"
+	                                ng-click="vm.newCriteria.operator = op">
+	                            {{:: 'PROCESSOS.PESQUISA-AVANCADA.OPERADOR-LOGICO.' + op | translate}}
+	                        </md-button>
+	                    </div>
+	                </div>
+
+	            </div>
+	            <md-button
+	                    class="md-raised md-fab add-button"
+	                    operator-color="vm.newCriteria.operator"
+	                    ng-disabled="!vm.newCriteria.trait"
+	                    aria-label="adicionar"
+	                    ng-click="vm.addNewCriteria()">
+	                <md-icon md-font-icon="icon-plus"></md-icon>
+	            </md-button>
+	        </div>
+
+	        <div class="criteria-list md-whiteframe-2dp"
+	             ng-sortable="vm.sortableOptions"
+	             ng-class="{'sortable': vm.criteriaOrder === ''}">
+
+	            <div class="criteria-item fx-fade-left fx-speed-250 fx-stagger-100"
+	                 ng-repeat="criteria in vm.search.criterias"
+	                 layout="row" layout-align="start center">
+
+	                <div class="handle" ng-click="vm.preventDefault($event)">
+	                    <md-icon md-font-icon="icon-drag-vertical" class="icon"></md-icon>
+	                </div>
+
+	                <div class="lock-size logical-operator-options"
+	                     layout="row" layout-align="center center"
+	                     ng-if="$index > 0">
+	                    <md-fab-speed-dial class="md-scale" md-direction="right">
+	                        <md-fab-trigger>
+	                            <md-button
+	                                    aria-label="menu"
+	                                    class="md-fab md-mini"
+	                                    operator-color="criteria.logicalOperator">
+	                                <span>{{ 'PROCESSOS.PESQUISA-AVANCADA.OPERADOR-LOGICO.' + criteria.logicalOperator | translate }}</span>
+	                            </md-button>
+	                        </md-fab-trigger>
+	                        <md-fab-actions>
+	                            <md-button
+	                                ng-repeat="op in vm.logicalOperators"
+	                                ng-if="criteria.logicalOperator !== op"
+	                                aria-label="{{op}}"
+	                                class="md-fab md-raised md-mini"
+	                                operator-color="op"
+	                                ng-click="criteria.logicalOperator = op">
+	                                <span>{{ 'PROCESSOS.PESQUISA-AVANCADA.OPERADOR-LOGICO.' + op | translate }}</span>
+	                            </md-button>
+	                        </md-fab-actions>
+	                    </md-fab-speed-dial>
+	                </div>
+
+	                <div class="name">
+	                    {{criteria.trait.name}}
+	                </div>
+
+	                <div class="comparisson-operator md-whiteframe-1dp"
+	                     ng-class="{'disabled': criteria.trait.dataType === 'constant'}">
+	                    <md-select placeholder="Operador" ng-model="criteria.comparisonOperator" ng-disabled="criteria.trait.dataType === 'constant'">
+	                        <md-option ng-repeat="op in vm.getComparisonOperators(criteria.trait.dataType)" value="{{op}}">
+	                            {{ 'PROCESSOS.PESQUISA-AVANCADA.OPERADOR-COMPARACAO.' + op | translate }}
+	                        </md-option>
+	                    </md-select>
+	                </div>
+
+	                <div class="value"
+	                     ng-class="criteria.trait.dataType || 'string'"
+	                     layout="row" flex>
+	                     <criteria-value-input criteria="criteria"></criteria-value-input>
+	                </div>
+
+	                <div class="buttons" layout="row" layout-align="start center">
+	                    <md-button class="md-primary remove"
+	                               aria-label="Remover"
+	                               ng-click="vm.removeCriteria($index)">
+	                        <md-icon class="icon" md-font-icon="icon-delete"></md-icon>
+	                    </md-button>
+	                </div>
+
+	            </div>
+
+	        </div>
+
+	    </div>
+	</div>
+</div>
