@@ -20,4 +20,3 @@ INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (35, 14
 
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (29, 'preautuar-recursal', 'ACAO');
 INSERT INTO plataforma.permissao_recurso (seq_permissao, seq_recurso) VALUES (35, 29);
-/* Falta a permissão para os recursos de devolução de recursal*/
