@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
-
-import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * @author Rodrigo Barreiros
@@ -47,5 +47,11 @@ public class ProcessoRestResource {
     public List<ProcessoStatusDto> consultarStatus() {
     	return this.processoServiceFacade.consultarStatus();
     }
+	
+	@ApiOperation("Retorna o processo de uma petição.")
+	@RequestMapping(value = "/peticoes/{id}/processo", method = RequestMethod.GET)
+	public ProcessoDto consultarPelaPeticao(@PathVariable Long id) {
+		return processoServiceFacade.consultarPelaPeticao(id);
+	}
 	
 }
