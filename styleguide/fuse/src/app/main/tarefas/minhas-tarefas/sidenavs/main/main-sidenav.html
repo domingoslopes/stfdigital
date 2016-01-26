@@ -26,7 +26,7 @@
             <div layout="row" layout-align="start center">
               <md-icon md-font-icon="icon-star" class="s16"></md-icon>
               <span class="title" translate="TAREFAS.MINHAS-TAREFAS.MINHAS-TAREFAS">Minhas Tarefas</span>
-              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({starred: true}) }}</span>
+              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({starred: true, completed: false}) }}</span>
             </div>
         </md-button>
 
@@ -36,7 +36,7 @@
             <div layout="row" layout-align="start center">
               <md-icon md-font-icon="icon-alert-circle" class="s16"></md-icon>
               <span class="title" translate="TAREFAS.MINHAS-TAREFAS.PRIORIZADAS">Priorizadas</span>
-              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({important: true}) }}</span>
+              <span flex class="secondary-text h5 text-right">{{ vm.countTagsWithFilter({important: true, completed: false}) }}</span>
             </div>
         </md-button>
 
