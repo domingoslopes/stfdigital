@@ -134,13 +134,13 @@
 					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
 				}
 			}	
-		}).state('analisar-pressuposto',{
+		}).state('analisar-pressupostos',{
 			parent: 'action.autuacao',
 			url: '/processo/analise',
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/recursal/pressuposto/analise.tpl.html'
+					templateUrl: 'application/autuacao/recursal/pressuposto/analise-pressupostos.tpl.html'
 				}
 			}	
 		}).state('autuar', {
