@@ -14,7 +14,20 @@
 				url: '/pesquisa-avancada',
 				views: {
 					'content@app.autenticado': {
-						templateUrl: 'app/main/processos/pesquisa-avancada/pesquisa-avancada.html'
+						templateUrl: 'app/main/processos/pesquisa-avancada/pesquisa-avancada.html',
+						controller: 'ProcessosPesquisaAvancadaController',
+						controllerAs: 'vm'
+					}
+				},
+				resolve: {
+					traits: /** @ngInject */ function($http) {
+						var traits = {data:{}};
+
+						$http.get('app/data/sample/processos/pesquisa-avancada/traits.json').then(function(response) {
+							traits.data = response.data;
+						});
+
+						return traits;
 					}
 				}
 			});
