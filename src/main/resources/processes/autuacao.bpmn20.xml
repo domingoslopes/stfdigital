@@ -50,7 +50,7 @@
           <modeler:allow-send-email>false</modeler:allow-send-email>
         </extensionElements>
       </userTask>
-      <userTask id="sid-E37B156B-E573-4276-9793-6912D812F541" name="Analisar Pressupostos Formais" default="sid-95EC2C6B-C9C9-4D76-8ACB-8A449C5306BE" activiti:candidateGroups="${grupoCandidatoService.grupos('analisar-pressupostos-formais')}">
+      <userTask id="analisar-pressupostos-formais" name="Analisar Pressupostos Formais" default="sid-95EC2C6B-C9C9-4D76-8ACB-8A449C5306BE" activiti:candidateGroups="${grupoCandidatoService.grupos('analisar-pressupostos-formais')}">
         <extensionElements>
           <modeler:allow-send-email>false</modeler:allow-send-email>
         </extensionElements>
