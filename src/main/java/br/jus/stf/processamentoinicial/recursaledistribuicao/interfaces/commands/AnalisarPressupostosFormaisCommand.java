@@ -30,10 +30,6 @@ public class AnalisarPressupostosFormaisCommand {
 	private String classificacao;
 	
 	@NotEmpty
-	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
-	private List<String> partesPoloPassivo;
-	
-	@NotEmpty
 	@ApiModelProperty(value = "Lista com os motivos e suas respectivas observações.", required=true)
 	private Map<Long, String> motivos;
 	
@@ -46,10 +42,6 @@ public class AnalisarPressupostosFormaisCommand {
 
 	public String getClassificacao() {
 		return classificacao;
-	}
-
-	public List<String> getPartesPoloPassivo() {
-		return partesPoloPassivo;
 	}
 
 	public Map<Long, String> getMotivos() {
