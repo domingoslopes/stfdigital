@@ -15,6 +15,18 @@
 			
 			listarStatus : function() {
 				return $http.get(properties.apiUrl + '/processos/status');
+			},
+			
+			consultarMotivos : function(){
+				return $q(function(resolve, reject) {
+					var motivos = [{id : 1, descricao : "Partes inválidas"}, {id : 2 , descricao: "Classe inválida"}, {id: 3, descricao: "Requisitos formais incompletos"}];
+					resolve(motivos);
+				});
+				//return $http.gest(properties.apiUrl + '/processos/motivos');
+			},
+			
+			consultarProcessoPeloIdPeticao : function(peticaoId){
+				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId + '/processo');
 			}
 		};
 	});

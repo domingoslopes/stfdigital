@@ -29,7 +29,7 @@ public class ProcessoDtoAssembler {
 		Long id = processo.id().toLong();
 		String classe = processo.classe().toString();
 		Long numero = processo.numero();
-		Long relator = Optional.ofNullable(processo.relator()).map(m -> m.toLong()).get();
+		Long relator = Optional.ofNullable(processo.relator()).map(m -> m.toLong()).orElse(null);
 		List<Long> partesPoloAtivo = new LinkedList<Long>();
 		List<Long> partesPoloPassivo = new LinkedList<Long>();
 		List<PecaDto> pecas = new LinkedList<PecaDto>();
