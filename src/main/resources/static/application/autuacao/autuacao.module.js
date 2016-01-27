@@ -134,13 +134,22 @@
 					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
 				}
 			}	
-		}).state('analisar-pressupostos',{
+		}).state('analisar-pressupostos-formais',{
 			parent: 'action.autuacao',
 			url: '/processo/analise',
 			params : { resources : [] },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/pressuposto/analise-pressupostos.tpl.html'
+				}
+			}	
+		}).state('revisar-processo-inapto',{
+			parent: 'action.autuacao',
+			url: '/processo/revisao',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/revisao/revisao-processo-inapto.tpl.html'
 				}
 			}	
 		}).state('autuar', {
