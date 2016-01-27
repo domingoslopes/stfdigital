@@ -12,6 +12,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.application.Process
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AnalisarPressupostosFormaisCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoCriminalEleitoralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarProcessoRecursalInaptoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
 
@@ -50,7 +51,7 @@ public class ProcessoActionsResource {
 	}
 	
 	@ActionMapping(id = "revisar-processo-inapto", name = "Revisar Processo Inapto")
-	public void revisarPressupostosFormais(AnalisarPressupostosFormaisCommand command) {
+	public void revisarPressupostosFormais(RevisarProcessoRecursalInaptoCommand command) {
 		processoApplicationService.analisarPressupostosFormais(command.getProcessoId(), command.getClassificacao().toUpperCase(), 
 				command.getMotivos(), command.getObservacao(), true);
 	}
