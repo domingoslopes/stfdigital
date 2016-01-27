@@ -15,5 +15,5 @@ INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (29, 16
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (33, 16); /* TAREFA    -> ASSUMIR                 -> VISUALIZAR */
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (37, 16); /* TAREFA    -> ANÁLISE DE PRESSUPOSTOS -> EXECUTAR   */
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (31, 'analisar-pressupostos', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (31, 'analisar-pressupostos-formais', 'ACAO');
 INSERT INTO plataforma.permissao_recurso (seq_permissao, seq_recurso) VALUES (37, 31);
