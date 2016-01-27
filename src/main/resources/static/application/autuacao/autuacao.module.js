@@ -125,6 +125,24 @@
 					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao-recursal.tpl.html'
 				}
 			}
+		}).state('autuar-recursal-criminal-eleitoral',{
+			parent: 'action.autuacao',
+			url: '/processo/autuacao-criminal',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
+				}
+			}	
+		}).state('analisar-pressupostos',{
+			parent: 'action.autuacao',
+			url: '/processo/analise',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/pressuposto/analise-pressupostos.tpl.html'
+				}
+			}	
 		}).state('autuar', {
 			parent: 'action.autuacao',
 			url: '/peticao/autuacao',
