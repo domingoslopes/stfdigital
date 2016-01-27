@@ -11,8 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import br.jus.stf.jurisprudencia.controletese.domain.model.Assunto;
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
-import br.jus.stf.processamentoinicial.suporte.domain.model.Classe;
-import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.AssuntoId;
 
 /**
