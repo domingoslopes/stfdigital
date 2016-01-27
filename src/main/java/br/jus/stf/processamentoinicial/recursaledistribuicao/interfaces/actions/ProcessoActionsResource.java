@@ -43,7 +43,7 @@ public class ProcessoActionsResource {
 		processoApplicationService.autuar(command.getProcessoId(), command.getAssuntos(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo());
 	}
 	
-	@ActionMapping(id = "analisar-pressupostos", name = "Analisar Pressupostos")
+	@ActionMapping(id = "analisar-pressupostos-formais", name = "Analisar Pressupostos Formais")
 	public void analisarPressupostosFormais(AnalisarPressupostosFormaisCommand command) {
 		processoApplicationService.analisarPressupostosFormais(command.getProcessoId(), command.getClassificacao().toUpperCase(), 
 				command.getMotivos(), command.getObservacao(), false);
@@ -52,7 +52,7 @@ public class ProcessoActionsResource {
 	@ActionMapping(id = "revisar-processo-inapto", name = "Revisar Processo Inapto")
 	public void revisarPressupostosFormais(AnalisarPressupostosFormaisCommand command) {
 		processoApplicationService.analisarPressupostosFormais(command.getProcessoId(), command.getClassificacao().toUpperCase(), 
-				command.getMotivos(), command.getObservacao(), false);
+				command.getMotivos(), command.getObservacao(), true);
 	}
 	
 	@ActionMapping(id = "distribuir-processo", name = "Distribuir Processo")
