@@ -49,6 +49,12 @@ public class ProcessoActionsResource {
 				command.getMotivos(), command.getObservacao(), false);
 	}
 	
+	@ActionMapping(id = "revisar-processo-inapto", name = "Revisar Processo Inapto")
+	public void revisarPressupostosFormais(AnalisarPressupostosFormaisCommand command) {
+		processoApplicationService.analisarPressupostosFormais(command.getProcessoId(), command.getClassificacao().toUpperCase(), 
+				command.getMotivos(), command.getObservacao(), false);
+	}
+	
 	@ActionMapping(id = "distribuir-processo", name = "Distribuir Processo")
 	public ProcessoDto distribuir(DistribuirPeticaoCommand command) {
 		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), command.getPeticaoId(), command.getJustificativa(),
