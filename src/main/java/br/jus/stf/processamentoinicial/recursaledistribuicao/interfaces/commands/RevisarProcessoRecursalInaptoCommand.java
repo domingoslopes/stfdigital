@@ -22,7 +22,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  */
 @Component
 @ApiModel(value = "Contém as informações necessárias para a rvisão de processo recursal inapto.")
-public class RevisarProcessoRecursalInapto {
+public class RevisarProcessoRecursalInaptoCommand {
 	@NotNull
 	@ApiModelProperty(value = "Id do processo recursal.", required=true)
 	private Long processoId;
