@@ -23,6 +23,10 @@
 					resolve(motivos);
 				});
 				//return $http.gest(properties.apiUrl + '/processos/motivos');
+			},
+			
+			consultarProcessoPeloIdPeticao : function(peticaoId){
+				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId + '/processo');
 			}
 		};
 	});
