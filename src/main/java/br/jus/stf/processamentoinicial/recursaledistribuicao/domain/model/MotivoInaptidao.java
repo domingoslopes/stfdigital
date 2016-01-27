@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
-@Table(name = "AUTUACAO", schema = "MOTIVO_INAPTIDAO", uniqueConstraints = @UniqueConstraint(columnNames = {"DSC_MOTIVO_INAPTIDAO"}))
+@Table(name = "MOTIVO_INAPTIDAO", schema = "AUTUACAO", uniqueConstraints = @UniqueConstraint(columnNames = {"DSC_MOTIVO_INAPTIDAO"}))
 public class MotivoInaptidao implements ValueObject<MotivoInaptidao> {
 	
 	private static final long serialVersionUID = 1L;
