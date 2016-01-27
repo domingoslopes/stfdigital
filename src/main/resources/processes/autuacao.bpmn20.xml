@@ -78,7 +78,7 @@
       <sequenceFlow id="sid-CBC20342-B8FF-447D-B6A4-3C513FD83FB8" sourceRef="sid-E8E80951-5FF0-4B53-A384-1ECEBCB70CA5" targetRef="sid-4C046B38-C2F7-4B9C-A0C0-84968C16E6C5"/>
       <sequenceFlow id="sid-F706F4D4-34B3-4567-A1E2-F6E879D7AD20" sourceRef="sid-4C046B38-C2F7-4B9C-A0C0-84968C16E6C5" targetRef="sid-1E4E320B-1F7E-4AEE-8669-1E027076787B"/>
       <sequenceFlow id="sid-8543339C-8E09-4AA1-A30F-2C255EC11A0B" sourceRef="revisar-repercussao-geral" targetRef="sid-75895BA1-A2AA-4DD7-8CF7-60FAE7AB7308"/>
-      <sequenceFlow id="sid-95EC2C6B-C9C9-4D76-8ACB-8A449C5306BE" sourceRef="sid-E37B156B-E573-4276-9793-6912D812F541" targetRef="sid-80550F4F-AFE7-417F-B5BA-253B1B44DDF8"/>
+      <sequenceFlow id="sid-95EC2C6B-C9C9-4D76-8ACB-8A449C5306BE" sourceRef="analisar-pressupostos-formais" targetRef="sid-80550F4F-AFE7-417F-B5BA-253B1B44DDF8"/>
       <sequenceFlow id="sid-FCE27365-9F59-4305-AF36-8AD20F5D2B3F" sourceRef="autuar-recursal-criminal-eleitoral" targetRef="sid-4C046B38-C2F7-4B9C-A0C0-84968C16E6C5"/>
       <sequenceFlow id="sid-ABEBD521-2F94-43E6-83C7-81924901C986" name="Apto" sourceRef="sid-80550F4F-AFE7-417F-B5BA-253B1B44DDF8" targetRef="analisar-repercussao-geral"/>
       <sequenceFlow id="sid-774BEAD9-6FA3-46A1-9414-5DDFDF87940B" sourceRef="revisar-processo-inapto" targetRef="sid-D3E81F23-3AF7-4DA9-A62D-BADAD2F54820"/>
@@ -117,7 +117,7 @@
         </extensionElements>
         <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='A_AUTUAR'}]]></conditionExpression>
       </sequenceFlow>
-      <sequenceFlow id="sid-78D47A8E-F29F-4B67-98A6-F08FA6154A7A" name="Não&#xa;" sourceRef="sid-3EB82D0F-E2D9-46FD-A59C-82052048EA3D" targetRef="sid-E37B156B-E573-4276-9793-6912D812F541"/>
+      <sequenceFlow id="sid-78D47A8E-F29F-4B67-98A6-F08FA6154A7A" name="Não&#xa;" sourceRef="sid-3EB82D0F-E2D9-46FD-A59C-82052048EA3D" targetRef="analisar-pressupostos-formais"/>
     </subProcess>
     <startEvent id="receberRemessa" name="Registrar&#xa;Petição&#xa;Física">
       <messageEventDefinition messageRef="remessaFisica"/>
@@ -231,7 +231,7 @@
       <bpmndi:BPMNShape bpmnElement="revisar-processo-inapto" id="BPMNShape_revisar-processo-inapto">
         <omgdc:Bounds height="80.0" width="100.0" x="538.7631452327124" y="531.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="sid-E37B156B-E573-4276-9793-6912D812F541" id="BPMNShape_sid-E37B156B-E573-4276-9793-6912D812F541">
+      <bpmndi:BPMNShape bpmnElement="analisar-pressupostos-formais" id="BPMNShape_analisar-pressupostos-formais">
         <omgdc:Bounds height="80.0" width="100.0" x="389.4330132029738" y="651.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="analisar-repercussao-geral" id="BPMNShape_analisar-repercussao-geral">
