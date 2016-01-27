@@ -1,7 +1,26 @@
 {
 	"PROCESSOS": {
 		"PESQUISA-AVANCADA": {
-			"PESQUISA-AVANCADA": "Pesquisa Avançada"
+			"PESQUISA-AVANCADA": "Pesquisa Avançada",
+
+			"SELECIONE-CRITERIO": "Selecione um crítério",
+			"COMBINE-VARIOS-OUTROS": "Combine vários outros",
+			"CRITERIO": "Critério",
+
+			"OPERADOR-LOGICO": {
+				"E": "e",
+				"OU": "ou",
+				"NAO": "não"
+			},
+
+			"OPERADOR-COMPARACAO": {
+				"IGUAL": "Igual",
+				"CONTEM": "Contem",
+				"ENTRE": "Entre",
+				"MAIOR-QUE": "Maior Que",
+				"MENOR-QUE": "Menor Que",
+				"EXISTE": "Existe"
+			}
 		}
 	}	
 }
