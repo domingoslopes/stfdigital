@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
@@ -50,6 +52,7 @@ public class ProcessoRecursal extends Processo {
 	private String observacaoAnalise;
 	
 	@Column(name = "TIP_CLASSIFICACAO")
+	@Enumerated(EnumType.STRING)
 	private Classificacao classificacao;
 
 	ProcessoRecursal() {

@@ -68,7 +68,7 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 	
 	@Override
 	public MotivoInaptidao findOneMotivoInaptidao(Long id) {
-		Query query = entityManager.createQuery("SELECT motivo FROM MotivoInaptidao motivo WHERE motivo.sequencial = :id");
+		Query query = entityManager.createQuery("SELECT motivo FROM MotivoInaptidao motivo WHERE motivo.codigo = :id");
 		query.setParameter("id", id);
 		
 		return (MotivoInaptidao)query.getSingleResult();

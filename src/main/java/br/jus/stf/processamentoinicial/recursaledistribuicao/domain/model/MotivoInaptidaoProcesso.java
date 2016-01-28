@@ -38,11 +38,9 @@ public class MotivoInaptidaoProcesso implements ValueObject<MotivoInaptidaoProce
 		
 	}
 	
-	public MotivoInaptidaoProcesso(final Long sequencial, final MotivoInaptidao motivoInaptidao, final String observacao) {
-		Validate.notNull(sequencial, "motivoInaptidaoProcesso.sequencial.required");
+	public MotivoInaptidaoProcesso(final MotivoInaptidao motivoInaptidao, final String observacao) {
 		Validate.notNull(motivoInaptidao, "motivoInaptidaoProcesso.motivoInaptidao.required");
-		
-		this.sequencial = sequencial;
+
 		this.motivoInaptidao = motivoInaptidao;
 		this.observacao = observacao;
 	}
