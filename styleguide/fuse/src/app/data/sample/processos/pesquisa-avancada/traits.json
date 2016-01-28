@@ -12,7 +12,7 @@
     "id": "226c9572-bcd7-49cf-b119-fc239397b30a",
     "name": "Setor",
     "dataType": "list",
-    "values": ["ASS PLEN - ASSESSORIA DO PLENÁRIO", "SEJ - SECRETARIA JUDICIARIA"]
+    "values": ["ASS PLEN - ASSESSORIA DO PLENÁRIO", "SEJ - SECRETARIA JUDICIARIA", "Gabinete Min. Ricardo Lewandowski", "Gabinete Min. Cármen Lúcia", "Gabinete Min. Celso de Mello", "Gabinete Min. Marco Aurélio", "Gabinete Min. Gilmar Mendes", "Gabinete Min. Dias Toffoli", "Gabinete Min. Luiz Fux", "Gabinete Min. Rosa Weber", "Gabinete Min. Teori Zavascki", "Gabinete Min. Roberto Barroso", "Gabinete Min. Edson Fachin"]
 }, {
     "id": "fe53a703-6232-435e-967d-7a6d726ff7a4",
     "name": "Data andamento",
