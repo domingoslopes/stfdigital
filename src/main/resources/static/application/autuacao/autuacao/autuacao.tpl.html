@@ -34,8 +34,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row" ng-show="autuacao.peticao.partes['poloAtivo'].length || autuacao.peticao.partes['poloPassivo'].length">
-            	<div class="col-md-6" ng-show="autuacao.peticao.partes['poloAtivo'].length">
+            <div class="row">
+            	<div class="col-md-6">
                     <div class="card share" data-social="item" style="width: 100%">
                         <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
                         <div class="card-header clearfix">
@@ -46,16 +46,21 @@
                             <div class="auto-overflow widget-11-2-table">
                                 <table class="table table-condensed table-hover">
                                     <tbody>
-                                        <tr ng-repeat="parte in autuacao.peticao.partes['poloAtivo']">
-                                            <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+                                        <tr ng-repeat="parte in autuacao.partesPoloAtivo">
+                                            <td class="font-montserrat fs-12 col-lg-12">{{parte.pessoa.nome}}</td>
+                                            <td class="text-center b-l b-dashed b-grey col-lg-2"><span class="hint-text small"><a href="#" ng-click="autuacao.removerPoloAtivo(parte)">Remover</a></span></td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <ng-form name="partesPoloAtivoForm"> 
+                                	<input type="text" id="partePoloAtivo" name="partePoloAtivo" ng-model="autuacao.partePoloAtivo" size="30" placeholder="Nome da Parte" autofocus> 
+                                	<input type="submit" id="botaoAdicionarPartePoloAtivo" value="Adicionar" ng-if="autuacao.partePoloAtivo.length > 0" ng-click="autuacao.adicionarPoloAtivo()"> 
+                            	</ng-form>
                             </div>
                         </div>
                     </div>
 	            </div>
-				<div class="col-md-6" ng-show="autuacao.peticao.partes['poloPassivo'].length">
+				<div class="col-md-6">
 					<div class="card share" data-social="item" style="width: 100%">
 					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 					    <div class="card-header clearfix">
@@ -66,11 +71,16 @@
 					        <div class="auto-overflow widget-11-2-table">
 					            <table class="table table-condensed table-hover">
 					                <tbody>
-					                    <tr ng-repeat="parte in autuacao.peticao.partes['poloPassivo']">
-					                        <td class="font-montserrat fs-12 col-lg-12">{{parte}}</td>
+					                    <tr ng-repeat="parte in autuacao.partesPoloPassivo">
+					                        <td class="font-montserrat fs-12 col-lg-12">{{parte.pessoa.nome}}</td>
+					                        <td class="text-center b-l b-dashed b-grey col-lg-2"><span class="hint-text small"><a href="#" ng-click="autuacao.removerPoloPassivo(parte)">Remover</a></span></td>
 					                    </tr>
 					                </tbody>
 					            </table>
+                                <ng-form name="partesPoloPassivoForm"> 
+                                	<input type="text" id="partePoloPassivo" name="partePoloPassivo" ng-model="autuacao.partePoloPassivo" size="30" placeholder="Nome da Parte" autofocus> 
+                                	<input type="submit" id="botaoAdicionarPartePoloPassivo" value="Adicionar" ng-if="autuacao.partePoloPassivo.length > 0" ng-click="autuacao.adicionarPoloPassivo()"> 
+                            	</ng-form>
 					        </div>
 					    </div>
 					</div>

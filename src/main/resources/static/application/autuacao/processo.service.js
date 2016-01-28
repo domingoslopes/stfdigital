@@ -15,6 +15,14 @@
 			
 			listarStatus : function() {
 				return $http.get(properties.apiUrl + '/processos/status');
+			},
+			
+			consultarMotivos : function(){
+				return $http.get(properties.apiUrl + '/motivos');
+			},
+			
+			consultarProcessoPeloIdPeticao : function(peticaoId){
+				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId + '/processo');
 			}
 		};
 	});

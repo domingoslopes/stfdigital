@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.wordnik.swagger.annotations.ApiModel;
@@ -16,7 +15,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * 
  * @author Anderson.Araujo
  * 
- * @since 
+ * @since 26.01.2016 
  *
  */
 @ApiModel(value = "Contém as informações necessárias para autuar a petição enviada pelo peticionador")
@@ -36,7 +35,7 @@ public class AutuarProcessoCriminalEleitoralCommand {
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com os assuntos", required=true)
-	private List<Long> assuntos;
+	private List<String> assuntos;
 		
 	public Long getProcessoId() {
 		return processoId;
@@ -50,7 +49,7 @@ public class AutuarProcessoCriminalEleitoralCommand {
 		return partesPoloPassivo;
 	}
 
-	public List<Long> getAssuntos() {
+	public List<String> getAssuntos() {
 		return assuntos;
 	}
 	
