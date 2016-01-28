@@ -24,7 +24,9 @@
                 'layoutOnly': '=',
                 'fabAction': '&',
                 'fabAriaLabel': '@',
-                'fabIcon': '@'
+                'fabIcon': '@',
+                'fabText': '@',
+                'fabActive': '='
             },
             templateUrl: 'app/core/directives/stf-header/stf-header.html',
             transclude: true,

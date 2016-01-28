@@ -33,13 +33,15 @@
 
 	    <div flex ng-transclude></div>
    </div>
-
    	<md-button
-   		class="fab md-fab md-warn" 
+   		class="fab md-warn" 
+   		ng-class="{'md-fab' : !fabText, 'md-raised with-text': fabText}"
    		ng-click="fabAction()"
         aria-label="fabAriaLabel"
-        ng-if="hasFabAction">
+        ng-if="hasFabAction"
+        ng-disabled="!fabActive">
 
-    	<md-icon md-font-icon="{{ fabIcon }}"></md-icon>
+		<i class="icon {{ fabIcon }}"></i>
+		<span class="text" ng-if="fabText">{{ fabText }}</span>
 	</md-button>
 </div>
