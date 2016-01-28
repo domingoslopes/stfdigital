@@ -43,7 +43,10 @@ public class ProcessoDto {
 	@ApiModelProperty(value = "A lista de preferências.")
 	private List<Long> preferencias;
 	
-	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, List<Long> preferencias) {
+	@ApiModelProperty(value = "Identificação do processo.")
+	private String identificacao;
+	
+	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, List<Long> preferencias, String identificacao) {
 		this.id = id;
 		this.classe = classe;
 		this.numero = numero;
@@ -52,6 +55,7 @@ public class ProcessoDto {
 		this.pecas = pecas;
 		this.situacao = situacao;
 		this.preferencias = preferencias;
+		this.identificacao = identificacao;
 	}
 	
 	public Long getId() {
@@ -84,6 +88,10 @@ public class ProcessoDto {
 	
 	public List<Long> getPreferencias() {
 		return preferencias;
+	}
+	
+	public String getIdentificacao(){
+		return identificacao;
 	}
 	
 }
