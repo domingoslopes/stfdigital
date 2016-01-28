@@ -8,7 +8,7 @@
 
         name: 'ProcessosPesquisaAvancadaController',
 
-        inject: ['$mdDialog', '$scope', '$document', '$filter', '$mdToast', 'traits'],
+        inject: ['$mdDialog', '$scope', '$document', '$filter', '$mdToast', '$mdSidenav', 'traits'],
 
         init: function() {
             this.translate = this.$filter('translate');
@@ -21,7 +21,17 @@
             };
             
             this.selectedTab = false;
-            this.searchComplete = false;   
+            this.searchComplete = false;  
+
+            this.savedSearchs = [
+                {
+                    label: "ABC",
+                },
+
+                {
+                    label: "DEF"
+                }
+            ];
         },
 
         methods: {
@@ -44,8 +54,12 @@
                         .position('top right')
                         .hideDelay(3000)
                 );
-            }
+            },
 
+            openSavedSearchs: function() {
+                console.log("OK")
+                this.$mdSidenav('sidenav').toggle();
+            }
         }
 
     });

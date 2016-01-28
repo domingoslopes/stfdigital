@@ -4,6 +4,14 @@
 		fab-text="{{ 'PROCESSOS.PESQUISA-AVANCADA.' + (vm.selectedTab == 1 ? 'SALVAR-PESQUISA' : 'BUSCAR') | translate }}"
 		fab-action="vm.selectedTab == 1 ? vm.saveSearch() : vm.doSearch()"
 		fab-active="vm.canSearch()">
+
+		<div class="text-right header-saved-search-button">
+			<md-button class="md-raised" ng-click="vm.openSavedSearchs()">
+				<md-icon md-font-icon="icon-folder" class="s20"></md-icon>
+				<small>Pesquisas Salvas</small>
+			</md-button>
+		</div>
+
 	</stf-header>
 
 	<div class="content" flex layout="column">
@@ -26,4 +34,14 @@
 			</md-tab>
 		</md-tabs>
 	</div>
+
+	<md-sidenav 
+ 		class="sidenav details-sidenav md-sidenav-right"
+    	md-is-locked-open="$mdMedia('gt-lg')"
+    	md-component-id="sidenav"
+    	ms-scroll="{suppressScrollX: true}"
+    	ms-sidenav-helper
+    	ng-include="'app/main/processos/pesquisa-avancada/sidebar-direita/sidebar-direita.html'">
+
+	</md-sidenav>
 </div>
