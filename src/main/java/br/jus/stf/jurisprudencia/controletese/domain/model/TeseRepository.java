@@ -26,17 +26,5 @@ public interface TeseRepository {
 	/**
 	 * @return a lista de assuntos para o tipo de tese
 	 */
-	public List<Tese> findTeseByTipo(TipoTese tipo);
-	
-	/**
-	 * 
-	 * @param tese
-	 */
-	public <T extends Tese> T save(Tese tese);
-	
-	/**
-	 * @return
-	 */
-	public TeseId nextId();
-
+	public List<Tese> findTeseByTipo(TipoTese tipo, Long numero);
 }

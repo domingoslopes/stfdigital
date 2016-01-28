@@ -118,16 +118,21 @@ public class ProcessoApplicationService {
 	/**
 	 * Realiza análise de pressupostos formais para processo recursal.
 	 * 
-	 * @param processoId Processo recursal a ser autuado
+	 * @param idProcesso Processo recursal a ser autuado
 	 * @param assuntos Assuntos do processo
 	 * @param teses Teses de repercussão geral
 	 * @param observacao Observação da análise
 	 */
-	public void analisarRepercussaoGeral(ProcessoId processoId, Set<AssuntoId> assuntos, Set<TeseId> teses, boolean revisao) {
-		// TODO: Verificar possíveis chamadas a eventos e ao workflow.
+	public void analisarRepercussaoGeral(Long idProcesso, List<String> assuntos, List<Long> teses, boolean revisao) {
+		
+		ProcessoId processoId = new ProcessoId(idProcesso);
+		Set<AssuntoId> assuntosProcesso = assuntos.stream().map(id -> new AssuntoId(id)).collect(Collectors.toSet());
+		Set<TeseId> tesesProcesso = teses.stream().map(id -> new TeseId(id)).collect(Collectors.toSet());
+		
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(processoId);
-		processo.analisarRepercussaoGeral(assuntos, teses);
+		processo.analisarRepercussaoGeral(assuntosProcesso, tesesProcesso);
 		processoRepository.save(processo);
+		
 		if (revisao) {
 			tarefaAdapter.completarRevisaoRepercussaoGeral(processo);
 		} else {
