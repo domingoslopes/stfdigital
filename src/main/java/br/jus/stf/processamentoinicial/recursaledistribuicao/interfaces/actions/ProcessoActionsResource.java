@@ -10,9 +10,11 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.PreautuarPet
 import br.jus.stf.processamentoinicial.autuacao.interfaces.facade.PeticaoServiceFacade;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationService;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AnalisarPressupostosFormaisCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoCriminalEleitoralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarProcessoRecursalInaptoCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
 
@@ -54,6 +56,16 @@ public class ProcessoActionsResource {
 	public void revisarPressupostosFormais(RevisarProcessoRecursalInaptoCommand command) {
 		processoApplicationService.analisarPressupostosFormais(command.getProcessoId(), command.getClassificacao().toUpperCase(), 
 				command.getMotivos(), command.getObservacao(), true);
+	}
+	
+	@ActionMapping(id = "analisar-repercussao-geral", name = "Analisar Repercussão Geral")
+	public void analisarRepercussaoGeral(AnalisarRepercussaoGeralCommand command) {
+		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), false);
+	}
+	
+	@ActionMapping(id = "revisar-repercussao-geral", name = "Revisar Repercussão Geral")
+	public void revisarRepercussaoGeral(RevisarRepercussaoGeralCommand command) {
+		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), true);
 	}
 	
 	@ActionMapping(id = "distribuir-processo", name = "Distribuir Processo")
