@@ -4,11 +4,11 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
- * Classe usada para transportar dados de assuntos, do front-end para o back-end.
+ * Classe usada para transportar dados de motivo de inaptidão de processo recursal do front-end para o back-end.
  * 
  * @author Anderson.Araujo
  * 
- * @since 25.01.2016
+ * @since 27.01.2016
  *
  */
 @ApiModel(value = "Representa um assunto")

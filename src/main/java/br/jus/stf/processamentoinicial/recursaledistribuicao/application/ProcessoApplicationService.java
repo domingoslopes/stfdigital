@@ -1,13 +1,20 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.application;
 
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Distribuicao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidaoProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParteProcesso;
@@ -16,7 +23,9 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.shared.AssuntoId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.TeseId;
@@ -41,6 +50,9 @@ public class ProcessoApplicationService {
 	@Autowired
 	private ProcessoApplicationEvent processoApplicationEvent;
 	
+	@Autowired
+	private PessoaAdapter pessoaAdapter;
+	
 	/**
 	 * Cadastra um processo recursal.
 	 * 
@@ -58,15 +70,23 @@ public class ProcessoApplicationService {
 	/**
 	 * Realiza a autuação de processo recursal.
 	 * 
-	 * @param processo Processo recursal a ser autuado
-	 * @param assuntos Lista de assuntos do processo
-	 * @param poloAtivo Lista de partes do polo ativo
-	 * @param poloPassivo Lista de partes do polo passivo
+	 * @param idProcesso ID do processo recursal a ser autuado.
+	 * @param assuntos Lista de assuntos do processo.
+	 * @param poloAtivo Lista de partes do polo ativo.
+	 * @param poloPassivo Lista de partes do polo passivo.
 	 */
-	public void autuar(ProcessoId processoId, Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
-		// TODO: Verificar possíveis chamadas a eventos e ao workflow.
+	public void autuar(Long idProcesso, List<String> assuntos, List<String> poloAtivo, List<String> poloPassivo) {
+		
+		ProcessoId processoId = new ProcessoId(idProcesso);
+		Set<AssuntoId> assuntosProcesso = assuntos.stream().map(id -> new AssuntoId(id)).collect(Collectors.toSet());
+		Set<ParteProcesso> partesPoloAtivo = new HashSet<ParteProcesso>();
+		Set<ParteProcesso> partesPoloPassivo = new HashSet<ParteProcesso>();
+		
+		adicionarPartes(partesPoloAtivo, poloAtivo, TipoPolo.POLO_ATIVO);
+		adicionarPartes(partesPoloPassivo, poloPassivo, TipoPolo.POLO_PASSIVO);
+		
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(processoId);
-		processo.autuar(assuntos, poloAtivo, poloPassivo);
+		processo.autuar(assuntosProcesso, partesPoloAtivo, partesPoloPassivo);
 		processoRepository.save(processo);
 		tarefaAdapter.completarAutuacao(processo);
 	}
@@ -76,18 +96,22 @@ public class ProcessoApplicationService {
 	 * 
 	 * @param processoId Processo recursal a ser autuado
 	 * @param classificacao Classificação (APTO/INAPTO)
-	 * @param motivosInaptidao Lista de motivos de inaptidão do processo
+	 * @param motivos Lista de motivos de inaptidão do processo
 	 * @param observacao Observação da análise
 	 */
-	public void analisarPressupostosFormais(ProcessoId processoId, Classificacao classificacao, Set<MotivoInaptidaoProcesso> motivosInaptidao, String observacao, boolean revisao) {
-		// TODO: Verificar possíveis chamadas a eventos e ao workflow.
+	public void analisarPressupostosFormais(Long IdProcesso, String classificacao, Map<Long, String> motivos, String observacao, boolean revisao) {
+		ProcessoId processoId = new ProcessoId(IdProcesso);
+		Classificacao classif = Classificacao.valueOf(classificacao.toUpperCase());
+		Set<MotivoInaptidaoProcesso> motivosInaptidao = new LinkedHashSet<MotivoInaptidaoProcesso>(); 
+		motivos.forEach((k, v) -> motivosInaptidao.add(new MotivoInaptidaoProcesso(recuperarMotivoInaptidao(k), v)));
+		
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(processoId);
-		processo.analisarPressupostosFormais(classificacao, observacao, motivosInaptidao);
+		processo.analisarPressupostosFormais(classif, observacao, motivosInaptidao);
 		processoRepository.save(processo);
 		if (revisao) {
-			tarefaAdapter.completarRevisaoProcessoInapto(processo, classificacao);
+			tarefaAdapter.completarRevisaoProcessoInapto(processo, classif);
 		} else {
-			tarefaAdapter.completarAnalisePressupostosFormais(processo, classificacao);
+			tarefaAdapter.completarAnalisePressupostosFormais(processo, classif);
 		}
 	}
 	
@@ -127,4 +151,20 @@ public class ProcessoApplicationService {
 		return processo;
 	}
 
+	private MotivoInaptidao recuperarMotivoInaptidao(Long id){
+		return processoRepository.findOneMotivoInaptidao(id);
+	}
+	
+	/**
+	 * Cria as partes do processo recursal.
+	 * 
+	 * @param partes Conjunto de partes.
+	 * @param polo Lista de partes.
+	 * @param tipo Tipo de polo.
+	 * 
+	 */
+	private void adicionarPartes(Set<ParteProcesso> partes, List<String> polo, TipoPolo tipo) {
+		Set<PessoaId> pessoas = pessoaAdapter.cadastrarPessoas(polo);
+		pessoas.forEach(pessoa -> partes.add(new ParteProcesso(pessoa, tipo)));
+	}
 }
