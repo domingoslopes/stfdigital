@@ -21,13 +21,31 @@
 				},
 				resolve: {
 					traits: /** @ngInject */ function($http) {
-						var traits = {data:{}};
+						var traits = {data:[]};
 
 						$http.get('app/data/sample/processos/pesquisa-avancada/traits.json').then(function(response) {
-							traits.data = response.data;
+							angular.copy(response.data, traits.data);
 						});
 
 						return traits;
+					},
+					savedSearchs: /** @ngInject */ function($http) {
+						var savedSearchs = {data:[]};
+						$http.get('app/data/sample/processos/pesquisa-avancada/saved-searchs.json').then(function(response) {
+							angular.copy(response.data, savedSearchs.data);
+
+							savedSearchs.data.forEach(function(savedSearch) {
+								savedSearch.criterias.forEach(function(criteria) {
+									if (criteria.trait.dataType === 'date') {
+										criteria.value = _.isArray(criteria) ? 
+											[new Date(criteria.value[0]), new Date(criteria.value[1])] : 
+											new Date(criteria.value);
+									}
+								});
+							});
+						});
+
+						return savedSearchs;
 					}
 				}
 			});
