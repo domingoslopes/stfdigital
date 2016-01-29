@@ -29,7 +29,7 @@
     "sockjs": "~0.3.4",
     "hwcrypto": "~0.0.10",
     "ngMask": "angular-mask#~3.0.16",
-    "angular-bootstrap-switch" : "0.4.1" 
+    "angular-bootstrap-switch" : "0.4.1"
   },
   "ignoredDependencies": [],
   "devDependencies": {}
