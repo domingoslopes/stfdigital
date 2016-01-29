@@ -31,6 +31,9 @@ public class AnalisarRepercussaoGeralCommand {
 	@ApiModelProperty(value = "Lista de teses", required=true)
 	private List<Long> teses;
 	
+	@ApiModelProperty(value = "Observação da análise", required=true)
+	private String observacao;
+	
 	public Long getProcessoId() {
 		return processoId;
 	}
@@ -41,6 +44,10 @@ public class AnalisarRepercussaoGeralCommand {
 	
 	public List<Long> getTeses() {
 		return teses;
+	}
+	
+	public String getObservacao() {
+		return observacao;
 	}
 	
 }

@@ -23,6 +23,12 @@
 			
 			consultarProcessoPeloIdPeticao : function(peticaoId){
 				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId + '/processo');
+			},
+			
+			consultarTeses : function(tipoTese, numeroTese) {
+				return $http.get(properties.apiUrl + '/teses', {
+					params: {tipo:tipoTese, numero:numeroTese}
+				});
 			}
 		};
 	});

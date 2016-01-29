@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.suporte.interfaces.dto;
 
+import java.util.List;
+
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -22,10 +24,14 @@ public class TeseDto {
 	@ApiModelProperty(value = "Nº da tese")
 	private Long numero;
 	
-	public TeseDto(Long codigo, String descricao, Long numero) {
+	@ApiModelProperty(value = "Lista de assuntos vinculados à tese")
+	private List<AssuntoDto> assuntos;
+	
+	public TeseDto(Long codigo, String descricao, Long numero, List<AssuntoDto> assuntos) {
 		this.codigo = codigo;
 		this.descricao = descricao;
 		this.numero = numero;
+		this.assuntos = assuntos;
 	}
 	
 	public Long getCodigo() {
@@ -38,5 +44,9 @@ public class TeseDto {
 	
 	public Long getNumero() {
 		return numero;
+	}
+	
+	public List<AssuntoDto> getAssuntos(){
+		return assuntos;
 	}
 }
