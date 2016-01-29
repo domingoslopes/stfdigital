@@ -9,7 +9,7 @@
 	<md-divider></md-divider>
 
 	<div class="navigation-simple" layout="column">
-		<md-button class="item hover-container" ng-repeat="search in vm.savedSearchs | filter:{label:vm.searchSearch}">
+		<md-button class="item hover-container" ng-repeat="search in vm.savedSearchs | filter:{label:vm.searchSearch}" ng-click="vm.loadSearch(search)">
 			{{ search.label }}
         </md-button>
 	</div>
