@@ -12,6 +12,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.application.Process
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AnalisarPressupostosFormaisCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoCriminalEleitoralCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarProcessoRecursalInaptoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarRepercussaoGeralCommand;
@@ -68,9 +69,15 @@ public class ProcessoActionsResource {
 		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), true);
 	}
 	
+	@ActionMapping(id = "autuar-recursal", name = "Autuar Processo Recursal")
+	public void autuar(AutuarProcessoRecursalCommand command) {
+		processoApplicationService.autuar(command.getProcessoId(), command.getAssuntos(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo());
+	}
+	
 	@ActionMapping(id = "distribuir-processo", name = "Distribuir Processo")
 	public ProcessoDto distribuir(DistribuirPeticaoCommand command) {
 		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), command.getPeticaoId(), command.getJustificativa(),
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
+	
 }
