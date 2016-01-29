@@ -3,6 +3,15 @@
 		"PESQUISA-AVANCADA": {
 			"PESQUISA-AVANCADA": "Pesquisa Avançada",
 
+			"BUSCAR": "Buscar",
+			"SALVAR-PESQUISA": "Salvar pesquisa",
+
+			"NOVA-PESQUISA": "Nova pesquisa",
+			"RESULTADOS": "Resultados",
+			"EDITAR-CRITERIOS": "Editar Critérios",
+
+			"PESQUISA-SALVA": "Pesquisa salva",
+
 			"SELECIONE-CRITERIO": "Selecione um crítério",
 			"COMBINE-VARIOS-OUTROS": "Combine vários outros",
 			"CRITERIO": "Critério",
@@ -20,6 +29,12 @@
 				"MAIOR-QUE": "Maior Que",
 				"MENOR-QUE": "Menor Que",
 				"EXISTE": "Existe"
+			},
+
+			"MODAL-SALVAR-PESQUISA": {
+				"NOME-PESQUISA": "Nome da pesquisa",
+				"CANCELAR": "Cancelar",
+				"OK": "OK"
 			}
 		}
 	}	
