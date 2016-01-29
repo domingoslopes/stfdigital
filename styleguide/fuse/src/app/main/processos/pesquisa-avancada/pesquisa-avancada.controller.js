@@ -8,110 +8,110 @@
 
         name: 'ProcessosPesquisaAvancadaController',
 
-        inject: ['$mdDialog', '$scope', '$document', 'traits'],
+        inject: ['$mdDialog', '$scope', '$document', '$filter', '$mdToast', '$mdSidenav', 'traits', 'savedSearchs'],
 
         init: function() {
-
-            this.logicalOperators = ['E', 'OU', 'NAO'];
-            this.comparisonOperators = {
-                'IGUAL': ['string', 'number', 'currency', 'date', 'list'],
-                'CONTEM': ['string'],
-                'ENTRE': ['number', 'currency', 'date'],
-                'MAIOR-QUE': ['number', 'currency', 'date'],
-                'MENOR-QUE': ['number', 'currency', 'date'],
-                'EXISTE': ['constant', 'string', 'number', 'currency', 'date', 'list']
-            };
-
-            this.traitSearchText = '';
-            this.newCriteria = {
-                operator: 'E',
-                trait: null
-            };
+            this.translate = this.$filter('translate');
 
             this.traits = this.traits.data;
+            this.savedSearchs = this.savedSearchs.data;
 
-            this.search = {
+            this.defaultSearch = {
                 id: null,
-                name: '',
+                label: '',
                 criterias: []
             };
-            
-            this.criteriaOrder = '';
-            this.sortableOptions = {
-                ghostClass: 'criteria-item-placeholder',
-                handle: '.handle',
-                forceFallback: true,
-                fallbackClass: 'criteria-item-ghost'
-            };
 
-           
+            this.newSearch = angular.copy(this.defaultSearch);
+            this.loadedSearch = angular.copy(this.defaultSearch);
+            this.resultSearch = angular.copy(this.defaultSearch);
+            
+            this.selectedTab = false;
+            this.searchComplete = false; 
+            this.editEnabled = false; 
+
         },
 
         methods: {
-
-            setCriteriaLogicalOperator: function(criteria, operator) {
-                criteria.logicalOperator = operator;
+            canSearch: function() {
+                var search = (this.selectedTab == 0 ? this.newSearch : this.loadedSearch);
+                return ((search.criterias.length > 0) && (_.all(search.criterias, 'valid')));
             },
 
-            setAsFavorite: function(criteria) {
-                criteria.isFavorite = !criteria.isFavorite;
+            doSearch: function() {
+                // TODO: Do search
+                if (this.selectedTab == 0) {
+                    angular.copy(this.newSearch, this.resultSearch);
+                    angular.copy(this.newSearch, this.loadedSearch);
+                    angular.copy(this.defaultSearch, this.newSearch);
+                } else {
+                    angular.copy(this.loadedSearch, this.resultSearch);
+                }
+                
+                this.selectedTab = 1;
+                this.searchComplete = true;
+                this.editEnabled = true;
             },
 
-            removeCriteria: function(i) {
-                _.pullAt(this.search.criterias, i);
-            },
-
-            querySearch: function(query) {
-                var results = query ? _.filter(this.traits, this._createFilterFor(query)) : this.traits;
-                return results;
-            },
-
-            searchTextChange: function(text) {
-                console.log('Text changed to ' + text);
-            },
-
-            selectedItemChange: function(item) {
-                console.log('Item changed to ' + JSON.stringify(item));
-            },
-
-            addNewCriteria: function() {
-                var trait = this.newCriteria.trait;
-                var criteria = {
-                    id: null,
-                    logicalOperator: this.newCriteria.operator,
-                    comparisonOperator: trait.dataType === 'constant' ? 'EXISTS' : 'EQUALS',
-                    trait: trait,
-                    value: trait.dataType === 'constant' ? trait.name : null
-                };
-                this.traitSearchText = '';
-                this.newCriteria.trait = null;
-                this.search.criterias.push(criteria);
-            },
-
-            /**
-             * Get the valid comparison operator for an specific data type.
-             * @param {String} dataType
-             * @return {Array} Valid comparison operators
-             */
-            getComparisonOperators: function(dataType) {
-                var operatorMapping = this.comparisonOperators;
-                var ops = _.keys(operatorMapping);
-                return _.reject(ops, function(op) {
-                    var types = operatorMapping[op];
-                    return !_.include(types, dataType);
+            saveSearch: function(event) {
+                this.$mdDialog.show({
+                    clickOutsideToClose: true,
+                    controller: /** @ngInject */ function ($rootScope, $mdDialog, searchName) {
+                        var vm = this;
+                        vm.searchName = searchName;
+                        
+                        vm.cancel = function () {
+                            $mdDialog.hide();
+                        };
+                        vm.confirm = function () {
+                            $rootScope.$broadcast('save-search:confirm', vm.searchName);
+                            $mdDialog.cancel();
+                        };
+                    },
+                    resolve: {
+                        searchName: function() {
+                            return (this.resultSearch.id === null ? '' : this.resultSearch.label)
+                        }.bind(this)
+                    },
+                    controllerAs: 'vm',
+                    templateUrl: 'app/main/processos/pesquisa-avancada/modals/save-search-name/save-search-name.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event,
+                    //scope: this.$scope
                 });
+
+                var removeListener = this.$scope.$on('save-search:confirm', function(event, label) {
+                    if (this.resultSearch.id === null) {
+                        var id = this.savedSearchs.length;
+                        this.savedSearchs.push(angular.copy(this.resultSearch));
+                        this.savedSearchs[id].id = id;
+                        this.savedSearchs[id].label = label;
+                    } else {
+                        angular.copy(this.resultSearch, this.savedSearchs[this.resultSearch.id]);
+                        this.savedSearchs[this.resultSearch.id].label = label;
+                    }
+                    
+                    this.$mdToast.show(
+                        this.$mdToast.simple()
+                            .textContent(this.translate('PROCESSOS.PESQUISA-AVANCADA.PESQUISA-SALVA'))
+                            .position('top right')
+                            .hideDelay(3000)
+                    );
+
+                    removeListener();
+                }.bind(this));
             },
 
-            /**
-             * Create filter function for a query string
-             */
-            _createFilterFor: function(query) {
-                var lowercaseQuery = angular.lowercase(query);
-                return function filterFn(trait) {
-                    return (trait.name.toLowerCase().indexOf(lowercaseQuery) !== -1);
-                };
-            }
+            openSavedSearchs: function() {
+                this.$mdSidenav('sidenav').open();
+            },
 
+            loadSearch: function(savedSearch) {
+                angular.copy(savedSearch, this.loadedSearch);
+                this.$mdSidenav('sidenav').close();
+                this.selectedTab = 2;
+                this.editEnabled = true;
+            }
         }
 
     });
