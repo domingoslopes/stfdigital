@@ -1,4 +1,4 @@
-package br.jus.stf.processamentoinicial.suporte.infra.persistence;
+package br.jus.stf.jurisprudencia.controletese.infra.persistence;
 
 import java.util.List;
 
@@ -65,6 +65,19 @@ public class TeseRepositoryImpl  extends SimpleJpaRepository<Tese, TeseId> imple
 		query.setParameter("tipo", tipo);
 		query.setParameter("numero", numero);
 		
+		return query.getResultList();
+	}
+
+	/**
+	 * Recupera as teses com os ids
+	 * 
+	 * @param tesesIds
+	 * @return A lista de teses
+	 */
+	@Override
+	public List<Tese> findTesesByIds(List<TeseId> tesesIds) {
+		TypedQuery<Tese> query = entityManager.createQuery("FROM Tese tese WHERE tese.codigo in :ids", Tese.class);
+		query.setParameter("ids", tesesIds);
 		return query.getResultList();
 	}
 }
