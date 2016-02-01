@@ -1,142 +1,117 @@
-(function ()
-{
+(function () {
     'use strict';
 
-    angular
-        .module('app.tarefas.minhas-tarefas')
-        .controller('TaskDialogController', TaskDialogController);
-
-    /** @ngInject */
-    function TaskDialogController($mdDialog, Task, Tasks, event)
-    {
-        var vm = this;
-
-        // Data
-        vm.task = angular.copy(Task);
-        vm.tasks = Tasks;
-        vm.newTask = false;
-
-        if ( !vm.task )
-        {
-            vm.task = {
-                'id'                : '',
-                'title'             : '',
-                'notes'             : '',
-                'startDate'         : new Date(),
-                'startDateTimeStamp': new Date().getTime(),
-                'dueDate'           : '',
-                'dueDateTimeStamp'  : '',
-                'completed'         : false,
-                'starred'           : false,
-                'important'         : false,
-                'deleted'           : false,
-                'tags'              : []
-            };
-            vm.newTask = true;
-            vm.task.tags = [];
-        }
-
-        // Methods
-        vm.addNewTask = addNewTask;
-        vm.saveTask = saveTask;
-        vm.deleteTask = deleteTask;
-        vm.newTag = newTag;
-        vm.closeDialog = closeDialog;
-        vm.deleteAttachment = deleteAttachment;
+    var app = angular.module('app.tarefas.minhas-tarefas')
         
-        //////////
+    app.classy.controller({
+        name: 'TaskDialogController',
 
-        /**
-         * Add new task
-         */
-        function addNewTask()
-        {
-            vm.tasks.unshift(vm.task);
+        inject: ['$mdDialog', 'Task', 'Tasks', 'event', '$filter'],
 
-            closeDialog();
-        }
+        init: function() {
+            this.translate = this.$filter('translate');
 
-        /**
-         * Save task
-         */
-        function saveTask()
-        {
-            // Dummy save action
-            for ( var i = 0; i < vm.tasks.length; i++ )
-            {
-                if ( vm.tasks[i].id === vm.task.id )
-                {
-                    vm.tasks[i] = angular.copy(vm.task);
-                    break;
-                }
+            // Data
+            this.task = angular.copy(this.Task);
+            this.tasks = this.Tasks;
+            this.newTask = false;
+
+            if ( !this.task ) {
+                this.task = {
+                    'id'                : '',
+                    'title'             : '',
+                    'notes'             : '',
+                    'startDate'         : new Date(),
+                    'startDateTimeStamp': new Date().getTime(),
+                    'dueDate'           : '',
+                    'dueDateTimeStamp'  : '',
+                    'completed'         : false,
+                    'starred'           : false,
+                    'important'         : false,
+                    'deleted'           : false,
+                    'tags'              : []
+                };
+                this.newTask = true;
+                this.task.tags = [];
             }
+        },
 
-            closeDialog();
-        }
+        methods: {
+            /**
+             * Add new task
+             */
+            addNewTask: function() {
+                this.tasks.unshift(this.task);
+                closeDialog();
+            },
 
-        /**
-         * Delete task
-         */
-        function deleteTask()
-        {
-            var confirm = $mdDialog.confirm()
-                .title('Are you sure?')
-                .content('The Task will be deleted.')
-                .ariaLabel('Delete Task')
-                .ok('Delete')
-                .cancel('Cancel')
-                .targetEvent(event);
-
-            $mdDialog.show(confirm).then(function ()
-            {
-                // Dummy delete action
-                for ( var i = 0; i < vm.tasks.length; i++ )
-                {
-                    if ( vm.tasks[i].id === vm.task.id )
-                    {
-                        vm.tasks[i].deleted = true;
+            /**
+             * Save task
+             */
+            saveTask: function() {
+                for ( var i = 0; i < this.tasks.length; i++ ) {
+                    if ( this.tasks[i].id === this.task.id ) {
+                        this.tasks[i] = angular.copy(this.task);
                         break;
                     }
                 }
-            }, function ()
-            {
-                // Cancel Action
-            });
-        }
+
+                closeDialog();
+            },
+
+            /**
+             * Delete task
+             */
+            deleteTask: function() {
+                var confirm = this.$mdDialog.confirm()
+                    .title(this.translate('TAREFAS.MINHAS-TAREFAS.DIALOGO.VOCE-TEM-CERTEZA'))
+                    .content(this.translate('TAREFAS.MINHAS-TAREFAS.DIALOGO.ESSA-TAREFA-SERA-DELETADA'))
+                    .ariaLabel(this.translate('TAREFAS.MINHAS-TAREFAS.DIALOGO.DELETAR-TAREFA'))
+                    .ok(this.translate('TAREFAS.MINHAS-TAREFAS.DIALOGO.DELETAR'))
+                    .cancel(this.translate('TAREFAS.MINHAS-TAREFAS.DIALOGO.CANCELAR'))
+                    .targetEvent(this.event);
+
+                this.$mdDialog.show(confirm).then(function () {
+                    for ( var i = 0; i < this.tasks.length; i++ ) {
+                        if ( this.tasks[i].id === this.task.id ) {
+                            this.tasks[i].deleted = true;
+                            break;
+                        }
+                    }
+                }.bind(this));
+            },
 
 
-        /**
-         * New tag
-         *
-         * @param chip
-         * @returns {{label: *, color: string}}
-         */
-        function newTag(chip)
-        {
-            var tagColors = ['#388E3C', '#F44336', '#FF9800', '#0091EA', '#9C27B0'];
+            /**
+             * New tag
+             *
+             * @param chip
+             * @returns {{label: *, color: string}}
+             */
+            newTag: function(chip) {
+                var tagColors = ['#388E3C', '#F44336', '#FF9800', '#0091EA', '#9C27B0'];
 
-            return {
-                name : chip,
-                label: chip,
-                color: tagColors[Math.floor(Math.random() * (tagColors.length))]
-            };
-        }
+                return {
+                    name : chip,
+                    label: chip,
+                    color: tagColors[Math.floor(Math.random() * (tagColors.length))]
+                };
+            },
 
-        /**
-         * Close dialog
-         */
-        function closeDialog()
-        {
-            $mdDialog.hide();
-        }
+            /**
+             * Close dialog
+             */
+            closeDialog: function() {
+                this.$mdDialog.hide();
+            },
 
-        function deleteAttachment(attachment, task)
-        {
-            var index = task.attachments.indexOf(attachment);
+            deleteAttachment: function(attachment, task) {
+                var index = task.attachments.indexOf(attachment);
 
-            if (index > -1) {
-                task.attachments.splice(index, 1);
+                if (index > -1) {
+                    task.attachments.splice(index, 1);
+                }
             }
         }
-    }
+    });
 })();
