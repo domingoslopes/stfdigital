@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import br.jus.stf.jurisprudencia.controletese.interfaces.TeseIntegrationTests;
 import br.jus.stf.plataforma.actions.AcoesIntegrationTests;
 import br.jus.stf.plataforma.dashboards.DashboardIntegrationTests;
 import br.jus.stf.plataforma.documentos.DocumentoIntegrationTests;
@@ -27,7 +28,8 @@ import br.jus.stf.processamentoinicial.distribuicao.interfaces.ConsultaProcessos
 	DashboardIntegrationTests.class,
 	PeticionamentoActionIntegrationTests.class,
 	SignatureApplicationServiceTest.class,
-	DocumentValidatorApplicationServiceTest.class
+	DocumentValidatorApplicationServiceTest.class,
+	TeseIntegrationTests.class
 })
 public class IntegrationTestingSuite {
 
