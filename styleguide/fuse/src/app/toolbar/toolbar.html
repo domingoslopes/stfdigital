@@ -16,7 +16,7 @@
             <input
                 class="bn s18"
                 ng-model="vm.termoBusca"
-                placeholder="{{ ('TOOLBAR.PESQUISA.PLACEHOLDER_' + (vm.tipoBusca == 1 ? 'PROCESSO' : 'PETICAO' )) | translate }}"
+                placeholder="{{ ('TOOLBAR.PESQUISA.PLACEHOLDER_' + (vm.tipoBusca == 1 ? 'PROCESSO' : 'PETICAO' ) + ($mdMedia('xs') ? '_REDUZIDO' : '')) | translate }}"
                 ng-keyup="vm.teclaPressionadaBusca($event)">
             
             <md-menu>
