@@ -29,6 +29,15 @@
 
 						return traits;
 					},
+					results: /** @ngInject */ function($http) {
+						var results = {data:[]};
+
+						$http.get('app/data/sample/processos/pesquisa-avancada/results.json').then(function(response) {
+							angular.copy(response.data, results.data);
+						});
+
+						return results;
+					},
 					savedSearchs: /** @ngInject */ function($http) {
 						var savedSearchs = {data:[]};
 						$http.get('app/data/sample/processos/pesquisa-avancada/saved-searchs.json').then(function(response) {

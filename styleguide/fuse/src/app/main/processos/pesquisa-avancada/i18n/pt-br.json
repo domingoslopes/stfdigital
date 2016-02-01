@@ -16,6 +16,20 @@
 			"COMBINE-VARIOS-OUTROS": "Combine vários outros",
 			"CRITERIO": "Critério",
 
+			"PROCESSO": "Processo",
+			"TEXTO": "Texto",
+			"OBSERVACAO": "Observação",
+			"FASE": "Fase",
+			"MINISTRO": "Ministro",
+			"RESPONSAVEL": "Responsável",
+			"DATA-INICIO": "Data de Início",
+			"CONTROLE-DE-VOTO": "Controle de Voto",
+
+			"CONTROLE-VOTO": {
+				"SIM": "Sim",
+				"NAO": "Não"
+			},
+
 			"OPERADOR-LOGICO": {
 				"E": "e",
 				"OU": "ou",
