@@ -151,7 +151,16 @@
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/revisao/revisao-processo-inapto.tpl.html'
 				}
-			}	
+			}
+		}).state('analisar-repercussao-geral',{
+			parent: 'action.autuacao',
+			url: '/processo/repercussao',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/repercussao/analise-repercussao-geral.tpl.html'
+				}
+			}
 		}).state('autuar', {
 			parent: 'action.autuacao',
 			url: '/peticao/autuacao',

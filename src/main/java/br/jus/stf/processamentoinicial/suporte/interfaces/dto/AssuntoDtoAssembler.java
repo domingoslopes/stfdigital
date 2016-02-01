@@ -14,7 +14,6 @@ import br.jus.stf.jurisprudencia.controletese.domain.model.Assunto;
  */
 @Component
 public class AssuntoDtoAssembler {
-	
 	public AssuntoDto toDto(Assunto assunto) {
 		Validate.notNull(assunto);
 		return new AssuntoDto(assunto.id().toString(), assunto.descricao());
