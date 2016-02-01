@@ -1,6 +1,5 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
