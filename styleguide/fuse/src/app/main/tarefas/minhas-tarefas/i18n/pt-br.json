@@ -47,6 +47,14 @@
 				"CONCLUIR-REABRIR": "Concluir/Re-abrir",
 				"INCLUIR-TAG": "Incluir Tag",
 				"REMOVER-SELECAO": "Remover seleção"
+			},
+
+			"DIALOGO": {
+				"VOCE-TEM-CERTEZA": "Você tem certeza?",
+				"ESSA-TAREFA-SERA-DELETADA": "Essa tarefa será deletada",
+				"DELETAR-TAREFA": "Deletar tarefa",
+				"DELETAR": "Deletar",
+				"CANCELAR": "Cancelar"
 			}
 		}
 	}	
