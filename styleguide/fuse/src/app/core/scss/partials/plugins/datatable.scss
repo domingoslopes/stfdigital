@@ -1060,6 +1060,12 @@ table.dataTable {
     }
 }
 
+.dataTables_noTop .dataTables_wrapper {
+    .top {
+        display: none;
+    }
+}
+
 /* DataTable Specific Content Rules & Fixes */
 table.dataTable {
 

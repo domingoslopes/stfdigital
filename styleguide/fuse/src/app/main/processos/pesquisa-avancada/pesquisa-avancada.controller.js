@@ -8,13 +8,14 @@
 
         name: 'ProcessosPesquisaAvancadaController',
 
-        inject: ['$mdDialog', '$scope', '$document', '$filter', '$mdToast', '$mdSidenav', 'traits', 'savedSearchs'],
+        inject: ['$mdDialog', '$scope', '$document', '$filter', '$mdToast', '$mdSidenav', 'traits', 'savedSearchs', 'results'],
 
         init: function() {
             this.translate = this.$filter('translate');
 
             this.traits = this.traits.data;
             this.savedSearchs = this.savedSearchs.data;
+            this.searchResults = this.results.data;
 
             this.defaultSearch = {
                 id: null,
@@ -30,6 +31,13 @@
             this.searchComplete = false; 
             this.editEnabled = false; 
 
+            this.resultsDtOptions = {
+                dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+                pagingType: 'simple',
+                autoWidth : true,
+                responsive: false,
+                searching: false,
+            };
         },
 
         methods: {
@@ -76,8 +84,7 @@
                     controllerAs: 'vm',
                     templateUrl: 'app/main/processos/pesquisa-avancada/modals/save-search-name/save-search-name.html',
                     parent: angular.element(document.body),
-                    targetEvent: event,
-                    //scope: this.$scope
+                    targetEvent: event
                 });
 
                 var removeListener = this.$scope.$on('save-search:confirm', function(event, label) {
