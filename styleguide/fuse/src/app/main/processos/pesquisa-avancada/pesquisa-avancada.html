@@ -23,7 +23,68 @@
 
 			<md-tab label="{{ 'PROCESSOS.PESQUISA-AVANCADA.RESULTADOS' | translate }}" ng-disabled="!vm.searchComplete">
 				<criterias-summary class="md-whiteframe-1dp md-block" criterias="vm.resultSearch.criterias"></criterias-summary>
-				<h1>Processos</h1> <span>87 Results</span>
+				
+				<div class="dataTables_noTop">
+					<table class=" row-border hover" datatable="ng" dt-options="vm.resultsDtOptions">
+						<thead>
+							<tr>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title" translate="PROCESSOS.PESQUISA-AVANCADA.PROCESSO">Processo</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title" translate="PROCESSOS.PESQUISA-AVANCADA.TEXTO">Texto</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title" translate="PROCESSOS.PESQUISA-AVANCADA.OBSERVACAO">Observação</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.FASE">Fase</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.MINISTRO">Ministro</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.RESPONSAVEL">Responsável</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.DATA-INICIO">Data Início</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.CONTROLE-DE-VOTO">Controle de Voto</span>
+	                    			</div>
+	                			</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr ng-repeat="result in vm.searchResults">
+								<td>{{ result.processo }}</td>
+								<td>{{ result.texto }}</td>
+								<td>{{ result.observacao }}</td>
+								<td class="text-center">{{ result.fase }}</td>
+								<td class="text-center">{{ result.ministro }}</td>
+								<td class="text-center">{{ result.responsavel }}</td>
+								<td class="text-center">{{ result.dataInicio * 1000 | date:'longDate' }}</td>
+								<td class="text-center">{{ 'PROCESSOS.PESQUISA-AVANCADA.CONTROLE-VOTO.' + (result.controleVoto ? 'SIM' : 'NAO') | translate }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</md-tab>
 
 			<md-tab label="{{ 'PROCESSOS.PESQUISA-AVANCADA.EDITAR-CRITERIOS' | translate }}" ng-disabled="!vm.editEnabled">
