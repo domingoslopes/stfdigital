@@ -1,9 +1,11 @@
-package br.jus.stf.processamentoinicial.suporte.interfaces.dto;
+package br.jus.stf.jurisprudencia.controletese.interfaces.dto;
 
 import java.util.List;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
 
 /**
  * Classe usada para transportar dados de motivo de inaptidão de processo recursal do front-end para o back-end.
@@ -27,11 +29,15 @@ public class TeseDto {
 	@ApiModelProperty(value = "Lista de assuntos vinculados à tese")
 	private List<AssuntoDto> assuntos;
 	
-	public TeseDto(Long codigo, String descricao, Long numero, List<AssuntoDto> assuntos) {
+	@ApiModelProperty(value = "Tipo de tese")
+	private String tipoTese;
+	
+	public TeseDto(Long codigo, String descricao, Long numero, List<AssuntoDto> assuntos, String tipoTese) {
 		this.codigo = codigo;
 		this.descricao = descricao;
 		this.numero = numero;
 		this.assuntos = assuntos;
+		this.tipoTese = tipoTese;
 	}
 	
 	public Long getCodigo() {
@@ -49,4 +55,9 @@ public class TeseDto {
 	public List<AssuntoDto> getAssuntos(){
 		return assuntos;
 	}
+	
+	public String getTipoTese() {
+		return tipoTese;
+	}
+
 }
