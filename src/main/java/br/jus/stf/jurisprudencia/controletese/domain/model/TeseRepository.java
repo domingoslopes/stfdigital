@@ -27,4 +27,12 @@ public interface TeseRepository {
 	 * @return a lista de assuntos para o tipo de tese
 	 */
 	public List<Tese> findTeseByTipo(TipoTese tipo, Long numero);
+
+	/**
+	 * Recupera as teses com os ids
+	 * 
+	 * @param tesesIds
+	 * @return A lista de teses
+	 */
+	public List<Tese> findTesesByIds(List<TeseId> tesesIds);
 }

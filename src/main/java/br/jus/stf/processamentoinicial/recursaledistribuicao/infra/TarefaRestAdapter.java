@@ -48,8 +48,8 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	}
 	
 	@Override
-	public void completarAnaliseRepercussaoGeral(ProcessoRecursal processo, boolean tema) {
-		completarTarefa(processo, tema ? ProcessoSituacao.A_REVISAR : ProcessoSituacao.A_AUTUAR);	
+	public void completarAnaliseRepercussaoGeral(ProcessoRecursal processo, boolean repercussaoGeral) {
+		completarTarefa(processo, repercussaoGeral ? ProcessoSituacao.A_REVISAR : ProcessoSituacao.A_AUTUAR);	
 	}
 	
 	@Override
