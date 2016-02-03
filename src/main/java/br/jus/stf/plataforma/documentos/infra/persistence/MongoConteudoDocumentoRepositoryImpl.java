@@ -39,9 +39,8 @@ public class MongoConteudoDocumentoRepositoryImpl implements ConteudoDocumentoRe
 		try {
 			GridFSDBFile gridFile = gridOperations.findOne(
 					new Query().addCriteria(Criteria.where("_id").is(new ObjectId(numeroConteudo))));
-			byte[] bytes = IOUtils.toByteArray(gridFile.getInputStream()); // TODO Benchmark-Tomas voltar para comentário abaixo depois do benchmark
-			return new ConteudoDocumentoDownload(new ByteArrayInputStream(bytes), gridFile.getLength()); // TODO Benchmark-Tomas voltar para comentário depois do benchmark
-//			return new ConteudoDocumentoDownload(gridFile.getInputStream(), gridFile.getLength());
+			byte[] bytes = IOUtils.toByteArray(gridFile.getInputStream());
+			return new ConteudoDocumentoDownload(new ByteArrayInputStream(bytes), gridFile.getLength());
 		} catch (Exception t) {
 			throw new RuntimeException("Não foi possível carregar o stream do arquivo ", t);
 		}
