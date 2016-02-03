@@ -28,6 +28,9 @@ public abstract class Peca implements ValueObject<Peca> {
 	@Column(name = "DSC_PECA", nullable = false)
 	private String descricao;
 	
+	@Column(name = "NUM_ORDEM_PECA")
+	private Long numeroOrdem;
+	
 	protected Peca() {
 
 	}
@@ -56,9 +59,17 @@ public abstract class Peca implements ValueObject<Peca> {
 		return this.descricao;
 	}
 	
+	public Long numeroOrdem() {
+		return numeroOrdem;
+	}
+	
+	public void numerarOrdem(Long numeroOrdem) {
+		this.numeroOrdem = numeroOrdem;
+	}
+	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(documento).append(tipo).hashCode();
+		return new HashCodeBuilder().append(documento).append(tipo).append(numeroOrdem).hashCode();
 	}
 
 	@Override
@@ -77,7 +88,7 @@ public abstract class Peca implements ValueObject<Peca> {
 	
 	@Override
 	public boolean sameValueAs(final Peca other){
-		return other != null && this.documento.sameValueAs(other.documento) && this.tipo.sameValueAs(other.tipo);
+		return other != null && this.documento.sameValueAs(other.documento) && this.tipo.sameValueAs(other.tipo) && this.numeroOrdem.equals(other.numeroOrdem);
 	}
 
 }
