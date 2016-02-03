@@ -6,6 +6,7 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -18,6 +19,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.shared.settings.AndProfilesCondition;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 import br.jus.stf.shared.DocumentoId;
 
@@ -28,7 +30,9 @@ import br.jus.stf.shared.DocumentoId;
  *
  */
 @Repository
-@Profile(Profiles.DOCUMENTO_MONGO)
+//@Profile(Profiles.DOCUMENTO_MONGO)
+@Profile({"!" + Profiles.DOCUMENTO_FS, "!" + Profiles.DOCUMENTO_ORACLE }) // Setando o profile do mongo se os outros não forem ativados.
+@Conditional(AndProfilesCondition.class)
 public class MongoConteudoDocumentoRepositoryImpl implements ConteudoDocumentoRepository {
 
 	@Autowired
