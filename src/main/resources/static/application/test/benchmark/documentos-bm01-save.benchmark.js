@@ -86,10 +86,9 @@
 	});
 	
 	var uploadSpecs = [
-		{'size': '100k', 'peticoes': 25, 'pecasPorPeticao': 4},
-		{'size': '1MB', 'peticoes': 25, 'pecasPorPeticao': 4},
-		{'size': '10MB', 'peticoes': 25, 'pecasPorPeticao': 4},
-//		{'size': '100MB', 'peticoes': 50, 'pecasPorPeticao': 2},
+	    {'size': '10MB', 'peticoes': 50, 'pecasPorPeticao': 2},
+	    {'size': '1MB', 'peticoes': 50, 'pecasPorPeticao': 2},
+		{'size': '100k', 'peticoes': 50, 'pecasPorPeticao': 2},
 	];
 	
 	uploadSpecs.map(function(spec) {
