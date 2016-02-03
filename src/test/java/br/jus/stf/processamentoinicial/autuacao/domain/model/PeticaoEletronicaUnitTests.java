@@ -6,13 +6,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
@@ -25,16 +28,19 @@ public class PeticaoEletronicaUnitTests {
 	
 	private Set<PartePeticao> partes;
 	private Set<PecaPeticao> pecas;
+	private Long idDocumentoAtual;
 	
 	@Before
 	public void setUp() {
+		idDocumentoAtual = 0L;
+		
 		partes = new HashSet<PartePeticao>(0);
 		partes.add(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
 		partes.add(new PartePeticao(new PessoaId(2L), TipoPolo.POLO_PASSIVO));
 		partes.add(new PartePeticao(new PessoaId(3L), TipoPolo.POLO_PASSIVO));
 		
 		pecas = new LinkedHashSet<PecaPeticao>(0);
-		pecas.add(new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial"));
+		pecas.add(new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(1L, "Petição inicial"), "Petição inicial"));
 	}
 
 	@Test
@@ -101,4 +107,66 @@ public class PeticaoEletronicaUnitTests {
 		
 		new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
 	}
+	
+	@Test
+	public void criarPeticaoEletronicaUmaPecaNumeradaCorretamente() {
+		PeticaoEletronica peticao = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
+		Assert.assertEquals("Peça deveria ter sido ordenada.", new Long(1L), peticao.pecas().iterator().next().numeroOrdem());
+	}
+	
+	@Test
+	public void criarPeticaoEletronicaVariasPecasNumeradasCorretamente() {
+		incluirPecaCustas();
+		PeticaoEletronica peticao = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
+		Assert.assertEquals("Peça 1 deveria ter sido ordenada com valor 1.", new Long(1L), pecaPorTipo(peticao.pecas(), 1L).numeroOrdem());
+		Assert.assertEquals("Peça 2 deveria ter sido ordenada com valor 2.", new Long(2L), pecaPorTipo(peticao.pecas(), 2L).numeroOrdem());
+	}
+	
+	@Test
+	public void removerPecasDaPeticaoRenumeradasCorretamente() {
+		Peca pecaCustas = incluirPecaCustas();
+		incluirPecaAtoCoator();
+		PeticaoEletronica peticao = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
+		peticao.removerPeca(pecaCustas);
+		Assert.assertEquals("Peça 1 deveria ter sido ordenada com valor 1.", new Long(1L), pecaPorTipo(peticao.pecas(), 1L).numeroOrdem());
+		Assert.assertEquals("Peça 3 deveria ter sido reordenada com valor 2.", new Long(2L), pecaPorTipo(peticao.pecas(), 5L).numeroOrdem());
+	}
+
+	@Test
+	public void substituirPecaDaPeticaoRenumerasCorretamente() {
+		Peca pecaCustas = incluirPecaCustas();
+		incluirPecaAtoCoator();
+		PeticaoEletronica peticao = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
+		Peca pecaCustasNova = new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(2L, "Custas"), "Custas Nova");
+		peticao.substituirPeca(pecaCustas, pecaCustasNova);
+		Assert.assertEquals("Total de peças deveria ter sido mantida em 3.", 3L, peticao.pecas().size());
+		Assert.assertEquals("Peça 1 deveria ter sido ordenada com valor 1.", new Long(1L), pecaPorTipo(peticao.pecas(), 1L).numeroOrdem());
+		Assert.assertEquals("Peça substituta da Peça 2 deveria ter sido reordenada com valor 2.", new Long(2L), pecaPorTipo(peticao.pecas(), 2L).numeroOrdem());
+		Assert.assertEquals("Peça 3 deveria ter tido mantida sua ordenação com valor 3.", new Long(3L), pecaPorTipo(peticao.pecas(), 5L).numeroOrdem());
+		Assert.assertEquals("Peça substituta da Peça 2 deveria ter realmente substituído.", "Custas Nova", pecaPorTipo(peticao.pecas(), 2L).descricao());
+	}
+	
+	private Peca incluirPecaCustas() {
+		return incluirPeca(new TipoPeca(2L, "Custas"), "Custas");
+	}
+	
+	private Peca incluirPecaAtoCoator() {
+		return incluirPeca(new TipoPeca(5L, "Ato coator"), "Ato coator");
+	}
+
+	private Peca incluirPeca(TipoPeca tipoPeca, String descricaoPeca) {
+		PecaPeticao pecaPeticao = new PecaPeticao(new DocumentoId(proximoIdDocumento()), tipoPeca, descricaoPeca);
+		pecas.add(pecaPeticao);
+		return pecaPeticao;
+	}
+	
+	private Peca pecaPorTipo(Collection<Peca> pecas, Long idTipo) {
+		return pecas.stream().filter(p -> p.tipo().toLong().equals(idTipo)).findFirst().orElseThrow(() -> new IllegalArgumentException("Peça não encontrada."));
+	}
+
+	private Long proximoIdDocumento() {
+		idDocumentoAtual++;
+		return idDocumentoAtual;
+	}
+	
 }
