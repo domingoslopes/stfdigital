@@ -7,7 +7,7 @@
 
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 var baseDir = 'src/main/resources/static';
-var port = 3000;
+var port = 443;
 
 var path = require('path');
 
@@ -37,7 +37,7 @@ exports.config = {
 	    '-browserTimeout=60' 
 	],
 	
-	baseUrl : 'https://127.0.0.1:' + port,
+	baseUrl : 'https://digital.stf.jus.br:' + port,
 	
 	onPrepare: function() {
 		browser.driver.manage().window().maximize();
