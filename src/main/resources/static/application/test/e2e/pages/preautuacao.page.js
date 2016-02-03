@@ -20,11 +20,11 @@
 		};
 		
 		preautuacao.finalizar = function() {
-			element(by.css('label[for=no]')).click();
+			element(by.css('action-executor[fn-validate="preautuacao.validar"] > a')).click();
 		};
 		
 		preautuacao.finalizarDevolucao = function() {
-			element(by.css('action-executor[description="Devolver Petição"] > button')).click();
+			element(by.css('action-executor[description="Devolver Petição"] > a')).click();
 		};
 		
 		preautuacao.preencherMotivoIndevida = function(){

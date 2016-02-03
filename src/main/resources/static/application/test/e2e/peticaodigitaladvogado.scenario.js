@@ -79,7 +79,7 @@
 			login('autuador');
 		});
 		
-		it('Deveria atuar como válida a petição recebida', function() {
+		it('Deveria autuar como válida a petição recebida', function() {
 			
 		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    		    
@@ -166,7 +166,7 @@
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.peticoes().count()).toBeGreaterThan(0);
+			expect(principalPage.isMensagemSucessoApresentada()).toBeTruthy();
 		}
 		
 		var autuar = function(){
