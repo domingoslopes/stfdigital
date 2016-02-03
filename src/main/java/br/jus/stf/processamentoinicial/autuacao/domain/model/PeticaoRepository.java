@@ -36,6 +36,14 @@ public interface PeticaoRepository {
 	public <T extends Peticao> T save(Peticao peticao);
 	
 	/**
+	 * Salva e realiza o flush da petição.
+	 * 
+	 * @param peticao
+	 * @return o id da peticao
+	 */
+	public <T extends Peticao> T saveAndFlush(Peticao peticao);
+	
+	/**
 	 * Gera o próximo id da petição
 	 * 
 	 * @return o sequencial da petição
@@ -76,7 +84,19 @@ public interface PeticaoRepository {
 	 */
 	public List<Orgao> findAllOrgao();
 	
+	/**
+	 * Verifica se as petições estão no mesmo status.
+	 * 
+	 * @param ids
+	 * @param status
+	 * @return
+	 */
 	public boolean estaoNoMesmoStatus(List<PeticaoId> ids, PeticaoStatus status);
 
+	/**
+	 * Atualiza uma petição com os dados mais atuais
+	 * 
+	 * @param peticao
+	 */
 	public void refresh(Peticao peticao);
 }
