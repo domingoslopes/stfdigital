@@ -3,7 +3,6 @@ package br.jus.stf.processamentoinicial.autuacao.infra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.bus.EventBus;
 import br.jus.stf.plataforma.workflow.interfaces.WorkflowRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
@@ -25,9 +24,6 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	
 	@Autowired
 	private WorkflowRestResource processoRestService;
-
-	@Autowired
-	private EventBus eventBus;
 	
 	@Autowired
 	private PeticaoRepository peticaoRepository;
