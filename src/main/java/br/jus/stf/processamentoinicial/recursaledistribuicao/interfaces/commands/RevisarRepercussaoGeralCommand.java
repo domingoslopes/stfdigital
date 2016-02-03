@@ -10,14 +10,14 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
- * Comando responsável por enviar os dados da revisão de pressupostos formais para o back-end.
+ * Comando responsável por enviar os dados da revisão de repercussão geral para o back-end.
  * 
  * @author Anderson.Araujo
  * 
  * @since 27.01.2016
  *
  */
-@ApiModel(value = "Contém as informações necessárias para a análise de repercussão geral.")
+@ApiModel(value = "Contém as informações necessárias para a revisão de repercussão geral.")
 public class RevisarRepercussaoGeralCommand {
 	@NotNull
 	@ApiModelProperty(value = "Id do processo recursal.", required=true)
@@ -31,6 +31,9 @@ public class RevisarRepercussaoGeralCommand {
 	@ApiModelProperty(value = "Lista de teses", required=true)
 	private List<Long> teses;
 	
+	@ApiModelProperty(value = "Observação da análise", required=true)
+	private String observacao;
+	
 	public Long getProcessoId() {
 		return processoId;
 	}
@@ -41,5 +44,9 @@ public class RevisarRepercussaoGeralCommand {
 	
 	public List<Long> getTeses() {
 		return teses;
+	}
+	
+	public String getObservacao() {
+		return observacao;
 	}
 }
