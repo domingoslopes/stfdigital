@@ -22,7 +22,8 @@ import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
  * @author Rafael.Alencar
  */
 @Configuration
-@Profile({ "!" + Profiles.MONGO_SERVER, Profiles.DOCUMENTO_MONGO })
+//@Profile({ "!" + Profiles.MONGO_SERVER, Profiles.DOCUMENTO_MONGO })
+@Profile({"!" + Profiles.DOCUMENTO_FS, "!" + Profiles.DOCUMENTO_ORACLE }) // Setando o profile do mongo se os outros não forem ativados.
 @Conditional(AndProfilesCondition.class)
 public class MongoMemoryConfiguration extends AbstractMongoConfiguration {
 
