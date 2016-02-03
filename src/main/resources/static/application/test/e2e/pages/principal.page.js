@@ -68,7 +68,7 @@
 		};
 		
 		this.isMensagemSucessoApresentada = function() {
-			return element(by.css('div.pgn-wrapper')).element(by.css('div.alert.alert-success')).isDisplayed();
+			return element(by.css('div.pgn-wrapper')).all(by.css('div.alert.alert-success')).get(0).isDisplayed();
 		};
 		
 		this.dashletMinhasTarefas = element(by.cssContainingText('.panel-title', 'Tarefas dos meus papéis'));
