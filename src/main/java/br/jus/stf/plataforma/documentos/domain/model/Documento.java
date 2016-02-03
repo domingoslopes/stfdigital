@@ -25,6 +25,9 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	@Column(name = "NUM_CONTEUDO", nullable = false)	
 	private String numeroConteudo;
 	
+	@Column(name = "QTD_PAGINAS")
+	private Integer quantidadePaginas;
+	
 	Documento() {
 
 	}
@@ -44,6 +47,10 @@ public class Documento implements Entity<Documento, DocumentoId> {
 
 	public String numeroConteudo(){
 		return numeroConteudo;
+	}
+	
+	public Integer quantidadePaginas() {
+		return quantidadePaginas;
 	}
 	
 	@Override
