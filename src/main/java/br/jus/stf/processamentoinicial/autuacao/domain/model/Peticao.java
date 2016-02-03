@@ -37,6 +37,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.processamentoinicial.suporte.domain.NumeradorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -111,6 +112,9 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 	@Transient
 	private String identificacao;
+	
+	@Transient
+	private NumeradorOrdenacaoPecas numeradorOrdenacaoPecas;
 
 	Peticao() {
 
@@ -129,11 +133,14 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.dataCadastramento = new Date();
 		this.usuarioCadastramento = usuarioCadastramento;
 		this.tipoProcesso = tipoProcesso;
+		
+		this.numeradorOrdenacaoPecas = new NumeradorOrdenacaoPecas(this.pecas);
 	}
 
 	@PostLoad
 	private void init() {
 		this.identificacao = montarIdentificacao();
+		this.numeradorOrdenacaoPecas = new NumeradorOrdenacaoPecas(this.pecas);
 	}
 	
 	@Override
@@ -210,15 +217,35 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 */
 	public boolean juntar(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
+		
+		numeradorOrdenacaoPecas.numerarPeca(peca);
 	
 		return pecas.add(peca);
 	}
 	
+	/**
+	 * Realiza a substituição de uma peça por outra,
+	 * o número de ordem da peça substituta será o mesmo
+	 * da peça original.
+	 * 
+	 * @param pecaOriginal
+	 * @param pecaSubstituta
+	 */
 	public void substituirPeca(Peca pecaOriginal, Peca pecaSubstituta) {
 		Validate.notNull(pecaOriginal, "peticao.pecaOriginal.required");
 		Validate.notNull(pecaSubstituta, "peticao.pecaSubstituta.required");
-		removerPeca(pecaOriginal);
-		juntar(pecaSubstituta);
+		
+		Iterator<Peca> iterator = pecas.iterator();
+		while (iterator.hasNext()) {
+			Peca pecaAtual = iterator.next();
+			if (pecaAtual.equals(pecaOriginal)) {
+				numeradorOrdenacaoPecas.numerarPecaSubstituta(pecaAtual, pecaSubstituta);
+				iterator.remove();
+				break;
+			}
+		}
+		
+		pecas.add(pecaSubstituta);
 	}
 	
 	/**
@@ -228,7 +255,11 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public boolean removerPeca(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
 	
-		return pecas.remove(peca);
+		boolean removeu = pecas.remove(peca);
+		
+		numeradorOrdenacaoPecas.normalizarOrdenacaoPecas();
+		
+		return removeu;
 	}
 
 	public ClasseId classeProcessual() {

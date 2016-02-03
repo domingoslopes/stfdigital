@@ -30,6 +30,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.processamentoinicial.suporte.domain.NumeradorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -95,6 +96,9 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@CollectionTable(name = "PROCESSO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
 	
+	@Transient
+	private NumeradorOrdenacaoPecas numeradorOrdenacaoPecas;
+	
 	Processo() {
 
 	}
@@ -125,6 +129,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		});
 		
 		this.identificacao = montarIdentificacao();
+		
+		this.numeradorOrdenacaoPecas = new NumeradorOrdenacaoPecas(this.pecas);
 	}
 
 	/**
@@ -138,8 +144,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao, final Set<PreferenciaId> preferencias) {
 		this(id, classe, numero, peticao, situacao, preferencias);
 		this.partes.addAll(partes);
-		this.pecas.addAll(pecas);
 		this.identificacao = montarIdentificacao();
+		
+		this.numeradorOrdenacaoPecas = new NumeradorOrdenacaoPecas(this.pecas);
+		pecas.forEach(p -> adicionarPeca(p));
 	}
 	
 	public abstract TipoProcesso tipoProcesso();
@@ -147,6 +155,7 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@PostLoad
 	private void init() {
 		this.identificacao = montarIdentificacao();
+		this.numeradorOrdenacaoPecas = new NumeradorOrdenacaoPecas(this.pecas);
 	}
 
 	@Override
@@ -229,6 +238,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	public boolean adicionarPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
 	
+		numeradorOrdenacaoPecas.numerarPeca(peca);
+		
 		return pecas.add(peca);
 	}
 	
@@ -239,7 +250,11 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	public boolean removerPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
 	
-		return pecas.remove(peca);
+		boolean removeu = pecas.remove(peca);
+		
+		numeradorOrdenacaoPecas.normalizarOrdenacaoPecas();
+		
+		return removeu;
 	}
 
 	public Set<Peca> pecas() {
