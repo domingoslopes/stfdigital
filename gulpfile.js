@@ -12,6 +12,7 @@
 var config = require('./build/build.config.js');
 var karmaConfig = require('./build/karma.config.js');
 var protractorConfig = require('./build/protractor.config.js');
+var protractorBenchmarkConfig = require('./build/protractor.benchmark.config.js');
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var shell = require('gulp-shell');
@@ -251,6 +252,20 @@ gulp.task('test:e2e', ['webdriver:update'], function() {
 	return gulp.src(protractorConfig.config.specs)
 		.pipe($.protractor.protractor({
 			configFile: 'build/protractor.config.js'
+		}))
+		.on('error', function(e) {
+			throw e;
+		});
+});
+
+/**
+ * Executa os teste benchmark e2e usando Protractor.
+ */
+gulp.task('test:benchmark', ['webdriver:update'], function() {
+	protractorBenchmarkConfig.config.specs = replacePattern(protractorBenchmarkConfig.config.specs);
+	return gulp.src(protractorBenchmarkConfig.config.specs)
+		.pipe($.protractor.protractor({
+			configFile: 'build/protractor.benchmark.config.js'
 		}))
 		.on('error', function(e) {
 			throw e;

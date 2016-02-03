@@ -90,7 +90,7 @@
 									<tr ng-if="resultados.length == 0">
 										<td colspan="4">Nenhum resultado disponível!</td>
 									</tr>
-									<tr ng-repeat="resultado in resultados">
+									<tr ng-repeat="resultado in resultados | orderBy: ['objeto.ano', 'objeto.numero']">
 										<td><input type="checkbox" checklist-model="selecao.objetos" checklist-value="buildSelectedObject(resultado)"></td>
 										<td>{{resultado.objeto.identificacao}}</td>
 										<td>{{resultado.objeto.classeSugerida.sigla}}</td>
