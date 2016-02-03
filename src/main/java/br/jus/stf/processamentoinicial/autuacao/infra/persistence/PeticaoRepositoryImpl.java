@@ -60,6 +60,12 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 		return (T) super.save(peticao);
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Peticao> T saveAndFlush(Peticao peticao) {
+		return (T) super.saveAndFlush(peticao);
+	}
+	
 	@Override
 	public Long nextNumero() {
 		synchronized (this) {
