@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.wordnik.swagger.annotations.ApiOperation;
 
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
@@ -29,7 +31,7 @@ public class ProcessoRestResource {
 	@Autowired
 	private ProcessoServiceFacade processoServiceFacade;
 
-    @ApiOperation("Recupera as informações de um determinad processo")
+    @ApiOperation("Recupera as informações de um determinado processo")
 	@RequestMapping(value = "processos/{id}", method = RequestMethod.GET)
 	public ProcessoDto consultar(@PathVariable Long id) {
     	return processoServiceFacade.consultar(id);
@@ -53,5 +55,12 @@ public class ProcessoRestResource {
 	public ProcessoDto consultarPelaPeticao(@PathVariable Long id) {
 		return processoServiceFacade.consultarPelaPeticao(id);
 	}
+	
+	@JsonView(ProcessoRecursal.class)
+	@ApiOperation("Recupera as informações de um determinado processo recursal")
+    @RequestMapping(value = "/processos/recursais/{id}", method = RequestMethod.GET)
+    public ProcessoDto consultarRecursal(@PathVariable Long id) {
+    	return processoServiceFacade.consultarPelaPeticao(id);
+    }
 	
 }

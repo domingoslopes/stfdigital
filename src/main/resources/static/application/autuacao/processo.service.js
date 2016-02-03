@@ -13,6 +13,10 @@
 				return $http.get(properties.apiUrl + '/processos/' + peticaoId);
 			},
 			
+			consultarRecursal: function(peticaoId) {
+				return $http.get(properties.apiUrl + '/processos/recursais/' + peticaoId);
+			},
+			
 			listarStatus : function() {
 				return $http.get(properties.apiUrl + '/processos/status');
 			},

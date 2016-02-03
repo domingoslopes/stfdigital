@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchAutoConfiguration;
+import org.springframework.boot.autoconfigure.hateoas.HypermediaAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -15,7 +16,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
  * @since 17.06.2015
  */
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = ElasticsearchAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = {ElasticsearchAutoConfiguration.class, HypermediaAutoConfiguration.class})
 @ComponentScan("br.jus.stf")
 public class ApplicationContextInitializer {
     
