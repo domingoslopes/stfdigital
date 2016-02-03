@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,5 +43,10 @@ public class AssuntoRestResource {
 		}
 		
 		return assuntos;
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public AssuntoDto consultar(@PathVariable String id) {
+		return assuntoDtoAssembler.toDto(assuntoRepository.findOne(new AssuntoId(id)));
 	}
 }

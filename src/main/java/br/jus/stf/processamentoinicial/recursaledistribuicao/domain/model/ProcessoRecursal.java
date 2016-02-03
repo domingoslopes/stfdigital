@@ -97,6 +97,10 @@ public class ProcessoRecursal extends Processo {
 		return Collections.unmodifiableSet(motivosInaptidao);
 	}
 	
+	public String observacaoAnalise() {
+		return observacaoAnalise;
+	}
+	
 	public void autuar(Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
 		atribuirAssuntos(assuntos);
 		atribuirPoloAtivo(poloAtivo);
