@@ -16,6 +16,7 @@ import br.jus.stf.shared.TeseId;
 public class TeseRestAdapter implements TeseAdapter {
 
 	private static final String TIPO_TESE_REPERCURSSAO_GERAL = "REPERCUSSAO_GERAL";
+	
 	@Autowired
 	private TeseRestResource teseRestResource;
 
@@ -31,5 +32,11 @@ public class TeseRestAdapter implements TeseAdapter {
 		List<TeseDto> teses = teseRestResource
 		        .consultar(tesesIds.stream().map(tid -> tid.toLong()).collect(Collectors.toList()));
 		return teses.stream().anyMatch(tDto -> tDto.getTipoTese().equals(TIPO_TESE_REPERCURSSAO_GERAL));
+	}
+
+	@Override
+	public List<TeseDto> consultar(Set<TeseId> tesesIds) {
+		return teseRestResource
+		        .consultar(tesesIds.stream().map(tid -> tid.toLong()).collect(Collectors.toList()));
 	}
 }
