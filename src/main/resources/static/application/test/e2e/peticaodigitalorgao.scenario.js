@@ -84,7 +84,7 @@
 
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.peticoes().count()).toBeGreaterThan(0);
+			expect(principalPage.isMensagemSucessoApresentada()).toBeTruthy();
 			
 		    loginPage.logout();
 		});

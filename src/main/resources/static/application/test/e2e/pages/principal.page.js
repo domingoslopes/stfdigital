@@ -67,6 +67,10 @@
 			return element.all(by.repeater('peticao in peticoes'));
 		};
 		
+		this.isMensagemSucessoApresentada = function() {
+			return element(by.css('div.pgn-wrapper')).element(by.css('div.alert.alert-success')).isDisplayed();
+		};
+		
 		this.dashletMinhasTarefas = element(by.cssContainingText('.panel-title', 'Tarefas dos meus papéis'));
 		
 		this.dashletMinhasPeticoes = element(by.cssContainingText('.panel-title', 'Minhas Petições'));
