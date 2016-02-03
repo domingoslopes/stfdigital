@@ -33,7 +33,7 @@
 		    			return false;
 		    		}
 		    	}
-		    }/*, { // TODO Benchmark-Tomas Remover comentário depois do benchmark
+		    }, {
 		    	name: 'tamanho-maximo',
 		    	fn: function(file) {
 		    		if (file.size / 1024 / 1024 > 10) {
@@ -42,7 +42,7 @@
 		    		}
 		    		return true;
 		    	}
-		    }*/] // TODO Benchmark-Tomas Remover comentário depois do benchmark
+		    }] 
         });
 		
 		uploader.onAfterAddingFile = function(fileItem) {
