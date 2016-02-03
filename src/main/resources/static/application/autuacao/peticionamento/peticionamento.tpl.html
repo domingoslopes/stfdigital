@@ -106,13 +106,13 @@
 		                            <tr ng-repeat="peca in pecas">
 		                            	<td data-ng-click="visualizar(peca)" class="force-pointer"><strong>{{ peca.fileItem.file.name }}</strong></td>
 		                                <td ng-show="uploader.isHTML5" nowrap>{{ peca.fileItem.file.size/1024/1024|number:2 }} MB</td>
-		                                <td ng-show="uploader.isHTML5">
+		                                <td class="progress-row" ng-show="uploader.isHTML5" ng-class="{'upload-finished': peca.uploadFinished}">
 		                                    <div class="progress" style="margin-bottom: 0;">
 		                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': peca.fileItem.progress + '%' }"></div>
 		                                    </div>
 		                                </td>
 		                                <td>
-		                                    <select required id="tipoPecaId" ng-model="peca.tipo" style="max-width: 110px; min-width: 110px;" ui-select2="configurarSelect2({{$index}})">
+		                                    <select required id="tipoPecaId-{{$index}}" ng-model="peca.tipo" style="max-width: 110px; min-width: 110px;" ui-select2="configurarSelect2({{$index}})">
 												 <option value=""></option>
 												 <option data-ng-repeat="tipoPeca in tiposPeca" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
 											</select>

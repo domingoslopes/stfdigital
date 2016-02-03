@@ -42,15 +42,17 @@
 		    		}
 		    		return true;
 		    	}
-		    }]
+		    }] 
         });
 		
 		uploader.onAfterAddingFile = function(fileItem) {
             var peca = {
             		fileItem : fileItem,
                 	documentoTemporario : null,
-                	tipo : null
+                	tipo : null,
+                	uploadFinished: false
             };
+            fileItem.peca = peca;
             $scope.pecas.push(peca);						
 			fileItem.upload();
 		};
@@ -58,6 +60,7 @@
         uploader.onSuccessItem = function(fileItem, response, status) {
         	var peca = recuperarPecaPorItem(fileItem);
        		peca.documentoTemporario = response;
+       		peca.uploadFinished = true;
         };
         
         uploader.onErrorItem = function(fileItem, response, status) {
@@ -135,13 +138,7 @@
 		};
 		
 		function recuperarPecaPorItem(item) {
-			var p = null;
-			angular.forEach($scope.pecas, function(peca) {
-				if (peca.fileItem == item) {
-					p = peca;
-				}
-			});
-			return p;
+			return item.peca;
 		}
 		
 		function removeArrayItem(array, item) {
