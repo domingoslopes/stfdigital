@@ -18,7 +18,7 @@
 		beforeEach(module('appDev'));
 		
 		beforeEach(inject(function($controller, $httpBackend, $log, properties) {
-			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
+			$httpBackend.expectGET(properties.apiUrl + '/classes/tipoprocesso/originario').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
 //			$httpBackend.expectGET(properties.apiUrl + '/peticoes/fisicas/2/preautuar').respond({tipoRecebimento : 'Sedex'});
 			$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
 
