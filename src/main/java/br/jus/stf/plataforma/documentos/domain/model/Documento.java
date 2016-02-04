@@ -32,12 +32,14 @@ public class Documento implements Entity<Documento, DocumentoId> {
 
 	}
 
-	public Documento(final DocumentoId id, final String numeroConteudo) {
+	public Documento(final DocumentoId id, final String numeroConteudo, Integer quantidadePaginas) {
 		Validate.notNull(id, "documento.id.required");
 		Validate.notBlank(numeroConteudo, "documento.numeroConteudo.required");
+		Validate.notNull(quantidadePaginas, "documento.quantidadePaginas.required");
 		
 		this.id = id;
 		this.numeroConteudo = numeroConteudo;
+		this.quantidadePaginas = quantidadePaginas;
 	}
 
 	@Override

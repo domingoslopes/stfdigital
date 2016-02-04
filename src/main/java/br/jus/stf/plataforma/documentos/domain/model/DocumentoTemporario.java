@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 
 import org.apache.commons.lang3.Validate;
@@ -66,6 +67,19 @@ public class DocumentoTemporario implements ValueObject<DocumentoTemporario> {
 			return new FileInputStream(arquivo);
 		} catch (FileNotFoundException e) {
 			throw new IllegalArgumentException(e);
+		}
+	}
+	
+	/**
+	 * Recupera um objeto para acesso aleatório ao arquivo. 
+	 * 
+	 * @return
+	 */
+	public RandomAccessFile randomAccessFile() {
+		try {
+			return new RandomAccessFile(arquivo, "r");
+		} catch (FileNotFoundException e) {
+			throw new IllegalArgumentException("Erro ao recuperar o arquivo temporário.", e);
 		}
 	}
 	
