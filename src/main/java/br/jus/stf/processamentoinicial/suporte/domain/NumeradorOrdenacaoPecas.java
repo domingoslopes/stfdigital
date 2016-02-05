@@ -1,8 +1,10 @@
 package br.jus.stf.processamentoinicial.suporte.domain;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 
@@ -91,16 +93,29 @@ public class NumeradorOrdenacaoPecas {
 		if (!pecas.stream().anyMatch(p -> p.numeroOrdem().equals(novoNumeroOrdem))) {
 			return false; // Não possui um item com o novo número de ordem.
 		}
+		return reordenarPecas(Arrays.asList(peca), novoNumeroOrdem);
+	}
+
+	/**
+	 * Reordena as peças para a ordem especificada, ajustando os números de ordem das outras peças.
+	 * 
+	 * @param pecasOrdenacao
+	 * @param numeroOrdem
+	 * @return
+	 */
+	public boolean reordenarPecas(List<Peca> pecasOrdenacao, Long numeroOrdem) {
 		Iterator<Peca> iterator = pecas.stream().sorted(comparatorPecasPeloNumeroOrdem()).iterator();
 		Long numeroOrdemAtual = 1L;
 		Long numeroOrdemFinal = new Long(pecas.size());
 		while (numeroOrdemAtual <= numeroOrdemFinal) {
-			if (numeroOrdemAtual == novoNumeroOrdem) { // Numera a peça com o novo número de ordem.
-				peca.numerarOrdem(numeroOrdemAtual);
-				numeroOrdemAtual++;
+			if (numeroOrdemAtual == numeroOrdem) { // Numera as peças a partir do novo número de ordem.
+				for (Peca p : pecasOrdenacao) {
+					p.numerarOrdem(numeroOrdemAtual);
+					numeroOrdemAtual++;
+				}
 			} else { // Numera as outras peças na sequência.
 				Peca pecaAtual = iterator.next();
-				if (!pecaAtual.equals(peca)) {
+				if (!pecasOrdenacao.contains(pecaAtual)) {
 					pecaAtual.numerarOrdem(numeroOrdemAtual);
 					numeroOrdemAtual++;
 				}
