@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -89,7 +89,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaPeticao.class)
 	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
-	private Set<Peca> pecas = new LinkedHashSet<Peca>(0);
+	private List<Peca> pecas = new LinkedList<Peca>();
 	
 	@OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false),
@@ -208,8 +208,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return partes.remove(parte);
 	}
 	
-	public Set<Peca> pecas(){
-		return Collections.unmodifiableSet(pecas);
+	public List<Peca> pecas(){
+		return Collections.unmodifiableList(pecas);
 	}
 
 	/**
@@ -257,7 +257,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 */
 	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
 		Validate.notNull(pecaDividida, "peticao.pecaDividida.required");
-		Validate.notEmpty(pecasDivisao, "peticao.pecas.required");
+		Validate.notEmpty(pecasDivisao, "peticao.pecasDivisao.required");
 
 		Long numeroOrdem = pecaDividida.numeroOrdem();
 		
@@ -266,6 +266,26 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		pecasDivisao.forEach(p -> juntar(p));
 		
 		numeradorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
+	}
+	
+	/**
+	 * Realiza a união da lista de peças, sendo substutuídas pela
+	 * peça especificada.
+	 * 
+	 * @param pecasUniao
+	 * @param pecaUnida
+	 */
+	public void unirPecas(List<Peca> pecasUniao, Peca pecaUnida) {
+		Validate.notEmpty(pecasUniao, "peticao.pecasUniao.required");
+		Validate.notNull(pecaUnida, "peticao.pecaUnida.required");
+		
+		Long menorNumeroOrdem = pecasUniao.stream().min((p1, p2) -> p1.numeroOrdem().compareTo(p2.numeroOrdem())).get().numeroOrdem();
+		
+		pecasUniao.forEach(p -> removerPeca(p));
+		
+		juntar(pecaUnida);
+		
+		numeradorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}
 	
 	/**
