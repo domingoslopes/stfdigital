@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -246,6 +247,25 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		}
 		
 		pecas.add(pecaSubstituta);
+	}
+	
+	/**
+	 * Divide uma peça, substituindo-a pelas peças especificadas.
+	 * 
+	 * @param pecaDividida
+	 * @param pecasDivisao
+	 */
+	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
+		Validate.notNull(pecaDividida, "peticao.pecaDividida.required");
+		Validate.notEmpty(pecasDivisao, "peticao.pecas.required");
+
+		Long numeroOrdem = pecaDividida.numeroOrdem();
+		
+		removerPeca(pecaDividida);
+		
+		pecasDivisao.forEach(p -> juntar(p));
+		
+		numeradorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
 	}
 	
 	/**

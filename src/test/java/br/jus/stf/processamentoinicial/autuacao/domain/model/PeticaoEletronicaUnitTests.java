@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -176,6 +177,24 @@ public class PeticaoEletronicaUnitTests {
 		Assert.assertEquals("Peça 3 deveria ter sido reordenada para 2.", new Long(2L), pecaPorTipo(peticao.pecas(), 5L).numeroOrdem());
 	}
 	
+	@Test
+	public void dividirPeca() {
+		Peca pecaASerDividida = incluirPecaCustas();
+		incluirPecaAtoCoator();
+		PeticaoEletronica peticao = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
+		
+		Peca peca1DaDivisao = criarPeca(new TipoPeca(3L, "Cópia do ato normativo ou lei impugnada"), "Cópia do ato normativo ou lei impugnada");
+		Peca peca2DaDivisao = criarPeca(new TipoPeca(4L, "Decisão rescindenda"), "Decisão rescindenda");
+		
+		peticao.dividirPeca(pecaASerDividida, Arrays.asList(peca1DaDivisao, peca2DaDivisao));
+		
+		Assert.assertTrue("Peça original deveria ter sido removida.", !peticao.pecas().contains(pecaASerDividida));
+		Assert.assertEquals("Peça original 1 deveria ter ordenação 1.", new Long(1L), pecaPorTipo(peticao.pecas(), 1L).numeroOrdem());
+		Assert.assertEquals("Peça 1 da divisão deveria ter ordenação 2", new Long(2L), pecaPorTipo(peticao.pecas(), 3L).numeroOrdem());
+		Assert.assertEquals("Peça 2 da divisão deveria ter ordenação 3", new Long(3L), pecaPorTipo(peticao.pecas(), 4L).numeroOrdem());
+		Assert.assertEquals("Peça original 3 deveria ter ordenação 4", new Long(4L), pecaPorTipo(peticao.pecas(), 5L).numeroOrdem());
+	}
+	
 	private Peca incluirPecaCustas() {
 		return incluirPeca(new TipoPeca(2L, "Custas"), "Custas");
 	}
@@ -185,6 +204,11 @@ public class PeticaoEletronicaUnitTests {
 	}
 
 	private Peca incluirPeca(TipoPeca tipoPeca, String descricaoPeca) {
+		PecaPeticao pecaPeticao = criarPeca(tipoPeca, descricaoPeca);
+		return pecaPeticao;
+	}
+
+	private PecaPeticao criarPeca(TipoPeca tipoPeca, String descricaoPeca) {
 		PecaPeticao pecaPeticao = new PecaPeticao(new DocumentoId(proximoIdDocumento()), tipoPeca, descricaoPeca);
 		pecas.add(pecaPeticao);
 		return pecaPeticao;
