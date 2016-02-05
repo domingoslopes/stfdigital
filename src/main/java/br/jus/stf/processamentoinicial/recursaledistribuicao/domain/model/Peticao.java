@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
@@ -22,12 +23,12 @@ public class Peticao implements ValueObject<Peticao> {
 	private ClasseId classeProcessual;
 	private String tipo;
 	private Set<Parte> partes;
-	private Set<Peca> pecas;
+	private List<Peca> pecas;
 	private ProcessoWorkflowId processoWorkflowId;
 	private TipoProcesso tipoProcesso;
 	private Set<PreferenciaId> preferencias;
 	
-	public Peticao(final PeticaoId id, final ClasseId classeProcessual, final String tipo, final Set<Parte> partes, final Set<Peca> pecas, final ProcessoWorkflowId processoWorkflowId, final TipoProcesso tipoProcesso, final Set<PreferenciaId> preferencias) {
+	public Peticao(final PeticaoId id, final ClasseId classeProcessual, final String tipo, final Set<Parte> partes, final List<Peca> pecas, final ProcessoWorkflowId processoWorkflowId, final TipoProcesso tipoProcesso, final Set<PreferenciaId> preferencias) {
 		Validate.notNull(id, "peticao.id.required");
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
 		Validate.notBlank(tipo, "peticao.tipo.required");
@@ -60,8 +61,8 @@ public class Peticao implements ValueObject<Peticao> {
 		return Collections.unmodifiableSet(partes);
 	}
 	
-	public Set<Peca> pecas() {
-		return Collections.unmodifiableSet(pecas);
+	public List<Peca> pecas() {
+		return Collections.unmodifiableList(pecas);
 	}
 	
 	public ProcessoWorkflowId processoWorkflowId() {
