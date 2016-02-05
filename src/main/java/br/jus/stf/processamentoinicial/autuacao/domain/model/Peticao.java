@@ -262,6 +262,20 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return removeu;
 	}
 
+	/**
+	 * Reordena uma peça.
+	 * 
+	 * @param peca
+	 * @param novoNumeroOrdem
+	 * @return Se reordenou com sucesso
+	 */
+	public boolean reordenarPeca(final Peca peca, Long novoNumeroOrdem) {
+		Validate.notNull(peca, "peticao.peca.required");
+		Validate.notNull(novoNumeroOrdem, "peticao.novoNumeroOrdem.required");
+		
+		return numeradorOrdenacaoPecas.reordenarPeca(peca, novoNumeroOrdem);
+	}
+	
 	public ClasseId classeProcessual() {
 		return classeProcessual;
 	}

@@ -30,6 +30,8 @@ public class PeticaoEletronicaUnitTests {
 	private Set<PecaPeticao> pecas;
 	private Long idDocumentoAtual;
 	
+	private PecaPeticao peca;
+	
 	@Before
 	public void setUp() {
 		idDocumentoAtual = 0L;
@@ -39,8 +41,10 @@ public class PeticaoEletronicaUnitTests {
 		partes.add(new PartePeticao(new PessoaId(2L), TipoPolo.POLO_PASSIVO));
 		partes.add(new PartePeticao(new PessoaId(3L), TipoPolo.POLO_PASSIVO));
 		
+		peca = new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		
 		pecas = new LinkedHashSet<PecaPeticao>(0);
-		pecas.add(new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(1L, "Petição inicial"), "Petição inicial"));
+		pecas.add(peca);
 	}
 
 	@Test
@@ -144,6 +148,32 @@ public class PeticaoEletronicaUnitTests {
 		Assert.assertEquals("Peça substituta da Peça 2 deveria ter sido reordenada com valor 2.", new Long(2L), pecaPorTipo(peticao.pecas(), 2L).numeroOrdem());
 		Assert.assertEquals("Peça 3 deveria ter tido mantida sua ordenação com valor 3.", new Long(3L), pecaPorTipo(peticao.pecas(), 5L).numeroOrdem());
 		Assert.assertEquals("Peça substituta da Peça 2 deveria ter realmente substituído.", "Custas Nova", pecaPorTipo(peticao.pecas(), 2L).descricao());
+	}
+	
+	@Test
+	public void reordenarDePeca3Para1() {
+		incluirPecaCustas();
+		Peca pecaAtoCoator = incluirPecaAtoCoator();
+		PeticaoEletronica peticao = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
+		
+		Assert.assertTrue("Peça deveria ter sido reordenada", peticao.reordenarPeca(pecaAtoCoator, 1L));
+		
+		Assert.assertEquals("Peça 1 deveria ter sido reordenada para 2.", new Long(2L), pecaPorTipo(peticao.pecas(), 1L).numeroOrdem());
+		Assert.assertEquals("Peça 2 deveria ter sido reordenada para 3.", new Long(3L), pecaPorTipo(peticao.pecas(), 2L).numeroOrdem());
+		Assert.assertEquals("Peça 3 deveria ter sido reordenada para 1.", new Long(1L), pecaPorTipo(peticao.pecas(), 5L).numeroOrdem());
+	}
+	
+	@Test
+	public void reordenarDePeca1Para3() {
+		incluirPecaCustas();
+		incluirPecaAtoCoator();
+		PeticaoEletronica peticao = new PeticaoEletronica(new PeticaoId(1L), 5L, "PETICIONADOR", new ClasseId("HC"), partes, pecas, TipoProcesso.ORIGINARIO);
+		
+		Assert.assertTrue("Peça deveria ter sido reordenada", peticao.reordenarPeca(peca, 3L));
+		
+		Assert.assertEquals("Peça 1 deveria ter sido reordenada para 3.", new Long(3L), pecaPorTipo(peticao.pecas(), 1L).numeroOrdem());
+		Assert.assertEquals("Peça 2 deveria ter sido reordenada para 1.", new Long(1L), pecaPorTipo(peticao.pecas(), 2L).numeroOrdem());
+		Assert.assertEquals("Peça 3 deveria ter sido reordenada para 2.", new Long(2L), pecaPorTipo(peticao.pecas(), 5L).numeroOrdem());
 	}
 	
 	private Peca incluirPecaCustas() {
