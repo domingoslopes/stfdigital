@@ -139,7 +139,7 @@ public class ProcessoOriginarioUnitTests {
 		Processo processo = processo();
 		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
 		
-		processo.adicionarPeca(peca);
+		processo.juntar(peca);
 		assertEquals(2, processo.pecas().size());
 		assertTrue(processo.pecas().contains(peca));
 	}
@@ -148,7 +148,7 @@ public class ProcessoOriginarioUnitTests {
 	public void tentaAdicionarPecaAProcessoInformandoNulo() {
 		Processo processo = processo();
 		
-		processo.adicionarPeca(null);
+		processo.juntar(null);
 	}
 	
 	@Test
@@ -156,7 +156,7 @@ public class ProcessoOriginarioUnitTests {
 		Processo processo = processo();
 		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
 		
-		processo.adicionarPeca(peca);
+		processo.juntar(peca);
 		processo.removerPeca(peca);
 		assertEquals(1, processo.pecas().size());
 		assertFalse(processo.pecas().contains(peca));

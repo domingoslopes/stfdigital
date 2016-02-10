@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
-import br.jus.stf.plataforma.documentos.infra.DocumentoPdfService;
+import br.jus.stf.plataforma.documentos.infra.DocumentoServiceImpl;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -39,7 +39,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	private ConteudoDocumentoRepository conteudoDocumentoRepository;
 	
 	@Autowired
-	private DocumentoPdfService documentoPdfService;
+	private DocumentoServiceImpl documentoPdfService;
 	
 	@Autowired
 	public DocumentoRepositoryImpl(EntityManager entityManager) {
@@ -48,7 +48,7 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	}
 	
 	@Override
-	public ConteudoDocumentoDownload download(DocumentoId documentoId) {
+	public ConteudoDocumento download(DocumentoId documentoId) {
 		Documento documento = Optional.ofNullable(super.findOne(documentoId))
 					.orElseThrow(IllegalArgumentException::new);
 		return conteudoDocumentoRepository.downloadConteudo(documento.numeroConteudo());

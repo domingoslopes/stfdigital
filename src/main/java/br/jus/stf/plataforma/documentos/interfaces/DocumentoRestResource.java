@@ -1,13 +1,17 @@
 package br.jus.stf.plataforma.documentos.interfaces;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -26,14 +30,16 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
-import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.shared.errorhandling.ValidationException;
+import br.jus.stf.shared.DocumentoId;
 
 /**
  * Api REST para salvar e recuperar documentos
@@ -64,7 +70,7 @@ public class DocumentoRestResource {
 	@ApiOperation("Recupera um documento do repositório")
 	@RequestMapping(value = "/{documentoId}", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> recuperar(@PathVariable("documentoId") Long documentoId) throws IOException {
-		ConteudoDocumentoDownload documento = documentoServiceFacade.pesquisaDocumento(documentoId);
+		ConteudoDocumento documento = documentoServiceFacade.pesquisaDocumento(documentoId);
 		InputStreamResource is = new InputStreamResource(documento.stream());
 		HttpHeaders headers = createResponseHeaders(documento.tamanho());
 	    return new ResponseEntity<InputStreamResource>(is, headers, HttpStatus.OK);
@@ -98,6 +104,21 @@ public class DocumentoRestResource {
 		documentoServiceFacade.apagarDocumentosTemporarios(command.getFiles());
 	}
 
+	@ApiOperation("Divide um documento")
+	@RequestMapping(value = "/dividir", method = RequestMethod.POST)
+	public List<DocumentoId> dividirDocumento(@Valid @RequestBody List<DividirDocumentoCommand> commands, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.toString());
+		}
+		Map<DocumentoId, List<DividirDocumentoCommand>> commandsById = commands.stream().collect(Collectors.groupingBy(DividirDocumentoCommand::getDocumento));
+		List<DocumentoId> documentosDivididos = new ArrayList<>();
+		for (DocumentoId id : commandsById.keySet()) {
+			List<Range<Integer>> intervalos = commandsById.get(id).stream().map(d -> Range.between(1, 2)).collect(Collectors.toList());
+			documentosDivididos.addAll(documentoServiceFacade.dividirDocumento(id, intervalos));
+		}
+		return documentosDivididos;
+	}
+	
 	/**
 	 * Define os headers para o pdf 
 	 * 

@@ -1,6 +1,6 @@
 package br.jus.stf.plataforma.documentos.infra.persistence;
 
-import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.shared.DocumentoId;
 
@@ -18,7 +18,7 @@ public interface ConteudoDocumentoRepository {
 	 * @param numeroConteudo
 	 * @return
 	 */
-	ConteudoDocumentoDownload downloadConteudo(String numeroConteudo);
+	ConteudoDocumento downloadConteudo(String numeroConteudo);
 
 	/**
 	 * Remove o conteúdo de um documento.

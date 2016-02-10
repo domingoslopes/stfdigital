@@ -1,11 +1,13 @@
 package br.jus.stf.plataforma.documentos.infra.monitoring;
 
+import java.util.Optional;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.monitoring.method.MethodCall;
 import br.jus.stf.plataforma.monitoring.method.MethodMonitoringAspect;
@@ -35,7 +37,7 @@ public class DocumentoMonitoringAspect extends MethodMonitoringAspect {
 		try {
 			Object[] args = proceedingJoinPoint.getArgs();
 			DocumentoTemporario temp = (DocumentoTemporario) args[1];
-			methodCall.setResourceSize(temp.tamanho());
+			methodCall.setResourceSize(Optional.ofNullable(temp).map(t -> t.tamanho()).orElse(0L));
 			methodCall.setMethod("save()");
 			methodCall.setMonitorGroup(MONITOR_GROUP);
 			
@@ -68,7 +70,7 @@ public class DocumentoMonitoringAspect extends MethodMonitoringAspect {
 			
 			Object value = monitorMethodCall(proceedingJoinPoint, methodCall);
 			
-			ConteudoDocumentoDownload cdd = (ConteudoDocumentoDownload) value;
+			ConteudoDocumento cdd = (ConteudoDocumento) value;
 			methodCall.setResourceSize(cdd.tamanho());
 			return value;
 		} finally {
