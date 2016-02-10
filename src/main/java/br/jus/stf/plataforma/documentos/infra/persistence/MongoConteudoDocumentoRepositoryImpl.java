@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.documentos.infra.persistence;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -17,7 +16,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 
-import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.shared.settings.AndProfilesCondition;
 import br.jus.stf.plataforma.shared.settings.Profiles;
@@ -39,12 +38,12 @@ public class MongoConteudoDocumentoRepositoryImpl implements ConteudoDocumentoRe
 	private GridFsOperations gridOperations;
 	
 	@Override
-	public ConteudoDocumentoDownload downloadConteudo(String numeroConteudo) {
+	public ConteudoDocumento downloadConteudo(String numeroConteudo) {
 		try {
 			GridFSDBFile gridFile = gridOperations.findOne(
 					new Query().addCriteria(Criteria.where("_id").is(new ObjectId(numeroConteudo))));
 			byte[] bytes = IOUtils.toByteArray(gridFile.getInputStream());
-			return new ConteudoDocumentoDownload(new ByteArrayInputStream(bytes), gridFile.getLength());
+			return new ConteudoDocumento(bytes, gridFile.getLength());
 		} catch (Exception t) {
 			throw new RuntimeException("Não foi possível carregar o stream do arquivo ", t);
 		}

@@ -11,19 +11,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Testes da service DocumentoPdfService.
+ * Testes da service
  * 
  * @author Tomas.Godoi
  *
  */
-public class DocumentoPdfServiceTest {
+public class DocumentoServiceImplTest {
 
-	private DocumentoPdfService documentoPdfService;
+	private DocumentoServiceImpl documentoPdfService;
 	private RandomAccessFile pdfFile;
 
 	@Before
 	public void setUp() throws IOException {
-		documentoPdfService = new DocumentoPdfService();
+		documentoPdfService = new DocumentoServiceImpl();
 		pdfFile = criarPdfFile();
 	}
 
