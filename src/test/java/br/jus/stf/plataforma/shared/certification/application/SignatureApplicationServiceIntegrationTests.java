@@ -29,7 +29,7 @@ import br.jus.stf.plataforma.shared.certification.support.pki.PlataformaUnitTest
 import br.jus.stf.plataforma.shared.certification.support.util.SignatureTestUtil;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
-public class SignatureApplicationServiceTest extends AbstractIntegrationTests {
+public class SignatureApplicationServiceIntegrationTests extends AbstractIntegrationTests {
 
 	private static final String PDF_DE_TESTE = "pdf-de-teste-01.pdf";
 
