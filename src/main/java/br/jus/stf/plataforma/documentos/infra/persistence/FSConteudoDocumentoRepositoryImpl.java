@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.documentos.infra.persistence;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 import br.jus.stf.shared.DocumentoId;
@@ -35,11 +34,11 @@ public class FSConteudoDocumentoRepositoryImpl implements ConteudoDocumentoRepos
 	private String documentosDirPath;
 
 	@Override
-	public ConteudoDocumentoDownload downloadConteudo(String numeroConteudo) {
+	public ConteudoDocumento downloadConteudo(String numeroConteudo) {
 		File arquivoConteudo = createArquivoConteudo(numeroConteudo);
 		try {
 			byte[] conteudo = FileUtils.readFileToByteArray(arquivoConteudo);
-			return new ConteudoDocumentoDownload(new ByteArrayInputStream(conteudo), new Long(conteudo.length));
+			return new ConteudoDocumento(conteudo, new Long(conteudo.length));
 		} catch (IOException e) {
 			throw new RuntimeException("Erro ao recuperar o documento.", e);
 		}

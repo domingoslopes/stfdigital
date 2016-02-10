@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,6 +57,18 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	public DocumentoTemporarioId upload(String nome, byte[] documento) {
 		MultipartFile file = new PDFMultipartFile(nome, documento);
 		return new DocumentoTemporarioId(documentoRestResource.upload(new UploadDocumentoCommand(file)));
+	}
+
+	@Override
+	public List<DocumentoId> dividirDocumento(DocumentoId documento, List<Range<Integer>> intervalosDivisao) {
+		// TODO Tomas.Godoi Implementar
+		return null;
+	}
+
+	@Override
+	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
+		// TODO Tomas.Godoi Implementar
+		return null;
 	}
 
 }

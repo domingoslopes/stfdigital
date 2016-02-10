@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.documentos.infra.persistence;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
@@ -19,7 +18,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumentoDownload;
+import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 import br.jus.stf.shared.DocumentoId;
@@ -45,14 +44,14 @@ public class OracleConteudoDocumentoRepositoryImpl implements ConteudoDocumentoR
 	@Qualifier("documentoJdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
 
-	private class ConteudoDocumentoDownloadMapper implements RowMapper<ConteudoDocumentoDownload> {
+	private class ConteudoDocumentoDownloadMapper implements RowMapper<ConteudoDocumento> {
 
 		@Override
-		public ConteudoDocumentoDownload mapRow(ResultSet rs, int rowNum) throws SQLException {
+		public ConteudoDocumento mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Blob blob = rs.getBlob(CONTEUDO_BINARIO_COLUMN);
 			try {
 				byte[] bytes = IOUtils.toByteArray(blob.getBinaryStream());
-				return new ConteudoDocumentoDownload(new ByteArrayInputStream(bytes), new Long(bytes.length));
+				return new ConteudoDocumento(bytes, new Long(bytes.length));
 			} catch (IOException e) {
 				throw new SQLException("Erro ao recuperar o conteúdo do documento.", e);
 			}
@@ -61,7 +60,7 @@ public class OracleConteudoDocumentoRepositoryImpl implements ConteudoDocumentoR
 	}
 
 	@Override
-	public ConteudoDocumentoDownload downloadConteudo(String numeroConteudo) {
+	public ConteudoDocumento downloadConteudo(String numeroConteudo) {
 		return jdbcTemplate.queryForObject(CONTEUDO_SELECT_SQL, new ConteudoDocumentoDownloadMapper(), numeroConteudo);
 	}
 
