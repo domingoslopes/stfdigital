@@ -328,9 +328,25 @@
 				<configuration>
 					<includes>
 						<include>br/jus/stf/UnitTestingSuite.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
 						<include>br/jus/stf/IntegrationTestingSuite.java</include>
 					</includes>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
