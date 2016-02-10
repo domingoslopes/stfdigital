@@ -28,6 +28,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,7 +39,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import br.jus.stf.processamentoinicial.suporte.domain.NumeradorOrdenacaoPecas;
+import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -89,7 +90,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaPeticao.class)
 	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
-	private List<Peca> pecas = new LinkedList<Peca>();
+	@OrderBy("numeroOrdem ASC")
+	public List<Peca> pecas = new LinkedList<Peca>();
 	
 	@OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false),
@@ -115,7 +117,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	private String identificacao;
 	
 	@Transient
-	private NumeradorOrdenacaoPecas numeradorOrdenacaoPecas;
+	private ControladorOrdenacaoPecas controladorOrdenacaoPecas;
 
 	Peticao() {
 
@@ -135,13 +137,13 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.usuarioCadastramento = usuarioCadastramento;
 		this.tipoProcesso = tipoProcesso;
 		
-		this.numeradorOrdenacaoPecas = new NumeradorOrdenacaoPecas(this.pecas);
+		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
 
 	@PostLoad
 	private void init() {
 		this.identificacao = montarIdentificacao();
-		this.numeradorOrdenacaoPecas = new NumeradorOrdenacaoPecas(this.pecas);
+		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
 	
 	@Override
@@ -219,9 +221,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public boolean juntar(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
 		
-		numeradorOrdenacaoPecas.numerarPeca(peca);
-	
-		return pecas.add(peca);
+		return controladorOrdenacaoPecas.adicionarPeca(peca);
 	}
 	
 	/**
@@ -236,19 +236,9 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notNull(pecaOriginal, "peticao.pecaOriginal.required");
 		Validate.notNull(pecaSubstituta, "peticao.pecaSubstituta.required");
 		
-		Iterator<Peca> iterator = pecas.iterator();
-		while (iterator.hasNext()) {
-			Peca pecaAtual = iterator.next();
-			if (pecaAtual.equals(pecaOriginal)) {
-				numeradorOrdenacaoPecas.numerarPecaSubstituta(pecaAtual, pecaSubstituta);
-				iterator.remove();
-				break;
-			}
-		}
-		
-		pecas.add(pecaSubstituta);
+		controladorOrdenacaoPecas.substituirPeca(pecaOriginal, pecaSubstituta);
 	}
-	
+
 	/**
 	 * Divide uma peça, substituindo-a pelas peças especificadas.
 	 * 
@@ -265,7 +255,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 		pecasDivisao.forEach(p -> juntar(p));
 		
-		numeradorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
+		controladorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
 	}
 	
 	/**
@@ -285,7 +275,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 		juntar(pecaUnida);
 		
-		numeradorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
+		controladorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}
 	
 	/**
@@ -297,7 +287,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	
 		boolean removeu = pecas.remove(peca);
 		
-		numeradorOrdenacaoPecas.normalizarOrdenacaoPecas();
+		controladorOrdenacaoPecas.normalizarOrdenacaoPecas();
 		
 		return removeu;
 	}
@@ -313,7 +303,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		Validate.notNull(peca, "peticao.peca.required");
 		Validate.notNull(novoNumeroOrdem, "peticao.novoNumeroOrdem.required");
 		
-		return numeradorOrdenacaoPecas.reordenarPeca(peca, novoNumeroOrdem);
+		return controladorOrdenacaoPecas.reordenarPeca(peca, novoNumeroOrdem);
 	}
 	
 	public ClasseId classeProcessual() {
