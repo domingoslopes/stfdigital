@@ -25,7 +25,7 @@
 			revisao.observacao = response.data.observacaoAnalise;
 			revisao.teses = response.data.teses;
 			revisao.assuntos = response.data.assuntos;
-		})
+		});
 		
 		PeticaoService.consultar(revisao.peticaoId).then(function(data) {
 			revisao.peticao = data;
