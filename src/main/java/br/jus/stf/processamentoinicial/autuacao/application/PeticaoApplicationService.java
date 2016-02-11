@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
-import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
@@ -22,6 +21,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
+import br.jus.stf.processamentoinicial.autuacao.infra.PecaDevolucaoITextFromHtmlBuilder;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
@@ -60,7 +60,7 @@ public class PeticaoApplicationService {
 	private DocumentoAdapter documentoAdapter;
 	
 	@Autowired
-	private PecaDevolucaoBuilder pecaDevolucaoBuilder;
+	private PecaDevolucaoITextFromHtmlBuilder pecaDevolucaoBuilder;
 	
 	/**
 	 * Registra uma nova petição.
@@ -144,9 +144,9 @@ public class PeticaoApplicationService {
 	 * 
 	 * @param peticao Dados da petição.
 	 */
-	public void prepararDevolucao(Peticao peticao, TipoDevolucao tipoDevolucao, Long numero) {
+	public void prepararDevolucao(Peticao peticao, String documento, TipoDevolucao tipoDevolucao, Long numero) {
     	// Passo 01: Gerando o Ofício de Devolução e fazendo o upload do documento (arquivo temporário)...
-		byte[] oficio = pecaDevolucaoBuilder.build(peticao.identificacao(), tipoDevolucao, numero);
+		byte[] oficio = pecaDevolucaoBuilder.build(documento, peticao.identificacao(), tipoDevolucao, numero);
 		DocumentoTemporarioId documentoTemporarioId = documentoAdapter.upload(tipoDevolucao.nome(), oficio);
 		
 		// Passo 02: Salvando o Documento Temporário no Sistema de Armazenamento Definitivo...

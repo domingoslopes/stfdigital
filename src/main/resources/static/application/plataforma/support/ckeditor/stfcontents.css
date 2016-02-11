@@ -1,0 +1,46 @@
+/* Reseta as margens do p, para a visualização no browser ficar igual a do PDF. 
+ * Os browsers tem uma margem padrão para esse elemento, o que não é aplicado
+ * no CSS de conversão para PDF.
+ */
+p {
+	margin: 0;
+}
+
+body.cke_editable {
+	margin-left: 40pt;
+    margin-right: 20pt;
+    margin-top: 34pt;
+    margin-bottom: 20pt;
+}
+
+.smallcaps {
+	font-variant: small-caps;
+}
+
+.stf-titulo-cursivo {
+	text-align: center;
+	font-size: 18pt;
+	font-family: "English111 Vivace BT";
+	padding-bottom: 20pt;
+}
+
+.stf-estilo-padrao {
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 13pt;
+}
+
+.stf-indent1 {
+	text-indent: 12.5mm;
+}
+
+.stf-indent2 {
+	text-indent: 25mm;
+}
+
+.stf-indent3 {
+	text-indent: 37.5mm;
+}
+
+.stf-indent4 {
+	text-indent: 50mm;
+}

@@ -14,7 +14,7 @@
 	<div class="container-fluid container-fixed-lg">
 		<div tarefa-actions processo="devolucao.processoWorkflowId" tarefa="tarefa"></div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <form role="form">
@@ -37,15 +37,36 @@
                     </div>
                 </div>
             </div>
-        </div>
-		<div class="row">
-			<div class="col-md-9" ng-show="showCkeditor">
-				<textarea ckeditor="editorOptions" name="ckeditor" id="ckeditor" rows="10" cols="80" ng-model="devolucao.template"></textarea>
+			<div class="col-md-6">
+				<div class="card share" data-social="item" style="width: 100%">
+					<div class="circle" data-toggle="tooltip" title=""
+						data-container="body" data-original-title="Label"></div>
+					<div class="card-header clearfix">
+						<h5>Tipo de Editor</h5>
+					</div>
+					<div class="card-description">
+						<div class="radio radio-success">
+							<input type="radio" ng-model="devolucao.isCKEditor" ng-value="true" id="yes">
+							<label for="yes">CKEditor</label>
+							<input type="radio" ng-model="devolucao.isCKEditor" ng-value="false" id="no">
+							<label for="no">WebODF</label>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" ng-if="devolucao.showEditor && devolucao.isCKEditor">
+			<div class="col-md-12" style="background-color: rgb(204,204,204);">
+				<div class="center-block-table">
+					<textarea ckeditor="editorOptions" name="ckeditor" id="ckeditor" ng-model="devolucao.documento"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-if="devolucao.showEditor && !devolucao.isCKEditor">
 			<div class="col-md-12">
-				<div wodotexteditor="urlTemplate" id="wodotexteditor"></div>
+				<div class="center-block-table">
+					<div wodotexteditor="urlTemplate" id="wodotexteditor"></div>
+				</div>
 			</div>
 		</div>
 		<p>

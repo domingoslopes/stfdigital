@@ -15,11 +15,36 @@
 		devolucao.recursos = [];
 		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, {id : 'TRANSITADO', nome : "Transitado"}, {id : 'BAIXADO', nome : "Baixado"}];
 		devolucao.tipoDevolucao = '';
-		devolucao.template = '';
+		devolucao.documento = '';
 		
-		$scope.showCkeditor = false;
+		devolucao.showEditor = false;
+		devolucao.isCKEditor = true;
 		$scope.urlTemplate = '';
-		$scope.editorOptions = { language : 'pt-br', allowedContent : true, toolbar : null };
+		
+		var toolbar = [
+			{ name: 'clipboard', 'items' : ['Cut', 'Copy', 'Paste']},
+			{ name: 'styles', 'items' : ['Styles']},
+			{ name: 'basicstyles', 'items' : ['Bold', 'Italic', 'Underline']},
+			{ name: 'advancedstyles', 'items' : ['Smallcaps', 'Marker']},
+			{ name: 'formatting', 'items' : ['Indent', 'Outdent']},
+			{ name: 'justify', 'items' : ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+		];
+		
+		var plugins = 'font,justify,stfstyles,indentblock';
+		
+		$scope.editorOptions = { language : 'pt-br',
+			allowedContent : true,
+			extraPlugins: plugins,
+			toolbar : 'stf',
+			toolbar_stf: toolbar,
+			stylesSet: 'stf_styles',
+			removeButtons: '',
+//			height: '842px',
+//			width: '595px'
+			height: '500px',
+			width: '210mm',
+			indentClasses: ['stf-indent1', 'stf-indent2', 'stf-indent3', 'stf-indent4', 'stf-indent4'],
+		};
 		
 		PeticaoService.consultarProcessoWorkflow(devolucao.peticaoId).then(function(data) {
 			devolucao.processoWorkflowId = data;
@@ -30,8 +55,8 @@
 				//ckeditor
 				PeticaoService.templateDevolucao(devolucao.tipoDevolucao)
 					.then(function(template) {
-						devolucao.template = template;
-						$scope.showCkeditor = true;
+						devolucao.documento = template;
+						devolucao.showEditor = true;
 					});
 				//wodotexteditor
 				$scope.urlTemplate = PeticaoService.urlTemplateDevolucao(devolucao.tipoDevolucao, 'odt');
@@ -52,7 +77,7 @@
 				messages.error(errors);
 				return false;
 			}
-			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.tipoDevolucao, devolucao.numeroOficio));
+			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.tipoDevolucao, devolucao.numeroOficio, devolucao.documento));
 			return true;
 		};
 		
@@ -61,11 +86,12 @@
 			messages.success('Petição devolvida com sucesso.');
 		};
 		
-		function DevolverCommand(peticaoId, tipoDevolucao, numeroOficio) {
+		function DevolverCommand(peticaoId, tipoDevolucao, numeroOficio, documento) {
 			var command = {};
 			command.peticaoId = peticaoId;
 			command.tipoDevolucao = tipoDevolucao; 
 			command.numeroOficio = numeroOficio;
+			command.documento = documento;
 			return command;
 		}
 	});
