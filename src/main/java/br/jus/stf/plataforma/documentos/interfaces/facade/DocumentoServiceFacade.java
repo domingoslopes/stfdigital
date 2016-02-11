@@ -58,4 +58,8 @@ public class DocumentoServiceFacade {
 		return documentoApplicationService.dividirDocumento(id, intervalos);
 	}
 
+	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
+		return documentoApplicationService.unirDocumentos(documentos);
+	}
+
 }
