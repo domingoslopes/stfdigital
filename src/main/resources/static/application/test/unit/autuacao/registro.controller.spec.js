@@ -28,7 +28,8 @@
 				$stateParams : stateParams,
 				$log: $log
 			});
-//			$httpBackend.flush();
+
+			$httpBackend.flush();
 		}));
 		
 		it ('Deveria carregar a lista de forma de envio do controlador', function(){
