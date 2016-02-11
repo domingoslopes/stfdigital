@@ -34,6 +34,7 @@ import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
@@ -117,6 +118,15 @@ public class DocumentoRestResource {
 			documentosDivididos.addAll(documentoServiceFacade.dividirDocumento(id, intervalos));
 		}
 		return documentosDivididos;
+	}
+	
+	@ApiOperation("Une documentos")
+	@RequestMapping(value = "/unir", method = RequestMethod.POST)
+	public DocumentoId unirDocumentos(@Valid @RequestBody UnirDocumentosCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.toString());
+		}
+		return documentoServiceFacade.unirDocumentos(command.getDocumentos());
 	}
 	
 	/**

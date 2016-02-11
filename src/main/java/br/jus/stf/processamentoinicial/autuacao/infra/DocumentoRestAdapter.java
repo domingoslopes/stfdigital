@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
+import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
@@ -61,14 +63,13 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 
 	@Override
 	public List<DocumentoId> dividirDocumento(DocumentoId documento, List<Range<Integer>> intervalosDivisao) {
-		// TODO Tomas.Godoi Implementar
-		return null;
+		List<DividirDocumentoCommand> commands = intervalosDivisao.stream().map(i -> new DividirDocumentoCommand(documento, i.getMinimum(), i.getMaximum())).collect(Collectors.toList());
+		return documentoRestResource.dividirDocumento(commands, null);
 	}
 
 	@Override
 	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
-		// TODO Tomas.Godoi Implementar
-		return null;
+		return documentoRestResource.unirDocumentos(new UnirDocumentosCommand(documentos), null);
 	}
 
 }
