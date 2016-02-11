@@ -3,6 +3,7 @@ package br.jus.stf.plataforma.documentos.infra;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -46,6 +47,10 @@ public class DocumentoServiceImpl implements DocumentoService {
 		}
 	}
 
+	/**
+	 * Divide o conteúdo do documento.
+	 * 
+	 */
 	@Override
 	public DocumentoTemporario dividirConteudo(ConteudoDocumento conteudo, Integer paginaInicial,
 	        Integer paginaFinal) {
@@ -63,6 +68,29 @@ public class DocumentoServiceImpl implements DocumentoService {
 			return new DocumentoTemporario(new PDFMultipartFile("pdf-dividido", baos.toByteArray()));
 		} catch (IOException | DocumentException e) {
 			throw new RuntimeException("Erro ao dividir o conteúdo do documento.", e);
+		}
+	}
+
+	/**
+	 * Une vários conteúdos em um só.
+	 * 
+	 */
+	@Override
+	public DocumentoTemporario unirConteudos(List<ConteudoDocumento> conteudos) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream(1000);
+			Document document = new Document();
+			PdfCopy copy = new PdfCopy(document, baos);
+			document.open();
+			for (ConteudoDocumento conteudo : conteudos) {
+				PdfReader reader = new PdfReader(conteudo.stream());
+				copy.addDocument(reader);
+				reader.close();
+			}
+			document.close();
+			return new DocumentoTemporario(new PDFMultipartFile("pdf-unido", baos.toByteArray()));
+		} catch (IOException | DocumentException e) {
+			throw new RuntimeException("Erro ao unir os conteúdos dos documentos.", e);
 		}
 	}
 }
