@@ -78,4 +78,18 @@ public class DocumentoApplicationService {
 		return documentosDivididos;
 	}
 
+	/**
+	 * Une os documentos especificados em um só.
+	 * 
+	 * @param documentos
+	 * @return
+	 */
+	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
+		List<ConteudoDocumento> conteudos = documentos.stream().map(d -> documentoRepository.download(d)).collect(Collectors.toList());
+		DocumentoTemporario temp = documentoService.unirConteudos(conteudos);
+		DocumentoTemporarioId tempId = new DocumentoTemporarioId(documentoRepository.storeTemp(temp));
+		DocumentoId novoDocumento = documentoRepository.save(tempId);
+		return novoDocumento;
+	}
+
 }
