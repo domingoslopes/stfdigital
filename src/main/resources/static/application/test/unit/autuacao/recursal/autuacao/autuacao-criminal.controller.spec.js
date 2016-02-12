@@ -88,12 +88,18 @@
 			expect(controller.partesPoloPassivo.length).toBe(qtdPartesPoloPassivo + 2);
 		});
 		
-		xit('Deveria remover partes do polo ativo', function() {
-			// TODO
+		it('Deveria remover partes do polo ativo', function() {
+			var qtdPartesPoloAtivo = controller.partesPoloAtivo.length;
+			controller.adicionarPoloAtivo('João');
+			controller.removerPoloAtivo(0);
+			expect(controller.partesPoloAtivo.length).toBe(qtdPartesPoloAtivo);
 		});
 		
-		xit('Deveria remover partes do polo passivo', function() {
-			// TODO
+		it('Deveria remover partes do polo passivo', function() {
+			var qtdPartesPoloPassivo = controller.partesPoloPassivo.length;
+			controller.adicionarPoloPassivo('José');
+			controller.removerPoloPassivo(0);
+			expect(controller.partesPoloPassivo.length).toBe(qtdPartesPoloPassivo);
 		});
 		
 		it('Deveria adicionar um assunto à lista', function() {
