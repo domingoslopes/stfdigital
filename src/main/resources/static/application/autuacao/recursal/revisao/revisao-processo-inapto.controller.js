@@ -18,11 +18,11 @@
 		
 		revisao.obsAnalise = '';
 		
-		revisao.apto = true;
+		revisao.apto = false;
 		
 		revisao.motivos = [];
 		
-		revisao.motivoId = undefined;
+		revisao.motivoId = '';
 		
 		revisao.recursos = [];
 		
@@ -40,19 +40,25 @@
 		
 		
 		revisao.validar = function() {
-			var errors = null;
+			var errors = '';
+			
 			if (revisao.obsAnalise.length === 0) {
 				errors = 'Você precisa escrever uma descrição da análise</b>.<br/>';
 			}
 			
-			if (revisao.apto === 'false' && revisao.obsMotivo.length === 0) {
-				errors += 'Para processo inapto, você precisa informar o motivo da inaptidão.<br/>';
+			if (revisao.apto === false) {
+				if (revisao.motivoId.length === 0) {
+					errors += 'Para processo inapto, você precisa informar o motivo da inaptidão.<br/>';
+				} else if (revisao.obsMotivo.length === 0) {
+					errors += 'Para processo inapto, você precisa informar uma observação para o motivo da inaptidão.<br/>';
+				}
 			}
-			
-			if (errors) {
+
+			if (errors.length > 0) {
 				messages.error(errors);
 				return false;
 			}
+			
 			revisao.recursos.push(new RevisaoInaptoCommand(revisao.processo.id, revisao.apto, revisao.motivoId, revisao.obsMotivo, revisao.obsAnalise));
 			return true;
 		}

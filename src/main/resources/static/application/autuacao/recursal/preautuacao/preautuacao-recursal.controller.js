@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('PreautuacaoRecursalController', function ($log, $http, $state, $stateParams, messages, properties, ClasseService, PeticaoService) {
+	angular.autuacao.controller('PreautuacaoRecursalController', function ($state, $stateParams, messages, properties, ClasseService, PeticaoService) {
 var preautuacao = this;
 		
 		var resource = $stateParams.resources[0];
@@ -67,6 +67,8 @@ var preautuacao = this;
 			return true;
 		};
 		
+		// gabriel.bastos: Não vi chamadas a essa função, na dúvida comentei ao invés de remover. 
+		/*
 		preautuacao.devolver = function(){
 			var errors = null;
 			
@@ -82,6 +84,7 @@ var preautuacao = this;
 			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, false, preautuacao.motivo, preautuacao.preferenciasSelecionadas));
 			return true;
 		};
+		*/
 		
 		preautuacao.finalizar = function() {
 			$state.go('dashboard');
