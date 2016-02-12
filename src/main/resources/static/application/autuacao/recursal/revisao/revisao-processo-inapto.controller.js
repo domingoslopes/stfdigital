@@ -45,7 +45,7 @@
 				errors = 'Você precisa escrever uma descrição da análise</b>.<br/>';
 			}
 			
-			if (revisao.apto === 'false' && revisao.obsMotivo.length === 0) {
+			if (revisao.apto === false && revisao.obsMotivo.length === 0) {
 				errors += 'Para processo inapto, você precisa informar o motivo da inaptidão.<br/>';
 			}
 			
