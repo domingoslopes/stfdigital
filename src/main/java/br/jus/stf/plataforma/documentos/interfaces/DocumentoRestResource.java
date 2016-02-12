@@ -114,7 +114,7 @@ public class DocumentoRestResource {
 		Map<DocumentoId, List<DividirDocumentoCommand>> commandsById = commands.stream().collect(Collectors.groupingBy(DividirDocumentoCommand::getDocumento));
 		List<DocumentoId> documentosDivididos = new ArrayList<>();
 		for (DocumentoId id : commandsById.keySet()) {
-			List<Range<Integer>> intervalos = commandsById.get(id).stream().map(d -> Range.between(1, 2)).collect(Collectors.toList());
+			List<Range<Integer>> intervalos = commandsById.get(id).stream().map(d -> Range.between(d.getPaginaInicial(), d.getPaginaFinal())).collect(Collectors.toList());
 			documentosDivididos.addAll(documentoServiceFacade.dividirDocumento(id, intervalos));
 		}
 		return documentosDivididos;
