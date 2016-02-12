@@ -107,27 +107,31 @@
 				controller.apto = false;
 			});
 			
-			it('Deveria não validar a análise quando não informar uma descrição para a análise nem o motivo da inaptidão', function() {
-				controller.obsAnalise = '';
-				controller.obsMotivo = '';
+			it('Deveria não validar a análise quando não informar o motivo da inaptidão', function() {
+				controller.obsAnalise = 'Descrição genérica';
+				controller.obsMotivo = 'Motivo genérico';
+				controller.motivoId = '';
 				expect(controller.validar()).toBeFalsy();
 			});
 
-			it('Deveria não validar a análise quando informar o motivo da inaptidão mas não informar uma descrição para a análise', function() {
+			it('Deveria não validar a análise quando não informar uma descrição para a análise', function() {
 				controller.obsAnalise = '';
 				controller.obsMotivo = 'Motivo genérico';
+				controller.motivoId = 9;
 				expect(controller.validar()).toBeFalsy();
 			});
 			
-			it('Deveria não validar a análise quando informar uma descrição para a análise mas não informar o motivo da inaptidão', function() {
+			it('Deveria não validar a análise quando não informar o motivo da inaptidão', function() {
 				controller.obsAnalise = 'Descrição genérica';
 				controller.obsMotivo = '';
+				controller.motivoId = 9;
 				expect(controller.validar()).toBeFalsy();
 			});
 			
-			it('Deveria validar a análise quando informar uma descrição para a análise e o motivo da inaptidão', function() {
+			it('Deveria validar a análise quando informar uma descrição para a análise, o motivo da inaptidão e a observação do motivo', function() {
 				controller.obsAnalise = 'Descrição genérica';
 				controller.obsMotivo = 'Motivo genérico';
+				controller.motivoId = 9;
 				expect(controller.validar()).toBeTruthy();
 			});
 		});
