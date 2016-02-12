@@ -28,9 +28,10 @@
 			{ name: 'advancedstyles', 'items' : ['Smallcaps', 'Marker']},
 			{ name: 'formatting', 'items' : ['Indent', 'Outdent']},
 			{ name: 'justify', 'items' : ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+			{ name: 'breaking', 'items' : ['PageBreak']},
 		];
 		
-		var plugins = 'font,justify,stfstyles,indentblock';
+		var plugins = 'font,justify,stfstyles,indentblock,pagebreak';
 		
 		$scope.editorOptions = { language : 'pt-br',
 			allowedContent : true,
