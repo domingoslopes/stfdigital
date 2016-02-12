@@ -52,7 +52,7 @@
         tipoTese: "REPERCUSSAO_GERAL"
 	}];
 	
-	describe('Revisão de Repercussão Geral Controller', function() {
+	describe('Análise de Repercussão Geral Controller', function() {
 		var fakeData = [];
 		var stateParams = [];
 		var controller;
