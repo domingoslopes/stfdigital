@@ -16,6 +16,8 @@ import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.documentos.infra.persistence.ConteudoDocumentoRepository;
+import br.jus.stf.plataforma.documentos.infra.persistence.DocumentoTempRepository;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -34,6 +36,12 @@ public class DocumentoApplicationService {
 	
 	@Autowired
 	private DocumentoService documentoService;
+	
+	@Autowired
+	private DocumentoTempRepository documentoTempRepository;
+	
+	@Autowired
+	private ConteudoDocumentoRepository conteudoDocumentoRepository;
 
 	/**
 	 * Salva os documentos temporários no repositório
@@ -43,7 +51,7 @@ public class DocumentoApplicationService {
 	 */
 	public Map<String, DocumentoId> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		return documentosTemporarios.stream()
-				.collect(Collectors.toMap(docTemp -> docTemp.toString(), docTemp -> documentoRepository.save(docTemp)));
+				.collect(Collectors.toMap(docTemp -> docTemp.toString(), docTemp -> salvar(docTemp)));
 	}
 
 	/**
@@ -60,72 +68,27 @@ public class DocumentoApplicationService {
 	}
 
 	/**
-	 * Divide um documento em documentos especificados pelos intervalos.
+	 * Divide um documento.
 	 * 
 	 * @param id
 	 * @param intervalos
 	 * @return
 	 */
 	public List<DocumentoId> dividirDocumento(DocumentoId id, List<Range<Integer>> intervalos) {
-		Documento documento = documentoRepository.findOne(id);
-		return dividirDocumento(documento, intervalos);
+		List<DocumentoTemporarioId> documentosTemporarios = documentoService.dividirDocumento(id, intervalos);
+		return salvar(documentosTemporarios);
 	}
 	
-	private List<DocumentoId> dividirDocumento(Documento documento, List<Range<Integer>> intervalos) {
-		if (!intervalosSaoContidosPeloDocumento(intervalos, documento)) {
-			throw new IllegalArgumentException("Há intervalos não contidos no documento.");
-		}
-		ConteudoDocumento conteudo = documentoRepository.download(documento.id());
-		List<DocumentoId> documentosDivididos = new ArrayList<>();
-		for (Range<Integer> intervalo : intervalos) {
-			DocumentoTemporario temp = documentoService.dividirConteudo(conteudo, intervalo.getMinimum(),
-					intervalo.getMaximum());
-			DocumentoTemporarioId tempId = new DocumentoTemporarioId(documentoRepository.storeTemp(temp));
-			DocumentoId novoDocumento = documentoRepository.save(tempId);
-			documentosDivididos.add(novoDocumento);
-		}
-		return documentosDivididos;
-	}
-	
-	private boolean intervalosSaoContidosPeloDocumento(List<Range<Integer>> intervalos, Documento documento) {
-		for (Range<Integer> intervalo : intervalos) {
-			if (intervalo.getMinimum() <= 0 || intervalo.getMaximum() > documento.quantidadePaginas()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	/**
-	 * Divide um documento contiguamente como especificado pelos intervalos.
+	 * Divide um documento contiguamente.
 	 * 
 	 * @param id
 	 * @param intervalos
 	 * @return
 	 */
 	public List<DocumentoId> dividirDocumentoContiguamente(DocumentoId id, List<Range<Integer>> intervalos) {
-		Documento documento = documentoRepository.findOne(id);
-		if (intervalosSaoContiguos(intervalos, documento)) {
-			return dividirDocumento(documento, intervalos);
-		} else {
-			throw new IllegalArgumentException("Intervalos não são contíguos");
-		}
-	}
-
-	private boolean intervalosSaoContiguos(List<Range<Integer>> intervalos, Documento documento) {
-		if (intervalos.get(0).getMinimum() <= 0 || intervalos.get(intervalos.size() - 1).getMaximum() != documento.quantidadePaginas()) {
-			return false;
-		} else {
-			Range<Integer> anterior = intervalos.get(0);
-			for (int i = 1; i < intervalos.size(); i++) {
-				Range<Integer> proximo = intervalos.get(i);
-				if (anterior.getMaximum() + 1 != proximo.getMinimum()) {
-					return false;
-				}
-				anterior = proximo;
-			}
-		}
-		return true;
+		List<DocumentoTemporarioId> documentosTemporarios = documentoService.dividirDocumentoContiguamente(id, intervalos);
+		return salvar(documentosTemporarios);
 	}
 
 	/**
@@ -138,8 +101,32 @@ public class DocumentoApplicationService {
 		List<ConteudoDocumento> conteudos = documentos.stream().map(d -> documentoRepository.download(d)).collect(Collectors.toList());
 		DocumentoTemporario temp = documentoService.unirConteudos(conteudos);
 		DocumentoTemporarioId tempId = new DocumentoTemporarioId(documentoRepository.storeTemp(temp));
-		DocumentoId novoDocumento = documentoRepository.save(tempId);
+		DocumentoId novoDocumento = salvar(tempId);
 		return novoDocumento;
 	}
 
+	private List<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios) {
+		List<DocumentoId> documentosSalvos = new ArrayList<>();
+		for (DocumentoTemporarioId docTempId : documentosTemporarios) {
+			DocumentoId novoDocumento = salvar(docTempId);
+			documentosSalvos.add(novoDocumento);
+		}
+		return documentosSalvos;
+	}
+	
+	private DocumentoId salvar(DocumentoTemporarioId docTempId) {
+		DocumentoTemporario docTemp = documentoTempRepository.recoverTemp(docTempId);
+		
+		DocumentoId id = documentoRepository.nextId();
+		
+		String numeroConteudo = conteudoDocumentoRepository.save(id, docTemp);
+		
+		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp.randomAccessFile()));
+		documento = documentoRepository.save(documento);
+		
+		documentoTempRepository.removeTemp(docTempId.toString());
+		docTemp.delete();
+		return documento.id();
+	}
+	
 }
