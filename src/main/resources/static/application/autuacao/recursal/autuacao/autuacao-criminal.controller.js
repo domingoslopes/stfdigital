@@ -150,15 +150,8 @@
 				});
 			};
 		
-			partesController.remover = function(parteSelecionada) {
-				parteSelecionada.selected = true;
-				var partesAtuais = partes.slice(0);
-				partesController.clear(partes);
-				angular.forEach(partesAtuais, function(parte) {
-					if (!parte.selected) {
-						partes.push(parte);
-					}
-				});
+			partesController.remover = function(index) {
+				partes.splice(index, 1);
 			};
 			
 			partesController.clear = function(array) {
