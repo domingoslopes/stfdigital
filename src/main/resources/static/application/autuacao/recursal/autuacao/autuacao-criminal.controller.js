@@ -61,7 +61,7 @@
 		        }
 			},
 	        formatResult: function(object, container, query) {
-	        	return object.codigo + " - " + object.descricao;
+	        	return object.id + " - " + object.descricao;
 			},
 	        formatSelection: function (item) { 
 	        	return item.descricao; 
