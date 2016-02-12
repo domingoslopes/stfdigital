@@ -32,14 +32,14 @@
 		id: 9,
 		identificacao: "RE 6",
 		numero: 6,
-		observacaoAnalise: null,
+		observacaoAnalise: "345",
 		partes: {PoloAtivo: [], PoloPassivo: []},
 		pecas: [],
 		preferencias: [],
 		relator: null,
 		situacao: "A analisar",
 		teses: []
-	}
+	};
 	
 	var mockMotivos = [
 		{id: 2, descricao: "Ausência de preliminar formal de repercussão geral"},
@@ -52,7 +52,7 @@
 		{id: 8, descricao: "Supressão de instância"}
 	];
 	
-	describe('Análise de Pressupostos Formais de Processo Recursal Controller', function() {
+	describe('Revisão de Pressupostos Formais de Processo Recursal Controller', function() {
 		var controller;
 		var $httpBackend;
 		var properties;
@@ -64,12 +64,12 @@
 			properties = _properties_;
 			
 			$httpBackend.expectGET(properties.apiUrl + '/motivos').respond(mockMotivos);
-			$httpBackend.expectGET(properties.apiUrl + '/peticoes/17').respond(mockPeticao);
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/17/processo').respond(mockProcesso);
+			$httpBackend.expectGET(properties.apiUrl + '/peticoes/17').respond(mockPeticao);
 			
 			var scope = $rootScope.$new();
 			
-			controller = $controller('AnalisePressupostoController', {
+			controller = $controller('RevisaoProcessosInaptosController', {
 				$scope: scope,
 				$stateParams: {resources: [17]},
 				messages: messages,
