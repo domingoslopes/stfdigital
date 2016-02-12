@@ -22,7 +22,7 @@
 		
 		analise.motivos = [];
 		
-		analise.motivoId = undefined;
+		analise.motivoId = '';
 		
 		analise.recursos = [];
 		
@@ -40,20 +40,25 @@
 		
 		
 		analise.validar = function() {
-			var errors = null;
+			var errors = '';
 			
 			if (analise.obsAnalise.length === 0) {
 				errors = 'Você precisa escrever uma descrição da análise</b>.<br/>';
 			}
 			
-			if (analise.apto === false && analise.obsMotivo.length === 0) {
-				errors += 'Para processo inapto, você precisa informar o motivo da inaptidão.<br/>';
+			if (analise.apto === false) {
+				if (analise.motivoId.length === 0) {
+					errors += 'Para processo inapto, você precisa informar o motivo da inaptidão.<br/>';
+				} else if (analise.obsMotivo.length === 0) {
+					errors += 'Para processo inapto, você precisa informar uma observação para o motivo da inaptidão.<br/>';
+				}
 			}
 			
-			if (errors) {
+			if (errors.length > 0) {
 				messages.error(errors);
 				return false;
 			}
+			
 			analise.recursos.push(new AnalisePressupostosCommand(analise.processo.id, analise.peticaoId, analise.apto, analise.motivoId, analise.obsMotivo, analise.obsAnalise));
 			return true;
 		}
