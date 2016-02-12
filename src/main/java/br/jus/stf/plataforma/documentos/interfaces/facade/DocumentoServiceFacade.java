@@ -55,7 +55,7 @@ public class DocumentoServiceFacade {
 	}
 
 	public List<DocumentoId> dividirDocumento(DocumentoId id, List<Range<Integer>> intervalos) {
-		return documentoApplicationService.dividirDocumento(id, intervalos);
+		return documentoApplicationService.dividirDocumentoContiguamente(id, intervalos);
 	}
 
 	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
