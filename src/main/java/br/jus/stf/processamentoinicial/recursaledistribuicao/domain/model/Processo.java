@@ -329,26 +329,12 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		this.preferencias.retainAll(preferencias);
 	}
 	
-	public void atribuirPoloAtivo(final Set<ParteProcesso> partesPoloAtivo) {
-		Validate.notNull(partesPoloAtivo, "peticao.partesPoloAtivo.required");
+	public void atribuirPartes(final Set<ParteProcesso> partes, final TipoPolo polo) {
+		Validate.notNull(partes, "peticao.partes.required");
+		Validate.notNull(polo, "peticao.partesPoloAtivo.required");
 		
-		this.partes.addAll(partesPoloAtivo);
-		Set<Parte> poloAtivoRemover = new HashSet<Parte>();
-		this.partes.stream().filter(parte -> TipoPolo.POLO_ATIVO.equals(parte.polo()) && !partesPoloAtivo.contains(parte))
-			.forEach(poloAtivoRemover::add);
-		
-		this.partes.removeAll(poloAtivoRemover);
-	}
-
-	public void atribuirPoloPassivo(final Set<ParteProcesso> partesPoloPassivo) {
-		Validate.notNull(partesPoloPassivo, "peticao.partesPoloPassivo.required");
-		
-		this.partes.addAll(partesPoloPassivo);
-		Set<Parte> poloPassivoRemover = new HashSet<Parte>();
-		this.partes.stream().filter(parte -> TipoPolo.POLO_PASSIVO.equals(parte.polo()) && !partesPoloPassivo.contains(parte))
-			.forEach(poloPassivoRemover::add);
-		
-		this.partes.removeAll(poloPassivoRemover);
+		this.partes.removeIf(parte -> polo.equals(parte.polo()) && !partes.contains(parte));
+		this.partes.addAll(partes);
 	}
 	
 	public String identificacao() {

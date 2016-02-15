@@ -1,9 +1,9 @@
 package br.jus.stf.processamentoinicial.autuacao.application;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -13,9 +13,11 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder;
+import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
@@ -26,10 +28,12 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PreferenciaId;
 
 /**
@@ -64,6 +68,9 @@ public class PeticaoApplicationService {
 	
 	@Autowired
 	private PecaDevolucaoBuilder pecaDevolucaoBuilder;
+	
+	@Autowired
+	private PessoaAdapter pessoaAdapter;
 	
 	/**
 	 * Registra uma nova petição.
@@ -105,11 +112,9 @@ public class PeticaoApplicationService {
 	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
 	 * @param preferencias Preferências processuais.
 	 */
-	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao, List<Long> preferencias) {
+	public void preautuar(PeticaoFisica peticao, ClasseId classeSugerida, boolean peticaoValida, String motivoDevolucao, Set<PreferenciaId> preferencias) {
 		if (peticaoValida) {
-			Set<PreferenciaId> preferenciasSel = new HashSet<PreferenciaId>();
-			Optional.ofNullable(preferencias).ifPresent(p -> p.forEach(p1 -> preferenciasSel.add(new PreferenciaId(p1))));
-			peticao.preautuar(classeSugerida, preferenciasSel);
+			peticao.preautuar(classeSugerida, preferencias);
 			peticaoRepository.save(peticao);
 			tarefaAdapter.completarPreautuacao(peticao);
 			peticaoApplicationEvent.peticaoPreautuada(peticao);
@@ -129,9 +134,14 @@ public class PeticaoApplicationService {
 	 * @param classe Classe processual informada pelo autuador.
 	 * @param peticaoValida Indica se uma petição foi considerada válida.
 	 * @param motivoRejeicao Motivo da rejeição da petição.
+	 * @param partesPoloAtivo Partes do polo ativo
+	 * @param partesPoloPassivo Partes do polo passivo
 	 */	
-	public void autuar(Peticao peticao, ClasseId classe, boolean peticaoValida, String motivoRejeicao) {
+	public void autuar(Peticao peticao, ClasseId classe, boolean peticaoValida, String motivoRejeicao, List<String> partesPoloAtivo, List<String> partesPoloPassivo) {
+					
 		if (peticaoValida) {
+			carregarPartes(peticao, partesPoloAtivo, TipoPolo.POLO_ATIVO);
+			carregarPartes(peticao, partesPoloPassivo, TipoPolo.POLO_PASSIVO);
 			peticao.aceitar(classe);
 			peticaoRepository.save(peticao);
 			tarefaAdapter.completarAutuacao(peticao);
@@ -186,6 +196,20 @@ public class PeticaoApplicationService {
 		peticaoRepository.save(peticao);
 		tarefaAdapter.completarDevolucao(peticao);
 		peticaoApplicationEvent.peticaoDevolucaoAssinada(peticao);
+	}
+	
+	/**
+	 * Cria as partes da petição.
+	 * 
+	 * @param peticao Petição.
+	 * @param polo Lista de partes.
+	 * @param tipo Tipo de polo.
+	 * 
+	 */
+	private void carregarPartes(Peticao peticao, List<String> polo, TipoPolo tipo) {
+		Set<PessoaId> pessoas = pessoaAdapter.cadastrarPessoas(polo);
+		Set<PartePeticao> partes = pessoas.stream().map(pessoa -> new PartePeticao(pessoa, tipo)).collect(Collectors.toSet());
+		peticao.atribuirPartes(partes, tipo);
 	}
 	
 }
