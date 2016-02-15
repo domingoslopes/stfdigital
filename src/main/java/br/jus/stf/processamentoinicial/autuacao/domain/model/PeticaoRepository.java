@@ -99,4 +99,5 @@ public interface PeticaoRepository {
 	 * @param peticao
 	 */
 	public void refresh(Peticao peticao);
+	
 }
