@@ -90,7 +90,7 @@ public class ProcessoDtoAssembler {
 		processo.preferencias().forEach(preferencia -> preferencias.add(preferencia.toLong()));
 		
 		if (processo instanceof ProcessoRecursal) {
-			ProcessoRecursal processoRecursal = (ProcessoRecursal)processo;
+			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
 			List<AssuntoDto> assuntos = new ArrayList<AssuntoDto>();
 			List<TeseDto> teses = new ArrayList<TeseDto>();
 			String observacao = processoRecursal.observacaoAnalise();
@@ -98,7 +98,7 @@ public class ProcessoDtoAssembler {
 			processoRecursal.assuntos().stream().forEach(assunto -> assuntos.add(assuntoAdapter.consultar(assunto)));
 			teses = teseAdapter.consultar(processoRecursal.teses());
 			
-			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, observacao);
+			return new ProcessoRecursalDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, observacao);
 		} else {
 			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao);
 		}
