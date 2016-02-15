@@ -25,16 +25,21 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	@Column(name = "NUM_CONTEUDO", nullable = false)	
 	private String numeroConteudo;
 	
+	@Column(name = "QTD_PAGINAS")
+	private Integer quantidadePaginas;
+	
 	Documento() {
 
 	}
 
-	public Documento(final DocumentoId id, final String numeroConteudo) {
+	public Documento(final DocumentoId id, final String numeroConteudo, Integer quantidadePaginas) {
 		Validate.notNull(id, "documento.id.required");
 		Validate.notBlank(numeroConteudo, "documento.numeroConteudo.required");
+		Validate.notNull(quantidadePaginas, "documento.quantidadePaginas.required");
 		
 		this.id = id;
 		this.numeroConteudo = numeroConteudo;
+		this.quantidadePaginas = quantidadePaginas;
 	}
 
 	@Override
@@ -44,6 +49,10 @@ public class Documento implements Entity<Documento, DocumentoId> {
 
 	public String numeroConteudo(){
 		return numeroConteudo;
+	}
+	
+	public Integer quantidadePaginas() {
+		return quantidadePaginas;
 	}
 	
 	@Override

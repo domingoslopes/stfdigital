@@ -1,13 +1,17 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.actions;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
 
+import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -130,6 +134,7 @@ public class AutuacaoRecursalActionIntegrationTests extends AbstractIntegrationT
 		peticaoFisica.append("{\"resources\": [{\"formaRecebimento\":\"SEDEX\",");
 		peticaoFisica.append("\"quantidadeVolumes\":2,");
 		peticaoFisica.append("\"quantidadeApensos\":1,");
+		peticaoFisica.append("\"tipoProcesso\":\"RECURSAL\",");
 		peticaoFisica.append("\"numeroSedex\":\"SR123456789BR\"}]}");
 		this.peticaoFisicaParaRegistro = peticaoFisica.toString();
 		
@@ -137,6 +142,9 @@ public class AutuacaoRecursalActionIntegrationTests extends AbstractIntegrationT
 		StringBuilder peticaoFisicaParaPreautuacao =  new StringBuilder();
 		peticaoFisicaParaPreautuacao.append("{\"resources\": ");
 		peticaoFisicaParaPreautuacao.append("[{\"peticaoId\": @,");
+		peticaoFisicaParaPreautuacao.append("\"valida\":true,");
+		peticaoFisicaParaPreautuacao.append("\"motivo\":\"Motivo\",");
+		peticaoFisicaParaPreautuacao.append("\"preferencias\":[],");
 		peticaoFisicaParaPreautuacao.append("\"classeId\":\"ADI\"}]}");
 		this.peticaoFisicaParaPreautuacao = peticaoFisicaParaPreautuacao.toString();
 		
@@ -159,18 +167,18 @@ public class AutuacaoRecursalActionIntegrationTests extends AbstractIntegrationT
     public void executarAcaoRegistroPeticaoRecursal() throws Exception {
     	
     	String peticaoId = "";
-    	//String tarefaObject = "";
+    	String tarefaObject = "";
     	
     	//Envia a petição eletrônica.
     	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-fisica/execute").header("login", "recebedor").contentType(MediaType.APPLICATION_JSON)
     		.content(this.peticaoFisicaParaRegistro)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		
     	//Recupera a(s) tarefa(s) do préautuador.
-    	/*tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "preautuador-recursal")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("preautuar"))).andReturn().getResponse().getContentAsString();*/
+    	tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "preautuador-recursal")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("preautuar-recursal"))).andReturn().getResponse().getContentAsString();
     	
     	//Assumir a(s) tarefa(s) do préautuador.
-    	//assumirTarefa(tarefaObject);
+    	assumirTarefa(tarefaObject);
     	    	
     	/*super.mockMvc.perform(post("/api/actions/preautuar/execute").header("login", "preautuador-originario").contentType(MediaType.APPLICATION_JSON)
 	    		.content(this.peticaoFisicaParaPreautuacao.replace("@", peticaoId))).andExpect(status().isOk());
@@ -247,6 +255,7 @@ public class AutuacaoRecursalActionIntegrationTests extends AbstractIntegrationT
 		// Realiza a assinatura do documento de devolução e finalizando, portanto, a devolução.
 		assinarDevolucaoPeticao(peticaoId);
     }
+    */
     
     private void assumirTarefa(String tarefaObject) throws Exception {
     	String tarefaId = getTarefaId(tarefaObject);
@@ -258,6 +267,7 @@ public class AutuacaoRecursalActionIntegrationTests extends AbstractIntegrationT
     	return ((Integer) new JSONArray(json).getJSONObject(0).get("id")).toString();
     }
     
+    /*
     private void assinarDevolucaoPeticao(String peticaoId)
 			throws UnsupportedEncodingException, Exception, CertificateEncodingException {
 		String peticaoJson = this.mockMvc.perform(get("/api/peticoes/" + peticaoId).header("login", "gestor-recebimento"))

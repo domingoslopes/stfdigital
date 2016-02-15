@@ -213,6 +213,17 @@
 					}
 				}
 			}
+		}).state('revisar-repercussao-geral', {
+			parent: 'action.autuacao',
+			url: '/processo/repercussao/revisar',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/repercussao/revisao-repercussao-geral.tpl.html',
+					controller: 'RevisaoRepercussaoGeralController',
+					controllerAs: 'vm'
+				}
+			}
 		});
 		
 		DashletsProvider.dashlet('minhas-peticoes', {
