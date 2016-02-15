@@ -69,7 +69,7 @@
 			
 			registroPage.preencherNumeroSedex(2);
 			
-			registriPage.selecionarTipoProcesso('Recursal');
+			registroPage.selecionarTipoProcesso('Recursal');
 			
 			registroPage.registrar();
 			
@@ -91,7 +91,7 @@
 		    	pos = text.search("#");
 		    	pos = pos + 1;
 		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #' + peticaoId);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Recursal #' + peticaoId);
 		    });
 		    
 		    principalPage.executarTarefa();

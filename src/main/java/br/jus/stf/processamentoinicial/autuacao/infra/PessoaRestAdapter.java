@@ -11,6 +11,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 
 import br.jus.stf.plataforma.identidades.interfaces.PessoaRestResource;
 import br.jus.stf.plataforma.identidades.interfaces.commands.CadastrarPessoasCommand;
+import br.jus.stf.plataforma.identidades.interfaces.dto.PessoaDto;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.shared.PessoaId;
 
@@ -31,6 +32,12 @@ public class PessoaRestAdapter implements PessoaAdapter {
 				.map(dto -> new PessoaId(dto.getId()))
 				.collect(Collectors.toCollection(
 						() -> new LinkedHashSet<PessoaId>()));
+	}
+
+	@Override
+	public String consultarNome(PessoaId pessoaId) {
+		PessoaDto pessoa = pessoaRestResource.pesquisar(pessoaId.toLong());
+		return pessoa.getNome();
 	}
 
 }

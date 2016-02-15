@@ -27,7 +27,7 @@ public class PeticaoActionsResource {
 	
 	@ActionMapping(id = "autuar", name = "Autuar Petição")
 	public void autuar(AutuarPeticaoCommand command) {
-		peticaoServiceFacade.autuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo()); 
+		peticaoServiceFacade.autuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo()); 
 	}
 	
 	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição")
