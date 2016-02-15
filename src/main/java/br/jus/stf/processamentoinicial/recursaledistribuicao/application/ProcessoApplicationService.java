@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TarefaAdapter;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TeseAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Distribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidaoProcesso;
@@ -52,6 +53,9 @@ public class ProcessoApplicationService {
 	
 	@Autowired
 	private PessoaAdapter pessoaAdapter;
+	
+	@Autowired
+	private TeseAdapter teseAdapter;
 	
 	/**
 	 * Cadastra um processo recursal.
@@ -136,7 +140,7 @@ public class ProcessoApplicationService {
 		if (revisao) {
 			tarefaAdapter.completarRevisaoRepercussaoGeral(processo);
 		} else {
-			tarefaAdapter.completarAnaliseRepercussaoGeral(processo, !teses.isEmpty());
+			tarefaAdapter.completarAnaliseRepercussaoGeral(processo, teseAdapter.contemTeseDoTipoRepercursaoGeral(tesesProcesso));
 		}
 	}
 	

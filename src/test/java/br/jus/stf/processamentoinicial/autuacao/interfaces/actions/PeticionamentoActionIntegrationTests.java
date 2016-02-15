@@ -98,6 +98,8 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoInValidaParaAutuacao.append("[{\"peticaoId\": @,");
 		peticaoInValidaParaAutuacao.append("\"classeId\":\"ADI\",");
 		peticaoInValidaParaAutuacao.append("\"valida\":false,");
+		peticaoInValidaParaAutuacao.append("\"partesPoloAtivo\":[],");
+		peticaoInValidaParaAutuacao.append("\"partesPoloPassivo\":[],");
 		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}]}");
 		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
 		
@@ -107,6 +109,8 @@ public class PeticionamentoActionIntegrationTests extends AbstractIntegrationTes
 		peticaoEletronicaValidaParaAutuacao.append("[{\"peticaoId\": @,");
 		peticaoEletronicaValidaParaAutuacao.append("\"classeId\":\"ADI\",");
 		peticaoEletronicaValidaParaAutuacao.append("\"valida\":true,");
+		peticaoEletronicaValidaParaAutuacao.append("\"partesPoloAtivo\":[1, 2],");
+		peticaoEletronicaValidaParaAutuacao.append("\"partesPoloPassivo\":[3, 4],");
 		peticaoEletronicaValidaParaAutuacao.append("\"motivo\":\"\"}]}");
 		this.peticaoValidaParaAutuacao = peticaoEletronicaValidaParaAutuacao.toString();
 		

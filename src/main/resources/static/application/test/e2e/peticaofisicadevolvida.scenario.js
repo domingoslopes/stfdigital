@@ -94,7 +94,7 @@
 		    	pos = text.search("#");
 		    	pos = pos + 1;
 		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo #' + peticaoId);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Originário #' + peticaoId);
 		    });
 		    
 		    principalPage.executarTarefa();
@@ -102,6 +102,8 @@
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/preautuacao/);
 		    
 			var preautuacaoPage = new PreautuacaoPage();
+			
+			preautuacaoPage.classificar("RE");
 			
 			preautuacaoPage.preencherMotivoIndevida();
 			
