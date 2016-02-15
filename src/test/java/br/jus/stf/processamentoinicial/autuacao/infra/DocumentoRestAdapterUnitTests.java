@@ -51,7 +51,7 @@ public class DocumentoRestAdapterUnitTests {
 		DocumentoId documentoId = new DocumentoId(7L);
 		List<Range<Integer>> intervalos = Arrays.asList(Range.between(1, 5), Range.between(6, 10));
 		
-		Mockito.doReturn(Arrays.asList(new DocumentoId(8L), new DocumentoId(9L))).when(documentoRestResource).dividirDocumento(Mockito.any(), Mockito.any());
+		Mockito.doReturn(Arrays.asList(8L, 9L)).when(documentoRestResource).dividirDocumento(Mockito.any(), Mockito.any());
 		
 		List<DocumentoId> documentos = documentoRestAdapter.dividirDocumento(documentoId, intervalos);
 		
@@ -59,8 +59,8 @@ public class DocumentoRestAdapterUnitTests {
 		
 		Assert.assertEquals(2, dividirCommandCaptor.getValue().size());
 		
-		Assert.assertEquals(new DocumentoId(7L), dividirCommandCaptor.getValue().get(0).getDocumento());
-		Assert.assertEquals(new DocumentoId(7L), dividirCommandCaptor.getValue().get(1).getDocumento());
+		Assert.assertEquals(new Long(7L), dividirCommandCaptor.getValue().get(0).getDocumentoId());
+		Assert.assertEquals(new Long(7L), dividirCommandCaptor.getValue().get(1).getDocumentoId());
 		
 		Assert.assertEquals(new Integer(1), dividirCommandCaptor.getValue().get(0).getPaginaInicial());
 		Assert.assertEquals(new Integer(5), dividirCommandCaptor.getValue().get(0).getPaginaFinal());
@@ -78,16 +78,16 @@ public class DocumentoRestAdapterUnitTests {
 		DocumentoId documentoId1 = new DocumentoId(2L);
 		DocumentoId documentoId2 = new DocumentoId(3L);
 		
-		Mockito.doReturn(new DocumentoId(4L)).when(documentoRestResource).unirDocumentos(Mockito.any(), Mockito.any());
+		Mockito.doReturn(4L).when(documentoRestResource).unirDocumentos(Mockito.any(), Mockito.any());
 		
 		DocumentoId documentoUnido = documentoRestAdapter.unirDocumentos(Arrays.asList(documentoId1, documentoId2));
 		
 		Mockito.verify(documentoRestResource).unirDocumentos(unirDocumentosCommandCaptor.capture(), Mockito.any());
 		
-		Assert.assertEquals(2, unirDocumentosCommandCaptor.getValue().getDocumentos().size());
+		Assert.assertEquals(2, unirDocumentosCommandCaptor.getValue().getIdsDocumentos().size());
 		
-		Assert.assertEquals(new DocumentoId(2L), unirDocumentosCommandCaptor.getValue().getDocumentos().get(0));
-		Assert.assertEquals(new DocumentoId(3L), unirDocumentosCommandCaptor.getValue().getDocumentos().get(1));
+		Assert.assertEquals(new Long(2L), unirDocumentosCommandCaptor.getValue().getIdsDocumentos().get(0));
+		Assert.assertEquals(new Long(3L), unirDocumentosCommandCaptor.getValue().getIdsDocumentos().get(1));
 		
 		Assert.assertEquals(new DocumentoId(4L), documentoUnido);
 	}
