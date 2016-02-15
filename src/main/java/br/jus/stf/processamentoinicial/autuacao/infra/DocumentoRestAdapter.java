@@ -37,7 +37,7 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	@Override
 	public DocumentoId salvar(DocumentoTemporarioId documentoTemporario) {
 		SalvarDocumentosCommand command = new SalvarDocumentosCommand();
-		command.setDocumentos(Arrays.asList(documentoTemporario));
+		command.setIdsDocumentosTemporarios(Arrays.asList(documentoTemporario.toString()));
 		LinkedHashSet<DocumentoId> docs = documentoRestResource.salvar(command).stream()
 				.map(dto -> new DocumentoId(dto.getDocumentoId()))
 				.collect(Collectors.toCollection(
@@ -48,7 +48,7 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	@Override
 	public Set<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios) {
 		SalvarDocumentosCommand command = new SalvarDocumentosCommand();
-		command.setDocumentos(documentosTemporarios);
+		command.setIdsDocumentosTemporarios(documentosTemporarios.stream().map(id -> id.toString()).collect(Collectors.toList()));
 		return documentoRestResource.salvar(command).stream()
 				.map(dto -> new DocumentoId(dto.getDocumentoId()))
 				.collect(Collectors.toCollection(
@@ -63,13 +63,13 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 
 	@Override
 	public List<DocumentoId> dividirDocumento(DocumentoId documento, List<Range<Integer>> intervalosDivisao) {
-		List<DividirDocumentoCommand> commands = intervalosDivisao.stream().map(i -> new DividirDocumentoCommand(documento, i.getMinimum(), i.getMaximum())).collect(Collectors.toList());
-		return documentoRestResource.dividirDocumento(commands, null);
+		List<DividirDocumentoCommand> commands = intervalosDivisao.stream().map(i -> new DividirDocumentoCommand(documento.toLong(), i.getMinimum(), i.getMaximum())).collect(Collectors.toList());
+		return documentoRestResource.dividirDocumento(commands, null).stream().map(id -> new DocumentoId(id)).collect(Collectors.toList());
 	}
 
 	@Override
 	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
-		return documentoRestResource.unirDocumentos(new UnirDocumentosCommand(documentos), null);
+		return new DocumentoId(documentoRestResource.unirDocumentos(new UnirDocumentosCommand(documentos.stream().map(d -> d.toLong()).collect(Collectors.toList())), null));
 	}
 
 }
