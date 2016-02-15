@@ -13,9 +13,7 @@ import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
-import br.jus.stf.plataforma.documentos.infra.DocumentoServiceImpl;
 import br.jus.stf.shared.DocumentoId;
-import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * Repositório de documentos.
@@ -39,9 +37,6 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 	private ConteudoDocumentoRepository conteudoDocumentoRepository;
 	
 	@Autowired
-	private DocumentoServiceImpl documentoPdfService;
-	
-	@Autowired
 	public DocumentoRepositoryImpl(EntityManager entityManager) {
 		super(Documento.class, entityManager);
 		this.entityManager = entityManager;
@@ -54,20 +49,13 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 		return conteudoDocumentoRepository.downloadConteudo(documento.numeroConteudo());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public DocumentoId save(DocumentoTemporarioId documentoTemporario) {
-		DocumentoTemporario docTemp = documentoTempRepository.recoverTemp(documentoTemporario);
-		DocumentoId id = nextId();
-		
-		String numeroConteudo = conteudoDocumentoRepository.save(id, docTemp);
-		
-		Documento documento = new Documento(id, numeroConteudo, documentoPdfService.contarPaginas(docTemp.randomAccessFile()));
-		documento = super.save(documento);
+	public Documento save(Documento documento) {
+		Documento documentoPersistido = super.save(documento);
 
 		entityManager.flush();
-		documentoTempRepository.removeTemp(documentoTemporario.toString());
-		docTemp.delete();
-		return documento.id();
+		return documentoPersistido;
 	}
 
 	@Override

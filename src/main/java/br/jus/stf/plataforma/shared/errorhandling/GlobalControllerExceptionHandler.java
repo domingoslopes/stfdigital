@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.shared.errorhandling;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -35,8 +36,11 @@ class GlobalControllerExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
-    public void handleIllegals(IllegalArgumentException exception) {
+    @ResponseBody
+    public ErrorMessageDto handleIllegals(IllegalArgumentException exception) {
     	LOGGER.error(exception.getClass().getName(), exception);
+    	
+    	return new ErrorMessageDto(Arrays.asList(new ErrorDto(exception.getMessage())));
     }
     
     /**
