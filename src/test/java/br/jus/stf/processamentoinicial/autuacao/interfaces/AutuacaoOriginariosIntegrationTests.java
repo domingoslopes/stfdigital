@@ -16,7 +16,6 @@ import java.security.Signature;
 import java.security.cert.CertificateEncodingException;
 
 import org.apache.commons.codec.binary.Hex;
-import org.activiti.engine.impl.util.json.JSONArray;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,8 +29,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.jayway.jsonpath.JsonPath;
-
 import br.jus.stf.plataforma.shared.certification.infra.pki.CustomKeyStore;
 import br.jus.stf.plataforma.shared.certification.support.pki.PlataformaUnitTestingUser;
 import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
@@ -39,6 +36,8 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusIndexadorConsumer;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.eventbus.ProcessoDistribuidoIndexadorConsumer;
+
+import com.jayway.jsonpath.JsonPath;
 
 /**
  * Realiza os testes de integração do peticionamento usando o mecanismo de ações da plataforma STF Digital.
@@ -336,14 +335,12 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		assinarDevolucaoPeticao(peticaoId);
     }
     
-    private void assumirTarefa(String tarefaObject) throws Exception {
-    	String tarefaId = getTarefaId(tarefaObject);
+    private void assumirTarefa(String json) throws Exception {
+    	
+    	String tarefaId = ((Integer) JsonPath.read(json, "$[0].id")).toString();
+    	
 		super.mockMvc.perform(post("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
 	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
-    }
-    
-    private String getTarefaId(String json) {
-    	return ((Integer) new JSONArray(json).getJSONObject(0).get("id")).toString();
     }
     
     private void assinarDevolucaoPeticao(String peticaoId)
