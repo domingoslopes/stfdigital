@@ -1,6 +1,5 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.application;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -83,11 +82,9 @@ public class ProcessoApplicationService {
 		
 		ProcessoId processoId = new ProcessoId(idProcesso);
 		Set<AssuntoId> assuntosProcesso = assuntos.stream().map(id -> new AssuntoId(id)).collect(Collectors.toSet());
-		Set<ParteProcesso> partesPoloAtivo = new HashSet<ParteProcesso>();
-		Set<ParteProcesso> partesPoloPassivo = new HashSet<ParteProcesso>();
 		
-		adicionarPartes(partesPoloAtivo, poloAtivo, TipoPolo.POLO_ATIVO);
-		adicionarPartes(partesPoloPassivo, poloPassivo, TipoPolo.POLO_PASSIVO);
+		Set<ParteProcesso> partesPoloAtivo = carregarPartes(poloAtivo, TipoPolo.POLO_ATIVO);
+		Set<ParteProcesso> partesPoloPassivo = carregarPartes(poloPassivo, TipoPolo.POLO_PASSIVO);
 		
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(processoId);
 		processo.autuar(assuntosProcesso, partesPoloAtivo, partesPoloPassivo);
@@ -103,8 +100,8 @@ public class ProcessoApplicationService {
 	 * @param motivos Lista de motivos de inaptidão do processo
 	 * @param observacao Observação da análise
 	 */
-	public void analisarPressupostosFormais(Long IdProcesso, String classificacao, Map<Long, String> motivos, String observacao, boolean revisao) {
-		ProcessoId processoId = new ProcessoId(IdProcesso);
+	public void analisarPressupostosFormais(Long idProcesso, String classificacao, Map<Long, String> motivos, String observacao, boolean revisao) {
+		ProcessoId processoId = new ProcessoId(idProcesso);
 		Classificacao classif = Classificacao.valueOf(classificacao.toUpperCase());
 		Set<MotivoInaptidaoProcesso> motivosInaptidao = new LinkedHashSet<MotivoInaptidaoProcesso>(); 
 		motivos.forEach((k, v) -> motivosInaptidao.add(new MotivoInaptidaoProcesso(recuperarMotivoInaptidao(k), v)));
@@ -172,8 +169,8 @@ public class ProcessoApplicationService {
 	 * @param tipo Tipo de polo.
 	 * 
 	 */
-	private void adicionarPartes(Set<ParteProcesso> partes, List<String> polo, TipoPolo tipo) {
+	private Set<ParteProcesso> carregarPartes(List<String> polo, TipoPolo tipo) {
 		Set<PessoaId> pessoas = pessoaAdapter.cadastrarPessoas(polo);
-		pessoas.forEach(pessoa -> partes.add(new ParteProcesso(pessoa, tipo)));
+		return pessoas.stream().map(pessoa -> new ParteProcesso(pessoa, tipo)).collect(Collectors.toSet());
 	}
 }

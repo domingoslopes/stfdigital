@@ -26,7 +26,7 @@
 			analise.peticao = data;
 		});
 		
-		ProcessoService.consultarProcessoPeloIdPeticao(analise.peticaoId).success(function(data){
+		ProcessoService.consultarPorPeticao(analise.peticaoId).success(function(data){
 			analise.processo = data;
 		});
 		

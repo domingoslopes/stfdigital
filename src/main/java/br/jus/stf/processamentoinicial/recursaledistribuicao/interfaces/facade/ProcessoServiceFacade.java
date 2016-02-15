@@ -14,7 +14,6 @@ import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationService;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoSituacao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
