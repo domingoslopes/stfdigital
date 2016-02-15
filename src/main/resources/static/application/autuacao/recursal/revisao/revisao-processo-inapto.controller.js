@@ -30,7 +30,7 @@
 			revisao.motivos = motivos;
 		});
 		
-		ProcessoService.consultarProcessoPeloIdPeticao(revisao.peticaoId).success(function(data){
+		ProcessoService.consultarPorPeticao(revisao.peticaoId).success(function(data){
 			revisao.processo = data;
 		});
 		

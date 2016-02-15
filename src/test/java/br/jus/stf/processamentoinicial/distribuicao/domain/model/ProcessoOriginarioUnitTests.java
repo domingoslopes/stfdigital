@@ -229,7 +229,7 @@ public class ProcessoOriginarioUnitTests {
 		novoPoloAtivo.add(new ParteProcesso(new PessoaId(3L), TipoPolo.POLO_ATIVO));
 		novoPoloAtivo.add(new ParteProcesso(new PessoaId(4L), TipoPolo.POLO_ATIVO));
 		
-		processo.atribuirPoloAtivo(novoPoloAtivo);
+		processo.atribuirPartes(novoPoloAtivo, TipoPolo.POLO_ATIVO);
 		
 		assertEquals(2, processo.partesPoloAtivo().size());
 		assertTrue(processo.partesPoloAtivo().contains(new ParteProcesso(new PessoaId(3L), TipoPolo.POLO_ATIVO)));
@@ -246,7 +246,7 @@ public class ProcessoOriginarioUnitTests {
 		novoPoloPassivo.add(new ParteProcesso(new PessoaId(5L), TipoPolo.POLO_PASSIVO));
 		novoPoloPassivo.add(new ParteProcesso(new PessoaId(6L), TipoPolo.POLO_PASSIVO));
 		
-		processo.atribuirPoloPassivo(novoPoloPassivo);
+		processo.atribuirPartes(novoPoloPassivo, TipoPolo.POLO_PASSIVO);
 		
 		assertEquals(2, processo.partesPoloPassivo().size());
 		assertTrue(processo.partesPoloPassivo().contains(new ParteProcesso(new PessoaId(5L), TipoPolo.POLO_PASSIVO)));

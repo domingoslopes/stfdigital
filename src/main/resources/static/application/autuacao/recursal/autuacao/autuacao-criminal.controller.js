@@ -32,7 +32,7 @@
 		
 		autuacao.recursos = [];
 		
-		ProcessoService.consultarProcessoPeloIdPeticao(autuacao.peticaoId).success(function(data){
+		ProcessoService.consultarPorPeticao(autuacao.peticaoId).success(function(data){
 			autuacao.processo = data;
 		});
 		
