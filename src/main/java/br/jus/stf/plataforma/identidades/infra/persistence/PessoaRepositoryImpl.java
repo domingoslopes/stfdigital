@@ -67,8 +67,8 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 		Query query = entityManager.createQuery("SELECT p FROM Pessoa p WHERE p.cpf = :cpf");
 		query.setParameter("cpf", cpf.trim());
 		
-		try{
-			return (Pessoa)query.getSingleResult();
+		try {
+			return (Pessoa) query.getSingleResult();
 		}
 		catch(NoResultException e){
 			return null;
