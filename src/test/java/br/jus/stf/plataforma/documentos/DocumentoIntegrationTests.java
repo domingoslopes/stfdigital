@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -26,6 +28,13 @@ import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 public class DocumentoIntegrationTests extends AbstractIntegrationTests {
+	
+	private String dividirDocumentoCommand;
+	
+	@Before
+	public void setUp() {
+		dividirDocumentoCommand = "{\"documentoId\": %d, \"paginaInicial\": %d, \"paginaFinal\": %d}";
+	}
 	
 	@Test
 	public void enviarArquivoSemAssinatura() throws Exception {
@@ -77,7 +86,37 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 	}
 	
 	@Test
-	public void dividirDocumento() throws Exception {
+	public void dividirEUnirDocumentos() throws Exception {
+		Integer documentoId = fazerUploadDocumento();
+		
+		String dividirDocumentoCommands = "[" + String.format(dividirDocumentoCommand,
+				documentoId, 1, 7) + ", " + String.format(dividirDocumentoCommand, documentoId, 8, 14) + "]";
+		String documentosDivididos = mockMvc.perform(post("/api/documentos/dividir").contentType(MediaType.APPLICATION_JSON)
+		        .content(dividirDocumentoCommands)).andExpect(status().is2xxSuccessful())
+				.andExpect(jsonPath("$", hasSize(2))).andReturn().getResponse()
+		        .getContentAsString();
+		
+		String unirDocumentosCommand = "{\"idsDocumentos\": " + documentosDivididos + "}";
+		
+		mockMvc.perform(post("/api/documentos/unir").contentType(MediaType.APPLICATION_JSON)
+		        .content(unirDocumentosCommand)).andExpect(status().is2xxSuccessful())
+				.andReturn().getResponse()
+		        .getContentAsString();
+	}
+	
+	@Test
+	public void dividirDocumentoIntervalosInvalidos() throws Exception {
+		Integer documentoId = fazerUploadDocumento();
+		
+		String dividirDocumentoCommands = "[" + String.format(dividirDocumentoCommand,
+				documentoId, 1, 7) + ", " + String.format(dividirDocumentoCommand, documentoId, 9, 14) + "]";
+		String json = mockMvc.perform(post("/api/documentos/dividir").contentType(MediaType.APPLICATION_JSON)
+		        .content(dividirDocumentoCommands)).andExpect(status().is4xxClientError()).andReturn().getResponse().getContentAsString();
+		String erro = JsonPath.read(json, "$.errors[0].message");
+		Assert.assertEquals("Intervalos não são contíguos", erro);
+	}
+	
+	private Integer fazerUploadDocumento() throws Exception {
 		String nomeArquivo = "pdf-14-pgs.pdf";
 		String mime = "application/pdf";
 		String caminho = "pdf/pdf-14-pgs.pdf";
@@ -100,20 +139,6 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 		        .andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
 		
 		Integer documentoId = JsonPath.read(documentosSalvos, "$[0].documentoId");
-		
-		String dividirDocumento = "{\"documentoId\": %d, \"paginaInicial\": %d, \"paginaFinal\": %d}";
-		String dividirDocumentoCommand = "[" + String.format(dividirDocumento,
-				documentoId, 1, 7) + ", " + String.format(dividirDocumento, documentoId, 8, 14) + "]";
-		String documentosDivididos = mockMvc.perform(post("/api/documentos/dividir").contentType(MediaType.APPLICATION_JSON)
-		        .content(dividirDocumentoCommand)).andExpect(status().is2xxSuccessful())
-				.andExpect(jsonPath("$", hasSize(2))).andReturn().getResponse()
-		        .getContentAsString();
-		
-		String unirDocumentosCommand = "{\"idsDocumentos\": " + documentosDivididos + "}";
-		
-		mockMvc.perform(post("/api/documentos/unir").contentType(MediaType.APPLICATION_JSON)
-		        .content(unirDocumentosCommand)).andExpect(status().is2xxSuccessful())
-				.andReturn().getResponse()
-		        .getContentAsString();
+		return documentoId;
 	}
 }

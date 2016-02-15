@@ -30,8 +30,7 @@ public class PessoaRestAdapter implements PessoaAdapter {
 		command.setNomes(pessoas);
 		return pessoaRestResource.cadastrar(command, new BeanPropertyBindingResult(command, "cadastrarPessoasCommand")).stream()
 				.map(dto -> new PessoaId(dto.getId()))
-				.collect(Collectors.toCollection(
-						() -> new LinkedHashSet<PessoaId>()));
+				.collect(Collectors.toCollection(() -> new LinkedHashSet<PessoaId>()));
 	}
 
 	@Override
