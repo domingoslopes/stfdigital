@@ -35,6 +35,7 @@
         <scm.git>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</scm.git>
 		<sonar.host.url>http://digital.stf.jus.br:9000</sonar.host.url>
 		<sonar.jdbc.url>jdbc:h2:tcp://digital.stf.jus.br:9092/sonar</sonar.jdbc.url>
+		<junit-toolbox.version>2.2</junit-toolbox.version>
     </properties>
 
     <dependencies>
@@ -102,6 +103,11 @@
 			<version>${reactor-bus.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 		</dependency>        
@@ -157,6 +163,12 @@
 			<version>${sonar-jacoco-listeners.version}</version>
 			<scope>test</scope>        
         </dependency>
+        <dependency>
+			<groupId>com.googlecode.junit-toolbox</groupId>
+			<artifactId>junit-toolbox</artifactId>
+			<version>${junit-toolbox.version}</version>
+			<scope>test</scope>
+		</dependency>
         <dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
@@ -310,8 +322,41 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>br/jus/stf/UnitTestingSuite.java</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>br/jus/stf/IntegrationTestingSuite.java</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+		</repository>
+	</repositories>
 
 	<scm>
 		<url>${scm.git}</url>

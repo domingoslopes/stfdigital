@@ -56,7 +56,7 @@ public class PeticaoFactory {
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
 		adicionarPartes(partes, poloPassivo, TipoPolo.POLO_PASSIVO);
 		
-		Set<PecaPeticao> pecas = adicionarPecas(pecasTemporarias);
+		List<PecaPeticao> pecas = adicionarPecas(pecasTemporarias);
 		
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
@@ -106,7 +106,7 @@ public class PeticaoFactory {
 	 * @param pecas
 	 * @return
 	 */
-	private Set<PecaPeticao> adicionarPecas(List<PecaTemporaria> pecas) {
+	private List<PecaPeticao> adicionarPecas(List<PecaTemporaria> pecas) {
 		List<DocumentoTemporarioId> documentosTemporarios = pecas.stream()
 				.map(peca -> peca.documentoTemporario())
 				.collect(Collectors.toList());
@@ -119,7 +119,7 @@ public class PeticaoFactory {
 					TipoPeca tipo = pecas.get(index).tipo();
 					String descricao = pecas.get(index).descricao();
 					return new PecaPeticao(documento, tipo, descricao);
-				}).collect(Collectors.toSet());
+				}).collect(Collectors.toList());
 	}
 	
 }

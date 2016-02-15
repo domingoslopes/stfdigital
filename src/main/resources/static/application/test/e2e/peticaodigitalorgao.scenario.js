@@ -71,10 +71,12 @@
 			peticionamentoPage.partePoloPassivo('Maria da Silva');
 			
 			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.removePecas();
 			
 			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.selecionarTipoPeca('Petição Inicial');
 		    
@@ -82,7 +84,7 @@
 
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.peticoes().count()).toBeGreaterThan(0);
+			expect(principalPage.isMensagemSucessoApresentada()).toBeTruthy();
 			
 		    loginPage.logout();
 		});

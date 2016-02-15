@@ -13,7 +13,7 @@ public interface TarefaAdapter {
 
 	void completarRevisaoProcessoInapto(ProcessoRecursal processo, Classificacao classificacao);
 
-	void completarAnaliseRepercussaoGeral(ProcessoRecursal processo, boolean tema);
+	void completarAnaliseRepercussaoGeral(ProcessoRecursal processo, boolean repercussaoGeral);
 
 	void completarRevisaoRepercussaoGeral(ProcessoRecursal processo);
 

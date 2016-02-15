@@ -9,6 +9,6 @@ insert into corporativo.setor (cod_setor, nom_setor, sig_setor) values (60000062
 insert into corporativo.setor (cod_setor, nom_setor, sig_setor) values (600000629, 'COORDENADORIA DE PROCESSAMENTO INICIAL', 'CPIN');
 insert into corporativo.setor (cod_setor, nom_setor, sig_setor) values (600000680, 'SEÇÃO DE RECEBIMENTO E DISTRIBUIÇÃO DE RECURSOS', 'SRDR');
 
-update plataforma.usuario set cod_setor_lotacao = 600000627 where seq_usuario in (4, 5, 6, 7, 8);
+update plataforma.usuario set cod_setor_lotacao = 600000627 where seq_usuario in (4, 5, 6, 7, 8, 9);
 update plataforma.usuario set cod_setor_lotacao = 600000629 where seq_usuario in (10, 12);
 update plataforma.usuario set cod_setor_lotacao = 600000680 where seq_usuario = 2;

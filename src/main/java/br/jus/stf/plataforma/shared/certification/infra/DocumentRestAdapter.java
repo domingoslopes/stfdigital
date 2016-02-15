@@ -48,7 +48,7 @@ public class DocumentRestAdapter implements DocumentAdapter {
 	@Override
 	public DocumentoId save(DocumentoTemporarioId tempDocument) {
 		SalvarDocumentosCommand command = new SalvarDocumentosCommand();
-		command.setDocumentos(Arrays.asList(tempDocument));
+		command.setIdsDocumentosTemporarios(Arrays.asList(tempDocument.toString()));
 		LinkedHashSet<DocumentoId> docs = docRestResource.salvar(command).stream()
 				.map(dto -> new DocumentoId(dto.getDocumentoId()))
 				.collect(Collectors.toCollection(() -> new LinkedHashSet<DocumentoId>()));

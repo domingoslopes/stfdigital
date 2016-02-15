@@ -1,5 +1,6 @@
 package br.jus.stf.processamentoinicial.autuacao.domain.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
@@ -30,7 +31,7 @@ public class PeticaoEletronica extends Peticao {
 
 	public PeticaoEletronica(final PeticaoId id, final Long numero, final String usuarioCadastramento,
 			final ClasseId classeSugerida, final Set<PartePeticao> partes,
-			final Set<PecaPeticao> pecas, final TipoProcesso tipoProcesso) {
+			final List<PecaPeticao> pecas, final TipoProcesso tipoProcesso) {
 		super(id, numero, usuarioCadastramento, tipoProcesso);
 
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");
@@ -44,7 +45,7 @@ public class PeticaoEletronica extends Peticao {
 
 	public PeticaoEletronica(final PeticaoId id, final Long numero, final String usuarioCadastramento,
 			final ClasseId classeSugerida, final Set<PartePeticao> partes,
-			final Set<PecaPeticao> pecas, final Orgao orgaoRepresentado, final TipoProcesso tipoProcesso) {
+			final List<PecaPeticao> pecas, final Orgao orgaoRepresentado, final TipoProcesso tipoProcesso) {
 		super(id, numero, usuarioCadastramento, tipoProcesso);
 
 		Validate.notNull(classeSugerida, "peticao.classeSugerida.required");

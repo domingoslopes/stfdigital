@@ -59,10 +59,10 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 		return partes;
 	}
 	
-	private Set<Peca> carregarPecas(List<PecaDto> pecasDto) {
+	private List<Peca> carregarPecas(List<PecaDto> pecasDto) {
 		return pecasDto.stream()
 				.map(pecaDto -> new PecaPeticao(new DocumentoId(pecaDto.getDocumentoId()), new TipoPeca(pecaDto.getTipoId(), pecaDto.getTipoNome()), pecaDto.getDescricao()))
-				.collect(Collectors.toSet());
+				.collect(Collectors.toList());
 	}
 	
 	private Set<PreferenciaId> carregarPreferencias(List<PreferenciaDto> preferenciasDto) {
