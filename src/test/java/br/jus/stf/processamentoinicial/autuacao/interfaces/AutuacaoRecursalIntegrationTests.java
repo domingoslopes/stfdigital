@@ -11,8 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.UnsupportedEncodingException;
 
-import org.activiti.engine.impl.util.json.JSONArray;
-import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +27,8 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoIndexadorConsumer;
 import br.jus.stf.processamentoinicial.autuacao.infra.eventbus.PeticaoStatusIndexadorConsumer;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.eventbus.ProcessoDistribuidoIndexadorConsumer;
+
+import com.jayway.jsonpath.JsonPath;
 
 /**
  * Executa os testes de integração do processo de autuação de recursais.
@@ -227,7 +227,7 @@ public class AutuacaoRecursalIntegrationTests extends AbstractIntegrationTests {
 		//Recupera a(s) tarefa(s) do autuador.
     	tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador-recursal")).andExpect(status().isOk())
 			.andExpect(jsonPath("$[0].nome", is("autuar-recursal"))).andReturn().getResponse().getContentAsString();
-		
+    	
 		assumirTarefa(tarefaObject);
 		
 		//Realiza a autuação.
@@ -246,20 +246,19 @@ public class AutuacaoRecursalIntegrationTests extends AbstractIntegrationTests {
 			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)));
     }
     
-    private void assumirTarefa(String tarefaObject) throws Exception {
-    	String tarefaId = getId(tarefaObject);
+    private void assumirTarefa(String json) throws Exception {
+    	
+    	String tarefaId = ((Integer) JsonPath.read(json, "$[0].id")).toString();
+    	
 		super.mockMvc.perform(post("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
 	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
-    }
-    
-    private String getId(String json) {
-    	return ((Integer) new JSONArray(json).getJSONObject(0).get("id")).toString();
     }
     
     private String getProcessoId(String peticaoId) throws Exception {
 		String json = super.mockMvc.perform(get("/api/peticoes/" + peticaoId + "/processo").contentType(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse().getContentAsString();
-		return ((Integer) new JSONObject(json).get("id")).toString();
+		
+		return ((Integer) JsonPath.read(json, "$.id")).toString();
     }
     
 }
