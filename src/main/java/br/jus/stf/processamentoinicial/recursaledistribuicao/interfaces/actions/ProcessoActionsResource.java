@@ -6,7 +6,6 @@ import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionController;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
-import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.facade.PeticaoServiceFacade;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationService;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AnalisarPressupostosFormaisCommand;
@@ -36,11 +35,6 @@ public class ProcessoActionsResource {
 	
 	@Autowired
 	private PeticaoServiceFacade peticaoServiceFacade;
-	
-	@ActionMapping(id = "preautuar-recursal", name = "Preautuar Petição Física Recursal")
-	public void preautuar(PreautuarPeticaoFisicaCommand command) {
-		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPreferencias());
-	}
 	
 	@ActionMapping(id = "autuar-recursal-criminal-eleitoral", name = "Autuar Petição Física Recursal Criminal Eleitoral")
 	public void autuarRecursalCriminalEleitoral(AutuarProcessoCriminalEleitoralCommand command) {

@@ -210,6 +210,20 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return partes.remove(parte);
 	}
 	
+	/**
+	 * Atribui as partes a um polo especificado
+	 * 
+	 * @param partes
+	 * @param polo
+	 */
+	public void atribuirPartes(final Set<PartePeticao> partes, final TipoPolo polo) {
+		Validate.notNull(partes, "peticao.partesPolo.required");
+		Validate.notNull(polo, "peticao.polo.required");
+		
+		this.partes.removeIf(parte -> polo.equals(parte.polo()) && !partes.contains(parte));
+		this.partes.addAll(partes);
+	}
+	
 	public List<Peca> pecas(){
 		return Collections.unmodifiableList(pecas);
 	}

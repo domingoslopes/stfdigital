@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.ClasseId;
@@ -103,8 +104,8 @@ public class ProcessoRecursal extends Processo {
 	
 	public void autuar(Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
 		atribuirAssuntos(assuntos);
-		atribuirPoloAtivo(poloAtivo);
-		atribuirPoloPassivo(poloPassivo);
+		atribuirPartes(poloAtivo, TipoPolo.POLO_ATIVO);
+		atribuirPartes(poloPassivo, TipoPolo.POLO_PASSIVO);
 	}
 	
 	public void analisarPressupostosFormais(Classificacao classificacao, String observacaoAnalise, Set<MotivoInaptidaoProcesso> motivosInaptidao) {
