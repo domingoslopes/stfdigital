@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.jurisprudencia.controletese.domain.model.Tese;
 import br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDtoAssembler;
@@ -62,7 +61,7 @@ public class ProcessoDtoAssembler {
 		
 		// Processos recursais têm informações adicionais
 		if (processo instanceof ProcessoRecursal) {
-			ProcessoRecursal processoRecursal = (ProcessoRecursal)processo;
+			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
 			
 			List<AssuntoDto> assuntos = new LinkedList<AssuntoDto>();
 			processoRecursal.assuntos().stream().forEach(assunto -> assuntos.add(assuntoAdapter.consultar(assunto)));
@@ -71,7 +70,7 @@ public class ProcessoDtoAssembler {
 			
 			List<TeseDto> teses = teseAdapter.consultar(processoRecursal.teses());
 			
-			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, observacao);
+			return new ProcessoRecursalDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, observacao);
 		} else {
 			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao);
 		}
