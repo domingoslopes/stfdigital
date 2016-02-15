@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.MotivoInaptidaoDto;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TeseDto;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -46,7 +49,14 @@ public class ProcessoDto {
 	@ApiModelProperty(value = "Identificação do processo.")
 	private String identificacao;
 	
-	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, List<Long> preferencias, String identificacao) {
+	@ApiModelProperty(value = "Assuntos vinculados ao processo.")
+	private List<AssuntoDto> assuntos;
+	
+	@ApiModelProperty(value = "Teses vinculadas ao processo.")
+	private List<TeseDto> teses;
+	
+	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, 
+			List<Long> preferencias, String identificacao, List<AssuntoDto> assuntos, List<TeseDto> teses) {
 		this.id = id;
 		this.classe = classe;
 		this.numero = numero;
@@ -56,6 +66,8 @@ public class ProcessoDto {
 		this.situacao = situacao;
 		this.preferencias = preferencias;
 		this.identificacao = identificacao;
+		this.assuntos = assuntos;
+		this.teses = teses;
 	}
 	
 	public Long getId() {
@@ -92,6 +104,14 @@ public class ProcessoDto {
 	
 	public String getIdentificacao(){
 		return identificacao;
+	}
+	
+	public List<AssuntoDto> getAssuntos() {
+		return assuntos;
+	}
+	
+	public List<TeseDto> getTeses() {
+		return teses;
 	}
 	
 }
