@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import br.jus.stf.shared.DocumentoTemporarioId;
-
 /**
  * Comando para persistir documentos temporários
  * 
@@ -15,20 +13,20 @@ import br.jus.stf.shared.DocumentoTemporarioId;
 public class SalvarDocumentosCommand {
 	
 	@NotEmpty
-	private List<DocumentoTemporarioId> documentos;
+	private List<String> idsDocumentosTemporarios;
 
 	/**
 	 * @return the documentos
 	 */
-	public List<DocumentoTemporarioId> getDocumentos() {
-		return documentos;
+	public List<String> getIdsDocumentosTemporarios() {
+		return idsDocumentosTemporarios;
 	}
 
 	/**
 	 * @param documentos the documentos to set
 	 */
-	public void setDocumentos(List<DocumentoTemporarioId> documentos) {
-		this.documentos = documentos;
+	public void setIdsDocumentosTemporarios(List<String> documentos) {
+		this.idsDocumentosTemporarios = documentos;
 	}
 
 }
