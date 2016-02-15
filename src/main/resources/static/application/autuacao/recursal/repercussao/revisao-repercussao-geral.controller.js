@@ -20,12 +20,12 @@
 		revisao.numeroTese = '';
 		revisao.recursos = [];
 		
-		ProcessoService.consultarRecursal(resource).then(function(response) {
+		ProcessoService.consultar(resource).then(function(response) {
 			revisao.processo = response.data;
 			revisao.observacao = response.data.observacaoAnalise;
 			revisao.teses = response.data.teses;
 			revisao.assuntos = response.data.assuntos;
-		})
+		});
 		
 		PeticaoService.consultar(revisao.peticaoId).then(function(data) {
 			revisao.peticao = data;

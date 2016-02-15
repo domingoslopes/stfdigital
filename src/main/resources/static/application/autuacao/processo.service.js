@@ -9,12 +9,8 @@
 
 	angular.plataforma.factory('ProcessoService', function($http, $q, properties) {
 		return {
-			consultar : function(peticaoId) {
-				return $http.get(properties.apiUrl + '/processos/' + peticaoId);
-			},
-			
-			consultarRecursal: function(peticaoId) {
-				return $http.get(properties.apiUrl + '/processos/recursais/' + peticaoId);
+			consultar : function(processoId) {
+				return $http.get(properties.apiUrl + '/processos/' + processoId);
 			},
 			
 			listarStatus : function() {
@@ -25,7 +21,7 @@
 				return $http.get(properties.apiUrl + '/motivos');
 			},
 			
-			consultarProcessoPeloIdPeticao : function(peticaoId){
+			consultarPorPeticao : function(peticaoId){
 				return $http.get(properties.apiUrl + '/peticoes/' + peticaoId + '/processo');
 			},
 			
