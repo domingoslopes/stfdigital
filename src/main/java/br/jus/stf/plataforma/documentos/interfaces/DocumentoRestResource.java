@@ -34,12 +34,14 @@ import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.shared.errorhandling.ValidationException;
 import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * Api REST para salvar e recuperar documentos
@@ -64,7 +66,7 @@ public class DocumentoRestResource {
 		if (!result.isEmpty()) {
 			throw new IllegalArgumentException(result.toString());
 		}
-		return documentoServiceFacade.salvarDocumentos(command.getDocumentos());
+		return documentoServiceFacade.salvarDocumentos(command.getIdsDocumentosTemporarios().stream().map(id -> new DocumentoTemporarioId(id)).collect(Collectors.toList()));
 	}	
 	
 	@ApiOperation("Recupera um documento do repositório")
@@ -106,17 +108,26 @@ public class DocumentoRestResource {
 
 	@ApiOperation("Divide um documento")
 	@RequestMapping(value = "/dividir", method = RequestMethod.POST)
-	public List<DocumentoId> dividirDocumento(@Valid @RequestBody List<DividirDocumentoCommand> commands, BindingResult result) {
+	public List<Long> dividirDocumento(@Valid @RequestBody List<DividirDocumentoCommand> commands, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new IllegalArgumentException(result.toString());
 		}
-		Map<DocumentoId, List<DividirDocumentoCommand>> commandsById = commands.stream().collect(Collectors.groupingBy(DividirDocumentoCommand::getDocumento));
+		Map<Long, List<DividirDocumentoCommand>> commandsById = commands.stream().collect(Collectors.groupingBy(DividirDocumentoCommand::getDocumentoId));
 		List<DocumentoId> documentosDivididos = new ArrayList<>();
-		for (DocumentoId id : commandsById.keySet()) {
-			List<Range<Integer>> intervalos = commandsById.get(id).stream().map(d -> Range.between(1, 2)).collect(Collectors.toList());
-			documentosDivididos.addAll(documentoServiceFacade.dividirDocumento(id, intervalos));
+		for (Long id : commandsById.keySet()) {
+			List<Range<Integer>> intervalos = commandsById.get(id).stream().map(d -> Range.between(d.getPaginaInicial(), d.getPaginaFinal())).collect(Collectors.toList());
+			documentosDivididos.addAll(documentoServiceFacade.dividirDocumento(new DocumentoId(id), intervalos));
 		}
-		return documentosDivididos;
+		return documentosDivididos.stream().map(d -> d.toLong()).collect(Collectors.toList());
+	}
+	
+	@ApiOperation("Une documentos")
+	@RequestMapping(value = "/unir", method = RequestMethod.POST)
+	public Long unirDocumentos(@Valid @RequestBody UnirDocumentosCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.toString());
+		}
+		return documentoServiceFacade.unirDocumentos(command.getIdsDocumentos().stream().map(id -> new DocumentoId(id)).collect(Collectors.toList())).toLong();
 	}
 	
 	/**

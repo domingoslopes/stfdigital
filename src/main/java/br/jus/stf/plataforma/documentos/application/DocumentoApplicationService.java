@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 
 import br.jus.stf.plataforma.documentos.domain.DocumentoService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
+import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.documentos.infra.persistence.ConteudoDocumentoRepository;
+import br.jus.stf.plataforma.documentos.infra.persistence.DocumentoTempRepository;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -33,6 +36,12 @@ public class DocumentoApplicationService {
 	
 	@Autowired
 	private DocumentoService documentoService;
+	
+	@Autowired
+	private DocumentoTempRepository documentoTempRepository;
+	
+	@Autowired
+	private ConteudoDocumentoRepository conteudoDocumentoRepository;
 
 	/**
 	 * Salva os documentos temporários no repositório
@@ -42,7 +51,7 @@ public class DocumentoApplicationService {
 	 */
 	public Map<String, DocumentoId> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		return documentosTemporarios.stream()
-				.collect(Collectors.toMap(docTemp -> docTemp.toString(), docTemp -> documentoRepository.save(docTemp)));
+				.collect(Collectors.toMap(docTemp -> docTemp.toString(), docTemp -> salvar(docTemp)));
 	}
 
 	/**
@@ -59,23 +68,65 @@ public class DocumentoApplicationService {
 	}
 
 	/**
-	 * Divide um documento em documentos especificados pelos intervalos.
+	 * Divide um documento.
 	 * 
 	 * @param id
 	 * @param intervalos
 	 * @return
 	 */
 	public List<DocumentoId> dividirDocumento(DocumentoId id, List<Range<Integer>> intervalos) {
-		ConteudoDocumento conteudo = documentoRepository.download(id);
-		List<DocumentoId> documentosDivididos = new ArrayList<>();
-		for (Range<Integer> intervalo : intervalos) {
-			DocumentoTemporario temp = documentoService.dividirConteudo(conteudo, intervalo.getMinimum(),
-			        intervalo.getMaximum());
-			DocumentoTemporarioId tempId = new DocumentoTemporarioId(documentoRepository.storeTemp(temp));
-			DocumentoId novoDocumento = documentoRepository.save(tempId);
-			documentosDivididos.add(novoDocumento);
-		}
-		return documentosDivididos;
+		List<DocumentoTemporarioId> documentosTemporarios = documentoService.dividirDocumento(id, intervalos);
+		return salvar(documentosTemporarios);
+	}
+	
+	/**
+	 * Divide um documento contiguamente.
+	 * 
+	 * @param id
+	 * @param intervalos
+	 * @return
+	 */
+	public List<DocumentoId> dividirDocumentoContiguamente(DocumentoId id, List<Range<Integer>> intervalos) {
+		List<DocumentoTemporarioId> documentosTemporarios = documentoService.dividirDocumentoContiguamente(id, intervalos);
+		return salvar(documentosTemporarios);
 	}
 
+	/**
+	 * Une os documentos especificados em um só.
+	 * 
+	 * @param documentos
+	 * @return
+	 */
+	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
+		List<ConteudoDocumento> conteudos = documentos.stream().map(d -> documentoRepository.download(d)).collect(Collectors.toList());
+		DocumentoTemporario temp = documentoService.unirConteudos(conteudos);
+		DocumentoTemporarioId tempId = new DocumentoTemporarioId(documentoRepository.storeTemp(temp));
+		DocumentoId novoDocumento = salvar(tempId);
+		return novoDocumento;
+	}
+
+	private List<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios) {
+		List<DocumentoId> documentosSalvos = new ArrayList<>();
+		for (DocumentoTemporarioId docTempId : documentosTemporarios) {
+			DocumentoId novoDocumento = salvar(docTempId);
+			documentosSalvos.add(novoDocumento);
+		}
+		return documentosSalvos;
+	}
+	
+	private DocumentoId salvar(DocumentoTemporarioId docTempId) {
+		DocumentoTemporario docTemp = documentoTempRepository.recoverTemp(docTempId);
+		
+		DocumentoId id = documentoRepository.nextId();
+		
+		String numeroConteudo = conteudoDocumentoRepository.save(id, docTemp);
+		
+		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp.randomAccessFile()));
+		documento = documentoRepository.save(documento);
+		
+		documentoTempRepository.removeTemp(docTempId.toString());
+		docTemp.delete();
+		return documento.id();
+	}
+	
 }
