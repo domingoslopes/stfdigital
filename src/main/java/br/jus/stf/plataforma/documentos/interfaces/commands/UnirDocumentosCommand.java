@@ -7,8 +7,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
-import br.jus.stf.shared.DocumentoId;
-
 /**
  * Command para união de documentos.
  * 
@@ -20,17 +18,21 @@ public class UnirDocumentosCommand {
 
 	@ApiModelProperty("Documentos a serem unidos")
 	@NotEmpty
-	private List<DocumentoId> documentos;
+	private List<Long> idsDocumentos;
 
-	public UnirDocumentosCommand(List<DocumentoId> documentos) {
-		this.documentos = documentos;
+	public UnirDocumentosCommand() {
+		
+	}
+	
+	public UnirDocumentosCommand(List<Long> idsDocumentos) {
+		this.idsDocumentos = idsDocumentos;
 	}
 
-	public List<DocumentoId> getDocumentos() {
-		return documentos;
+	public List<Long> getIdsDocumentos() {
+		return idsDocumentos;
 	}
 
-	public void setDocumentos(List<DocumentoId> documentos) {
-		this.documentos = documentos;
+	public void setIdsDocumentos(List<Long> idsDocumentos) {
+		this.idsDocumentos = idsDocumentos;
 	}
 }

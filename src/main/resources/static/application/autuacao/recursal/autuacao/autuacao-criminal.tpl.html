@@ -46,8 +46,11 @@
                             <div class="auto-overflow widget-11-2-table">
                                 <table class="table table-condensed table-hover">
                                     <tbody>
-                                        <tr ng-repeat="parte in autuacao.partesPoloAtivo">
-                                            <td class="font-montserrat fs-12 col-lg-12">{{parte.text}}</td>
+                                        <tr ng-repeat="parte in autuacao.partesPoloAtivo track by $index">
+                                            <td class="font-montserrat fs-12 col-lg-12 p-l-15 p-r-15">
+                                            	<span>{{parte.text}}</span>
+                                            	<a href="#" class="pull-right" ng-click="autuacao.removerPoloAtivo($index)">&times;</a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -70,8 +73,11 @@
 					        <div class="auto-overflow widget-11-2-table">
 					            <table class="table table-condensed table-hover">
 					                <tbody>
-					                    <tr ng-repeat="parte in autuacao.partesPoloPassivo">
-					                        <td class="font-montserrat fs-12 col-lg-12">{{parte.text}}</td>
+					                    <tr ng-repeat="parte in autuacao.partesPoloPassivo track by $index">
+					                        <td class="font-montserrat fs-12 col-lg-12 p-l-15 p-r-15">
+                                            	<span>{{parte.text}}</span>
+                                            	<a href="#" class="pull-right" ng-click="autuacao.removerPoloPassivo($index)">&times;</a>
+                                            </td>
 					                    </tr>
 					                </tbody>
 					            </table>
