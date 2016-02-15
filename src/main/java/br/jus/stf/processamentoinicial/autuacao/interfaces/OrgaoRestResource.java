@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.jus.stf.plataforma.acessos.application.AcessosApplicationService;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.OrgaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.OrgaoDtoAssembler;
@@ -21,9 +20,6 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.OrgaoDtoAssembler
 @RestController
 @RequestMapping("/api/orgaos")
 public class OrgaoRestResource {
-
-	@Autowired
-	private AcessosApplicationService acessoApplicationService;
 	
 	@Autowired
 	private OrgaoDtoAssembler orgaoDtoAssembler;

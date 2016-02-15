@@ -1,16 +1,20 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.facade;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
+import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
@@ -21,10 +25,13 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoWorkflow;
 
@@ -48,6 +55,9 @@ public class PeticaoServiceFacade {
 	
 	@Autowired
 	private PeticaoDtoAssembler peticaoDtoAssembler;
+	
+	@Autowired
+	private PessoaAdapter pessoaAdapter;
 	
 	/**
 	 * Inicia o processo de peticionamento de uma petição eletônica.
@@ -106,13 +116,19 @@ public class PeticaoServiceFacade {
 	/**
 	 * Realiza a autuação de uma petição.
 	 * @param peticaoId Id da petição.
-	 * @param classe Classe processual atribuída à petição.
 	 * @param peticaoValida Indica se uma petição é valida ou inválida.
 	 * @param motivoRejeicao Descrição do motivo da rejeição da petição.
+	 * @param partesPoloAtivo Partes do polo ativo
+	 * @param partesPoloPassivo Partes do polo passivo
+	 * @param classe Classe processual atribuída à petição.
 	 */
-	public void autuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoRejeicao) {
+	public void autuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoRejeicao, List<String> partesPoloAtivo, List<String> partesPoloPassivo) {
 		ClasseId classe = new ClasseId(classeId);
 		Peticao peticao = carregarPeticao(peticaoId);
+		
+		alterarPartes(peticao, peticao.partesPoloAtivo(), partesPoloAtivo, TipoPolo.POLO_ATIVO);
+		alterarPartes(peticao, peticao.partesPoloPassivo(), partesPoloPassivo, TipoPolo.POLO_PASSIVO);
+		
 		peticaoApplicationService.autuar(peticao, classe, peticaoValida, motivoRejeicao);
 	}
 
@@ -210,6 +226,29 @@ public class PeticaoServiceFacade {
 		PeticaoId id = new PeticaoId(peticaoId);
 		return (T) Optional.ofNullable(peticaoRepository.findOne(id))
 					.orElseThrow(IllegalArgumentException::new);
+	}
+	
+	/**
+	 * Altera as partes de uma petição.
+	 * @param peticao petição
+	 * @param partes Conjunto de partes.
+	 * @param polo Lista de partes.
+	 * @param tipo Tipo de polo.
+	 * 
+	 */
+	private void alterarPartes(Peticao peticao, Set<Parte> partes, List<String> polo, TipoPolo tipo) {
+		Iterator<Parte> iterator = partes.iterator();
+		while (iterator.hasNext()) {
+			Parte parte = iterator.next();
+			String nome = pessoaAdapter.consultarNome(parte.pessoaId());
+			if (!polo.contains(nome)) {
+				peticao.removerParte(parte);
+			} else {
+				polo.remove(nome); // Já é uma parte.
+			}
+		}
+		Set<PessoaId> pessoas = pessoaAdapter.cadastrarPessoas(polo);
+		pessoas.forEach(pessoa -> peticao.adicionarParte(new PartePeticao(pessoa, tipo)));
 	}
 	
 }

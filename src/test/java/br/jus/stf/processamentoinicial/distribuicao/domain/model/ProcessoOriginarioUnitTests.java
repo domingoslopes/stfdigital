@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -55,7 +56,7 @@ public class ProcessoOriginarioUnitTests {
 	    assertEquals(new PeticaoId(1L), processo.peticao());
 	    assertEquals(1, processo.partesPoloAtivo().size());
 		assertEquals(2, processo.partesPoloPassivo().size());
-		assertEquals(pecas, processo.pecas());
+		assertTrue("Peças deveriam ter sido adicionadas.", CollectionUtils.isEqualCollection(pecas, processo.pecas()));
 	    
 		// Atributos cujos valores são calculados
 		assertEquals("HD 1", processo.identificacao());
@@ -138,8 +139,8 @@ public class ProcessoOriginarioUnitTests {
 		Processo processo = processo();
 		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
 		
-		processo.adicionarPeca(peca);
-		assertEquals(1, processo.pecas().size());
+		processo.juntar(peca);
+		assertEquals(2, processo.pecas().size());
 		assertTrue(processo.pecas().contains(peca));
 	}
 	
@@ -147,7 +148,7 @@ public class ProcessoOriginarioUnitTests {
 	public void tentaAdicionarPecaAProcessoInformandoNulo() {
 		Processo processo = processo();
 		
-		processo.adicionarPeca(null);
+		processo.juntar(null);
 	}
 	
 	@Test
@@ -155,9 +156,9 @@ public class ProcessoOriginarioUnitTests {
 		Processo processo = processo();
 		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
 		
-		processo.adicionarPeca(peca);
+		processo.juntar(peca);
 		processo.removerPeca(peca);
-		assertEquals(0, processo.pecas().size());
+		assertEquals(1, processo.pecas().size());
 		assertFalse(processo.pecas().contains(peca));
 	}
 	

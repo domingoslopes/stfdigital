@@ -35,7 +35,7 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 	@Before
 	public void carregarDadosTeste() {
 		this.permissoesUsuario = new StringBuilder();
-		this.permissoesUsuario.append("{\"idUsuario\":5,");
+		this.permissoesUsuario.append("{\"idUsuario\":9,");
 		this.permissoesUsuario.append("\"papeisAdicionados\":[1,2,3,4],");
 		this.permissoesUsuario.append("\"gruposAdicionados\":[2],");
 		this.permissoesUsuario.append("\"papeisRemovidos\":[5],");
@@ -49,9 +49,9 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 	public void recuperarInformacoesUsuarioLogado() throws Exception{
 		
 		//Recupera as informações do usuário.
-		this.mockMvc.perform(get("/api/acessos/usuario").header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$.login", is("autuador")))
-			.andExpect(jsonPath("$.nome", is("autuador")))
+		this.mockMvc.perform(get("/api/acessos/usuario").header("login", "usuario-teste")).andExpect(status().isOk())
+			.andExpect(jsonPath("$.login", is("usuario-teste")))
+			.andExpect(jsonPath("$.nome", is("usuario-teste")))
 			.andExpect(jsonPath("$.setorLotacao.codigo", is(600000627)))
 			.andExpect(jsonPath("$.setorLotacao.sigla", is("SEJ")))
 			.andExpect(jsonPath("$.setorLotacao.nome", is("SECRETARIA JUDICIÁRIA")));
@@ -70,8 +70,8 @@ public class AcessoIntegrationTests extends AbstractIntegrationTests {
 	public void carregarPapeisUsuario() throws Exception {
 		//Recupera as informações do usuário.
 		this.mockMvc.perform(get("/api/acessos/usuarios/papeis")
-			.header("login", "autuador")
-			.param("login", "autuador")).andExpect(status().isOk())
+			.header("login", "usuario-teste")
+			.param("login", "usuario-teste")).andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(1)));
 	}
 	

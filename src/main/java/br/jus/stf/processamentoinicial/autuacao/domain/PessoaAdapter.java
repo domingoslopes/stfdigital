@@ -19,5 +19,13 @@ public interface PessoaAdapter {
 	 * @return a lista de ids de pessoas
 	 */
 	public Set<PessoaId> cadastrarPessoas(List<String> pessoas);
+
+	/**
+	 * Recupera o nome de uma pessoa.
+	 * 
+	 * @param pessoaId
+	 * @return
+	 */
+	public String consultarNome(PessoaId pessoaId);
 	
 }
