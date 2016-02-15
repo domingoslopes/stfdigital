@@ -10,9 +10,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+<<<<<<< HEAD
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.jurisprudencia.controletese.domain.model.TeseRepository;
+=======
+>>>>>>> 0940931388ad36dbfd7da5fc6721fa74b67d37c7
 import br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDto;
+import br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.AssuntoAdapter;
@@ -22,8 +26,9 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDtoAssembler;
-import br.jus.stf.processamentoinicial.suporte.interfaces.dto.MotivoInaptidaoDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.MotivoInaptidaoDtoAssembler;
+
+
 
 @Component
 public class ProcessoDtoAssembler {
@@ -41,18 +46,19 @@ public class ProcessoDtoAssembler {
 	TeseRepository teseRepository;
 	
 	@Autowired
-	br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDtoAssembler teseDtoAssembler;
+	TeseDtoAssembler teseDtoAssembler;
 	
 	@Autowired
 	ProcessoRepository processoRepository;
 	
 	@Autowired
 	MotivoInaptidaoDtoAssembler motivoInaptidaoDtoAssembler;
-	@Autowired 
-	private AssuntoAdapter assuntoAdapter;
 	
 	@Autowired
-	private TeseAdapter teseAdapter;
+	AssuntoAdapter assuntoAdapter;
+	
+	@Autowired
+	TeseAdapter teseAdapter;
 		
 	/**
 	 * Constrói um dto de processo
@@ -82,18 +88,28 @@ public class ProcessoDtoAssembler {
 		
 		processo.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
 		processo.preferencias().forEach(preferencia -> preferencias.add(preferencia.toLong()));
-
+		
+		processo.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
+		processo.preferencias().forEach(preferencia -> preferencias.add(preferencia.toLong()));
+		
 		if (processo instanceof ProcessoRecursal) {
+<<<<<<< HEAD
 			ProcessoRecursal processoRecursal = (ProcessoRecursal)processo;
+			List<AssuntoDto> assuntos = new ArrayList<AssuntoDto>();
+			List<TeseDto> teses = new ArrayList<TeseDto>();
+=======
+			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
 			
 			List<AssuntoDto> assuntos = new LinkedList<AssuntoDto>();
 			processoRecursal.assuntos().stream().forEach(assunto -> assuntos.add(assuntoAdapter.consultar(assunto)));
 			
+>>>>>>> 0940931388ad36dbfd7da5fc6721fa74b67d37c7
 			String observacao = processoRecursal.observacaoAnalise();
 			
-			List<TeseDto> teses = teseAdapter.consultar(processoRecursal.teses());
+			processoRecursal.assuntos().stream().forEach(assunto -> assuntos.add(assuntoAdapter.consultar(assunto)));
+			teses = teseAdapter.consultar(processoRecursal.teses());
 			
-			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, observacao);
+			return new ProcessoRecursalDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, observacao);
 		} else {
 			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao);
 		}

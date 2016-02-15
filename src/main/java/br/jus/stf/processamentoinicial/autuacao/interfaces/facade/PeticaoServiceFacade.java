@@ -1,7 +1,7 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.facade;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
-import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
@@ -25,14 +23,12 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
-import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
-import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
-import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
 
 
@@ -56,9 +52,6 @@ public class PeticaoServiceFacade {
 	@Autowired
 	private PeticaoDtoAssembler peticaoDtoAssembler;
 	
-	@Autowired
-	private PessoaAdapter pessoaAdapter;
-	
 	/**
 	 * Inicia o processo de peticionamento de uma petição eletônica.
 	 * @param classeSugerida Sugestão de classe processual.
@@ -71,12 +64,8 @@ public class PeticaoServiceFacade {
 	public Long peticionar(String classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<Map<String, String>> pecas, Long orgaoId) {
 		ClasseId classe = new ClasseId(classeSugerida);
 		List<PecaTemporaria> pecasTemporarias = pecas.stream()
-				.map(peca -> {
-					DocumentoTemporarioId documentoTemporario = new DocumentoTemporarioId(peca.get("documentoTemporario"));
-					TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(peca.get("tipo")));
-					return new PecaTemporaria(documentoTemporario, tipo, tipo.nome());
-				})
-				.collect(Collectors.toList());
+				.map(peca -> criarPecaTemporaria(peca))
+		        .collect(Collectors.toList());
 		
 		PeticaoEletronica peticao = peticaoApplicationService.peticionar(classe, poloAtivo, poloPassivo, pecasTemporarias, Optional.ofNullable(orgaoId));
 		return peticao.id().toLong();
@@ -105,31 +94,29 @@ public class PeticaoServiceFacade {
 	 * @param classeId Classe processual sugerida.
 	 * @param peticaoValida indica se a petição está correta ou indevida
 	 * @param motivoDevolucao o motivo da devolução, no caso de petições indevidas
-	 * @param preferencias Preferências.
+	 * @param preferenciasId Preferências.
 	 */
-	public void preautuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoDevolucao, List<Long> preferencias) {
+	public void preautuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoDevolucao, List<Long> preferenciasId) {
 		ClasseId classe = new ClasseId(classeId);
 		PeticaoFisica peticao = carregarPeticao(peticaoId);
+		Set<PreferenciaId> preferencias = criarPreferencias(preferenciasId);
 		peticaoApplicationService.preautuar(peticao, classe, peticaoValida, motivoDevolucao, preferencias);
 	}
 	
 	/**
 	 * Realiza a autuação de uma petição.
 	 * @param peticaoId Id da petição.
+	 * @param classeId Classe processual atribuída à petição.
 	 * @param peticaoValida Indica se uma petição é valida ou inválida.
 	 * @param motivoRejeicao Descrição do motivo da rejeição da petição.
 	 * @param partesPoloAtivo Partes do polo ativo
 	 * @param partesPoloPassivo Partes do polo passivo
-	 * @param classe Classe processual atribuída à petição.
 	 */
 	public void autuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoRejeicao, List<String> partesPoloAtivo, List<String> partesPoloPassivo) {
 		ClasseId classe = new ClasseId(classeId);
 		Peticao peticao = carregarPeticao(peticaoId);
 		
-		alterarPartes(peticao, peticao.partesPoloAtivo(), partesPoloAtivo, TipoPolo.POLO_ATIVO);
-		alterarPartes(peticao, peticao.partesPoloPassivo(), partesPoloPassivo, TipoPolo.POLO_PASSIVO);
-		
-		peticaoApplicationService.autuar(peticao, classe, peticaoValida, motivoRejeicao);
+		peticaoApplicationService.autuar(peticao, classe, peticaoValida, motivoRejeicao, partesPoloAtivo, partesPoloPassivo);
 	}
 
 	/**
@@ -229,26 +216,27 @@ public class PeticaoServiceFacade {
 	}
 	
 	/**
-	 * Altera as partes de uma petição.
-	 * @param peticao petição
-	 * @param partes Conjunto de partes.
-	 * @param polo Lista de partes.
-	 * @param tipo Tipo de polo.
+	 * Carrega as preferências
 	 * 
-	 */
-	private void alterarPartes(Peticao peticao, Set<Parte> partes, List<String> polo, TipoPolo tipo) {
-		Iterator<Parte> iterator = partes.iterator();
-		while (iterator.hasNext()) {
-			Parte parte = iterator.next();
-			String nome = pessoaAdapter.consultarNome(parte.pessoaId());
-			if (!polo.contains(nome)) {
-				peticao.removerParte(parte);
-			} else {
-				polo.remove(nome); // Já é uma parte.
-			}
-		}
-		Set<PessoaId> pessoas = pessoaAdapter.cadastrarPessoas(polo);
-		pessoas.forEach(pessoa -> peticao.adicionarParte(new PartePeticao(pessoa, tipo)));
-	}
+     * @param preferencias
+     * @return 
+     */
+    private Set<PreferenciaId> criarPreferencias(List<Long> preferenciasId) {
+		return Optional.ofNullable(preferenciasId)
+		        .map(ids -> ids.stream().map(id -> new PreferenciaId(id)).collect(Collectors.toSet()))
+		        .orElse(Collections.emptySet());
+    }
+    
+	/**
+	 * Cria uma peça temporária
+	 * 
+     * @param peca
+     * @return
+     */
+    private PecaTemporaria criarPecaTemporaria(Map<String, String> peca) {
+	    DocumentoTemporarioId documentoTemporario = new DocumentoTemporarioId(peca.get("documentoTemporario"));
+	    TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(peca.get("tipo")));
+	    return new PecaTemporaria(documentoTemporario, tipo, tipo.nome());
+    }
 	
 }
