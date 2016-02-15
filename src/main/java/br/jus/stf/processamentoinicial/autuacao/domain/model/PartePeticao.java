@@ -34,5 +34,15 @@ public class PartePeticao extends Parte {
 	public PartePeticao(PessoaId pessoaId, TipoPolo tipoPolo) {
 		super(pessoaId, tipoPolo);
 	}
+
+	@Override
+    public int hashCode() {
+	    return super.hashCode();
+    }
+
+	@Override
+    public boolean equals(Object obj) {
+		return super.equals(obj);
+    }
 	
 }
