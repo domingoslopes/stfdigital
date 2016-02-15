@@ -19,6 +19,12 @@
 	
 	var PreautuacaoPage = require('./pages/preautuacao.page');
 	
+	var AnalisePressupostoPage = require('./pages/analise.page');
+	
+	var RevisaoPage = require('./pages/revisao.page');
+	
+	var AnaliseRGPage = require('./pages/analiseRG.page');
+	
 	var LoginPage = require('./pages/login.page');
 	
 	var principalPage;
@@ -47,31 +53,12 @@
 			login('recebedor');
 		});
 
-		it('Deveria navegar para a página de envio de petições físicas', function() {
-			// Ao instanciar a Home Page, o browser já deve navega para a home page ("/")
-			principalPage = new PrincipalPage();
-			
-			// Iniciando o Processo de Remessa Físca
-			principalPage.iniciarProcesso('link_registrar-peticao-fisica');
-			
-			// Verificando se, após iniciar o processo, o browser está na página de registro de petições físicas
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
-		});
 		
-		it('Deveria registrar uma petição física', function(){
+		it('Deveria registrar uma peticao física recursal', function(){
+			
 			var registroPage = new RegistroPage();
 			
-			registroPage.preencherQtdVolumes(2);
-			
-			registroPage.preencherQtdApensos(2);
-			
-			registroPage.classificarTipoRecebimento('Sedex');
-			
-			registroPage.preencherNumeroSedex(2);
-			
-			registroPage.selecionarTipoProcesso('Recursal');
-			
-			registroPage.registrar();
+			registroPage.registrarVariasPeticoes(3);
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
@@ -83,7 +70,9 @@
 			login('preautuador-recursal');
 		});
 
-		it('Deveria pré-atuar como válida a petição recebida', function() {
+		it('Deveria pré-atuar como válida a petição recebida como eleitoral ou criminal', function() {
+			
+			principalPage = new PrincipalPage();
 			
 		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
@@ -94,19 +83,189 @@
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Recursal #' + peticaoId);
 		    });
 		    
+		    preautuarRecursal('Criminal');
+		    
+		});
+		
+		it('Deveria logar como autuador recursal', function() {
+			login('autuador-recursal-ce');
+		});
+		
+		it('Deveria autuar um processo recursal com a preferência criminal ou eleitoral', function(){
+			
+			principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo Recursal Criminal / Eleitoral #' + peticaoId);
+		    });
+		    
 		    principalPage.executarTarefa();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/autuacao-criminal/);
+		    
+		    var autuacaoPage = new AutuacaoPage();
+		    
+			autuacaoPage.partePoloAtivo('João da Silva');
+		    
+			autuacaoPage.partePoloPassivo('Maria da Silva');
+			
+			autuacaoPage.selecionarAssunto('287');
+		    
+			autuacaoPage.finalizarRecursal();
+			
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			loginPage.logout();
+		});
+		
+		it('Deveria logar como preautuador recursal', function() {
+			login('preautuador-recursal');
+		});
+		
+		it('Deveria pré-atuar como válida a petição recebida com tipo preferencia diferente de criminal e eleitoral', function() {
+			
+			principalPage = new PrincipalPage();
+			
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Recursal #' + peticaoId);
+		    });
+		    
+		    preautuarRecursal('Medida Liminar');
+		    
+		});
+		
+		it('Deveria logar como analista-pressupostos', function() {
+			login('analista-pressupostos');
+		});
+		
+		it('Deveria analisar os pressupostos do processo recursal informando como inapto', function() {
+			
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Analisar Pressupostos Formais #' + peticaoId);
+		    });
+		    
+		    principalPage.executarTarefa();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/analise/);
+		    
+		    var analisePage = new AnalisePressupostoPage();
+		    
+		    analisePage.classificarInapto('Inapto');
+		    
+		    analisePage.selecionarMotivo('Outro');
+		    
+		    analisePage.preencherObsMotivo();
+		    
+		    analisePage.preencherObsAnalise();
+		    
+		    analisePage.finalizarAnalise();
 
-			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/preautuacao/);
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			loginPage.logout();
+		});
+		
+		it('Deveria logar como revisor de processo recursal', function() {
+			login('revisor-processo-ri');
+		});
+		
+		it ('Deveria revisar processo recursal como apto ', function(){
+			
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Revisar Processo Inapto #' + peticaoId);
+		    });
+		    
+		    principalPage.executarTarefa();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/revisao/);
+		    
+		    var revisaoPage = new RevisaoPage();
+		    
+		    revisaoPage.preencherObsAnalise();
+		    
+		    revisaoPage.finalizarRevisao();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			loginPage.logout();
+		    
+		});
+		
+		it('Deveria logar como analista de repercussão geral', function() {
+			login('analista-repercussao-g');
+		});
+		
+		it ('Deveria analisar o processo com Repercussão Geral ', function(){
+			
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Analisar Assunto / RG #' + peticaoId);
+		    });
+		    
+		    principalPage.executarTarefa();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/repercussao/);
+		    
+		    var analiseRGPage = new AnaliseRGPage();
+		    
+		    analiseRGPage.selecionarTese();
+		    
+		    analiseRGPage.preencherNumeroTese();
+		    
+		    analiseRGPage.selecionarAssunto(287);
+		    
+		    analiseRGPage.preencherObsAnalise();
+		    
+		    analiseRGPage.finalizar();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			loginPage.logout();
+		    
+		});
+		
+		
+		var preautuarRecursal = function(tipoPreferencia){
+			
+		  	principalPage.executarTarefa();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/preautuacao\/recursal/);
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
 			preautuacaoPage.classificar('AI');
 			
+			preautuacaoPage.selecionarPreferencias(tipoPreferencia);
+			
+			preautuacaoPage.preencherAnalise();
+			
 			preautuacaoPage.finalizar();
 			
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
 			loginPage.logout();
-		    
-		});
+		}
+		
 		
 	});
 })();
