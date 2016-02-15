@@ -6,11 +6,13 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.stf.jurisprudencia.controletese.domain.model.Assunto;
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDtoAssembler;
@@ -36,11 +38,19 @@ public class AssuntoRestResource {
 		List<AssuntoDto> assuntos = new ArrayList<AssuntoDto>();
 		
 		if (NumberUtils.isNumber(termo)) {
-			assuntos.add(assuntoDtoAssembler.toDto(assuntoRepository.findOne(new AssuntoId(termo))));
+			Assunto assunto = assuntoRepository.findOne(new AssuntoId(termo));
+			if (assunto != null) {
+				assuntos.add(assuntoDtoAssembler.toDto(assunto));
+			}
 		} else {
 			assuntos = assuntoRepository.findAssuntoByDescricao(termo.toUpperCase()).stream().map(assunto -> assuntoDtoAssembler.toDto(assunto)).collect(Collectors.toList());
 		}
 		
 		return assuntos;
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public AssuntoDto consultar(@PathVariable String id) {
+		return assuntoDtoAssembler.toDto(assuntoRepository.findOne(new AssuntoId(id)));
 	}
 }

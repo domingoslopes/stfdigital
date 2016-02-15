@@ -1,9 +1,12 @@
 package br.jus.stf.processamentoinicial.autuacao.interfaces.commands;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -32,6 +35,14 @@ public class AutuarPeticaoCommand {
 	@ApiModelProperty(value = "Contém o motivo da recusa da petição, no caso de petições inválidas", required=true)
 	private String motivo;
 	
+	@NotEmpty
+	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
+	private List<String> partesPoloAtivo;
+	
+	@NotEmpty
+	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
+	private List<String> partesPoloPassivo;
+	
 	public Long getPeticaoId() {
 		return this.peticaoId;
 	}
@@ -46,6 +57,14 @@ public class AutuarPeticaoCommand {
 	
 	public String getMotivo() {
 		return motivo;
+	}
+	
+	public List<String> getPartesPoloAtivo() {
+		return partesPoloAtivo;
+	}
+	
+	public List<String> getPartesPoloPassivo() {
+		return partesPoloPassivo;
 	}
 
 	@Override

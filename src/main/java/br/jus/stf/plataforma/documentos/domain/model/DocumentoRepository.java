@@ -4,7 +4,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
 import br.jus.stf.shared.DocumentoId;
-import br.jus.stf.shared.DocumentoTemporarioId;
 
 /**
  * @author Rafael.Alencar
@@ -27,14 +26,14 @@ public interface DocumentoRepository extends Repository<Documento, DocumentoId> 
 	 * @param documentoId
 	 * @return o stream do conteúdo
 	 */
-	public DocumentoDownload download(DocumentoId documentoId);
+	public ConteudoDocumento download(DocumentoId documentoId);
 	
 	/**
 	 * Salva um documento
 	 * 
 	 * @param documento
 	 */
-	public DocumentoId save(DocumentoTemporarioId documentoTemporario);
+	public Documento save(Documento documento);
 	
 	/**
 	 * Exclui um documento

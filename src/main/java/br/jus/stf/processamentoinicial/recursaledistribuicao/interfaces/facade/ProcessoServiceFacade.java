@@ -51,7 +51,7 @@ public class ProcessoServiceFacade {
 		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
 		return processoDtoAssembler.toDto(processo);
 	}
-
+	
 	/**
 	 * Distribui um processo para um ministro relator.
 	 * 

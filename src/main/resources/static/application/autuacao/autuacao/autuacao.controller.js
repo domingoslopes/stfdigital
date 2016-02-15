@@ -153,11 +153,11 @@
     		dto.motivo = motivo;
     		
     		angular.forEach(partesPoloAtivo, function(parte) {
-    			dto.partesPoloAtivo.push(parte.text);
+    			dto.partesPoloAtivo.push(parte.pessoa.nome);
     		});
     		
     		angular.forEach(partesPoloPassivo, function(parte) {
-    			dto.partesPoloPassivo.push(parte.text);
+    			dto.partesPoloPassivo.push(parte.pessoa.nome);
     		});
     		
     		return dto;
