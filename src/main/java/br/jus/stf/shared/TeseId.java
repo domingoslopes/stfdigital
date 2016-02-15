@@ -19,30 +19,30 @@ public class TeseId implements ValueObject<TeseId>{
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "SEQ_TESE", nullable = false)
-	private Long sequencia;
+	private Long sequencial;
 
 	TeseId() {
 
 	}
 
-	public TeseId(final Long sequencia){
-		Validate.notNull(sequencia, "teseId.sequencia.required");
+	public TeseId(final Long sequencial){
+		Validate.notNull(sequencial, "teseId.sequencia.required");
 		
-		this.sequencia = sequencia;
+		this.sequencial = sequencial;
 	}
 
 	public Long toLong(){
-		return sequencia;
+		return sequencial;
 	}
 	
 	@Override
 	public String toString(){
-		return sequencia.toString();
+		return sequencial.toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(sequencia).toHashCode();
+		return new HashCodeBuilder().append(sequencial).toHashCode();
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class TeseId implements ValueObject<TeseId>{
 
 	@Override
 	public boolean sameValueAs(final TeseId other){
-		return other != null && sequencia.equals(other.sequencia);
+		return other != null && sequencial.equals(other.sequencial);
 	}
 	
 }

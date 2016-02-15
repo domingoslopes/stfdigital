@@ -88,6 +88,16 @@ public class DocumentoApplicationServiceIntegrationTest extends AbstractIntegrat
 		Assert.assertEquals("Deveria ser a página 14", "Página 14", textoDaPagina);
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testDividirDocumentosContiguamenteIntervaloErrado() throws IOException {
+		dividirDocumentoComIntervalosContiguos(Arrays.asList(Range.between(1, 3), Range.between(5, 8), Range.between(8, 14)));
+	}
+
+	public void testDividirDocumentosContiguamenteIntervalosCorretos() throws IOException {
+		List<DocumentoId> documentos = dividirDocumentoComIntervalosContiguos(Arrays.asList(Range.between(1, 3), Range.between(4, 8), Range.between(8, 14)));
+		Assert.assertEquals("Deveria ter dividido o documento em 3.", 3, documentos.size());
+	}
+	
 	private List<DocumentoId> dividirDocumentoComIntervalos(List<Range<Integer>> intervalos) throws IOException {
 		String idDocumentoTemporario = salvarDocumentoTemporarioParaTeste("pdf-14-pgs.pdf");
 		Map<String, DocumentoId> documentosSalvos = documentoApplicationService.salvarDocumentos(Arrays.asList(new DocumentoTemporarioId(idDocumentoTemporario)));
@@ -95,6 +105,16 @@ public class DocumentoApplicationServiceIntegrationTest extends AbstractIntegrat
 		DocumentoId docParaDividir = documentosSalvos.get(idDocumentoTemporario);
 		
 		List<DocumentoId> documentos = documentoApplicationService.dividirDocumento(docParaDividir, intervalos);
+		return documentos;
+	}
+	
+	private List<DocumentoId> dividirDocumentoComIntervalosContiguos(List<Range<Integer>> intervalos) throws IOException {
+		String idDocumentoTemporario = salvarDocumentoTemporarioParaTeste("pdf-14-pgs.pdf");
+		Map<String, DocumentoId> documentosSalvos = documentoApplicationService.salvarDocumentos(Arrays.asList(new DocumentoTemporarioId(idDocumentoTemporario)));
+		
+		DocumentoId docParaDividir = documentosSalvos.get(idDocumentoTemporario);
+		
+		List<DocumentoId> documentos = documentoApplicationService.dividirDocumentoContiguamente(docParaDividir, intervalos);
 		return documentos;
 	}
 
