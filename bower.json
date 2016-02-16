@@ -20,6 +20,7 @@
     "datatables.net-colreorder-bs": "~1.2.0",
     "datatables.net-rowreorder-bs": "~1.0.0",
     "datatables.net-buttons-bs": "~1.0.3",
+    "angular-datatables": "~0.5.3",
     "ckeditor": "~4.5.3",
     "angular-file-upload": "~2.1.4",
     "angular-moment": "~0.10.3",
