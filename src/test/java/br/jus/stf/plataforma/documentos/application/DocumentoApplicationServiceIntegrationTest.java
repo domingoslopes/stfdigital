@@ -89,13 +89,30 @@ public class DocumentoApplicationServiceIntegrationTest extends AbstractIntegrat
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testDividirDocumentosContiguamenteIntervaloErrado() throws IOException {
-		dividirDocumentoComIntervalosContiguos(Arrays.asList(Range.between(1, 3), Range.between(5, 8), Range.between(8, 14)));
+	public void testDividirDocumentoCompletamenteIntervaloErrado() throws IOException {
+		dividirDocumentoComIntervalosCompletos(Arrays.asList(Range.between(1, 3), Range.between(5, 8), Range.between(8, 14)));
 	}
 
-	public void testDividirDocumentosContiguamenteIntervalosCorretos() throws IOException {
-		List<DocumentoId> documentos = dividirDocumentoComIntervalosContiguos(Arrays.asList(Range.between(1, 3), Range.between(4, 8), Range.between(8, 14)));
+	@Test
+	public void testDividirDocumentosCompletamenteIntervalosCorretos() throws IOException {
+		List<DocumentoId> documentos = dividirDocumentoComIntervalosCompletos(Arrays.asList(Range.between(1, 3), Range.between(4, 8), Range.between(8, 14)));
 		Assert.assertEquals("Deveria ter dividido o documento em 3.", 3, documentos.size());
+	}
+
+	@Test
+	public void testDividirDocumentosCompletamenteIntervalosSobrepostos() throws IOException {
+		List<DocumentoId> documentos = dividirDocumentoComIntervalosCompletos(Arrays.asList(Range.between(1, 3), Range.between(3, 7), Range.between(5, 14)));
+		Assert.assertEquals("Deveria ter dividido o documento em 3.", 3, documentos.size());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDividirDocumentosCompletamenteIntervalosExtrapolantesNoInicio() throws IOException {
+		dividirDocumentoComIntervalosCompletos(Arrays.asList(Range.between(-3, 3), Range.between(3, 7), Range.between(5, 14)));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDividirDocumentosCompletamenteIntervalosExtrapolantesNoFim() throws IOException {
+		dividirDocumentoComIntervalosCompletos(Arrays.asList(Range.between(1, 3), Range.between(3, 7), Range.between(5, 15)));
 	}
 	
 	private List<DocumentoId> dividirDocumentoComIntervalos(List<Range<Integer>> intervalos) throws IOException {
@@ -108,13 +125,13 @@ public class DocumentoApplicationServiceIntegrationTest extends AbstractIntegrat
 		return documentos;
 	}
 	
-	private List<DocumentoId> dividirDocumentoComIntervalosContiguos(List<Range<Integer>> intervalos) throws IOException {
+	private List<DocumentoId> dividirDocumentoComIntervalosCompletos(List<Range<Integer>> intervalos) throws IOException {
 		String idDocumentoTemporario = salvarDocumentoTemporarioParaTeste("pdf-14-pgs.pdf");
 		Map<String, DocumentoId> documentosSalvos = documentoApplicationService.salvarDocumentos(Arrays.asList(new DocumentoTemporarioId(idDocumentoTemporario)));
 		
 		DocumentoId docParaDividir = documentosSalvos.get(idDocumentoTemporario);
 		
-		List<DocumentoId> documentos = documentoApplicationService.dividirDocumentoContiguamente(docParaDividir, intervalos);
+		List<DocumentoId> documentos = documentoApplicationService.dividirDocumentoCompletamente(docParaDividir, intervalos);
 		return documentos;
 	}
 

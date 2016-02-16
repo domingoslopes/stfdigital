@@ -80,14 +80,14 @@ public class DocumentoApplicationService {
 	}
 	
 	/**
-	 * Divide um documento contiguamente.
+	 * Divide um documento completamente.
 	 * 
 	 * @param id
 	 * @param intervalos
 	 * @return
 	 */
-	public List<DocumentoId> dividirDocumentoContiguamente(DocumentoId id, List<Range<Integer>> intervalos) {
-		List<DocumentoTemporarioId> documentosTemporarios = documentoService.dividirDocumentoContiguamente(id, intervalos);
+	public List<DocumentoId> dividirDocumentoCompletamente(DocumentoId id, List<Range<Integer>> intervalos) {
+		List<DocumentoTemporarioId> documentosTemporarios = documentoService.dividirDocumentoCompletamente(id, intervalos);
 		return salvar(documentosTemporarios);
 	}
 
