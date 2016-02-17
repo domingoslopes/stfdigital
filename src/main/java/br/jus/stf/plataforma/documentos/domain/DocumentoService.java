@@ -48,11 +48,11 @@ public interface DocumentoService {
 	List<DocumentoTemporarioId> dividirDocumento(DocumentoId id, List<Range<Integer>> intervalos);
 	
 	/**
-	 * Divide um documento contiguamente como especificado pelos intervalos.
+	 * Divide um documento completamente como especificado pelos intervalos.
 	 * 
 	 * @param id
 	 * @param intervalos
 	 * @return
 	 */
-	public List<DocumentoTemporarioId> dividirDocumentoContiguamente(DocumentoId id, List<Range<Integer>> intervalos);
+	public List<DocumentoTemporarioId> dividirDocumentoCompletamente(DocumentoId id, List<Range<Integer>> intervalos);
 }
