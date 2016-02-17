@@ -119,16 +119,16 @@ public class DocumentoServiceImpl implements DocumentoService {
 	}
 	
 	/**
-	 * Divide um documento contiguamente como especificado pelos intervalos.
+	 * Divide um documento completamente como especificado pelos intervalos.
 	 * 
 	 * @param id
 	 * @param intervalos
 	 * @return
 	 */
 	@Override
-	public List<DocumentoTemporarioId> dividirDocumentoContiguamente(DocumentoId id, List<Range<Integer>> intervalos) {
+	public List<DocumentoTemporarioId> dividirDocumentoCompletamente(DocumentoId id, List<Range<Integer>> intervalos) {
 		Documento documento = documentoRepository.findOne(id);
-		if (intervalosSaoContiguos(intervalos, documento)) {
+		if (todasPaginasForamContempladas(intervalos, documento)) {
 			return dividirDocumento(documento, intervalos);
 		} else {
 			throw new IllegalArgumentException("Intervalos não são contíguos");
@@ -150,17 +150,17 @@ public class DocumentoServiceImpl implements DocumentoService {
 		return documentosTemporariosDivididos;
 	}
 	
-	private boolean intervalosSaoContiguos(List<Range<Integer>> intervalos, Documento documento) {
-		if (intervalos.get(0).getMinimum() <= 0 || intervalos.get(intervalos.size() - 1).getMaximum() != documento.quantidadePaginas()) {
-			return false;
-		} else {
-			Range<Integer> anterior = intervalos.get(0);
-			for (int i = 1; i < intervalos.size(); i++) {
-				Range<Integer> proximo = intervalos.get(i);
-				if (anterior.getMaximum() + 1 != proximo.getMinimum()) {
-					return false;
+	private boolean todasPaginasForamContempladas(List<Range<Integer>> intervalos, Documento documento) {
+		for (int paginaAtual = 1; paginaAtual <= documento.quantidadePaginas(); paginaAtual++) {
+			boolean paginaAtualFoiContemplada = false;
+			for (Range<Integer> intervalo : intervalos) {
+				if (intervalo.contains(paginaAtual)) {
+					paginaAtualFoiContemplada = true;
+					break;
 				}
-				anterior = proximo;
+			}
+			if (!paginaAtualFoiContemplada) {
+				return false;
 			}
 		}
 		return true;
