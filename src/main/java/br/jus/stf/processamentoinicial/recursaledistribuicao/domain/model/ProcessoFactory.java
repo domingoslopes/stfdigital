@@ -91,7 +91,7 @@ public class ProcessoFactory {
 	
 	private static List<PecaProcesso> coletarPecas(List<Peca> pecasPeticao) {
 		return pecasPeticao.stream()
-			.map(peca -> new PecaProcesso(peca.documento(), peca.tipo(), peca.descricao()))
+			.map(peca -> new PecaProcesso(peca.documento(), peca.tipo(), peca.descricao(), peca.visibilidade(), peca.situacao()))
 			.collect(Collectors.toList());
 	}
 	

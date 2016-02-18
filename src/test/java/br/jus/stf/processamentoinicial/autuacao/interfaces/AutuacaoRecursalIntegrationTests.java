@@ -3,7 +3,6 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -11,16 +10,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 
 import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
@@ -83,20 +79,6 @@ public class AutuacaoRecursalIntegrationTests extends AbstractIntegrationTests {
 		peticaoAutuadaParaDistribuicao.append("\"processosPreventos\":[1]}]}");
 		this.peticaoAutuadaParaDistribuicao = peticaoAutuadaParaDistribuicao.toString();
 		
-		//Envia um documento para que seja obtido o seu ID. Este será usado para simular o teste de envio de uma petição eletrônica.
-		String idDoc = "";
-		String nomeArquivo = "teste_arq_temp.pdf";
-		String mime = "application/pdf";
-		String caminho = "certification/pdf-de-teste-assinado-02.pdf";
-		
-		byte[] arquivo = IOUtils.toByteArray(new ClassPathResource(caminho).getInputStream());
-
-	    MockMultipartFile mockArquivo = new MockMultipartFile("file", nomeArquivo, mime, arquivo);
-		
-	    //Envia um documento antes de enviar a petição.
-	    idDoc = mockMvc.perform(fileUpload("/api/documentos/upload/assinado").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
-	    	.andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
-
 		//Cria um objeto contendo os dados da petição física a ser usado no teste do registro da petição física.
 		StringBuilder peticaoFisica =  new StringBuilder();
 		peticaoFisica.append("{\"resources\": [{\"formaRecebimento\":\"SEDEX\",");
