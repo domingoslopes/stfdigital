@@ -16,8 +16,25 @@
 	
 	var AnalisePage = function () {
 		
-		this.classificarInapto = function () {
-			element(by.css('#classificacao .bootstrap-switch-handle-on')).click();
+		this.classificarAptidao = function (apto) {
+			if (apto) {
+				var off = element(by.css('#classificacao .bootstrap-switch-off'));
+				off.isDisplayed()
+					.then(function(isVisible) {
+						if (isVisible) {
+							off.click(); // vai para apto
+						} // senão continua no que já está
+					});	
+			} else {
+				var on = element(by.css('#classificacao .bootstrap-switch-on'));
+				on.isDisplayed()
+					.then(function(isVisible) {
+						if (isVisible) {
+							on.click(); // vai para inapto
+						}
+					});	// senão continua no que já está
+			}
+			
 		};
 		
 		this.selecionarMotivo = function(motivo){

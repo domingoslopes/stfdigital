@@ -10,15 +10,18 @@
 	
 	var Utils = require('./support');
 	
-	var PrincipalPage = require('./principal.page');
-	
 	var utils = new Utils();
 	
-	var AnaliseRGPage = function () {
+	var RevisaoRGPage = function () {
+		
+		this.removerTese = function(){
+			element(by.id('btnRemoveTese')).click();
+			browser.waitForAngular();
+		};
 		
 		this.selecionarTese = function(motivo){
 			element(by.id('btnTeseDropDown')).click();
-			element.all(by.repeater('tese in analise.tiposTeses')).
+			element.all(by.repeater('tese in vm.tiposTeses')).
 			  get(2).element(by.css('a')).click();
 		};
 		
@@ -32,15 +35,15 @@
 		};
 		
 		this.preencherObsAnalise = function(){
-			element(by.id('observacao')).sendKeys('observação analise');
+			element(by.id('observacao')).sendKeys('observação Analise 2');
 		};
 		
 		this.finalizar = function() {
-			element(by.id('btn_exec_analisar-repercussao-geral')).click();
+			element(by.id('btn_exec_revisar-repercussao-geral')).click();
 		};
 		
 	};
 
-	module.exports = AnaliseRGPage;
+	module.exports = RevisaoRGPage;
 	
 })();

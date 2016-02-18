@@ -134,6 +134,15 @@
 					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
 				}
 			}	
+		}).state('autuar-recursal',{
+			parent: 'action.autuacao',
+			url: '/processo/autuacao-recursal',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-recursal.tpl.html'
+				}
+			}	
 		}).state('analisar-pressupostos-formais',{
 			parent: 'action.autuacao',
 			url: '/processo/analise',
