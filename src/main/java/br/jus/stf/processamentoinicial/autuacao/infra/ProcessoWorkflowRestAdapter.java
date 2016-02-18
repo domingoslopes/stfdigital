@@ -8,7 +8,6 @@ import br.jus.stf.plataforma.workflow.interfaces.commands.IniciarProcessoCommand
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
@@ -25,11 +24,8 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	@Autowired
 	private WorkflowRestResource processoRestService;
 	
-	@Autowired
-	private PeticaoRepository peticaoRepository;
-	
 	@Override
-	public void iniciarWorkflow(PeticaoEletronica peticaoEletronica) {
+	public ProcessoWorkflow iniciarWorkflow(PeticaoEletronica peticaoEletronica) {
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
 		command.setMensagem("autuacao");
 		command.setStatus(PeticaoStatus.A_AUTUAR.toString());
@@ -38,12 +34,11 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setDescricao(peticaoEletronica.identificacao());
 		
 		Long id = processoRestService.iniciar(command);
-		peticaoEletronica.associarProcessoWorkflow(new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_AUTUAR.name()));
-		peticaoRepository.save(peticaoEletronica);
+		return new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_AUTUAR.name());
 	}
 
 	@Override
-	public void iniciarWorkflow(PeticaoFisica peticaoFisica) {
+	public ProcessoWorkflow iniciarWorkflow(PeticaoFisica peticaoFisica) {
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
 		command.setMensagem("remessaFisica");
 		command.setStatus(PeticaoStatus.A_PREAUTUAR.toString());
@@ -52,8 +47,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setDescricao(peticaoFisica.identificacao());
 		
 		Long id = processoRestService.iniciarPorMensagem(command);
-		peticaoFisica.associarProcessoWorkflow(new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_PREAUTUAR.name()));
-		peticaoRepository.save(peticaoFisica);
+		return new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_PREAUTUAR.name());
 	}
 	
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.shared.ProcessoWorkflow;
 
 /**
  * @author Rodrigo Barreiros
@@ -19,12 +20,12 @@ public interface WorkflowAdapter {
 	 * Iniciar uma nova instância do processo de autuação de petição eletrônica
 	 * @param peticaoEletronica
 	 */
-	void iniciarWorkflow(PeticaoEletronica peticaoEletronica);
+	ProcessoWorkflow iniciarWorkflow(PeticaoEletronica peticaoEletronica);
 	
 	/**
 	 * Iniciar uma nova instância do processo de autuação de petição eletrônica
 	 * @param peticaoFisica
 	 */
-	void iniciarWorkflow(PeticaoFisica peticaoFisica);
+	ProcessoWorkflow iniciarWorkflow(PeticaoFisica peticaoFisica);
 	
 }
