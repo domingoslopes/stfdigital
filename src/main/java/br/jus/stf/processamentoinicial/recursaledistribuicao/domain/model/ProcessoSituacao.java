@@ -12,7 +12,8 @@ public enum ProcessoSituacao implements ValueObject<ProcessoSituacao> {
 	A_AUTUAR("A autuar"),
 	A_REVISAR("A revisar"),
 	AUTUADO("Autuado"),
-	DISTRIBUIDO("Distribuído");
+	DISTRIBUIDO("Distribuído"),
+	PECAS_ORGANIZADAS("Peças organizadas");
 	
 	private String descricao;
 	

@@ -26,8 +26,10 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -191,16 +193,31 @@ public class ProcessoApplicationService {
 	public void inserirPecas(Processo processo, List<PecaProcessual> pecas){		
 		TipoPeca tipoPeca = null;
 		PecaProcesso peca = null;
+		Visibilidade visibilidade = null;
+		Situacao situacao = null;
 		
 		for (PecaProcessual pecaProcessual : pecas){
 			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
 			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
-			//Inserir a visibilidade.
-			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao());
+			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
+			situacao = Situacao.valueOf(pecaProcessual.getSituacao());
+			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, situacao);
 
-			processo.juntar(peca);
+			processo.adicionarPeca(peca);
 		}
 		
 		processoRepository.save(processo);
+	}
+	
+	/**
+	 * Atribui uma lista de peças com nova organização para um processo.
+	 * 
+	 * @param processo
+	 * @param pecasOrganizadas
+	 * @return
+	 */
+	public Processo organizarPecas(Processo processo, List<Long> pecasOrganizadas) {
+		processo.organizarPecas(pecasOrganizadas);
+		return processoRepository.save(processo);
 	}
 }

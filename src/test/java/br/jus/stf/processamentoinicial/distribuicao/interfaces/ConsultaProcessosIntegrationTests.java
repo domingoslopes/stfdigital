@@ -30,7 +30,7 @@ public class ConsultaProcessosIntegrationTests extends AbstractIntegrationTests 
 			.andExpect(jsonPath("$.numero", is(200)))
 			.andExpect(jsonPath("$.relator", is(28)))
 			.andExpect(jsonPath("$.partes.*", hasSize(2)))
-			.andExpect(jsonPath("$.pecas", hasSize(1)))
+			.andExpect(jsonPath("$.pecas", hasSize(2)))
 			.andExpect(jsonPath("$.situacao", is("Distribuído")));
 	}
 	
@@ -39,7 +39,7 @@ public class ConsultaProcessosIntegrationTests extends AbstractIntegrationTests 
 		//Recupera a lista de status do processo.
 		this.mockMvc.perform(get("/api/processos/status")
 			.header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(5)));
+			.andExpect(jsonPath("$", hasSize(6)));
 	}
 	
 }
