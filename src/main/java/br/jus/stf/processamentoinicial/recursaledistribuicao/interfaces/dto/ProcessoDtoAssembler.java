@@ -76,6 +76,7 @@ public class ProcessoDtoAssembler {
 		String situacao = processo.situacao().descricao();
 		List<Long> preferencias = new LinkedList<Long>();
 		String identificacao = processo.identificacao();
+		List<String> motivosInaptidao = new LinkedList<String>();
 		
 		processo.partesPoloAtivo().forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
 		processo.partesPoloPassivo().forEach(parte -> partesPoloPassivo.add(parte.pessoaId().toLong()));
@@ -98,7 +99,9 @@ public class ProcessoDtoAssembler {
 			processoRecursal.assuntos().stream().forEach(assunto -> assuntos.add(assuntoAdapter.consultar(assunto)));
 			teses = teseAdapter.consultar(processoRecursal.teses());
 			
-			return new ProcessoRecursalDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, observacao);
+			processoRecursal.motivosInaptidao().forEach(motivo -> motivosInaptidao.add(motivo.motivoInaptidao().descricao()));
+			
+			return new ProcessoRecursalDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, motivosInaptidao, observacao);
 		} else {
 			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao);
 		}
