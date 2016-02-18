@@ -140,4 +140,20 @@ public class ProcessoServiceFacade {
 		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
 		processoApplicationService.inserirPecas(processo, pecas);
 	}
+	
+	/**
+	 * Atribui a lista de peças com nova organização para um processo.
+	 * 
+	 * @param processoId
+	 * @param pecasOrganizadas
+	 * @return
+	 */
+	public ProcessoDto organizarPecas(Long processoId, List<Long> pecasOrganizadas) {
+		ProcessoId id = new ProcessoId(processoId);
+		Processo processo = Optional.ofNullable(processoRepository.findOne(id))
+				.orElseThrow(IllegalArgumentException::new);
+		
+		return processoDtoAssembler.toDto(processoApplicationService.organizarPecas(processo, pecasOrganizadas));
+	}
+	
 }
