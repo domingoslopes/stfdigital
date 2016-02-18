@@ -32,6 +32,10 @@ public class PecaProcessual {
 	private String visibilidade;
 	
 	@NotEmpty
+	@ApiModelProperty(value = "Situação da peça", required=true)
+	private String situacao;
+	
+	@NotEmpty
 	@ApiModelProperty(value = "Descrição da peça", required=true)
 	private String descricao;
 	
@@ -45,6 +49,10 @@ public class PecaProcessual {
 	
 	public String getVisibilidade(){
 		return visibilidade;
+	}
+	
+	public String getSituacao(){
+		return situacao;
 	}
 	
 	public String getDescricao(){
