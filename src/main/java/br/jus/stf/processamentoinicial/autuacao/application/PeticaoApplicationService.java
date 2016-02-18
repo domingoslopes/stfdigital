@@ -27,9 +27,11 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -169,7 +171,7 @@ public class PeticaoApplicationService {
 		
 		// Passo 03: Juntando a Peça de Devolução (Ofício) à Petição...
 		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8)); // TODO: Alterar o Tipo de Peça.
-		peticao.juntar(new PecaPeticao(documentoId, tipo, String.format("Ofício nº %s", numero)));
+		peticao.adicionarPeca(new PecaPeticao(documentoId, tipo, String.format("Ofício nº %s", numero), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA));
 		peticaoRepository.save(peticao);
 		
 		// Passo 04: Completando a tarefa no BPM...
@@ -190,7 +192,7 @@ public class PeticaoApplicationService {
 		DocumentoId documentoId = documentoAdapter.salvar(documentoTemporarioId);
 		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8));
 		Peca pecaOriginal = peticao.pecas().stream().filter(p -> p.tipo().equals(tipo)).findFirst().get();
-		Peca pecaAssinada = new PecaPeticao(documentoId, tipo, pecaOriginal.descricao());
+		Peca pecaAssinada = new PecaPeticao(documentoId, tipo, pecaOriginal.descricao(), pecaOriginal.visibilidade(), Situacao.JUNTADA);
 		
 		peticao.substituirPeca(pecaOriginal, pecaAssinada);
 		peticaoRepository.save(peticao);
