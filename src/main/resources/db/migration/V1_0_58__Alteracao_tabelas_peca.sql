@@ -12,10 +12,8 @@ update autuacao.peticao_peca set tip_visibilidade = 'PUBLICO', tip_situacao = 'J
 
 update autuacao.processo_peca set tip_visibilidade = 'PUBLICO', tip_situacao = 'JUNTADA';
 
-/*
 ALTER TABLE autuacao.peticao_peca ALTER COLUMN tip_visibilidade SET NOT NULL;
 ALTER TABLE autuacao.peticao_peca ALTER COLUMN tip_situacao SET NOT NULL;
 
 ALTER TABLE autuacao.processo_peca ALTER COLUMN tip_visibilidade SET NOT NULL;
 ALTER TABLE autuacao.processo_peca ALTER COLUMN tip_situacao SET NOT NULL;
-*/

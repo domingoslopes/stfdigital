@@ -10,6 +10,8 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces.dto;
  */
 public class PecaDto {
 
+	private Long sequencial;
+	
 	private Long tipoId;
 	
 	private String tipoNome;
@@ -18,11 +20,26 @@ public class PecaDto {
 	
 	private Long documentoId;
 	
-	public PecaDto(Long tipoId, String tipoNome, String descricao, Long documentoId) {
+	private Long numeroOrdem;
+	
+	private String visibilidade;
+	
+	private String situacao;
+	
+	public PecaDto(Long sequencial, Long tipoId, String tipoNome, String descricao, Long documentoId,
+			Long numeroOrdem, String visibilidade, String situacao) {
+		this.sequencial = sequencial;
 		this.tipoId = tipoId;
 		this.tipoNome = tipoNome;
 		this.descricao = descricao;
 		this.documentoId = documentoId;
+		this.numeroOrdem = numeroOrdem;
+		this.visibilidade = visibilidade;
+		this.situacao = situacao;
+	}
+	
+	public Long getSequencial() {
+		return sequencial;
 	}
 	
 	public Long getTipoId() {
@@ -39,6 +56,18 @@ public class PecaDto {
 	
 	public Long getDocumentoId() {
 		return documentoId;
+	}
+	
+	public String getVisibilidade() {
+		return visibilidade;
+	}
+	
+	public String getSituacao() {
+		return situacao;
+	}
+	
+	public Long getNumeroOrdem() {
+		return numeroOrdem;
 	}
 	
 }
