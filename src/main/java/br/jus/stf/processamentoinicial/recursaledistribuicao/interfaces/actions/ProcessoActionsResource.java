@@ -55,12 +55,12 @@ public class ProcessoActionsResource {
 	
 	@ActionMapping(id = "analisar-repercussao-geral", name = "Analisar Repercussão Geral")
 	public void analisarRepercussaoGeral(AnalisarRepercussaoGeralCommand command) {
-		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), false);
+		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), command.getObservacao(), false);
 	}
 	
 	@ActionMapping(id = "revisar-repercussao-geral", name = "Revisar Repercussão Geral")
 	public void revisarRepercussaoGeral(RevisarRepercussaoGeralCommand command) {
-		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), true);
+		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), command.getObservacao(), true);
 	}
 	
 	@ActionMapping(id = "autuar-recursal", name = "Autuar Processo Recursal")

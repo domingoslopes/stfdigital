@@ -25,6 +25,10 @@
 	
 	var AnaliseRGPage = require('./pages/analiseRG.page');
 	
+	var RevisaoRGPage = require('./pages/revisaoRG.page');
+	
+	var AutuacaoRecursalPage = require('./pages/autuacaoRe.page');
+	
 	var LoginPage = require('./pages/login.page');
 	
 	var principalPage;
@@ -33,7 +37,7 @@
 	
 	var pos;
 	
-	var peticaoId;
+	var processoId;
 	
 	var login = function(user) {
 		browser.ignoreSynchronization = true;
@@ -58,7 +62,7 @@
 			
 			var registroPage = new RegistroPage();
 			
-			registroPage.registrarVariasPeticoes(3);
+			registroPage.registrarVariasPeticoes(2);
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
@@ -79,8 +83,8 @@
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Recursal #' + peticaoId);
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Recursal #' + processoId);
 		    });
 		    
 		    preautuarRecursal('Criminal');
@@ -96,8 +100,8 @@
 			principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo Recursal Criminal / Eleitoral #' + peticaoId);
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo Recursal Criminal / Eleitoral #' + processoId);
 		    });
 		    
 		    principalPage.executarTarefa();
@@ -132,8 +136,8 @@
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Recursal #' + peticaoId);
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Pré-Autuar Processo Recursal #' + processoId);
 		    });
 		    
 		    preautuarRecursal('Medida Liminar');
@@ -151,8 +155,8 @@
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Analisar Pressupostos Formais #' + peticaoId);
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Analisar Pressupostos Formais #' + processoId);
 		    });
 		    
 		    principalPage.executarTarefa();
@@ -161,7 +165,7 @@
 		    
 		    var analisePage = new AnalisePressupostoPage();
 		    
-		    analisePage.classificarInapto('Inapto');
+		    analisePage.classificarAptidao(false);
 		    
 		    analisePage.selecionarMotivo('Outro');
 		    
@@ -187,8 +191,8 @@
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Revisar Processo Inapto #' + peticaoId);
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Revisar Processo Inapto #' + processoId);
 		    });
 		    
 		    principalPage.executarTarefa();
@@ -196,6 +200,8 @@
 		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/revisao/);
 		    
 		    var revisaoPage = new RevisaoPage();
+		    
+		    revisaoPage.classificarAptidao(true);
 		    
 		    revisaoPage.preencherObsAnalise();
 		    
@@ -218,8 +224,8 @@
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	peticaoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Analisar Assunto / RG #' + peticaoId);
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Analisar Assunto / RG #' + processoId);
 		    });
 		    
 		    principalPage.executarTarefa();
@@ -230,13 +236,82 @@
 		    
 		    analiseRGPage.selecionarTese();
 		    
-		    analiseRGPage.preencherNumeroTese();
+		    analiseRGPage.preencherNumeroTese(50);
 		    
 		    analiseRGPage.selecionarAssunto(287);
 		    
 		    analiseRGPage.preencherObsAnalise();
 		    
 		    analiseRGPage.finalizar();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			loginPage.logout();
+		    
+		});
+		
+		
+		it('Deveria logar como revisor de repercussão geral', function() {
+			login('revisor-repercussao-g');
+		});
+		
+		it ('Deveria revisar o processo com Repercussão Geral', function(){
+			
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Revisar Repercussão Geral #' + processoId);
+		    });
+		    
+		    principalPage.executarTarefa();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/repercussao\/revisar/);
+		    
+		    var revisaoRGPage = new RevisaoRGPage();
+		    
+		    revisaoRGPage.removerTese();
+		    
+		    revisaoRGPage.preencherNumeroTese(1);
+		    
+		    revisaoRGPage.preencherObsAnalise();
+		    
+		    revisaoRGPage.finalizar();
+
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			
+			loginPage.logout();
+		    
+		});
+		
+		it('Deveria logar como autuador de processo recursal', function() {
+			login('autuador-recursal');
+		});
+		
+		it ('Deveria revisar o processo com Repercussão Geral', function(){
+			
+		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	processoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Autuar Processo Recursal #' + processoId);
+		    });
+		    
+		    principalPage.executarTarefa();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/autuacao-recursal/);
+		    
+		    var autuacaoRE = new AutuacaoRecursalPage();
+		    
+		    autuacaoRE.partePoloAtivo('João da Silva');
+		    
+		    autuacaoRE.partePoloPassivo('Maria da Silva');
+		    
+		    autuacaoRE.finalizar();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			

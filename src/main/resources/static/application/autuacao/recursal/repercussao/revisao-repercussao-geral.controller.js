@@ -20,7 +20,7 @@
 		revisao.numeroTese = '';
 		revisao.recursos = [];
 		
-		ProcessoService.consultar(resource).then(function(response) {
+		ProcessoService.consultarPorPeticao(revisao.peticaoId).then(function(response) {
 			revisao.processo = response.data;
 			revisao.observacao = response.data.observacaoAnalise;
 			revisao.teses = response.data.teses;
