@@ -11,10 +11,10 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Representa uma preferência ativa")
 public class PreferenciaDto {
 	
-	@ApiModelProperty(value = "O código da preferência.")
+	@ApiModelProperty("O código da preferência.")
 	private Long codigo;
 
-	@ApiModelProperty(value = "A descrição da preferência.")
+	@ApiModelProperty("A descrição da preferência.")
 	private String descricao;
 	
 	public PreferenciaDto(Long codigo, String descricao) {
