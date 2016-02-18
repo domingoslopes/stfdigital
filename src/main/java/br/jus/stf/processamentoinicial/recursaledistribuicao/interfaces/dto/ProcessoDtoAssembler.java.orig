@@ -10,8 +10,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+<<<<<<< HEAD
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.jurisprudencia.controletese.domain.model.TeseRepository;
+=======
+>>>>>>> 0940931388ad36dbfd7da5fc6721fa74b67d37c7
 import br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDto;
 import br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
@@ -90,9 +93,17 @@ public class ProcessoDtoAssembler {
 		processo.preferencias().forEach(preferencia -> preferencias.add(preferencia.toLong()));
 		
 		if (processo instanceof ProcessoRecursal) {
-			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
+<<<<<<< HEAD
+			ProcessoRecursal processoRecursal = (ProcessoRecursal)processo;
 			List<AssuntoDto> assuntos = new ArrayList<AssuntoDto>();
 			List<TeseDto> teses = new ArrayList<TeseDto>();
+=======
+			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
+			
+			List<AssuntoDto> assuntos = new LinkedList<AssuntoDto>();
+			processoRecursal.assuntos().stream().forEach(assunto -> assuntos.add(assuntoAdapter.consultar(assunto)));
+			
+>>>>>>> 0940931388ad36dbfd7da5fc6721fa74b67d37c7
 			String observacao = processoRecursal.observacaoAnalise();
 			
 			processoRecursal.assuntos().stream().forEach(assunto -> assuntos.add(assuntoAdapter.consultar(assunto)));
