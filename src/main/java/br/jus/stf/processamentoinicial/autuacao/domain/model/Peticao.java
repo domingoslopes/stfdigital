@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -42,6 +43,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
@@ -232,10 +234,30 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 * 
 	 * @param peca
 	 */
-	public boolean juntar(final Peca peca) {
+	public boolean adicionarPeca(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
 		
 		return controladorOrdenacaoPecas.adicionarPeca(peca);
+	}
+	
+	/**
+	 * 
+	 * @param peca
+	 */
+	public void juntarPeca(final Peca peca) {
+		Validate.notNull(peca, "peticao.peca.required");
+		Validate.isTrue(peca.situacao() == Situacao.PENDENTE_JUNTADA, "peticao.peca.situacao.invalid");
+		
+		ListIterator<Peca> iterator = pecas.listIterator();
+		
+		while (iterator.hasNext()) {
+			Peca pecaAtual = iterator.next();
+			
+			if (pecaAtual.equals(peca)) {
+				pecaAtual.alterarSituacao(Situacao.JUNTADA);
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -267,7 +289,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 		removerPeca(pecaDividida);
 		
-		pecasDivisao.forEach(p -> juntar(p));
+		pecasDivisao.forEach(p -> adicionarPeca(p));
 		
 		controladorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
 	}
@@ -287,7 +309,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 		pecasUniao.forEach(p -> removerPeca(p));
 		
-		juntar(pecaUnida);
+		adicionarPeca(pecaUnida);
 		
 		controladorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}

@@ -19,8 +19,10 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaPr
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoOriginario;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -41,7 +43,7 @@ public class ProcessoOriginarioUnitTests {
 		partes.add(new ParteProcesso(new PessoaId(3L), TipoPolo.POLO_PASSIVO));
 
 		pecas = new LinkedHashSet<PecaProcesso>(0);
-		pecas.add(new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial"));
+		pecas.add(new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA));
 	}
 	
 	@Test
@@ -137,9 +139,9 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void adicionaPecaAProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
-		processo.juntar(peca);
+		processo.adicionarPeca(peca);
 		assertEquals(2, processo.pecas().size());
 		assertTrue(processo.pecas().contains(peca));
 	}
@@ -148,15 +150,15 @@ public class ProcessoOriginarioUnitTests {
 	public void tentaAdicionarPecaAProcessoInformandoNulo() {
 		Processo processo = processo();
 		
-		processo.juntar(null);
+		processo.adicionarPeca(null);
 	}
 	
 	@Test
 	public void removePecaDaProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
-		processo.juntar(peca);
+		processo.adicionarPeca(peca);
 		processo.removerPeca(peca);
 		assertEquals(1, processo.pecas().size());
 		assertFalse(processo.pecas().contains(peca));

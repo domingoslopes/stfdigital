@@ -23,8 +23,10 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PeticaoId;
@@ -236,7 +238,9 @@ public class PeticaoServiceFacade {
     private PecaTemporaria criarPecaTemporaria(Map<String, String> peca) {
 	    DocumentoTemporarioId documentoTemporario = new DocumentoTemporarioId(peca.get("documentoTemporario"));
 	    TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(peca.get("tipo")));
-	    return new PecaTemporaria(documentoTemporario, tipo, tipo.nome());
+	    Visibilidade visibilidade = Visibilidade.valueOf(Optional.ofNullable(peca.get("visibilidade")).orElse(Visibilidade.PUBLICO.toString()));
+	    Situacao situacao = Situacao.valueOf(Optional.ofNullable(peca.get("situacao")).orElse(Situacao.JUNTADA.toString()));
+	    return new PecaTemporaria(documentoTemporario, tipo, tipo.nome(), visibilidade, situacao);
     }
 	
 }
