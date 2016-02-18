@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,6 +36,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
@@ -150,7 +152,7 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		this.identificacao = montarIdentificacao();
 		
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
-		pecas.forEach(p -> juntar(p));
+		pecas.forEach(p -> adicionarPeca(p));
 	}
 	
 	public abstract TipoProcesso tipoProcesso();
@@ -238,12 +240,32 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * 
 	 * @param peca
 	 */
-	public boolean juntar(final Peca peca){
+	public boolean adicionarPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
 	
 		controladorOrdenacaoPecas.numerarPeca(peca);
 		
 		return pecas.add(peca);
+	}
+	
+	/**
+	 * 
+	 * @param peca
+	 */
+	public void juntarPeca(final Peca peca) {
+		Validate.notNull(peca, "processo.peca.required");
+		Validate.isTrue(peca.situacao() == Situacao.PENDENTE_JUNTADA, "processo.peca.situacao.invalid");
+		
+		ListIterator<Peca> iterator = pecas.listIterator();
+		
+		while (iterator.hasNext()) {
+			Peca pecaAtual = iterator.next();
+			
+			if (pecaAtual.equals(peca)) {
+				pecaAtual.alterarSituacao(Situacao.JUNTADA);
+				break;
+			}
+		}
 	}
 
 	/**
@@ -255,8 +277,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param pecaSubstituta
 	 */
 	public void substituirPeca(Peca pecaOriginal, Peca pecaSubstituta) {
-		Validate.notNull(pecaOriginal, "peticao.pecaOriginal.required");
-		Validate.notNull(pecaSubstituta, "peticao.pecaSubstituta.required");
+		Validate.notNull(pecaOriginal, "processo.pecaOriginal.required");
+		Validate.notNull(pecaSubstituta, "processo.pecaSubstituta.required");
 		
 		controladorOrdenacaoPecas.substituirPeca(pecaOriginal, pecaSubstituta);
 	}
@@ -268,14 +290,14 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param pecasDivisao
 	 */
 	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
-		Validate.notNull(pecaDividida, "peticao.pecaDividida.required");
-		Validate.notEmpty(pecasDivisao, "peticao.pecasDivisao.required");
+		Validate.notNull(pecaDividida, "processo.pecaDividida.required");
+		Validate.notEmpty(pecasDivisao, "processo.pecasDivisao.required");
 
 		Long numeroOrdem = pecaDividida.numeroOrdem();
 		
 		removerPeca(pecaDividida);
 		
-		pecasDivisao.forEach(p -> juntar(p));
+		pecasDivisao.forEach(p -> adicionarPeca(p));
 		
 		controladorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
 	}
@@ -288,14 +310,14 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param pecaUnida
 	 */
 	public void unirPecas(List<Peca> pecasUniao, Peca pecaUnida) {
-		Validate.notEmpty(pecasUniao, "peticao.pecasUniao.required");
-		Validate.notNull(pecaUnida, "peticao.pecaUnida.required");
+		Validate.notEmpty(pecasUniao, "processo.pecasUniao.required");
+		Validate.notNull(pecaUnida, "processo.pecaUnida.required");
 		
 		Long menorNumeroOrdem = pecasUniao.stream().min((p1, p2) -> p1.numeroOrdem().compareTo(p2.numeroOrdem())).get().numeroOrdem();
 		
 		pecasUniao.forEach(p -> removerPeca(p));
 		
-		juntar(pecaUnida);
+		adicionarPeca(pecaUnida);
 		
 		controladorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}
@@ -313,6 +335,18 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		
 		return removeu;
 	}
+	
+	/**
+	 * @param pecasOrganizadas
+	 */
+	public void organizarPecas(final List<Long> pecasOrganizadas) {
+		Validate.notNull(pecasOrganizadas, "processo.pecasOrganizadas.required");
+		Validate.isTrue(pecas.size() == pecasOrganizadas.size(), "processo.pecasOrganizadas.invalid");
+		
+		for(Peca p : pecas) {
+			controladorOrdenacaoPecas.reordenarPeca(p, Long.valueOf(pecasOrganizadas.indexOf(p.toLong()) + 1));
+		} 
+	}
 
 	public List<Peca> pecas() {
 		return Collections.unmodifiableList(pecas);
@@ -323,15 +357,15 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	}
 	
 	public void atribuirPreferencias(final Set<PreferenciaId> preferencias) {
-		Validate.notNull(preferencias, "peticao.preferencias.required");
+		Validate.notNull(preferencias, "processo.preferencias.required");
 		
 		this.preferencias.addAll(preferencias);
 		this.preferencias.retainAll(preferencias);
 	}
 	
 	public void atribuirPartes(final Set<ParteProcesso> partes, final TipoPolo polo) {
-		Validate.notNull(partes, "peticao.partes.required");
-		Validate.notNull(polo, "peticao.partesPoloAtivo.required");
+		Validate.notNull(partes, "processo.partes.required");
+		Validate.notNull(polo, "processo.partesPoloAtivo.required");
 		
 		this.partes.removeIf(parte -> polo.equals(parte.polo()) && !partes.contains(parte));
 		this.partes.addAll(partes);

@@ -16,9 +16,11 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.PessoaId;
@@ -233,10 +235,10 @@ public class PeticaoUnitTests {
 	@Test
 	public void adicionaPecaAPeticao() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		assertEquals(0, peticao.pecas().size());
-		peticao.juntar(peca);
+		peticao.adicionarPeca(peca);
 		assertEquals(1, peticao.pecas().size());
 		assertTrue(peticao.pecas().contains(peca));
 	}
@@ -245,15 +247,15 @@ public class PeticaoUnitTests {
 	public void tentaAdicionarPecaAPeticaoInformandoNulo() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
 		
-		peticao.juntar(null);
+		peticao.adicionarPeca(null);
 	}
 	
 	@Test
 	public void removePecaDaPeticao() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
-		peticao.juntar(peca);
+		peticao.adicionarPeca(peca);
 		assertEquals(1, peticao.pecas().size());
 		peticao.removerPeca(peca);
 		assertEquals(0, peticao.pecas().size());
