@@ -113,7 +113,7 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 		String json = mockMvc.perform(post("/api/documentos/dividir").contentType(MediaType.APPLICATION_JSON)
 		        .content(dividirDocumentoCommands)).andExpect(status().is4xxClientError()).andReturn().getResponse().getContentAsString();
 		String erro = JsonPath.read(json, "$.errors[0].message");
-		Assert.assertEquals("Intervalos não são contíguos", erro);
+		Assert.assertEquals("Nem todas as páginas do documento foram contempladas.", erro);
 	}
 	
 	private Integer fazerUploadDocumento() throws Exception {
