@@ -133,14 +133,14 @@ public class ProcessoApplicationService {
 	 * @param teses Teses de repercussão geral
 	 * @param observacao Observação da análise
 	 */
-	public void analisarRepercussaoGeral(Long idProcesso, List<String> assuntos, List<Long> teses, boolean revisao) {
+	public void analisarRepercussaoGeral(Long idProcesso, List<String> assuntos, List<Long> teses, String obsAnalise, boolean revisao) {
 		
 		ProcessoId processoId = new ProcessoId(idProcesso);
 		Set<AssuntoId> assuntosProcesso = assuntos.stream().map(id -> new AssuntoId(id)).collect(Collectors.toSet());
 		Set<TeseId> tesesProcesso = teses.stream().map(id -> new TeseId(id)).collect(Collectors.toSet());
 		
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(processoId);
-		processo.analisarRepercussaoGeral(assuntosProcesso, tesesProcesso);
+		processo.analisarRepercussaoGeral(assuntosProcesso, tesesProcesso, obsAnalise);
 		processoRepository.save(processo);
 		
 		if (revisao) {
