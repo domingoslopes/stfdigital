@@ -18,6 +18,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoSituacao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.PeticaoRestAdapter;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
@@ -129,4 +130,14 @@ public class ProcessoServiceFacade {
 		return processoDtoAssembler.toDto(processoRepository.findByPeticao(new PeticaoId(id)));
 	}
 	
+	/**
+	 * Insere peças processuais.
+	 * 
+	 * @param processoId ID do processo.
+	 * @param pecas Conjunto de peças processuais a serem inseridas.
+	 */
+	public void inserirPecas(Long processoId, List<PecaProcessual> pecas){
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		processoApplicationService.inserirPecas(processo, pecas);
+	}
 }
