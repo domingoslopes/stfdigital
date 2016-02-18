@@ -13,6 +13,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoCriminalEleitoralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.ExcluirPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.OrganizarPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarProcessoRecursalInaptoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarRepercussaoGeralCommand;
@@ -79,6 +80,11 @@ public class ProcessoActionsResource {
 	@ActionMapping(id = "inserir-pecas", name = "Inserir Peçad Processual")
 	public void inserirPecas(SalvarPecasCommand command) {
 		processoServiceFacade.inserirPecas(command.getProcessoId(), command.getPecas());
+	}
+	
+	@ActionMapping(id = "excluir-pecas", name = "Excluir Peças Processuais")
+	public void excluirPecas(ExcluirPecasCommand command) {
+		processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecas());
 	}
 	
 	@ActionMapping(id = "organizar-pecas", name = "Organizar Peças")
