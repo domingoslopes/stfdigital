@@ -15,6 +15,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarProcessoRecursalInaptoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarRepercussaoGeralCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.SalvarPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
 
@@ -72,6 +73,11 @@ public class ProcessoActionsResource {
 	public ProcessoDto distribuir(DistribuirPeticaoCommand command) {
 		return processoServiceFacade.distribuir(command.getTipoDistribuicao(), command.getPeticaoId(), command.getJustificativa(),
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
+	}
+	
+	@ActionMapping(id = "inserir-pecas", name = "Inserir Peçad Processual")
+	public void inserirPecas(SalvarPecasCommand command) {
+		processoServiceFacade.inserirPecas(command.getProcessoId(), command.getPecas());
 	}
 	
 }

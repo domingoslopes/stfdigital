@@ -116,4 +116,12 @@ public class ProcessoDto {
 	public String getIdentificacao(){
 		return identificacao;
 	}
+	public List<AssuntoDto> getAssuntos() {
+		return assuntos;
+	}
+	
+	public List<TeseDto> getTeses() {
+		return teses;
+	}
+	
 }
