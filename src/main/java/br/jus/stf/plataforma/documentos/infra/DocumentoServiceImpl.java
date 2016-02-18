@@ -131,7 +131,7 @@ public class DocumentoServiceImpl implements DocumentoService {
 		if (todasPaginasForamContempladas(intervalos, documento)) {
 			return dividirDocumento(documento, intervalos);
 		} else {
-			throw new IllegalArgumentException("Intervalos não são contíguos");
+			throw new IllegalArgumentException("Nem todas as páginas do documento foram contempladas.");
 		}
 	}
 	
