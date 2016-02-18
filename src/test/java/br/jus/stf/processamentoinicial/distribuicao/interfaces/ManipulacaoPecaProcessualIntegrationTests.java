@@ -127,7 +127,7 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 	    documentoTemporarioId = mockMvc.perform(fileUpload("/api/documentos/upload/assinado").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
 	    	.andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
 	    
-	    salvarPecasCommand = "{\"resources\":[{\"processoId\": 1, \"pecas\": [{\"documentoTemporarioId\":\"" + documentoTemporarioId + "\", \"tipoPecaId\":1, \"visibilidade\":\"PUBLICA\", \"descricao\":\"xxx\"}]}]}";
+	    salvarPecasCommand = "{\"resources\":[{\"processoId\": 1, \"pecas\": [{\"documentoTemporarioId\":\"" + documentoTemporarioId + "\", \"tipoPecaId\":1, \"visibilidade\":\"PUBLICO\", \"situacao\":\"JUNTADA\", \"descricao\":\"xxx\"}]}]}";
 	    
 	    //Insere a peça.
   		super.mockMvc.perform(post("/api/actions/inserir-pecas/execute").header("login", "autuador").contentType(MediaType.APPLICATION_JSON)

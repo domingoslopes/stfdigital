@@ -18,9 +18,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.PessoaId;
@@ -57,11 +59,11 @@ public class PeticaoEletronicaUnitTests {
 	}
 
 	private PecaPeticao criarPecaPI() {
-		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 	}
 	
 	private PecaPeticao criarPecaDAR() {
-		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(6L, "Decisão ou ato reclamado"), "Decisão ou ato reclamado");
+		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(6L, "Decisão ou ato reclamado"), "Decisão ou ato reclamado", Visibilidade.PUBLICO, Situacao.JUNTADA);
 	}
 
 	@Test
@@ -162,7 +164,7 @@ public class PeticaoEletronicaUnitTests {
 		Peca pecaCustas = incluirPecaCustas();
 		incluirPecaAtoCoator();
 		PeticaoEletronica peticao = criarPeticaoPadrao();
-		Peca pecaCustasNova = new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(2L, "Custas"), "Custas Nova");
+		Peca pecaCustasNova = new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(2L, "Custas"), "Custas Nova", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		peticao.substituirPeca(pecaCustas, pecaCustasNova);
 		Assert.assertEquals("Total de peças deveria ter sido mantida em 3.", 3L, peticao.pecas().size());
 		Assert.assertEquals("Peça 1 deveria ter sido ordenada com valor 1.", new Long(1L), recuperarPecaPI(peticao).numeroOrdem());
@@ -296,7 +298,7 @@ public class PeticaoEletronicaUnitTests {
 	}
 
 	private PecaPeticao criarPeca(TipoPeca tipoPeca, String descricaoPeca) {
-		PecaPeticao pecaPeticao = new PecaPeticao(new DocumentoId(proximoIdDocumento()), tipoPeca, descricaoPeca);
+		PecaPeticao pecaPeticao = new PecaPeticao(new DocumentoId(proximoIdDocumento()), tipoPeca, descricaoPeca, Visibilidade.PUBLICO, Situacao.JUNTADA);
 		return pecaPeticao;
 	}
 	

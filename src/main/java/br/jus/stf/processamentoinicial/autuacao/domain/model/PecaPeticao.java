@@ -9,7 +9,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.DocumentoId;
 
 @Entity
@@ -28,6 +30,21 @@ public class PecaPeticao extends Peca {
 
 	}
 
+	public PecaPeticao(final DocumentoId documento, final TipoPeca tipoPeca,
+			final String descricao, final Visibilidade visibilidade, final Situacao situacao) {
+		super(documento, tipoPeca, descricao, visibilidade, situacao);
+	}
+	
+	public PecaPeticao(final DocumentoId documento, final TipoPeca tipoPeca,
+			final String descricao, final Visibilidade visibilidade) {
+		super(documento, tipoPeca, descricao, visibilidade);
+	}
+	
+	public PecaPeticao(final DocumentoId documento, final TipoPeca tipoPeca,
+			final String descricao, final Situacao situacao) {
+		super(documento, tipoPeca, descricao, situacao);
+	}
+	
 	public PecaPeticao(final DocumentoId documento, final TipoPeca tipoPeca,
 			final String descricao) {
 		super(documento, tipoPeca, descricao);

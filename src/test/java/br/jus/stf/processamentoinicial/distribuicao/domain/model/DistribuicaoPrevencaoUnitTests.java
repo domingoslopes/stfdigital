@@ -26,9 +26,11 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -130,7 +132,7 @@ public class DistribuicaoPrevencaoUnitTests {
 		PeticaoFisica peticao = new PeticaoFisica(new PeticaoId(1L), 1L, "DISTRIBUIDOR", 1, 1, FormaRecebimento.SEDEX, "BR123456789AD", TipoProcesso.ORIGINARIO);
 		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
 		
-		peticao.juntar(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome()));
+		peticao.adicionarPeca(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.JUNTADA));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
 		peticao.preautuar(new ClasseId("ADI"), null);
 		peticao.aceitar(new ClasseId("ADI"));
