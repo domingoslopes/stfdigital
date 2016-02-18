@@ -8,7 +8,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * 
  * @since 13.01.2016
  */
-@ApiModel(value = "Representa uma preferência ativa")
+@ApiModel("Representa uma preferência ativa")
 public class PreferenciaDto {
 	
 	@ApiModelProperty("O código da preferência.")
