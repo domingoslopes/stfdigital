@@ -133,7 +133,7 @@
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
 				}
-			}	
+			}
 		}).state('autuar-recursal',{
 			parent: 'action.autuacao',
 			url: '/processo/autuacao-recursal',
