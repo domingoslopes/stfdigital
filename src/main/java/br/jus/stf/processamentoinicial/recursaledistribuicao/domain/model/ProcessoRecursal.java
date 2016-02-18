@@ -120,9 +120,10 @@ public class ProcessoRecursal extends Processo {
 		this.observacaoAnalise = observacaoAnalise;
 	}
 	
-	public void analisarRepercussaoGeral(Set<AssuntoId> assuntos, Set<TeseId> teses) {
+	public void analisarRepercussaoGeral(Set<AssuntoId> assuntos, Set<TeseId> teses, String observacaoAnalise) {
 		atribuirAssuntos(assuntos);
 		atribuirTeses(teses);
+		this.observacaoAnalise = observacaoAnalise;
 	}
 
 }

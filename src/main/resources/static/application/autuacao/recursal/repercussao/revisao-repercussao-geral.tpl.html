@@ -38,7 +38,7 @@
 							<div class="input-group">
 								<div class="input-group-btn">
 									<button type="button" class="btn btn-success" ng-model="vm.tipoTese">{{vm.tipoTese.descricao}}</button>
-									<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+									<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" id='btnTeseDropDown'>
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu">
@@ -47,7 +47,7 @@
 										</li>
 									</ul>
 								</div>
-								<input type="text" class="form-control" ng-model="vm.numeroTese" placeholder="Digite o número tese" 
+								<input type="text" class="form-control" ng-model="vm.numeroTese" placeholder="Digite o número tese" id="inputNumeroTese"
 										style="min-height: 36px; border-radius: 0; border-left-width: 0px; border-left-color: none;" ng-keypress="($event.charCode==13)?vm.consultarTese():return">
 							</div>							
 	 					</div>
@@ -62,7 +62,7 @@
 								<tbody>
 									<tr ng-repeat="tese in vm.teses">
 										<td class="font-montserrat fs-12 col-md-12">{{tese.descricao}}</td>
-										<td class="text-center b-l b-dashed b-grey col-md-4"><span class="hint-text small"><a href="#" ng-click="vm.removerTese(tese)">Remover</a></span></td>
+										<td class="text-center b-l b-dashed b-grey col-md-4"><span class="hint-text small"><a href="#" ng-click="vm.removerTese(tese)" id="btnRemoveTese">Remover</a></span></td>
 									</tr>
 								</tbody>
 							</table>
