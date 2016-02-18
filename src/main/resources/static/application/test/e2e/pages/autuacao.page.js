@@ -40,8 +40,16 @@
 			element(by.model('autuacao.motivo')).sendKeys('Peticao inválida');
 		};
 		
+		this.selecionarAssunto = function(codigoDescricao){
+			utils.select('div#s2id_assunto', codigoDescricao);
+		};
+		
 		this.finalizar = function() {
 			element(by.id('btn_exec_autuar')).click();
+		};
+		
+		this.finalizarRecursal = function() {
+			element(by.id('btn_exec_autuar-recursal-criminal-eleitoral')).click();
 		};
 		
 	};

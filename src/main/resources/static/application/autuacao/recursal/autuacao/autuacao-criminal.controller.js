@@ -55,7 +55,7 @@
 		        results: function (data, page) {
 		        	
 		        	var resultados = data.map(function(item){
-		        			return {id:item.codigo, descricao : item.descricao};
+		        			return {id:item.codigo, codigo: item.codigo, descricao : item.descricao};
 		        	});
 		        	return {results: resultados};
 		        }

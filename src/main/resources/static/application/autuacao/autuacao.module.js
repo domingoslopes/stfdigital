@@ -142,7 +142,7 @@
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-recursal.tpl.html'
 				}
-			}
+			}	
 		}).state('analisar-pressupostos-formais',{
 			parent: 'action.autuacao',
 			url: '/processo/analise',
