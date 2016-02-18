@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TeseAdapter;
@@ -18,13 +19,18 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Motivo
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidaoProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParteProcesso;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.shared.AssuntoId;
+import br.jus.stf.shared.DocumentoId;
+import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
@@ -55,6 +61,9 @@ public class ProcessoApplicationService {
 	
 	@Autowired
 	private TeseAdapter teseAdapter;
+	
+	@Autowired
+	DocumentoAdapter documentoAdapter;
 	
 	/**
 	 * Cadastra um processo recursal.
@@ -172,5 +181,26 @@ public class ProcessoApplicationService {
 	private Set<ParteProcesso> carregarPartes(List<String> polo, TipoPolo tipo) {
 		Set<PessoaId> pessoas = pessoaAdapter.cadastrarPessoas(polo);
 		return pessoas.stream().map(pessoa -> new ParteProcesso(pessoa, tipo)).collect(Collectors.toSet());
+	}
+	
+	/**
+	 * Insere as peças do processo
+	 * @param processo Dados do processo.
+	 * @param pecas Lista de peças.
+	 */
+	public void inserirPecas(Processo processo, List<PecaProcessual> pecas){		
+		TipoPeca tipoPeca = null;
+		PecaProcesso peca = null;
+		
+		for (PecaProcessual pecaProcessual : pecas){
+			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
+			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
+			//Inserir a visibilidade.
+			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao());
+
+			processo.juntar(peca);
+		}
+		
+		processoRepository.save(processo);
 	}
 }

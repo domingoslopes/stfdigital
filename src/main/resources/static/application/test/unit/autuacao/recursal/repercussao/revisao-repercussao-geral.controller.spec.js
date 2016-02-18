@@ -96,7 +96,7 @@
 		
 		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $log, messages, properties, $state, ProcessoService, PeticaoService) {
 			$httpBackend = _$httpBackend_;
-			$httpBackend.expectGET(properties.apiUrl + '/processos/recursais/14').respond(mockProcessoRecursal);
+			$httpBackend.expectGET(properties.apiUrl + '/processos/14').respond(mockProcessoRecursal);
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/14').respond(mockPeticao);
 			
 			scope = $rootScope.$new();
