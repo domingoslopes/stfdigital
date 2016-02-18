@@ -72,8 +72,6 @@ public class ProcessoDto {
 		this.situacao = situacao;
 		this.preferencias = preferencias;
 		this.identificacao = identificacao;
-		this.assuntos = assuntos;
-		this.teses = teses;
 	}
 	
 	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, List<Long> preferencias, String identificacao, List<TeseDto> teses, List<AssuntoDto> assuntos, String observacaoAnalise) {
