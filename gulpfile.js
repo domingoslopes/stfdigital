@@ -28,7 +28,7 @@ var karma = require('karma').server;
 var del = require('del');
 var _ = require('lodash');
 var argv = require('yargs').argv;
-/* jshint camelcase:false */
+
 var webdriverStandalone = require('gulp-protractor').webdriver_standalone;
 var webdriverUpdate = require('gulp-protractor').webdriver_update;
 
