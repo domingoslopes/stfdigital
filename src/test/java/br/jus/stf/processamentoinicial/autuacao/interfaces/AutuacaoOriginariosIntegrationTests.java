@@ -59,6 +59,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String peticaoFisicaParaDevolucao;
 	private String peticaoInvalidaParaAutuacao;
 	private String tarefaParaAssumir;
+	private String processoParaOrganizarPecas;
 	
 	private String prepareCommand;
 	private String provideToSignCommand;
@@ -142,6 +143,13 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoEletronica.append("\"partesPoloAtivo\":[1, 2],");
 		peticaoEletronica.append("\"partesPoloPassivo\":[3, 4],");
 		peticaoEletronica.append("\"pecas\": [{\"documentoTemporario\":\"" + idDoc + "\",");
+		peticaoEletronica.append("\"tipo\":1}, ");
+		
+		//Envia um documento antes de enviar a petição.
+		idDoc = mockMvc.perform(fileUpload("/api/documentos/upload/assinado").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
+		    .andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
+		
+		peticaoEletronica.append("{\"documentoTemporario\":\"" + idDoc + "\",");
 		peticaoEletronica.append("\"tipo\":1}]}]}");
 		this.peticaoEletronica = peticaoEletronica.toString();
 
@@ -186,6 +194,13 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		this.assinarDevolucaoPeticaoCommand = "{\"resources\":[{\"peticaoId\":@peticaoId,\"documentoId\":\"@documentoId\"}]}";
 		
 		this.tarefaParaAssumir = "{\"resources\": [{\"tarefaId\": @}]}";
+		
+		// Cria um objeto para ser usado no processo de organização de peças.
+		StringBuilder processoParaOrganizarPecas = new StringBuilder();
+		processoParaOrganizarPecas.append("{\"resources\": ");
+		processoParaOrganizarPecas.append("[{\"processoId\": @,");
+		processoParaOrganizarPecas.append("\"pecasOrganizadas\": [4,3]}]}");
+		this.processoParaOrganizarPecas = processoParaOrganizarPecas.toString();
 	}
 	
 	@Test
@@ -395,4 +410,58 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 
 		return Hex.encodeHexString(signed);
 	}
+
+    @Test
+    public void executarAcaoOrganizarPecas() throws Exception {
+    	
+    	String peticaoId = "";
+    	String processoDto = "";
+    	String tarefaObject = "";
+    	
+    	//Envia a petição eletrônica.
+    	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-eletronica/execute").header("login", "peticionador").contentType(MediaType.APPLICATION_JSON)
+    		.content(this.peticaoEletronica)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		
+		//Recupera a(s) tarefa(s) do autuador.
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "autuador")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("autuar"))).andReturn().getResponse().getContentAsString();
+		
+		assumirTarefa(tarefaObject);
+		
+		//Realiza a autuação.
+		super.mockMvc.perform(post("/api/actions/autuar/execute").contentType(MediaType.APPLICATION_JSON)
+			.content(this.peticaoValidaParaAutuacao.replace("@", peticaoId))).andExpect(status().isOk());
+		
+		//Recupera a(s) tarefa(s) do distribuidor.
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "distribuidor")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("distribuir-processo"))).andReturn().getResponse().getContentAsString();
+		
+		assumirTarefa(tarefaObject);
+		
+		//Realiza a distribuição.
+		processoDto = super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").header("login", "distribuidor").contentType(MediaType.APPLICATION_JSON)
+			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)))
+			.andReturn().getResponse().getContentAsString();
+
+		//Recupera a(s) tarefa(s) do organizador de peças.
+		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "organizador-pecas")).andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].nome", is("organizar-pecas"))).andReturn().getResponse().getContentAsString();
+
+		assumirTarefa(tarefaObject);
+		
+		//Realiza a organização das peças.
+		processoDto = super.mockMvc.perform(post("/api/actions/organizar-pecas/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
+			.content(this.processoParaOrganizarPecas.replace("@", JsonPath.read(processoDto, "$.id").toString())))
+			.andReturn().getResponse().getContentAsString();
+		
+		System.out.println("<<< " + processoDto + " >>>");
+		System.out.println(getProcessoId(peticaoId));
+    }
+    
+    private String getProcessoId(String peticaoId) throws Exception {
+		String json = super.mockMvc.perform(get("/api/peticoes/" + peticaoId + "/processo").contentType(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse().getContentAsString();
+		
+		return (JsonPath.read(json, "$.pecas")).toString();
+    }
 }
