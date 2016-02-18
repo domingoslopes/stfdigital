@@ -38,16 +38,16 @@
 							<div class="input-group">
 								<div class="input-group-btn">
 									<button type="button" class="btn btn-success" ng-model="analise.tipoTese">{{analise.tipoTese.descricao}}</button>
-									<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+									<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" id='btnTeseDropDown'>
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu">
 										<li ng-repeat="tese in analise.tiposTeses">
-											<a href="#" ng-click="analise.selecionarTipoTese(tese)">{{tese.descricao}}</a>
+											<a href="#" ng-click="analise.selecionarTipoTese(tese)" id="optTese">{{tese.descricao}}</a>
 										</li>
 									</ul>
 								</div>
-								<input type="text" class="form-control" ng-model="analise.numeroTese" placeholder="Digite o número tese" 
+								<input type="text" class="form-control" ng-model="analise.numeroTese" placeholder="Digite o número tese" id="inputNumeroTese"
 										style="min-height: 36px; border-radius: 0; border-left-width: 0px; border-left-color: none;" ng-keypress="($event.charCode==13)?analise.consultarTese():return">
 							</div>							
 	 					</div>

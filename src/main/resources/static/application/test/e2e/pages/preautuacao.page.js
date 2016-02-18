@@ -19,6 +19,10 @@
 			utils.select('div#s2id_classe', sigla);
 		};
 		
+		preautuacao.selecionarPreferencias = function(preferencia){
+			utils.selectMultiple('div#s2id_preferencia', preferencia);
+		};
+		
 		preautuacao.finalizar = function() {
 			element(by.css('action-executor[fn-validate="preautuacao.validar"] > a')).click();
 		};
@@ -29,6 +33,10 @@
 		
 		preautuacao.preencherMotivoIndevida = function(){
 			element(by.model('preautuacao.motivo')).sendKeys('Peticao indevida');
+		};
+		
+		preautuacao.preencherAnalise = function(){
+			element(by.model('preautuacao.motivo')).sendKeys('Analise realizada');
 		};
 	};
 
