@@ -55,13 +55,13 @@
 				// Iniciando o Processo de Remessa Física
 				principalPage.iniciarProcesso('link_registrar-peticao-fisica');
 				
-				this.preencherQtdVolumes(i);
+				this.preencherQtdVolumes(i+1);
 				
-				this.preencherQtdApensos(i);
+				this.preencherQtdApensos(i+1);
 				
 				this.classificarTipoRecebimento('Sedex');
 				
-				this.preencherNumeroSedex(i);
+				this.preencherNumeroSedex(i+1);
 				
 				this.selecionarTipoProcesso('Recursal');
 				
