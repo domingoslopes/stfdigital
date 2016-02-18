@@ -19,7 +19,6 @@
 		var resource = $stateParams.resources[0];
 		
 		autuacao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
-<<<<<<< HEAD
 		
 		autuacao.classe = '';
 		
@@ -33,15 +32,11 @@
 		
 		autuacao.valida = 'true';
 		
-		autuacao.motivo = '';
-		
-		autuacao.assuntosSelecionados = [];
-		
 		autuacao.recursos = [];
 		
 		ProcessoService.consultarPorPeticao(revisao.peticaoId).then(function(response) {
 			autuacao.processo = response.data;
-			autuacao.motivosInaptidao = response.data.;
+			autuacao.motivosInaptidao = response.data.motivosInaptidao;
 			autuacao.teses = response.data.teses;
 			autuacao.assuntos = response.data.assuntos;
 		});
@@ -49,47 +44,7 @@
 		PeticaoService.consultar(revisao.peticaoId).then(function(data) {
 			revisao.peticao = data;
 		});
-		
-		
-=======
-		autuacao.classe = '';
-		autuacao.partesPoloAtivo = [];
-		autuacao.partesPoloPassivo = [];
-		autuacao.teses = [];
-		autuacao.assuntos = [];
-		asutuacao.motivos = 
-		autuacao.poloAtivoController = new PartesController(autuacao.partesPoloAtivo);
-		autuacao.poloPassivoController = new PartesController(autuacao.partesPoloPassivo);
-		autuacao.valida = 'true';
-		autuacao.recursos = [];
-		
-		ProcessoService.consultarProcessoPeloIdPeticao(autuacao.peticaoId).success(function(data){
-			autuacao.processo = data;
-			autuacao.teses = autuacao.processo.teses;
-			autuacao.assuntos = autuacao.processo.assuntos;
-			autuacao.motivos = autuacao.processo.motivos;
-			
-			if (autuacao.processo.partes.PoloAtivo.length > 0){
-				angular.forEach(autuacao.peticao.partes.PoloAtivo, function(parteAtiva) {
-					PessoaService.pesquisar(parteAtiva).then(function(dado){
-						var pessoaAtivo = dado.data;
-						autuacao.partesPoloAtivo.push({'id':parteAtiva, 'pessoa': pessoaAtivo});
-					});
-				});
-			}
-			
-			if (autuacao.processo.partes.PoloPassivo.length > 0){
-				angular.forEach(autuacao.peticao.partes.PoloPassivo, function(partePassiva) {
-					PessoaService.pesquisar(partePassiva).then(function(dado){
-						var pessoaPassiva = dado.data;
-						autuacao.partesPoloPassivo.push({'id':partePassiva, 'pessoa': pessoaPassiva});
-					});
-				});
-			}
-			
-		});
-		
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
+
 		autuacao.adicionarPoloAtivo = function() {
 			autuacao.poloAtivoController.adicionar(autuacao.partePoloAtivo);
 			autuacao.partePoloAtivo = '';
@@ -109,10 +64,7 @@
 		autuacao.removerPoloPassivo = function(parteSelecionada) {
 			autuacao.poloPassivoController.remover(parteSelecionada);
 		};
-<<<<<<< HEAD
 
-=======
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
 		
 		autuacao.validar = function() {
 			var errors = null;
@@ -129,11 +81,9 @@
 				messages.error(errors);
 				return false;
 			}
-<<<<<<< HEAD
+
 			autuacao.recursos.push( new AutuarProcessoRecursalCommand(autuacao.processo.id, autuacao.partesPoloAtivo, autuacao.partesPoloPassivo));
-=======
-			autuacao.recursos.push( new AutuarProcessoCriminalEleitoralCommand(autuacao.processo.id, autuacao.partesPoloAtivo, autuacao.partesPoloPassivo, autuacao.assuntosSelecionados));
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
+
 			return true;
 		}
 		
@@ -153,10 +103,9 @@
 				});
 			};
 		
-<<<<<<< HEAD
 			partesController.remover = function(index) {
 				partes.splice(index, 1);
-=======
+				
 			partesController.remover = function(parteSelecionada) {
 				parteSelecionada.selected = true;
 				var partesAtuais = partes.slice(0);
@@ -166,7 +115,6 @@
 						partes.push(parte);
 					}
 				});
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
 			};
 			
 			partesController.clear = function(array) {
@@ -177,19 +125,12 @@
 			return partesController;
 		}
 
-<<<<<<< HEAD
+
     	function AutuarProcessoCriminalEleitoralCommand(id, partesPoloAtivo, partesPoloPassivo){
-=======
-    	function AutuarProcessoCriminalEleitoralCommand(id, partesPoloAtivo, partesPoloPassivo, assuntosSelecionados){
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
-    		var dto = {};
+=
     		dto.processoId = id;
     		dto.partesPoloAtivo = [];
     		dto.partesPoloPassivo = [];
-<<<<<<< HEAD
-=======
-    		dto.assuntos = [];
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
     		
     		angular.forEach(partesPoloAtivo, function(parte) {
     			dto.partesPoloAtivo.push(parte.text);
@@ -199,20 +140,10 @@
     			dto.partesPoloPassivo.push(parte.text);
     		});
     		
-<<<<<<< HEAD
-=======
-    		angular.forEach(assuntosSelecionados, function(assunto) {
-    			dto.assuntos.push(assunto.id);
-    		});
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
+
     		return dto;
     	}
 		
 	});
-
-<<<<<<< HEAD
 })();
 
-=======
-})();
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6

@@ -169,41 +169,6 @@
 					</div>
 				</div>	
 			</div> 
-	        <div class="row">
-				<div class="col-md-6">
-					<div class="card share" data-social="item" style="width: 100%">
-						<div class="circle" data-toggle="tooltip" title=""
-							data-container="body" data-original-title="Label"></div>
-						<div class="card-header clearfix">
-							<h5>Pesquisa de assuntos</h5>
-	                   		<h6>Selecione aqui os assuntos que serão anexados ao processo.</h6>
-						</div>
-	               		<div class="card-description">
-							<div class="form-group form-group-default">
-								<input type="hidden" id="assunto" name="assunto" ng-model="autuacao.assunto" placeholder="Código ou descrição" style="width: 100%" ui-select2="autuacao.select2Options"/>
-							</div>
-							<div class="auto-overflow widget-11-2-table">
-								<table class="table table-condensed table-hover" ng-show="autuacao.assuntosSelecionados.length > 0">
-									<thead>
-			                            <tr>
-			                                <th>Código</th>
-			                                <th>Descrição</th>
-			                                <th>Ações</th>
-			                            </tr>
-			                        </thead>
-									<tbody>
-										<tr ng-repeat="ass in autuacao.assuntosSelecionados">
-											<td class="font-montserrat fs-12 col-lg-12">{{ass.codigo}}</td>
-											<td class="font-montserrat fs-12 col-lg-12">{{ass.descricao}}</td>
-											<td class="text-center b-l b-dashed b-grey col-lg-2"><span class="hint-text small"><a href="#" ng-click="autuacao.removerAssunto(ass)">Remover</a></span></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-	 					</div>
-	 				</div>
-				</div>
-			</div>
 			<p>
 				<action-executor id="autuar-recursal" resources="autuacao.recursos" fn-validate="autuacao.validar"
 					fn-result="autuacao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Autuar Processo Criminal">
