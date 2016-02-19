@@ -17,13 +17,13 @@ public class ParametroDistribuicao implements ValueObject<ParametroDistribuicao>
 	private PeticaoId peticaoId;
 	private String justificativa;
 	private String usuarioDistribuicao;
-	private Set<MinistroId> ministrosCanditatos;
+	private Set<MinistroId> ministrosCandidatos;
 	private Set<MinistroId> ministrosImpedidos;
 	private Set<Processo> processosPreventos;
 	
 	public ParametroDistribuicao(final TipoDistribuicao tipoDistribuicao, final PeticaoId peticaoId, 
 			final String justificativa, final String usuarioDistribuicao,
-			final Set<MinistroId> ministrosCanditatos, final Set<MinistroId> ministrosImpedidos,
+			final Set<MinistroId> ministrosCandidatos, final Set<MinistroId> ministrosImpedidos,
 			final Set<Processo> processosPreventos) {
 		
 		Validate.notNull(tipoDistribuicao, "parametroDistribuicao.tipoDistribuicao.required");
@@ -34,7 +34,7 @@ public class ParametroDistribuicao implements ValueObject<ParametroDistribuicao>
 		this.justificativa = justificativa;
 		this.usuarioDistribuicao = usuarioDistribuicao;
 		
-		this.ministrosCanditatos = ministrosCanditatos;
+		this.ministrosCandidatos = ministrosCandidatos;
 		this.ministrosImpedidos = ministrosImpedidos;
 		
 		this.processosPreventos = processosPreventos;
@@ -56,8 +56,8 @@ public class ParametroDistribuicao implements ValueObject<ParametroDistribuicao>
 		return this.usuarioDistribuicao;
 	}
 	
-	public Set<MinistroId> ministrosCanditatos() {
-		return Collections.unmodifiableSet(this.ministrosCanditatos);
+	public Set<MinistroId> ministrosCandidatos() {
+		return Collections.unmodifiableSet(this.ministrosCandidatos);
 	}
 	
 	public Set<MinistroId> ministrosImpedidos() {
