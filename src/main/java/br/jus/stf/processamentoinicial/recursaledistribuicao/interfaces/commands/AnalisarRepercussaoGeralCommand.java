@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -19,15 +17,14 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(value = "Contém as informações necessárias para a análise de repercussão geral.")
 public class AnalisarRepercussaoGeralCommand {
+	
 	@NotNull
 	@ApiModelProperty(value = "Id do processo recursal.", required=true)
 	private Long processoId;
 	
-	@NotEmpty
 	@ApiModelProperty(value = "Lista com os assuntos", required=true)
 	private List<String> assuntos;
 	
-	@NotEmpty
 	@ApiModelProperty(value = "Lista de teses", required=true)
 	private List<Long> teses;
 	

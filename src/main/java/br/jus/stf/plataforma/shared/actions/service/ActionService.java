@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.springframework.beans.BeanUtils;
@@ -146,10 +145,13 @@ public class ActionService {
 	 * @param resources
 	 */
 	private void validarRecursos(List<?> resources) {
-		Set<ConstraintViolation<List<?>>> violations = validator.validate(resources);
-		if (!violations.isEmpty()) {
-			throw new IllegalArgumentException(violations.toString());
-		}
+		
+		resources.stream().map(resource -> validator.validate(resource))
+			.forEach(violations -> {
+				if (!violations.isEmpty()) {
+					throw new IllegalArgumentException(violations.toString());
+				}
+			});
 	}
 
 	/**
