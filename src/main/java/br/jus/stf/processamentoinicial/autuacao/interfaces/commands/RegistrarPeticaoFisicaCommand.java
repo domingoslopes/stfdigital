@@ -66,5 +66,4 @@ public class RegistrarPeticaoFisicaCommand {
 	public String getTipoProcesso(){
 		return this.tipoProcesso;
 	}
-	
 }

@@ -1,0 +1,136 @@
+<div class="content" ng-controller="AutuacaoCriminalController as autuacao">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Processos</p>
+					</li>
+					<li><a href="#" class="active">Autuação</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<div tarefa-actions processo="autuacao.peticao.processoWorkflowId" tarefa="tarefa" />
+    	<form>
+            <div class="row">
+            	<div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Número do processo: {{autuacao.processo.id}}</h5>
+                            <h6>Essa é apenas o número <strong>de identificação da processo</strong>.</h6>
+                        </div>
+                    </div>
+	                </div>	
+                <div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Classe Processual: {{autuacao.processo.classe}}</h5>
+                            <h6>Essa é apenas a classe <strong>do processo</strong>.</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            	<div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Partes do Polo Ativo</h5>
+                            <h6>Abaixo, a lista de partes do polo ativo <strong>indicadas pelo peticionador</strong></h6>
+                        </div>
+                        <div class="card-description">
+                            <div class="auto-overflow widget-11-2-table">
+                                <table class="table table-condensed table-hover">
+                                    <tbody>
+                                        <tr ng-repeat="parte in autuacao.partesPoloAtivo track by $index">
+                                            <td class="font-montserrat fs-12 col-lg-12 p-l-15 p-r-15">
+                                            	<span>{{parte.text}}</span>
+                                            	<a href="#" class="pull-right" ng-click="autuacao.removerPoloAtivo($index)">&times;</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <ng-form name="partesPoloAtivoForm"> 
+                                <input type="text" id="partePoloAtivo" name="partePoloAtivo" ng-model="autuacao.partePoloAtivo" size="30" placeholder="Nome da Parte" autofocus> 
+                                <input type="submit" id="botaoAdicionarPartePoloAtivo" value="Adicionar" ng-if="autuacao.partePoloAtivo.length > 0" ng-click="autuacao.adicionarPoloAtivo()"> 
+                            </ng-form>
+                        </div>
+                    </div>
+	            </div>
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+					    <div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
+					    <div class="card-header clearfix">
+					        <h5>Partes do Polo Passivo</h5>
+					        <h6>Abaixo, a lista de partes do polo passivo <strong>indicadas pelo peticionador</strong></h6>
+					    </div>
+					    <div class="card-description">
+					        <div class="auto-overflow widget-11-2-table">
+					            <table class="table table-condensed table-hover">
+					                <tbody>
+					                    <tr ng-repeat="parte in autuacao.partesPoloPassivo track by $index">
+					                        <td class="font-montserrat fs-12 col-lg-12 p-l-15 p-r-15">
+                                            	<span>{{parte.text}}</span>
+                                            	<a href="#" class="pull-right" ng-click="autuacao.removerPoloPassivo($index)">&times;</a>
+                                            </td>
+					                    </tr>
+					                </tbody>
+					            </table>
+					        </div>
+					        <ng-form name="partesPoloPassivoForm"> 
+                                <input type="text" id="partePoloPassivo" name="partePoloPassivo" ng-model="autuacao.partePoloPassivo" size="30" placeholder="Nome da Parte" autofocus> 
+                                <input type="submit" id="botaoAdicionarPartePoloPassivo" value="Adicionar" ng-if="autuacao.partePoloPassivo.length > 0" ng-click="autuacao.adicionarPoloPassivo()"> 
+                            </ng-form>
+					    </div>
+					</div>
+				</div>	
+			</div> 
+	        <div class="row">
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title=""
+							data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Pesquisa de assuntos</h5>
+	                   		<h6>Selecione aqui os assuntos que serão anexados ao processo.</h6>
+						</div>
+	               		<div class="card-description">
+							<div class="form-group form-group-default">
+								<input type="hidden" id="assunto" name="assunto" ng-model="autuacao.assunto" placeholder="Código ou descrição" style="width: 100%" ui-select2="autuacao.select2Options"/>
+							</div>
+							<div class="auto-overflow widget-11-2-table">
+								<table class="table table-condensed table-hover" ng-show="autuacao.assuntosSelecionados.length > 0">
+									<thead>
+			                            <tr>
+			                                <th>Código</th>
+			                                <th>Descrição</th>
+			                                <th>Ações</th>
+			                            </tr>
+			                        </thead>
+									<tbody>
+										<tr ng-repeat="ass in autuacao.assuntosSelecionados">
+											<td class="font-montserrat fs-12 col-lg-12">{{ass.codigo}}</td>
+											<td class="font-montserrat fs-12 col-lg-12">{{ass.descricao}}</td>
+											<td class="text-center b-l b-dashed b-grey col-lg-2"><span class="hint-text small"><a href="#" ng-click="autuacao.removerAssunto(ass)">Remover</a></span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+	 					</div>
+	 				</div>
+				</div>
+			</div>
+			<p>
+				<action-executor id="autuar-recursal-criminal-eleitoral" resources="autuacao.recursos" fn-validate="autuacao.validar"
+					fn-result="autuacao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Autuar Processo Criminal">
+				</action-executor>
+			</p>
+		</form>
+	</div>
+</div>
+

@@ -19,9 +19,11 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.PeticaoAdapt
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.PreferenciaDto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
@@ -59,10 +61,12 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 		return partes;
 	}
 	
-	private Set<Peca> carregarPecas(List<PecaDto> pecasDto) {
+	private List<Peca> carregarPecas(List<PecaDto> pecasDto) {
 		return pecasDto.stream()
-				.map(pecaDto -> new PecaPeticao(new DocumentoId(pecaDto.getDocumentoId()), new TipoPeca(pecaDto.getTipoId(), pecaDto.getTipoNome()), pecaDto.getDescricao()))
-				.collect(Collectors.toSet());
+				.map(pecaDto -> new PecaPeticao(new DocumentoId(pecaDto.getDocumentoId()), new TipoPeca(pecaDto.getTipoId(),
+						pecaDto.getTipoNome()), pecaDto.getDescricao(), Visibilidade.valueOf(pecaDto.getVisibilidade()),
+						Situacao.valueOf(pecaDto.getSituacao())))
+				.collect(Collectors.toList());
 	}
 	
 	private Set<PreferenciaId> carregarPreferencias(List<PreferenciaDto> preferenciasDto) {

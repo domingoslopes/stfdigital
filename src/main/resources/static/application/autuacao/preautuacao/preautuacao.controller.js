@@ -17,15 +17,24 @@
 		preautuacao.classes = [];
 		preautuacao.peticao = {};
 		preautuacao.recursos = [];
+		preautuacao.preferenciasSelecionadas = [];
+		preautuacao.preferencias = [];
+		
+		preautuacao.carregarPreferencias = function() {
+			ClasseService.consultarPreferencias(preautuacao.classe).success(function(preferencias) {
+				preautuacao.preferenciasSelecionadas = [];
+				preautuacao.preferencias = preferencias;
+			});
+		};
 		
 		PeticaoService.consultar(preautuacao.peticaoId).then(function(data) {
 			preautuacao.peticao = data;
 		});
 		
-		ClasseService.listar().success(function(classes) {
+		ClasseService.consultarPorTipoProcesso('originario').success(function(classes) {
 			preautuacao.classes = classes;
 		});
-		
+			
 		preautuacao.validar = function(){
 			var errors = null;
 			
@@ -38,7 +47,7 @@
 				return false;
 			}
 			
-			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, true, preautuacao.motivo));
+			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, true, preautuacao.motivo, preautuacao.preferenciasSelecionadas));
 			return true;
 		};
 		
@@ -54,7 +63,7 @@
 				return false;
 			}
 			
-			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, false, preautuacao.motivo));
+			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, false, preautuacao.motivo, preautuacao.preferenciasSelecionadas));
 			return true;
 		};
 		
@@ -70,7 +79,7 @@
 				return false;
 			}
 			
-			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, preautuacao.valida, preautuacao.motivo));
+			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, false, preautuacao.motivo, preautuacao.preferenciasSelecionadas));
 			return true;
 		};
 		
@@ -84,12 +93,13 @@
 			messages.success('Petição devolvida com sucesso.');
 		};
 		
-    	function PreautuarCommand(peticaoId, classeId, valida, motivo){
+    	function PreautuarCommand(peticaoId, classeId, valida, motivo, preferencias){
     		var command = {};
     		command.peticaoId = peticaoId;
     		command.classeId = classeId;
     		command.valida = valida;
     		command.motivo = motivo;
+    		command.preferencias = preferencias;
     		return command;
     	}
 	});

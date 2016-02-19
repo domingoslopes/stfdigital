@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
@@ -68,7 +70,7 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 	
 	@Override
 	public MotivoInaptidao findOneMotivoInaptidao(Long id) {
-		Query query = entityManager.createQuery("SELECT motivo FROM MotivoInaptidao motivo WHERE motivo.sequencial = :id");
+		Query query = entityManager.createQuery("SELECT motivo FROM MotivoInaptidao motivo WHERE motivo.codigo = :id");
 		query.setParameter("id", id);
 		
 		return (MotivoInaptidao)query.getSingleResult();
@@ -82,11 +84,25 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 		return query.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
     public Processo findByPeticao(PeticaoId peticaoId) {
 		Query query = entityManager.createQuery("SELECT processo FROM Processo processo WHERE processo.peticao = :id");
 		query.setParameter("id", peticaoId);
-		return (Processo) query.getSingleResult();
+		return (Processo) query.getResultList().stream().findFirst().orElse(null);
     }
 	
+	@Override
+	public TipoPeca findOneTipoPeca(Long id) {
+		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo WHERE tipo.sequencial = :id");
+		query.setParameter("id", id);
+		return (TipoPeca)query.getSingleResult();
+	}
+	
+	@Override
+	public Peca findOnePeca(Long id) {
+		Query query = entityManager.createQuery("SELECT peca FROM PecaProcesso peca WHERE peca.sequencial = :id");
+		query.setParameter("id", id);
+		return (Peca)query.getSingleResult();
+	}
 }

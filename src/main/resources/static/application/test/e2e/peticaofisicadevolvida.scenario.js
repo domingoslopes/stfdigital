@@ -72,6 +72,8 @@
 			
 			registroPage.preencherNumeroSedex(10);
 			
+			registroPage.selecionarTipoProcesso('Originário');
+			
 			registroPage.registrar();
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
@@ -105,7 +107,7 @@
 			
 			preautuacaoPage.preencherMotivoIndevida();
 			
-			preautuacaoPage.devolver();
+			preautuacaoPage.finalizarDevolucao();
 			
 			loginPage.logout();
 		    

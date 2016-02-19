@@ -22,12 +22,17 @@ public class PeticaoActionsResource {
 	
 	@ActionMapping(id = "preautuar", name = "Preautuar Petição Física")
 	public void preautuar(PreautuarPeticaoFisicaCommand command) {
-		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo());
+		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPreferencias());	
+	}
+	
+	@ActionMapping(id = "preautuar-recursal", name = "Preautuar Petição Física Recursal")
+	public void preautuarRecursal(PreautuarPeticaoFisicaCommand command) {
+		peticaoServiceFacade.preautuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPreferencias());
 	}
 	
 	@ActionMapping(id = "autuar", name = "Autuar Petição")
 	public void autuar(AutuarPeticaoCommand command) {
-		peticaoServiceFacade.autuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo()); 
+		peticaoServiceFacade.autuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo()); 
 	}
 	
 	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição")

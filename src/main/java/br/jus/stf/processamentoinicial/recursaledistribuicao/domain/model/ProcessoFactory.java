@@ -1,10 +1,9 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,16 +72,14 @@ public class ProcessoFactory {
 	 * @return
 	 */
 	private static ProcessoRecursal criarProcessoRecursal(Peticao peticao) {
-		ProcessoRecursal processo = null;
-		try {
-			processo = (ProcessoRecursal) processoRepository.findByPeticao(peticao.id());
-			
-		} catch(NoResultException nre) {
+		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findByPeticao(peticao.id());
+		
+		if (processo == null){
 			ProcessoId id = processoRepository.nextId();
 			Long numero = processoRepository.nextNumero(peticao.classeProcessual());
-			
 			processo = new ProcessoRecursal(id, peticao.classeProcessual(), numero, peticao.id(), peticao.preferencias());
 		}
+		
 		return processo;
 	}
 
@@ -92,10 +89,10 @@ public class ProcessoFactory {
 			.collect(Collectors.toSet());
 	}
 	
-	private static Set<PecaProcesso> coletarPecas(Set<Peca> pecasPeticao) {
+	private static List<PecaProcesso> coletarPecas(List<Peca> pecasPeticao) {
 		return pecasPeticao.stream()
-			.map(peca -> new PecaProcesso(peca.documento(), peca.tipo(), peca.descricao()))
-			.collect(Collectors.toSet());
+			.map(peca -> new PecaProcesso(peca.documento(), peca.tipo(), peca.descricao(), peca.visibilidade(), peca.situacao()))
+			.collect(Collectors.toList());
 	}
 	
 }

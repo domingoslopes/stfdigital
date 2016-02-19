@@ -2,7 +2,9 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -30,8 +33,10 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
@@ -78,7 +83,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaProcesso.class)
 	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
-	private Set<Peca> pecas = new LinkedHashSet<Peca>(0);
+	@OrderBy("numeroOrdem ASC")
+	private List<Peca> pecas = new LinkedList<Peca>();
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Distribuicao.class)
 	@JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", nullable = false)
@@ -94,6 +100,9 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PROCESSO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false))
 	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
+	
+	@Transient
+	private ControladorOrdenacaoPecas controladorOrdenacaoPecas;
 	
 	Processo() {
 
@@ -125,6 +134,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		});
 		
 		this.identificacao = montarIdentificacao();
+		
+		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
 
 	/**
@@ -138,8 +149,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao, final Set<PreferenciaId> preferencias) {
 		this(id, classe, numero, peticao, situacao, preferencias);
 		this.partes.addAll(partes);
-		this.pecas.addAll(pecas);
 		this.identificacao = montarIdentificacao();
+		
+		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
+		pecas.forEach(p -> adicionarPeca(p));
 	}
 	
 	public abstract TipoProcesso tipoProcesso();
@@ -147,6 +160,7 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@PostLoad
 	private void init() {
 		this.identificacao = montarIdentificacao();
+		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
 
 	@Override
@@ -229,7 +243,83 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	public boolean adicionarPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
 	
+		controladorOrdenacaoPecas.numerarPeca(peca);
+		
 		return pecas.add(peca);
+	}
+	
+	/**
+	 * 
+	 * @param peca
+	 */
+	public void juntarPeca(final Peca peca) {
+		Validate.notNull(peca, "processo.peca.required");
+		Validate.isTrue(peca.situacao() == Situacao.PENDENTE_JUNTADA, "processo.peca.situacao.invalid");
+		
+		ListIterator<Peca> iterator = pecas.listIterator();
+		
+		while (iterator.hasNext()) {
+			Peca pecaAtual = iterator.next();
+			
+			if (pecaAtual.equals(peca)) {
+				pecaAtual.alterarSituacao(Situacao.JUNTADA);
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Realiza a substituição de uma peça por outra,
+	 * o número de ordem da peça substituta será o mesmo
+	 * da peça original.
+	 * 
+	 * @param pecaOriginal
+	 * @param pecaSubstituta
+	 */
+	public void substituirPeca(Peca pecaOriginal, Peca pecaSubstituta) {
+		Validate.notNull(pecaOriginal, "processo.pecaOriginal.required");
+		Validate.notNull(pecaSubstituta, "processo.pecaSubstituta.required");
+		
+		controladorOrdenacaoPecas.substituirPeca(pecaOriginal, pecaSubstituta);
+	}
+	
+	/**
+	 * Divide uma peça, substituindo-a pelas peças especificadas.
+	 * 
+	 * @param pecaDividida
+	 * @param pecasDivisao
+	 */
+	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
+		Validate.notNull(pecaDividida, "processo.pecaDividida.required");
+		Validate.notEmpty(pecasDivisao, "processo.pecasDivisao.required");
+
+		Long numeroOrdem = pecaDividida.numeroOrdem();
+		
+		removerPeca(pecaDividida);
+		
+		pecasDivisao.forEach(p -> adicionarPeca(p));
+		
+		controladorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
+	}
+	
+	/**
+	 * Realiza a união da lista de peças, sendo substutuídas pela
+	 * peça especificada.
+	 * 
+	 * @param pecasUniao
+	 * @param pecaUnida
+	 */
+	public void unirPecas(List<Peca> pecasUniao, Peca pecaUnida) {
+		Validate.notEmpty(pecasUniao, "processo.pecasUniao.required");
+		Validate.notNull(pecaUnida, "processo.pecaUnida.required");
+		
+		Long menorNumeroOrdem = pecasUniao.stream().min((p1, p2) -> p1.numeroOrdem().compareTo(p2.numeroOrdem())).get().numeroOrdem();
+		
+		pecasUniao.forEach(p -> removerPeca(p));
+		
+		adicionarPeca(pecaUnida);
+		
+		controladorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}
 	
 	/**
@@ -239,11 +329,27 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	public boolean removerPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
 	
-		return pecas.remove(peca);
+		boolean removeu = pecas.remove(peca);
+		
+		controladorOrdenacaoPecas.normalizarOrdenacaoPecas();
+		
+		return removeu;
+	}
+	
+	/**
+	 * @param pecasOrganizadas
+	 */
+	public void organizarPecas(final List<Long> pecasOrganizadas) {
+		Validate.notNull(pecasOrganizadas, "processo.pecasOrganizadas.required");
+		Validate.isTrue(pecas.size() == pecasOrganizadas.size(), "processo.pecasOrganizadas.invalid");
+		
+		for(Peca p : pecas) {
+			controladorOrdenacaoPecas.reordenarPeca(p, Long.valueOf(pecasOrganizadas.indexOf(p.toLong()) + 1));
+		} 
 	}
 
-	public Set<Peca> pecas() {
-		return Collections.unmodifiableSet(pecas);
+	public List<Peca> pecas() {
+		return Collections.unmodifiableList(pecas);
 	}
 	
 	public Set<PreferenciaId> preferencias(){
@@ -251,32 +357,18 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	}
 	
 	public void atribuirPreferencias(final Set<PreferenciaId> preferencias) {
-		Validate.notNull(preferencias, "peticao.preferencias.required");
+		Validate.notNull(preferencias, "processo.preferencias.required");
 		
 		this.preferencias.addAll(preferencias);
 		this.preferencias.retainAll(preferencias);
 	}
 	
-	public void atribuirPoloAtivo(final Set<ParteProcesso> partesPoloAtivo) {
-		Validate.notNull(partesPoloAtivo, "peticao.partesPoloAtivo.required");
+	public void atribuirPartes(final Set<ParteProcesso> partes, final TipoPolo polo) {
+		Validate.notNull(partes, "processo.partes.required");
+		Validate.notNull(polo, "processo.partesPoloAtivo.required");
 		
-		this.partes.addAll(partesPoloAtivo);
-		Set<Parte> poloAtivoRemover = new HashSet<Parte>();
-		this.partes.stream().filter(parte -> TipoPolo.POLO_ATIVO.equals(parte.polo()) && !partesPoloAtivo.contains(parte))
-			.forEach(poloAtivoRemover::add);
-		
-		this.partes.removeAll(poloAtivoRemover);
-	}
-
-	public void atribuirPoloPassivo(final Set<ParteProcesso> partesPoloPassivo) {
-		Validate.notNull(partesPoloPassivo, "peticao.partesPoloPassivo.required");
-		
-		this.partes.addAll(partesPoloPassivo);
-		Set<Parte> poloPassivoRemover = new HashSet<Parte>();
-		this.partes.stream().filter(parte -> TipoPolo.POLO_PASSIVO.equals(parte.polo()) && !partesPoloPassivo.contains(parte))
-			.forEach(poloPassivoRemover::add);
-		
-		this.partes.removeAll(poloPassivoRemover);
+		this.partes.removeIf(parte -> polo.equals(parte.polo()) && !partes.contains(parte));
+		this.partes.addAll(partes);
 	}
 	
 	public String identificacao() {

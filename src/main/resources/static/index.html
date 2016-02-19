@@ -32,6 +32,7 @@
     <link href="vendor/ng-ckeditor/ng-ckeditor.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="vendor/wodo.texteditor/wodotexteditor/wodotexteditor.css" type="text/css" media="screen" />
     <link href="theme/assets/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="vendor/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet" type="text/css" media="screen">
     
     <!-- BEGIN Pages CSS-->
     <link href="theme/assets/pages/css/pages-icons.css" rel="stylesheet" type="text/css">
@@ -86,6 +87,8 @@
     <script type="text/javascript" src="vendor/sockjs/sockjs.min.js"></script>
     <script type="text/javascript" src="vendor/stomp-websocket/lib/stomp.min.js"></script>
     <script type="text/javascript" src="vendor/ngMask/dist/ngMask.min.js"></script>
+    <script type="text/javascript" src="vendor/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"></script>
     <script type="text/javascript" src="vendor/ng-ckeditor/ng-ckeditor.min.js"></script>
     <script type="text/javascript" src="vendor/wodo.texteditor/wodotexteditor/wodotexteditor.js"></script>
     
@@ -145,9 +148,12 @@
 	<script type="text/javascript" src="application/plataforma/cadastro/cadastro.controller.js"></script>
 	<script type="text/javascript" src="application/plataforma/identidades/associado.service.js"></script>
 	<script type="text/javascript" src="application/plataforma/identidades/associado/registrar.controller.js"></script>
+	<script type="text/javascript" src="application/plataforma/identidades/pessoa.service.js"></script>	
 	<script type="text/javascript" src="application/plataforma/identidades/usuario/informacoes.controller.js"></script>
 	<script type="text/javascript" src="application/plataforma/acessos/permissoes/permissoes.controller.js"></script>
 	<script type="text/javascript" src="application/plataforma/acessos/acessos.service.js"></script>
+	<script type="text/javascript" src="vendor/angular-datatables/dist/angular-datatables.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
 
     <script type="text/javascript" src="application/test/mocks.module.js"></script>
     
@@ -161,9 +167,16 @@
     <script type="text/javascript" src="application/autuacao/peticionamento/peca.service.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/orgao/orgao.service.js"></script>	
     <script type="text/javascript" src="application/autuacao/autuacao/autuacao.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/recursal/pressuposto/analise-pressupostos.controller.js"></script>      
+    <script type="text/javascript" src="application/autuacao/recursal/autuacao/autuacao-criminal.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/recursal/autuacao/autuacao-recursal.controller.js"></script>    
+	<script type="text/javascript" src="application/autuacao/recursal/revisao/revisao-processo-inapto.controller.js"></script>      
     <script type="text/javascript" src="application/autuacao/distribuicao/distribuicao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/registro/registro.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/preautuacao/preautuacao.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/recursal/preautuacao/preautuacao-recursal.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/recursal/repercussao/analise-repercussao-geral.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/recursal/repercussao/revisao-repercussao-geral.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/distribuicao/ministro.service.js"></script>
     <script type="text/javascript" src="application/autuacao/devolucao/devolucao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/devolucao/assinatura/assinatura-devolucao.controller.js"></script>

@@ -3,6 +3,7 @@ package br.jus.stf.processamentoinicial.autuacao.domain;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.Range;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.shared.DocumentoId;
@@ -30,4 +31,8 @@ public interface DocumentoAdapter {
 	
 	DocumentoTemporarioId upload(String nome, byte[] documento);
 
+	List<DocumentoId> dividirDocumento(DocumentoId documento, List<Range<Integer>> intervalosDivisao);
+	
+	DocumentoId unirDocumentos(List<DocumentoId> documentos);
+	
 }

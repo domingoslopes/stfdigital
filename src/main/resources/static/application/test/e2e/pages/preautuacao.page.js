@@ -19,18 +19,25 @@
 			utils.select('div#s2id_classe', sigla);
 		};
 		
-		preautuacao.finalizar = function() {
-			element(by.css('action-executor[fn-result="preautuacao.finalizar"] > a')).click();
+		preautuacao.selecionarPreferencias = function(preferencia){
+			utils.selectMultiple('div#s2id_preferencia', preferencia);
 		};
 		
-		preautuacao.devolver = function(){
-			element(by.css('action-executor[fn-result="preautuacao.finalizarDevolucao"] > a')).click();
+		preautuacao.finalizar = function() {
+			element(by.css('action-executor[fn-validate="preautuacao.validar"] > a')).click();
+		};
+		
+		preautuacao.finalizarDevolucao = function() {
+			element(by.css('action-executor[description="Devolver Petição"] > a')).click();
 		};
 		
 		preautuacao.preencherMotivoIndevida = function(){
 			element(by.model('preautuacao.motivo')).sendKeys('Peticao indevida');
 		};
 		
+		preautuacao.preencherAnalise = function(){
+			element(by.model('preautuacao.motivo')).sendKeys('Analise realizada');
+		};
 	};
 
 	module.exports = PreautuacaoPage;

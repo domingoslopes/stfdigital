@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +19,10 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaPr
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoOriginario;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.MinistroId;
@@ -40,7 +43,7 @@ public class ProcessoOriginarioUnitTests {
 		partes.add(new ParteProcesso(new PessoaId(3L), TipoPolo.POLO_PASSIVO));
 
 		pecas = new LinkedHashSet<PecaProcesso>(0);
-		pecas.add(new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial"));
+		pecas.add(new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA));
 	}
 	
 	@Test
@@ -55,7 +58,7 @@ public class ProcessoOriginarioUnitTests {
 	    assertEquals(new PeticaoId(1L), processo.peticao());
 	    assertEquals(1, processo.partesPoloAtivo().size());
 		assertEquals(2, processo.partesPoloPassivo().size());
-		assertEquals(pecas, processo.pecas());
+		assertTrue("Peças deveriam ter sido adicionadas.", CollectionUtils.isEqualCollection(pecas, processo.pecas()));
 	    
 		// Atributos cujos valores são calculados
 		assertEquals("HD 1", processo.identificacao());
@@ -136,10 +139,10 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void adicionaPecaAProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		processo.adicionarPeca(peca);
-		assertEquals(1, processo.pecas().size());
+		assertEquals(2, processo.pecas().size());
 		assertTrue(processo.pecas().contains(peca));
 	}
 	
@@ -153,11 +156,11 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void removePecaDaProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial");
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		processo.adicionarPeca(peca);
 		processo.removerPeca(peca);
-		assertEquals(0, processo.pecas().size());
+		assertEquals(1, processo.pecas().size());
 		assertFalse(processo.pecas().contains(peca));
 	}
 	
@@ -228,7 +231,7 @@ public class ProcessoOriginarioUnitTests {
 		novoPoloAtivo.add(new ParteProcesso(new PessoaId(3L), TipoPolo.POLO_ATIVO));
 		novoPoloAtivo.add(new ParteProcesso(new PessoaId(4L), TipoPolo.POLO_ATIVO));
 		
-		processo.atribuirPoloAtivo(novoPoloAtivo);
+		processo.atribuirPartes(novoPoloAtivo, TipoPolo.POLO_ATIVO);
 		
 		assertEquals(2, processo.partesPoloAtivo().size());
 		assertTrue(processo.partesPoloAtivo().contains(new ParteProcesso(new PessoaId(3L), TipoPolo.POLO_ATIVO)));
@@ -245,7 +248,7 @@ public class ProcessoOriginarioUnitTests {
 		novoPoloPassivo.add(new ParteProcesso(new PessoaId(5L), TipoPolo.POLO_PASSIVO));
 		novoPoloPassivo.add(new ParteProcesso(new PessoaId(6L), TipoPolo.POLO_PASSIVO));
 		
-		processo.atribuirPoloPassivo(novoPoloPassivo);
+		processo.atribuirPartes(novoPoloPassivo, TipoPolo.POLO_PASSIVO);
 		
 		assertEquals(2, processo.partesPoloPassivo().size());
 		assertTrue(processo.partesPoloPassivo().contains(new ParteProcesso(new PessoaId(5L), TipoPolo.POLO_PASSIVO)));

@@ -79,7 +79,7 @@
 			login('autuador');
 		});
 		
-		it('Deveria atuar como válida a petição recebida', function() {
+		it('Deveria autuar como válida a petição recebida', function() {
 			
 		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    		    
@@ -153,10 +153,12 @@
 			peticionamentoPage.partePoloPassivo('Maria da Silva');
 			
 			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.removePecas();
 			
 			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.selecionarTipoPeca('Ato coator');
 		    
@@ -164,7 +166,7 @@
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
-			expect(principalPage.peticoes().count()).toBeGreaterThan(0);
+			expect(principalPage.isMensagemSucessoApresentada()).toBeTruthy();
 		}
 		
 		var autuar = function(){
@@ -176,6 +178,10 @@
 			var autuacaoPage = new AutuacaoPage();
 			
 			autuacaoPage.classificar('AP');
+			
+			autuacaoPage.partePoloAtivo('João da Silva');
+		    
+			autuacaoPage.partePoloPassivo('Maria da Silva');
 			
 			autuacaoPage.finalizar();
 		}

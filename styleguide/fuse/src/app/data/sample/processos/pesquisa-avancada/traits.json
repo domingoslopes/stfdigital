@@ -1,0 +1,24 @@
+[{
+    "id": "0025aa13-02e9-4ae3-ad74-3855a21ecbb8",
+    "name": "Relator",
+    "dataType": "list",
+    "values": ["Min. Ricardo Lewandowski", "Min. Carmen Lúcia", "Min. Celso de Mello", "Min. Marco Aurélio", "Min. Gilmar Mendes", "Min. Dias Toffoli", "Min. Luiz Fux", "Min. Rosa Weber", "Min. Teori Zavascki", "Min. Roberto Barroso", "Min. Edson Fachin"]
+}, {
+    "id": "69d4c1e2-4130-43a5-a4c9-090a89985b20",
+    "name": "Classe",
+    "dataType": "list",
+    "values": ["ADI", "AC", "ACO", "ADC", "ADO", "ADPF", "AI", "AImp", "AO", "AOE", "AP", "AR", "ARE", "AS", "CC", "Cm", "EI", "EL", "EP", "Ext", "HC", "HD", "IF", "Inq", "MI", "MS", "OACO", "Pet", "PPE", "PSV", "RC", "Rcl", "RE", "RHC", "RHD", "RMI", "RMS", "RvC", "SEC", "SL", "SS", "STA"]
+}, {
+    "id": "226c9572-bcd7-49cf-b119-fc239397b30a",
+    "name": "Setor",
+    "dataType": "list",
+    "values": ["ASS PLEN - ASSESSORIA DO PLENÁRIO", "SEJ - SECRETARIA JUDICIARIA", "Gabinete Min. Ricardo Lewandowski", "Gabinete Min. Carmen Lúcia", "Gabinete Min. Celso de Mello", "Gabinete Min. Marco Aurélio", "Gabinete Min. Gilmar Mendes", "Gabinete Min. Dias Toffoli", "Gabinete Min. Luiz Fux", "Gabinete Min. Rosa Weber", "Gabinete Min. Teori Zavascki", "Gabinete Min. Roberto Barroso", "Gabinete Min. Edson Fachin"]
+}, {
+    "id": "fe53a703-6232-435e-967d-7a6d726ff7a4",
+    "name": "Data andamento",
+    "dataType": "date"
+}, {
+    "id": "b6350472-983b-4074-826f-98930037047c",
+    "name": "Parte",
+    "dataType": "string"
+}]

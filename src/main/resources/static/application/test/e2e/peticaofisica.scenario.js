@@ -70,6 +70,8 @@
 			
 			registroPage.preencherNumeroSedex(2);
 			
+			registroPage.selecionarTipoProcesso('Originário');
+			
 			registroPage.registrar();
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);

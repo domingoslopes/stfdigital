@@ -14,9 +14,11 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -56,7 +58,7 @@ public class PeticaoFactory {
 		adicionarPartes(partes, poloAtivo, TipoPolo.POLO_ATIVO);
 		adicionarPartes(partes, poloPassivo, TipoPolo.POLO_PASSIVO);
 		
-		Set<PecaPeticao> pecas = adicionarPecas(pecasTemporarias);
+		List<PecaPeticao> pecas = adicionarPecas(pecasTemporarias);
 		
 		PeticaoId id = peticaoRepository.nextId();
 		Long numero = peticaoRepository.nextNumero();
@@ -106,7 +108,7 @@ public class PeticaoFactory {
 	 * @param pecas
 	 * @return
 	 */
-	private Set<PecaPeticao> adicionarPecas(List<PecaTemporaria> pecas) {
+	private List<PecaPeticao> adicionarPecas(List<PecaTemporaria> pecas) {
 		List<DocumentoTemporarioId> documentosTemporarios = pecas.stream()
 				.map(peca -> peca.documentoTemporario())
 				.collect(Collectors.toList());
@@ -118,8 +120,10 @@ public class PeticaoFactory {
 					int index = linhas.nextInt();
 					TipoPeca tipo = pecas.get(index).tipo();
 					String descricao = pecas.get(index).descricao();
-					return new PecaPeticao(documento, tipo, descricao);
-				}).collect(Collectors.toSet());
+					Visibilidade visibilidade = pecas.get(index).visibilidade();
+					Situacao situacao = pecas.get(index).situacao();
+					return new PecaPeticao(documento, tipo, descricao, visibilidade, situacao);
+				}).collect(Collectors.toList());
 	}
 	
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
@@ -77,5 +79,20 @@ public interface ProcessoRepository {
 	 * @return processo
 	 */
 	public Processo findByPeticao(PeticaoId peticaoId);
+	
+	/**
+	 * Recupera um tipo de peça de acordo com o id informado.
+	 * 
+	 * @param id Id do tipo de peça.
+	 * @return Dados do tipo de peça.
+	 */
+	public TipoPeca findOneTipoPeca(Long id);
+	
+	/**
+	 * Recupera uma peça.
+	 * @param id Id da peça.
+	 * @return Dados da peça.
+	 */
+	public Peca findOnePeca(Long id);
 
 }

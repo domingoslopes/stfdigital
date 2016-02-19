@@ -13,11 +13,20 @@ import br.jus.stf.shared.PessoaId;
 public interface PessoaAdapter {
 
 	/**
-	 * Cadastra as pessoas e recupera os ids na ordem de envio
+	 * Cadastra as pessoas e recupera os ids na ordem de envio.
+	 * OBS: As pessoas cadastradas com o mesmo nome retornará o id já cadastrado anteriormente.
 	 * 
 	 * @param pessoas
 	 * @return a lista de ids de pessoas
 	 */
 	public Set<PessoaId> cadastrarPessoas(List<String> pessoas);
+
+	/**
+	 * Recupera o nome de uma pessoa.
+	 * 
+	 * @param pessoaId
+	 * @return
+	 */
+	public String consultarNome(PessoaId pessoaId);
 	
 }

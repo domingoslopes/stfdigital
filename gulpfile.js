@@ -12,6 +12,7 @@
 var config = require('./build/build.config.js');
 var karmaConfig = require('./build/karma.config.js');
 var protractorConfig = require('./build/protractor.config.js');
+var protractorBenchmarkConfig = require('./build/protractor.benchmark.config.js');
 var gulp = require('gulp');
 var bower = require('gulp-bower');
 var shell = require('gulp-shell');
@@ -27,7 +28,7 @@ var karma = require('karma').server;
 var del = require('del');
 var _ = require('lodash');
 var argv = require('yargs').argv;
-/* jshint camelcase:false */
+
 var webdriverStandalone = require('gulp-protractor').webdriver_standalone;
 var webdriverUpdate = require('gulp-protractor').webdriver_update;
 
@@ -248,9 +249,29 @@ gulp.task('test:unit', ['build'], function(cb) {
  */
 gulp.task('test:e2e', ['webdriver:update'], function() {
 	protractorConfig.config.specs = replacePattern(protractorConfig.config.specs);
+	// Monta o objeto de configuração para o protractor, que vai sobreescrever a url ou não
+	// dependendo da existência do parâmetro --e2eBaseUrl passado para o gulp
+	var protractorConfigObject = {
+		configFile: 'build/protractor.config.js'
+	};
+	if (argv.e2eBaseUrl) {
+		protractorConfigObject.args = ['--baseUrl', argv.e2eBaseUrl]
+	}
 	return gulp.src(protractorConfig.config.specs)
+		.pipe($.protractor.protractor(protractorConfigObject))
+		.on('error', function(e) {
+			throw e;
+		});
+});
+
+/**
+ * Executa os teste benchmark e2e usando Protractor.
+ */
+gulp.task('test:benchmark', ['webdriver:update'], function() {
+	protractorBenchmarkConfig.config.specs = replacePattern(protractorBenchmarkConfig.config.specs);
+	return gulp.src(protractorBenchmarkConfig.config.specs)
 		.pipe($.protractor.protractor({
-			configFile: 'build/protractor.config.js'
+			configFile: 'build/protractor.benchmark.config.js'
 		}))
 		.on('error', function(e) {
 			throw e;

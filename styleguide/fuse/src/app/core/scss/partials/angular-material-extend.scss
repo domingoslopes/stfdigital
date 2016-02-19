@@ -235,6 +235,10 @@ md-tabs-canvas {
     background-color: white;
 }
 
-md-content.md-default-theme, md-content {
-    background-color: transparent;
+.md-block {
+    display: block;
+}
+
+.md-inline {
+    display: inline;
 }

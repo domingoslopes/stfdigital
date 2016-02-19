@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.plataforma.identidades.domain.model.TipoAssociado;
 import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
+import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
@@ -31,7 +32,10 @@ import br.jus.stf.shared.PeticaoId;
 public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoId> implements PeticaoRepository {
 
 	@Autowired
-	public AcessosRestAdapter acessosRestAdapter;
+	private AcessosRestAdapter acessosRestAdapter;
+	
+	@Autowired
+	private PessoaAdapter pessoaAdapter;
 	
 	private EntityManager entityManager;
 	
@@ -58,6 +62,12 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	@Override
 	public <T extends Peticao> T save(Peticao peticao) {
 		return (T) super.save(peticao);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Peticao> T saveAndFlush(Peticao peticao) {
+		return (T) super.saveAndFlush(peticao);
 	}
 	
 	@Override

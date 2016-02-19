@@ -2,10 +2,13 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,14 +21,17 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoSituacao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.PeticaoRestAdapter;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 
 @Component
+@Transactional
 public class ProcessoServiceFacade {
 	
 	@Autowired
@@ -51,7 +57,7 @@ public class ProcessoServiceFacade {
 		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
 		return processoDtoAssembler.toDto(processo);
 	}
-
+	
 	/**
 	 * Distribui um processo para um ministro relator.
 	 * 
@@ -117,6 +123,55 @@ public class ProcessoServiceFacade {
 		PeticaoId peticao = new PeticaoId(peticaoId);
 		Processo processo = processoApplicationService.cadastrarRecursal(peticao);
 		return processo.id().toLong();
+	}
+
+	/**
+	 * Consulta um processo associado a uma petição.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ProcessoDto consultarPelaPeticao(Long id) {
+		return processoDtoAssembler.toDto(processoRepository.findByPeticao(new PeticaoId(id)));
+	}
+	
+	/**
+	 * Insere peças processuais.
+	 * 
+	 * @param processoId ID do processo.
+	 * @param pecas Conjunto de peças processuais a serem inseridas.
+	 */
+	public void inserirPecas(Long processoId, List<PecaProcessual> pecas){
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		processoApplicationService.inserirPecas(processo, pecas);
+	}
+	
+	/**
+	 * Exclui peças processuais.
+	 * @param processoId Id do processo.
+	 * @param pecas Lista de peças.
+	 */
+	public void excluirPecas(Long processoId, List<Long> pecas){
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		List<Peca> pecasProcesso = new LinkedList<Peca>(); 
+		pecas.forEach(pecaId -> pecasProcesso.add(processoRepository.findOnePeca(pecaId)));
+		
+		processoApplicationService.excluirPecas(processo, pecasProcesso);
+	}
+	
+	/**
+	 * Atribui a lista de peças com nova organização para um processo.
+	 * 
+	 * @param processoId
+	 * @param pecasOrganizadas
+	 * @return
+	 */
+	public ProcessoDto organizarPecas(Long processoId, List<Long> pecasOrganizadas) {
+		ProcessoId id = new ProcessoId(processoId);
+		Processo processo = Optional.ofNullable(processoRepository.findOne(id))
+				.orElseThrow(IllegalArgumentException::new);
+		
+		return processoDtoAssembler.toDto(processoApplicationService.organizarPecas(processo, pecasOrganizadas));
 	}
 	
 }

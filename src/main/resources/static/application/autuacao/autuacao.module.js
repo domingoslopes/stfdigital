@@ -122,7 +122,52 @@
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao.tpl.html'
+					templateUrl: 'application/autuacao/recursal/preautuacao/preautuacao-recursal.tpl.html'
+				}
+			}
+		}).state('autuar-recursal-criminal-eleitoral',{
+			parent: 'action.autuacao',
+			url: '/processo/autuacao-criminal',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
+				}
+			}
+		}).state('autuar-recursal',{
+			parent: 'action.autuacao',
+			url: '/processo/autuacao-recursal',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-recursal.tpl.html'
+				}
+			}	
+		}).state('analisar-pressupostos-formais',{
+			parent: 'action.autuacao',
+			url: '/processo/analise',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/pressuposto/analise-pressupostos.tpl.html'
+				}
+			}	
+		}).state('revisar-processo-inapto',{
+			parent: 'action.autuacao',
+			url: '/processo/revisao',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/revisao/revisao-processo-inapto.tpl.html'
+				}
+			}
+		}).state('analisar-repercussao-geral',{
+			parent: 'action.autuacao',
+			url: '/processo/repercussao',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/repercussao/analise-repercussao-geral.tpl.html'
 				}
 			}
 		}).state('autuar', {
@@ -166,6 +211,17 @@
 							return MinistroService.listar();
 						}
 					}
+				}
+			}
+		}).state('revisar-repercussao-geral', {
+			parent: 'action.autuacao',
+			url: '/processo/repercussao/revisar',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/repercussao/revisao-repercussao-geral.tpl.html',
+					controller: 'RevisaoRepercussaoGeralController',
+					controllerAs: 'vm'
 				}
 			}
 		});

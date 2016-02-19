@@ -38,11 +38,9 @@ public class MotivoInaptidaoProcesso implements ValueObject<MotivoInaptidaoProce
 		
 	}
 	
-	public MotivoInaptidaoProcesso(final Long sequencial, final MotivoInaptidao motivoInaptidao, final String observacao) {
-		Validate.notNull(sequencial, "motivoInaptidaoProcesso.sequencial.required");
+	public MotivoInaptidaoProcesso(final MotivoInaptidao motivoInaptidao, final String observacao) {
 		Validate.notNull(motivoInaptidao, "motivoInaptidaoProcesso.motivoInaptidao.required");
-		
-		this.sequencial = sequencial;
+
 		this.motivoInaptidao = motivoInaptidao;
 		this.observacao = observacao;
 	}
@@ -61,7 +59,7 @@ public class MotivoInaptidaoProcesso implements ValueObject<MotivoInaptidaoProce
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(sequencial).hashCode();
+		return new HashCodeBuilder().append(motivoInaptidao).hashCode();
 	}
 	
 	@Override
@@ -77,13 +75,13 @@ public class MotivoInaptidaoProcesso implements ValueObject<MotivoInaptidaoProce
 	
 		MotivoInaptidaoProcesso other = (MotivoInaptidaoProcesso) obj;
 		
-		return sequencial.equals(other.sequencial);
+		return motivoInaptidao.equals(other.motivoInaptidao);
 	}
 
 	@Override
 	public boolean sameValueAs(final MotivoInaptidaoProcesso other) {
 		return other != null
-				&& sequencial.equals(other.sequencial);
+				&& motivoInaptidao.equals(other.motivoInaptidao);
 	}
 	
 }

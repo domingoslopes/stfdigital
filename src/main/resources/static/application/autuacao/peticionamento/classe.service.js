@@ -7,10 +7,18 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.factory('ClasseService', function($http, properties) {
+	angular.plataforma.factory('ClasseService', function($http, properties, $q) {
 		return {
 			listar : function() {
 				return $http.get(properties.apiUrl + '/classes');
+			},
+			
+			consultarPorTipoProcesso : function(tipoProcesso) {
+				return $http.get(properties.apiUrl + '/classes/tipoprocesso/' + tipoProcesso);
+			},
+			
+			consultarPreferencias : function(classe) {
+				return $http.get(properties.apiUrl + '/classes/' + classe + '/preferencias');
 			}
 		};
 	});

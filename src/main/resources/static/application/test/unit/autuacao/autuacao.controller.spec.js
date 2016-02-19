@@ -18,8 +18,10 @@
 		
 		beforeEach(inject(function($rootScope, $controller, $httpBackend, $log, properties) {
 			$httpBackend.expectGET(properties.apiUrl + '/classes').respond([{sigla : 'AP', nome: 'Ação Penal'}, {sigla : 'ADI', nome: 'Ação Direta de Inconstitucionalidade'}]);
-			$httpBackend.expectGET(properties.apiUrl + '/peticoes/1').respond({classe : 'AP'});
+			$httpBackend.expectGET(properties.apiUrl + '/peticoes/1').respond({classe : 'AP', partes: {PoloAtivo: [1], PoloPassivo: [2]}});
 			$httpBackend.whenGET(properties.apiUrl + '/workflow/tarefas').respond([{}]);
+			$httpBackend.whenGET(properties.apiUrl + '/pessoas/1').respond([{}]);
+			$httpBackend.whenGET(properties.apiUrl + '/pessoas/2').respond([{}]);
 
 			stateParams = {resources: [1]};
 			

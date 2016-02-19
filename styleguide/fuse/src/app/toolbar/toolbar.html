@@ -11,33 +11,35 @@
         </md-button>
 
         <div flex id="navigation-search">
-            <md-icon class="ml-16 mr-16" md-font-icon="icon-magnify"></md-icon>
+            <div ng-show="vm.$mdMedia('gt-sm')" class="md-inline">
+                <md-icon class="ml-16 mr-16" md-font-icon="icon-magnify"></md-icon>
+                
+                <input
+                    class="bn s18"
+                    ng-model="vm.termoBusca"
+                    placeholder="{{ ('TOOLBAR.PESQUISA.PLACEHOLDER_' + (vm.tipoBusca == 1 ? 'PROCESSO' : 'PETICAO' ) + (vm.$mdMedia('gt-sm') ? '' : '_REDUZIDO')) | translate }}"
+                    ng-keyup="vm.teclaPressionadaBusca($event)">
+                    
+                <md-menu>
+                    <md-button
+                        class="md-icon-button"
+                        aria-label="Alternar pesquisa"
+                        translate
+                        translate-attr-aria-label="TOOLBAR.ALTERNAR_PESQUISA"
+                        ng-click="$mdOpenMenu($event)">
+                        <md-icon md-font-icon="icon-chevron-down" class="icon s16"></md-icon>
+                    </md-button>
 
-            <input
-                class="bn s18"
-                ng-model="vm.termoBusca"
-                placeholder="{{ ('TOOLBAR.PESQUISA.PLACEHOLDER_' + (vm.tipoBusca == 1 ? 'PROCESSO' : 'PETICAO' )) | translate }}"
-                ng-keyup="vm.teclaPressionadaBusca($event)">
-            
-            <md-menu>
-                <md-button
-                    class="md-icon-button"
-                    aria-label="Alternar pesquisa"
-                    translate
-                    translate-attr-aria-label="TOOLBAR.ALTERNAR_PESQUISA"
-                    ng-click="$mdOpenMenu($event)">
-                    <md-icon md-font-icon="icon-chevron-down" class="icon s16"></md-icon>
-                </md-button>
-
-                <md-menu-content width="4">            
-                    <md-menu-item>
-                        <md-button translate="TOOLBAR.PESQUISA.PESQUISAR_PROCESSO" ng-click="vm.alterarBusca(1)">Pesquisar Processos</md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button translate="TOOLBAR.PESQUISA.PESQUISAR_PETICAO" ng-click="vm.alterarBusca(2)">Pesquisar petições</md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+                    <md-menu-content width="4">            
+                        <md-menu-item>
+                            <md-button translate="TOOLBAR.PESQUISA.PESQUISAR_PROCESSO" ng-click="vm.alterarBusca(1)">Pesquisar Processos</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button translate="TOOLBAR.PESQUISA.PESQUISAR_PETICAO" ng-click="vm.alterarBusca(2)">Pesquisar petições</md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
             <md-button class="md-accent" translate="TOOLBAR.PESQUISA.PESQUISA_AVANCADA">Pesquisa Avançada</md-button>
         </div>
 

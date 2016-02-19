@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -27,6 +29,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -37,8 +40,10 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
@@ -87,7 +92,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PecaPeticao.class)
 	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
-	private Set<Peca> pecas = new LinkedHashSet<Peca>(0);
+	@OrderBy("numeroOrdem ASC")
+	public List<Peca> pecas = new LinkedList<Peca>();
 	
 	@OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinTable(name = "PETICAO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false),
@@ -111,6 +117,9 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		
 	@Transient
 	private String identificacao;
+	
+	@Transient
+	private ControladorOrdenacaoPecas controladorOrdenacaoPecas;
 
 	Peticao() {
 
@@ -129,11 +138,14 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.dataCadastramento = new Date();
 		this.usuarioCadastramento = usuarioCadastramento;
 		this.tipoProcesso = tipoProcesso;
+		
+		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
 
 	@PostLoad
 	private void init() {
 		this.identificacao = montarIdentificacao();
+		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
 	
 	@Override
@@ -200,25 +212,106 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return partes.remove(parte);
 	}
 	
-	public Set<Peca> pecas(){
-		return Collections.unmodifiableSet(pecas);
+	/**
+	 * Atribui as partes a um polo especificado
+	 * 
+	 * @param partes
+	 * @param polo
+	 */
+	public void atribuirPartes(final Set<PartePeticao> partes, final TipoPolo polo) {
+		Validate.notNull(partes, "peticao.partesPolo.required");
+		Validate.notNull(polo, "peticao.polo.required");
+		
+		this.partes.removeIf(parte -> polo.equals(parte.polo()) && !partes.contains(parte));
+		this.partes.addAll(partes);
+	}
+	
+	public List<Peca> pecas(){
+		return Collections.unmodifiableList(pecas);
 	}
 
 	/**
 	 * 
 	 * @param peca
 	 */
-	public boolean juntar(final Peca peca) {
+	public boolean adicionarPeca(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
-	
-		return pecas.add(peca);
+		
+		return controladorOrdenacaoPecas.adicionarPeca(peca);
 	}
 	
+	/**
+	 * 
+	 * @param peca
+	 */
+	public void juntarPeca(final Peca peca) {
+		Validate.notNull(peca, "peticao.peca.required");
+		Validate.isTrue(peca.situacao() == Situacao.PENDENTE_JUNTADA, "peticao.peca.situacao.invalid");
+		
+		ListIterator<Peca> iterator = pecas.listIterator();
+		
+		while (iterator.hasNext()) {
+			Peca pecaAtual = iterator.next();
+			
+			if (pecaAtual.equals(peca)) {
+				pecaAtual.alterarSituacao(Situacao.JUNTADA);
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Realiza a substituição de uma peça por outra,
+	 * o número de ordem da peça substituta será o mesmo
+	 * da peça original.
+	 * 
+	 * @param pecaOriginal
+	 * @param pecaSubstituta
+	 */
 	public void substituirPeca(Peca pecaOriginal, Peca pecaSubstituta) {
 		Validate.notNull(pecaOriginal, "peticao.pecaOriginal.required");
 		Validate.notNull(pecaSubstituta, "peticao.pecaSubstituta.required");
-		removerPeca(pecaOriginal);
-		juntar(pecaSubstituta);
+		
+		controladorOrdenacaoPecas.substituirPeca(pecaOriginal, pecaSubstituta);
+	}
+
+	/**
+	 * Divide uma peça, substituindo-a pelas peças especificadas.
+	 * 
+	 * @param pecaDividida
+	 * @param pecasDivisao
+	 */
+	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
+		Validate.notNull(pecaDividida, "peticao.pecaDividida.required");
+		Validate.notEmpty(pecasDivisao, "peticao.pecasDivisao.required");
+
+		Long numeroOrdem = pecaDividida.numeroOrdem();
+		
+		removerPeca(pecaDividida);
+		
+		pecasDivisao.forEach(p -> adicionarPeca(p));
+		
+		controladorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
+	}
+	
+	/**
+	 * Realiza a união da lista de peças, sendo substutuídas pela
+	 * peça especificada.
+	 * 
+	 * @param pecasUniao
+	 * @param pecaUnida
+	 */
+	public void unirPecas(List<Peca> pecasUniao, Peca pecaUnida) {
+		Validate.notEmpty(pecasUniao, "peticao.pecasUniao.required");
+		Validate.notNull(pecaUnida, "peticao.pecaUnida.required");
+		
+		Long menorNumeroOrdem = pecasUniao.stream().min((p1, p2) -> p1.numeroOrdem().compareTo(p2.numeroOrdem())).get().numeroOrdem();
+		
+		pecasUniao.forEach(p -> removerPeca(p));
+		
+		adicionarPeca(pecaUnida);
+		
+		controladorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}
 	
 	/**
@@ -228,9 +321,27 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	public boolean removerPeca(final Peca peca) {
 		Validate.notNull(peca, "peticao.peca.required");
 	
-		return pecas.remove(peca);
+		boolean removeu = pecas.remove(peca);
+		
+		controladorOrdenacaoPecas.normalizarOrdenacaoPecas();
+		
+		return removeu;
 	}
 
+	/**
+	 * Reordena uma peça.
+	 * 
+	 * @param peca
+	 * @param novoNumeroOrdem
+	 * @return Se reordenou com sucesso
+	 */
+	public boolean reordenarPeca(final Peca peca, Long novoNumeroOrdem) {
+		Validate.notNull(peca, "peticao.peca.required");
+		Validate.notNull(novoNumeroOrdem, "peticao.novoNumeroOrdem.required");
+		
+		return controladorOrdenacaoPecas.reordenarPeca(peca, novoNumeroOrdem);
+	}
+	
 	public ClasseId classeProcessual() {
 		return classeProcessual;
 	}
@@ -321,6 +432,17 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	
 	public boolean isEletronica() {
 		return this.getClass().equals(PeticaoEletronica.class);
+	}
+	
+	/**
+	 * Verifica se o processo é criminal e/ou eleitoral
+	 * 
+	 * @return
+	 */
+	public boolean isCriminalEleitoral() {
+		// TODO: Melhorar forma de implementação dessa verificação.
+		return preferencias.contains(new PreferenciaId(2L)) ||
+				preferencias.contains(new PreferenciaId(3L));
 	}
 	
 	public abstract boolean hasRepresentacao();

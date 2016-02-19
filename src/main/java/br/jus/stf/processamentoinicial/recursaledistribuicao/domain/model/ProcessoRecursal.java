@@ -10,12 +10,15 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.ClasseId;
@@ -50,6 +53,7 @@ public class ProcessoRecursal extends Processo {
 	private String observacaoAnalise;
 	
 	@Column(name = "TIP_CLASSIFICACAO")
+	@Enumerated(EnumType.STRING)
 	private Classificacao classificacao;
 
 	ProcessoRecursal() {
@@ -94,10 +98,14 @@ public class ProcessoRecursal extends Processo {
 		return Collections.unmodifiableSet(motivosInaptidao);
 	}
 	
+	public String observacaoAnalise() {
+		return observacaoAnalise;
+	}
+	
 	public void autuar(Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
 		atribuirAssuntos(assuntos);
-		atribuirPoloAtivo(poloAtivo);
-		atribuirPoloPassivo(poloPassivo);
+		atribuirPartes(poloAtivo, TipoPolo.POLO_ATIVO);
+		atribuirPartes(poloPassivo, TipoPolo.POLO_PASSIVO);
 	}
 	
 	public void analisarPressupostosFormais(Classificacao classificacao, String observacaoAnalise, Set<MotivoInaptidaoProcesso> motivosInaptidao) {
@@ -112,9 +120,10 @@ public class ProcessoRecursal extends Processo {
 		this.observacaoAnalise = observacaoAnalise;
 	}
 	
-	public void analisarRepercussaoGeral(Set<AssuntoId> assuntos, Set<TeseId> teses) {
+	public void analisarRepercussaoGeral(Set<AssuntoId> assuntos, Set<TeseId> teses, String observacaoAnalise) {
 		atribuirAssuntos(assuntos);
 		atribuirTeses(teses);
+		this.observacaoAnalise = observacaoAnalise;
 	}
 
 }
