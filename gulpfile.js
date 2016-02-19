@@ -252,10 +252,16 @@ gulp.task('test:e2e', ['webdriver:update'], function() {
 	// Monta o objeto de configuração para o protractor, que vai sobreescrever a url ou não
 	// dependendo da existência do parâmetro --e2eBaseUrl passado para o gulp
 	var protractorConfigObject = {
-		configFile: 'build/protractor.config.js'
+		configFile: 'build/protractor.config.js',
+		args: []
 	};
 	if (argv.e2eBaseUrl) {
-		protractorConfigObject.args = ['--baseUrl', argv.e2eBaseUrl]
+		protractorConfigObject.args.push('--baseUrl');
+		protractorConfigObject.args.push(argv.e2eBaseUrl);
+	}
+	if (argv.e2eSeleniumAddress) {
+		protractorConfigObject.args.push('--seleniumAddress');
+		protractorConfigObject.args.push(argv.e2eSeleniumAddress);
 	}
 	return gulp.src(protractorConfig.config.specs)
 		.pipe($.protractor.protractor(protractorConfigObject))
