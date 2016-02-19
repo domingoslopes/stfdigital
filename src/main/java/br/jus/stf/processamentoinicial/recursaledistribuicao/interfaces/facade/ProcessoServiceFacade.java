@@ -2,10 +2,13 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,11 +25,13 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 
 @Component
+@Transactional
 public class ProcessoServiceFacade {
 	
 	@Autowired
@@ -139,6 +144,19 @@ public class ProcessoServiceFacade {
 	public void inserirPecas(Long processoId, List<PecaProcessual> pecas){
 		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
 		processoApplicationService.inserirPecas(processo, pecas);
+	}
+	
+	/**
+	 * Exclui peças processuais.
+	 * @param processoId Id do processo.
+	 * @param pecas Lista de peças.
+	 */
+	public void excluirPecas(Long processoId, List<Long> pecas){
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		List<Peca> pecasProcesso = new LinkedList<Peca>(); 
+		pecas.forEach(pecaId -> pecasProcesso.add(processoRepository.findOnePeca(pecaId)));
+		
+		processoApplicationService.excluirPecas(processo, pecasProcesso);
 	}
 	
 	/**

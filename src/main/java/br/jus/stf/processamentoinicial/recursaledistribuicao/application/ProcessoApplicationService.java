@@ -26,6 +26,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -206,6 +207,16 @@ public class ProcessoApplicationService {
 			processo.adicionarPeca(peca);
 		}
 		
+		processoRepository.save(processo);
+	}
+	
+	/**
+	 * Exclui as peças de um processo.
+	 * @param processo Dados do processo.
+	 * @param pecas Lista de peças para serem excluídas.
+	 */
+	public void excluirPecas(Processo processo, List<Peca> pecas){
+		pecas.forEach(peca -> processo.removerPeca(peca));
 		processoRepository.save(processo);
 	}
 	
