@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PessoaId;
@@ -98,4 +99,10 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 		return (TipoPeca)query.getSingleResult();
 	}
 	
+	@Override
+	public Peca findOnePeca(Long id) {
+		Query query = entityManager.createQuery("SELECT peca FROM PecaProcesso peca WHERE peca.sequencial = :id");
+		query.setParameter("id", id);
+		return (Peca)query.getSingleResult();
+	}
 }

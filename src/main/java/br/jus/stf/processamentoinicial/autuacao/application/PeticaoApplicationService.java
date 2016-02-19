@@ -37,6 +37,7 @@ import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PreferenciaId;
+import br.jus.stf.shared.ProcessoWorkflow;
 
 /**
  * @author Rodrigo Barreiros
@@ -83,8 +84,9 @@ public class PeticaoApplicationService {
 	 */
 	public PeticaoEletronica peticionar(ClasseId classeSugerida, List<String> poloAtivo, List<String> poloPassivo, List<PecaTemporaria> pecas, Optional<Long> orgaoId) {
 		PeticaoEletronica peticao = peticaoFactory.criarPeticaoEletronica(classeSugerida, poloAtivo, poloPassivo, pecas, orgaoId, TipoProcesso.ORIGINARIO);
-		peticaoRepository.saveAndFlush(peticao); // Como a petição será será salva novamente no iniciarWorkflow, é necessário fazer o flush para não duplicar coleções
-		processoAdapter.iniciarWorkflow(peticao);
+		ProcessoWorkflow processoWorkflow = processoAdapter.iniciarWorkflow(peticao);
+		peticao.associarProcessoWorkflow(processoWorkflow);
+		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
 	}
@@ -99,8 +101,9 @@ public class PeticaoApplicationService {
 	public PeticaoFisica registrar(Integer volumes, Integer apensos, FormaRecebimento formaRecebimento,
 			String numeroSedex, TipoProcesso tipoProcesso){
 		PeticaoFisica peticao = peticaoFactory.criarPeticaoFisica(volumes, apensos, formaRecebimento, numeroSedex, tipoProcesso);
-		peticaoRepository.saveAndFlush(peticao); // Como a petição será será salva novamente no iniciarWorkflow, é necessário fazer o flush para não duplicar coleções
-		processoAdapter.iniciarWorkflow(peticao);
+		ProcessoWorkflow processoWorkflow = processoAdapter.iniciarWorkflow(peticao);
+		peticao.associarProcessoWorkflow(processoWorkflow);
+		peticaoRepository.save(peticao);
 		peticaoApplicationEvent.peticaoRecebida(peticao);
 		return peticao;
 	}
