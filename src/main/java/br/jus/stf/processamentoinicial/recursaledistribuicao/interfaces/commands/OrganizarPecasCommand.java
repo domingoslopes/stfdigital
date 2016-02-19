@@ -25,7 +25,7 @@ public class OrganizarPecasCommand {
 	
 	@NotNull
 	@ApiModelProperty(value = "Indica se a tarefa será concluída ou não.", required=true)
-	private boolean concluirTarefa;
+	private Boolean concluirTarefa;
 
 	public Long getProcessoId() {
 		return processoId;
@@ -35,7 +35,7 @@ public class OrganizarPecasCommand {
 		return pecasOrganizadas;
 	}
 	
-	public boolean isConcluirTarefa() {
+	public Boolean isConcluirTarefa() {
 		return concluirTarefa;
 	}
 	
