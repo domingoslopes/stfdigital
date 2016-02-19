@@ -344,8 +344,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		Validate.isTrue(pecas.size() == pecasOrganizadas.size(), "processo.pecasOrganizadas.invalid");
 		
 		for(Peca p : pecas) {
-			controladorOrdenacaoPecas.reordenarPeca(p, Long.valueOf(pecasOrganizadas.indexOf(p.toLong()) + 1));
-		} 
+			p.numerarOrdem(Long.valueOf(pecasOrganizadas.indexOf(p.toLong()) + 1));
+		}
+		
+		controladorOrdenacaoPecas.ordenarPecas();
 	}
 
 	public List<Peca> pecas() {

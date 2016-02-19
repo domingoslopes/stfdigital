@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -47,6 +49,7 @@ import br.jus.stf.shared.TeseId;
  * @since 25.09.2015
  */
 @Component
+@Transactional
 public class ProcessoApplicationService {
 
 	@Autowired
@@ -225,10 +228,15 @@ public class ProcessoApplicationService {
 	 * 
 	 * @param processo
 	 * @param pecasOrganizadas
+	 * @param concluirTarefa
 	 * @return
 	 */
-	public Processo organizarPecas(Processo processo, List<Long> pecasOrganizadas) {
+	public void organizarPecas(Processo processo, List<Long> pecasOrganizadas, boolean concluirTarefa) {
 		processo.organizarPecas(pecasOrganizadas);
-		return processoRepository.save(processo);
+		processoRepository.save(processo);
+		
+		if (concluirTarefa) {
+			tarefaAdapter.completarOrganizarPecas(processo);
+		}
 	}
 }

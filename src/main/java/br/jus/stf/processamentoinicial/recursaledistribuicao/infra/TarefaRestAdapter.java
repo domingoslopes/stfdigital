@@ -67,6 +67,11 @@ public class TarefaRestAdapter implements TarefaAdapter {
 		completarTarefa(processo, ProcessoSituacao.DISTRIBUIDO);
 	}
 	
+	@Override
+	public void completarOrganizarPecas(Processo processo) {
+		completarTarefa(processo, ProcessoSituacao.PECAS_ORGANIZADAS);
+	}
+	
 	/**
 	 * Completa uma tarefa do processo com um status
 	 * 

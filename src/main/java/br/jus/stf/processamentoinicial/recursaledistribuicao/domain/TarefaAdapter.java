@@ -21,4 +21,6 @@ public interface TarefaAdapter {
 
 	void completarDistribuicao(Processo processo);
 	
+	void completarOrganizarPecas(Processo processo);
+	
 }

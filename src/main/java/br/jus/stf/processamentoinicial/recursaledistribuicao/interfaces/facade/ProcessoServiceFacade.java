@@ -8,8 +8,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +29,6 @@ import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 
 @Component
-@Transactional
 public class ProcessoServiceFacade {
 	
 	@Autowired
@@ -164,14 +161,15 @@ public class ProcessoServiceFacade {
 	 * 
 	 * @param processoId
 	 * @param pecasOrganizadas
+	 * @param concluirTarefa
 	 * @return
 	 */
-	public ProcessoDto organizarPecas(Long processoId, List<Long> pecasOrganizadas) {
+	public void organizarPecas(Long processoId, List<Long> pecasOrganizadas, boolean concluirTarefa) {
 		ProcessoId id = new ProcessoId(processoId);
 		Processo processo = Optional.ofNullable(processoRepository.findOne(id))
 				.orElseThrow(IllegalArgumentException::new);
 		
-		return processoDtoAssembler.toDto(processoApplicationService.organizarPecas(processo, pecasOrganizadas));
+		processoApplicationService.organizarPecas(processo, pecasOrganizadas, concluirTarefa);
 	}
 	
 }
