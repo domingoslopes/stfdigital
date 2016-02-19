@@ -1,14 +1,8 @@
 /**
-<<<<<<< HEAD
- * @author Rodrigo Barreiros
- * 
- * @since 1.0.0
- * @since 10.07.2015
-=======
+
  * @author Anderson.Araujo
  * 
  * @since 01.02.2016
->>>>>>> 15d6c1446c8216c7d7b3891a51f9e52ed8c2d9c6
  */ 
 (function() {
 	'use strict';
@@ -34,36 +28,72 @@
 		
 		autuacao.recursos = [];
 		
-		ProcessoService.consultarPorPeticao(revisao.peticaoId).then(function(response) {
+		ProcessoService.consultarPorPeticao(autuacao.peticaoId).then(function(response) {
 			autuacao.processo = response.data;
 			autuacao.motivosInaptidao = response.data.motivosInaptidao;
 			autuacao.teses = response.data.teses;
 			autuacao.assuntos = response.data.assuntos;
+			if (autuacao.processo.partes.PoloAtivo.length > 0){
+				angular.forEach(autuacao.peticao.partes.PoloAtivo, function(parteAtiva) {
+					PessoaService.pesquisar(parteAtiva).then(function(dado){
+						var pessoaAtivo = dado.data;
+						autuacao.partesPoloAtivo.push({'id':parteAtiva, 'pessoa': pessoaAtivo});
+					});
+				});
+			}
+			if (autuacao.processo.partes.PoloPassivo.length > 0){
+				angular.forEach(autuacao.peticao.partes.PoloPassivo, function(partePassiva) {
+					PessoaService.pesquisar(partePassiva).then(function(dado){
+						var pessoaPassiva = dado.data;
+						autuacao.partesPoloPassivo.push({'id':partePassiva, 'pessoa': pessoaPassiva});
+					});
+				});
+			}
 		});
 		
-		PeticaoService.consultar(revisao.peticaoId).then(function(data) {
-			revisao.peticao = data;
+		PeticaoService.consultar(autuacao.peticaoId).then(function(data) {
+			autuacao.peticao = data;
 		});
 
 		autuacao.adicionarPoloAtivo = function() {
-			autuacao.poloAtivoController.adicionar(autuacao.partePoloAtivo);
-			autuacao.partePoloAtivo = '';
-			$('partePoloAtivo').focus();
+			adicionarPartePolo('ativo');
 		};
 	
 		autuacao.removerPoloAtivo = function(parteSelecionada) {
-			autuacao.poloAtivoController.remover(parteSelecionada);
+			angular.forEach(autuacao.partesPoloAtivo, function(parte, indice){
+				if (parte.pessoa.nome === parteSelecionada.pessoa.nome){
+					autuacao.partesPoloAtivo.splice(indice,1);
+				}
+			});
 		};
 
 		autuacao.adicionarPoloPassivo = function() {
-			autuacao.poloPassivoController.adicionar(autuacao.partePoloPassivo);
-			autuacao.partePoloPassivo = '';
-			$('partePoloPassivo').focus();
+			adicionarPartePolo('passivo');
 		};
 	
 		autuacao.removerPoloPassivo = function(parteSelecionada) {
-			autuacao.poloPassivoController.remover(parteSelecionada);
+			angular.forEach(autuacao.partesPoloPassivo, function(parte, indice){
+				if (parte.pessoa.nome === parteSelecionada.pessoa.nome){
+					autuacao.partesPoloPassivo.splice(indice,1);
+				}
+			});
 		};
+        
+        var adicionarPartePolo = function(polo){
+            var parte = {'pessoa': {}};
+            if (polo === 'ativo'){
+                parte.pessoa.nome = autuacao.partePoloAtivo;
+                autuacao.partesPoloAtivo.push(parte);
+                autuacao.partePoloAtivo = '';
+                $('partePoloAtivo').focus();      
+            }else{
+                parte.pessoa.nome = autuacao.partePoloPassivo;
+                autuacao.partesPoloPassivo.push(parte);
+                autuacao.partePoloPassivo = '';
+                $('partePoloPassivo').focus();  
+            }
+        }
+		
 
 		
 		autuacao.validar = function() {
@@ -82,10 +112,10 @@
 				return false;
 			}
 
-			autuacao.recursos.push( new AutuarProcessoRecursalCommand(autuacao.processo.id, autuacao.partesPoloAtivo, autuacao.partesPoloPassivo));
+			autuacao.recursos.push( new AutuarProcessoRecursalCommand(autuacao.processo.id, autuacao.partesPoloAtivo, autuacao.partesPoloPassivo, autuacao.assuntos));
 
 			return true;
-		}
+		};
 		
 		autuacao.completar = function() {
 			$state.go('dashboard');
@@ -93,28 +123,26 @@
 		};
 		
 		
-    	function PartesController(partes){
+	 	function PartesController(polo){
     		var partesController = {};
     		
     		partesController.adicionar = function(parte) {
-				partes.push({
-					text : parte,
-					selected : false
+				polo.adicionados.push({
+					text : parte.pessoa.nome,
 				});
 			};
 		
-			partesController.remover = function(index) {
-				partes.splice(index, 1);
-				
 			partesController.remover = function(parteSelecionada) {
-				parteSelecionada.selected = true;
-				var partesAtuais = partes.slice(0);
-				partesController.clear(partes);
-				angular.forEach(partesAtuais, function(parte) {
-					if (!parte.selected) {
-						partes.push(parte);
+				if (parteSelecionada.id){
+					polo.removidos.push(parteSelecionada);
+				}else{
+					for(var i in polo.adicionados){
+						if (polo.adicionados[i].text === parteSelecionada.pessoa.nome){
+							polo.adicionados.splice(i,1);
+							break;
+						}
 					}
-				});
+				}
 			};
 			
 			partesController.clear = function(array) {
@@ -125,21 +153,24 @@
 			return partesController;
 		}
 
-
-    	function AutuarProcessoCriminalEleitoralCommand(id, partesPoloAtivo, partesPoloPassivo){
-=
+    	function AutuarProcessoRecursalCommand(id, partesPoloAtivo, partesPoloPassivo, assuntos){
+    		var dto = {};
     		dto.processoId = id;
     		dto.partesPoloAtivo = [];
     		dto.partesPoloPassivo = [];
-    		
+    		dto.assuntos = [];
+
     		angular.forEach(partesPoloAtivo, function(parte) {
-    			dto.partesPoloAtivo.push(parte.text);
+    			dto.partesPoloAtivo.push(parte.pessoa.nome);
     		});
     		
     		angular.forEach(partesPoloPassivo, function(parte) {
-    			dto.partesPoloPassivo.push(parte.text);
+    			dto.partesPoloPassivo.push(parte.pessoa.nome);
     		});
     		
+    		angular.forEach(assuntos, function(assunto) {
+    			dto.assuntos.push(assunto.codigo);
+    		});
 
     		return dto;
     	}

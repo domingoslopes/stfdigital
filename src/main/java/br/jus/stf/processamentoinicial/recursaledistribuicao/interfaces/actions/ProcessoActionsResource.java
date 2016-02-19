@@ -14,8 +14,6 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.OrganizarPecasCommand;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarProcessoRecursalInaptoCommand;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.SalvarPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
@@ -50,7 +48,7 @@ public class ProcessoActionsResource {
 	}
 	
 	@ActionMapping(id = "revisar-processo-inapto", name = "Revisar Processo Inapto")
-	public void revisarPressupostosFormais(RevisarProcessoRecursalInaptoCommand command) {
+	public void revisarPressupostosFormais(AnalisarPressupostosFormaisCommand command) {
 		processoApplicationService.analisarPressupostosFormais(command.getProcessoId(), command.getClassificacao().toUpperCase(), 
 				command.getMotivos(), command.getObservacao(), true);
 	}
@@ -61,7 +59,7 @@ public class ProcessoActionsResource {
 	}
 	
 	@ActionMapping(id = "revisar-repercussao-geral", name = "Revisar Repercussão Geral")
-	public void revisarRepercussaoGeral(RevisarRepercussaoGeralCommand command) {
+	public void revisarRepercussaoGeral(AnalisarRepercussaoGeralCommand command) {
 		processoApplicationService.analisarRepercussaoGeral(command.getProcessoId(), command.getAssuntos(), command.getTeses(), command.getObservacao(), true);
 	}
 	
