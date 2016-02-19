@@ -56,6 +56,6 @@ public class PecaProcessual {
 	}
 	
 	public String getDescricao(){
-		return visibilidade;
+		return descricao;
 	}
 }

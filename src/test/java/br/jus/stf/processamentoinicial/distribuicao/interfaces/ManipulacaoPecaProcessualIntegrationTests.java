@@ -16,9 +16,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.jayway.jsonpath.JsonPath;
-
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
+
+import com.jayway.jsonpath.JsonPath;
 
 /**
  * Realiza os testes de intergação de manipulação de peças processuais.
@@ -29,6 +29,7 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  */
 public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrationTests {
 	private String salvarPecasCommand;
+	private String excluirPecasCommand;
 	private String peticaoEletronica;
 	private String peticaoValidaParaAutuacao;
 	private String peticaoAutuadaParaDistribuicao;
@@ -84,7 +85,7 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 	}
 	
 	@Test
-    public void executarAcaoDistribuirPeticaoEletronica() throws Exception {
+    public void executarAcaoManterPecaProcesso() throws Exception {
     	
     	String peticaoId = "";
     	String tarefaObject = "";
@@ -127,12 +128,23 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 	    documentoTemporarioId = mockMvc.perform(fileUpload("/api/documentos/upload/assinado").file(mockArquivo).contentType(MediaType.MULTIPART_FORM_DATA).content(arquivo))
 	    	.andExpect(status().is2xxSuccessful()).andReturn().getResponse().getContentAsString();
 	    
-	    salvarPecasCommand = "{\"resources\":[{\"processoId\": 1, \"pecas\": [{\"documentoTemporarioId\":\"" + documentoTemporarioId + "\", \"tipoPecaId\":1, \"visibilidade\":\"PUBLICO\", \"situacao\":\"JUNTADA\", \"descricao\":\"xxx\"}]}]}";
+	    String processoDto = getProcesso(peticaoId);
+	    String processoId = getProcessoId(processoDto);
+	    
+	    salvarPecasCommand = "{\"resources\":[{\"processoId\": " + processoId + ", \"pecas\": [{\"documentoTemporarioId\":\"" + documentoTemporarioId + "\", \"tipoPecaId\":1, \"visibilidade\":\"PUBLICO\", \"situacao\":\"JUNTADA\", \"descricao\":\"xxx\"}]}]}";
 	    
 	    //Insere a peça.
   		super.mockMvc.perform(post("/api/actions/inserir-pecas/execute").header("login", "autuador").contentType(MediaType.APPLICATION_JSON)
   			.content(salvarPecasCommand)).andExpect(status().isOk());
 		
+  		//Recupera novamente o processo após a inserção da segunda peça.
+  		processoDto = getProcesso(peticaoId);
+  		
+  		excluirPecasCommand = getPecasParaExclusao(processoId, processoDto);
+  		
+  		//Exclui as peças.
+  		super.mockMvc.perform(post("/api/actions/excluir-pecas/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
+  			.content(excluirPecasCommand)).andExpect(status().isOk());
     }
 	
 	private void assumirTarefa(String json) throws Exception {
@@ -140,4 +152,25 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 		super.mockMvc.perform(post("/api/actions/assumir-tarefa/execute").contentType(MediaType.APPLICATION_JSON)
 	    		.content(this.tarefaParaAssumir.replace("@", tarefaId))).andExpect(status().isOk());
     }
+	
+	private String getProcesso(String peticaoId) throws Exception {
+		String json = super.mockMvc.perform(get("/api/peticoes/" + peticaoId + "/processo").contentType(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse().getContentAsString();
+		
+		return (JsonPath.read(json, "$")).toString();
+    }
+	
+	private String getPecasParaExclusao(String processoId, String processo){
+		String peca1 = (JsonPath.read(processo, "$.pecas[0].sequencial")).toString();
+		String peca2 = (JsonPath.read(processo, "$.pecas[1].sequencial")).toString();
+		StringBuilder pecas =  new StringBuilder();
+		pecas.append("{\"resources\": [{\"processoId\":" + processoId + ",");
+		pecas.append("\"pecas\":[" + peca1 + ", " + peca2 + "]}]}");
+		
+		return pecas.toString();
+	}
+	
+	private String getProcessoId(String processo){
+		return (JsonPath.read(processo, "$.id")).toString();
+	}
 }
