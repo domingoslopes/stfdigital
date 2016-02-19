@@ -286,7 +286,7 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void modificaOrdemDasPecas() {
 		Processo processo = processo();
-		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 		
 		peca2.atribuirSequencial(2L);
 		processo.adicionarPeca(peca2);
@@ -298,6 +298,24 @@ public class ProcessoOriginarioUnitTests {
 		
 		assertEquals(peca.toLong(), processo.pecas().get(1).toLong());
 		assertEquals(peca2.toLong(), processo.pecas().get(0).toLong());
+	}
+	
+	@Test
+	public void juntaPecaAoProcesso() {
+		Processo processo = processo();
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		
+		processo.adicionarPeca(peca2);
+		processo.juntarPeca(peca2);
+		
+		assertEquals(peca2.situacao(), Situacao.JUNTADA);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void tentaJuntarPecaComSituacaoJuntada() {
+		Processo processo = processo();
+		
+		processo.juntarPeca(peca);
 	}
 	
 }

@@ -199,14 +199,12 @@ public class ProcessoApplicationService {
 		TipoPeca tipoPeca = null;
 		PecaProcesso peca = null;
 		Visibilidade visibilidade = null;
-		Situacao situacao = null;
 		
 		for (PecaProcessual pecaProcessual : pecas){
 			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
 			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
 			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
-			situacao = Situacao.valueOf(pecaProcessual.getSituacao());
-			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, situacao);
+			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, Situacao.PENDENTE_JUNTADA);
 
 			processo.adicionarPeca(peca);
 		}
