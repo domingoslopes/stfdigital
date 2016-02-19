@@ -30,9 +30,9 @@ public class PreautuarPeticaoFisicaCommand {
 	@ApiModelProperty(value = "A classe processual sugerida pelo práutuador.", required=true)
 	private String classeId;
 	
-	@NotBlank
+	@NotNull
 	@ApiModelProperty(value = "Contém o resultado da análise do pré-autuador, indicando se a petição está 'Correta' ou 'Indevida'", required=true)
-	private boolean valida;
+	private Boolean valida;
 	
 	@ApiModelProperty(value = "Contém o motivo da recusa da petição, no caso de petições indevidas", required=true)
 	private String motivo;
@@ -48,7 +48,7 @@ public class PreautuarPeticaoFisicaCommand {
 		return classeId;
 	}
 	
-	public boolean isValida() {
+	public Boolean isValida() {
 		return valida;
 	}
 	
