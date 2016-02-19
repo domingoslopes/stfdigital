@@ -18,7 +18,6 @@ import java.security.cert.CertificateEncodingException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
@@ -261,12 +260,10 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
     }
 	
     @Test
-    @Ignore
     public void executarAcaoRegistroPeticaoFisica() throws Exception {
     	
     	String peticaoId = "";
     	String tarefaObject = "";
-    	String processoDto = "";
     	
     	//Envia a petição eletrônica.
     	peticaoId = super.mockMvc.perform(post("/api/actions/registrar-peticao-fisica/execute").header("login", "recebedor").contentType(MediaType.APPLICATION_JSON)
@@ -302,23 +299,9 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		assumirTarefa(tarefaObject);
 		
 		//Realiza a distribuição.
-		processoDto = super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").contentType(MediaType.APPLICATION_JSON)
-			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)))
-			.andReturn().getResponse().getContentAsString();
+		super.mockMvc.perform(post("/api/actions/distribuir-processo/execute").contentType(MediaType.APPLICATION_JSON)
+			.content(this.peticaoAutuadaParaDistribuicao.replace("@", peticaoId))).andExpect(status().isOk()).andExpect(jsonPath("$.relator", is(28)));
 		
-		//Recupera a(s) tarefa(s) do organizador de peças.
-		tarefaObject = super.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "organizador-pecas")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("organizar-pecas"))).andReturn().getResponse().getContentAsString();
-
-		assumirTarefa(tarefaObject);
-				
-		//Realiza a organização das peças.
-		super.mockMvc.perform(post("/api/actions/organizar-pecas/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
-			.content(this.processoParaOrganizarPecas.replace("@1", JsonPath.read(processoDto, "$.pecas[1].sequencial").toString())
-			.replace("@2", JsonPath.read(processoDto, "$.pecas[0].sequencial").toString())
-			.replace("@", JsonPath.read(processoDto, "$.id").toString())))
-			.andExpect(status().isOk());
-
     }
     
     @Test

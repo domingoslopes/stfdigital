@@ -50,11 +50,10 @@ public class ProcessoServiceFacade {
 	 * @return dto o DTO com as informações de retorno do processo
 	 */
 	public ProcessoDto consultar(Long id){
-		ProcessoId processoId = new ProcessoId(id);
-		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
+		Processo processo = carregarProcesso(id);
 		return processoDtoAssembler.toDto(processo);
 	}
-	
+
 	/**
 	 * Distribui um processo para um ministro relator.
 	 * 
@@ -77,22 +76,6 @@ public class ProcessoServiceFacade {
 		Processo processo = processoApplicationService.distribuir(parametroDistribuicao);
 		
 		return processoDtoAssembler.toDto(processo);
-	}
-	
-	private Set<MinistroId> carregarMinistros(Set<Long> listaMinistros) {
-		return Optional.ofNullable(listaMinistros)
-				.map(lista -> lista.stream()
-					.map(id -> new MinistroId(id))
-					.collect(Collectors.toSet()))
-				.orElse(Collections.emptySet());
-	}
-	
-	private Set<Processo> carregarProcessos(Set<Long> listaProcessos) {
-		return Optional.ofNullable(listaProcessos)
-				.map(lista -> lista.stream()
-						.map(id -> processoRepository.findOne(new ProcessoId(id)))
-						.collect(Collectors.toSet()))
-				.orElse(Collections.emptySet());
 	}
 
 	/**
@@ -165,11 +148,42 @@ public class ProcessoServiceFacade {
 	 * @return
 	 */
 	public void organizarPecas(Long processoId, List<Long> pecasOrganizadas, boolean concluirTarefa) {
-		ProcessoId id = new ProcessoId(processoId);
-		Processo processo = Optional.ofNullable(processoRepository.findOne(id))
-				.orElseThrow(IllegalArgumentException::new);
+		Processo processo = carregarProcesso(processoId);
 		
 		processoApplicationService.organizarPecas(processo, pecasOrganizadas, concluirTarefa);
 	}
+	
+	/**
+	 * Verifica se um processo possui peças.
+	 * 
+	 * @param processoId
+	 * @return
+	 */
+	public boolean temPecas(String processoId) {
+		Processo processo = processoRepository.findByPeticao(new PeticaoId(Long.valueOf(processoId)));
+		
+		return !processo.pecas().isEmpty();
+	}
+	
+	private Set<MinistroId> carregarMinistros(Set<Long> listaMinistros) {
+		return Optional.ofNullable(listaMinistros)
+				.map(lista -> lista.stream()
+					.map(id -> new MinistroId(id))
+					.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
+	}
+	
+	private Set<Processo> carregarProcessos(Set<Long> listaProcessos) {
+		return Optional.ofNullable(listaProcessos)
+				.map(lista -> lista.stream()
+						.map(id -> processoRepository.findOne(new ProcessoId(id)))
+						.collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
+	}
+	
+	private Processo carregarProcesso(Long id) {
+	    ProcessoId processoId = new ProcessoId(id);
+		return Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
+    }
 	
 }
