@@ -28,7 +28,6 @@ public class AnalisarPressupostosFormaisCommand {
 	@ApiModelProperty(value = "Classificação da análise", required=true)
 	private String classificacao;
 	
-	@NotEmpty
 	@ApiModelProperty(value = "Lista com os motivos e suas respectivas observações.", required=true)
 	private Map<Long, String> motivos;
 	
