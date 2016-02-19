@@ -21,7 +21,7 @@ public class DevolverPeticaoCommand {
 	@ApiModelProperty(value = "Id da petição física registrada.", required=true)
 	private Long peticaoId;
 	
-	@NotBlank
+	@NotNull
 	@ApiModelProperty(value = "O número do ofício de devolução", required=true)
 	private Long numeroOficio;
 	

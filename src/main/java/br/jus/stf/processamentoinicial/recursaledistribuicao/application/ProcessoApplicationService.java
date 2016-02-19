@@ -167,6 +167,7 @@ public class ProcessoApplicationService {
 		Processo processo = distribuicao.executar();
 		processoRepository.save(processo);
 		tarefaAdapter.completarDistribuicao(processo);
+		processo = processoRepository.findOne(processo.id());
 		processoApplicationEvent.processoDistribuido(processo);
 		
 		return processo;

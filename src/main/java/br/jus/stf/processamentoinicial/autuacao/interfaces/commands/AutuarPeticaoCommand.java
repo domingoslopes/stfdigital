@@ -28,9 +28,9 @@ public class AutuarPeticaoCommand {
 	@ApiModelProperty(value = "A classe processual definitiva, selecionada pelo autuador", required=true)
 	private String classeId;
 	
-	@NotBlank
+	@NotNull
 	@ApiModelProperty(value = "Contém o resultado da análise do autuador, indicando se a petição é válida ou não", required=true)
-	private boolean valida;
+	private Boolean valida;
 	
 	@ApiModelProperty(value = "Contém o motivo da recusa da petição, no caso de petições inválidas", required=true)
 	private String motivo;
@@ -51,7 +51,7 @@ public class AutuarPeticaoCommand {
 		return classeId;
 	}
 
-	public boolean isValida() {
+	public Boolean isValida() {
 		return valida;
 	}
 	

@@ -98,8 +98,8 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoInValidaParaAutuacao.append("[{\"peticaoId\": @,");
 		peticaoInValidaParaAutuacao.append("\"classeId\":\"ADI\",");
 		peticaoInValidaParaAutuacao.append("\"valida\":false,");
-		peticaoInValidaParaAutuacao.append("\"partesPoloAtivo\":[],");
-		peticaoInValidaParaAutuacao.append("\"partesPoloPassivo\":[],");
+		peticaoInValidaParaAutuacao.append("\"partesPoloAtivo\":[1, 2],");
+		peticaoInValidaParaAutuacao.append("\"partesPoloPassivo\":[3, 4],");
 		peticaoInValidaParaAutuacao.append("\"motivo\":\"Petição inválida\"}]}");
 		this.peticaoInvalidaParaAutuacao = peticaoInValidaParaAutuacao.toString();
 		
