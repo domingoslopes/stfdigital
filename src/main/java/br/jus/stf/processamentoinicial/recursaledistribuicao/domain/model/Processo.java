@@ -26,6 +26,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -157,12 +159,38 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	public abstract TipoProcesso tipoProcesso();
 	
-	@PostLoad
 	private void init() {
 		this.identificacao = montarIdentificacao();
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
+	
+	/**
+	 * Método para carregar arquivos transientes após o carregamento.
+	 * 
+	 */
+	@PostLoad
+	private void initAfterLoad() {
+		init();
+	}
 
+	/**
+	 * Método para carregar arquivos transientes após a persistência.
+	 * 
+	 */
+	@PostPersist
+	private void initAfterPersist() {
+		init();
+	}
+	
+	/**
+	 * Método para carregar arquivos transientes após a atualização.
+	 * 
+	 */
+	@PostUpdate
+	private void initAfterUpdate() {
+		init();
+	}
+	
 	@Override
 	public ProcessoId id() {
 		return this.id;

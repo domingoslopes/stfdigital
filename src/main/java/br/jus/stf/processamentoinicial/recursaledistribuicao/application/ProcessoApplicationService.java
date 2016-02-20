@@ -165,9 +165,8 @@ public class ProcessoApplicationService {
 	public Processo distribuir(ParametroDistribuicao parametroDistribuicao) {
 		Distribuicao distribuicao = Distribuicao.criar(parametroDistribuicao);
 		Processo processo = distribuicao.executar();
-		processoRepository.save(processo);
+		processo = processoRepository.saveAndFlush(processo);
 		tarefaAdapter.completarDistribuicao(processo);
-		processo = processoRepository.findOne(processo.id());
 		processoApplicationEvent.processoDistribuido(processo);
 		
 		return processo;

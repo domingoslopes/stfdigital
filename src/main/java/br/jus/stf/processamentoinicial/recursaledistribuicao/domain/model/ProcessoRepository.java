@@ -95,4 +95,12 @@ public interface ProcessoRepository {
 	 */
 	public Peca findOnePeca(Long id);
 
+	/**
+	 * Salva e força o envio para o banco.
+	 * 
+	 * @param processo
+	 * @return
+	 */
+	public <T extends Processo> T saveAndFlush(Processo processo);
+
 }

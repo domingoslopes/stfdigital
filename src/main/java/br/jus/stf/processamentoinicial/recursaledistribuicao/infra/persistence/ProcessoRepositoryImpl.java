@@ -105,4 +105,10 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 		query.setParameter("id", id);
 		return (Peca)query.getSingleResult();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends Processo> T saveAndFlush(Processo processo) {
+		return (T)super.saveAndFlush(processo);
+	}
 }

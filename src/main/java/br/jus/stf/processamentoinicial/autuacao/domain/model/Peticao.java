@@ -31,6 +31,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -142,10 +144,36 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
 
-	@PostLoad
 	private void init() {
 		this.identificacao = montarIdentificacao();
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
+	}
+	
+	/**
+	 * Método para carregar arquivos transientes após o carregamento.
+	 * 
+	 */
+	@PostLoad
+	private void initAfterLoad() {
+		init();
+	}
+
+	/**
+	 * Método para carregar arquivos transientes após a persistência.
+	 * 
+	 */
+	@PostPersist
+	private void initAfterPersist() {
+		init();
+	}
+	
+	/**
+	 * Método para carregar arquivos transientes após a atualização.
+	 * 
+	 */
+	@PostUpdate
+	private void initAfterUpdate() {
+		init();
 	}
 	
 	@Override
