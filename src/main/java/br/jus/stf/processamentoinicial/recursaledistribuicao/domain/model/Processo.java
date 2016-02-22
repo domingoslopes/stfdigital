@@ -159,36 +159,12 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	public abstract TipoProcesso tipoProcesso();
 	
+	@PostLoad
+	@PostPersist
+	@PostUpdate
 	private void init() {
 		this.identificacao = montarIdentificacao();
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
-	}
-	
-	/**
-	 * Método para carregar arquivos transientes após o carregamento.
-	 * 
-	 */
-	@PostLoad
-	private void initAfterLoad() {
-		init();
-	}
-
-	/**
-	 * Método para carregar arquivos transientes após a persistência.
-	 * 
-	 */
-	@PostPersist
-	private void initAfterPersist() {
-		init();
-	}
-	
-	/**
-	 * Método para carregar arquivos transientes após a atualização.
-	 * 
-	 */
-	@PostUpdate
-	private void initAfterUpdate() {
-		init();
 	}
 	
 	@Override
