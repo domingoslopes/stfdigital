@@ -30,6 +30,7 @@ import com.jayway.jsonpath.JsonPath;
 public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrationTests {
 	private String salvarPecasCommand;
 	private String excluirPecasCommand;
+	private String dividirPecasCommand;
 	private String peticaoEletronica;
 	private String peticaoValidaParaAutuacao;
 	private String peticaoAutuadaParaDistribuicao;
@@ -140,12 +141,46 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
   		//Recupera novamente o processo após a inserção da segunda peça.
   		processoDto = getProcesso(peticaoId);
   		
+  		//Recupera a peça que acabou de ser inserida para ser dividida em duas.
+  		dividirPecasCommand = prepararPecaParaDivisao(processoId);
+  		
+  		//Divide a peça.
+  		super.mockMvc.perform(post("/api/actions/dividir-peca/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
+  	  			.content(dividirPecasCommand)).andExpect(status().isOk());
+  		
+  		//Recupera novamente o processo após a divisão da segunda peça.
+  		processoDto = getProcesso(peticaoId);
+  		
   		excluirPecasCommand = getPecasParaExclusao(processoId, processoDto);
   		
   		//Exclui as peças.
   		super.mockMvc.perform(post("/api/actions/excluir-pecas/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
   			.content(excluirPecasCommand)).andExpect(status().isOk());
     }
+	
+	private String prepararPecaParaDivisao(String processoId) throws UnsupportedEncodingException, Exception{
+		String peca = getPecaParaDivisao(processoId);
+		String pecaId = (JsonPath.read(peca, "$.pecaId")).toString();
+		String tipo = (JsonPath.read(peca, "$.tipo")).toString();
+		String visibilidade = (JsonPath.read(peca, "$.visibilidade")).toString();
+		String situacao = (JsonPath.read(peca, "$.situacao")).toString();
+		String descricao = (JsonPath.read(peca, "$.situacao")).toString();
+				
+		StringBuilder json = new StringBuilder();
+		json.append("{\"resources\": ");
+		json.append("[{\"processoId\":" + processoId + ", \"pecaId\": " + pecaId + ", ");
+		json.append("[{\"tipoPecaId\":" + tipo + ", \"visibilidade\":" + visibilidade + ", \"situacao:\":" + situacao + ", \"descricao\":" + descricao + ", \"paginaInicial\":1, \"paginaFinal\":2}, ");
+		json.append("{\"tipoPecaId\":" + tipo + ", \"visibilidade\":" + visibilidade + ", \"situacao:\":" + situacao + ", \"descricao\":" + descricao + ", \"paginaInicial\":3, \"paginaFinal\":5}]}]}");
+		
+		return json.toString();
+	}
+	
+	private String getPecaParaDivisao(String processoId) throws UnsupportedEncodingException, Exception{
+		String json = super.mockMvc.perform(get("/api/processos/" + processoId + "/pecas").contentType(MediaType.APPLICATION_JSON))
+				.andReturn().getResponse().getContentAsString();
+		
+		return (JsonPath.read(json, "$[1]")).toString();
+	}
 	
 	private void assumirTarefa(String json) throws Exception {
     	String tarefaId = ((Integer) JsonPath.read(json, "$[0].id")).toString();
@@ -157,7 +192,7 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 		String json = super.mockMvc.perform(get("/api/peticoes/" + peticaoId + "/processo").contentType(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse().getContentAsString();
 		
-		return (JsonPath.read(json, "$")).toString();
+		return (JsonPath.read(json, "$[1]")).toString();
     }
 	
 	private String getPecasParaExclusao(String processoId, String processo){

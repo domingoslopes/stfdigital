@@ -19,3 +19,4 @@ INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (43, 16
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (43, 18); /* TAREFA -> INSERIR PEÇA -> EXECUTAR -> PAPEL ANALISTA DE REPERCUSSÃO GERAL */
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (43, 17); /* TAREFA -> INSERIR PEÇA -> EXECUTAR -> PAPEL REVISOR DE PROCESSOS INAPTOS */
 INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (43, 19); /* TAREFA -> INSERIR PEÇA -> EXECUTAR -> PAPEL REVISOR DE REPERCUSSÃO GERAL */
+INSERT INTO plataforma.permissao_papel (seq_permissao, seq_papel) VALUES (43, 21); /* TAREFA -> EXCLUIR PEÇA -> EXECUTAR -> PAPEL ORGANIZADOR-PECAS */

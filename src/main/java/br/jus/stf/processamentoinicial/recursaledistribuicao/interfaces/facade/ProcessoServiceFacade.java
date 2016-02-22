@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,8 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.PeticaoRestAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.PecaProcessoDto;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.PecaProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
@@ -45,6 +48,9 @@ public class ProcessoServiceFacade {
 	
 	@Autowired
 	private PeticaoRestAdapter peticaoRestAdapter;
+	
+	@Autowired
+	private PecaProcessoDtoAssembler pecaDtoAssembler; 
 
 	/**
 	 * Consulta um processo judicial, dado o seu identificador primário
@@ -56,6 +62,21 @@ public class ProcessoServiceFacade {
 		ProcessoId processoId = new ProcessoId(id);
 		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
 		return processoDtoAssembler.toDto(processo);
+	}
+	
+	/**
+	 * Retorna as peças de um processo.
+	 * 
+	 * @param id Id do processo.
+	 * @return Lista de peças;
+	 */
+	public List<PecaProcessoDto> consultarPecas(Long id){
+		ProcessoId processoId = new ProcessoId(id);
+		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
+		List<PecaProcessoDto> pecas = new LinkedList<PecaProcessoDto>(); 
+		processo.pecas().stream().map(p -> pecas.add(pecaDtoAssembler.toDto(p)));
+		
+		return pecas;
 	}
 	
 	/**
@@ -174,4 +195,17 @@ public class ProcessoServiceFacade {
 		return processoDtoAssembler.toDto(processoApplicationService.organizarPecas(processo, pecasOrganizadas));
 	}
 	
+	/**
+	 * Divide uma peça processual.
+	 * @param processoId Id do processo.
+	 * @param pecas Lista de peças.
+	 */
+	public void dividirPeca(Long processoId, Long pecaOriginalId, List<PecaProcessual> novasPecas){
+		Peca pecaOriginal = processoRepository.findOnePeca(pecaOriginalId);
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		List<Range<Integer>> intervalos = new LinkedList<Range<Integer>>();
+		novasPecas.forEach(peca -> intervalos.add(Range.between(peca.getPaginaInicial(), peca.getPaginaFinal())));
+				
+		processoApplicationService.dividirPeca(processo, pecaOriginal, intervalos, novasPecas);
+	}
 }

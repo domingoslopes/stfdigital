@@ -1,11 +1,13 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.application;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -230,5 +232,24 @@ public class ProcessoApplicationService {
 	public Processo organizarPecas(Processo processo, List<Long> pecasOrganizadas) {
 		processo.organizarPecas(pecasOrganizadas);
 		return processoRepository.save(processo);
+	}
+	
+	/**
+	 * Divide uma peça.
+	 * @param processo Dados do processo.
+	 * @param pecaOriginal Dados da peça original a ser dividida.
+	 * @param intervalos Intervalos de páginas usados para a geração das novas peças.
+	 * @param pecas Lista contendo os dados das novas peças a serem criadas.
+	 */
+	public void dividirPeca(Processo processo, Peca pecaOriginal, List<Range<Integer>> intervalos, List<PecaProcessual> pecas){
+		List<Peca> novasPecas = new LinkedList<Peca>();
+		List<DocumentoId> documentos = documentoAdapter.dividirDocumento(pecaOriginal.documento(), intervalos);
+				
+		for(int i = 0; i < documentos.size(); i++){
+			novasPecas.add(new PecaProcesso(documentos.get(i), pecaOriginal.tipo(), pecas.get(i).getDescricao(), pecaOriginal.visibilidade(), pecaOriginal.situacao()));
+		}
+		
+		processo.dividirPeca(pecaOriginal, novasPecas);
+		processoRepository.save(processo);
 	}
 }
