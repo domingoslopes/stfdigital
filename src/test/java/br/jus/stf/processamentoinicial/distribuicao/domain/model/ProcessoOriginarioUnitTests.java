@@ -163,12 +163,11 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void removePecaDaProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		Peca peca = new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		processo.adicionarPeca(peca);
 		processo.removerPeca(peca);
-		assertEquals(1, processo.pecas().size());
-		assertFalse(processo.pecas().contains(peca));
+		assertEquals(Situacao.EXCLUIDA, processo.pecas().get(processo.pecas().indexOf(peca)).situacao());
 	}
 	
 	@Test(expected = NullPointerException.class)
