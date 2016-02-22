@@ -64,7 +64,12 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	
 	@Override
 	public void completarDistribuicao(Processo processo) {
-		completarTarefa(processo, ProcessoSituacao.DISTRIBUIDO);
+		completarTarefa(processo, processo.pecas().isEmpty() ? ProcessoSituacao.PECAS_ORGANIZADAS : ProcessoSituacao.DISTRIBUIDO);
+	}
+	
+	@Override
+	public void completarOrganizarPecas(Processo processo) {
+		completarTarefa(processo, ProcessoSituacao.PECAS_ORGANIZADAS);
 	}
 	
 	/**

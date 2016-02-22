@@ -82,12 +82,12 @@ public class ProcessoActionsResource {
 	
 	@ActionMapping(id = "excluir-pecas", name = "Excluir Peças Processuais")
 	public void excluirPecas(ExcluirPecasCommand command) {
-		processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecas());
+		processoServiceFacade.excluirPecas(command.getProcessoId(), command.getPecas());
 	}
 	
 	@ActionMapping(id = "organizar-pecas", name = "Organizar Peças")
-	public ProcessoDto organizarPecas(OrganizarPecasCommand command) {
-		return processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecasOrganizadas());
+	public void organizarPecas(OrganizarPecasCommand command) {
+		processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecasOrganizadas(), command.isConcluirTarefa());
 	}
 	
 }

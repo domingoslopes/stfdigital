@@ -42,7 +42,7 @@
 		
 		this.executarTarefa = function() {
 
-			var tarefa = element(by.repeater('tarefa in tarefas').row(0));
+			var tarefa = element(by.repeater('tarefa in tarefasDosPapeis').row(0));
 			tarefa.element(by.css('input')).click();
 			browser.waitForAngular();
 			

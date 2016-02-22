@@ -24,7 +24,7 @@ public class ControladorOrdenacaoPecas {
 		ordenarPecas();
 	}
 
-	private void ordenarPecas() {
+	public void ordenarPecas() {
 		pecas.sort(comparatorPecasPeloNumeroOrdem());
 	}
 

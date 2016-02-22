@@ -87,9 +87,6 @@ public class ProcessoDtoAssembler {
 		processo.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
 		processo.preferencias().forEach(preferencia -> preferencias.add(preferencia.toLong()));
 		
-		processo.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
-		processo.preferencias().forEach(preferencia -> preferencias.add(preferencia.toLong()));
-		
 		if (processo instanceof ProcessoRecursal) {
 			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
 			List<AssuntoDto> assuntos = new ArrayList<AssuntoDto>();

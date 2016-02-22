@@ -9,6 +9,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
 
@@ -40,7 +41,11 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 	@Override
 	public ProcessoWorkflow iniciarWorkflow(PeticaoFisica peticaoFisica) {
 		IniciarProcessoCommand command = new IniciarProcessoCommand();
-		command.setMensagem("remessaFisica");
+		if (peticaoFisica.tipoProcesso() == TipoProcesso.ORIGINARIO) {
+			command.setMensagem("remessaOriginario");
+		} else {
+			command.setMensagem("remessaRecursal");
+		}
 		command.setStatus(PeticaoStatus.A_PREAUTUAR.toString());
 		command.setInformacao(peticaoFisica.id().toString());
 		command.setTipoInformacao(peticaoFisica.getClass().getSimpleName());

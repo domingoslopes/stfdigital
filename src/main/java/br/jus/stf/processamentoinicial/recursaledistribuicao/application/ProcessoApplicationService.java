@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -47,6 +49,7 @@ import br.jus.stf.shared.TeseId;
  * @since 25.09.2015
  */
 @Component
+@Transactional
 public class ProcessoApplicationService {
 
 	@Autowired
@@ -162,7 +165,7 @@ public class ProcessoApplicationService {
 	public Processo distribuir(ParametroDistribuicao parametroDistribuicao) {
 		Distribuicao distribuicao = Distribuicao.criar(parametroDistribuicao);
 		Processo processo = distribuicao.executar();
-		processoRepository.save(processo);
+		processo = processoRepository.saveAndFlush(processo);
 		tarefaAdapter.completarDistribuicao(processo);
 		processoApplicationEvent.processoDistribuido(processo);
 		
@@ -195,14 +198,12 @@ public class ProcessoApplicationService {
 		TipoPeca tipoPeca = null;
 		PecaProcesso peca = null;
 		Visibilidade visibilidade = null;
-		Situacao situacao = null;
 		
 		for (PecaProcessual pecaProcessual : pecas){
 			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
 			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
 			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
-			situacao = Situacao.valueOf(pecaProcessual.getSituacao());
-			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, situacao);
+			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, Situacao.PENDENTE_JUNTADA);
 
 			processo.adicionarPeca(peca);
 		}
@@ -225,10 +226,15 @@ public class ProcessoApplicationService {
 	 * 
 	 * @param processo
 	 * @param pecasOrganizadas
+	 * @param concluirTarefa
 	 * @return
 	 */
-	public Processo organizarPecas(Processo processo, List<Long> pecasOrganizadas) {
+	public void organizarPecas(Processo processo, List<Long> pecasOrganizadas, boolean concluirTarefa) {
 		processo.organizarPecas(pecasOrganizadas);
-		return processoRepository.save(processo);
+		processoRepository.save(processo);
+		
+		if (concluirTarefa) {
+			tarefaAdapter.completarOrganizarPecas(processo);
+		}
 	}
 }

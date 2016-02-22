@@ -24,7 +24,7 @@ public class DistribuicaoComum extends Distribuicao {
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "DISTRIBUICAO_MIN_CANDIDATO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false))
-	private Set<MinistroId> ministrosCanditatos = new HashSet<MinistroId>(0);
+	private Set<MinistroId> ministrosCandidatos = new HashSet<MinistroId>(0);
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "DISTRIBUICAO_MIN_IMPEDIDO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_DISTRIBUICAO", nullable = false))
@@ -37,16 +37,16 @@ public class DistribuicaoComum extends Distribuicao {
 	protected DistribuicaoComum(ParametroDistribuicao parametroDistribuicao) {
 		super(parametroDistribuicao);
 		
-		Validate.notEmpty(parametroDistribuicao.ministrosCanditatos(), "distribuicao.ministrosCanditatos.required");
+		Validate.notEmpty(parametroDistribuicao.ministrosCandidatos(), "distribuicao.ministrosCandidatos.required");
 		Validate.notNull(parametroDistribuicao.ministrosImpedidos(), "distribuicao.ministrosImpedidos.required");
-		Validate.isTrue(this.validarListasMinistros(parametroDistribuicao.ministrosCanditatos(), parametroDistribuicao.ministrosImpedidos()), "distribuicao.listasMinistros.invalid");
+		Validate.isTrue(this.validarListasMinistros(parametroDistribuicao.ministrosCandidatos(), parametroDistribuicao.ministrosImpedidos()), "distribuicao.listasMinistros.invalid");
 		
-		this.ministrosCanditatos = parametroDistribuicao.ministrosCanditatos();
+		this.ministrosCandidatos = parametroDistribuicao.ministrosCandidatos();
 		this.ministrosImpedidos = parametroDistribuicao.ministrosImpedidos();
 	}
 	
-	public Set<MinistroId> ministrosCanditatos() {
-		return Collections.unmodifiableSet(this.ministrosCanditatos);
+	public Set<MinistroId> ministrosCandidatos() {
+		return Collections.unmodifiableSet(this.ministrosCandidatos);
 	}
 	
 	public Set<MinistroId> ministrosImpedidos() {
@@ -60,17 +60,17 @@ public class DistribuicaoComum extends Distribuicao {
 	
 	@Override
 	protected MinistroId sorteio() {
-		int indice = new Random().nextInt(ministrosCanditatos.size());
+		int indice = new Random().nextInt(ministrosCandidatos.size());
 		
-		return (MinistroId)ministrosCanditatos.toArray()[indice];
+		return (MinistroId)ministrosCandidatos.toArray()[indice];
 	}
 	
-	private boolean validarListasMinistros(Set<MinistroId> ministrosCandidatos, Set<MinistroId> ministrosImpedidos) {
-		Set<MinistroId> intersecaoCandidatoImpedido = new HashSet<MinistroId>(ministrosCanditatos);
-		Set<MinistroId> intersecaoImpedidoCandidato = new HashSet<MinistroId>(ministrosImpedidos);
+	private boolean validarListasMinistros(Set<MinistroId> candidatos, Set<MinistroId> impedidos) {
+		Set<MinistroId> intersecaoCandidatoImpedido = new HashSet<MinistroId>(candidatos);
+		Set<MinistroId> intersecaoImpedidoCandidato = new HashSet<MinistroId>(impedidos);
 		
-		intersecaoCandidatoImpedido.retainAll(ministrosImpedidos);
-		intersecaoImpedidoCandidato.retainAll(ministrosCandidatos);
+		intersecaoCandidatoImpedido.retainAll(impedidos);
+		intersecaoImpedidoCandidato.retainAll(candidatos);
 		
 		return intersecaoCandidatoImpedido.isEmpty() &&
 				intersecaoImpedidoCandidato.isEmpty();

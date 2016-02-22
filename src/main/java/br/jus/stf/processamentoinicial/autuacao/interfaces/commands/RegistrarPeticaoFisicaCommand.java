@@ -6,10 +6,10 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
-
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
+
+import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
 
 /**
  * @author Rodrigo Barreiros
@@ -27,11 +27,11 @@ public class RegistrarPeticaoFisicaCommand {
 	
 	@NotNull
 	@ApiModelProperty(value = "Quantidade de volumes recebidos", required=true)
-	private int quantidadeVolumes;
+	private Integer quantidadeVolumes;
 	
 	@NotNull
 	@ApiModelProperty(value = "Quantidade de apensos recebidos", required=true)
-	private int quantidadeApensos;
+	private Integer quantidadeApensos;
 	
 	@ApiModelProperty(value = "Número do Sedex, caso a forma de recebimento seja Sedex")
 	private String numeroSedex;

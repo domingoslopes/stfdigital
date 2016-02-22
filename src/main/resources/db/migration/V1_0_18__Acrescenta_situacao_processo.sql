@@ -1,4 +1,4 @@
-alter table autuacao.processo add column tip_situacao varchar2(15);
+alter table autuacao.processo add column tip_situacao varchar2(20);
 
 update autuacao.processo set tip_situacao = 'DISTRIBUIDO';
 
