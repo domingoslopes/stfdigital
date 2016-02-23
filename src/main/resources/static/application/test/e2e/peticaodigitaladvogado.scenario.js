@@ -142,6 +142,8 @@
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Organizar Peças #' + processoId);
 		    });
 		    
+		    principalPage.executarTarefa();
+		    
 		    var organizaPecasPage = new OrganizaPecasPage();
 		    
 		    organizaPecasPage.finalizar();

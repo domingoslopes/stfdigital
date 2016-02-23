@@ -1,0 +1,46 @@
+<div class="content" ng-controller="OrganizaPecasController as organiza">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Processos</p>
+					</li>
+					<li><a href="#" class="active">Peças</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<div tarefa-actions processo="organiza.peticao.processoWorkflowId" tarefa="tarefa" />
+    	<form>
+			<div class="row" ui-view></div>
+			<table datatable="ng" class="table" dt-options="organiza.dtOptions">
+				<thead>
+			        <tr>
+			        	<th style="width: 10px;"><input type="checkbox" ng-model="organiza.checkToggle" ng-change="organiza.toggleCheck()"></th>
+			            <th>ID</th>
+			            <th>descricao</th>
+			            <th>Numero Ordem</th>
+			            <th>visibilidade</th>
+			        </tr>
+			    </thead>
+		        <tbody>
+		        <tr ng-repeat="peca in ::organiza.processo.pecas">
+		        	<td><input type="checkbox" checklist-model="organiza.selecao.objetos" checklist-value="organiza.buildSelectedObject(peca)"></td>
+		            <td>{{ peca.sequencial }}</td>
+		            <td>{{ peca.descricao }}</td>
+		            <td>{{ peca.numeroOrdem }}</td>
+		            <td>{{ peca.visibilidade }}</td>
+		        </tr>
+		        </tbody>
+			</table>
+			<br />
+			<p>
+				<action-executor id="organizar-pecas" resources="organiza.recursos" fn-validate="organiza.validar"
+					fn-result="organiza.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Concluir tarefa">
+				</action-executor>
+			</p>
+		</form>
+	</div>
+</div>
