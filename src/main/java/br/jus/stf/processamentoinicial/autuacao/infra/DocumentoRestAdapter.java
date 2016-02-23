@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
@@ -64,12 +65,13 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	@Override
 	public List<DocumentoId> dividirDocumento(DocumentoId documento, List<Range<Integer>> intervalosDivisao) {
 		List<DividirDocumentoCommand> commands = intervalosDivisao.stream().map(i -> new DividirDocumentoCommand(documento.toLong(), i.getMinimum(), i.getMaximum())).collect(Collectors.toList());
-		return documentoRestResource.dividirDocumento(commands, null).stream().map(id -> new DocumentoId(id)).collect(Collectors.toList());
+		return documentoRestResource.dividirDocumento(commands, new BeanPropertyBindingResult(commands, "dividirDocumentoCommands")).stream().map(id -> new DocumentoId(id)).collect(Collectors.toList());
 	}
 
 	@Override
 	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
-		return new DocumentoId(documentoRestResource.unirDocumentos(new UnirDocumentosCommand(documentos.stream().map(d -> d.toLong()).collect(Collectors.toList())), null));
+		UnirDocumentosCommand command = new UnirDocumentosCommand(documentos.stream().map(d -> d.toLong()).collect(Collectors.toList()));
+		return new DocumentoId(documentoRestResource.unirDocumentos(command, new BeanPropertyBindingResult(command, "unirDocumentosCommands")));
 	}
 
 }
