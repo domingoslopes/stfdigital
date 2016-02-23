@@ -22,6 +22,10 @@ public class OrganizarPecasCommand {
 	@NotNull
 	@ApiModelProperty(value = "Lista de peças organizadas.", required=true)
 	private List<Long> pecasOrganizadas;
+	
+	@NotNull
+	@ApiModelProperty(value = "Indica se a tarefa será concluída ou não.", required=true)
+	private Boolean concluirTarefa;
 
 	public Long getProcessoId() {
 		return processoId;
@@ -29,6 +33,10 @@ public class OrganizarPecasCommand {
 	
 	public List<Long> getPecasOrganizadas() {
 		return pecasOrganizadas;
+	}
+	
+	public Boolean isConcluirTarefa() {
+		return concluirTarefa;
 	}
 	
 }

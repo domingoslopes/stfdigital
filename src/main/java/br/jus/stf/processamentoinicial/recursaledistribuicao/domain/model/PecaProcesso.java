@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.Validate;
+
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
@@ -48,6 +50,12 @@ public class PecaProcesso extends Peca {
 	public PecaProcesso(final DocumentoId documento, final TipoPeca tipoPeca,
 			final String descricao) {
 		super(documento, tipoPeca, descricao);
+	}
+	
+	public void atribuirSequencial(final Long sequencial) {
+		Validate.notNull(sequencial, "peca.sequencial.required");
+		
+		this.sequencial = sequencial;
 	}
 	
 	@Override

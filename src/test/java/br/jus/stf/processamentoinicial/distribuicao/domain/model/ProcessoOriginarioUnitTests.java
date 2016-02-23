@@ -5,8 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -34,6 +36,7 @@ public class ProcessoOriginarioUnitTests {
 	
 	private Set<ParteProcesso> partes;
 	private Set<PecaProcesso> pecas;
+	private PecaProcesso peca;
 	
 	@Before
 	public void setUp() {
@@ -43,7 +46,11 @@ public class ProcessoOriginarioUnitTests {
 		partes.add(new ParteProcesso(new PessoaId(3L), TipoPolo.POLO_PASSIVO));
 
 		pecas = new LinkedHashSet<PecaProcesso>(0);
-		pecas.add(new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA));
+		
+		peca = new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		
+		peca.atribuirSequencial(1L);
+		pecas.add(peca);
 	}
 	
 	@Test
@@ -156,12 +163,11 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void removePecaDaProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		Peca peca = new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		processo.adicionarPeca(peca);
 		processo.removerPeca(peca);
-		assertEquals(1, processo.pecas().size());
-		assertFalse(processo.pecas().contains(peca));
+		assertEquals(Situacao.EXCLUIDA, processo.pecas().get(processo.pecas().indexOf(peca)).situacao());
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -274,6 +280,41 @@ public class ProcessoOriginarioUnitTests {
 	public void associarRelatorNulo() {
 		Processo processo = processo();
 		processo.associarRelator(null);
+	}
+	
+	@Test
+	public void modificaOrdemDasPecas() {
+		Processo processo = processo();
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		
+		peca2.atribuirSequencial(2L);
+		processo.adicionarPeca(peca2);
+		
+		List<Long> pecasOrganizadas = new ArrayList<Long>();
+		pecasOrganizadas.add(2L);
+		pecasOrganizadas.add(1L);
+		processo.organizarPecas(pecasOrganizadas);
+		
+		assertEquals(peca.toLong(), processo.pecas().get(1).toLong());
+		assertEquals(peca2.toLong(), processo.pecas().get(0).toLong());
+	}
+	
+	@Test
+	public void juntaPecaAoProcesso() {
+		Processo processo = processo();
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		
+		processo.adicionarPeca(peca2);
+		processo.juntarPeca(peca2);
+		
+		assertEquals(peca2.situacao(), Situacao.JUNTADA);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void tentaJuntarPecaComSituacaoJuntada() {
+		Processo processo = processo();
+		
+		processo.juntarPeca(peca);
 	}
 	
 }

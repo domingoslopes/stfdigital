@@ -120,6 +120,10 @@
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
+			autuacaoPage.partePoloAtivo('Maria');
+			
+			autuacaoPage.partePoloPassivo('Joana');
+			
 			autuacaoPage.classificar('MS');
 			
 			autuacaoPage.finalizar();

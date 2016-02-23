@@ -263,6 +263,10 @@ gulp.task('test:e2e', ['webdriver:update'], function() {
 		protractorConfigObject.args.push('--seleniumAddress');
 		protractorConfigObject.args.push(argv.e2eSeleniumAddress);
 	}
+	if (argv.e2eFilesDirPath) {
+		protractorConfigObject.args.push('--params.filesDirPath');
+		protractorConfigObject.args.push(argv.e2eFilesDirPath);
+	}
 	return gulp.src(protractorConfig.config.specs)
 		.pipe($.protractor.protractor(protractorConfigObject))
 		.on('error', function(e) {

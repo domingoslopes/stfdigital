@@ -13,6 +13,9 @@
 	
 	var utils = new Utils();
 	
+	// Parametrização do caminho dos arquivos.
+	var filesDirFullPath = browser.params.filesDirPath ? browser.params.filesDirPath : (__dirname + '/../files');
+	
 	var PeticionamentoPage = function () {
 		
 		this.classificarClasse = function(sigla) {
@@ -36,8 +39,8 @@
 		};
 		
 		this.uploadPecas = function(){
-			var fileToUpload = '../files/pdf-de-teste-assinado-02.pdf';
-			var absolutePath = path.resolve(__dirname, fileToUpload);
+			var fileToUpload = 'pdf-de-teste-assinado-02.pdf';
+			var absolutePath = path.resolve(filesDirFullPath, fileToUpload);
 			// Procura o elemento input da tela com o atributo com o tipo "file"
 		    var fileElem = element(by.css('input[type="file"]'));
 

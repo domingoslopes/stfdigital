@@ -87,8 +87,8 @@ public class ProcessoActionsResource {
 	}
 	
 	@ActionMapping(id = "organizar-pecas", name = "Organizar Peças")
-	public ProcessoDto organizarPecas(OrganizarPecasCommand command) {
-		return processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecasOrganizadas());
+	public void organizarPecas(OrganizarPecasCommand command) {
+		processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecasOrganizadas(), command.isConcluirTarefa());
 	}
 	
 	@ActionMapping(id = "dividir-peca", name = "Dividir Peça Processual")

@@ -9,7 +9,7 @@
 	angular.plataforma.controller('TarefasPapeisDashletController', ['$scope', 'TarefaService', 'ActionService', '$state', function($scope, TarefaService, ActionService, $state) {
 		
 		TarefaService.listarPorMeusPapeis().success(function(tarefas) {
-			$scope.tarefas = tarefas;
+			$scope.tarefasDosPapeis = tarefas;
 		});
 		
 		$scope.selecao = [];

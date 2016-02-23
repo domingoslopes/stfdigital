@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +25,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -158,11 +159,13 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	public abstract TipoProcesso tipoProcesso();
 	
 	@PostLoad
+	@PostPersist
+	@PostUpdate
 	private void init() {
 		this.identificacao = montarIdentificacao();
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
-
+	
 	@Override
 	public ProcessoId id() {
 		return this.id;
@@ -249,23 +252,16 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	}
 	
 	/**
+	 * Altera a situação da peça no processo para JUNTADA.
 	 * 
 	 * @param peca
+	 * @return true para peça juntada ou false para peça inexistente no processo.
 	 */
-	public void juntarPeca(final Peca peca) {
+	public boolean juntarPeca(final Peca peca) {
 		Validate.notNull(peca, "processo.peca.required");
 		Validate.isTrue(peca.situacao() == Situacao.PENDENTE_JUNTADA, "processo.peca.situacao.invalid");
 		
-		ListIterator<Peca> iterator = pecas.listIterator();
-		
-		while (iterator.hasNext()) {
-			Peca pecaAtual = iterator.next();
-			
-			if (pecaAtual.equals(peca)) {
-				pecaAtual.alterarSituacao(Situacao.JUNTADA);
-				break;
-			}
-		}
+		return alterarSituacaoPeca(peca, Situacao.JUNTADA);
 	}
 
 	/**
@@ -323,17 +319,15 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	}
 	
 	/**
+	 * Marca uma peça como removida.
 	 * 
 	 * @param peca
+	 * * @return true para peça juntada ou false para peça inexistente no processo.
 	 */
 	public boolean removerPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
 	
-		boolean removeu = pecas.remove(peca);
-		
-		controladorOrdenacaoPecas.normalizarOrdenacaoPecas();
-		
-		return removeu;
+		return alterarSituacaoPeca(peca, Situacao.EXCLUIDA);
 	}
 	
 	/**
@@ -344,8 +338,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		Validate.isTrue(pecas.size() == pecasOrganizadas.size(), "processo.pecasOrganizadas.invalid");
 		
 		for(Peca p : pecas) {
-			controladorOrdenacaoPecas.reordenarPeca(p, Long.valueOf(pecasOrganizadas.indexOf(p.toLong()) + 1));
-		} 
+			p.numerarOrdem(Long.valueOf(pecasOrganizadas.indexOf(p.toLong()) + 1));
+		}
+		
+		controladorOrdenacaoPecas.ordenarPecas();
 	}
 
 	public List<Peca> pecas() {
@@ -432,6 +428,25 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	private String montarIdentificacao() {
 		return new StringBuilder()
 			.append(classe.toString()).append(" ").append(numero).toString();
+	}
+	
+	/**
+	 * Altera a situação de uma peça no processo.
+	 * 
+	 * @param peca
+	 * @param situacao
+	 * @return true quando a situação da peça for alterada ou false quando a peça não existir no processo.
+	 */
+	private boolean alterarSituacaoPeca(final Peca peca, final Situacao situacao) {
+		int indicePecaAAlterar = pecas.indexOf(peca);   
+		
+		if (indicePecaAAlterar == -1) {
+			return false;
+		}
+		
+		pecas.get(indicePecaAAlterar).alterarSituacao(situacao);
+		
+		return true;
 	}
 
 }

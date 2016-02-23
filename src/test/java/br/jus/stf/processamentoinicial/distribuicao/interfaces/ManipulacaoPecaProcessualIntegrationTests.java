@@ -132,7 +132,7 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 	    String processoDto = getProcesso(peticaoId);
 	    String processoId = getProcessoId(processoDto);
 	    
-	    salvarPecasCommand = "{\"resources\":[{\"processoId\": " + processoId + ", \"pecas\": [{\"documentoTemporarioId\":\"" + documentoTemporarioId + "\", \"tipoPecaId\":1, \"visibilidade\":\"PUBLICO\", \"situacao\":\"JUNTADA\", \"descricao\":\"xxx\"}]}]}";
+	    salvarPecasCommand = "{\"resources\":[{\"processoId\": " + processoId + ", \"pecas\": [{\"documentoTemporarioId\":\"" + documentoTemporarioId + "\", \"tipoPecaId\":1, \"visibilidade\":\"PUBLICO\", \"descricao\":\"xxx\"}]}]}";
 	    
 	    //Insere a peça.
   		super.mockMvc.perform(post("/api/actions/inserir-pecas/execute").header("login", "autuador").contentType(MediaType.APPLICATION_JSON)
