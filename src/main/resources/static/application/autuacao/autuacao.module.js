@@ -213,6 +213,16 @@
 					}
 				}
 			}
+		}).state('organizar-pecas', {
+			parent: 'action.autuacao',
+			url: '/processo/pecas',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pecas/organiza-pecas.tpl.html',
+					controller: 'OrganizaPecasController',
+				}
+			}
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',
