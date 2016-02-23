@@ -161,16 +161,14 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 	private String prepararPecaParaDivisao(String processoId) throws UnsupportedEncodingException, Exception{
 		String peca = getPecaParaDivisao(processoId);
 		String pecaId = (JsonPath.read(peca, "$.pecaId")).toString();
-		String tipo = (JsonPath.read(peca, "$.tipo")).toString();
 		String visibilidade = (JsonPath.read(peca, "$.visibilidade")).toString();
 		String situacao = (JsonPath.read(peca, "$.situacao")).toString();
-		String descricao = (JsonPath.read(peca, "$.situacao")).toString();
-				
+						
 		StringBuilder json = new StringBuilder();
 		json.append("{\"resources\": ");
-		json.append("[{\"processoId\":" + processoId + ", \"pecaId\": " + pecaId + ", ");
-		json.append("[{\"tipoPecaId\":" + tipo + ", \"visibilidade\":" + visibilidade + ", \"situacao:\":" + situacao + ", \"descricao\":" + descricao + ", \"paginaInicial\":1, \"paginaFinal\":2}, ");
-		json.append("{\"tipoPecaId\":" + tipo + ", \"visibilidade\":" + visibilidade + ", \"situacao:\":" + situacao + ", \"descricao\":" + descricao + ", \"paginaInicial\":3, \"paginaFinal\":5}]}]}");
+		json.append("[{\"processoId\":" + processoId + ", \"pecaId\": " + pecaId + ", \"pecas\":");
+		json.append("[{\"documentoTemporarioId\":\"\", \"tipoPecaId\":1, \"visibilidade\":\"" + visibilidade + "\", \"situacao\":\"" + situacao + "\", \"descricao\":\"primeira parte peca\", \"paginaInicial\":1, \"paginaFinal\":2}, ");
+		json.append("{\"tipoPecaId\":1, \"visibilidade\":\"" + visibilidade + "\", \"situacao\":\"" + situacao + "\", \"descricao\":\"segunda parte peca\", \"paginaInicial\":3, \"paginaFinal\":5}]}]}");
 		
 		return json.toString();
 	}
@@ -192,12 +190,12 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 		String json = super.mockMvc.perform(get("/api/peticoes/" + peticaoId + "/processo").contentType(MediaType.APPLICATION_JSON))
 				.andReturn().getResponse().getContentAsString();
 		
-		return (JsonPath.read(json, "$[1]")).toString();
+		return (JsonPath.read(json, "$")).toString();
     }
 	
 	private String getPecasParaExclusao(String processoId, String processo){
-		String peca1 = (JsonPath.read(processo, "$.pecas[0].sequencial")).toString();
-		String peca2 = (JsonPath.read(processo, "$.pecas[1].sequencial")).toString();
+		String peca1 = (JsonPath.read(processo, "$.pecas[1].sequencial")).toString();
+		String peca2 = (JsonPath.read(processo, "$.pecas[2].sequencial")).toString();
 		StringBuilder pecas =  new StringBuilder();
 		pecas.append("{\"resources\": [{\"processoId\":" + processoId + ",");
 		pecas.append("\"pecas\":[" + peca1 + ", " + peca2 + "]}]}");

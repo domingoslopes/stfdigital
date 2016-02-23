@@ -14,6 +14,8 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 @Component
 public class PecaProcessoDtoAssembler {
 	public PecaProcessoDto toDto(Peca peca) {
+		String lixo = "";
+		System.out.println(lixo);
 		return new PecaProcessoDto(peca.toLong(), peca.documento().toLong(), peca.tipo().nome(), peca.descricao(), peca.numeroOrdem(), peca.visibilidade().descricao(), peca.situacao().descricao());
 	}
 }

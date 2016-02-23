@@ -207,7 +207,7 @@ public class ProcessoApplicationService {
  			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
 
 			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
-			situacao = Situacao.valueOf(pecaProcessual.getSituacao());
+			situacao = Situacao.PENDENTE_JUNTADA;
 			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, situacao);
  
 			processo.adicionarPeca(peca);

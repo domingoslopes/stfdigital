@@ -47,7 +47,7 @@ public class ProcessoServiceFacade {
 	private PeticaoRestAdapter peticaoRestAdapter;
 	
 	@Autowired
-	private PecaProcessoDtoAssembler pecaDtoAssembler; 
+	private PecaProcessoDtoAssembler pecaProcessoDtoAssembler; 
 
 	/**
 	 * Consulta um processo judicial, dado o seu identificador primário
@@ -70,7 +70,7 @@ public class ProcessoServiceFacade {
 		ProcessoId processoId = new ProcessoId(id);
 		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
 		List<PecaProcessoDto> pecas = new LinkedList<PecaProcessoDto>(); 
-		processo.pecas().stream().map(p -> pecas.add(pecaDtoAssembler.toDto(p)));
+		processo.pecas().forEach(p -> pecas.add(pecaProcessoDtoAssembler.toDto(p)));
 		
 		return pecas;
 	}

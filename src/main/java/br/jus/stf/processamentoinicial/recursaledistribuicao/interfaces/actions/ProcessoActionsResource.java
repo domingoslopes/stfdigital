@@ -76,7 +76,7 @@ public class ProcessoActionsResource {
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
 	
-	@ActionMapping(id = "inserir-pecas", name = "Inserir Peçad Processual")
+	@ActionMapping(id = "inserir-pecas", name = "Inserir Peças Processuais")
 	public void inserirPecas(SalvarPecasCommand command) {
 		processoServiceFacade.inserirPecas(command.getProcessoId(), command.getPecas());
 	}
