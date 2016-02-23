@@ -8,7 +8,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+<<<<<<< HEAD
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.Range;
+=======
+>>>>>>> 4e54a78b4abf3aa79760fb656219a135d8df611f
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +52,7 @@ public class ProcessoServiceFacade {
 	private PeticaoRestAdapter peticaoRestAdapter;
 	
 	@Autowired
-	private PecaProcessoDtoAssembler pecaProcessoDtoAssembler; 
+	private PecaProcessoDtoAssembler pecaDtoAssembler; 
 
 	/**
 	 * Consulta um processo judicial, dado o seu identificador primário
@@ -70,7 +75,7 @@ public class ProcessoServiceFacade {
 		ProcessoId processoId = new ProcessoId(id);
 		Processo processo = Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
 		List<PecaProcessoDto> pecas = new LinkedList<PecaProcessoDto>(); 
-		processo.pecas().forEach(p -> pecas.add(pecaProcessoDtoAssembler.toDto(p)));
+		processo.pecas().stream().map(p -> pecas.add(pecaDtoAssembler.toDto(p)));
 		
 		return pecas;
 	}
@@ -175,6 +180,20 @@ public class ProcessoServiceFacade {
 	}
 	
 	/**
+<<<<<<< HEAD
+	 * Divide uma peça processual.
+	 * @param processoId Id do processo.
+	 * @param pecas Lista de peças.
+	 */
+	public void dividirPeca(Long processoId, Long pecaOriginalId, List<PecaProcessual> novasPecas){
+		Peca pecaOriginal = processoRepository.findOnePeca(pecaOriginalId);
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		List<Range<Integer>> intervalos = new LinkedList<Range<Integer>>();
+		novasPecas.forEach(peca -> intervalos.add(Range.between(peca.getPaginaInicial(), peca.getPaginaFinal())));
+				
+		processoApplicationService.dividirPeca(processo, pecaOriginal, intervalos, novasPecas);
+	}
+=======
 	 * Verifica se um processo possui peças.
 	 * 
 	 * @param processoId
@@ -207,17 +226,5 @@ public class ProcessoServiceFacade {
 		return Optional.ofNullable(processoRepository.findOne(processoId)).orElseThrow(IllegalArgumentException::new);
     }
 	
-	/**
-	 * Divide uma peça processual.
-	 * @param processoId Id do processo.
-	 * @param pecas Lista de peças.
-	 */
-	public void dividirPeca(Long processoId, Long pecaOriginalId, List<PecaProcessual> novasPecas){
-		Peca pecaOriginal = processoRepository.findOnePeca(pecaOriginalId);
-		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
-		List<Range<Integer>> intervalos = new LinkedList<Range<Integer>>();
-		novasPecas.forEach(peca -> intervalos.add(Range.between(peca.getPaginaInicial(), peca.getPaginaFinal())));
-				
-		processoApplicationService.dividirPeca(processo, pecaOriginal, intervalos, novasPecas);
-	}
+>>>>>>> 4e54a78b4abf3aa79760fb656219a135d8df611f
 }

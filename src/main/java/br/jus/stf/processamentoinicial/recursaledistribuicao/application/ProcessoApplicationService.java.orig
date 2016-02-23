@@ -7,9 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+<<<<<<< HEAD
+import org.apache.commons.lang3.Range;
+=======
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.Range;
+>>>>>>> 4e54a78b4abf3aa79760fb656219a135d8df611f
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -198,22 +201,19 @@ public class ProcessoApplicationService {
 	 */
 	public void inserirPecas(Processo processo, List<PecaProcessual> pecas){		
 		TipoPeca tipoPeca = null;
- 		PecaProcesso peca = null;
+		PecaProcesso peca = null;
 		Visibilidade visibilidade = null;
-		Situacao situacao = null;
- 		
- 		for (PecaProcessual pecaProcessual : pecas){
- 			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
- 			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
-
+		
+		for (PecaProcessual pecaProcessual : pecas){
+			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
+			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
 			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
-			situacao = Situacao.PENDENTE_JUNTADA;
-			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, situacao);
- 
+			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, Situacao.PENDENTE_JUNTADA);
+
 			processo.adicionarPeca(peca);
- 		}
- 		
- 		processoRepository.save(processo);
+		}
+		
+		processoRepository.save(processo);
 	}
 	
 	/**

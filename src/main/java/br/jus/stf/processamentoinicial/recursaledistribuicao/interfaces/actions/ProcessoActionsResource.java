@@ -13,6 +13,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoCriminalEleitoralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DividirPecaCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.ExcluirPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.OrganizarPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.SalvarPecasCommand;
@@ -75,7 +76,7 @@ public class ProcessoActionsResource {
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
 	
-	@ActionMapping(id = "inserir-pecas", name = "Inserir Peçad Processual")
+	@ActionMapping(id = "inserir-pecas", name = "Inserir Peças Processuais")
 	public void inserirPecas(SalvarPecasCommand command) {
 		processoServiceFacade.inserirPecas(command.getProcessoId(), command.getPecas());
 	}
@@ -90,4 +91,8 @@ public class ProcessoActionsResource {
 		processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecasOrganizadas(), command.isConcluirTarefa());
 	}
 	
+	@ActionMapping(id = "dividir-peca", name = "Dividir Peça Processual")
+	public void dividirPeca(DividirPecaCommand command) {
+		processoServiceFacade.dividirPeca(command.getProcessoId(), command.getPecaId(), command.getPecas());
+	}
 }

@@ -35,7 +35,7 @@
 
 		it('Deveria navegar para a página de configuração de usuário', function() {
 			principalPage = new PrincipalPage();
-			expect(browser.isElementPresent(principalPage.conteudo)).toBeTruthy;
+			expect(browser.isElementPresent(principalPage.conteudo)).toBeTruthy();
 			
 			// Navega até a página e espera que seja a página correta
 			principalPage.iniciarProcesso('link_configurar-permissao');
