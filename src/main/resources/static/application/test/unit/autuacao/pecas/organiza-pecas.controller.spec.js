@@ -17,8 +17,7 @@
 		observacaoAnalise: null,
 		partes: {'Polo Ativo': [], 'Polo Passivo': []},
 		pecas: [{id: 1, tipoPecaId : 2, visibilidade: 'P', situacao: 'JUNTADA', descricao: 'peca juntada do processo RE 7'}, 
-		        {id: 2, tipoPecaId : 1, visibilidade: 'I', situacao: 'ASSINADA', descricao: 'peca assinada do processo RE 7'}];
-		teses: []
+		        {id: 2, tipoPecaId : 1, visibilidade: 'I', situacao: 'ASSINADA', descricao: 'peca assinada do processo RE 7'}]
 	};
 	
 	describe('Controle das peças do processo selecionado', function() {

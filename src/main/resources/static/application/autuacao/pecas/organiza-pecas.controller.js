@@ -23,7 +23,7 @@
 		
 		organiza.recursos = [];
 		
-		organiza.pecas = [];
+//		organiza.pecas = [];
 		
 		organiza.buildSelectedObject = function(item) {
 			return {'documentoId': item.documentoId};
