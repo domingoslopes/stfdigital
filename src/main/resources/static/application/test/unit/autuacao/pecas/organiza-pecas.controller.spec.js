@@ -18,9 +18,6 @@
 		partes: {'Polo Ativo': [], 'Polo Passivo': []},
 		pecas: [{id: 1, tipoPecaId : 2, visibilidade: 'P', situacao: 'JUNTADA', descricao: 'peca juntada do processo RE 7'}, 
 		        {id: 2, tipoPecaId : 1, visibilidade: 'I', situacao: 'ASSINADA', descricao: 'peca assinada do processo RE 7'}];
-		preferencias: [],
-		relator: 'Marco Aurélio',
-		situacao: "Distribuido",
 		teses: []
 	};
 	
@@ -35,7 +32,7 @@
 			$httpBackend = _$httpBackend_;
 			properties = _properties_;
 			
-			//$httpBackend.expectGET(properties.apiUrl + '/processo/18/pecas').respond(mockProcesso);
+			$httpBackend.expectGET(properties.apiUrl + '/processo/1/pecas').respond(mockProcesso);
 			
 			var scope = $rootScope.$new();
 			
@@ -58,7 +55,7 @@
 		
 		it('Deveria recuperar as pecas do processo', function() {
 			var pecas = [];
-			pecas = controller.consultarPecas(1);
+			pecas = controller.processo.pecas;
 			expect(pecas.length).toBeGreaterThan(0);
 		});
 		

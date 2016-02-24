@@ -34,9 +34,9 @@
 			organiza.resultados = data.pecas;
 		});
 		
-		ProcessoService.consultarPecas(organiza.processo.id).success(function(data){
-			organiza.pecas = data;
-		});
+//		ProcessoService.consultarPecas(organiza.processo.id).success(function(data){
+//			organiza.pecas = data;
+//		});
 		
 		organiza.toggleCheck = function() {
 			if (organiza.checkToggle) {
