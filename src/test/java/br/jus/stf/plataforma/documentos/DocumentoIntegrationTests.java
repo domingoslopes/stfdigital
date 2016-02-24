@@ -80,7 +80,7 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 				.constructParametricType(ArrayList.class, DocumentoTemporarioDto.class);
 		List<DocumentoTemporarioDto> dtos = new ObjectMapper().readValue(json, type); 
 	 
-	    mockMvc.perform(get("/api/documentos/" + dtos.get(0).getDocumentoId()))
+	    mockMvc.perform(get("/api/documentos/" + dtos.get(0).getDocumentoId() + "/conteudo"))
 	    	.andExpect(status().isOk())
 	    	.andExpect(content().bytes(arquivo));
 	}

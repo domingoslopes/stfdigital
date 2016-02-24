@@ -26,10 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
-
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
@@ -37,11 +33,16 @@ import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosComm
 import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.shared.errorhandling.ValidationException;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * Api REST para salvar e recuperar documentos
@@ -80,8 +81,8 @@ public class DocumentoRestResource {
 	
 	@ApiOperation("Retornda os dados de um documento")
 	@RequestMapping(value = "/{documentoId}", method = RequestMethod.GET)
-	public DocumentoTemporarioDto consultar(@PathVariable("documentoId") Long documentoId) throws IOException {
-	    return null;
+	public DocumentoDto consultar(@PathVariable("documentoId") Long documentoId) throws IOException {
+	    return documentoServiceFacade.consultar(documentoId);
 	}
 	
 	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")

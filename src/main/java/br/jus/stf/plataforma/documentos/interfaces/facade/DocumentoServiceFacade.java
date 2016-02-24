@@ -13,6 +13,8 @@ import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDtoAssembler;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDtoAssembler;
 import br.jus.stf.shared.DocumentoId;
@@ -34,6 +36,9 @@ public class DocumentoServiceFacade {
 	private DocumentoTemporarioDtoAssembler documentoTemporarioDtoAssembler;
 	
 	@Autowired
+	private DocumentoDtoAssembler documentoDtoAssembler;
+	
+	@Autowired
 	private DocumentoRepository documentoRepository;
 
 	public List<DocumentoTemporarioDto> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
@@ -51,9 +56,9 @@ public class DocumentoServiceFacade {
 		return documentoRepository.download(new DocumentoId(documentoId));
 	}
 	
-	public DocumentoTemporarioDto consultar(Long documentoId) {
+	public DocumentoDto consultar(Long documentoId) {
 		Documento documento = documentoRepository.findOne(new DocumentoId(documentoId));
-		return null;
+		return documentoDtoAssembler.toDo(documento.id().toLong(), documento.tamanho(), documento.quantidadePaginas());
 	}
 
 	public void apagarDocumentosTemporarios(List<String> files) {
