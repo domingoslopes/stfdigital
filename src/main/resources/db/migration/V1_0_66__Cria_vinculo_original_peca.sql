@@ -1,0 +1,3 @@
+create table autuacao.vinculo_peca_original (seq_processo_peca_original bigint not null, seq_processo_peca bigint not null, constraint pk_vinculo_peca_original primary key (seq_processo_peca_original, seq_processo_peca));
+alter table autuacao.vinculo_peca_original add constraint fk_processo_peca_original_vipo foreign key (seq_processo_peca_original) references autuacao.processo_peca_original;
+alter table autuacao.vinculo_peca_original add constraint fk_peca_processo_vipo foreign key (seq_processo_peca) references autuacao.processo_peca;

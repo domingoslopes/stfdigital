@@ -47,6 +47,7 @@ import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.stereotype.Entity;
 
+
 /**
  * @author Rafael Alencar
  * 
@@ -104,6 +105,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	@Transient
 	private ControladorOrdenacaoPecas controladorOrdenacaoPecas;
+	
+	@OneToMany(cascade = CascadeType.ALL, targetEntity = PecaProcessoOriginal.class)
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	private List<PecaProcessoOriginal> pecasOriginaisVinculadas = new LinkedList<PecaProcessoOriginal>();
 	
 	Processo() {
 
@@ -285,16 +290,17 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param pecaDividida
 	 * @param pecasDivisao
 	 */
-	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
+	public void dividirPeca(PecaProcesso pecaDividida, List<Peca> pecasDivisao) {
 		Validate.notNull(pecaDividida, "processo.pecaDividida.required");
 		Validate.notEmpty(pecasDivisao, "processo.pecasDivisao.required");
 
 		Long numeroOrdem = pecaDividida.numeroOrdem();
+		PecaProcessoOriginal pecaOriginal = PecaProcessoOriginal.criar(pecaDividida, TipoVinculo.DIVISAO);
 		
-		removerPeca(pecaDividida);
-		
+		pecasDivisao.forEach(p -> ((PecaProcesso)p).vincularPecaOriginal(pecaOriginal));
+		pecasOriginaisVinculadas.add(pecaOriginal);
+		pecas.remove(pecaDividida);
 		pecasDivisao.forEach(p -> adicionarPeca(p));
-		
 		controladorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
 	}
 	
@@ -305,16 +311,21 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param pecasUniao
 	 * @param pecaUnida
 	 */
-	public void unirPecas(List<Peca> pecasUniao, Peca pecaUnida) {
+	public void unirPecas(List<PecaProcesso> pecasUniao, PecaProcesso pecaUnida) {
 		Validate.notEmpty(pecasUniao, "processo.pecasUniao.required");
 		Validate.notNull(pecaUnida, "processo.pecaUnida.required");
 		
 		Long menorNumeroOrdem = pecasUniao.stream().min((p1, p2) -> p1.numeroOrdem().compareTo(p2.numeroOrdem())).get().numeroOrdem();
 		
-		pecasUniao.forEach(p -> removerPeca(p));
+		pecasUniao.forEach(p -> {
+			PecaProcessoOriginal pecaOriginal = PecaProcessoOriginal.criar(p, TipoVinculo.UNIAO);
+			
+			pecaUnida.vincularPecaOriginal(pecaOriginal);
+			pecasOriginaisVinculadas.add(pecaOriginal);
+			pecas.remove(p);
+		});
 		
 		adicionarPeca(pecaUnida);
-		
 		controladorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}
 	
@@ -346,6 +357,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 
 	public List<Peca> pecas() {
 		return Collections.unmodifiableList(pecas);
+	}
+	
+	public List<PecaProcessoOriginal> pecasOriginaisVinculadas() {
+		return Collections.unmodifiableList(pecasOriginaisVinculadas);
 	}
 	
 	public Set<PreferenciaId> preferencias(){
