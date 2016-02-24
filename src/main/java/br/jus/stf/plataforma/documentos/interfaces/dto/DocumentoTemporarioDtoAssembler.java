@@ -11,7 +11,7 @@ import br.jus.stf.shared.DocumentoId;
  *
  */
 @Component
-public class DocumentoDtoAssembler {
+public class DocumentoTemporarioDtoAssembler {
 
 	public DocumentoTemporarioDto toDto(String tempId, DocumentoId documentoId) {
 		return new DocumentoTemporarioDto(tempId, documentoId.toLong());
