@@ -220,4 +220,17 @@ public class ProcessoServiceFacade {
 				
 		processoApplicationService.dividirPeca(processo, pecaOriginal, intervalos, novasPecas);
 	}
+	
+	/**
+	 * Uni peças processuais.
+	 * @param processoId Id do processo.
+	 * @param pecas Lista de peças.
+	 */
+	public void unirPecas(Long processoId, List<Long> pecasParaUniao){
+		List<Peca> pecas = new LinkedList<Peca>();
+		pecasParaUniao.forEach(p -> pecas.add(processoRepository.findOnePeca(p)));
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+			
+		processoApplicationService.unirPecas(processo, pecas);
+	}
 }
