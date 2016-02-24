@@ -22,7 +22,7 @@
 	
 	var PreautuacaoPage = require('./pages/preautuacao.page');
 	
-	var OrganizaPecasPage = require(',pages/organizaPecas.page');
+	var OrganizaPecasPage = require('./pages/organizaPecas.page');
 	
 	var principalPage;
 	
@@ -195,7 +195,7 @@
 			peticionamentoPage.uploadPecas();
 			peticionamentoPage.waitUploadFinished(0);
 			
-			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios');
+			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios', 1);
 		    
 			peticionamentoPage.registrar('registrar-peticao-eletronica');
 			

@@ -35,17 +35,16 @@
 			$httpBackend = _$httpBackend_;
 			properties = _properties_;
 			
-			$httpBackend.expectGET(properties.apiUrl + '/processo/18/pecas').respond(mockProcesso);
+			//$httpBackend.expectGET(properties.apiUrl + '/processo/18/pecas').respond(mockProcesso);
 			
 			var scope = $rootScope.$new();
 			
-			controller = $controller('ControlePecasController', {
+			controller = $controller('OrganizaPecasController', {
 				$scope: scope,
 				$stateParams: {resources: [18]},
 				messages: messages,
 				properties: properties,
 				$state: $state,
-				ClasseService: ClasseService,
 				ProcessoService: ProcessoService
 			});
 			
@@ -59,7 +58,7 @@
 		
 		it('Deveria recuperar as pecas do processo', function() {
 			var pecas = [];
-			pecas = controller.pesquisarPecas(mockProcesso.id);
+			pecas = controller.consultarPecas(1);
 			expect(pecas.length).toBeGreaterThan(0);
 		});
 		

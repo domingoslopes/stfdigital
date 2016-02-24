@@ -23,9 +23,20 @@
 		
 		organiza.recursos = [];
 		
+		organiza.pecas = [];
+		
 		organiza.buildSelectedObject = function(item) {
 			return {'documentoId': item.documentoId};
 		};
+		
+		ProcessoService.consultarPorPeticao(organiza.peticaoId).success(function(data){
+			organiza.processo = data;
+			organiza.resultados = data.pecas;
+		});
+		
+		ProcessoService.consultarPecas(organiza.processo.id).success(function(data){
+			organiza.pecas = data;
+		});
 		
 		organiza.toggleCheck = function() {
 			if (organiza.checkToggle) {
@@ -47,14 +58,7 @@
 	        	selector : 'tr'
 	        });
 		
-		ProcessoService.consultarPorPeticao(organiza.peticaoId).success(function(data){
-			organiza.processo = data;
-			organiza.resultados = data.pecas;
-		});
-		
-		PeticaoService.consultar(organiza.peticaoId).then(function(data) {
-			organiza.peticao = data;
-		});
+
 		
 	/*	var uploader = organiza.uploader = new FileUploader({
             url: properties.apiUrl + '/documentos/upload/assinado',

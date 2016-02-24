@@ -29,6 +29,10 @@
 				return $http.get(properties.apiUrl + '/teses', {
 					params: {tipo:tipoTese, numero:numeroTese}
 				});
+			},
+			
+			consultarPecas : function(processoId){
+				return $http.get(properties.apiUrl + '/processos/' + processoId + '/pecas')
 			}
 		};
 	});
