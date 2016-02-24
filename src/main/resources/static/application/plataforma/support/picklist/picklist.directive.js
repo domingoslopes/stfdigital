@@ -104,9 +104,14 @@
 					scope.rightListRowsModel = scope.rightListRowsModel.concat(selectedData);
 		
 					//remove from left list
-					scope.leftSelected.forEach(function (element) {
-						scope.leftListRowsModel.splice(element.originalIndex, 1);
-					});
+					var i = scope.leftListRowsModel.length;
+					while (i--){
+						scope.leftSelected.forEach(function (element) {
+							if (i == element.originalIndex){
+								scope.leftListRowsModel.splice(i, 1);
+							}
+						});
+					}
 		
 					//reinitialize row models
 					initializeRowLists();
@@ -131,9 +136,14 @@
 					scope.leftListRowsModel = scope.leftListRowsModel.concat(selectedData);
 		
 					//remove from right list
-					scope.rightSelected.forEach(function (element) {
-						scope.rightListRowsModel.splice(element.originalIndex, 1);
-					});
+					var i = scope.rightListRowsModel.length;
+					while (i--){
+						scope.rightSelected.forEach(function (element) {
+							if (i == element.originalIndex){
+								scope.rightListRowsModel.splice(i, 1);
+							}
+						});
+					}
 		
 					preventReinitialize = false;
 					
