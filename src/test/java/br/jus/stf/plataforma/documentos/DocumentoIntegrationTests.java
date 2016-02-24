@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.documentos;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -114,6 +115,12 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 		        .content(dividirDocumentoCommands)).andExpect(status().is4xxClientError()).andReturn().getResponse().getContentAsString();
 		String erro = JsonPath.read(json, "$.errors[0].message");
 		Assert.assertEquals("Nem todas as páginas do documento foram contempladas.", erro);
+	}
+	
+	@Test
+	public void consultarDocumentoPorId() throws Exception {
+		mockMvc.perform(get("/api/documentos/1")).andExpect(status().isOk())
+		.andExpect(jsonPath("$.documentoId", is(1)));
 	}
 	
 	private Integer fazerUploadDocumento() throws Exception {
