@@ -82,5 +82,10 @@ public class DocumentoRepositoryImpl extends SimpleJpaRepository<Documento, Docu
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new DocumentoId(sequencial);
 	}
+	
+	@Override
+	public Documento findOne(DocumentoId documentoId){
+		return super.findOne(documentoId);
+	}
 
 }

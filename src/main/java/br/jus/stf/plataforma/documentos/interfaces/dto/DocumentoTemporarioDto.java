@@ -4,16 +4,16 @@ package br.jus.stf.plataforma.documentos.interfaces.dto;
  * @author Lucas.Rodrigues
  *
  */
-public class DocumentoDto {
+public class DocumentoTemporarioDto {
 
 	private String tempId;
 	private Long documentoId;
 	
-	public DocumentoDto() {
+	public DocumentoTemporarioDto() {
 		
 	}
 	
-	public DocumentoDto(String tempId, Long documentoId) {
+	public DocumentoTemporarioDto(String tempId, Long documentoId) {
 		this.setTempId(tempId);
 		this.setDocumentoId(documentoId);
 	}

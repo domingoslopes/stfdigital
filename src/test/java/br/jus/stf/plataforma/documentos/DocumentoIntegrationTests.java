@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.jayway.jsonpath.JsonPath;
 
-import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 public class DocumentoIntegrationTests extends AbstractIntegrationTests {
@@ -77,8 +77,8 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 			.andReturn().getResponse().getContentAsString();
 	    
 		JavaType type = TypeFactory.defaultInstance()
-				.constructParametricType(ArrayList.class, DocumentoDto.class);
-		List<DocumentoDto> dtos = new ObjectMapper().readValue(json, type); 
+				.constructParametricType(ArrayList.class, DocumentoTemporarioDto.class);
+		List<DocumentoTemporarioDto> dtos = new ObjectMapper().readValue(json, type); 
 	 
 	    mockMvc.perform(get("/api/documentos/" + dtos.get(0).getDocumentoId()))
 	    	.andExpect(status().isOk())

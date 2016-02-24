@@ -37,7 +37,7 @@ import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosComm
 import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
-import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.shared.errorhandling.ValidationException;
 import br.jus.stf.shared.DocumentoId;
@@ -61,7 +61,7 @@ public class DocumentoRestResource {
 	@ApiOperation("Salva os documentos temporários")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public List<DocumentoDto> salvar(@RequestBody SalvarDocumentosCommand command) {
+	public List<DocumentoTemporarioDto> salvar(@RequestBody SalvarDocumentosCommand command) {
 		Set<ConstraintViolation<SalvarDocumentosCommand>> result = validator.validate(command);
 		if (!result.isEmpty()) {
 			throw new IllegalArgumentException(result.toString());
@@ -69,13 +69,19 @@ public class DocumentoRestResource {
 		return documentoServiceFacade.salvarDocumentos(command.getIdsDocumentosTemporarios().stream().map(id -> new DocumentoTemporarioId(id)).collect(Collectors.toList()));
 	}	
 	
-	@ApiOperation("Recupera um documento do repositório")
-	@RequestMapping(value = "/{documentoId}", method = RequestMethod.GET)
+	@ApiOperation("Recupera o conteúdo de um documento do repositório")
+	@RequestMapping(value = "/{documentoId}/conteudo", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> recuperar(@PathVariable("documentoId") Long documentoId) throws IOException {
 		ConteudoDocumento documento = documentoServiceFacade.pesquisaDocumento(documentoId);
 		InputStreamResource is = new InputStreamResource(documento.stream());
 		HttpHeaders headers = createResponseHeaders(documento.tamanho());
 	    return new ResponseEntity<InputStreamResource>(is, headers, HttpStatus.OK);
+	}
+	
+	@ApiOperation("Retornda os dados de um documento")
+	@RequestMapping(value = "/{documentoId}", method = RequestMethod.GET)
+	public DocumentoTemporarioDto consultar(@PathVariable("documentoId") Long documentoId) throws IOException {
+	    return null;
 	}
 	
 	@ApiOperation("Envia um documento para armazenamento temporário e retorna o indentificador")

@@ -10,9 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.application.DocumentoApplicationService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
+import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
-import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDtoAssembler;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -35,7 +36,7 @@ public class DocumentoServiceFacade {
 	@Autowired
 	private DocumentoRepository documentoRepository;
 
-	public List<DocumentoDto> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
+	public List<DocumentoTemporarioDto> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		return documentoApplicationService.salvarDocumentos(documentosTemporarios).entrySet().stream()
 				.map(entry -> documentoDtoAssembler.toDto(entry.getKey(), entry.getValue()))
 				.collect(Collectors.toList());
@@ -48,6 +49,11 @@ public class DocumentoServiceFacade {
 
 	public ConteudoDocumento pesquisaDocumento(Long documentoId) {
 		return documentoRepository.download(new DocumentoId(documentoId));
+	}
+	
+	public DocumentoTemporarioDto consultar(Long documentoId) {
+		Documento documento = documentoRepository.findOne(new DocumentoId(documentoId));
+		return null;
 	}
 
 	public void apagarDocumentosTemporarios(List<String> files) {

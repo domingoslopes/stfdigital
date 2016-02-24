@@ -26,7 +26,7 @@
 		};
 		
 		this.montarUrlConteudo = function(peca) {
-			return properties.apiUrl + '/documentos/' + peca.documentoId;
+			return properties.apiUrl + '/documentos/' + peca.documentoId + "/conteudo";
 		};
 		
 	});
