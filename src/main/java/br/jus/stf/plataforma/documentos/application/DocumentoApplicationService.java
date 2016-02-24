@@ -121,7 +121,7 @@ public class DocumentoApplicationService {
 		
 		String numeroConteudo = conteudoDocumentoRepository.save(id, docTemp);
 		
-		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp.randomAccessFile()));
+		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp.randomAccessFile()), docTemp.tamanho());
 		documento = documentoRepository.save(documento);
 		
 		documentoTempRepository.removeTemp(docTempId.toString());

@@ -251,7 +251,7 @@ public class ProcessoApplicationService {
 	 * @param intervalos Intervalos de páginas usados para a geração das novas peças.
 	 * @param pecas Lista contendo os dados das novas peças a serem criadas.
 	 */
-	public void dividirPeca(Processo processo, Peca pecaOriginal, List<Range<Integer>> intervalos, List<PecaProcessual> pecas){
+	public void dividirPeca(Processo processo, PecaProcesso pecaOriginal, List<Range<Integer>> intervalos, List<PecaProcessual> pecas){
 		List<Peca> novasPecas = new LinkedList<Peca>();
 		List<DocumentoId> documentos = documentoAdapter.dividirDocumento(pecaOriginal.documento(), intervalos);
 				
@@ -269,7 +269,7 @@ public class ProcessoApplicationService {
 	 * @param pecaOriginal Dados da peça original a ser dividida.
 	 * @param intervalos Intervalos de páginas usados para a geração das novas peças.
 	 */
-	public void unirPecas(Processo processo, List<Peca> pecas){
+	public void unirPecas(Processo processo, List<PecaProcesso> pecas){
 				
 		//1º passo: recupera-se os ids dos documentos vinculados às peças para a criação de um novo documento com o conteúdo das peças unificado.
 		List<DocumentoId> documentos = pecas.stream().map(p -> p.documento()).collect(Collectors.toList());
@@ -278,13 +278,14 @@ public class ProcessoApplicationService {
 		//2º passo: criação da nova peça. Os dados da nova peça são baseados na peça de menor ordem dentro do processo.
 		Long numeroOrdem = getNumeroOrdem(pecas);
 		Peca peca = pecas.stream().filter(p -> p.numeroOrdem().equals(numeroOrdem)).findFirst().get();
-		Peca pecaUnificada = new PecaProcesso(documentoId, peca.tipo(), peca.descricao());
+		PecaProcesso pecaUnificada = new PecaProcesso(documentoId, peca.tipo(), peca.descricao());
 		processo.unirPecas(pecas, pecaUnificada);
 		processoRepository.save(processo);
 	}
 	
-	private Long getNumeroOrdem(List<Peca> pecas){
-		ControladorOrdenacaoPecas controlador = new ControladorOrdenacaoPecas(pecas);
+	private Long getNumeroOrdem(List<PecaProcesso> pecas){
+		ControladorOrdenacaoPecas controlador = new ControladorOrdenacaoPecas(pecas.stream().map(p -> p).collect(Collectors.toList()));
+		
 		return controlador.primeiroNumeroOrdemPeca();
 	}
 }

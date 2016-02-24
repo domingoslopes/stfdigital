@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationService;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoSituacao;
@@ -213,7 +214,7 @@ public class ProcessoServiceFacade {
 	 * @param pecas Lista de peças.
 	 */
 	public void dividirPeca(Long processoId, Long pecaOriginalId, List<PecaProcessual> novasPecas){
-		Peca pecaOriginal = processoRepository.findOnePeca(pecaOriginalId);
+		PecaProcesso pecaOriginal = (PecaProcesso)processoRepository.findOnePeca(pecaOriginalId);
 		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
 		List<Range<Integer>> intervalos = new LinkedList<Range<Integer>>();
 		novasPecas.forEach(peca -> intervalos.add(Range.between(peca.getPaginaInicial(), peca.getPaginaFinal())));
@@ -227,8 +228,8 @@ public class ProcessoServiceFacade {
 	 * @param pecas Lista de peças.
 	 */
 	public void unirPecas(Long processoId, List<Long> pecasParaUniao){
-		List<Peca> pecas = new LinkedList<Peca>();
-		pecasParaUniao.forEach(p -> pecas.add(processoRepository.findOnePeca(p)));
+		List<PecaProcesso> pecas = new LinkedList<PecaProcesso>();
+		pecasParaUniao.forEach(p -> pecas.add((PecaProcesso)processoRepository.findOnePeca(p)));
 		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
 			
 		processoApplicationService.unirPecas(processo, pecas);
