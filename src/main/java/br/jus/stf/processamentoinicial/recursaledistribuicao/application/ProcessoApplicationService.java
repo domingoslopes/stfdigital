@@ -289,9 +289,8 @@ public class ProcessoApplicationService {
 	 * @param processo Dados do processo.
 	 * @param peca Dados da peça.
 	 */
-	public void editarPeca(Peca peca){
-	
-		//processoRepository.save(processo);
+	public void editarPeca(PecaProcesso peca){
+		processoRepository.savePeca(peca);
 	}
 	
 	private Long getNumeroOrdem(List<PecaProcesso> pecas){

@@ -28,6 +28,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.Proc
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
@@ -244,7 +245,11 @@ public class ProcessoServiceFacade {
 	 * @param visibilidade Visibilidade da peça.
 	 */
 	public void editarPeca(Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
-		Peca peca = processoRepository.findOnePeca(pecaId);
+		PecaProcesso peca = (PecaProcesso)processoRepository.findOnePeca(pecaId);
+		peca.alterarTipo(processoRepository.findOneTipoPeca(tipoPecaId));
+		peca.alterarDescricao(descricao);
+		peca.numerarOrdem(numeroOrdem);
+		peca.alterarVisibilidade(Visibilidade.valueOf(visibilidade));
 		processoApplicationService.editarPeca(peca);
 	}
 }
