@@ -234,4 +234,17 @@ public class ProcessoServiceFacade {
 			
 		processoApplicationService.unirPecas(processo, pecas);
 	}
+	
+	/**
+	 * Permite a edição de uma peça.
+	 * @param pecaId Id da peça.
+	 * @param tipoPecaId Id do tipo da peça.
+	 * @param descricao Descrição da peça.
+	 * @param numeroOrdem Nº de ordem da peça.
+	 * @param visibilidade Visibilidade da peça.
+	 */
+	public void editarPeca(Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
+		Peca peca = processoRepository.findOnePeca(pecaId);
+		processoApplicationService.editarPeca(peca);
+	}
 }

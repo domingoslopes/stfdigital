@@ -283,6 +283,17 @@ public class ProcessoApplicationService {
 		processoRepository.save(processo);
 	}
 	
+	/**
+	 * Permite a edição de uma peça.
+	 * 
+	 * @param processo Dados do processo.
+	 * @param peca Dados da peça.
+	 */
+	public void editarPeca(Peca peca){
+	
+		//processoRepository.save(processo);
+	}
+	
 	private Long getNumeroOrdem(List<PecaProcesso> pecas){
 		ControladorOrdenacaoPecas controlador = new ControladorOrdenacaoPecas(pecas.stream().map(p -> p).collect(Collectors.toList()));
 		
