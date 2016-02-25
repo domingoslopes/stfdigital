@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
@@ -110,5 +111,14 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
 	@Override
 	public <T extends Processo> T saveAndFlush(Processo processo) {
 		return (T)super.saveAndFlush(processo);
+	}
+	
+	@Override
+	public void savePeca(PecaProcesso peca) {
+		if (peca.toLong() == null) {
+			entityManager.persist(peca);
+		} else {
+			entityManager.merge(peca);
+		}
 	}
 }
