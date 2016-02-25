@@ -2,6 +2,7 @@ package br.jus.stf.plataforma.pesquisas;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -92,5 +93,32 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 			.andExpect(jsonPath("$[1].objeto['hc']", is(1)));
 
 		elasticsearchTemplate.deleteIndex("teste-quantidade-autuacoes");
+	}
+	
+	@Test
+	public void pesquisarAvancado() throws Exception {
+		
+		String jsonProcesso = "{\"id\":{\"sequencial\":123},\"classe\":{\"sigla\":\"HC\"},\"numero\":123456,\"identificacao\":\"HC123456\"}";
+		
+		IndexQuery query = new IndexQueryBuilder()
+				.withIndexName("teste-distribuicao")
+				.withType("Processo")
+				.withSource(jsonProcesso)
+				.withId("123")
+				.build();
+		elasticsearchTemplate.index(query);
+		
+		elasticsearchTemplate.refresh("teste-distribuicao", true);
+
+		mockMvc.perform(post("/api/pesquisas/avancada")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"consulta\" : {\"filter\": \"and\": {\"term\": { \"Processo.classe.sigla\" : [\"HC\"]}}}, \"tamanho\" : 10, \"pagina\": 0}")
+					.header("papel", "peticionador"))
+				.andExpect(status().isOk())
+				.andDo(print());
+				/*.andExpect(jsonPath("$[0].tipo", is("Processo")))
+ 				.andExpect(jsonPath("$[0].objeto['classe.sigla']", is("HC")));*/
+		
+		elasticsearchTemplate.deleteIndex("teste-distribuicao");
 	}
 }

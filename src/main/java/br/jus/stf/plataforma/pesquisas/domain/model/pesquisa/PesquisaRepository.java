@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.pesquisas.domain.model.query;
+package br.jus.stf.plataforma.pesquisas.domain.model.pesquisa;
 
 import java.util.List;
 

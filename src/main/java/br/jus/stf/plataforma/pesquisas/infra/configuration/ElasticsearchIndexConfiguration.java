@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.domain.model.query.Pesquisa;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
 
 /**
  * Configure os índices básicos do ElasticSearch.

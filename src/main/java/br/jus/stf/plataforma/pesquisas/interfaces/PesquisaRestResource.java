@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.stf.plataforma.pesquisas.interfaces.command.PesquisarAvancadoCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.PesquisarCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.facade.PesquisaServiceFacade;
@@ -60,6 +61,15 @@ public class PesquisaRestResource {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
 		}
 		return pesquisaServiceFacade.sugerir(command.getCampos(), command.getTipos(), command.getIndices(), command.getFiltros(), command.getOrdenadores());
+	}
+	
+	@ApiOperation("Pesquisa avançada")
+	@RequestMapping(value = "/avancada", method = RequestMethod.POST)
+	public PagedResources<Resource<ResultadoDto>> pesquisarAvancado(@RequestBody @Valid PesquisarAvancadoCommand command, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException(result.getAllErrors().toString());
+		}		
+		return pesquisaServiceFacade.pesquisarAvancado(command.getConsulta(), command.getPagina(), command.getTamanho());
 	}
 	
 }

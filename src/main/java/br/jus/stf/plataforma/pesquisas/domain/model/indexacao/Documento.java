@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.pesquisas.domain.model.command;
+package br.jus.stf.plataforma.pesquisas.domain.model.indexacao;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.elasticsearch.common.lang3.Validate;

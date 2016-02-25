@@ -13,8 +13,9 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.domain.model.query.Pesquisa;
-import br.jus.stf.plataforma.pesquisas.domain.model.query.PesquisaRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaRepository;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDtoAssembler;
 
@@ -27,6 +28,9 @@ public class PesquisaServiceFacade {
 
 	@Autowired
 	private PesquisaRepository pesquisaRepository;
+	
+	@Autowired
+	private PesquisaAvancadaRepository pesquisaAvancadaRepository;
 	
 	@Autowired
 	private ResultadoDtoAssembler resultadoDtoAssembler;
@@ -92,5 +96,16 @@ public class PesquisaServiceFacade {
 			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores);
 		return resultadoDtoAssembler.toDto(pesquisaRepository.sugerir(pesquisa));
 	}
+
+	/**
+	 * @param consulta
+	 * @return
+	 */
+	public PagedResources<Resource<ResultadoDto>> pesquisarAvancado(String consulta, Integer pagina, Integer tamanho) {
+		Pageable paginacao = new PageRequest(pagina, tamanho);
+		List<ResultadoDto> dtos = resultadoDtoAssembler.toDto(pesquisaAvancadaRepository.executar(consulta, pagina, tamanho));
+		Page<ResultadoDto> dtosPaginados = new PageImpl<ResultadoDto>(dtos, paginacao, dtos.size());
+	    return paginacaoAssembler.toResource(dtosPaginados);
+    }
 	
 }
