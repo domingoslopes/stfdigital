@@ -31,6 +31,8 @@ import br.jus.stf.shared.DocumentoTemporarioId;
 @Transactional
 public class DocumentoApplicationService {
 
+	private final Long TAMANHO_MAXIMO = 10485760L;
+	
 	@Autowired
 	private DocumentoRepository documentoRepository;
 	
@@ -59,6 +61,10 @@ public class DocumentoApplicationService {
 	 * @return
 	 */
 	public String salvarDocumentoTemporario(DocumentoTemporario documentoTemporario) {
+		if (documentoTemporario.tamanho() > TAMANHO_MAXIMO){
+			throw new IllegalArgumentException("O tamanho do arquivo excede o limite máximo de 10MB.");
+		}
+		
 		return documentoRepository.storeTemp(documentoTemporario);
 	}
 
@@ -99,11 +105,22 @@ public class DocumentoApplicationService {
 	 */
 	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
 		List<ConteudoDocumento> conteudos = documentos.stream().map(d -> documentoRepository.download(d)).collect(Collectors.toList());
+		Long tamanhoNovoDocumento = 1L;
+		
+		for(ConteudoDocumento conteudo : conteudos){
+			tamanhoNovoDocumento += conteudo.tamanho();
+		}
+		
+		if (tamanhoNovoDocumento > TAMANHO_MAXIMO){
+			throw new IllegalArgumentException("O tamanho do arquivo excede o limite máximo de 10MB.");
+		}
+		
 		DocumentoTemporario temp = documentoService.unirConteudos(conteudos);
 		DocumentoTemporarioId tempId = new DocumentoTemporarioId(documentoRepository.storeTemp(temp));
 		DocumentoId novoDocumento = salvar(tempId);
 		return novoDocumento;
 	}
+
 
 	private List<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios) {
 		List<DocumentoId> documentosSalvos = new ArrayList<>();
@@ -121,7 +138,7 @@ public class DocumentoApplicationService {
 		
 		String numeroConteudo = conteudoDocumentoRepository.save(id, docTemp);
 		
-		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp.randomAccessFile()));
+		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp.randomAccessFile()), docTemp.tamanho());
 		documento = documentoRepository.save(documento);
 		
 		documentoTempRepository.removeTemp(docTempId.toString());

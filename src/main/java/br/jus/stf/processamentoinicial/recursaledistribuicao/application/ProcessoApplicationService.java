@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.application;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
+import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
@@ -196,19 +199,22 @@ public class ProcessoApplicationService {
 	 */
 	public void inserirPecas(Processo processo, List<PecaProcessual> pecas){		
 		TipoPeca tipoPeca = null;
-		PecaProcesso peca = null;
+ 		PecaProcesso peca = null;
 		Visibilidade visibilidade = null;
-		
-		for (PecaProcessual pecaProcessual : pecas){
-			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
-			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
-			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
-			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, Situacao.PENDENTE_JUNTADA);
+		Situacao situacao = null;
+ 		
+ 		for (PecaProcessual pecaProcessual : pecas){
+ 			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
+ 			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
 
+			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
+			situacao = Situacao.PENDENTE_JUNTADA;
+			peca = new PecaProcesso(documentoId, tipoPeca, pecaProcessual.getDescricao(), visibilidade, situacao);
+ 
 			processo.adicionarPeca(peca);
-		}
-		
-		processoRepository.save(processo);
+ 		}
+ 		
+ 		processoRepository.save(processo);
 	}
 	
 	/**
@@ -236,5 +242,50 @@ public class ProcessoApplicationService {
 		if (concluirTarefa) {
 			tarefaAdapter.completarOrganizarPecas(processo);
 		}
+	}
+	
+	/**
+	 * Divide uma peça.
+	 * @param processo Dados do processo.
+	 * @param pecaOriginal Dados da peça original a ser dividida.
+	 * @param intervalos Intervalos de páginas usados para a geração das novas peças.
+	 * @param pecas Lista contendo os dados das novas peças a serem criadas.
+	 */
+	public void dividirPeca(Processo processo, PecaProcesso pecaOriginal, List<Range<Integer>> intervalos, List<PecaProcessual> pecas){
+		List<Peca> novasPecas = new LinkedList<Peca>();
+		List<DocumentoId> documentos = documentoAdapter.dividirDocumento(pecaOriginal.documento(), intervalos);
+				
+		for(int i = 0; i < documentos.size(); i++){
+			novasPecas.add(new PecaProcesso(documentos.get(i), pecaOriginal.tipo(), pecas.get(i).getDescricao(), pecaOriginal.visibilidade(), pecaOriginal.situacao()));
+		}
+		
+		processo.dividirPeca(pecaOriginal, novasPecas);
+		processoRepository.save(processo);
+	}
+	
+	/**
+	 * Une peças.
+	 * @param processo Dados do processo.
+	 * @param pecaOriginal Dados da peça original a ser dividida.
+	 * @param intervalos Intervalos de páginas usados para a geração das novas peças.
+	 */
+	public void unirPecas(Processo processo, List<PecaProcesso> pecas){
+				
+		//1º passo: recupera-se os ids dos documentos vinculados às peças para a criação de um novo documento com o conteúdo das peças unificado.
+		List<DocumentoId> documentos = pecas.stream().map(p -> p.documento()).collect(Collectors.toList());
+		DocumentoId documentoId = documentoAdapter.unirDocumentos(documentos);
+		
+		//2º passo: criação da nova peça. Os dados da nova peça são baseados na peça de menor ordem dentro do processo.
+		Long numeroOrdem = getNumeroOrdem(pecas);
+		Peca peca = pecas.stream().filter(p -> p.numeroOrdem().equals(numeroOrdem)).findFirst().get();
+		PecaProcesso pecaUnificada = new PecaProcesso(documentoId, peca.tipo(), peca.descricao());
+		processo.unirPecas(pecas, pecaUnificada);
+		processoRepository.save(processo);
+	}
+	
+	private Long getNumeroOrdem(List<PecaProcesso> pecas){
+		ControladorOrdenacaoPecas controlador = new ControladorOrdenacaoPecas(pecas.stream().map(p -> p).collect(Collectors.toList()));
+		
+		return controlador.primeiroNumeroOrdemPeca();
 	}
 }

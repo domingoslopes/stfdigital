@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -60,10 +59,6 @@ public class PeticaoEletronicaUnitTests {
 
 	private PecaPeticao criarPecaPI() {
 		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
-	}
-	
-	private PecaPeticao criarPecaDAR() {
-		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(6L, "Decisão ou ato reclamado"), "Decisão ou ato reclamado", Visibilidade.PUBLICO, Situacao.JUNTADA);
 	}
 
 	@Test
@@ -172,90 +167,6 @@ public class PeticaoEletronicaUnitTests {
 		Assert.assertEquals("Peça 3 deveria ter tido mantida sua ordenação com valor 3.", new Long(3L), recuperarPecaAC(peticao).numeroOrdem());
 		Assert.assertEquals("Peça substituta da Peça 2 deveria ter realmente substituído.", "Custas Nova", pecaPorTipo(peticao.pecas(), 2L).descricao());
 	}
-	
-	@Test
-	public void reordenarDePeca3Para1() {
-		incluirPecaCustas();
-		Peca pecaAtoCoator = incluirPecaAtoCoator();
-		PeticaoEletronica peticao = criarPeticaoPadrao();
-		
-		Assert.assertTrue("Peça deveria ter sido reordenada", peticao.reordenarPeca(pecaAtoCoator, 1L));
-		
-		Assert.assertEquals("Peça 1 deveria ter sido reordenada para 2.", new Long(2L), recuperarPecaPI(peticao).numeroOrdem());
-		Assert.assertEquals("Peça 2 deveria ter sido reordenada para 3.", new Long(3L), pecaPorTipo(peticao.pecas(), 2L).numeroOrdem());
-		Assert.assertEquals("Peça 3 deveria ter sido reordenada para 1.", new Long(1L), recuperarPecaAC(peticao).numeroOrdem());
-	}
-	
-	@Test
-	public void reordenarDePeca1Para3() {
-		incluirPecaCustas();
-		incluirPecaAtoCoator();
-		PeticaoEletronica peticao = criarPeticaoPadrao();
-		
-		Assert.assertTrue("Peça deveria ter sido reordenada", peticao.reordenarPeca(peca, 3L));
-		
-		Assert.assertEquals("Peça 1 deveria ter sido reordenada para 3.", new Long(3L), recuperarPecaPI(peticao).numeroOrdem());
-		Assert.assertEquals("Peça 2 deveria ter sido reordenada para 1.", new Long(1L), pecaPorTipo(peticao.pecas(), 2L).numeroOrdem());
-		Assert.assertEquals("Peça 3 deveria ter sido reordenada para 2.", new Long(2L), recuperarPecaAC(peticao).numeroOrdem());
-	}
-	
-	@Test
-	public void dividirPeca() {
-		Peca pecaASerDividida = incluirPecaCustas();
-		incluirPecaAtoCoator();
-		PeticaoEletronica peticao = criarPeticaoPadrao();
-		
-		Peca peca1DaDivisao = criarPecaAN();
-		Peca peca2DaDivisao = criarPecaDR();
-		
-		peticao.dividirPeca(pecaASerDividida, Arrays.asList(peca1DaDivisao, peca2DaDivisao));
-		
-		Assert.assertTrue("Peça original deveria ter sido removida.", !peticao.pecas().contains(pecaASerDividida));
-		Assert.assertEquals("Peça original 1 deveria ter ordenação 1.", new Long(1L), recuperarPecaPI(peticao).numeroOrdem());
-		Assert.assertEquals("Peça 1 da divisão deveria ter ordenação 2", new Long(2L), recuperarPecaAN(peticao).numeroOrdem());
-		Assert.assertEquals("Peça 2 da divisão deveria ter ordenação 3", new Long(3L), recuperarPecaDR(peticao).numeroOrdem());
-		Assert.assertEquals("Peça original 3 deveria ter ordenação 4", new Long(4L), recuperarPecaAC(peticao).numeroOrdem());
-	}
-
-	private PecaPeticao criarPecaDR() {
-		return criarPeca(new TipoPeca(4L, "Decisão rescindenda"), "Decisão rescindenda");
-	}
-
-	private PecaPeticao criarPecaAN() {
-		return criarPeca(new TipoPeca(3L, "Cópia do ato normativo ou lei impugnada"), "Cópia do ato normativo ou lei impugnada");
-	}
-	
-	@Test
-	public void unirPecas() {
-		Peca pecaCustas = incluirPecaCustas();
-		incluirPecaAtoCoator();
-		Peca pecaAN = incluirPecaAN();
-		incluirPecaDR();
-		PeticaoEletronica peticao = criarPeticaoPadrao();
-		
-		Peca pecaUnida = criarPecaDAR();
-		
-		List<Peca> pecasASeremUnidas = Arrays.asList(pecaCustas, pecaAN);
-		
-		peticao.unirPecas(pecasASeremUnidas, pecaUnida);
-		
-		Assert.assertTrue("Deveria não ter a peça custas.", !peticao.pecas().contains(pecaCustas));
-		Assert.assertTrue("Deveria não ter a peça AN.", !peticao.pecas().contains(pecaAN));
-		Assert.assertTrue("Deveria ter a peça unida", peticao.pecas().contains(pecaUnida));
-		
-		Assert.assertEquals("Peça Custas deveria ter ordenação 1.", new Long(1L), recuperarPecaPI(peticao).numeroOrdem());
-		Assert.assertEquals("Peça unida (DAR) deveria ter ordenação 2", new Long(2L), recuperarPecaDAR(peticao).numeroOrdem());
-		Assert.assertEquals("Peça Ato Coator deveria ter ordenação 3", new Long(3L), recuperarPecaAC(peticao).numeroOrdem());
-		Assert.assertEquals("Peça DR deveria ter ordenação 4", new Long(4L), recuperarPecaDR(peticao).numeroOrdem());		
-	}
-
-	private Peca recuperarPecaDR(PeticaoEletronica peticao) {
-		return pecaPorTipo(peticao.pecas(), 4L);
-	}
-
-	private Peca recuperarPecaAN(PeticaoEletronica peticao) {
-		return pecaPorTipo(peticao.pecas(), 3L);
-	}
 
 	private Peca recuperarPecaAC(PeticaoEletronica peticao) {
 		return pecaPorTipo(peticao.pecas(), 5L);
@@ -263,22 +174,6 @@ public class PeticaoEletronicaUnitTests {
 
 	private Peca recuperarPecaPI(PeticaoEletronica peticao) {
 		return pecaPorTipo(peticao.pecas(), 1L);
-	}
-	
-	private Peca recuperarPecaDAR(PeticaoEletronica peticao) {
-		return pecaPorTipo(peticao.pecas(), 6L);
-	}
-
-	private PecaPeticao incluirPecaDR() {
-		PecaPeticao pecaDR = criarPecaDR();
-		incluirPeca(pecaDR);
-		return pecaDR;
-	}
-
-	private PecaPeticao incluirPecaAN() {
-		PecaPeticao pecaAN = criarPecaAN();
-		incluirPeca(pecaAN);
-		return pecaAN;
 	}
 	
 	private Peca incluirPecaCustas() {

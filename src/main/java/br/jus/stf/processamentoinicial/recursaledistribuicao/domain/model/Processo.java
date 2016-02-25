@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +46,7 @@ import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.stereotype.Entity;
+
 
 /**
  * @author Rafael Alencar
@@ -105,6 +105,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	@Transient
 	private ControladorOrdenacaoPecas controladorOrdenacaoPecas;
+	
+	@OneToMany(cascade = CascadeType.ALL, targetEntity = PecaProcessoOriginal.class)
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	private List<PecaProcessoOriginal> pecasOriginaisVinculadas = new LinkedList<PecaProcessoOriginal>();
 	
 	Processo() {
 
@@ -253,23 +257,16 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	}
 	
 	/**
+	 * Altera a situação da peça no processo para JUNTADA.
 	 * 
 	 * @param peca
+	 * @return true para peça juntada ou false para peça inexistente no processo.
 	 */
-	public void juntarPeca(final Peca peca) {
+	public boolean juntarPeca(final Peca peca) {
 		Validate.notNull(peca, "processo.peca.required");
 		Validate.isTrue(peca.situacao() == Situacao.PENDENTE_JUNTADA, "processo.peca.situacao.invalid");
 		
-		ListIterator<Peca> iterator = pecas.listIterator();
-		
-		while (iterator.hasNext()) {
-			Peca pecaAtual = iterator.next();
-			
-			if (pecaAtual.equals(peca)) {
-				pecaAtual.alterarSituacao(Situacao.JUNTADA);
-				break;
-			}
-		}
+		return alterarSituacaoPeca(peca, Situacao.JUNTADA);
 	}
 
 	/**
@@ -293,16 +290,17 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param pecaDividida
 	 * @param pecasDivisao
 	 */
-	public void dividirPeca(Peca pecaDividida, List<Peca> pecasDivisao) {
+	public void dividirPeca(PecaProcesso pecaDividida, List<Peca> pecasDivisao) {
 		Validate.notNull(pecaDividida, "processo.pecaDividida.required");
 		Validate.notEmpty(pecasDivisao, "processo.pecasDivisao.required");
 
 		Long numeroOrdem = pecaDividida.numeroOrdem();
+		PecaProcessoOriginal pecaOriginal = PecaProcessoOriginal.criar(pecaDividida, TipoVinculo.DIVISAO);
 		
-		removerPeca(pecaDividida);
-		
+		pecasDivisao.forEach(p -> ((PecaProcesso)p).vincularPecaOriginal(pecaOriginal));
+		pecasOriginaisVinculadas.add(pecaOriginal);
+		pecas.remove(pecaDividida);
 		pecasDivisao.forEach(p -> adicionarPeca(p));
-		
 		controladorOrdenacaoPecas.reordenarPecas(pecasDivisao, numeroOrdem);
 	}
 	
@@ -313,31 +311,34 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param pecasUniao
 	 * @param pecaUnida
 	 */
-	public void unirPecas(List<Peca> pecasUniao, Peca pecaUnida) {
+	public void unirPecas(List<PecaProcesso> pecasUniao, PecaProcesso pecaUnida) {
 		Validate.notEmpty(pecasUniao, "processo.pecasUniao.required");
 		Validate.notNull(pecaUnida, "processo.pecaUnida.required");
 		
 		Long menorNumeroOrdem = pecasUniao.stream().min((p1, p2) -> p1.numeroOrdem().compareTo(p2.numeroOrdem())).get().numeroOrdem();
 		
-		pecasUniao.forEach(p -> removerPeca(p));
+		pecasUniao.forEach(p -> {
+			PecaProcessoOriginal pecaOriginal = PecaProcessoOriginal.criar(p, TipoVinculo.UNIAO);
+			
+			pecaUnida.vincularPecaOriginal(pecaOriginal);
+			pecasOriginaisVinculadas.add(pecaOriginal);
+			pecas.remove(p);
+		});
 		
 		adicionarPeca(pecaUnida);
-		
 		controladorOrdenacaoPecas.reordenarPeca(pecaUnida, menorNumeroOrdem);
 	}
 	
 	/**
+	 * Marca uma peça como removida.
 	 * 
 	 * @param peca
+	 * * @return true para peça juntada ou false para peça inexistente no processo.
 	 */
 	public boolean removerPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
 	
-		boolean removeu = pecas.remove(peca);
-		
-		controladorOrdenacaoPecas.normalizarOrdenacaoPecas();
-		
-		return removeu;
+		return alterarSituacaoPeca(peca, Situacao.EXCLUIDA);
 	}
 	
 	/**
@@ -356,6 +357,10 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 
 	public List<Peca> pecas() {
 		return Collections.unmodifiableList(pecas);
+	}
+	
+	public List<PecaProcessoOriginal> pecasOriginaisVinculadas() {
+		return Collections.unmodifiableList(pecasOriginaisVinculadas);
 	}
 	
 	public Set<PreferenciaId> preferencias(){
@@ -438,6 +443,25 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	private String montarIdentificacao() {
 		return new StringBuilder()
 			.append(classe.toString()).append(" ").append(numero).toString();
+	}
+	
+	/**
+	 * Altera a situação de uma peça no processo.
+	 * 
+	 * @param peca
+	 * @param situacao
+	 * @return true quando a situação da peça for alterada ou false quando a peça não existir no processo.
+	 */
+	private boolean alterarSituacaoPeca(final Peca peca, final Situacao situacao) {
+		int indicePecaAAlterar = pecas.indexOf(peca);   
+		
+		if (indicePecaAAlterar == -1) {
+			return false;
+		}
+		
+		pecas.get(indicePecaAAlterar).alterarSituacao(situacao);
+		
+		return true;
 	}
 
 }
