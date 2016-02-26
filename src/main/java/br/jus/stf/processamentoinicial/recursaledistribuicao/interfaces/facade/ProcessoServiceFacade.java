@@ -28,6 +28,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.Proc
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
@@ -233,5 +234,34 @@ public class ProcessoServiceFacade {
 		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
 			
 		processoApplicationService.unirPecas(processo, pecas);
+	}
+	
+	/**
+	 * Permite a edição de uma peça.
+	 * @param pecaId Id da peça.
+	 * @param tipoPecaId Id do tipo da peça.
+	 * @param descricao Descrição da peça.
+	 * @param numeroOrdem Nº de ordem da peça.
+	 * @param visibilidade Visibilidade da peça.
+	 */
+	public void editarPeca(Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
+		PecaProcesso peca = (PecaProcesso)processoRepository.findOnePeca(pecaId);
+		peca.alterarTipo(processoRepository.findOneTipoPeca(tipoPecaId));
+		peca.alterarDescricao(descricao);
+		peca.numerarOrdem(numeroOrdem);
+		peca.alterarVisibilidade(Visibilidade.valueOf(visibilidade));
+		processoApplicationService.editarPeca(peca);
+	}
+	
+	/**
+	 * Realiza a juntada de uma peça ao processo.
+	 * @param processoId Id do processo.
+	 * @param pecaId Id da peça.
+	 */
+	public void juntarPeca(Long processoId, Long pecaId){
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		PecaProcesso peca = (PecaProcesso)processoRepository.findOnePeca(pecaId);
+		
+		processoApplicationService.juntarPeca(processo, peca);
 	}
 }

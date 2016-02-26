@@ -23,10 +23,20 @@
 		
 		organiza.recursos = [];
 		
+		organiza.habilitado = true;
+		
 //		organiza.pecas = [];
 		
 		organiza.buildSelectedObject = function(item) {
 			return {'documentoId': item.documentoId};
+		};
+		
+		organiza.atualizaEstado = function(){
+			if (organiza.habilitado){
+				organiza.sortableOptions.disable = false;
+			}else{
+				organiza.sortableOptions.disable = true;
+			}
 		};
 		
 		ProcessoService.consultarPorPeticao(organiza.peticaoId).success(function(data){
@@ -53,12 +63,19 @@
 		};
 		
 		organiza.dtOptions = DTOptionsBuilder.newOptions()
-	        .withDOM('ptr')
-	        .withOption('rowReorder', {
-	        	selector : 'tr'
-	        });
+	        .withDOM('ptr');
 		
-
+		organiza.sortableOptions = {
+			helper : fixWidthHelper,
+			disabled: false
+		};
+		
+		function fixWidthHelper(e, ui) {
+		    ui.children().each(function() {
+		        $(this).width($(this).width());
+		    });
+		    return ui;
+		}
 		
 	/*	var uploader = organiza.uploader = new FileUploader({
             url: properties.apiUrl + '/documentos/upload/assinado',
