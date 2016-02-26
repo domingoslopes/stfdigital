@@ -1,13 +1,11 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.actions;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionController;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
-import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
-import br.jus.stf.processamentoinicial.autuacao.interfaces.facade.PeticaoServiceFacade;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationService;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DividirPecaCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.EditarPecaCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.ExcluirPecasCommand;
@@ -26,25 +24,9 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.P
  */
 @ActionController(groups = "peca")
 public class PecaActionResource {
+	
 	@Autowired
 	private ProcessoServiceFacade processoServiceFacade;
-	
-	@Autowired
-	private ProcessoApplicationService processoApplicationService;
-	
-	@Autowired
-	private AssuntoRepository assuntoRepository;
-	
-	@Autowired
-	private PessoaAdapter pessoaAdapter;
-	
-	@Autowired
-	private PeticaoServiceFacade peticaoServiceFacade;
-	
-	@ActionMapping(id = "inserir-pecas", name = "Inserir Peças Processuais")
-	public void inserirPecas(SalvarPecasCommand command) {
-		processoServiceFacade.inserirPecas(command.getProcessoId(), command.getPecas());
-	}
 	
 	@ActionMapping(id = "excluir-pecas", name = "Excluir Peças Processuais")
 	public void excluirPecas(ExcluirPecasCommand command) {
@@ -62,8 +44,8 @@ public class PecaActionResource {
 	}
 	
 	@ActionMapping(id = "unir-pecas", name = "Unir Peças Processuais")
-	public void unirPecas(UnirPecasCommand command) {
-		processoServiceFacade.unirPecas(command.getProcessoId(), command.getPecas());
+	public void unirPecas(List<UnirPecasCommand> command) {
+		processoServiceFacade.unirPecas(command.get(0).getProcessoId(), command.get(0).getPecas());
 	}
 	
 	@ActionMapping(id = "editar-peca", name = "Editar Peça Processual")
@@ -73,7 +55,7 @@ public class PecaActionResource {
 	}
 	
 	@ActionMapping(id = "juntar-peca", name = "Juntar Peça Processual")
-	public void juntarPeca(JuntarPecaCommand command) {
-		processoServiceFacade.juntarPeca(command.getProcessoId(), command.getPecaId());
+	public void juntarPeca(List<JuntarPecaCommand> command) {
+		processoServiceFacade.juntarPeca(command.get(0).getProcessoId(), command.get(0).getPecaId());
 	}
 }
