@@ -293,6 +293,19 @@ public class ProcessoApplicationService {
 		processoRepository.savePeca(peca);
 	}
 	
+	/**
+	 * Realiza a juntada de uma peça ao processo.
+	 * @param processo Dados do processo.
+	 * @param peca Dados da peça a ser juntada ao processo.
+	 */
+	public void juntarPeca(Processo processo, Peca peca){
+		if (peca.situacao() != Situacao.PENDENTE_JUNTADA){
+			throw new IllegalArgumentException("A peça informada não está pendente de juntada.");
+		}
+		
+		processo.juntarPeca(peca);
+	}
+	
 	private Long getNumeroOrdem(List<PecaProcesso> pecas){
 		ControladorOrdenacaoPecas controlador = new ControladorOrdenacaoPecas(pecas.stream().map(p -> p).collect(Collectors.toList()));
 		

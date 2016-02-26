@@ -252,4 +252,16 @@ public class ProcessoServiceFacade {
 		peca.alterarVisibilidade(Visibilidade.valueOf(visibilidade));
 		processoApplicationService.editarPeca(peca);
 	}
+	
+	/**
+	 * Realiza a juntada de uma peça ao processo.
+	 * @param processoId Id do processo.
+	 * @param pecaId Id da peça.
+	 */
+	public void juntarPeca(Long processoId, Long pecaId){
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		PecaProcesso peca = (PecaProcesso)processoRepository.findOnePeca(pecaId);
+		
+		processoApplicationService.juntarPeca(processo, peca);
+	}
 }

@@ -35,6 +35,7 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 	private String excluirPecasCommand;
 	private String dividirPecasCommand;
 	private String unirPecasCommand;
+	private String juntarPecaCommand;
 	private String peticaoEletronica;
 	private String peticaoValidaParaAutuacao;
 	private String peticaoAutuadaParaDistribuicao;
@@ -145,6 +146,15 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
   		//Recupera novamente o processo após a inserção da segunda peça.
   		processoDto = getProcesso(peticaoId);
   		
+  		juntarPecaCommand = prepararPecaParaJuntada(processoId);
+  		
+  		//Realiza a juntada da peça.
+  		super.mockMvc.perform(post("/api/actions/juntar-peca/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
+  			.content(juntarPecaCommand)).andExpect(status().isOk());
+  		
+  		//Recupera novamente o processo após a juntada da segunda peça.
+  		processoDto = getProcesso(peticaoId);
+  		
   		//Recupera a peça que acabou de ser inserida para ser dividida em duas.
   		editarPecaCommand = prepararPecaParaEdicao(processoId);
   		
@@ -179,6 +189,17 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
   		super.mockMvc.perform(post("/api/actions/excluir-pecas/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
   			.content(excluirPecasCommand)).andExpect(status().isOk());
     }
+	
+	private String prepararPecaParaJuntada(String processoId) throws UnsupportedEncodingException, Exception{
+		String peca = getPeca(processoId);
+		String pecaId = (JsonPath.read(peca, "$.pecaId")).toString();
+		
+		StringBuilder json = new StringBuilder();
+		json.append("{\"resources\": ");
+		json.append("[{\"processoId\": " + processoId + ", \"pecaId\":" + pecaId + "}]}");
+		
+		return json.toString();
+	}
 	
 	private String prepararPecaParaEdicao(String processoId) throws UnsupportedEncodingException, Exception{
 		String peca = getPeca(processoId);
