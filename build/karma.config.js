@@ -20,7 +20,7 @@ module.exports = {
 		baseDir + '/vendor/angular-mocks/angular-mocks.js',
 		baseDir + '/vendor/angular-sanitize/angular-sanitize.js',
 		baseDir + '/vendor/angular-ui-router/release/angular-ui-router.js',
-		baseDir + '/vender/angular-ui-sortable/sortable.js',
+		baseDir + '/vendor/angular-ui-sortable/sortable.js',
 		baseDir + '/vendor/ui-router-extras/release/ct-ui-router-extras.js',
 		baseDir + '/vendor/angular-ui-select2/src/select2.js',
 		baseDir + '/vendor/select2/select2.js',
