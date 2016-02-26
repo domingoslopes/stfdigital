@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.pesquisas.interfaces.command;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -21,12 +22,20 @@ public class SalvarPesquisaAvancadaCommand {
 	@NotBlank
 	private String consulta;
 	
+	@ApiModelProperty("Indíces para a consulta")
+	@NotEmpty
+	private String[] indices;
+	
 	public String getNome() {
 		return nome;
 	}
 	
 	public String getConsulta() {
 		return consulta;
+	}
+	
+	public String[] getIndices() {
+		return indices;
 	}
 	
 }

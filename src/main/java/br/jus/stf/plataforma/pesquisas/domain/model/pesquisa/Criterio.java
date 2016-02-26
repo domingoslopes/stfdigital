@@ -38,6 +38,7 @@ public class Criterio implements ValueObject<Criterio> {
 	@Column(name = "DSC_CAMPO")
 	private String campo;
 	
+	@Column(name = "TIP_CRITERIO")
 	@Enumerated(EnumType.STRING)
 	private TipoCriterio tipo;
 	

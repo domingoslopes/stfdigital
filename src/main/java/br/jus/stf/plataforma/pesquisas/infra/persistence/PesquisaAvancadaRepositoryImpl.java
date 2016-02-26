@@ -13,13 +13,16 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.Validate;
 import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancada;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaId;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaRepository;
@@ -80,20 +83,25 @@ public class PesquisaAvancadaRepositoryImpl extends SimpleJpaRepository<Pesquisa
 	}
 
 	@Override
-	public List<Resultado> executar(String consulta, Integer pagina, Integer tamanho) {
-		Validate.notBlank(consulta, "pesquisaAvancada.consulta.required");
-		
+	public List<Resultado> executar(Pesquisa pesquisa, Pageable paginacao) {
+		Validate.notNull(pesquisa, "pesquisaAvancada.pesquisa.required");
+		Validate.notEmpty(pesquisa.consulta(), "pesquisaAvancada.consulta.required");
+		Validate.notEmpty(pesquisa.indices(), "pesquisaAvancada.indices.required");
+				
 		SearchRequestBuilder builder = new SearchRequestBuilder(elasticsearchClient);
-		builder.setExtraSource(consulta);
-		Optional.ofNullable(tamanho).ifPresent(t -> {
+		builder.setIndices(pesquisa.indices());
+		builder.setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
+		builder.setExtraSource(pesquisa.consulta());
+		
+		Optional.ofNullable(paginacao.getPageSize()).ifPresent(t -> {
 			if (t > 0) {
-				builder.internalBuilder().size(t);
+				builder.setSize(t);
 			}
-			Optional.ofNullable(pagina).ifPresent(p -> {
+			Optional.ofNullable(paginacao.getPageNumber()).ifPresent(p -> {
 				if (p > 0 && t > 0) {
-					builder.internalBuilder().from(p * t);
+					builder.setFrom(p * t);
 				} else {
-					builder.internalBuilder().from(0);
+					builder.setFrom(0);
 				}
 			});	
 		});

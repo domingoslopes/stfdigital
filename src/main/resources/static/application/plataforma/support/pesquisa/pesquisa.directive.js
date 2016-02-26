@@ -83,7 +83,7 @@
 					
 	            	if (isPaginada) {
 	            		pesquisa.page = page - 1;
-	            		pesquisa.tamanho = 15;
+	            		pesquisa.size = 15;
 	            	}
 
 		            angular.forEach(filtros, function(filtro) {

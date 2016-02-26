@@ -3,6 +3,7 @@ package br.jus.stf.plataforma.pesquisas.interfaces.command;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -21,22 +22,30 @@ public class PesquisarAvancadoCommand {
 	
 	@ApiModelProperty("Página do resultado")
 	@NotNull
-	private Integer pagina = 0;
+	private Integer page = 0;
 	
 	@ApiModelProperty("Tamanho máximo do resultado")
 	@NotNull
-	private Integer tamanho = 15;
+	private Integer size = 15;
+	
+	@ApiModelProperty("Tamanho máximo do resultado")
+	@NotEmpty
+	private String[] indices;
 	
 	public String getConsulta() {
 		return consulta;
 	}
 
-	public Integer getPagina() {
-	    return pagina;
+	public Integer getPage() {
+	    return page;
     }
 
-	public Integer getTamanho() {
-	    return tamanho;
+	public Integer getSize() {
+	    return size;
+    }
+
+	public String[] getIndices() {
+	    return indices;
     }
 	
 }

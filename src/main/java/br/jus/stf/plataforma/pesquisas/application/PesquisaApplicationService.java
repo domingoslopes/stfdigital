@@ -21,10 +21,10 @@ public class PesquisaApplicationService {
 	@Autowired
 	private PesquisaAvancadaRepository pesquisaAvancadaRepository;
 	
-	public void salvar(String nome, String consulta) {
+	public void salvar(String nome, String consulta, String[] indices) {
 		
 		PesquisaAvancadaId id = pesquisaAvancadaRepository.nextId();
-		PesquisaAvancada pesquisa = new PesquisaAvancada(id, nome, consulta);
+		PesquisaAvancada pesquisa = new PesquisaAvancada(id, nome, consulta, indices);
 		pesquisaAvancadaRepository.save(pesquisa);
 	}
 	

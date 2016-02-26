@@ -58,11 +58,7 @@ public class PesquisaAvancadaId implements ValueObject<PesquisaAvancadaId> {
 		PesquisaAvancadaId other = (PesquisaAvancadaId) o;
 		return sameValueAs(other);
 	}
-
-	/**
-	 * 
-	 * @param other
-	 */
+	
 	@Override
 	public boolean sameValueAs(final PesquisaAvancadaId other){
 		return other != null && sequencial.equals(other.sequencial);

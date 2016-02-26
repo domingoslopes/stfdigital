@@ -2,6 +2,8 @@ package br.jus.stf.plataforma.pesquisas.domain.model.pesquisa;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
 
 /**
  * @author Lucas.Rodrigues
@@ -45,9 +47,9 @@ public interface PesquisaAvancadaRepository {
 	 * Executa diretamente uma pesquisa avançada
 	 * 
 	 * @param consulta
-	 * @param tamanho 
-	 * @param pagina 
+	 * @param indices
+	 * @param paginacao
 	 * @return
 	 */
-	List<Resultado> executar(String consulta, Integer pagina, Integer tamanho);	
+	List<Resultado> executar(Pesquisa pesquisa, Pageable paginacao);
 }

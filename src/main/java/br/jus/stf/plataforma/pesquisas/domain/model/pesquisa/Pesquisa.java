@@ -23,6 +23,7 @@ public class Pesquisa implements ValueObject<Pesquisa> {
 	private Map<String, String[]> filtros = new HashMap<String, String[]>();
 	private Map<String, String> ordenadores = new HashMap<String, String>(0);
 	private String campoAgregacao;
+	private String consulta;
 	
 	public Pesquisa(final String[] indices, final Map<String, String[]> filtros) {
 		Validate.notEmpty(indices, "pesquisa.indices.required");
@@ -30,6 +31,14 @@ public class Pesquisa implements ValueObject<Pesquisa> {
 		
 		this.indices = indices;
 		this.filtros.putAll(filtros);
+	}
+	
+	public Pesquisa(final String consulta, final String[] indices) {
+		Validate.notEmpty(consulta, "pesquisa.consulta.required");
+		Validate.notEmpty(indices, "pesquisa.indices.required");
+		
+		this.indices = indices;
+		this.consulta = consulta;
 	}
 	
 	public String[] campos() {
@@ -72,8 +81,12 @@ public class Pesquisa implements ValueObject<Pesquisa> {
 		return this;
 	}
 	
-	public String campoAgregacao(){
+	public String campoAgregacao() {
 		return this.campoAgregacao;
+	}
+	
+	public String consulta() {
+		return this.consulta;
 	}
 	
 	@Override

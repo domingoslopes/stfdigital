@@ -3,6 +3,7 @@ package br.jus.stf.plataforma.pesquisas.domain.model.pesquisa;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 
 import org.apache.commons.lang3.Validate;
 
@@ -19,6 +20,7 @@ public class FonteDados implements ValueObject<FonteDados> {
     private static final long serialVersionUID = 1L;
 
 	@Column(name = "TXT_CONSULTA")
+	@Lob
 	public String consulta;
 	
 	@Column(name = "DSC_VALOR")
