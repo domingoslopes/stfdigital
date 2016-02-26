@@ -93,8 +93,16 @@ public abstract class Peca implements ValueObject<Peca> {
 		return this.tipo;
 	}
 	
+	public void alterarTipo(TipoPeca tipo){
+		this.tipo = tipo;
+	}
+	
 	public String descricao() {
 		return this.descricao;
+	}
+	
+	public void alterarDescricao(String descricao){
+		this.descricao = descricao;
 	}
 	
 	public Long numeroOrdem() {
@@ -107,6 +115,10 @@ public abstract class Peca implements ValueObject<Peca> {
 	
 	public Visibilidade visibilidade() {
 		return visibilidade;
+	}
+	
+	public void alterarVisibilidade(Visibilidade visibilidade){
+		this.visibilidade = visibilidade;
 	}
 	
 	public void alterarSituacao(Situacao situacao) {

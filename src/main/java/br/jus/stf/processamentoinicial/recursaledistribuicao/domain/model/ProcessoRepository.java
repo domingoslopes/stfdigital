@@ -102,5 +102,12 @@ public interface ProcessoRepository {
 	 * @return
 	 */
 	public <T extends Processo> T saveAndFlush(Processo processo);
+	
+	/**
+	 * Salva uma peça do processo.
+	 * 
+	 * @param peca
+	 */
+	public void savePeca(PecaProcesso peca);
 
 }

@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.documentos;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.jayway.jsonpath.JsonPath;
 
-import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
 public class DocumentoIntegrationTests extends AbstractIntegrationTests {
@@ -77,10 +78,10 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 			.andReturn().getResponse().getContentAsString();
 	    
 		JavaType type = TypeFactory.defaultInstance()
-				.constructParametricType(ArrayList.class, DocumentoDto.class);
-		List<DocumentoDto> dtos = new ObjectMapper().readValue(json, type); 
+				.constructParametricType(ArrayList.class, DocumentoTemporarioDto.class);
+		List<DocumentoTemporarioDto> dtos = new ObjectMapper().readValue(json, type); 
 	 
-	    mockMvc.perform(get("/api/documentos/" + dtos.get(0).getDocumentoId()))
+	    mockMvc.perform(get("/api/documentos/" + dtos.get(0).getDocumentoId() + "/conteudo"))
 	    	.andExpect(status().isOk())
 	    	.andExpect(content().bytes(arquivo));
 	}
@@ -114,6 +115,12 @@ public class DocumentoIntegrationTests extends AbstractIntegrationTests {
 		        .content(dividirDocumentoCommands)).andExpect(status().is4xxClientError()).andReturn().getResponse().getContentAsString();
 		String erro = JsonPath.read(json, "$.errors[0].message");
 		Assert.assertEquals("Nem todas as páginas do documento foram contempladas.", erro);
+	}
+	
+	@Test
+	public void consultarDocumentoPorId() throws Exception {
+		mockMvc.perform(get("/api/documentos/1")).andExpect(status().isOk())
+		.andExpect(jsonPath("$.documentoId", is(1)));
 	}
 	
 	private Integer fazerUploadDocumento() throws Exception {
