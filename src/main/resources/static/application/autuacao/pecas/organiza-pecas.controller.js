@@ -63,11 +63,11 @@
 		};
 		
 		organiza.dtOptions = DTOptionsBuilder.newOptions()
-	        .withDOM('Bptr');
+	        .withDOM('ptr');
 		
 		organiza.sortableOptions = {
 			helper : fixWidthHelper,
-			disabled: false;
+			disabled: false
 		};
 		
 		function fixWidthHelper(e, ui) {
