@@ -84,3 +84,7 @@ table.dataTable thead .sorting_asc:after,
 table.dataTable thead .sorting_desc:after {
     display : none;
 }
+
+.ui-sortable-helper {
+    display: table;
+}
