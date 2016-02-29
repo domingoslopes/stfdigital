@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
 
 /**
  * Serviço de fachada que concentra o acesso à indexação

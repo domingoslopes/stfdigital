@@ -35,9 +35,9 @@
 		
 		organiza.atualizaEstado = function(){
 			if (organiza.habilitado){
-				organiza.habilitado = false;
+				organiza.sortableOptions.disable = false;
 			}else{
-				organiza.habilitado = true;
+				organiza.sortableOptions.disable = true;
 			}
 		};
 		
@@ -69,11 +69,11 @@
 		};
 		
 		organiza.dtOptions = DTOptionsBuilder.newOptions()
-	        .withDOM('Bptr');
+	        .withDOM('ptr');
 		
 		organiza.sortableOptions = {
 			helper : fixWidthHelper,
-			disabled: (organiza.habilitado ? false : true)
+			disabled: false
 		};
 		
 		function fixWidthHelper(e, ui) {

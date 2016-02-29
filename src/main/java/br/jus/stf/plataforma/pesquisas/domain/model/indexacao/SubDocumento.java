@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.pesquisas.domain.model.command;
+package br.jus.stf.plataforma.pesquisas.domain.model.indexacao;
 
 /**
  * Um subdocumento é um item de uma coleção de um documento.
