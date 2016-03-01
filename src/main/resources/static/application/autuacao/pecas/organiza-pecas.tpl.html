@@ -30,7 +30,7 @@
 	            			</div>
                         </div>
                         <div class="card-description">
-							<table datatable="ng" class="table" dt-options="organiza.dtOptions">
+							<table datatable="ng" class="table" dt-options="organiza.dtOptions" id="tabelaPecas">
 								<thead>
 							        <tr>
 							        	<th style="width: 10px;"><input type="checkbox" ng-model="organiza.checkToggle" ng-change="organiza.toggleCheck()"></th>
@@ -40,14 +40,14 @@
 							            <th>visibilidade</th>
 							        </tr>
 							    </thead>
-						        <tbody ui-sortable="organiza.sortableOptions">
-						        <tr ng-repeat="peca in ::organiza.processo.pecas">
-						        	<td><input type="checkbox" checklist-model="organiza.selecao.objetos" checklist-value="organiza.buildSelectedObject(peca)"></td>
-						            <td>{{ peca.sequencial }}</td>
-						            <td>{{ peca.descricao }}</td>
-						            <td>{{ peca.numeroOrdem }}</td>
-						            <td>{{ peca.visibilidade }}</td>
-						        </tr>
+						        <tbody ui-sortable="organiza.sortableOptions" ng-model="organiza.processo.pecas">
+							        <tr ng-repeat="peca in organiza.processo.pecas">
+							        	<td><input type="checkbox" checklist-model="organiza.selecao.objetos" checklist-value="organiza.buildSelectedObject(peca)"></td>
+							            <td>{{ peca.sequencial }}</td>
+							            <td>{{ peca.descricao }}</td>
+							            <td>{{ peca.numeroOrdem }}</td>
+							            <td>{{ peca.visibilidade }}</td>
+							        </tr>
 						        </tbody>
 							</table>
 							

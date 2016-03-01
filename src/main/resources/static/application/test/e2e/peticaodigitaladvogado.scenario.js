@@ -142,8 +142,6 @@
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Organizar Peças #' + processoId);
 		    });
 		    
-		    principalPage.executarTarefa();
-		    
 		    var organizaPecasPage = new OrganizaPecasPage();
 		    
 		    organizaPecasPage.finalizar();
@@ -196,6 +194,17 @@
 			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios', 1);
+			
+			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
+			
+			peticionamentoPage.selecionarTipoPeca('Ato coator', 2);
+			
+			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
+			
+			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios', 3);
+			
 		    
 			peticionamentoPage.registrar('registrar-peticao-eletronica');
 			

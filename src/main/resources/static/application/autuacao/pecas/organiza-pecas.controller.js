@@ -33,9 +33,9 @@
 		
 		organiza.atualizaEstado = function(){
 			if (organiza.habilitado){
-				organiza.sortableOptions.disable = false;
+				organiza.sortableOptions.disabled = false;
 			}else{
-				organiza.sortableOptions.disable = true;
+				organiza.sortableOptions.disabled = true;
 			}
 		};
 		
