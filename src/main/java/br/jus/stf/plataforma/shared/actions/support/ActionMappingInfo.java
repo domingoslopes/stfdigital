@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.shared.actions.support;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -126,27 +125,6 @@ public class ActionMappingInfo extends ResourceImpl {
 	 */
 	public Set<ActionConditionHandlerInfo> getActionHandlersInfo() {
 		return actionHandlersInfo;
-	}
-		
-	/**
-	 * Verifica se o resourceMode é o indicado para a quantidade de recursos
-	 * 
-	 * @param resources
-	 * @return
-	 */
-	public boolean isValidResourceMode(Collection<?> resources) {
-		if (resources == null) {
-			return resourcesMode.equals(ResourcesMode.None);
-		}
-		
-		int size = resources.size();
-		
-		if (size == 0) {
-			return resourcesMode.equals(ResourcesMode.None);
-		} else if (size == 1) {
-			return resourcesMode.equals(ResourcesMode.One) || resourcesMode.equals(ResourcesMode.Many);
-		}
-		return resourcesMode.equals(ResourcesMode.Many);
 	}
 
 }

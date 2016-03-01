@@ -7,6 +7,7 @@ package br.jus.stf.plataforma.shared.actions.support;
  *
  */
 public enum ResourcesMode {
-	None, One, Many
+	
+	None, One, OneOrMany, Many;
 	
 }

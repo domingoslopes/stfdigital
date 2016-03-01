@@ -180,7 +180,7 @@
 				if (resources.length === 0) {
 					return mode === "None";
 				} else if (resources.length === 1) {
-					return mode === "One" || mode === "Many";
+					return mode === "One" || mode === "OneOrMany";
 				} else {
 					return mode === "Many";
 				}
