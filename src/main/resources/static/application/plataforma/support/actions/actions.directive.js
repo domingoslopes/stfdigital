@@ -106,21 +106,17 @@
 				
 				var action = null;
 				$scope.disabled = true;
-				$scope.showAction = true;
+				$scope.showAction = false;
 				$scope.showIcon = angular.isString($scope.iconClass);
 				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
 				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
 				
 				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
 					$scope.showDescription = true;
-				}	
+				}
 				
 				ActionService.get($scope.id).then(function(theAction) {
 					
-					if (angular.isUndefined(theAction)) {
-						$scope.showAction = false;
-						return;
-					}
 					action = theAction;
 					$scope.description = action.description;
 					
@@ -219,10 +215,6 @@
 				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
 				
 				ActionService.get($scope.id).then(function(action) {
-					
-					if (angular.isUndefined(action)) {
-						return;
-					}
 					
 					$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
 							

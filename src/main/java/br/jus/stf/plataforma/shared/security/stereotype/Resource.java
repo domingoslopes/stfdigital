@@ -7,7 +7,7 @@ package br.jus.stf.plataforma.shared.security.stereotype;
  * @author Lucas.Rodrigues
  *
  */
-public interface Secured {
+public interface Resource {
 	
 	/**
 	 * Identificador do recurso

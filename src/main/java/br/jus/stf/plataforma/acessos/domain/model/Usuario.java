@@ -45,10 +45,10 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	private Setor lotacao;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "PERMISSAO_USUARIO", schema = "PLATAFORMA",
+	@JoinTable(name = "USUARIO_RECURSO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_USUARIO", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
-	private Set<Permissao> permissoes = new HashSet<Permissao>(0);
+		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
+	private Set<Recurso> recursos = new HashSet<Recurso>(0);
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "PAPEL_USUARIO", schema = "PLATAFORMA",
@@ -141,28 +141,28 @@ public class Usuario implements Entity<Usuario, UsuarioId>, Principal {
 	}
 	
 	@Override
-	public Set<Permissao> permissoes() {
-		Set<Permissao> permissoesCompletas = new HashSet<Permissao>();
+	public Set<Recurso> recursos() {
+		Set<Recurso> recursosCompletos = new HashSet<Recurso>();
 		
-		Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papel -> permissoesCompletas.addAll(papel.permissoes())));
-		Optional.ofNullable(grupos).ifPresent(g -> g.forEach(grupo -> permissoesCompletas.addAll(grupo.permissoes())));
-		Optional.ofNullable(permissoes).ifPresent(p -> permissoesCompletas.addAll(p));
+		Optional.ofNullable(papeis).ifPresent(p -> p.forEach(papel -> recursosCompletos.addAll(papel.recursos())));
+		Optional.ofNullable(grupos).ifPresent(g -> g.forEach(grupo -> recursosCompletos.addAll(grupo.recursos())));
+		Optional.ofNullable(recursos).ifPresent(p -> recursosCompletos.addAll(p));
 		
-		return Collections.unmodifiableSet(permissoesCompletas);
+		return Collections.unmodifiableSet(recursosCompletos);
 	}
 	
 	@Override
-	public void atribuirPermissoes(final Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "usuario.permissoes.required");
+	public void atribuirRecursos(final Set<Recurso> recursos) {
+		Validate.notEmpty(recursos, "usuario.recursos.required");
 		
-		this.permissoes.addAll(permissoes);
+		this.recursos.addAll(recursos);
 	}
 	
 	@Override
-	public void removerPermissoes(Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "usuario.permissoes.required");
+	public void removerRecursos(Set<Recurso> recursos) {
+		Validate.notEmpty(recursos, "usuario.recursos.required");
 		
-		this.permissoes.removeAll(permissoes);
+		this.recursos.removeAll(recursos);
 	}
 	
 	public Setor lotacao(){

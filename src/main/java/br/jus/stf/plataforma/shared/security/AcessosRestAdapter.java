@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.acessos.interfaces.AcessosRestResource;
 import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDto;
+import br.jus.stf.plataforma.shared.security.resource.ResourceImpl;
+import br.jus.stf.plataforma.shared.security.resource.ResourceType;
+import br.jus.stf.plataforma.shared.security.stereotype.Resource;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.UsuarioId;
 
@@ -30,9 +33,9 @@ public class AcessosRestAdapter {
 				.collect(Collectors.toSet());	
 	}
 	
-	public Set<GrantedAuthority> carregarPermissoesRecurso(String nome, String tipoRecurso) {
-		return acessosRestResouce.permissoes(nome, tipoRecurso).stream()
-				.map(permissao -> new SimpleGrantedAuthority(permissao.getDescricao()))
+	public Set<Resource> carregarRecursosUsuario(String login) {
+		return acessosRestResouce.recursos(login).stream()
+				.map(recurso -> new ResourceImpl(recurso.getNome(), ResourceType.valueOf(recurso.getTipo())))
 				.collect(Collectors.toSet());
 	}
 	

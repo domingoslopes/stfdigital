@@ -37,10 +37,10 @@ public class Grupo implements br.jus.stf.shared.stereotype.Entity<Grupo, GrupoId
 	private TipoGrupo tipo;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "PERMISSAO_GRUPO", schema = "PLATAFORMA",
+	@JoinTable(name = "GRUPO_RECURSO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_GRUPO", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
-	private Set<Permissao> permissoes = new HashSet<Permissao>(0);
+		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
+	private Set<Recurso> recursos = new HashSet<Recurso>(0);
 	
 	Grupo() {
 		
@@ -70,22 +70,22 @@ public class Grupo implements br.jus.stf.shared.stereotype.Entity<Grupo, GrupoId
 	}
 	
 	@Override
-	public Set<Permissao> permissoes() {
-		return Collections.unmodifiableSet(permissoes);
+	public Set<Recurso> recursos() {
+		return Collections.unmodifiableSet(recursos);
 	}
 
 	@Override
-	public void atribuirPermissoes(Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "grupo.permissoes.required");
+	public void atribuirRecursos(Set<Recurso> recursos) {
+		Validate.notEmpty(recursos, "grupo.recursos.required");
 		
-		this.permissoes.addAll(permissoes);
+		this.recursos.addAll(recursos);
 	}
 	
 	@Override
-	public void removerPermissoes(Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "grupo.permissoes.required");
+	public void removerRecursos(Set<Recurso> recursos) {
+		Validate.notEmpty(recursos, "grupo.recursos.required");
 		
-		this.permissoes.removeAll(permissoes);
+		this.recursos.removeAll(recursos);
 	}
 	
 	@Override

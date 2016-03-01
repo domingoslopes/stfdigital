@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import br.jus.stf.plataforma.shared.security.stereotype.Resource;
+
 /**
  * Classe utilitária com informações do contexto de segurança
  * 
@@ -17,7 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class SecurityContextUtil {
 
-	private SecurityContextUtil(){
+	private SecurityContextUtil() {
 		
 	}
 	
@@ -56,6 +58,18 @@ public class SecurityContextUtil {
 	public static boolean userContainsAll(Collection<? extends GrantedAuthority> neededAuthorities) {
 		return Optional.ofNullable(neededAuthorities)
 				.map(auts -> auts.isEmpty() ? true : getAuthorities().containsAll(auts))
+				.orElse(true);
+	}
+	
+	/**
+	 * Verifica se o usuário pode acessar um recurso seguro
+	 * 
+	 * @param resource
+	 * @return
+	 */
+	public static boolean userContains(Resource resource) {
+		return Optional.ofNullable(resource)
+				.map(r -> getUser().getUserDetails().getRecursos().contains(r))
 				.orElse(true);
 	}
 	

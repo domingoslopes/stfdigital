@@ -20,6 +20,6 @@ public interface UsuarioRepository {
 	
 	public Usuario save(Usuario principal);
 	
-	public List<Permissao> findByPermissaoUsuario(String login);
+	public List<Recurso> findRecursoByUsuario(String login);
 
 }

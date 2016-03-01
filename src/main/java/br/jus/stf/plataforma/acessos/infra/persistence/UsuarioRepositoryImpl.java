@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.plataforma.acessos.domain.model.Permissao;
+import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
 import br.jus.stf.plataforma.acessos.domain.model.UsuarioRepository;
 import br.jus.stf.shared.UsuarioId;
@@ -47,8 +47,8 @@ public class UsuarioRepositoryImpl extends SimpleJpaRepository<Usuario, UsuarioI
 	}
 	
 	@Override
-	public List<Permissao> findByPermissaoUsuario(String login) {
-		TypedQuery<Permissao> query = entityManager.createQuery("SELECT perm FROM Usuario usua INNER JOIN usua.permissoes perm WITH usua.login = :login", Permissao.class);
+	public List<Recurso> findRecursoByUsuario(String login) {
+		TypedQuery<Recurso> query = entityManager.createQuery("SELECT recu FROM Usuario usua INNER JOIN usua.recursos recu WITH usua.login = :login", Recurso.class);
 		query.setParameter("login", login);
 		
 		return query.getResultList();
