@@ -223,6 +223,15 @@
 					controller: 'OrganizaPecasController',
 				}
 			}
+		}).state('inserir-pecas', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/insere-pecas.tpl.html',
+					controller: 'InserePecasController'
+				}
+			}
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',

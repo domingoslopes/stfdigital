@@ -145,7 +145,11 @@
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
+<<<<<<< HEAD
 		</dependency>
+=======
+		</dependency>        
+>>>>>>> 332a1ada549f034063d4143ccba3e128016a08dd
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>

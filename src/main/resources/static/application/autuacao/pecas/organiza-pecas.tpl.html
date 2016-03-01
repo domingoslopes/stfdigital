@@ -29,6 +29,9 @@
 				       				data-switch-on-color="info" data-switch-off-color="warning" data-switch-size="small" />
 	            			</div>
                         </div>
+                        <div class="actions-wrapper">
+							<actions resources="organiza.selecao.objetos" groups="peca" btn-class="btn-default" />
+						</div>
                         <div class="card-description">
 							<table datatable="ng" class="table" dt-options="organiza.dtOptions" id="tabelaPecas">
 								<thead>
@@ -57,8 +60,9 @@
             </div>
 			<br />
 			<p>
+				<action id="inserir-pecas" groups="novapeca" resources="[{}]" btn-class="btn btn-cons m-t-10"></action>
 				<action-executor id="organizar-pecas" resources="organiza.recursos" fn-validate="organiza.validar"
-					fn-result="organiza.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Concluir tarefa">
+					fn-result="organiza.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Concluir tarefa" enable="tarefa.dono">
 				</action-executor>
 			</p>
 		</form>
