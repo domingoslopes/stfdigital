@@ -164,7 +164,7 @@
 			templateUrl : 'application/plataforma/support/actions/actionmenu.tpl.html',
 			controller : function($scope) {
 				
-				var resources = [{}];
+				var resources = [];
 				var group = 'menu';
 				$scope.actions = [];
 				
