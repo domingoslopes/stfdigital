@@ -6,8 +6,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
 
@@ -16,6 +19,19 @@ import br.jus.stf.plataforma.shared.tests.AbstractIntegrationTests;
  *
  */
 public class AcoesIntegrationTests extends AbstractIntegrationTests {
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
+	@Before
+	public void setUp() {
+		Long result = jdbcTemplate.queryForObject("select count(seq_recurso) from plataforma.usuario_recurso where seq_recurso = 12", Long.class);
+		if (result.intValue() == 0) {
+			jdbcTemplate.execute("insert into plataforma.usuario_recurso values (1, 12)");
+			jdbcTemplate.execute("insert into plataforma.usuario_recurso values (1, 13)");
+			jdbcTemplate.execute("insert into plataforma.usuario_recurso values (1, 14)");
+		}
+	}
 	
     @Test
     public void listarAcoes() throws Exception {

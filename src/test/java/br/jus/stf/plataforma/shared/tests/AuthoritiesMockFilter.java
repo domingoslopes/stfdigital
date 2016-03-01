@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -45,8 +46,10 @@ public class AuthoritiesMockFilter extends OncePerRequestFilter {
 		
 		if (login.isPresent()) {
 			Set<GrantedAuthority> permissoes = acessoAdapter.carregarPermissoesUsuario(login.get());
+			permissoes.add(new SimpleGrantedAuthority("STFDIGITAL"));
 			UserDetails userDetails = new UserDetails(new UsuarioId(1L), new PessoaId(1L), login.get());
 			userDetails.getPapeis().addAll(acessoAdapter.carregarPapeisUsuario(login.get()));
+			userDetails.getRecursos().addAll(acessoAdapter.carregarRecursosUsuario(login.get()));
 			UserImpl principal = new UserImpl(login.get(), "N/A", userDetails, permissoes);
 			AnonymousAuthenticationToken authentication = new AnonymousAuthenticationToken(login.get(), principal, permissoes);
 	

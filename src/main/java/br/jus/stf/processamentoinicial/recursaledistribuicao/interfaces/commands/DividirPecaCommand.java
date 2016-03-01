@@ -15,13 +15,13 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel(value="Comando usado para dividir uma peça processual.")
 public class DividirPecaCommand {
 	
-	@ApiModelProperty(value="Id do processo.")
+	@ApiModelProperty("Id do processo.")
 	private Long processoId;
 	
-	@ApiModelProperty(value="Id da peça original.")
+	@ApiModelProperty("Id da peça original.")
 	private Long pecaId;
 	
-	@ApiModelProperty(value="Lista de peças criadas.")
+	@ApiModelProperty("Lista de peças criadas.")
 	private List<PecaProcessual> pecas;
 	
 	public Long getProcessoId(){

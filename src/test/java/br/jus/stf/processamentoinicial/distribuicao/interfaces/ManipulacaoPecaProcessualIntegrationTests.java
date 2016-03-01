@@ -140,7 +140,7 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 	    salvarPecasCommand = "{\"resources\":[{\"processoId\": " + processoId + ", \"pecas\": [{\"documentoTemporarioId\":\"" + documentoTemporarioId + "\", \"tipoPecaId\":1, \"visibilidade\":\"PUBLICO\", \"descricao\":\"xxx\"}]}]}";
 	    
 	    //Insere a peça.
-  		super.mockMvc.perform(post("/api/actions/inserir-pecas/execute").header("login", "autuador").contentType(MediaType.APPLICATION_JSON)
+  		super.mockMvc.perform(post("/api/actions/inserir-pecas/execute").header("login", "organizador-pecas").contentType(MediaType.APPLICATION_JSON)
   			.content(salvarPecasCommand)).andExpect(status().isOk());
 		
   		//Recupera novamente o processo após a inserção da segunda peça.

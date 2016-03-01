@@ -2,13 +2,13 @@ INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (3
 
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (38, 'excluir-pecas', 'ACAO');
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (39, 'dividir-pecas', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (39, 'dividir-peca', 'ACAO');
 
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (40, 'unir-pecas', 'ACAO');
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (41, 'juntar-pecas', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (41, 'juntar-peca', 'ACAO');
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (42, 'editar-pecas', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (42, 'editar-peca', 'ACAO');
 
 INSERT INTO plataforma.papel_recurso (seq_papel, seq_recurso) VALUES (21, 37);
 

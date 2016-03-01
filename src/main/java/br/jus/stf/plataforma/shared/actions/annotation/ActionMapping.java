@@ -6,6 +6,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
+
 /**
  * Indica que a classe anotada é uma Ação.
  * 
@@ -32,5 +34,12 @@ public @interface ActionMapping {
      * @return o nome da ação
      */
     String name();
+    
+    /**
+     * Modo que indica a quantidade de recursos para a ação ser executada
+     * 
+     * @return
+     */
+    ResourcesMode resourcesMode() /*default ResourcesMode.One*/;
     
 }
