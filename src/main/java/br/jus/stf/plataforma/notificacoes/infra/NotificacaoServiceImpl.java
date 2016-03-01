@@ -1,7 +1,7 @@
 package br.jus.stf.plataforma.notificacoes.infra;
 
 import br.jus.stf.plataforma.notificacoes.domain.model.NotificacaoService;
-import br.jus.stf.plataforma.shared.security.resource.Resource;
+import br.jus.stf.plataforma.shared.security.resource.ResourceImpl;
 import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 
 /**
@@ -10,7 +10,7 @@ import br.jus.stf.plataforma.shared.security.resource.ResourceType;
  * @author Lucas.Rodrigues
  *
  */
-public abstract class NotificacaoServiceImpl extends Resource implements NotificacaoService {
+public abstract class NotificacaoServiceImpl extends ResourceImpl implements NotificacaoService {
 
 	public NotificacaoServiceImpl(String id) {
 		super(id, ResourceType.NOTIFICACAO);

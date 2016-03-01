@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('MinhasTarefasDashletController', ['$scope', 'TarefaService', 'ActionService', '$state', function($scope, TarefaService, ActionService, $state) {
+	angular.plataforma.controller('MinhasTarefasDashletController', ['$scope', 'TarefaService', 'ActionService', '$state', 'messages', function($scope, TarefaService, ActionService, $state, messages) {
 		
 		TarefaService.listarMinhas().success(function(tarefas) {
 			$scope.tarefas = tarefas;
@@ -20,6 +20,8 @@
 							resources : [tarefa.metadado.informacao]
 						};
 					$state.go(action.id, params);
+				}, function() {
+					messages.error("Tarefa '" + tarefa.nome + "' não permitida para o usuário!");
 				});
 		};
 		

@@ -11,27 +11,24 @@ public interface Principal {
 	/**
 	 * @return
 	 */
-	public Set<Permissao> permissoes();
+	public Set<Recurso> recursos();
 	
 	/**
-	 * @param permissoes
+	 * @param recursos
 	 */
-	public void atribuirPermissoes(final Set<Permissao> permissoes);
+	public void atribuirRecursos(final Set<Recurso> recursos);
 	
 	/**
-	 * @param permissoes
+	 * @param recursos
 	 */
-	public void removerPermissoes(final Set<Permissao> permissoes);
+	public void removerRecursos(final Set<Recurso> recursos);
 	
 	/**
 	 * @param recurso
 	 * @return
 	 */
 	public default boolean possuiAcessoNo(Recurso recurso) {
-		if (recurso.permissoesExigidas().isEmpty()) {
-			return true;
-		}
-		return permissoes().containsAll(recurso.permissoesExigidas());
+		return recursos().contains(recurso);
 	}
 	
 }

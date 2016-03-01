@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.acessos.domain.model.Grupo;
 import br.jus.stf.plataforma.acessos.domain.model.GrupoRepository;
-import br.jus.stf.plataforma.acessos.domain.model.Permissao;
+import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.TipoGrupo;
 import br.jus.stf.shared.GrupoId;
 
@@ -37,10 +37,9 @@ public class GrupoRepositoryImpl extends SimpleJpaRepository<Grupo, GrupoId> imp
 		return query.getSingleResult();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Permissao> findPermissaoByGrupo(GrupoId id) {
-		Query query = entityManager.createQuery("SELECT perm FROM Grupo grupo INNER JOIN grupo.permissoes perm WITH grupo.id = :id");
+	public List<Recurso> findRecursoByGrupo(GrupoId id) {
+		TypedQuery<Recurso> query = entityManager.createQuery("SELECT recu FROM Grupo grupo INNER JOIN grupo.recursos recu WITH grupo.id = :id", Recurso.class);
 		query.setParameter("id", id);
 		
 		return query.getResultList();

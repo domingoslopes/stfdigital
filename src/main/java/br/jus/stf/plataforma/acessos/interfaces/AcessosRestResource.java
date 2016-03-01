@@ -28,6 +28,8 @@ import br.jus.stf.plataforma.acessos.interfaces.dto.PapelDto;
 import br.jus.stf.plataforma.acessos.interfaces.dto.PapelDtoAssembler;
 import br.jus.stf.plataforma.acessos.interfaces.dto.PermissaoDto;
 import br.jus.stf.plataforma.acessos.interfaces.dto.PermissaoDtoAssembler;
+import br.jus.stf.plataforma.acessos.interfaces.dto.RecursoDto;
+import br.jus.stf.plataforma.acessos.interfaces.dto.RecursoDtoAssembler;
 import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDto;
 import br.jus.stf.plataforma.acessos.interfaces.dto.UsuarioDtoAssembler;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
@@ -48,6 +50,9 @@ public class AcessosRestResource {
 	private AcessosApplicationService acessosApplicationService;
 	
 	@Autowired
+	private RecursoDtoAssembler recursoDtoAssembler;
+	
+	@Autowired
 	private PermissaoDtoAssembler permissaoDtoAssembler;
 	
 	@Autowired
@@ -57,7 +62,7 @@ public class AcessosRestResource {
 	private GrupoDtoAssembler grupoDtoAssembler;
 	
 	@Autowired
-	private PapelDtoAssembler papelDtoAssembler; 
+	private PapelDtoAssembler papelDtoAssembler;
 	
 	@RequestMapping("/usuarios/permissoes")
 	public Set<PermissaoDto> permissoes(@RequestParam("login") String login) {
@@ -66,10 +71,10 @@ public class AcessosRestResource {
 				.collect(Collectors.toSet());
 	}
 	
-	@RequestMapping("/recursos/permissoes")
-	public Set<PermissaoDto> permissoes(@RequestParam("nome") String nome, @RequestParam("tipo") String tipo) {
-		return acessosApplicationService.carregarPermissoesRecurso(nome, tipo).stream()
-				.map(permissao -> permissaoDtoAssembler.toDto(permissao))
+	@RequestMapping("/usuarios/recursos")
+	public Set<RecursoDto> recursos(@RequestParam("login") String login) {
+		return acessosApplicationService.carregarRecursosUsuario(login).stream()
+				.map(permissao -> recursoDtoAssembler.toDto(permissao))
 				.collect(Collectors.toSet());
 	}
 	

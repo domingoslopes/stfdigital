@@ -35,6 +35,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         if (userDetails.isPresent()) {
         	Set<GrantedAuthority> permissoes = acessosRestAdapter.carregarPermissoesUsuario(login);
         	userDetails.get().getPapeis().addAll(acessosRestAdapter.carregarPapeisUsuario(login));
+        	userDetails.get().getRecursos().addAll(acessosRestAdapter.carregarRecursosUsuario(login));
         	
         	UserImpl user = new UserImpl(login, PASS, userDetails.get(), permissoes);
             return new UsernamePasswordAuthenticationToken(user, PASS, permissoes);
