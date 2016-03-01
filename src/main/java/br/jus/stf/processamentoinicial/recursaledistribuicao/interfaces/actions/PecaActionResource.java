@@ -11,7 +11,6 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.ExcluirPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.JuntarPecaCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.OrganizarPecasCommand;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.SalvarPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.UnirPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
 
