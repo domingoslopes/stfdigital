@@ -6,7 +6,7 @@ INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (3
 
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (40, 'unir-pecas', 'ACAO');
 
-INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (41, 'juntar-pecas', 'ACAO');
+INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (41, 'juntar-peca', 'ACAO');
 
 INSERT INTO plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (42, 'editar-pecas', 'ACAO');
 
