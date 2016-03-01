@@ -10,7 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import br.jus.stf.plataforma.shared.security.resource.Resource;
+import br.jus.stf.plataforma.shared.security.resource.ResourceImpl;
 import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 import br.jus.stf.shared.stereotype.Entity;
 
@@ -22,7 +22,7 @@ import br.jus.stf.shared.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "DASHBOARD", schema = "PLATAFORMA")
-public class Dashboard extends Resource implements Entity<Dashboard, DashboardId> {
+public class Dashboard extends ResourceImpl implements Entity<Dashboard, DashboardId> {
 
 	@EmbeddedId
 	private DashboardId id;
@@ -62,24 +62,6 @@ public class Dashboard extends Resource implements Entity<Dashboard, DashboardId
 	@Override
 	public String resourceId() {
 		return id.toString();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null || getClass() != obj.getClass())
-			return false;
-		Dashboard other = (Dashboard) obj;
-		return sameIdentityAs(other);
 	}
 
 	@Override

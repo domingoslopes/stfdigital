@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.elasticsearch.common.lang3.Validate;
 
+import br.jus.stf.plataforma.shared.security.stereotype.Resource;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.UsuarioId;
 
@@ -18,6 +19,7 @@ public class UserDetails {
 	private PessoaId pessoaId;
 	private String nome;
 	private List<String> roles = new ArrayList<String>(0);
+	private List<Resource> recursos = new ArrayList<Resource>(0);
 	
 	public UserDetails(UsuarioId usuarioId, PessoaId pessoaId, String nome) {
 		
@@ -56,6 +58,13 @@ public class UserDetails {
 	 */
 	public List<String> getPapeis() {
 		return roles;
+	}
+	
+	/**
+	 * @return os papéis do usuário
+	 */
+	public List<Resource> getRecursos() {
+		return recursos;
 	}
 	
 }

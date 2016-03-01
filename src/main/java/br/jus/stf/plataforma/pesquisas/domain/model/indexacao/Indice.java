@@ -1,4 +1,4 @@
-package br.jus.stf.plataforma.pesquisas.domain.model.command;
+package br.jus.stf.plataforma.pesquisas.domain.model.indexacao;
 
 import java.util.HashMap;
 import java.util.Map;

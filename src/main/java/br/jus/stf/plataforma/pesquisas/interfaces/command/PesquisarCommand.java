@@ -31,10 +31,10 @@ public class PesquisarCommand {
 	private Map<String, String> ordenadores;
 	
 	@ApiModelProperty("Página requisitada da pesquisa paginada")
-	private Integer pagina = 0;
+	private Integer page = 0;
 	
 	@ApiModelProperty("Tamanho da pesquisa paginada")
-	private Integer tamanho = 15;
+	private Integer size = 15;
 	
 	@ApiModelProperty("Campo para agregação.")
 	private String campoAgregacao;
@@ -47,24 +47,10 @@ public class PesquisarCommand {
 	}
 	
 	/**
-	 * @param campos the campos to set
-	 */
-	public void setCampos(String[] campos) {
-		this.campos = campos;
-	}
-	
-	/**
 	 * @return the tipos
 	 */
 	public String[] getTipos() {
 		return tipos;
-	}
-	
-	/**
-	 * @param tipos the tipos to set
-	 */
-	public void setTipos(String[] tipos) {
-		this.tipos = tipos;
 	}
 	
 	/**
@@ -75,24 +61,10 @@ public class PesquisarCommand {
 	}
 	
 	/**
-	 * @param indices the indices to set
-	 */
-	public void setIndices(String[] indices) {
-		this.indices = indices;
-	}
-	
-	/**
 	 * @return the filtros
 	 */
 	public Map<String, String[]> getFiltros() {
 		return filtros;
-	}
-	
-	/**
-	 * @param filtros the filtros to set
-	 */
-	public void setFiltros(Map<String, String[]> filtros) {
-		this.filtros = filtros;
 	}
 
 	/**
@@ -103,38 +75,17 @@ public class PesquisarCommand {
 	}
 
 	/**
-	 * @param ordenadores the ordenadores to set
+	 * @return the page
 	 */
-	public void setOrdenadores(Map<String, String> ordenadores) {
-		this.ordenadores = ordenadores;
+	public Integer getPage() {
+		return page;
 	}
 
 	/**
-	 * @return the pagina
+	 * @return the size
 	 */
-	public Integer getPagina() {
-		return pagina;
-	}
-
-	/**
-	 * @param pagina the pagina to set
-	 */
-	public void setPagina(Integer pagina) {
-		this.pagina = pagina;
-	}
-
-	/**
-	 * @return the tamanho
-	 */
-	public Integer getTamanho() {
-		return tamanho;
-	}
-
-	/**
-	 * @param tamanho the tamanho to set
-	 */
-	public void setTamanho(Integer tamanho) {
-		this.tamanho = tamanho;
+	public Integer getSize() {
+		return size;
 	}
 
 	/**

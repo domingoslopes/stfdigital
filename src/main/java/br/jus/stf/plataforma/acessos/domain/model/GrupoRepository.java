@@ -33,7 +33,7 @@ public interface GrupoRepository {
 	 * @param id
 	 * @return
 	 */
-	public List<Permissao> findPermissaoByGrupo(GrupoId id);
+	public List<Recurso> findRecursoByGrupo(GrupoId id);
 	
 	/**
 	 * @return

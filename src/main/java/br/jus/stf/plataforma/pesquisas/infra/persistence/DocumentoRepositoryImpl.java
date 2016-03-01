@@ -18,10 +18,10 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.jus.stf.plataforma.pesquisas.domain.model.command.Documento;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.DocumentoRepository;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.SubDocumento;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Documento;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.DocumentoRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.SubDocumento;
 
 /**
  * @author Lucas.Rodrigues

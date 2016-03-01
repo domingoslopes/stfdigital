@@ -20,9 +20,9 @@
 
 		// Configuração da pesquisa de usuário
 		this.configuracaoPesquisaUsuario = {
-			texto : 'nome',
+			texto : 'pessoa.nome',
 			indices : ['usuario'],
-			filtros : ['nome'],
+			filtros : ['pessoa.nome'],
 			filtrosFixos: {'setor.id': [this.proprioSetor] },
 			pesquisa : 'sugestao'
 		};
@@ -146,7 +146,7 @@
 			if (selecionado) {
 				this.configuracaoPesquisaUsuario.filtrosFixos['setor.id'] = [this.proprioSetor];
 			} else {
-				this.configuracaoPesquisaUsuario.filtrosFixos['setor.id'] = [];
+				this.configuracaoPesquisaUsuario.filtrosFixos = [];
 			}
 		}
 		

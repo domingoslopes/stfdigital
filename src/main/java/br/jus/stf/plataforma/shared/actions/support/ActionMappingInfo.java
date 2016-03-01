@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
-import br.jus.stf.plataforma.shared.security.resource.Resource;
+import br.jus.stf.plataforma.shared.security.resource.ResourceImpl;
 import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 
 /**
@@ -14,7 +14,7 @@ import br.jus.stf.plataforma.shared.security.resource.ResourceType;
  * @author Lucas.Rodrigues
  * 
  */
-public class ActionMappingInfo extends Resource {
+public class ActionMappingInfo extends ResourceImpl {
 
 	private String id;
 	private String description;

@@ -37,10 +37,10 @@ public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId
 	private Grupo grupo;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "PERMISSAO_PAPEL", schema = "PLATAFORMA",
+	@JoinTable(name = "PAPEL_RECURSO", schema = "PLATAFORMA",
 		joinColumns = @JoinColumn(name = "SEQ_PAPEL", nullable = false),
-		inverseJoinColumns = @JoinColumn(name = "SEQ_PERMISSAO", nullable = false))
-	private Set<Permissao> permissoes = new HashSet<Permissao>(0);
+		inverseJoinColumns = @JoinColumn(name = "SEQ_RECURSO", nullable = false))
+	private Set<Recurso> recursos = new HashSet<Recurso>(0);
 	
 	Papel() {
 		
@@ -76,27 +76,27 @@ public class Papel implements br.jus.stf.shared.stereotype.Entity<Papel, PapelId
 	}
 
 	@Override
-	public Set<Permissao> permissoes() {
-		Set<Permissao> permissoesCompletas = new HashSet<Permissao>();
+	public Set<Recurso> recursos() {
+		Set<Recurso> recursosCompletos = new HashSet<Recurso>();
 		
-		permissoesCompletas.addAll(permissoes);
-		Optional.ofNullable(grupo).ifPresent(g -> permissoesCompletas.addAll(g.permissoes()));
+		recursosCompletos.addAll(recursos);
+		Optional.ofNullable(grupo).ifPresent(g -> recursosCompletos.addAll(g.recursos()));
 		
-		return Collections.unmodifiableSet(permissoesCompletas);
+		return Collections.unmodifiableSet(recursosCompletos);
 	}
 
 	@Override
-	public void atribuirPermissoes(Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "papel.permissoes.required");
+	public void atribuirRecursos(Set<Recurso> recursos) {
+		Validate.notEmpty(recursos, "papel.recursos.required");
 		
-		this.permissoes.addAll(permissoes);
+		this.recursos.addAll(recursos);
 	}
 	
 	@Override
-	public void removerPermissoes(Set<Permissao> permissoes) {
-		Validate.notEmpty(permissoes, "papel.permissoes.required");
+	public void removerRecursos(Set<Recurso> recursos) {
+		Validate.notEmpty(recursos, "papel.recursos.required");
 		
-		this.permissoes.removeAll(permissoes);
+		this.recursos.removeAll(recursos);
 	}
 	
 	@Override

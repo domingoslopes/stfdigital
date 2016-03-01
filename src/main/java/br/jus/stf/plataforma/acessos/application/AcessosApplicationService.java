@@ -17,6 +17,7 @@ import br.jus.stf.plataforma.acessos.domain.model.GrupoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.Papel;
 import br.jus.stf.plataforma.acessos.domain.model.PapelRepository;
 import br.jus.stf.plataforma.acessos.domain.model.Permissao;
+import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.plataforma.acessos.domain.model.RecursoRepository;
 import br.jus.stf.plataforma.acessos.domain.model.TipoGrupo;
 import br.jus.stf.plataforma.acessos.domain.model.Usuario;
@@ -56,15 +57,14 @@ public class AcessosApplicationService {
 	@Autowired
 	private PessoaApplicationEvent pessoaApplicationEvent;
 	
+	//TODO: Implementar recuperação de permissões do usuário
 	public Set<Permissao> carregarPermissoesUsuario(String login) {
-		return Optional.ofNullable(usuarioRepository.findOne(login))
-				.map(usuario -> usuario.permissoes())
-				.orElse(Collections.emptySet());
+		return Collections.emptySet();
 	}
 	
-	public Set<Permissao> carregarPermissoesRecurso(String nome, String tipo) {
-		return Optional.ofNullable(recursoRepository.findOne(nome, ResourceType.valueOf(tipo)))
-				.map(recurso -> recurso.permissoesExigidas())
+	public Set<Recurso> carregarRecursosUsuario(String login) {
+		return Optional.ofNullable(usuarioRepository.findOne(login))
+				.map(usuario -> usuario.recursos())
 				.orElse(Collections.emptySet());
 	}
 	

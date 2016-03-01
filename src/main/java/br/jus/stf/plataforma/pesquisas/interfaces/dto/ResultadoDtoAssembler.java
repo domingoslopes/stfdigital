@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.domain.model.query.Resultado;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Resultado;
 
 /**
  * @author Lucas.Rodrigues

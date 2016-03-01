@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import br.jus.stf.plataforma.acessos.domain.model.Papel;
 import br.jus.stf.plataforma.acessos.domain.model.PapelRepository;
-import br.jus.stf.plataforma.acessos.domain.model.Permissao;
+import br.jus.stf.plataforma.acessos.domain.model.Recurso;
 import br.jus.stf.shared.PapelId;
 import br.jus.stf.shared.RecursoId;
 
@@ -36,10 +36,9 @@ public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> imp
 		return query.getSingleResult();
 	}
 			
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Permissao> findPermissaoByPapel(PapelId id) {
-		Query query = entityManager.createQuery("SELECT perm FROM Papel papel INNER JOIN papel.permissoes perm WITH papel.id = :id");
+	public List<Recurso> findRecursoByPapel(PapelId id) {
+		TypedQuery<Recurso> query = entityManager.createQuery("SELECT recu FROM Papel papel INNER JOIN papel.recursos recu WITH papel.id = :id", Recurso.class);
 		query.setParameter("id", id);
 		
 		return query.getResultList();
@@ -49,6 +48,7 @@ public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> imp
 	public PapelId nextId() {
 		Query query = entityManager.createNativeQuery("SELECT plataforma.seq_papel.NEXTVAL FROM DUAL");
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
+		
 		return new PapelId(sequencial);
 	}
 	
@@ -58,13 +58,13 @@ public class PapelRepositoryImpl extends SimpleJpaRepository<Papel, PapelId> imp
 		return super.save(papel);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Papel> findPapelByRecurso(RecursoId id) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT papel FROM Papel papel INNER JOIN papel.permissoes permiss WHERE permiss.id IN (");
-		sql.append("SELECT perm.id FROM Recurso recu INNER JOIN recu.permissoesExigidas perm WITH recu.id = :id))");
-		Query query = entityManager.createQuery(sql.toString());
+		
+		sql.append("SELECT papel FROM Papel papel INNER JOIN papel.recursos recu WHERE recu.id = :id");
+		
+		TypedQuery<Papel> query = entityManager.createQuery(sql.toString(), Papel.class);
 		query.setParameter("id", id);
 		
 		return query.getResultList();

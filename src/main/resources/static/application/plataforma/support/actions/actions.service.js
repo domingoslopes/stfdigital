@@ -25,7 +25,12 @@
 		 */
 		this.get = function(id) {
 			return $q.when(deferred.promise, function(actions) {
+				if (angular.isUndefined(actions[id])) {
+					return $q.reject();
+				}
 				return angular.copy(actions[id]);
+			}, function() {
+				return $q.reject();
 			});
 		};
 		

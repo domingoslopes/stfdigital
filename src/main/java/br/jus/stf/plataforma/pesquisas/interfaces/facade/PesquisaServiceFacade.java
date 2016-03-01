@@ -13,8 +13,12 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.domain.model.query.Pesquisa;
-import br.jus.stf.plataforma.pesquisas.domain.model.query.PesquisaRepository;
+import br.jus.stf.plataforma.pesquisas.application.PesquisaApplicationService;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaRepository;
+import br.jus.stf.plataforma.pesquisas.interfaces.dto.PesquisaAvancadaDto;
+import br.jus.stf.plataforma.pesquisas.interfaces.dto.PesquisaAvancadaDtoAssembler;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDtoAssembler;
 
@@ -29,10 +33,19 @@ public class PesquisaServiceFacade {
 	private PesquisaRepository pesquisaRepository;
 	
 	@Autowired
+	private PesquisaAvancadaRepository pesquisaAvancadaRepository;
+	
+	@Autowired
 	private ResultadoDtoAssembler resultadoDtoAssembler;
 	
 	@Autowired
 	private PagedResourcesAssembler<ResultadoDto> paginacaoAssembler;
+	
+	@Autowired
+	private PesquisaAvancadaDtoAssembler pesquisaAvancadaDtoAssembler;
+	
+	@Autowired
+	private PesquisaApplicationService pesquisaApplicationService;
 	
 	/**
 	 * Pesquisa objetos indexados
@@ -92,5 +105,31 @@ public class PesquisaServiceFacade {
 			.comCampos(campos).comTipos(tipos).comOrdenadores(ordenadores);
 		return resultadoDtoAssembler.toDto(pesquisaRepository.sugerir(pesquisa));
 	}
+
+	/**
+	 * Realiza uma pesquisa avançada
+	 * 
+	 * @param consulta
+	 * @param indices
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	public PagedResources<Resource<ResultadoDto>> pesquisarAvancado(String consulta, String[] indices, Integer page, Integer size) {
+		Pageable paginacao = new PageRequest(page, size);
+		Pesquisa pesquisa = new Pesquisa(consulta, indices);
+		List<ResultadoDto> dtos = resultadoDtoAssembler.toDto(pesquisaAvancadaRepository.executar(pesquisa, paginacao));
+		Page<ResultadoDto> dtosPaginados = new PageImpl<ResultadoDto>(dtos, paginacao, dtos.size());
+	    return paginacaoAssembler.toResource(dtosPaginados);
+    }
+
+	/**
+	 * Recupera as pesquisas avançadas salvas
+	 * 
+	 * @return
+	 */
+	public List<PesquisaAvancadaDto> recuperarAvancadas() {
+	    return pesquisaAvancadaDtoAssembler.toDto(pesquisaAvancadaRepository.listarMinhas());
+    }
 	
 }

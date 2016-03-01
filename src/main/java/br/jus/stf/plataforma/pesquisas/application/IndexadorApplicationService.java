@@ -7,10 +7,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.jus.stf.plataforma.pesquisas.domain.model.command.Documento;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.DocumentoRepository;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.Indice;
-import br.jus.stf.plataforma.pesquisas.domain.model.command.SubDocumento;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Documento;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.DocumentoRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.SubDocumento;
 
 /**
  * @author Lucas.Rodrigues
