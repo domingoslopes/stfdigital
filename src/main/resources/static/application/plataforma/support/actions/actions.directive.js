@@ -235,22 +235,18 @@
 							}
 						}
 						
-						if (ActionService.isValidResources(action, $scope.resources)) {
-							ActionService.execute($scope.id, $scope.resources)
-								.then(function(result) {
-									if (angular.isDefined($scope.result)) {
-										$scope.result = result.data;
-									}
-									// verifica se o callback é uma função e executa
-									if (angular.isFunction($scope.fnResult())) {
-										$scope.fnResult()(result.data);
-									}
-								}, function(err) {
-									messages.error(err);
-								});
-						} else {
-							messages.error("A ação e os recursos para a ação devem ser válidos!");
-						}
+						ActionService.execute($scope.id, $scope.resources)
+							.then(function(result) {
+								if (angular.isDefined($scope.result)) {
+									$scope.result = result.data;
+								}
+								// verifica se o callback é uma função e executa
+								if (angular.isFunction($scope.fnResult())) {
+									$scope.fnResult()(result.data);
+								}
+							}, function(err) {
+								messages.error(err);
+							});
 					};
 				});
 			}

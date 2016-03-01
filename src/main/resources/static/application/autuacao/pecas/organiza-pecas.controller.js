@@ -17,8 +17,6 @@
 		
 		organiza.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
 		
-		organiza.peticao = {};
-		
 		organiza.tiposPeca = [];
 		
 		organiza.resultados = [];
@@ -40,10 +38,6 @@
 				organiza.sortableOptions.disabled = true;
 			}
 		};
-		
-		PeticaoService.consultar(organiza.peticaoId).then(function(data){
-			organiza.peticao = data;
-		});
 		
 		ProcessoService.consultarPorPeticao(organiza.peticaoId).success(function(data){
 			organiza.processo = data;
