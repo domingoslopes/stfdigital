@@ -157,7 +157,11 @@
 			DocumentoTemporarioService.excluirArquivosTemporarios(arquivosTemporarios);
 			uploader.clearQueue();
 			uploader.progress = 0;
+<<<<<<< HEAD
+			PecaService.limpar($scope.pecas);
+=======
 			DocumentoTemporarioService.limpar(pecas);
+>>>>>>> 1c5961386fd6dc39bb433e7e5988092acb6a53f3
 		};
 		
 		

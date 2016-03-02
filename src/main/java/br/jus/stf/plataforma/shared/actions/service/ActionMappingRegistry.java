@@ -23,7 +23,6 @@ import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
 import br.jus.stf.plataforma.shared.actions.handler.ActionConditionHandler;
 import br.jus.stf.plataforma.shared.actions.support.ActionConditionHandlerInfo;
 import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
-import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
 import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
 import br.jus.stf.plataforma.shared.security.annotation.SecuredResource;
 
@@ -120,7 +119,7 @@ public class ActionMappingRegistry implements InitializingBean {
 				info.getGroupClasses().addAll(getGroupClasses(controllerClass));
 				info.setMethodName(method.getName());
 				info.setResourcesClass(getResourcesClass(method));
-				info.setResourcesMode(getResourcesMode(method));
+				info.setResourcesMode(actionMapping.resourcesMode());
 				
 			} else if (handlers.containsKey(annotation.annotationType())) {
 				info.getActionHandlersInfo().add(
@@ -141,23 +140,6 @@ public class ActionMappingRegistry implements InitializingBean {
 		return Arrays.asList(actionController.groups()).stream()
 				.map(group -> group.toLowerCase())
 				.collect(Collectors.toSet());
-	}
-	
-	/**
-	 * Verifica qual o modo de recursos
-	 * 
-	 * @param method
-	 * @return
-	 */
-	private ResourcesMode getResourcesMode(Method method) {
-		if (method.getParameterCount() == 0) {
-			return ResourcesMode.None;
-		} else if (method.getParameterCount() == 1) {
-			Class<?> clazz = method.getParameterTypes()[0];
-			return Collection.class.isAssignableFrom(clazz) ? 
-					ResourcesMode.Many : ResourcesMode.One;
-		}
-		throw new IllegalArgumentException("O mecanismo permite no máximo 1 parâmetro");
 	}
 	
 	/**

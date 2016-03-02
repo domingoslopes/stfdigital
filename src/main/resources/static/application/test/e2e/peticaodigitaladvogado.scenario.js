@@ -127,32 +127,6 @@
 			loginPage.logout();
 		}); 
 		
-		it('Deveria logar como organizador de peças', function() {
-			login('organizador-pecas');
-		});
-
-		it('Deveria organizar as peças do processo distribuído', function() {
-					    
-		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
-		    
-		    principalPage.tarefas().get(0).getText().then(function(text) {
-		    	pos = text.search("#");
-		    	pos = pos + 1;
-		    	processoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Organizar Peças #' + processoId);
-		    });
-		    
-		    principalPage.executarTarefa();
-		    
-		    var organizaPecasPage = new OrganizaPecasPage();
-		    
-		    organizaPecasPage.finalizar();
-		    
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
-			loginPage.logout();
-		}); 
-		
 		it('Deveria logar como gestor-autuacao', function() {
 			login('gestor-autuacao');
 		});
@@ -196,6 +170,17 @@
 			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios', 1);
+			
+/*			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
+			
+			peticionamentoPage.selecionarTipoPeca('Ato coator', 2);
+			
+			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
+			
+			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios', 3);*/
+			
 		    
 			peticionamentoPage.registrar('registrar-peticao-eletronica');
 			

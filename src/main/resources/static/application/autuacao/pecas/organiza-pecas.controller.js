@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('OrganizaPecasController', function ($stateParams, $state, $cookies, messages, properties,ProcessoService, FileUploader, PeticaoService, PecaService, DTOptionsBuilder) {
+	angular.autuacao.controller('OrganizaPecasController', function ($stateParams, $state, $cookies, messages, properties,ProcessoService, FileUploader, PeticaoService, DTOptionsBuilder) {
 		
 		var organiza = this;
 		
@@ -30,14 +30,15 @@
 //		organiza.pecas = [];
 		
 		organiza.buildSelectedObject = function(item) {
-			return {'documentoId': item.documentoId};
+			return {'peca': item,
+					'processoId': organiza.processo.id};
 		};
 		
 		organiza.atualizaEstado = function(){
 			if (organiza.habilitado){
-				organiza.sortableOptions.disable = false;
+				organiza.sortableOptions.disabled = false;
 			}else{
-				organiza.sortableOptions.disable = true;
+				organiza.sortableOptions.disabled = true;
 			}
 		};
 		

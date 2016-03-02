@@ -1,6 +1,7 @@
 package br.jus.stf.plataforma.shared.actions.service;
 
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -96,11 +97,10 @@ public class ActionService {
 							.findDeclaredMethodWithMinimalParameters(controllerClass, action.getMethodName());
 					if (method.getParameterCount() == 0) {
 						return method.invoke(controller);
-					} else if (ResourcesMode.One.equals(
-							action.getResourcesMode())) {
-						return method.invoke(controller, converted.get(0));
+					} else if (Collection.class.isAssignableFrom(method.getParameterTypes()[0])) {
+						return method.invoke(controller, converted);
 					}
-					return method.invoke(controller, converted);
+					return method.invoke(controller, converted.get(0));
 				} catch(Exception e) {
 					throw new Exception("Erro ao executar ação: " + action.getDescription(), e);
 				}
@@ -124,13 +124,8 @@ public class ActionService {
 	 * @return true, se a ação pode ser listada ou executada, false, caso contrário
 	 */
 	private boolean isAllowed(ActionMappingInfo actionInfo, List<?> resources) {
-		Optional.ofNullable(resources)
-			.filter(res -> res.size() > 0)
-			.ifPresent(res -> validarRecursos(res));
+		Optional.ofNullable(resources).filter(res -> res.size() > 0).ifPresent(res -> validarRecursos(res));
 		
-		if (!actionInfo.isValidResourceMode(resources)) {
-			return false;
-		}	
 		for (ActionConditionHandlerInfo handlerInfo : actionInfo.getActionHandlersInfo()) {
 			if(!matches(handlerInfo, resources)) {
 				return false;
@@ -161,13 +156,12 @@ public class ActionService {
 	 * @return os recursos covertidos para tipo infomado
 	 */
 	private List<?> convertResources(ArrayNode resources, ActionMappingInfo actionInfo) {
-		if (ResourcesMode.None.equals(actionInfo.getResourcesMode())) {
+		if (actionInfo.getResourcesClass() == null) {
 			return Collections.emptyList();
 		}
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			JavaType type = TypeFactory.defaultInstance()
-					.constructParametricType(List.class, actionInfo.getResourcesClass());
+			JavaType type = TypeFactory.defaultInstance().constructParametricType(List.class, actionInfo.getResourcesClass());
 			return mapper.convertValue(resources, type);
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao converter recursos!", e);

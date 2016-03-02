@@ -21,7 +21,11 @@ public class NovaPecaActionResource {
 	@Autowired
 	private ProcessoServiceFacade processoServiceFacade;
 	
+<<<<<<< HEAD
+	@ActionMapping(id = "inserir-pecas", name = "Inserir Peças")
+=======
 	@ActionMapping(id = "inserir-pecas", name = "Inserir Peças Processuais", resourcesMode = ResourcesMode.One)
+>>>>>>> 1c5961386fd6dc39bb433e7e5988092acb6a53f3
 	public void inserirPecas(SalvarPecasCommand command) {
 		processoServiceFacade.inserirPecas(command.getProcessoId(), command.getPecas());
 	}

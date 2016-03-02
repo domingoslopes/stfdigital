@@ -93,4 +93,10 @@ public class PesquisaRestResource {
 		pesquisaApplicationService.salvar(command.getNome(), command.getConsulta(), command.getIndices());
 	}
 	
+	@ApiOperation("Pesquisa avançada")
+	@RequestMapping(value = "/criterios", method = RequestMethod.GET)
+	public List<PesquisaAvancadaDto> recuperarCriterios() {		
+		return pesquisaServiceFacade.recuperarAvancadas();
+	}
+	
 }

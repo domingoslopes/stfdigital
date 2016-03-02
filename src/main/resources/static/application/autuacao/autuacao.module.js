@@ -233,6 +233,33 @@
 					controller: 'InserePecasController'
 				}
 			}
+		}).state('juntar-peca', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/juntar-peca.tpl.html',
+					controller: 'JuntaPecasController'
+				}
+			}
+		}).state('excluir-pecas', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/excluir-pecas.tpl.html',
+					controller: 'ExcluiPecasController'
+				}
+			}
+		}).state('unir-pecas', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/unir-pecas.tpl.html',
+					controller: 'UnePecasController'
+				}
+			}
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',
