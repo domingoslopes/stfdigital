@@ -44,7 +44,7 @@
 	
 	var itemHeight = 20, itemWidth = 100, dxOffset = 5, numberOfLists = 2;
 
-	describe('Autuação de Petições Digitais Originárias:', function() { 
+	describe('Organização das Peças do Processo:', function() { 
 		
 		beforeEach(function() {
 			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
@@ -54,7 +54,27 @@
 			login('organizador-pecas');
 		});
 		
-		it('should move last item to start of current list', function() {
+		it('Deveria inserir uma nova peca', function() {
+			
+		});
+		
+		it('Deveria juntar uma nova peça', function() {
+		
+		});
+		
+		it('Deveria unir duas peças', function() {
+			
+		});
+		
+		it('Deveria editar as informações da peça', function() {
+			
+		});
+		
+		it('Deveria exluir uma peça', function() {
+			
+		});
+		
+		/*it('should move last item to start of current list', function() {
 			
 			var principalPage = new PrincipalPage();
 			
@@ -84,22 +104,22 @@
 		  // to ensure the item dropped on a valid target.
 		  var itemHeight = 20, itemWidth = 100, dxOffset = 5, numberOfLists = 2;
 
-		  /**
+		  *//**
 		   * Get repeater string for list (lists start at 1)
 		   *
 		   * @param {Integer} listNumber
-		   */
+		   *//*
 		  function getRepeater(listNumber) {
 		    return by.repeater('peca in organiza.processo.pecas['+(listNumber-1)+']');
 		  }
 
-		  /**
+		  *//**
 		   * Compare list data to values.
 		   *
 		   * @param {Integer} listNumber list number to compare against. This is index
 		   * into the controller items array
 		   * @param {Array} values array of values to compare against a
-		   */
+		   *//*
 		  function expectDataToBe(listNumber, values) {
 		    browser.executeAsyncScript(function(callback) {
 		      callback(angular.element('body').scope().items);
@@ -109,7 +129,7 @@
 		    });
 		  }
 
-		  /**
+		  *//**
 		   * Compare list ng-repeat html against list of values. We do this in addition
 		   * to looking at the data directly to make sure model and HTML are what we
 		   * expect when we apply filters etc. We do this as the DOM is modified by the
@@ -118,7 +138,7 @@
 		   * @param {Integer} listNumber list number to compare against. This is index
 		   * into the controller items array used as in ng-repeat
 		   * @param {Array} values array of values to compare against a
-		   */
+		   *//*
 		  function expectHtmlToBe(listNumber, values) {
 		    element.all(getRepeater(listNumber).column('{{item.id}}')).then(function (items) {
 		      for (var i=0; i < items.length; i++) {
@@ -148,7 +168,7 @@
 		    }
 		  }
 
-		  /**
+		  *//**
 		   * Drag an item and compare to expected values
 		   *
 		   * @param {Integer} listNumber list to move from (starting at 1)
@@ -170,7 +190,7 @@
 		   * @param {Object} dydx offset to move
 		   * @param {Boolean} doSelect whether to do a selection rather than drag and
 		   * drop TODO: Not implemented
-		   */
+		   *//*
 		  function dragAndCompare(listNumber, itemNumber, listValues, dydx, doSelect) {
 			  browser.findElement(getRepeater(listNumber).row(itemNumber-1)).then(function (el) {
 
@@ -194,12 +214,12 @@
 
 		  }
 
-		  /**
+		  *//**
 		   * Check item html against expected values
 		   *
 		   * @param {Integer} listNumber
 		   * @param {Object} values @see dragAndCompare listValues for details
-		   */
+		   *//*
 		  function testItemHtml(listNumber, values) {
 		    var repeater = getRepeater(listNumber);
 		    if (values.length === 0) {
@@ -211,7 +231,7 @@
 		        }
 		      });
 		    }
-		  }
+		  }*/
 		
 	});
 })();
