@@ -224,10 +224,11 @@
 				}
 			}
 		}).state('inserir-pecas', {
-			parent: 'action',
+			parent: 'action.autuacao',
+			url: '/autuacao/pecas',
 			params : { resources : [] },
 			views: {
-				'@action': {
+				'content@root': {
 					templateUrl: 'application/autuacao/pecas/insere-pecas.tpl.html',
 					controller: 'InserePecasController'
 				}

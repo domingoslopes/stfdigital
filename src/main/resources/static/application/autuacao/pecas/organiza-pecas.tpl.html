@@ -60,10 +60,10 @@
             </div>
 			<br />
 			<p>
-				<action id="inserir-pecas" groups="novapeca" resources="[{}]" btn-class="btn btn-cons m-t-10"></action>
+				<action id="inserir-pecas" groups="novapeca" resources="[organiza.peticaoId]" btn-class="btn btn-cons m-t-10"></action>
 				<action-executor id="organizar-pecas" resources="organiza.recursos" fn-validate="organiza.validar"
 					fn-result="organiza.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Concluir tarefa" enable="tarefa.dono">
-				</action-executor>
+				</action-executor>	
 			</p>
 		</form>
 	</div>

@@ -157,7 +157,7 @@
 			PecaService.excluirArquivosTemporarios(arquivosTemporarios);
 			uploader.clearQueue();
 			uploader.progress = 0;
-			PecaService.limpar(pecas);
+			PecaService.limpar($scope.pecas);
 		};
 		
 		
