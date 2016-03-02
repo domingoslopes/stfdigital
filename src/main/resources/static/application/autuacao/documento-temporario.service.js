@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 
-	angular.autuacao.service('PecaService', function ($http, $q, properties) {
+	angular.autuacao.service('DocumentoTemporarioService', function ($http, $q, properties) {
 		
 		this.excluirArquivosTemporarios = function(arquivosTemporarios) {
     		var url = properties.apiUrl + '/documentos/temporarios/delete';
