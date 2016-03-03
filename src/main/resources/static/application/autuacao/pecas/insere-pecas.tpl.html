@@ -36,7 +36,7 @@
 							<h6>Quantidade de peças incluídas: {{ uploader.queue.length }}.</h6>
 						</div>
 						<div class="card-description">
-		    				<table class="table">
+		    				<table class="table" id="tabPecas">
 					            <thead>
 					                <tr>
 										<th style="width: 15%">Título</th>
@@ -54,7 +54,7 @@
 											<strong>{{ peca.fileItem.file.name }}</strong>
 										</td>
 										<td style="width: 30%">
-											<input class="form-control" type="text" style="width: 100%" ng-model="peca.descricao" />
+											<input class="form-control" type="text" style="width: 100%" ng-model="peca.descricao" id="descricao-{{$index}}" />
 										</td>
 										<td style="width: 10%" ng-show="uploader.isHTML5" nowrap>{{ peca.fileItem.file.size/1024/1024|number:2 }} MB</td>
 										<td style="width: 10%" class="progress-row" ng-show="uploader.isHTML5" ng-class="{'upload-finished': peca.uploadFinished}">
@@ -63,19 +63,19 @@
 											</div>
 										</td>
 										<td style="width: 15%">
-											<select ui-select2  class="full-width" ng-model="peca.visibilidade" placeholder="Selecione">
+											<select ui-select2  class="full-width" ng-model="peca.visibilidade" placeholder="Selecione" required id="tipoPecaId-{{$index}}">
 												<option value=""></option>
 												<option data-ng-repeat="visibilidade in visibilidades" value="{{visibilidade.id}}">{{visibilidade.descricao}}</option>
 											</select>
 										</td>
 										<td style="width: 15%">
-											<select ui-select2  class="full-width" ng-model="peca.tipo" placeholder="Selecione">
+											<select ui-select2  class="full-width" ng-model="peca.tipo" placeholder="Selecione" required id="visibilidade-{{$index}}">
 												<option value=""></option>
 												<option data-ng-repeat="tipoPeca in tiposPecas" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
 											</select>
 										</td>
 										<td style="width: 5%" nowrap>
-		                                    <a title="Remover Peca" id="btnRemovePeca" data-placement="top" ng-click="removerPeca(peca,true)" class="close">
+		                                    <a title="Remover Peca" id="btnRemoverPeca" data-placement="top" ng-click="removerPeca(peca,true)" class="close">
 		                                        <span class="glyphicon glyphicon-trash"></span>
 		                                    </a>
 		                                </td>
@@ -83,7 +83,7 @@
 							   </tbody>
 							</table>
 							<div>
-								<button type="button" class="btn btn-danger btn-s" ng-click="limparPecas()" ng-disabled="!uploader.queue.length">
+								<button type="button" class="btn btn-danger btn-s" ng-click="limparPecas()" ng-disabled="!uploader.queue.length" id="btnRemoverTodasPecas">
 									<span class="glyphicon glyphicon-trash"></span>Apagar tudo
 								</button>
 							</div>                

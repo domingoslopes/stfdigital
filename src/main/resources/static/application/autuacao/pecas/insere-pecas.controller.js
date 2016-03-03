@@ -6,7 +6,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('InserePecasController', function ($scope, $stateParams, $state, messages, properties, $window, $cookies, FileUploader, PeticaoService, PecaService, ProcessoService) {
+	angular.autuacao.controller('InserePecasController', function ($scope, $stateParams, $state, messages, properties, $window, $cookies, FileUploader, PeticaoService, DocumentoTemporarioService, ProcessoService) {
 		$scope.peticaoId = angular.isObject($stateParams.resources[0]) ? $stateParams.resources[0].peticaoId : $stateParams.resources[0];
 		$scope.processo = null;
 		$scope.pecas = [];
@@ -104,10 +104,10 @@
 				arquivosTemporarios.push(peca.documentoTemporario);
 			});
 			
-			PecaService.excluirArquivosTemporarios(arquivosTemporarios);
+			DocumentoTemporarioService.excluirArquivosTemporarios(arquivosTemporarios);
 			uploader.clearQueue();
 			uploader.progress = 0;
-			PecaService.limpar($scope.pecas);
+			DocumentoTemporarioService.limpar($scope.pecas);
 		};
 		
 		$scope.visualizar = function(peca){
@@ -121,7 +121,7 @@
 			if (apagarDoServidor) {
 				var pecaFull = recuperarPecaPorItem(peca.fileItem);
 				var arquivoTemporario = [pecaFull.documentoTemporario];
-				PecaService.excluirArquivosTemporarios(arquivoTemporario);
+				DocumentoTemporarioService.excluirArquivosTemporarios(arquivoTemporario);
 			}
 			
 			peca.fileItem.remove();

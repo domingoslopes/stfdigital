@@ -9,8 +9,11 @@
 	'use strict';
 	
 	var Utils = require('./support');
-	
+	var path = require('path');
 	var utils = new Utils();
+	
+	// Parametrização do caminho dos arquivos.
+	var filesDirFullPath = browser.params.filesDirPath ? browser.params.filesDirPath : (__dirname + '/../files');
 	
 	var OrganizaPecasPage = function () {
 		
@@ -35,10 +38,77 @@
 			browser.waitForAngular();
 		};
 		
+		this.acionarOpcaoInserirPecas = function () {
+			element(by.id('btn_inserir-pecas')).click();
+			browser.waitForAngular();
+		};
+		
+		this.uploadPecas = function(){
+			var fileToUpload = 'pdf-de-teste-assinado-02.pdf';
+			var absolutePath = path.resolve(filesDirFullPath, fileToUpload);
+			// Procura o elemento input da tela com o atributo com o tipo "file"
+		    var fileElem = element(by.css('input[type="file"]'));
+
+		    // É necessario dar visibilidade ao componente input
+		    browser.executeScript(
+		      "arguments[0].style.visibility = 'visible'; arguments[0].style.height = '1px'; arguments[0].style.width = '1px'; arguments[0].style.opacity = 1",
+		      fileElem.getWebElement());
+
+		    // Envia o caminho e o arquivo para o input fazer a submissão. Não é necessário clicar no botão
+		    fileElem.sendKeys(absolutePath);
+		    browser.waitForAngular();
+		};
+		
+		var hasClass = function (element, cls) {
+		    return element.getAttribute('class').then(function (classes) {
+		        return classes.split(' ').indexOf(cls) !== -1;
+		    });
+		};
+		
+		this.waitUploadFinished = function(index, timeout) {
+			browser.wait(element(by.css('#tabPecas')).isDisplayed);
+			
+			var uploadedRow = element.all(by.repeater('peca in pecas')).get(index);
+			var finishedMark = uploadedRow.element(by.css('td.progress-row'));
+			
+			browser.wait(function() {
+				return hasClass(finishedMark, 'upload-finished');
+			}, (!timeout) ? 3000 : timeout).then(function() {
+				browser.waitForAngular();
+			});
+		};
+		
+		this.removerPeca = function() {
+			element(by.id('btnRemoverPeca')).click();
+		};
+		
+		this.removerTodasPecas = function() {
+			element(by.id('btnRemoverTodasPecas')).click();
+		};
+		
+		this.setarDescricao = function(descricao, id) {
+			var index = !id ? 0 : id;
+			element(by.id('descricao-' + index)).sendKeys(descricao);
+		};
+		
+		this.selecionarTipoPeca = function(descricao, id) {
+			var index = !id ? 0 : id;
+			utils.select('div#s2id_tipoPecaId-' + index, descricao);
+		};
+		
+		this.selecionarVisibilidadePeca = function(visibilidade, id) {
+			var index = !id ? 0 : id;
+			utils.select('div#s2id_visibilidade-' + index, visibilidade);
+		};
+		
 		this.finalizar = function() {
 			element(by.id('btn_exec_organizar-pecas')).click();
 		};
 		
+		this.executarInsercaoPecas = function(){
+			element(by.id('btn_exec_inserir-pecas')).click();
+			browser.waitForAngular();
+		}
 	};
 
 	module.exports = OrganizaPecasPage;
