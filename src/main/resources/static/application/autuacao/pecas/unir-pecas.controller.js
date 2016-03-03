@@ -6,31 +6,39 @@
 (function() {
 	'use strict';
 
-	angular.autuacao.controller('UnePecasController', function($scope, $stateParams) {
+	angular.autuacao.controller('UnePecasController', function($scope, $stateParams, messages, PecaService) {
 		
-		$scope.commands = [];
+		var resources = [];
 		
-		var UnePecasCommand = function(tarefaId, usuarioId) {
-			return {
-				tarefaId : tarefaId, 
-				usuarioId : usuarioId
-			};
-		};
+		var documentos = [];
 		
-		angular.forEach($stateParams.resources, function(tarefa) {
-			$scope.commands.push(new UnePecasCommand(tarefa.id, null));
+		var pecasId = [];
+		
+		var tamanhoTotalPeca = 0;
+		
+		resources = $stateParams.resources;
+		
+		angular.forEach(resources, function(resource){
+			PecaService.consultarDocumento(resource.peca.documentoId).then(function(documento){
+				documentos.push(documento);
+				tamanhoTotalPeca += documento.tamanho;
+			});
+			pecasId.push(resource.peca.sequencial);
 		});
 		
+		$scope.commands = [{
+			processoId : resources[0].processoId, 
+			pecas : pecasId
+		}];
+		
 		$scope.validar = function() {
-			if (angular.isObject($scope.usuario) ) {
-				angular.forEach($scope.commands, function(command) {
-					command.usuarioId = $scope.usuario.id;
-				});
-				return true;
-			} else {
-				messages.error("Selecione um usuário!");
+			if (tamanhoTotalPeca > 1000000) {
+				messages.error("A união das peças está ultrapassando os 10Mb");
+				$scope.modal.close();
 				return false;
-			} 
+			}
+			messages.success('<b> Peças juntadas com sucesso </b>');
+			return true;
 		};
 		
 	});
