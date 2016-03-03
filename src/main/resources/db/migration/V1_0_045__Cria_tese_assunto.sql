@@ -5,7 +5,7 @@ create sequence jurisprudencia.seq_tese increment by 1 start with 1905 nomaxvalu
 create table jurisprudencia.assunto (cod_assunto varchar2(9) not null, dsc_assunto varchar2(255) not null, constraint pk_assunto primary key (cod_assunto));
 alter table jurisprudencia.assunto add constraint UK_ASSU_DSC_ASSUNTO  unique (dsc_assunto);
 
-create table jurisprudencia.tese (seq_tese bigint not null, dsc_tese varchar2(4000), tip_tese varchar2(17) not null, num_tese bigint not null, constraint pk_tese primary key (seq_tese));
+create table jurisprudencia.tese (seq_tese bigint not null, dsc_tese varchar2(4000) not null, tip_tese varchar2(17) not null, num_tese bigint not null, constraint pk_tese primary key (seq_tese));
 alter table jurisprudencia.tese add constraint UK_TESE_DSC_TESE  unique (tip_tese, dsc_tese);
 alter table jurisprudencia.tese add constraint UK_TESE_NUM_TESE  unique (tip_tese, num_tese);
 alter table jurisprudencia.tese add constraint ck_tese_tip_tese check (tip_tese in ('CONTROVERSIA', 'PRE_TEMA', 'REPERCUSSAO_GERAL'));
