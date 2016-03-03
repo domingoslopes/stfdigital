@@ -7,6 +7,6 @@ package br.jus.stf.plataforma.pesquisas.domain.model.pesquisa;
  */
 public enum TipoCriterio {
 	
-	NUMERO, DATA, SELECAO, TEXTO, BOLEANO;
+	NUMERO, DATA, SELECAO, TEXTO, BOOLEANO;
 	
 }
