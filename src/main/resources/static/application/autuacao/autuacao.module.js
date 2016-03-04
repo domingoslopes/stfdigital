@@ -259,6 +259,15 @@
 					controller: 'UnePecasController'
 				}
 			}
+		}).state('dividir-peca', {
+			parent: 'action',
+			params : { resources : [], modalClass:"modal-lg"},
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/dividir-pecas.tpl.html',
+					controller: 'DividePecasController'
+				}
+			}
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',
