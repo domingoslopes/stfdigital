@@ -1,88 +1,98 @@
 <div class="content" ng-controller="InserePecasController">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Peça</p>
+					</li>
+					<li><a href="#" id="subtitulo" class="active">Inserir Peças</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 	<div class="container-fluid container-fixed-lg">
 		<form id="taskForm" novalidate>
 			<div class="row">
 				<div class="col-md-12">
 					 <div class="card share" data-social="item" style="width: 100%">
-						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-						<div class="card-header clearfix ">
-							<h5>Inclusão de Peças</h5>
-						</div>
 						<div class="card-description">
 		                    <div nv-file-drop="" uploader="uploader">
 	                            <div nv-file-over="" uploader="uploader" over-class="another-file-over-class" class="force-pointer" data-ng-class="uploader.isHTML5 ? 'my-drop-zone' : 'my-drop-zone-single'" onclick="$('#idSelectFilePecas').click();">
 	                            </div>
                         	</div> 
-		                    <input  id="idSelectFilePecas" type="file" name="file" nv-file-select="" uploader="uploader" multiple  ng-class="uploader.isHTML5 ? 'invisible' : ''"/><br/>
+		                    <input  id="idSelectFilePecas" type="file" name="file" nv-file-select="" uploader="uploader" multiple  ng-class="uploader.isHTML5 ? 'invisible' : ''" />
+							<br/>
 	              		</div>
 	              	</div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" ng-show="pecas.length > 0">
 		        <div class="col-md-12" style="margin-bottom: 40px">
 			        <div class="card share" data-social="item" style="width: 100%">
 						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
 						<div class="card-header clearfix ">
-							<h5>Lista de documentos</h5>
-							<h6>Quantidade de documentos incluídos: {{ uploader.queue.length }}.</h6>
+							<h5>Lista de Peças</h5>
+							<h6>Quantidade de peças incluídas: {{ uploader.queue.length }}.</h6>
 						</div>
 						<div class="card-description">
-		                    
+		    				<table class="table" id="tabPecas">
+					            <thead>
+					                <tr>
+										<th style="width: 15%">Título</th>
+					                    <th style="width: 30%">Descrição</th>
+					                    <th style="width: 10%" ng-show="uploader.isHTML5">Tamanho</th>
+					                    <th style="width: 10%" ng-show="uploader.isHTML5">Progresso</th>
+					                    <th style="width: 15%">Visibilidade</th>
+					                    <th style="width: 15%">Tipo de Peça</th>
+					                    <th style="width: 5%">Ação</th>
+					                </tr>
+					            </thead>
+								<tbody>
+									<tr ng-repeat="peca in pecas">
+										<td style="width: 15%" data-ng-click="visualizar(peca)">
+											<strong>{{ peca.fileItem.file.name }}</strong>
+										</td>
+										<td style="width: 30%">
+											<input class="form-control" type="text" style="width: 100%" ng-model="peca.descricao" id="descricao-{{$index}}" />
+										</td>
+										<td style="width: 10%" ng-show="uploader.isHTML5" nowrap>{{ peca.fileItem.file.size/1024/1024|number:2 }} MB</td>
+										<td style="width: 10%" class="progress-row" ng-show="uploader.isHTML5" ng-class="{'upload-finished': peca.uploadFinished}">
+											<div class="progress" style="margin-bottom: 0;">
+												<div class="progress-bar" role="progressbar" ng-style="{ 'width': peca.fileItem.progress + '%' }"></div>
+											</div>
+										</td>
+										<td style="width: 15%">
+											<select ui-select2  class="full-width" ng-model="peca.visibilidade" placeholder="Selecione" required id="tipoPecaId-{{$index}}">
+												<option value=""></option>
+												<option data-ng-repeat="visibilidade in visibilidades" value="{{visibilidade.id}}">{{visibilidade.descricao}}</option>
+											</select>
+										</td>
+										<td style="width: 15%">
+											<select ui-select2  class="full-width" ng-model="peca.tipo" placeholder="Selecione" required id="visibilidade-{{$index}}">
+												<option value=""></option>
+												<option data-ng-repeat="tipoPeca in tiposPecas" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
+											</select>
+										</td>
+										<td style="width: 5%" nowrap>
+		                                    <a title="Remover Peca" id="btnRemoverPeca" data-placement="top" ng-click="removerPeca(peca,true)" class="close">
+		                                        <span class="glyphicon glyphicon-trash"></span>
+		                                    </a>
+		                                </td>
+									</tr>
+							   </tbody>
+							</table>
+							<div>
+								<button type="button" class="btn btn-danger btn-s" ng-click="limparPecas()" ng-disabled="!uploader.queue.length" id="btnRemoverTodasPecas">
+									<span class="glyphicon glyphicon-trash"></span>Apagar tudo
+								</button>
+							</div>                
 		                </div>
 					</div>
              	</div>
-            </div>
-            
-            <table class="table" style="width: 400px;">
-		                        <thead>
-		                            <tr>
-		                                <th>Título</th>
-		                                <th>Descrição</th>
-		                                <th ng-show="uploader.isHTML5">Tamanho</th>
-		                                <th ng-show="uploader.isHTML5">Progresso</th>
-		                                <th>Visibilidade</th>
-		                                <th>Tipo de Peça</th>
-		                            </tr>
-		                        </thead>
-		                        <tbody>
-		                            <tr ng-repeat="peca in pecas">
-		                            	<td data-ng-click="visualizar(peca)" class="force-pointer">
-		                            		<strong>{{ peca.fileItem.file.name }}</strong>
-	                            		</td>
-		                            	<td
-		                            		<input type="text" />
-		                            	</td>
-		                                <td ng-show="uploader.isHTML5" nowrap>{{ peca.fileItem.file.size/1024/1024|number:2 }} MB</td>
-		                                <td class="progress-row" ng-show="uploader.isHTML5" ng-class="{'upload-finished': peca.uploadFinished}">
-		                                    <div class="progress" style="margin-bottom: 0;">
-		                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': peca.fileItem.progress + '%' }"></div>
-		                                    </div>
-		                                </td>
-		                                <td>
-		                                    <select>
-												 <option value=""></option>
-												 <option value="Pendente de visualização">Pendente de visualização</option>
-												 <option value="Público">Público</option>
-											</select>
-		                                </td>
-		                                <td>
-		                                    <select>
-												 <option value=""></option>
-												 <option data-ng-repeat="visibilidade in visibilidades" value="{{visibilidade}}">{{visibilidade}}</option>
-											</select>
-		                                </td>
-		                            </tr>
-		                        </tbody>
-		                    </table>
-		                    <div>
-		                        <button type="button" class="btn btn-danger btn-s" ng-click="limparPecas()" ng-disabled="!uploader.queue.length">
-		                            <span class="glyphicon glyphicon-trash"></span> Apagar tudo
-		                        </button>
-		                    </div>
-            
-			<br />
-			<p>
-				 
+			</div>
+			<p ng-show="pecas.length > 0">
+				<action-executor id="inserir-pecas" resources="recursos" fn-validate="validar" fn-result="completar" btn-class="btn btn-complete btn-cons m-t-10" /> 
 			</p>
 		</form>
 	</div>

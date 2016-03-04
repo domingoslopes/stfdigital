@@ -28,6 +28,8 @@
 	
 	var loginPage;
 	
+	var organizaPecasPage;
+	
 	var pos;
 	
 	var peticaoId;
@@ -117,7 +119,7 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-			
+		    
 		    distribuir('COMUM');
 		    
 		    distribuir('PREVENCAO');
@@ -126,6 +128,58 @@
 			
 			loginPage.logout();
 		}); 
+		
+		it('Deveria logar como organizador-pecas', function(){
+			login('organizador-pecas');
+		});
+		
+		it('Deveria Inserir Peças', function(){
+			expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Organizar Peças #' + peticaoId);
+		    });
+		    
+		    principalPage.executarTarefa();
+		    
+		    inserirPecas();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/autuacao\/peca/);
+		});
+		
+		var inserirPecas = function(){
+			if (!organizaPecasPage) {
+		    	organizaPecasPage = new OrganizaPecasPage();
+		    }
+		    
+			//Acessa a página de inserção de peças.
+			organizaPecasPage.acionarOpcaoInserirPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			//Remove a peça.
+			organizaPecasPage.removerPeca();
+			
+			//Insere duas peças.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			//Exclui as duas peças.
+			organizaPecasPage.removerTodasPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			organizaPecasPage.executarInsercaoPecas();
+		}
 		
 		it('Deveria logar como gestor-autuacao', function() {
 			login('gestor-autuacao');
@@ -144,7 +198,6 @@
 			expect(principalPage.dashletMinhasTarefas.isDisplayed()).toBe(true);
 			loginPage.logout();
 		});
-		
 		
 		var peticionar = function(siglaClasse){
 			
