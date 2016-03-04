@@ -9,6 +9,7 @@ create sequence autuacao.seq_processo_motivo_inaptidao increment by 1 start with
 create table autuacao.processo_motivo_inaptidao (seq_processo_motivo_inaptidao bigint not null, seq_processo bigint not null, cod_motivo_inaptidao bigint not null, dsc_motivo_inaptidao varchar2(500), constraint pk_processo_motivo_inaptidao primary key (seq_processo_motivo_inaptidao));
 alter table autuacao.processo_motivo_inaptidao add constraint FK_PROCESSO_PRMI foreign key (seq_processo) references autuacao.processo;
 alter table autuacao.processo_motivo_inaptidao add constraint FK_MOTIVO_INAPTIDAO_PRMI foreign key (cod_motivo_inaptidao) references autuacao.motivo_inaptidao;
+alter table autuacao.processo_motivo_inaptidao add constraint UK_PRMI_SEQ_PROCESSO unique (seq_processo, cod_motivo_inaptidao);
 
 ALTER TABLE autuacao.processo ADD dsc_analise VARCHAR2(1000);
 ALTER TABLE autuacao.processo ADD tip_classificacao VARCHAR2(6);
