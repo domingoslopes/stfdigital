@@ -7,12 +7,11 @@
 	'use strict';
 	
 	angular.autuacao.controller('EditaPecaController', function ($scope, $stateParams, $state, messages, properties, $window, $cookies, FileUploader, PeticaoService, DocumentoTemporarioService, ProcessoService) {
-		$scope.peticaoId = angular.isObject($stateParams.resources[0]) ? $stateParams.resources[0].peticaoId : $stateParams.resources[0];
-		$scope.processo = null;
-		$scope.sequencialPeca = null;
-		$scope.tipoPeca = null;
-		$scope.descricaoPeca = null;
-		$scope.visibilidade = null;
+		$scope.pecaId = $stateParams.resources[0].peca.sequencial;
+		$scope.sequencialPeca = $stateParams.resources[0].peca.numeroOrdem;
+		$scope.tipoPeca = $stateParams.resources[0].peca.tipoId;
+		$scope.descricaoPeca = $stateParams.resources[0].peca.descricao;
+		$scope.visibilidade = $stateParams.resources[0].peca.visibilidade;
 		$scope.visibilidades = [{id:"PUBLICO", descricao:"Público"}, {id:"PENDENTE_VISUALIZACAO", descricao:"Pendente de visualização"}];
 		$scope.tiposPecas = [];
 		$scope.recursos = [];
@@ -20,82 +19,52 @@
 		PeticaoService.listarTipoPecas().then(function(tiposPecas) {
 			$scope.tiposPecas = tiposPecas;
 		});
-		
-		ProcessoService.consultarPorPeticao($scope.peticaoId).success(function(data){
-			$scope.processo = data;
-		});
 	    
 	    $scope.validar = function() {
 	    	var errors = '';
 	    	var camposErros = '';
 	    	var pecaInserida = null;
 			
-			if ($scope.pecas.length === 0) {
-				errors += 'Nenhuma peça foi informada.<br/>';
-			} else {
-				for (var i = 0; i < $scope.pecas.length; i++) {
-					pecaInserida = $scope.pecas[i];
-					
-					if (pecaInserida.descricao == '' || pecaInserida.descricao == null) {
-						camposErros += '- Descrição<br/>';
-					}
-					
-					if (pecaInserida.visibilidade == null) {
-						camposErros += '- Visibilidade<br/>';
-					}
-					
-					if (pecaInserida.tipo == null) {
-						camposErros += '- Tipo de peça<br/>';
-					}
-					
-					if (camposErros != '') {
-						errors += 'Campo(s) não informado(s) para a peça ' + pecaInserida.fileItem.file.name + ': <br/>' + camposErros + '<br/>';
-					}
-					
-					if (errors) {
-						messages.error(errors);
-					}
-				}
+			if ($scope.sequencialPeca == null) {
+				messages.error('Informe o sequencial da peça.');
+				return false;
 			}
 			
-	    	if (errors) {
+			if ($scope.tipoPeca == null) {
+				messages.error('Informe o tipo de peça.');
+				return false;
+			}
+			
+			if ($scope.descricaoPeca == null) {
+				messages.error('Informe descrição da peça.');
+				return false;
+			}
+			
+			if ($scope.visibilidade == null) {
+				messages.error('Informe a visibilidade da peça.');
 				return false;
 			}
 	    	
-	    	$scope.recursos[0] = new SalvarPecasCommand($scope.processo.id, $scope.pecas);
+	    	$scope.recursos[0] = new editarPecaCommand($scope.pecaId, $scope.tipoPeca, $scope.descricaoPeca, $scope.sequencialPeca, $scope.visibilidade);
 	    	
 	    	return true;
 	    };
 	    
 	    $scope.completar = function() {
 	    	$state.go('organizar-pecas');
-	    	messages.success('Peças inseridas com sucesso.');
+	    	messages.success('Peça editada com sucesso.');
 	    };
 
-    	function SalvarPecasCommand(processoId, pecas){
+    	function editarPecaCommand(pecaId, tipoPecaId, descricao, numeroOrdem, visibilidade){
     		var dto = {};
     		
-    		dto.processoId = processoId;
-    		dto.pecas = montarDtoPecas(pecas);
+    		dto.pecaId = pecaId;
+    		dto.tipoPecaId = tipoPecaId;
+    		dto.descricao = descricao;
+    		dto.numeroOrdem = numeroOrdem;
+    		dto.visibilidade = visibilidade;
     		
     		return dto;
-    	};
-		
-    	function montarDtoPecas(pecas) {
-    		var pecasDto = [];
-    		
-    		for (var i = 0; i < pecas.length; i++) {
-    			var dto = {};
-    			dto.documentoTemporarioId = pecas[i].documentoTemporario;
-        		dto.tipoPecaId = pecas[i].tipo;
-        		dto.visibilidade = pecas[i].visibilidade;
-        		dto.situacao = 'Pendente de juntada';
-        		dto.descricao = pecas[i].descricao;
-        		
-        		pecasDto.push(dto);
-    		}
-    		
-    		return pecasDto;
     	};
 	});
 

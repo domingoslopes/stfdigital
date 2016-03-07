@@ -260,6 +260,15 @@
 					controller: 'UnePecasController'
 				}
 			}
+<<<<<<< HEAD
+		}).state('editar-peca', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/edita-peca.tpl.html',
+					controller: 'EditaPecaController'
+=======
 		}).state('dividir-peca', {
 			parent: 'action',
 			params : { resources : [], modalClass:"modal-lg"},
@@ -267,18 +276,9 @@
 				'@action': {
 					templateUrl: 'application/autuacao/pecas/dividir-pecas.tpl.html',
 					controller: 'DividePecasController'
+>>>>>>> 1504559da5a258f388b7f421081236f3d5874dad
 				}
 			}
-		}).state('editar-peca', {
-			parent: 'action',
-			params : { resources : [], modalClass:"modal-lg" },
-			views: {
-				'@action': {
-					templateUrl: 'application/autuacao/pecas/edita-peca.tpl.html',
-					controller: 'EditaPecaController'
-				}
-			}
-
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',

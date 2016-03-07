@@ -21,6 +21,7 @@
 				$scope.modal.close();
 				return false;
 			}
+			messages.success('<b> Peça juntada com sucesso </b>');
 			return true;
 		};
 		

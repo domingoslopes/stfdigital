@@ -1,82 +1,49 @@
 <div class="content" ng-controller="EditaPecaController">
-	<div class="jumbotron" data-pages="parallax">
-		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
-			<div class="inner">
-				<ul class="breadcrumb">
-					<li>
-						<p>Peças Processuais</p>
-					</li>
-					<li><a href="#" id="subtitulo" class="active">Editar Peça</a></li>
-				</ul>
+	<div messages="" api="messages.api"></div>
+	<form id="formDividir" class="form-horizontal">
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="sequencialPeca" class="control-label">Sequencial:</label> 
+			</div>
+			<div class="col-md-2">
+	            <input type="text" class="form-control" id="descricaoPeca" ng-model="sequencialPeca" placeholder="Informe aqui"></input>
 			</div>
 		</div>
-	</div>
-	<div class="container-fluid container-fixed-lg">
-		<form>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="card share" data-social="item" style="width: 100%">
-						<div class="circle" data-toggle="tooltip" title=""
-							data-container="body" data-original-title="Label"></div>
-						<div class="card-header clearfix">
-							<h5>Sequêncial</h5>
-							<h6>Informe o nº sequencial da peça:</h6>
-						</div>
-						<div class="card-description">
-                        	<input type="text" id="sequencialPeca" name="sequencialPeca" ng-model="$scope.sequencialPeca" size="30" placeholder="Nº sequencial da peça"> 
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="card share" data-social="item" style="width: 100%">
-						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-						<div class="card-header clearfix ">
-							<h5>Tipo de Peça</h5>
-							<h6>Informe o tipo de peça.</h6>
-						</div>
-						<div class="card-description">
-							<select ui-select2 id="tipoPeca" ng-model="$scope.tipoPeca" data-placeholder="Selecione um tipo de peça" autofocus>
-								<option value=""></option>
-								<option ng-repeat="tipoPeca in $scope.tiposPecas" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
-							</select>
-						</div>
-					</div>
-				</div>
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="tipoPeca" class="control-label">Tipo:</label> 
 			</div>
-			<div class="row">
-                <div class="col-md-6">
-                    <div class="card share" data-social="item" style="width: 100%">
-                        <div class="circle" data-toggle="tooltip" title=""
-                            data-container="body" data-original-title="Label"></div>
-                        <div class="card-header clearfix">
-                            <h5>Descrição da Peça</h5>
-                            <h6>Informe a descrição da peça.</h6>
-                        </div>
-                        <div class="card-description">
-                        	<input type="text" id="descricaoPeca" name="descricaoPeca" ng-model="$scope.descricaoPeca" size="30" placeholder="Informe a descrição da peça" autofocus> 
-                        </div>
-                    </div>
-                </div>
-				<div class="col-md-6">
-					<div class="card share" data-social="item" style="width:99%">
-						<div class="circle" data-toggle="tooltip" title="" data-container="body" data-original-title="Label"></div>
-						<div class="card-header clearfix ">
-								<h5>Tipo de Processo</h5>
-								<h6>Tipo de processo da petição física</h6>
-							</div>
-						<div class="card-description">
-							<select ui-select2  class="full-width" ng-model="$scope.visibilidade" placeholder="Selecione" required id="visibilidadeId">
-								<option value=""></option>
-								<option data-ng-repeat="visibilidade in visibilidades" value="{{visibilidade.id}}">{{visibilidade.descricao}}</option>
-							</select>
-						</div>
-					</div>
-				</div>
+			<div class="col-md-10">
+	            <select ui-select2 id="tipoPeca" ng-model="tipoPeca" data-placeholder="Selecione um tipo de peça" style="width:58%;" autofocus>
+					<option value=""></option>
+					<option ng-repeat="tipoPeca in tiposPecas" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
+				</select>
 			</div>
-			<br />
-			<p>
-    			<action-executor id="editar-peca" resources="recursos" fn-validate="validar" fn-result="completar" btn-class="btn btn-complete btn-cons m-t-10" description="Salvar" /> 
- 			</p>
-		</form>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="descricaoPeca" class="control-label">Descrição:</label> 
+			</div>
+			<div class="col-md-10">
+	            <input type="text" class="form-control" id="descricaoPeca" ng-model="descricaoPeca" placeholder="Informe a descrição da peça"></input>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="tipoPeca" class="control-label">Visibilidade:</label> 
+			</div>
+			<div class="col-md-6">
+	            <select ui-select2  class="full-width" ng-model="visibilidade" placeholder="Selecione uma opção" required id="visibilidadeId">
+					<option value=""></option>
+					<option data-ng-repeat="visibilidade in visibilidades" value="{{visibilidade.id}}">{{visibilidade.descricao}}</option>
+				</select>
+			</div>
+		</div>
+	</form>
+	<div align="center" class="modal-footer">
+		<span>
+	    	<action-executor id="editar-peca" resources="recursos" fn-validate="validar" fn-result="modal.close()" btn-class="btn btn-complete" description="Salvar" />
+		</span>
+		<button ng-click="modal.close()" class="btn btn-default">Cancelar</button>
 	</div>
 </div>

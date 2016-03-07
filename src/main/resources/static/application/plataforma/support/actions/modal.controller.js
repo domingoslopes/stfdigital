@@ -9,6 +9,7 @@
 	angular.plataforma.controller('ModalActionController', function ($stateParams, $element, $previousState) {
 		var modal = this;
 		modal.action = $stateParams.action;
+		modal.modalClass = $stateParams.modalClass?$stateParams.modalClass:"";
 		$previousState.memo('modalInvoker'); 
 		$element.modal({backdrop : 'static'});
 		

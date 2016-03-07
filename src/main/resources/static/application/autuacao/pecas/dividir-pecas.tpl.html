@@ -1,0 +1,82 @@
+<div ng-controller="DividePecasController">
+<div messages="" api="messages.api"></div>
+	<p>
+	<form id="formDividir" class="form-horizontal">
+		<div class="form-group">
+			<div class="col-md-12">
+				<label for="numeroPaginas" class="control-label">Peça original: <strong>{{numeroPaginas}} páginas </strong></label> 
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="tipoPecas" class="control-label">Tipo de Peça: </label> 
+			</div>
+			<div class="col-md-10">
+	            <select ui-select2 id="tipoPeca" ng-model="tipoPeca" data-placeholder="Selecione o tipo de peça" style="width: 230px;" autofocus>
+	                <option value=""></option>
+	                <option ng-repeat="tipoPeca in tiposPeca" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
+	            </select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="descricao" class="control-label">Descrição: </label> 
+			</div>
+			<div class="col-md-10">
+                <input type="text" class="form-control" id="descricaoId" ng-model="descricao" placeholder="Informe uma descrição"></input>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2">
+	        	<label for="descricao" class="control-label">Página Inicial: </label> 
+	        </div>
+	        <div class="col-md-2">
+	        	<input type="text" id="intervaloInicialPagina" name="inicioPagina" ng-model="inicioPagina" size="4" placeholder="inicial" class="form-control input-sm">
+	        </div>
+	        <div class="col-md-2">
+	        	<label for="descricao" class="control-label">Página Final: </label> 
+	        </div>
+	        <div class="col-md-2">
+	        	<input type="text" id="intervaloFinalPagina" name="fimPagina" ng-model="fimPagina" size="4" class="form-control input-sm" placeholder="final">
+	        </div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-10">
+	        	<input type="submit" id="botaoAdicionarIntervalosPeca" value="Adicionar" ng-click="adicionarIntervaloDivisao()" class="btn btn-default btn-cons">
+	        </div>
+		</div>
+		<div class="row">
+   			<div class="col-md-12">
+				<div class="auto-overflow widget-11-2-table">
+			        <table class="table table-condensed table-hover" ng-show="intervalos.length">
+			        	 <thead>
+                            <tr>
+                                <th width="20%">Tipo</th>
+                                <th width="20%">Descrição</th>
+                                <th width="20%">Pag. Inicial</th>
+                                <th width="20%">Pag. Final</th>
+                                <th width="20%"></th>
+                            </tr>
+		                </thead>
+		            	<tbody>
+		                	<tr ng-repeat="intervalo in intervalos">
+			                    <td class="font-montserrat fs-2 col-lg-2">{{intervalo.tipo}}</td>
+			                    <td class="font-montserrat fs-2 col-lg-2">{{intervalo.descricao}}</td>
+			                    <td class="font-montserrat fs-2 col-lg-2">{{intervalo.paginaInicial}}</td>
+			                    <td class="font-montserrat fs-2 col-lg-2">{{intervalo.paginaFinal}}</td>
+			                    <td class="text-center b-l b-dashed b-grey col-lg-2"><span class="hint-text small"><a href="#" ng-click="removerIntervalo(intervalo)">Remover</a></span></td>
+			                </tr>
+			            </tbody>
+			        </table>
+			    </div>
+			 </div>
+		</div>
+	</form>
+	</p>
+	<div align="center" class="modal-footer">
+		<span>
+			<action-executor id="dividir-peca" fn-validate="validar" fn-result="modal.close()" description="Confirmar" resources="commands"/>
+		</span>
+		<button ng-click="modal.close()" class="btn btn-default">Cancelar</button>
+	</div>
+</div>

@@ -6,31 +6,26 @@
 (function() {
 	'use strict';
 
-	angular.autuacao.controller('ExcluiPecasController', function($scope, $stateParams) {
+	angular.autuacao.controller('ExcluiPecasController', function($scope, $stateParams, messages) {
 		
-		$scope.commands = [];
+		var resources = [];
 		
-		var DelegarTarefaCommand = function(tarefaId, usuarioId) {
-			return {
-				tarefaId : tarefaId, 
-				usuarioId : usuarioId
-			};
-		};
+		var pecasId = [];
 		
-		angular.forEach($stateParams.resources, function(tarefa) {
-			$scope.commands.push(new DelegarTarefaCommand(tarefa.id, null));
+		resources = $stateParams.resources;
+		
+		angular.forEach(resources, function(resource){
+			pecasId.push(resource.peca.sequencial);
 		});
 		
+		$scope.commands = [{
+			processoId : resources[0].processoId, 
+			pecas : pecasId
+		}];
+		
 		$scope.validar = function() {
-			if (angular.isObject($scope.usuario) ) {
-				angular.forEach($scope.commands, function(command) {
-					command.usuarioId = $scope.usuario.id;
-				});
-				return true;
-			} else {
-				messages.error("Selecione um usuário!");
-				return false;
-			} 
+			messages.success('<b> Peça(s) excluída(s) com sucesso </b>');
+			return true;
 		};
 		
 	});
