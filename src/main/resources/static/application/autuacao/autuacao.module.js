@@ -260,6 +260,15 @@
 					controller: 'UnePecasController'
 				}
 			}
+		}).state('editar-peca', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/edita-peca.tpl.html',
+					controller: 'EditaPecaController'
+				}
+			}
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',
