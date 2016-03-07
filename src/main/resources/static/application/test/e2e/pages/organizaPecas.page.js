@@ -21,22 +21,52 @@
 			browser.actions().dragAndDrop(element(by.css("#tabelaPecas tr:nth-child(1)")), element(by.css("#tabelaPecas tr:nth-child(3)"))).mouseDrown().perform();
 		};
 		
-		this.executarAcao = function(acao) {
-
-			var peca = element(by.repeater('peca in organiza.processo.pecas').row(0));
-			peca.element(by.css('input')).click();
-			browser.waitForAngular();
-			
-			var acao = element(by.css('actions'));
-			acao.element(by.css('a.dropdown-toggle')).click();
-			acao.element(by.repeater('action in actions').row(0)).click();
-			browser.waitForAngular();
-			
-			browser.wait(element(by.id('btn_exec_assumir-tarefa')).isDisplayed, 3000);
-			element(by.id('btn_exec_assumir-tarefa')).click();
-			tarefa.element(by.css('a')).click();
+		this.executarAcaoJuntar = function() {
+			selecionaPeca(2)
+			selecionaAcao(3);
+			element(by.id('btn_exec_juntar-peca')).click();
 			browser.waitForAngular();
 		};
+		
+		this.executarAcaoUnir = function(qtdPecas) {
+			var i = 0;
+			for (i ; i < qtdPecas ; i++){
+				var peca = element(by.repeater('peca in organiza.processo.pecas').row(i));
+				peca.element(by.css('input')).click();
+				browser.waitForAngular();
+			}
+			
+			selecionaAcao(0);
+			element(by.id('btn_exec_unir-pecas')).click();
+			browser.waitForAngular();
+		};
+		
+		this.executarAcaoDividir = function(){
+			selecionaPeca(1)
+			selecionaAcao(0);
+			browser.waitForAngular();
+		}
+		
+		this.confirmarAcaoDividir = function(){
+			element(by.id('btn_exec_dividir-peca')).click();
+			browser.waitForAngular();
+		}
+		
+		this.executarAcaoExcluir = function() {
+			selecionaPeca(2)
+			selecionaAcao(2);
+			element(by.id('btn_exec_excluir-pecas')).click();
+			browser.waitForAngular();
+		};
+		
+		this.setarPaginaInicialFinal = function(inicio, fim){
+			element(by.id('intervaloInicialPagina')).sendKeys(inicio);
+			element(by.id('intervaloFinalPagina')).sendKeys(fim);
+		}
+		
+		this.adicionarPeca = function(){
+			element(by.id('botaoAdicionarIntervalosPeca')).click();
+		}
 		
 		this.acionarOpcaoInserirPecas = function () {
 			element(by.id('btn_inserir-pecas')).click();
@@ -89,16 +119,19 @@
 		this.setarDescricao = function(descricao, id) {
 			var index = !id ? 0 : id;
 			element(by.id('descricao-' + index)).sendKeys(descricao);
+			browser.waitForAngular();
 		};
 		
 		this.selecionarTipoPeca = function(descricao, id) {
 			var index = !id ? 0 : id;
 			utils.select('div#s2id_tipoPecaId-' + index, descricao);
+			browser.waitForAngular();
 		};
 		
 		this.selecionarVisibilidadePeca = function(visibilidade, id) {
 			var index = !id ? 0 : id;
 			utils.select('div#s2id_visibilidade-' + index, visibilidade);
+			browser.waitForAngular();
 		};
 		
 		this.finalizar = function() {
@@ -108,7 +141,20 @@
 		this.executarInsercaoPecas = function(){
 			element(by.id('btn_exec_inserir-pecas')).click();
 			browser.waitForAngular();
-		}
+		};
+		
+		var selecionaPeca = function(indicePecas){
+			var peca = element(by.repeater('peca in organiza.processo.pecas').row(indicePecas));
+			peca.element(by.css('input')).click();
+			browser.waitForAngular();
+		};
+		
+		var selecionaAcao = function(indiceAcao){
+			var acao = element(by.css('actions'));
+			acao.element(by.css('a.dropdown-toggle')).click();
+			acao.element(by.repeater('action in actions').row(indiceAcao)).click();
+			browser.waitForAngular();
+		};
 	};
 
 	module.exports = OrganizaPecasPage;

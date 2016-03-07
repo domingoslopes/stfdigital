@@ -15,7 +15,7 @@ var port = 3000;
 exports.config = {
 	jasmineNodeOpts : {
 		showColors : true,
-		defaultTimeoutInterval : 30000
+		defaultTimeoutInterval : 40000
 	},
 
 	specs : [ baseDir + '/application/test/e2e/**/{pattern}.scenario.js' ],
