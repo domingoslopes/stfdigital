@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.PecaProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
@@ -45,4 +46,9 @@ public class ProcessoRestResource {
 		return processoServiceFacade.consultarPelaPeticao(id);
 	}
 	
+	@ApiOperation("Retorna as peças de um processo.")
+	@RequestMapping(value = "/processos/{id}/pecas")
+	public List<PecaProcessoDto> consultarPecas(@PathVariable Long id){
+		return processoServiceFacade.consultarPecas(id);
+	}
 }

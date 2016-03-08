@@ -5,8 +5,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -24,8 +22,7 @@ public class AutuarPeticaoCommand {
 	@ApiModelProperty(value = "Id da petição física registrada.", required=true)
 	private Long peticaoId;
 	
-	@NotBlank
-	@ApiModelProperty(value = "A classe processual definitiva, selecionada pelo autuador", required=true)
+	@ApiModelProperty(value = "A classe processual definitiva, selecionada pelo autuador")
 	private String classeId;
 	
 	@NotNull

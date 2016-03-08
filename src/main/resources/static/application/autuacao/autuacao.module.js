@@ -213,6 +213,72 @@
 					}
 				}
 			}
+		}).state('organizar-pecas', {
+			parent: 'action.autuacao',
+			url: '/processo/pecas',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pecas/organiza-pecas.tpl.html',
+					controller: 'OrganizaPecasController',
+				}
+			}
+		}).state('inserir-pecas', {
+			parent: 'action.autuacao',
+			url: '/autuacao/pecas',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pecas/insere-pecas.tpl.html',
+					controller: 'InserePecasController'
+				}
+			}
+		}).state('juntar-peca', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/juntar-peca.tpl.html',
+					controller: 'JuntaPecasController'
+				}
+			}
+		}).state('excluir-pecas', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/excluir-pecas.tpl.html',
+					controller: 'ExcluiPecasController'
+				}
+			}
+		}).state('unir-pecas', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/unir-pecas.tpl.html',
+					controller: 'UnePecasController'
+				}
+			}
+		}).state('dividir-peca', {
+			parent: 'action',
+			params : { resources : [], modalClass:"modal-lg"},
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/dividir-pecas.tpl.html',
+					controller: 'DividePecasController'
+				}
+			}
+		}).state('editar-peca', {
+			parent: 'action',
+			params : { resources : [], modalClass:"modal-lg" },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/edita-peca.tpl.html',
+					controller: 'EditaPecaController'
+				}
+			}
+
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',

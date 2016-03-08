@@ -14,7 +14,7 @@
 		
 		var fakePeca;
 		
-		var fakePecaService;
+		var fakeDocumentoTemporarioService;
 		var fakePeticaoService;
 		var fakeMessages;
 		var fakeSigner;
@@ -30,7 +30,7 @@
 					assinarDevolucao: function(){}
 				};
 				
-				fakePecaService = {
+				fakeDocumentoTemporarioService = {
 					montarUrlConteudo: function(){}	
 				};
 
@@ -134,7 +134,7 @@
 				spyOn(fakePeticaoService, 'consultarVarias').and.returnValue($q.when([fakePeticao]));
 				spyOn(fakePeticaoService, 'assinarDevolucao').and.returnValue($q.when());
 				
-				spyOn(fakePecaService, 'montarUrlConteudo').and.returnValue('url-fake');
+				spyOn(fakeDocumentoTemporarioService, 'montarUrlConteudo').and.returnValue('url-fake');
 				
 				spyOn(fakeMessages, 'error').and.callThrough();
 				spyOn(fakeMessages, 'success').and.callThrough();
@@ -143,7 +143,7 @@
 					$scope : scope,
 					$stateParams: stateParams,
 					PeticaoService: fakePeticaoService,
-					PecaService: fakePecaService,
+					DocumentoTemporarioService: fakeDocumentoTemporarioService,
 					messages: fakeMessages,
 					SignatureService: fakeSignatureService
 				});
@@ -181,7 +181,7 @@
 				scope.$apply();
 				var url = scope.urlConteudo(fakePeca);
 				expect(url).toEqual('url-fake');
-				expect(fakePecaService.montarUrlConteudo).toHaveBeenCalledWith(fakePeca);
+				expect(fakeDocumentoTemporarioService.montarUrlConteudo).toHaveBeenCalledWith(fakePeca);
 			});
 			
 			it('Deveria validar que nenhuma petição foi selecionada.', function() {

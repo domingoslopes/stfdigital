@@ -33,7 +33,7 @@ public interface PapelRepository {
 	 * @param id
 	 * @return
 	 */
-	public List<Permissao> findPermissaoByPapel(PapelId id);
+	public List<Recurso> findRecursoByPapel(PapelId id);
 	
 	/**
 	 * @param papel

@@ -25,6 +25,9 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	@Column(name = "NUM_CONTEUDO", nullable = false)	
 	private String numeroConteudo;
 	
+	@Column(name = "TAMANHO", nullable = false)	
+	private Long tamanho;
+	
 	@Column(name = "QTD_PAGINAS")
 	private Integer quantidadePaginas;
 	
@@ -32,14 +35,16 @@ public class Documento implements Entity<Documento, DocumentoId> {
 
 	}
 
-	public Documento(final DocumentoId id, final String numeroConteudo, Integer quantidadePaginas) {
+	public Documento(final DocumentoId id, final String numeroConteudo, Integer quantidadePaginas, Long tamanho) {
 		Validate.notNull(id, "documento.id.required");
 		Validate.notBlank(numeroConteudo, "documento.numeroConteudo.required");
 		Validate.notNull(quantidadePaginas, "documento.quantidadePaginas.required");
+		Validate.notNull(tamanho, "documento.tamanho.required");
 		
 		this.id = id;
 		this.numeroConteudo = numeroConteudo;
 		this.quantidadePaginas = quantidadePaginas;
+		this.tamanho = tamanho;
 	}
 
 	public void alterarConteudo(String numeroConteudo) {
@@ -57,6 +62,10 @@ public class Documento implements Entity<Documento, DocumentoId> {
 		return numeroConteudo;
 	}
 	
+	public Long tamanho() {
+		return tamanho;
+	}
+
 	public Integer quantidadePaginas() {
 		return quantidadePaginas;
 	}

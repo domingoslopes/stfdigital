@@ -46,27 +46,38 @@
 					</div>
 					<div class="card-description">
 						<div class="radio radio-success">
-							<input type="radio" ng-model="devolucao.isCKEditor" ng-value="true" id="yes">
-							<label for="yes">CKEditor</label>
-							<input type="radio" ng-model="devolucao.isCKEditor" ng-value="false" id="no">
-							<label for="no">WebODF</label>
+							<input type="radio" ng-model="devolucao.tipoEditor" ng-value="'CKEDITOR'" id="opcao-ckeditor">
+							<label for="opcao-ckeditor">CKEditor</label>
+							<input type="radio" ng-model="devolucao.tipoEditor" ng-value="'WEBODF'" id="opcao-webodf">
+							<label for="opcao-webodf">WebODF</label>
+							<input type="radio" ng-model="devolucao.tipoEditor" ng-value="'ONLYOFFICE'" id="opcao-onlyoffice">
+							<label for="opcao-onlyoffice">OnlyOffice</label>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row" ng-if="devolucao.showEditor && devolucao.isCKEditor">
+		<div class="row" ng-if="devolucao.showEditor && devolucao.tipoEditor == 'CKEDITOR'">
 			<div class="col-md-12" style="background-color: rgb(204,204,204);">
 				<div class="center-block-table">
 					<textarea ckeditor="editorOptions" name="ckeditor" id="ckeditor" ng-model="devolucao.documento"></textarea>
 				</div>
 			</div>
 		</div>
-		<div class="row" ng-if="devolucao.showEditor && !devolucao.isCKEditor">
+		<div class="row" ng-if="devolucao.showEditor && devolucao.tipoEditor == 'WEBODF'">
 			<div class="col-md-12">
 				<div class="center-block-table">
 					<div wodotexteditor="urlTemplate" id="wodotexteditor"></div>
 				</div>
+			</div>
+		</div>
+		<div class="row" ng-if="devolucao.showEditor && devolucao.tipoEditor == 'ONLYOFFICE'">
+			<div class="col-md-12" style="height: 600px;">
+				<onlyoffice-editor src="{{devolucao.document.src}}"
+					title="{{devolucao.document.name}}"
+					save="devolucao.save(url, close)" id="onlyoffice-editor" title="Ofício de devolução por Remessa Indevida">
+				
+				</onlyoffice-editor>
 			</div>
 		</div>
 		<p>

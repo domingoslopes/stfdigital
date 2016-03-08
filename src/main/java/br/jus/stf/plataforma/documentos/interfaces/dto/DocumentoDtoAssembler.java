@@ -2,19 +2,16 @@ package br.jus.stf.plataforma.documentos.interfaces.dto;
 
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.shared.DocumentoId;
-
 /**
- * Converte um documento em um dto
+ * Monta um objeto DocumentoDto
  * 
- * @author Lucas.Rodrigues
+ * @author Anderson.Araujo
+ * @since 24.02.2016
  *
  */
 @Component
 public class DocumentoDtoAssembler {
-
-	public DocumentoDto toDto(String tempId, DocumentoId documentoId) {
-		return new DocumentoDto(tempId, documentoId.toLong());
+	public DocumentoDto toDo(Long documentoId, Long tamanho, Integer quantidadePaginas){
+		return new DocumentoDto(documentoId, tamanho, quantidadePaginas);
 	}
-	
 }

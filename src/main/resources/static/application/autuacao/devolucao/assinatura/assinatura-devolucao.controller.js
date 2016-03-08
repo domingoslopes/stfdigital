@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AssinaturaDevolucaoController', function($scope, $state, $stateParams, PeticaoService, PecaService, SignatureService, messages) {
+	angular.autuacao.controller('AssinaturaDevolucaoController', function($scope, $state, $stateParams, PeticaoService, DocumentoTemporarioService, SignatureService, messages) {
 		var resourcesToIds = function(resources) {
 			var resourcesIds = [];
 			angular.forEach(resources, function(resource) {
@@ -85,7 +85,7 @@
 		};
 		
 		$scope.urlConteudo = function(peca) {
-			return PecaService.montarUrlConteudo(peca);
+			return DocumentoTemporarioService.montarUrlConteudo(peca);
 		};
 		
 		$scope.assinar = function() {

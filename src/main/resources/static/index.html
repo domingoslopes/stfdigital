@@ -28,6 +28,7 @@
     <link href="theme/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="vendor/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="vendor/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="vendor/datatables.net-rowreorder-bs/css/rowReorder.bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="vendor/nvd3/build/nv.d3.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="vendor/ng-ckeditor/ng-ckeditor.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="vendor/wodo.texteditor/wodotexteditor/wodotexteditor.css" type="text/css" media="screen" />
@@ -76,6 +77,7 @@
     <script type="text/javascript" src="vendor/angular-sanitize/angular-sanitize.js"></script>
     <script type="text/javascript" src="vendor/datatables.net/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="vendor/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendor/datatables.net-rowreorder/js/dataTables.rowReorder.min.js"></script>
     <script type="text/javascript" src="vendor/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="vendor/angular-file-upload/dist/angular-file-upload.min.js"></script>
    	<script type="text/javascript" src="vendor/moment/min/moment-with-locales.min.js"></script>
@@ -89,8 +91,9 @@
     <script type="text/javascript" src="vendor/ngMask/dist/ngMask.min.js"></script>
     <script type="text/javascript" src="vendor/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
     <script type="text/javascript" src="vendor/angular-bootstrap-switch/dist/angular-bootstrap-switch.min.js"></script>
-    <script type="text/javascript" src="vendor/angular-datatables/dist/angular-datatables.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-datatables/dist/angular-datatables.js"></script>
     <script type="text/javascript" src="vendor/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendor/angular-ui-sortable/sortable.min.js"></script>
     <script type="text/javascript" src="vendor/ng-ckeditor/ng-ckeditor.min.js"></script>
     <script type="text/javascript" src="vendor/wodo.texteditor/wodotexteditor/wodotexteditor.js"></script>
     <script type="text/javascript" src="https://eti078082/OfficeWeb/apps/api/documents/api.js"></script>
@@ -126,6 +129,7 @@
     <script type="text/javascript" src="application/plataforma/support/version/version.directive.js"></script>
     <script type="text/javascript" src="application/plataforma/support/error-handling/error-handler.interceptor.js"></script>
     <script type="text/javascript" src="application/plataforma/support/messaging/messages.util.js"></script>
+    <script type="text/javascript" src="application/plataforma/support/messaging/messages.directive.js"></script>
     <script type="text/javascript" src="application/plataforma/support/security/security.controller.js"></script>    
     <script type="text/javascript" src="application/plataforma/support/security/security.service.js"></script>
     <script type="text/javascript" src="application/plataforma/support/security/security.interceptor.js"></script> 
@@ -164,8 +168,6 @@
 	<script type="text/javascript" src="application/plataforma/modelo/tipo-modelo.service.js"></script>
 	<script type="text/javascript" src="application/plataforma/modelo/modelo.service.js"></script>
 	<script type="text/javascript" src="application/plataforma/modelo/onlyoffice.service.js"></script>
-	<script type="text/javascript" src="vendor/angular-datatables/dist/angular-datatables.min.js"></script>
-    <script type="text/javascript" src="vendor/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
 
     <script type="text/javascript" src="application/test/mocks.module.js"></script>
     
@@ -176,7 +178,6 @@
     <script type="text/javascript" src="application/autuacao/peticionamento/advogado/peticionamento.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/orgao/peticionamento.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/classe.service.js"></script>
-    <script type="text/javascript" src="application/autuacao/peticionamento/peca.service.js"></script>
     <script type="text/javascript" src="application/autuacao/peticionamento/orgao/orgao.service.js"></script>	
     <script type="text/javascript" src="application/autuacao/autuacao/autuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/recursal/pressuposto/analise-pressupostos.controller.js"></script>      
@@ -184,6 +185,13 @@
     <script type="text/javascript" src="application/autuacao/recursal/autuacao/autuacao-recursal.controller.js"></script>    
 	<script type="text/javascript" src="application/autuacao/recursal/revisao/revisao-processo-inapto.controller.js"></script>      
     <script type="text/javascript" src="application/autuacao/distribuicao/distribuicao.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pecas/organiza-pecas.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pecas/insere-pecas.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pecas/edita-peca.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pecas/juntar-peca.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pecas/unir-pecas.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pecas/excluir-pecas.controller.js"></script>
+    <script type="text/javascript" src="application/autuacao/pecas/dividir-pecas.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/registro/registro.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/preautuacao/preautuacao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/recursal/preautuacao/preautuacao-recursal.controller.js"></script>
@@ -194,6 +202,8 @@
     <script type="text/javascript" src="application/autuacao/devolucao/assinatura/assinatura-devolucao.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/peticao.service.js"></script>
     <script type="text/javascript" src="application/autuacao/processo.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/documento-temporario.service.js"></script>
+    <script type="text/javascript" src="application/autuacao/peca.service.js"></script>
     <script type="text/javascript" src="application/autuacao/pesquisa/peticoes.controller.js"></script>
     <script type="text/javascript" src="application/autuacao/pesquisa/processos.controller.js"></script>    
     <script type="text/javascript" src="application/autuacao/dashlets/peticoes.controller.js"></script>

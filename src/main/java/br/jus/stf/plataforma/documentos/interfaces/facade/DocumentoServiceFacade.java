@@ -10,10 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.application.DocumentoApplicationService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
+import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDtoAssembler;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDtoAssembler;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -30,14 +33,17 @@ public class DocumentoServiceFacade {
 	private DocumentoApplicationService documentoApplicationService;
 
 	@Autowired
+	private DocumentoTemporarioDtoAssembler documentoTemporarioDtoAssembler;
+	
+	@Autowired
 	private DocumentoDtoAssembler documentoDtoAssembler;
 	
 	@Autowired
 	private DocumentoRepository documentoRepository;
 
-	public List<DocumentoDto> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
+	public List<DocumentoTemporarioDto> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		return documentoApplicationService.salvarDocumentos(documentosTemporarios).entrySet().stream()
-				.map(entry -> documentoDtoAssembler.toDto(entry.getKey(), entry.getValue()))
+				.map(entry -> documentoTemporarioDtoAssembler.toDto(entry.getKey(), entry.getValue()))
 				.collect(Collectors.toList());
 	}
 
@@ -48,6 +54,11 @@ public class DocumentoServiceFacade {
 
 	public ConteudoDocumento pesquisaDocumento(Long documentoId) {
 		return documentoRepository.download(new DocumentoId(documentoId));
+	}
+	
+	public DocumentoDto consultar(Long documentoId) {
+		Documento documento = documentoRepository.findOne(new DocumentoId(documentoId));
+		return documentoDtoAssembler.toDo(documento.id().toLong(), documento.tamanho(), documento.quantidadePaginas());
 	}
 
 	public void apagarDocumentosTemporarios(List<String> files) {

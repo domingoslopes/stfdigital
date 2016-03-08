@@ -103,8 +103,6 @@
 		    
 			var preautuacaoPage = new PreautuacaoPage();
 			
-			preautuacaoPage.classificar('AP');
-			
 			preautuacaoPage.preencherMotivoIndevida();
 			
 			preautuacaoPage.finalizarDevolucao();

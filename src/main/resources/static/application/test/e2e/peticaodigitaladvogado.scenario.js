@@ -22,13 +22,19 @@
 	
 	var PreautuacaoPage = require('./pages/preautuacao.page');
 	
+	var OrganizaPecasPage = require('./pages/organizaPecas.page');
+	
 	var principalPage;
 	
 	var loginPage;
 	
+	var organizaPecasPage;
+	
 	var pos;
 	
 	var peticaoId;
+	
+	var processoId;
 	
 	var login = function(user) {
 		browser.ignoreSynchronization = true;
@@ -113,7 +119,7 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-			
+		    
 		    distribuir('COMUM');
 		    
 		    distribuir('PREVENCAO');
@@ -121,8 +127,57 @@
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
 			loginPage.logout();
+		});
+		
+		it('Deveria logar como organizador-pecas', function(){
+			login('organizador-pecas');
+		});
+		
+		it('Deveria Inserir Peças', function(){
+			principalPage = new PrincipalPage();
+			expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+			
+		    
+		    principalPage.tarefas().get(0).getText().then(function(text) {
+		    	pos = text.search("#");
+		    	pos = pos + 1;
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Organizar Peças #' + peticaoId);
+		    });
+		    
+		    principalPage.executarTarefa();
+		    
+		    inserirPecas();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/pecas/);
+		});
+		
+		it('Deveria alterar o status da peça para juntada', function(){
+			organizaPecasPage.executarAcaoJuntar();
 		}); 
 		
+		it('Deveria unir as duas primeiras peças', function(){
+			organizaPecasPage.executarAcaoUnir(2);
+		}); 
+		
+		it('Deveria dividir uma peça', function(){
+			organizaPecasPage.executarAcaoDividir();
+			organizaPecasPage.selecionarTipoPeca('Documentos comprobatórios');
+			organizaPecasPage.setarDescricao('Descricao primeira peça');
+			organizaPecasPage.setarPaginaInicialFinal(1, 3);
+			organizaPecasPage.adicionarPeca();
+			organizaPecasPage.selecionarTipoPeca('Peticão Inicial');
+			organizaPecasPage.setarDescricao('Descricao segunda peça');
+			organizaPecasPage.setarPaginaInicialFinal(4, 5);
+			organizaPecasPage.adicionarPeca();
+			organizaPecasPage.confirmarAcaoDividir();
+		});
+		
+		it ('Deveria excluir uma peça', function(){
+			organizaPecasPage.executarAcaoExcluir();
+			loginPage.logout();
+		});
+				
 		it('Deveria logar como gestor-autuacao', function() {
 			login('gestor-autuacao');
 		});
@@ -140,7 +195,6 @@
 			expect(principalPage.dashletMinhasTarefas.isDisplayed()).toBe(true);
 			loginPage.logout();
 		});
-		
 		
 		var peticionar = function(siglaClasse){
 			
@@ -161,7 +215,12 @@
 			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.selecionarTipoPeca('Ato coator');
-		    
+			
+			peticionamentoPage.uploadPecas();
+			peticionamentoPage.waitUploadFinished(0);
+			
+			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios', 1);
+			
 			peticionamentoPage.registrar('registrar-peticao-eletronica');
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
@@ -218,5 +277,39 @@
 			distribuicaoPage.finalizar();
 		}
 		
+		var inserirPecas = function(){
+			if (!organizaPecasPage) {
+		    	organizaPecasPage = new OrganizaPecasPage();
+		    }
+		    
+			//Acessa a página de inserção de peças.
+			organizaPecasPage.acionarOpcaoInserirPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			//Remove a peça.
+			organizaPecasPage.removerPeca();
+			
+			//Insere duas peças.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+
+			//Exclui as duas peças.
+			organizaPecasPage.removerTodasPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			organizaPecasPage.setarDescricao('Teste')
+			organizaPecasPage.selecionarTipoPeca('Ato coator');
+			organizaPecasPage.selecionarVisibilidadePeca('Público')
+			
+			organizaPecasPage.executarInsercaoPecas();
+		}
+
 	});
 })();

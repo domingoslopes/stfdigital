@@ -5,34 +5,26 @@ import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
 import static org.elasticsearch.search.sort.SortOrder.ASC;
 import static org.elasticsearch.search.sort.SortOrder.DESC;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import br.jus.stf.plataforma.pesquisas.domain.model.query.Pesquisa;
-import br.jus.stf.plataforma.pesquisas.domain.model.query.PesquisaRepository;
-import br.jus.stf.plataforma.pesquisas.domain.model.query.Resultado;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaRepository;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Resultado;
 
 /**
  * @author Lucas.Rodrigues
@@ -154,70 +146,6 @@ public class PesquisaRepositoryImpl implements PesquisaRepository {
 	 */
 	private Long executeCountQuery(NativeSearchQuery query) {
 		return elasticsearchTemplate.count(query);
-	}
-	
-	/**
-	 * Extrai o resultado da pesquisa
-	 */
-	private final class ResultadoPesquisa implements ResultsExtractor<List<Resultado>> {
-		@Override
-		public List<Resultado> extract(SearchResponse response) {
-			List<Resultado> documentos = new ArrayList<Resultado>();
-			try {
-				for (SearchHit hit : response.getHits()) {
-					documentos.add(coletarResultado(hit));
-				}
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
-			return documentos;
-		}
-	}
-	
-	private final class ResultadoPesquisaAgregada implements ResultsExtractor<List<Resultado>> {
-		@Override
-		public List<Resultado> extract(SearchResponse response) {
-			List<Resultado> documentos = new ArrayList<Resultado>();
-						
-			try {
-				Terms aggs = response.getAggregations().get("aggs"); 
-				
-				for (Terms.Bucket bucket : aggs.getBuckets()) {
-					Map<String, Object> campos = new LinkedHashMap<String, Object>();
-					campos.put(bucket.getKey(), bucket.getDocCount());
-					
-					documentos.add(new Resultado("1", "ValoresAgregados", campos));
-				}
-			} catch (Exception e) {
-				throw e;
-			}
-			return documentos;
-		}
-	}
-	
-	/**
-	 * Coleta um resultado a partir de um item encontrado na pesquisa
-	 * 
-	 * @param hit
-	 * @return
-	 * @throws JsonProcessingException 
-	 */
-	private Resultado coletarResultado(SearchHit hit) throws JsonProcessingException {
-		Map<String, Object> source = hit.isSourceEmpty() ? coletarCampos(hit) : hit.getSource();
-		return new Resultado(hit.getId(), hit.getType(), source);
-	}
-	
-	/**
-	 * Coleta um mapa com nome dos campos como chave
-	 * 
-	 * @param hit
-	 * @return um mapa dos campos
-	 */
-	private Map<String, Object> coletarCampos(final SearchHit hit) {
-		Map<String, Object> campos = new LinkedHashMap<String, Object>();
-		hit.fields().keySet()
-			.forEach(campo -> campos.put(campo, hit.field(campo).getValue()));
-		return campos;
 	}
 	
 }

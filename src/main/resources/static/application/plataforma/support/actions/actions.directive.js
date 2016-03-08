@@ -106,21 +106,17 @@
 				
 				var action = null;
 				$scope.disabled = true;
-				$scope.showAction = true;
+				$scope.showAction = false;
 				$scope.showIcon = angular.isString($scope.iconClass);
 				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
 				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
 				
 				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
 					$scope.showDescription = true;
-				}	
+				}
 				
 				ActionService.get($scope.id).then(function(theAction) {
 					
-					if (angular.isUndefined(theAction)) {
-						$scope.showAction = false;
-						return;
-					}
 					action = theAction;
 					$scope.description = action.description;
 					
@@ -168,7 +164,7 @@
 			templateUrl : 'application/plataforma/support/actions/actionmenu.tpl.html',
 			controller : function($scope) {
 				
-				var resources = [{}];
+				var resources = [];
 				var group = 'menu';
 				$scope.actions = [];
 				
@@ -220,10 +216,6 @@
 				
 				ActionService.get($scope.id).then(function(action) {
 					
-					if (angular.isUndefined(action)) {
-						return;
-					}
-					
 					$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
 							
 					if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
@@ -243,22 +235,18 @@
 							}
 						}
 						
-						if (ActionService.isValidResources(action, $scope.resources)) {
-							ActionService.execute($scope.id, $scope.resources)
-								.then(function(result) {
-									if (angular.isDefined($scope.result)) {
-										$scope.result = result.data;
-									}
-									// verifica se o callback é uma função e executa
-									if (angular.isFunction($scope.fnResult())) {
-										$scope.fnResult()(result.data);
-									}
-								}, function(err) {
-									messages.error(err);
-								});
-						} else {
-							messages.error("A ação e os recursos para a ação devem ser válidos!");
-						}
+						ActionService.execute($scope.id, $scope.resources)
+							.then(function(result) {
+								if (angular.isDefined($scope.result)) {
+									$scope.result = result.data;
+								}
+								// verifica se o callback é uma função e executa
+								if (angular.isFunction($scope.fnResult())) {
+									$scope.fnResult()(result.data);
+								}
+							}, function(err) {
+								messages.error(err);
+							});
 					};
 				});
 			}

@@ -104,9 +104,15 @@ public class PeticaoServiceFacade {
 	 * @param preferenciasId Preferências.
 	 */
 	public void preautuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoDevolucao, List<Long> preferenciasId) {
-		ClasseId classe = new ClasseId(classeId);
+		ClasseId classe = null;
 		PeticaoFisica peticao = carregarPeticao(peticaoId);
-		Set<PreferenciaId> preferencias = criarPreferencias(preferenciasId);
+		Set<PreferenciaId> preferencias = null;
+		
+		if (peticaoValida) {
+			classe = new ClasseId(classeId);
+			preferencias = criarPreferencias(preferenciasId);
+		}
+		
 		peticaoApplicationService.preautuar(peticao, classe, peticaoValida, motivoDevolucao, preferencias);
 	}
 	
@@ -120,8 +126,12 @@ public class PeticaoServiceFacade {
 	 * @param partesPoloPassivo Partes do polo passivo
 	 */
 	public void autuar(Long peticaoId, String classeId, boolean peticaoValida, String motivoRejeicao, List<String> partesPoloAtivo, List<String> partesPoloPassivo) {
-		ClasseId classe = new ClasseId(classeId);
+		ClasseId classe = null;
 		Peticao peticao = carregarPeticao(peticaoId);
+		
+		if (peticaoValida) {
+			classe = new ClasseId(classeId);
+		}
 		
 		peticaoApplicationService.autuar(peticao, classe, peticaoValida, motivoRejeicao, partesPoloAtivo, partesPoloPassivo);
 	}

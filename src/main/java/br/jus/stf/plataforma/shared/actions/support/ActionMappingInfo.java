@@ -1,11 +1,10 @@
 package br.jus.stf.plataforma.shared.actions.support;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
-import br.jus.stf.plataforma.shared.security.resource.Resource;
+import br.jus.stf.plataforma.shared.security.resource.ResourceImpl;
 import br.jus.stf.plataforma.shared.security.resource.ResourceType;
 
 /**
@@ -14,7 +13,7 @@ import br.jus.stf.plataforma.shared.security.resource.ResourceType;
  * @author Lucas.Rodrigues
  * 
  */
-public class ActionMappingInfo extends Resource {
+public class ActionMappingInfo extends ResourceImpl {
 
 	private String id;
 	private String description;
@@ -126,27 +125,6 @@ public class ActionMappingInfo extends Resource {
 	 */
 	public Set<ActionConditionHandlerInfo> getActionHandlersInfo() {
 		return actionHandlersInfo;
-	}
-		
-	/**
-	 * Verifica se o resourceMode é o indicado para a quantidade de recursos
-	 * 
-	 * @param resources
-	 * @return
-	 */
-	public boolean isValidResourceMode(Collection<?> resources) {
-		if (resources == null) {
-			return resourcesMode.equals(ResourcesMode.None);
-		}
-		
-		int size = resources.size();
-		
-		if (size == 0) {
-			return resourcesMode.equals(ResourcesMode.None);
-		} else if (size == 1) {
-			return resourcesMode.equals(ResourcesMode.One) || resourcesMode.equals(ResourcesMode.Many);
-		}
-		return resourcesMode.equals(ResourcesMode.Many);
 	}
 
 }

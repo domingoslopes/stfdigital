@@ -45,6 +45,15 @@ public class ControladorOrdenacaoPecas {
 	public Long ultimoNumeroOrdemPeca() {
 		return pecas.size() > 0 ? pecas.get(pecas.size() - 1).numeroOrdem() : 0L;
 	}
+	
+	/**
+	 * Recupera o primeiro número de peça.
+	 * 
+	 * @return Primeiro número de ordem das peças.
+	 */
+	public Long primeiroNumeroOrdemPeca() {
+		return pecas.size() > 0 ? pecas.get(0).numeroOrdem() : 0L;
+	}
 
 	/**
 	 * Normaliza a ordenação de peças. Isso consiste

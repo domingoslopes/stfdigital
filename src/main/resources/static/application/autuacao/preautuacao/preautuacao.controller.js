@@ -68,17 +68,6 @@
 		};
 		
 		preautuacao.devolver = function(){
-			var errors = null;
-			
-			if (preautuacao.classe.length === 0) {
-				errors = 'Você precisa selecionar <b>a classe processual sugerida</b>.';
-			}
-			
-			if (errors) {
-				messages.error(errors);
-				return false;
-			}
-			
 			preautuacao.recursos.push(new PreautuarCommand(preautuacao.peticaoId, preautuacao.classe, false, preautuacao.motivo, preautuacao.preferenciasSelecionadas));
 			return true;
 		};

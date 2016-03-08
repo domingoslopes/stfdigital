@@ -1,0 +1,9 @@
+<div ng-controller="ExcluiPecasController">
+	<p>Clique em "Confirmar" para excluir a(s) peça(s).</p>
+	<div align="center" class="modal-footer">
+		<span>
+			<action-executor id="excluir-pecas" fn-validate="validar" fn-result="modal.close()" description="Confirmar" resources="commands"/>
+		</span>
+		<button ng-click="modal.close()" class="btn btn-default">Cancelar</button>
+	</div>
+</div>

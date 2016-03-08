@@ -125,7 +125,6 @@ public class PeticaoApplicationService {
 			peticaoApplicationEvent.peticaoPreautuada(peticao);
 		} else {
 			peticao.devolver(motivoDevolucao);
-			peticao.preautuar(classeSugerida, peticao.preferencias());
 			peticaoRepository.save(peticao);
 			tarefaAdapter.completarPreautuacaoIndevida(peticao);
 			peticaoApplicationEvent.remessaInvalida(peticao);

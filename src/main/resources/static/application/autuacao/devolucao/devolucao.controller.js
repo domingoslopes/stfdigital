@@ -18,7 +18,7 @@
 		devolucao.documento = '';
 		
 		devolucao.showEditor = false;
-		devolucao.isCKEditor = true;
+		devolucao.tipoEditor = 'CKEDITOR';
 		$scope.urlTemplate = '';
 		
 		var toolbar = [
@@ -45,6 +45,19 @@
 			height: '500px',
 			width: '210mm',
 			indentClasses: ['stf-indent1', 'stf-indent2', 'stf-indent3', 'stf-indent4', 'stf-indent4'],
+		};
+		
+		devolucao.document = {
+//			src: 'https://eti078143:8443/' + PeticaoService.urlTemplateDevolucao(devolucao.tipoDevolucao, 'docx'),
+			src: 'https://eti078143:8443/api/textos/1/conteudo.docx',
+//			src: 'http://www.easychair.org/publications/easychair.docx',
+//			src: 'https://www2.le.ac.uk/Members/davidwickins/old/test.docx/at_download/file',
+//			src: 'http://calibre-ebook.com/downloads/demos/demo.docx',
+			title: 'Editor'
+		};
+		
+		devolucao.save = function() {
+			console.log('save');
 		};
 		
 		PeticaoService.consultarProcessoWorkflow(devolucao.peticaoId).then(function(data) {

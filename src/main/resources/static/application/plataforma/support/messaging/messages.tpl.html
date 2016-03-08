@@ -1,0 +1,4 @@
+<div ng-repeat="alert in alerts" class="alert alert-{{alert.type}}" role="alert">
+	<button class="close" data-dismiss="alert" ng-click="alert.close()"></button>
+	{{alert.message}}
+</div>
