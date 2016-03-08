@@ -133,7 +133,7 @@
 			login('organizador-pecas');
 		});
 		
-		it('Deveria Inserir Peças', function(){
+		it('Deveria editar uma peça', function(){
 			expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
@@ -145,10 +145,23 @@
 		    
 		    principalPage.executarTarefa();
 		    
-		    inserirPecas();
-		    
-		    expect(browser.getCurrentUrl()).toMatch(/\/autuacao\/peca/);
+		    editarPeca();
+		    		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/peca/);
 		});
+		
+		var editarPeca = function() {
+			if (!organizaPecasPage) {
+		    	organizaPecasPage = new OrganizaPecasPage();
+		    }
+			
+			organizaPecasPage.executarAcaoEditarPeca();
+			organizaPecasPage.alteraNumeroOrdemPeca('2');
+			organizaPecasPage.alteraTipoPeca('Ato coator');
+			organizaPecasPage.alteraDescricaoPeca('Peça alterada');
+			organizaPecasPage.alteraVisibilidadePeca('Pendente de visualização');
+			organizaPecasPage.salvarEdicaoPeca();
+		}
 		
 		var inserirPecas = function(){
 			if (!organizaPecasPage) {
@@ -178,26 +191,13 @@
 			organizaPecasPage.uploadPecas();
 			organizaPecasPage.waitUploadFinished(0);
 			
+			//Edita os campos da peça inserida.
+			organizaPecasPage.setarDescricao('Nova peça');
+			//organizaPecasPage.selecionarTipoPeca('Documentos Comprobatórios');
+			organizaPecasPage.selecionarVisibilidadePeca('Pendente de visualização');
+			
 			organizaPecasPage.executarInsercaoPecas();
 		}
-		
-		it('Deveria logar como gestor-autuacao', function() {
-			login('gestor-autuacao');
-		});
-		
-		it('Deveria exibir os dashlets do papel gestor-autuacao', function(){	
-			expect(principalPage.dashletGestaoAutuacao.isDisplayed()).toBe(true)
-			loginPage.logout();
-		});
-		
-		it('Deveria logar como cartoraria', function() {
-			login('cartoraria');
-		});
-		
-		it ('Deveria exibir a dashlet do papel cartorária', function() {
-			expect(principalPage.dashletMinhasTarefas.isDisplayed()).toBe(true);
-			loginPage.logout();
-		});
 		
 		var peticionar = function(siglaClasse){
 			
