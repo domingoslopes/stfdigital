@@ -1,14 +1,19 @@
 package br.jus.stf.plataforma.documentos.infra;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+
+import br.jus.stf.plataforma.documentos.domain.ContadorPaginas;
+import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 
 /**
  * Testes da service
@@ -18,25 +23,28 @@ import org.junit.Test;
  */
 public class DocumentoServiceImplTest {
 
+	@InjectMocks
 	private DocumentoServiceImpl documentoPdfService;
-	private RandomAccessFile pdfFile;
+
+	@Spy
+	private ContadorPaginas contadorPaginas = new ContadorPaginasStrategyConfiguration().contadorPaginas();
+
+	private DocumentoTemporario documentoPdf;
 
 	@Before
 	public void setUp() throws IOException {
-		documentoPdfService = new DocumentoServiceImpl();
-		pdfFile = criarPdfFile();
+		MockitoAnnotations.initMocks(this);
+		documentoPdf = criarDocumentoPdf();
 	}
 
-	private RandomAccessFile criarPdfFile() throws IOException {
+	private DocumentoTemporario criarDocumentoPdf() throws IOException {
 		InputStream is = getClass().getResourceAsStream("/pdf/archimate.pdf");
-		File tempFile = File.createTempFile("_DocTemp_", "pdf");
-		FileUtils.copyInputStreamToFile(is, tempFile);
-		return new RandomAccessFile(tempFile, "r");
+		return new DocumentoTemporario(new PDFMultipartFile("arquivo.pdf", IOUtils.toByteArray(is)));
 	}
 
 	@Test
 	public void testContarPaginas() {
-		Integer quantidadePaginas = documentoPdfService.contarPaginas(pdfFile);
+		Integer quantidadePaginas = documentoPdfService.contarPaginas(documentoPdf);
 		Assert.assertEquals("Quantidade de páginas deveria ser 42.", new Integer(42), quantidadePaginas);
 	}
 }
