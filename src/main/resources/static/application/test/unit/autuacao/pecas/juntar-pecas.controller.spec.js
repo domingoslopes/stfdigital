@@ -18,6 +18,7 @@
 		var controller;
 		var $httpBackend;
 		var properties;
+		var scope;
 		
 		beforeEach(module('appDev'));
 		
@@ -25,14 +26,13 @@
 			$httpBackend = _$httpBackend_;
 			properties = _properties_;
 			
-			var scope = $rootScope.$new();
+			scope = $rootScope.$new();
+			scope.modal = {close: function(){}};
 			
-			controller = $controller('JuntarPecasController', {
+			controller = $controller('JuntaPecasController', {
 				$scope: scope,
 				$stateParams: {resources: [mockResource]},
-				messages: messages,
-				properties: properties,
-				$state: $state
+				messages: messages
 			});
 			
 		}));
@@ -42,7 +42,7 @@
 		});
 		
 		it('Deveria não validar a quando a peça estiver em uma situaça diferente de PEDENTE DE JUNTADA', function() {
-			expect(controller.validar()).toBeFalsy();
+			expect(scope.validar()).toBeFalsy();
 		});
 	});
 })();
