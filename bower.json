@@ -34,8 +34,7 @@
     "sockjs": "~0.3.4",
     "hwcrypto": "~0.0.10",
     "ngMask": "angular-mask#~3.0.16",
-    "angular-bootstrap-switch" : "0.4.1",
-    "angular-onlyoffice" : "0.1.2"
+    "angular-bootstrap-switch" : "0.4.1"
   },
   "resolutions": { "angular": "1.4.7" },
   "ignoredDependencies": [],
