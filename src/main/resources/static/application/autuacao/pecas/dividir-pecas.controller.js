@@ -28,7 +28,7 @@
 		
 		PecaService.consultarDocumento(resource.peca.documentoId).then(function(data){
 			documento = data;
-			$scope.numeroPaginas = data.quantidadePaginas;
+			$scope.numeroTotalPaginas = data.quantidadePaginas;
 		});
 		
 		PeticaoService.listarTipoPecas().then(function(tiposPeca) {
@@ -36,19 +36,9 @@
 		});
 		
 		$scope.adicionarIntervaloDivisao = function(){
-			if ($scope.intervalos.length < 1){
-				if ($scope.fimPagina > $scope.numeroPaginas){
-					$scope.messages.api.warning("Número final da página é maior que o numero total de páginas do documento. ");
-					return;
-				}
-			}else{
-				for (var i in $scope.intervalos){
-					var intervalo = $scope.intervalos[i];
-					if (($scope.inicioPagina < intervalo.paginaFinal) || ($scope.fimPagina > $scope.numeroPaginas)){
-						$scope.messages.api.warning("A página inicial ou pagina final inconsistentes.");
-						return;
-					}
-				}
+			if ($scope.fimPagina > $scope.numeroTotalPaginas){
+				$scope.messages.api.warning("Número final da página é maior que o numero total de páginas do documento. ");
+				return;
 			}
 			$scope.intervalos.push({'tipoPecaId': $scope.tipoPeca, 'visibilidade': resource.peca.visibilidade, 'situacao': resource.peca.situacao, 'descricao': $scope.descricao, 
 				'paginaInicial': $scope.inicioPagina, 'paginaFinal' : $scope.fimPagina });
@@ -80,6 +70,11 @@
 		}];
 		
 		$scope.validar = function() {
+			var ultimoIndice = $scope.intervalos.length;
+			if ($scope.intervalos[ultimoIndice - 1].paginaFinal < $scope.numeroTotalPaginas){
+				$scope.messages.api.warning('As todas as páginas do texto original devem ser contempladas na divisão.')
+				return false;
+			}
 			messages.success('<b> Peças divididas com sucesso </b>');
 			return true;
 		};

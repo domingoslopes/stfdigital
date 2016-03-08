@@ -134,7 +134,6 @@
 		});
 		
 		it('Deveria inserir uma peça', function(){
-			principalPage = new PrincipalPage();
 			expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 			
 		    
@@ -150,6 +149,10 @@
 		    inserirPecas();
 		});
 		
+		it ('Deveria alterar o status da ultima peca para juntada', function(){
+			organizaPecasPage.executarAcaoJuntar();
+		});
+		
 		it('Deveria editar uma peça', function(){
 			editarPeca();
 		});
@@ -160,15 +163,19 @@
 		
 		it('Deveria dividir uma peça', function(){
 			organizaPecasPage.executarAcaoDividir();
-			organizaPecasPage.selecionarTipoPeca('Documentos comprobatórios');
-			organizaPecasPage.setarDescricao('Descricao primeira peça');
-			organizaPecasPage.setarPaginaInicialFinal(1, 3);
-			organizaPecasPage.adicionarPeca();
-			organizaPecasPage.selecionarTipoPeca('Peticão Inicial');
-			organizaPecasPage.setarDescricao('Descricao segunda peça');
-			organizaPecasPage.setarPaginaInicialFinal(4, 5);
-			organizaPecasPage.adicionarPeca();
-			organizaPecasPage.confirmarAcaoDividir();
+			organizaPecasPage.recuperarTotalPaginas().then(function(numeroTotalPaginas){
+				if (numeroTotalPaginas > 2){
+					organizaPecasPage.selecionarTipoPeca('Documentos comprobatórios');
+					organizaPecasPage.setarDescricao('Descricao primeira peça');
+					organizaPecasPage.setarPaginaInicialFinal(1, 2);
+					organizaPecasPage.adicionarPeca();
+					organizaPecasPage.selecionarTipoPeca('Peticão Inicial');
+					organizaPecasPage.setarDescricao('Descricao segunda peça');
+					organizaPecasPage.setarPaginaInicialFinal(2, numeroTotalPaginas);
+					organizaPecasPage.adicionarPeca();
+					organizaPecasPage.confirmarAcaoDividir();
+				}
+			});
 		});
 		
 		it ('Deveria excluir uma peça', function(){
