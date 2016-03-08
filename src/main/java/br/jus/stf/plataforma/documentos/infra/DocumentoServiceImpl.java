@@ -2,7 +2,6 @@ package br.jus.stf.plataforma.documentos.infra;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +11,10 @@ import org.springframework.stereotype.Component;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.io.RandomAccessSourceFactory;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.RandomAccessFileOrArray;
 
+import br.jus.stf.plataforma.documentos.domain.ContadorPaginas;
 import br.jus.stf.plataforma.documentos.domain.DocumentoService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
@@ -38,24 +36,18 @@ public class DocumentoServiceImpl implements DocumentoService {
 	@Autowired
 	private DocumentoRepository documentoRepository;
 	
+	@Autowired
+	private ContadorPaginas contadorPaginas;
+	
 	/**
-	 * Realiza a contagem da quantidade de páginas em um arquivo PDF.
+	 * Realiza a contagem da quantidade de páginas em um arquivo de documento.
 	 * 
-	 * @param file
+	 * @param docTemp
 	 * @return
 	 */
 	@Override
-	public Integer contarPaginas(RandomAccessFile file) {
-		try {
-			RandomAccessFileOrArray pdfFile = new RandomAccessFileOrArray(
-			        new RandomAccessSourceFactory().createSource(file));
-			PdfReader reader = new PdfReader(pdfFile, new byte[0]);
-			int paginas = reader.getNumberOfPages();
-			reader.close();
-			return paginas;
-		} catch (IOException e) {
-			throw new RuntimeException("Erro ao contar a quantidade de páginas do documento.", e);
-		}
+	public Integer contarPaginas(DocumentoTemporario docTemp) {
+		return contadorPaginas.contarPaginas(docTemp);
 	}
 
 	/**
