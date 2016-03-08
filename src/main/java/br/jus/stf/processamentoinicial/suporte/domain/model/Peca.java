@@ -93,16 +93,8 @@ public abstract class Peca implements ValueObject<Peca> {
 		return this.tipo;
 	}
 	
-	public void alterarTipo(TipoPeca tipo){
-		this.tipo = tipo;
-	}
-	
 	public String descricao() {
 		return this.descricao;
-	}
-	
-	public void alterarDescricao(String descricao){
-		this.descricao = descricao;
 	}
 	
 	public Long numeroOrdem() {
@@ -117,16 +109,26 @@ public abstract class Peca implements ValueObject<Peca> {
 		return visibilidade;
 	}
 	
-	public void alterarVisibilidade(Visibilidade visibilidade){
-		this.visibilidade = visibilidade;
-	}
-	
-	public void alterarSituacao(Situacao situacao) {
-		this.situacao = situacao;
-	}
-	
 	public Situacao situacao() {
 		return situacao;
+	}
+	
+	public void excluir() {
+		situacao = Situacao.EXCLUIDA;
+	}
+	
+	public void juntar() {
+		situacao = Situacao.JUNTADA;
+	}
+	
+	public void editar(TipoPeca tipo, String descricao, Visibilidade visibilidade) {
+		Validate.notNull(tipo, "peticao.tipo.required");
+		Validate.notBlank(descricao, "peticao.descricao.required");
+		Validate.notNull(visibilidade, "peticao.visibilidade.required");
+		
+		this.tipo = tipo;
+		this.descricao = descricao;
+		this.visibilidade = visibilidade;
 	}
 	
 	@Override
