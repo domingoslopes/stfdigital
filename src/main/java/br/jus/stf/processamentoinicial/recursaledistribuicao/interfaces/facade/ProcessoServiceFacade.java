@@ -246,10 +246,6 @@ public class ProcessoServiceFacade {
 	 */
 	public void editarPeca(Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
 		PecaProcesso peca = (PecaProcesso)processoRepository.findOnePeca(pecaId);
-		peca.alterarTipo(processoRepository.findOneTipoPeca(tipoPecaId));
-		peca.alterarDescricao(descricao);
-		peca.numerarOrdem(numeroOrdem);
-		peca.alterarVisibilidade(Visibilidade.valueOf(visibilidade));
 		processoApplicationService.editarPeca(peca);
 	}
 	
