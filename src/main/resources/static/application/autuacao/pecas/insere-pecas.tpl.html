@@ -63,13 +63,13 @@
 											</div>
 										</td>
 										<td style="width: 15%">
-											<select ui-select2  class="full-width" ng-model="peca.visibilidade" placeholder="Selecione" required id="tipoPecaId-{{$index}}">
+											<select ui-select2  class="full-width" ng-model="peca.visibilidade" placeholder="Selecione" required id="visibilidade-{{$index}}">
 												<option value=""></option>
 												<option data-ng-repeat="visibilidade in visibilidades" value="{{visibilidade.id}}">{{visibilidade.descricao}}</option>
 											</select>
 										</td>
 										<td style="width: 15%">
-											<select ui-select2  class="full-width" ng-model="peca.tipo" placeholder="Selecione" required id="visibilidade-{{$index}}">
+											<select ui-select2  class="full-width" ng-model="peca.tipo" placeholder="Selecione" required id="tipoPecaId-{{$index}}">
 												<option value=""></option>
 												<option data-ng-repeat="tipoPeca in tiposPecas" value="{{tipoPeca.id}}">{{tipoPeca.descricao}}</option>
 											</select>

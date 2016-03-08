@@ -51,7 +51,7 @@
 				}
 			}
 			$scope.intervalos.push({'tipoPecaId': $scope.tipoPeca, 'visibilidade': resource.peca.visibilidade, 'situacao': resource.peca.situacao, 'descricao': $scope.descricao, 
-				'paginaInicial': $scope.inicioPagina, 'paginaFinal' : $scope.fimPagina, });
+				'paginaInicial': $scope.inicioPagina, 'paginaFinal' : $scope.fimPagina });
 			limparCampos();
 			
 		};

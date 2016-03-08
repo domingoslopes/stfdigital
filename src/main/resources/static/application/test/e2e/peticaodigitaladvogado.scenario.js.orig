@@ -133,8 +133,12 @@
 			login('organizador-pecas');
 		});
 		
-		it('Deveria inserir uma peça', function(){
+<<<<<<< HEAD
+		it('Deveria editar uma peça', function(){
+=======
+		it('Deveria Inserir Peças', function(){
 			principalPage = new PrincipalPage();
+>>>>>>> 54372b3318da0c1f45989d5f369ea7172a384524
 			expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 			
 		    
@@ -147,51 +151,10 @@
 		    
 		    principalPage.executarTarefa();
 		    
-		    inserirPecas();
-		});
-		
-		it('Deveria editar uma peça', function(){
-			editarPeca();
-		});
-		
-		it('Deveria unir as duas primeiras peças', function(){
-			organizaPecasPage.executarAcaoUnir(2);
-		}); 
-		
-		it('Deveria dividir uma peça', function(){
-			organizaPecasPage.executarAcaoDividir();
-			organizaPecasPage.selecionarTipoPeca('Documentos comprobatórios');
-			organizaPecasPage.setarDescricao('Descricao primeira peça');
-			organizaPecasPage.setarPaginaInicialFinal(1, 3);
-			organizaPecasPage.adicionarPeca();
-			organizaPecasPage.selecionarTipoPeca('Peticão Inicial');
-			organizaPecasPage.setarDescricao('Descricao segunda peça');
-			organizaPecasPage.setarPaginaInicialFinal(4, 5);
-			organizaPecasPage.adicionarPeca();
-			organizaPecasPage.confirmarAcaoDividir();
-		});
-		
-		it ('Deveria excluir uma peça', function(){
-			organizaPecasPage.executarAcaoExcluir();
-			loginPage.logout();
-		});
-				
-		it('Deveria logar como gestor-autuacao', function() {
-			login('gestor-autuacao');
-		});
-		
-		it('Deveria exibir os dashlets do papel gestor-autuacao', function(){	
-			expect(principalPage.dashletGestaoAutuacao.isDisplayed()).toBe(true)
-			loginPage.logout();
-		});
-		
-		it('Deveria logar como cartoraria', function() {
-			login('cartoraria');
-		});
-		
-		it ('Deveria exibir a dashlet do papel cartorária', function() {
-			expect(principalPage.dashletMinhasTarefas.isDisplayed()).toBe(true);
-			loginPage.logout();
+<<<<<<< HEAD
+		    editarPeca();
+		    		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/peca/);
 		});
 		
 		var editarPeca = function() {
@@ -243,6 +206,57 @@
 			organizaPecasPage.executarInsercaoPecas();
 		}
 		
+=======
+		    inserirPecas();
+		    
+		    expect(browser.getCurrentUrl()).toMatch(/\/processo\/pecas/);
+		});
+		
+		it('Deveria alterar o status da peça para juntada', function(){
+			organizaPecasPage.executarAcaoJuntar();
+		}); 
+		
+		it('Deveria unir as duas primeiras peças', function(){
+			organizaPecasPage.executarAcaoUnir(2);
+		}); 
+		
+		it('Deveria dividir uma peça', function(){
+			organizaPecasPage.executarAcaoDividir();
+			organizaPecasPage.selecionarTipoPeca('Documentos comprobatórios');
+			organizaPecasPage.setarDescricao('Descricao primeira peça');
+			organizaPecasPage.setarPaginaInicialFinal(1, 3);
+			organizaPecasPage.adicionarPeca();
+			organizaPecasPage.selecionarTipoPeca('Peticão Inicial');
+			organizaPecasPage.setarDescricao('Descricao segunda peça');
+			organizaPecasPage.setarPaginaInicialFinal(4, 5);
+			organizaPecasPage.adicionarPeca();
+			organizaPecasPage.confirmarAcaoDividir();
+		});
+		
+		it ('Deveria excluir uma peça', function(){
+			organizaPecasPage.executarAcaoExcluir();
+			loginPage.logout();
+		});
+				
+		it('Deveria logar como gestor-autuacao', function() {
+			login('gestor-autuacao');
+		});
+		
+		it('Deveria exibir os dashlets do papel gestor-autuacao', function(){	
+			expect(principalPage.dashletGestaoAutuacao.isDisplayed()).toBe(true)
+			loginPage.logout();
+		});
+		
+		it('Deveria logar como cartoraria', function() {
+			login('cartoraria');
+		});
+		
+		it ('Deveria exibir a dashlet do papel cartorária', function() {
+			expect(principalPage.dashletMinhasTarefas.isDisplayed()).toBe(true);
+			loginPage.logout();
+		});
+		
+>>>>>>> 54372b3318da0c1f45989d5f369ea7172a384524
 		var peticionar = function(siglaClasse){
 			
 			var peticionamentoPage = new PeticionamentoPage();
@@ -357,5 +371,6 @@
 			
 			organizaPecasPage.executarInsercaoPecas();
 		}
+
 	});
 })();

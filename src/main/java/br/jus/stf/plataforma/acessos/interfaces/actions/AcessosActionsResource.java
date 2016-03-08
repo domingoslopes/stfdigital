@@ -14,7 +14,7 @@ public class AcessosActionsResource {
 	@Autowired
 	private AcessosApplicationService acessosApplicationService;
 	
-	@ActionMapping(id = "configurar-permissao", name = "Configurar Permissões", resourcesMode = ResourcesMode.One)
+	@ActionMapping(id = "configurar-permissao", name = "Configurar Permissões", resourcesMode = ResourcesMode.None)
 	public void configurarPermissoesUsuario(ConfigurarPermissoesUsuarioCommand command){
 		this.acessosApplicationService.configurarPermissoesUsuario(command.getIdUsuario(), command.getPapeisAdicionados(), 
 				command.getGruposAdicionados(), command.getPapeisRemovidos(), command.getGruposRemovidos());
