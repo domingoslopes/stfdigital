@@ -36,6 +36,7 @@
 		<sonar.host.url>http://digital.stf.jus.br:9000</sonar.host.url>
 		<sonar.jdbc.url>jdbc:h2:tcp://digital.stf.jus.br:9092/sonar</sonar.jdbc.url>
 		<junit-toolbox.version>2.2</junit-toolbox.version>
+		<poi-ooxml.version>3.13</poi-ooxml.version>
     </properties>
 
     <dependencies>
@@ -204,6 +205,11 @@
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-cypher-compiler-2.1</artifactId>
 			<version>2.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi-ooxml.version}</version>
 		</dependency>
     </dependencies>
     
