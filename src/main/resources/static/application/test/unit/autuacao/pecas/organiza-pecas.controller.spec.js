@@ -24,6 +24,20 @@
 		teses: []
 	};
 	
+	var mockPeticao = {
+		id: 14,
+		numero: 1,
+		ano: 2016,
+		identificacao: "1/2016",
+		classe: "ADI",
+		partes: {PoloAtivo: [], PoloPassivo: []},
+		pecas: [{id: 1, tipoPecaId : 2, visibilidade: 'P', situacao: 'JUNTADA', descricao: 'peca juntada do processo RE 7'}, 
+		        {id: 2, tipoPecaId : 1, visibilidade: 'I', situacao: 'ASSINADA', descricao: 'peca assinada do processo RE 7'}],
+		processoWorkflowId: 1,
+		tipo: "ELETRONICA",
+		tipoProcesso: "ORIGINARIO",
+		preferencias: []
+	};
 	
 	describe('Organizar Peças Controller', function() {
 		var fakeData = [];
@@ -38,6 +52,7 @@
 		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $log, messages, properties, $state, ProcessoService) {
 			$httpBackend = _$httpBackend_;
 			
+			$httpBackend.expectGET(properties.apiUrl + '/peticoes/14').respond(mockPeticao);
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/14/processo').respond(mockProcesso);
 			
 			scope = $rootScope.$new();
@@ -63,7 +78,7 @@
 		});
 		
 		it('Deveria existir peças no processo', function() {
-			expect(controller.processo.pecas.length).toBeGreaterThan(0);;
+			expect(controller.processo.pecas.length).toBeGreaterThan(0);
 		});
 		
 		it('Deveria validar o formulário quando os parâmetros não forem alterados', function() {
