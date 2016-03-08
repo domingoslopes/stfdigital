@@ -6,6 +6,8 @@ import org.apache.commons.lang3.Range;
 
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.documentos.domain.model.SubstituicaoTag;
+import br.jus.stf.plataforma.documentos.domain.model.Tag;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -17,7 +19,7 @@ public interface DocumentoService {
 	 * @param docTemp
 	 * @return
 	 */
-	public Integer contarPaginas(DocumentoTemporario docTemp);
+	Integer contarPaginas(DocumentoTemporario docTemp);
 	
 	/**
 	 * Divide o conteúdo de um documento no intervalo de página inicial e final especificado.
@@ -53,5 +55,10 @@ public interface DocumentoService {
 	 * @param intervalos
 	 * @return
 	 */
-	public List<DocumentoTemporarioId> dividirDocumentoCompletamente(DocumentoId id, List<Range<Integer>> intervalos);
+	List<DocumentoTemporarioId> dividirDocumentoCompletamente(DocumentoId id, List<Range<Integer>> intervalos);
+	
+	List<Tag> extrairTags(ConteudoDocumento conteudo);
+	
+	DocumentoTemporario preencherTags(List<SubstituicaoTag> substituicoes, ConteudoDocumento conteudo);
+	
 }
