@@ -175,6 +175,7 @@
 		
 		it ('Deveria excluir uma peça', function(){
 			organizaPecasPage.executarAcaoExcluir();
+			loginPage.logout();
 		});
 				
 		it('Deveria logar como gestor-autuacao', function() {
