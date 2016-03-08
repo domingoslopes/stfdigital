@@ -5,6 +5,10 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.internal.util.Location;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -28,8 +32,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories("br.jus.stf")
 @EnableSpringDataWebSupport
-public class PersistenceConfiguration {
+public class PersistenceConfiguration implements ApplicationContextAware {
 	
+	private ApplicationContext applicationContext;
+
 	/**
 	 * Configura o versionamento do do banco via flyway
 	 * 
@@ -44,6 +50,8 @@ public class PersistenceConfiguration {
 		
 		flyway.setValidateOnMigrate(false);
 		flyway.setDataSource(dataSource);
+		flyway.setResolvers(new ApplicationContextAwareSpringJdbcMigrationResolver(flyway.getClassLoader(),
+		        new Location(flyway.getLocations()[0]), applicationContext));
 		
 		return flyway;
 	}
@@ -108,6 +116,11 @@ public class PersistenceConfiguration {
 	@DependsOn("dataSource")
 	public NamedParameterJdbcTemplate namedParameterJdbcTemplate(DataSource dataSource) {
 		return new NamedParameterJdbcTemplate(dataSource);
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 	
 }
