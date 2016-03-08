@@ -1,0 +1,60 @@
+<div class="content">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Modelos</p>
+					</li>
+					<li><a href="#" class="active">Edição de Conteúdo</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<form>
+			<!-- <div class="row">
+				<div class="col-md-6">
+					<div class="card share" data-social="item" style="width: 100%">
+						<div class="circle" data-toggle="tooltip" title=""
+							data-container="body" data-original-title="Label"></div>
+						<div class="card-header clearfix">
+							<h5>Tipo do modelo</h5>
+						</div>
+						<div class="card-description">
+                        	<select ui-select2 id="tipoModelo" ng-model="ecmc.modelo.tipoModelo" data-placeholder="Selecione o tipo do modelo" style="width: 450px;" autofocus>
+								<option value=""></option>
+								<option ng-repeat="tipoModelo in ecmc.tiposModelo" value="{{tipoModelo.id}}">{{tipoModelo.descricao}}</option>
+							</select> 
+						</div>
+					</div>
+				</div>
+                <div class="col-md-6">
+                    <div class="card share" data-social="item" style="width: 100%">
+                        <div class="circle" data-toggle="tooltip" title=""
+                            data-container="body" data-original-title="Label"></div>
+                        <div class="card-header clearfix">
+                            <h5>Nome do modelo</h5>
+                        </div>
+                        <div class="card-description">
+							<input type="text" id="nomeModelo" name="nomeModelo" class="form-control" ng-model="ecmc.modelo.nome" size="30" placeholder="Nome do modelo"> 
+                        </div>
+                    </div>
+                </div>
+			</div> -->
+			<div class="row">
+				<div class="col-md-12" style="height: 700px;">
+					<div onlyoffice-editor="ecmc.config" src="{{ecmc.document.src}}"
+						title="{{ecmc.document.name}}"
+						callback-url="{{ecmc.document.callbackUrl}}"
+						save="ecmc.save(url, close)" id="onlyoffice-editor">
+					</div>
+				</div>
+			</div>
+			<br />
+			<p>
+    			<input type="button" class="btn btn-complete btn-cons m-t-10" id="editar-conteudo-modelo" value="Finalizar" ng-click="ecmc.finalizar()"> 
+ 			</p>
+		</form>
+	</div>
+</div>
