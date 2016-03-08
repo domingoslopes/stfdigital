@@ -1,6 +1,5 @@
 package br.jus.stf.plataforma.documentos.domain;
 
-import java.io.RandomAccessFile;
 import java.util.List;
 
 import org.apache.commons.lang3.Range;
@@ -15,10 +14,10 @@ public interface DocumentoService {
 	/**
 	 * Realiza a contagem da quantidade de páginas em um arquivo PDF.
 	 * 
-	 * @param file
+	 * @param docTemp
 	 * @return
 	 */
-	public Integer contarPaginas(RandomAccessFile file);
+	public Integer contarPaginas(DocumentoTemporario docTemp);
 	
 	/**
 	 * Divide o conteúdo de um documento no intervalo de página inicial e final especificado.

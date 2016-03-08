@@ -9,7 +9,7 @@
 (function() {
 	'use strict';
 	
-	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3', 'angularMoment', 'ngMask', 'checklist-model', 'frapontillo.bootstrap-switch', 'datatables', 'ngCkeditor']);
+	angular.plataforma = angular.module('plataforma', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'nvd3', 'angularMoment', 'ngMask', 'checklist-model', 'frapontillo.bootstrap-switch', 'datatables', 'ngCkeditor', 'onlyoffice']);
 	angular.plataforma.config(function($stateProvider, DashletsProvider) {
 		$stateProvider.state('dashboard', {
 			parent: 'root',
@@ -80,6 +80,28 @@
 					controller: 'DelegarController'
 				}
 			}
+		}).state('criar-modelo', {
+			parent: 'root',
+			url: '/modelo/criar',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/modelo/criacao-modelo.tpl.html',
+					controller: 'CriacaoModeloController',
+					controllerAs: 'cmc'
+				}
+			}
+		}).state('editar-modelo', {
+			parent: 'root',
+			url: '/modelo/:idModelo/editar',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/plataforma/modelo/edicao-conteudo-modelo.tpl.html',
+					controller: 'EdicaoConteudoModeloController',
+					controllerAs: 'ecmc'
+				}
+			}
 		});
 		
 		DashletsProvider.dashlet('minhas-tarefas', {
@@ -88,6 +110,9 @@
 		}).dashlet('tarefas-papeis', {
 			view: 'application/plataforma/dashlets/tarefas-papeis.tpl.html',
 			controller: 'TarefasPapeisDashletController'
+		}).dashlet('modelos', {
+			view: 'application/plataforma/dashlets/modelos.tpl.html',
+			controller: 'ModelosDashletController'
 		});
 	});
 	

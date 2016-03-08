@@ -11,6 +11,7 @@ import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.jus.stf.plataforma.documentos.domain.ControladorEdicaoDocumento;
 import br.jus.stf.plataforma.documentos.domain.DocumentoService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
@@ -42,6 +43,9 @@ public class DocumentoApplicationService {
 	
 	@Autowired
 	private ConteudoDocumentoRepository conteudoDocumentoRepository;
+	
+	@Autowired
+	private ControladorEdicaoDocumento controladorEdicaoDocumento;
 
 	/**
 	 * Salva os documentos temporários no repositório
@@ -121,12 +125,21 @@ public class DocumentoApplicationService {
 		
 		String numeroConteudo = conteudoDocumentoRepository.save(id, docTemp);
 		
-		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp.randomAccessFile()));
+		Documento documento = new Documento(id, numeroConteudo, documentoService.contarPaginas(docTemp));
 		documento = documentoRepository.save(documento);
 		
 		documentoTempRepository.removeTemp(docTempId.toString());
 		docTemp.delete();
 		return documento.id();
+	}
+
+	public void concluirEdicaoDocumento(String numeroEdicao, DocumentoId documentoId, DocumentoTemporario documentoTemporario) {
+		Documento documento = documentoRepository.findOne(documentoId);
+		conteudoDocumentoRepository.deleteConteudo(documento.numeroConteudo());
+		String numeroConteudo = conteudoDocumentoRepository.save(documentoId, documentoTemporario);
+		documento.alterarConteudo(numeroConteudo);
+		documentoRepository.save(documento);
+		controladorEdicaoDocumento.excluirEdicao(numeroEdicao);
 	}
 	
 }

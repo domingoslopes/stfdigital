@@ -6,7 +6,7 @@ angular.module('onlyoffice', []);
 
 angular.module('onlyoffice').directive('onlyofficeEditor', [ function() {
 	function key(k) {
-		var result = k.replace(new RegExp("[^0-9-.a-zA-Z_=]", "g"), "_") + (new Date()).getTime();
+		var result = k.replace(new RegExp("[^0-9-.a-zA-Z_=]", "g"), "_");
 		return result.substring(result.length - Math.min(result.length, 50));
 	}
 
@@ -21,25 +21,28 @@ angular.module('onlyoffice').directive('onlyofficeEditor', [ function() {
 	};
 
 	return {
+		restrict: 'AE',
 		template : '<div id="onlyoffice-editor"></div>',
 		scope : {
-			save : '&'
+			save : '&',
+			editorConfig: '=onlyofficeEditor'
 		},
 		link : function($scope, $element, $attrs) {
-			$scope.$watch(function() {
-				return $attrs.src;
-			}, function() {
-				if (!$attrs.src)
+			$scope.$watch('editorConfig.document.src',
+			function() {
+				if (!$scope.editorConfig || !$scope.editorConfig.document || !$scope.editorConfig.document.src)
 					return;
-				var docUrl = $attrs.src;
+				var docUrl = $scope.editorConfig.document.src;
 
-				var docTitle = $attrs.title || docUrl;
+				var docTitle = $scope.editorConfig.document.name || docUrl;
 				var docKey = key(docUrl);
 
 				var docType = docUrl.split('?')[0].substring(docUrl.lastIndexOf(".") + 1).trim().toLowerCase();
 				var documentType = getDocumentType(docType);
-
-				var config = {
+				
+				var callbackUrl = $scope.editorConfig.document.callbackUrl;
+				
+				var defaultConfig = {
 					type : "desktop",
 					width : '100%',
 					height : '100%',
@@ -55,7 +58,8 @@ angular.module('onlyoffice').directive('onlyofficeEditor', [ function() {
 						}
 					},
 					editorConfig : {
-						mode : 'edit'
+						mode : 'edit',
+						callbackUrl: callbackUrl
 					},
 					events : {
 						onReady : function() {
@@ -74,6 +78,8 @@ angular.module('onlyoffice').directive('onlyofficeEditor', [ function() {
 						}
 					}
 				};
+
+				var config = angular.merge(defaultConfig, $scope.editorConfig);
 
 				// creating object editing
 				new DocsAPI.DocEditor("onlyoffice-editor", config);

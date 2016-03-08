@@ -42,6 +42,12 @@ public class Documento implements Entity<Documento, DocumentoId> {
 		this.quantidadePaginas = quantidadePaginas;
 	}
 
+	public void alterarConteudo(String numeroConteudo) {
+		Validate.notBlank(numeroConteudo, "documento.numeroConteudo.required");
+		
+		this.numeroConteudo = numeroConteudo;
+	}
+	
 	@Override
 	public DocumentoId id() {
 		return id;
