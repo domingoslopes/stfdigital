@@ -104,7 +104,11 @@ public class MonitoredRequest {
 	 * @return o usuário logado na aplicação
 	 */
 	public String username() {
-		return SecurityContextUtil.getUser().getUsername();
+		if (!SecurityContextUtil.getAuthentication().getPrincipal().equals("anonymousUser")) {
+			return SecurityContextUtil.getUser().getUsername();
+		} else {
+			return "anonymousUser";
+		}
 	}
 
 	/**
