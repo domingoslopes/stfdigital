@@ -245,11 +245,20 @@ public class ProcessoServiceFacade {
 	 * @param numeroOrdem Nº de ordem da peça.
 	 * @param visibilidade Visibilidade da peça.
 	 */
+<<<<<<< HEAD
 	public void editarPeca(Long processoId, Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
 		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
 		PecaProcesso pecaOriginal = (PecaProcesso)processoRepository.findOnePeca(pecaId);
 		TipoPeca tipoPeca = processoRepository.findOneTipoPeca(tipoPecaId);
-		processoApplicationService.editarPeca(processo, pecaOriginal, tipoPeca, descricao, numeroOrdem, Visibilidade.valueOf(visibilidade));
+		PecaProcesso novaPeca = new PecaProcesso(pecaOriginal.documento(), tipoPeca, descricao, Visibilidade.valueOf(visibilidade), pecaOriginal.situacao());
+		novaPeca.numerarOrdem(numeroOrdem);
+		
+		processoApplicationService.editarPeca(processo, pecaOriginal, novaPeca);
+=======
+	public void editarPeca(Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
+		PecaProcesso peca = (PecaProcesso)processoRepository.findOnePeca(pecaId);
+		processoApplicationService.editarPeca(peca);
+>>>>>>> d949614930b0b592772d74ee06c2049c6f8714ee
 	}
 	
 	/**

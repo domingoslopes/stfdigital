@@ -7,6 +7,7 @@
 	'use strict';
 	
 	angular.autuacao.controller('EditaPecaController', function ($scope, $stateParams, $state, messages, properties, $window, $cookies, FileUploader, PeticaoService, DocumentoTemporarioService, ProcessoService) {
+		$scope.processoId = $stateParams.resources[0].processoId; 
 		$scope.pecaId = $stateParams.resources[0].peca.sequencial;
 		$scope.sequencialPeca = $stateParams.resources[0].peca.numeroOrdem;
 		$scope.tipoPeca = $stateParams.resources[0].peca.tipoId;
@@ -45,7 +46,7 @@
 				return false;
 			}
 	    	
-	    	$scope.recursos[0] = new editarPecaCommand($scope.pecaId, $scope.tipoPeca, $scope.descricaoPeca, $scope.sequencialPeca, $scope.visibilidade);
+	    	$scope.recursos[0] = new editarPecaCommand($scope.processoId, $scope.pecaId, $scope.tipoPeca, $scope.descricaoPeca, $scope.sequencialPeca, $scope.visibilidade);
 	    	
 	    	return true;
 	    };
@@ -55,9 +56,10 @@
 	    	messages.success('Peça editada com sucesso.');
 	    };
 
-    	function editarPecaCommand(pecaId, tipoPecaId, descricao, numeroOrdem, visibilidade){
+    	function editarPecaCommand(processoId, pecaId, tipoPecaId, descricao, numeroOrdem, visibilidade){
     		var dto = {};
     		
+    		dto.processoId = processoId;
     		dto.pecaId = pecaId;
     		dto.tipoPecaId = tipoPecaId;
     		dto.descricao = descricao;
