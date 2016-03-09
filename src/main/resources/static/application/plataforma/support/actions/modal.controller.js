@@ -17,6 +17,7 @@
 			$element.modal('toggle');
 			$('.modal-backdrop').remove();
 			$element.remove();
+			$('body').removeClass('modal-open'); // Corrige o problema da modal quebrar o scroll.
 			$previousState.go('modalInvoker');
 		};
 	});
