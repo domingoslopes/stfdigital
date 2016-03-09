@@ -290,8 +290,8 @@ public class ProcessoApplicationService {
 	 * @param processo Dados do processo
 	 * @param peca Dados da peça.
 	 */
-	public void editarPeca(Processo processo, PecaProcesso pecaOriginal, PecaProcesso novaPeca){
-		processo.substituirPeca(pecaOriginal, novaPeca);
+	public void editarPeca(Processo processo, PecaProcesso pecaOriginal, TipoPeca tipoPeca, String descricao, Long numeroOrdem, Visibilidade visibilidade){
+		processo.editarPeca(pecaOriginal, tipoPeca, descricao, numeroOrdem, visibilidade);
 		processoRepository.save(processo);
 	}
 	

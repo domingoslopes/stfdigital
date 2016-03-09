@@ -22,7 +22,9 @@
 		};
 		
 		this.executarAcaoJuntar = function() {
-			selecionaPeca(2)
+			element.all(by.repeater('peca in organiza.processo.pecas')).count().then(function(count) {
+				  selecionaPeca(count - 1);
+			});
 			selecionaAcao(3);
 			element(by.id('btn_exec_juntar-peca')).click();
 			browser.waitForAngular();
@@ -40,6 +42,10 @@
 			element(by.id('btn_exec_unir-pecas')).click();
 			browser.waitForAngular();
 		};
+		
+		this.recuperarTotalPaginas = function(){
+			return element(by.css('[for=numeroPaginas]')).getAttribute("data-numero-total-paginas");
+		}
 		
 		this.executarAcaoDividir = function(){
 			selecionaPeca(1)
