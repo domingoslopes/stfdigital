@@ -77,7 +77,7 @@
 		};
 		
 		this.alteraNumeroOrdemPeca = function(numeroOrdem) {
-			element(by.id('sequencialPeca')).sendKeys(numeroOrdem);
+			utils.substituirValor(element(by.id('sequencialPeca')), numeroOrdem);
 		};
 		
 		this.alteraTipoPeca = function(tipoPeca) {
@@ -85,7 +85,7 @@
 		};
 		
 		this.alteraDescricaoPeca = function(descricao) {
-			element(by.id('descricaoPeca')).sendKeys(descricao);
+			utils.substituirValor(element(by.id('descricaoPeca')), descricao);
 		};
 		
 		this.alteraVisibilidadePeca = function(visibilidade) {
