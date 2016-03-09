@@ -34,6 +34,7 @@ import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
+import br.jus.stf.shared.TextoId;
 
 
 /**
@@ -262,5 +263,9 @@ public class PeticaoServiceFacade {
 	    Situacao situacao = Situacao.valueOf(Optional.ofNullable(peca.get("situacao")).orElse(Situacao.JUNTADA.toString()));
 	    return new PecaTemporaria(documentoTemporario, tipo, tipo.nome(), visibilidade, situacao);
     }
+
+	public void associarTextoDevolucao(Long peticaoId, Long textoId) {
+		peticaoApplicationService.associarTextoDevolucao(new PeticaoId(peticaoId), new TextoId(textoId));
+	}
 	
 }

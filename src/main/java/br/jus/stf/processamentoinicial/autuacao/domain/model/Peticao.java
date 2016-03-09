@@ -50,6 +50,7 @@ import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
+import br.jus.stf.shared.TextoId;
 import br.jus.stf.shared.stereotype.Entity;
 
 /**
@@ -114,6 +115,10 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PETICAO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PETICAO", nullable = false))
 	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
+	
+	@Embedded
+	@AttributeOverride(name = "sequencial", column = @Column(name = "SEQ_TEXTO_DEVOLUCAO"))
+	private TextoId textoDevolucao;
 		
 	@Transient
 	private String identificacao;
@@ -192,6 +197,16 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		  .collect(Collectors.toSet()));
 	}
 
+	public TextoId textoDevolucao() {
+		return textoDevolucao;
+	}
+	
+	public void associarTextoDevolucao(TextoId texto) {
+		Validate.notNull(texto, "peticao.textoDevolucao.required");
+		
+		this.textoDevolucao = texto;
+	}
+	
 	/**
 	 * Adiciona um parte à petição. Caso nulo irá lançar uma exceção
 	 * 

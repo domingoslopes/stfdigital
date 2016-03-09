@@ -36,8 +36,10 @@ import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PessoaId;
+import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
+import br.jus.stf.shared.TextoId;
 
 /**
  * @author Rodrigo Barreiros
@@ -214,6 +216,12 @@ public class PeticaoApplicationService {
 		Set<PessoaId> pessoas = pessoaAdapter.cadastrarPessoas(polo);
 		Set<PartePeticao> partes = pessoas.stream().map(pessoa -> new PartePeticao(pessoa, tipo)).collect(Collectors.toSet());
 		peticao.atribuirPartes(partes, tipo);
+	}
+
+	public void associarTextoDevolucao(PeticaoId peticaoId, TextoId textoId) {
+		Peticao peticao = peticaoRepository.findOne(peticaoId);
+		peticao.associarTextoDevolucao(textoId);
+		peticaoRepository.save(peticao);
 	}
 	
 }
