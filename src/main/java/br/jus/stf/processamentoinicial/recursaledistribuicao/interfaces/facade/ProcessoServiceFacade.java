@@ -28,6 +28,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.Proc
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
@@ -244,13 +245,14 @@ public class ProcessoServiceFacade {
 	 * @param numeroOrdem Nº de ordem da peça.
 	 * @param visibilidade Visibilidade da peça.
 	 */
-	public void editarPeca(Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
-		PecaProcesso peca = (PecaProcesso)processoRepository.findOnePeca(pecaId);
-		peca.alterarTipo(processoRepository.findOneTipoPeca(tipoPecaId));
-		peca.alterarDescricao(descricao);
-		peca.numerarOrdem(numeroOrdem);
-		peca.alterarVisibilidade(Visibilidade.valueOf(visibilidade));
-		processoApplicationService.editarPeca(peca);
+	public void editarPeca(Long processoId, Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
+		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
+		PecaProcesso pecaOriginal = (PecaProcesso)processoRepository.findOnePeca(pecaId);
+		TipoPeca tipoPeca = processoRepository.findOneTipoPeca(tipoPecaId);
+		PecaProcesso novaPeca = new PecaProcesso(pecaOriginal.documento(), tipoPeca, descricao, Visibilidade.valueOf(visibilidade), pecaOriginal.situacao());
+		novaPeca.numerarOrdem(numeroOrdem);
+		
+		processoApplicationService.editarPeca(processo, pecaOriginal, novaPeca);
 	}
 	
 	/**

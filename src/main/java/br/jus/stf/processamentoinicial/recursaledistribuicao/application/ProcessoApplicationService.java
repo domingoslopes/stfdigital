@@ -287,10 +287,12 @@ public class ProcessoApplicationService {
 	 * Permite a edição de uma peça.
 	 * 
 	 * @param processo Dados do processo.
+	 * @param processo Dados do processo
 	 * @param peca Dados da peça.
 	 */
-	public void editarPeca(PecaProcesso peca){
-		processoRepository.savePeca(peca);
+	public void editarPeca(Processo processo, PecaProcesso pecaOriginal, PecaProcesso novaPeca){
+		processo.substituirPeca(pecaOriginal, novaPeca);
+		processoRepository.save(processo);
 	}
 	
 	/**
