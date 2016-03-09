@@ -17,6 +17,7 @@ import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.documentos.domain.model.SubstituicaoTag;
 import br.jus.stf.plataforma.documentos.infra.persistence.ConteudoDocumentoRepository;
 import br.jus.stf.plataforma.documentos.infra.persistence.DocumentoTempRepository;
 import br.jus.stf.shared.DocumentoId;
@@ -65,7 +66,7 @@ public class DocumentoApplicationService {
 	 * @return
 	 */
 	public String salvarDocumentoTemporario(DocumentoTemporario documentoTemporario) {
-		if (documentoTemporario.tamanho() > TAMANHO_MAXIMO){
+		if (documentoTemporario.tamanho() > TAMANHO_MAXIMO) {
 			throw new IllegalArgumentException("O tamanho do arquivo excede o limite máximo de 10MB.");
 		}
 		
@@ -111,11 +112,11 @@ public class DocumentoApplicationService {
 		List<ConteudoDocumento> conteudos = documentos.stream().map(d -> documentoRepository.download(d)).collect(Collectors.toList());
 		Long tamanhoNovoDocumento = 1L;
 		
-		for(ConteudoDocumento conteudo : conteudos){
+		for (ConteudoDocumento conteudo : conteudos) {
 			tamanhoNovoDocumento += conteudo.tamanho();
 		}
 		
-		if (tamanhoNovoDocumento > TAMANHO_MAXIMO){
+		if (tamanhoNovoDocumento > TAMANHO_MAXIMO) {
 			throw new IllegalArgumentException("O tamanho do arquivo excede o limite máximo de 10MB.");
 		}
 		
@@ -124,7 +125,6 @@ public class DocumentoApplicationService {
 		DocumentoId novoDocumento = salvar(tempId);
 		return novoDocumento;
 	}
-
 
 	private List<DocumentoId> salvar(List<DocumentoTemporarioId> documentosTemporarios) {
 		List<DocumentoId> documentosSalvos = new ArrayList<>();
@@ -157,6 +157,14 @@ public class DocumentoApplicationService {
 		documento.alterarConteudo(numeroConteudo);
 		documentoRepository.save(documento);
 		controladorEdicaoDocumento.excluirEdicao(numeroEdicao);
+	}
+	
+	public DocumentoId gerarDocumentoComTags(DocumentoId documentoId, List<SubstituicaoTag> substituicoes) {
+		ConteudoDocumento conteudo = documentoRepository.download(documentoId);
+		DocumentoTemporario documentoTemporario = documentoService.preencherTags(substituicoes, conteudo);
+
+		String documentoTemporarioId = salvarDocumentoTemporario(documentoTemporario);
+		return salvar(new DocumentoTemporarioId(documentoTemporarioId));
 	}
 	
 }

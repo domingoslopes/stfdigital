@@ -9,10 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.application.DocumentoApplicationService;
+import br.jus.stf.plataforma.documentos.domain.DocumentoService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+import br.jus.stf.plataforma.documentos.domain.model.SubstituicaoTag;
+import br.jus.stf.plataforma.documentos.domain.model.Tag;
+import br.jus.stf.plataforma.documentos.interfaces.commands.SubstituicaoTagDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDtoAssembler;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
@@ -40,6 +44,9 @@ public class DocumentoServiceFacade {
 	
 	@Autowired
 	private DocumentoRepository documentoRepository;
+
+	@Autowired
+	private DocumentoService documentoService;
 
 	public List<DocumentoTemporarioDto> salvarDocumentos(List<DocumentoTemporarioId> documentosTemporarios) {
 		return documentoApplicationService.salvarDocumentos(documentosTemporarios).entrySet().stream()
@@ -71,6 +78,18 @@ public class DocumentoServiceFacade {
 
 	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
 		return documentoApplicationService.unirDocumentos(documentos);
+	}
+
+	public List<Tag> extrairTags(DocumentoId documentoId) {
+		ConteudoDocumento conteudoDocumento = documentoRepository.download(documentoId);
+		return documentoService.extrairTags(conteudoDocumento);
+	}
+
+	public Long gerarDocumentoComTags(Long documentoId, List<SubstituicaoTagDocumento> substituicoes) {
+		List<SubstituicaoTag> substituicoesTag = substituicoes.stream()
+		        .map(std -> new SubstituicaoTag(std.getNome(), std.getValor())).collect(Collectors.toList());
+		DocumentoId documentoGeradoId = documentoApplicationService.gerarDocumentoComTags(new DocumentoId(documentoId), substituicoesTag);
+		return documentoGeradoId.toLong();
 	}
 
 }

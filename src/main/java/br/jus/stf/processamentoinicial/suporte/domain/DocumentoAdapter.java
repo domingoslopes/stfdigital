@@ -1,7 +1,9 @@
 package br.jus.stf.processamentoinicial.suporte.domain;
 
 import java.io.InputStream;
+import java.util.List;
 
+import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -24,5 +26,7 @@ public interface DocumentoAdapter {
 	DocumentoId salvar(DocumentoTemporarioId documentoTemporario);
 
 	DocumentoTemporarioId upload(String nome, byte[] documento);
+
+	DocumentoId gerarDocumentoComTags(DocumentoId documento, List<SubstituicaoTagTexto> substituicoes);
 
 }

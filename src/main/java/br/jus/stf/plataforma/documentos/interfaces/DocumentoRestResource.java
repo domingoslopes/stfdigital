@@ -26,23 +26,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
+
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoComTags;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoDto;
 import br.jus.stf.plataforma.documentos.interfaces.dto.DocumentoTemporarioDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.TagDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.shared.errorhandling.ValidationException;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
-
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * Api REST para salvar e recuperar documentos
@@ -149,6 +151,18 @@ public class DocumentoRestResource {
 		headers.setContentType(MediaType.parseMediaType("application/pdf"));
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 		return headers;
+	}
+	
+	@ApiOperation("Extrai as tags de um documento")
+	@RequestMapping(value = "/{documentoId}/tags", method = RequestMethod.GET)
+	public List<TagDto> extrairTags(@PathVariable("documentoId") Long documentoId) {
+		return documentoServiceFacade.extrairTags(new DocumentoId(documentoId)).stream().map(t -> new TagDto(t.nome())).collect(Collectors.toList());
+	}
+	
+	@ApiOperation("Gera um documento subsitituindo as tags")
+	@RequestMapping(value = "/gerar-com-tags")
+	public Long gerarDocumentoComTags(GerarDocumentoComTags command) {
+		return documentoServiceFacade.gerarDocumentoComTags(command.getDocumentoId(), command.getSubstituicoes());
 	}
 	
 }

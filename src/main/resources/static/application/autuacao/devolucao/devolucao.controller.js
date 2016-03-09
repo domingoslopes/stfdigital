@@ -7,75 +7,89 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('DevolucaoController', function (PeticaoService, $state, $stateParams, $scope, messages) {
+	angular.autuacao.controller('DevolucaoController', function (PeticaoService, ModeloService, TextoService, OnlyofficeService, SecurityService, $state, $stateParams, $scope, messages) {
 		var devolucao = this;
 		
 		var resource = $stateParams.resources[0];
 		devolucao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
 		devolucao.recursos = [];
-		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, {id : 'TRANSITADO', nome : "Transitado"}, {id : 'BAIXADO', nome : "Baixado"}];
+		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida", modelo: 1}, {id : 'TRANSITADO', nome : "Transitado", modelo: 2}, {id : 'BAIXADO', nome : "Baixado", modelo: 3}];
 		devolucao.tipoDevolucao = '';
 		devolucao.documento = '';
+		devolucao.tags = [];
 		
 		devolucao.showEditor = false;
-		devolucao.tipoEditor = 'CKEDITOR';
-		$scope.urlTemplate = '';
-		
-		var toolbar = [
-			{ name: 'clipboard', 'items' : ['Cut', 'Copy', 'Paste']},
-			{ name: 'styles', 'items' : ['Styles']},
-			{ name: 'basicstyles', 'items' : ['Bold', 'Italic', 'Underline']},
-			{ name: 'advancedstyles', 'items' : ['Smallcaps', 'Marker']},
-			{ name: 'formatting', 'items' : ['Indent', 'Outdent']},
-			{ name: 'justify', 'items' : ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
-			{ name: 'breaking', 'items' : ['PageBreak']},
-		];
-		
-		var plugins = 'font,justify,stfstyles,indentblock,pagebreak';
-		
-		$scope.editorOptions = { language : 'pt-br',
-			allowedContent : true,
-			extraPlugins: plugins,
-			toolbar : 'stf',
-			toolbar_stf: toolbar,
-			stylesSet: 'stf_styles',
-			removeButtons: '',
-//			height: '842px',
-//			width: '595px'
-			height: '500px',
-			width: '210mm',
-			indentClasses: ['stf-indent1', 'stf-indent2', 'stf-indent3', 'stf-indent4', 'stf-indent4'],
-		};
-		
-		devolucao.document = {
-//			src: 'https://eti078143:8443/' + PeticaoService.urlTemplateDevolucao(devolucao.tipoDevolucao, 'docx'),
-			src: 'https://eti078143:8443/api/textos/1/conteudo.docx',
-//			src: 'http://www.easychair.org/publications/easychair.docx',
-//			src: 'https://www2.le.ac.uk/Members/davidwickins/old/test.docx/at_download/file',
-//			src: 'http://calibre-ebook.com/downloads/demos/demo.docx',
-			title: 'Editor'
-		};
-		
-		devolucao.save = function() {
-			console.log('save');
-		};
 		
 		PeticaoService.consultarProcessoWorkflow(devolucao.peticaoId).then(function(data) {
 			devolucao.processoWorkflowId = data;
 		});
 		
+		var recuperarIdModelo = function(tipoDevolucao) {
+			for (var i in devolucao.tiposDevolucao) {
+				if (devolucao.tiposDevolucao[i].id == tipoDevolucao) {
+					return devolucao.tiposDevolucao[i].modelo;
+				}
+			}
+		};
+		
 		$scope.$watch('devolucao.tipoDevolucao', function() {
 			if (devolucao.tipoDevolucao != '') {
-				//ckeditor
-				PeticaoService.templateDevolucao(devolucao.tipoDevolucao)
-					.then(function(template) {
-						devolucao.documento = template;
-						devolucao.showEditor = true;
+				ModeloService.consultar(recuperarIdModelo(devolucao.tipoDevolucao)).then(function(modelo) {
+					devolucao.modelo = modelo;
+					ModeloService.extrairTags(devolucao.modelo.documento).then(function(tags) {
+						devolucao.tags = tags;
 					});
-				//wodotexteditor
-				$scope.urlTemplate = PeticaoService.urlTemplateDevolucao(devolucao.tipoDevolucao, 'odt');
+				});
 			}
 		});
+		
+		devolucao.tagsCarregadas = function() {
+			return devolucao.tags.length > 0;
+		};
+		
+		devolucao.gerarTexto = function() {
+			TextoService.gerarTextoComTags(new GerarTextoPeticaoCommand(devolucao.peticaoId, devolucao.modelo.id, devolucao.tags)).then(function(texto) {
+				messages.success("Texto gerado com sucesso");
+				OnlyofficeService.recuperarNumeroEdicao(texto.documentoId).then(function(edicao) {
+					iniciarEditor('Documento de Devolução', texto.documentoId, edicao.numero);
+					devolucao.showEditor = true;
+				});
+			}, function() {
+				messages.error("Erro ao gerar o texto");
+			});
+		};
+		
+		var GerarTextoPeticaoCommand = function(peticaoId, modeloId, tags) {
+			this.peticaoId = peticaoId;
+			this.modeloId = modeloId;
+			this.substituicoes = tags;
+		};
+		
+		var iniciarEditor = function(nome, documentoId, numeroEdicao) {
+			devolucao.config = {
+				editorConfig : {
+					lang: 'pt-BR',
+					customization: {
+			            about: true,
+			            chat: true
+					},
+					user: {
+			            id: SecurityService.user().login,
+			            name: SecurityService.user().nome
+			        },
+				},
+				document: {
+					src: OnlyofficeService.criarUrlConteudoDocumento(documentoId),
+					key: numeroEdicao,
+					name: 'Texto: ' + nome,
+					callbackUrl: OnlyofficeService.recuperarUrlCallback(documentoId)
+				}
+			};
+		};
+
+		devolucao.save = function() {
+			console.log('save');
+		};
 		
 		devolucao.validar = function() {
 			var errors = null;

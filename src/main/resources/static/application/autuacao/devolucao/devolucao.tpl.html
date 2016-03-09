@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group form-group-default">
-                                        <label>Motivo da Devolução</label>
+                                        <label>Tipo de Devolução</label>
                                         <select ui-select2 id="tipoDevolucao" ng-model="devolucao.tipoDevolucao" class="full-width">
                                             <option value=""></option>
                                             <option ng-repeat="tipoDevolucao in devolucao.tiposDevolucao" value="{{tipoDevolucao.id}}">{{tipoDevolucao.nome}}</option>
@@ -37,47 +37,36 @@
                     </div>
                 </div>
             </div>
-			<div class="col-md-6">
-				<div class="card share" data-social="item" style="width: 100%">
-					<div class="circle" data-toggle="tooltip" title=""
-						data-container="body" data-original-title="Label"></div>
-					<div class="card-header clearfix">
-						<h5>Tipo de Editor</h5>
-					</div>
-					<div class="card-description">
-						<div class="radio radio-success">
-							<input type="radio" ng-model="devolucao.tipoEditor" ng-value="'CKEDITOR'" id="opcao-ckeditor">
-							<label for="opcao-ckeditor">CKEditor</label>
-							<input type="radio" ng-model="devolucao.tipoEditor" ng-value="'WEBODF'" id="opcao-webodf">
-							<label for="opcao-webodf">WebODF</label>
-							<input type="radio" ng-model="devolucao.tipoEditor" ng-value="'ONLYOFFICE'" id="opcao-onlyoffice">
-							<label for="opcao-onlyoffice">OnlyOffice</label>
+            <div class="col-md-8" ng-show="devolucao.tagsCarregadas() && !devolucao.showEditor">
+                <div class="panel panel-default">
+                	<div class="panel-heading text-center">
+						<div class="panel-title">
+							{{devolucao.modelo.tipoModelo.descricao}} - {{devolucao.modelo.nome}} - Tags
 						</div>
 					</div>
-				</div>
-			</div>
+                    <div class="panel-body">
+                        <form role="form">
+	                        <div class="row" ng-repeat="tag in devolucao.tags">
+                                <div class="col-md-12">
+									<div class="form-group form-group-default">
+										<label>{{tag.nome}}</label>
+										<input id="tag-{{$index}}" type="text" ng-model="tag.valor" class="form-control" autocomplete="off" />
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <button class="btn btn-primary btn-cons m-t-10" ng-click="devolucao.gerarTexto()">Gerar Texto</button>
+						</form>
+                    </div>
+                </div>
+            </div>
 		</div>
-		<div class="row" ng-if="devolucao.showEditor && devolucao.tipoEditor == 'CKEDITOR'">
-			<div class="col-md-12" style="background-color: rgb(204,204,204);">
-				<div class="center-block-table">
-					<textarea ckeditor="editorOptions" name="ckeditor" id="ckeditor" ng-model="devolucao.documento"></textarea>
-				</div>
-			</div>
-		</div>
-		<div class="row" ng-if="devolucao.showEditor && devolucao.tipoEditor == 'WEBODF'">
-			<div class="col-md-12">
-				<div class="center-block-table">
-					<div wodotexteditor="urlTemplate" id="wodotexteditor"></div>
-				</div>
-			</div>
-		</div>
-		<div class="row" ng-if="devolucao.showEditor && devolucao.tipoEditor == 'ONLYOFFICE'">
-			<div class="col-md-12" style="height: 600px;">
-				<onlyoffice-editor src="{{devolucao.document.src}}"
+		<div class="row" ng-show="devolucao.showEditor">
+			<div class="col-md-12" style="height: 700px;">
+				<div onlyoffice-editor="devolucao.config" src="{{devolucao.document.src}}"
 					title="{{devolucao.document.name}}"
-					save="devolucao.save(url, close)" id="onlyoffice-editor" title="Ofício de devolução por Remessa Indevida">
-				
-				</onlyoffice-editor>
+					callback-url="{{devolucao.document.callbackUrl}}"
+					save="devolucao.save(url, close)" id="onlyoffice-editor">
+				</div>
 			</div>
 		</div>
 		<p>

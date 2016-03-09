@@ -3,6 +3,7 @@ package br.jus.stf.shared;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.shared.stereotype.ValueObject;
@@ -21,10 +22,16 @@ public class TextoId implements ValueObject<TextoId> {
 	@Column(name = "SEQ_TEXTO", nullable = false)
 	private Long sequencial;
 
-	public TextoId() {
+	TextoId() {
 
 	}
 
+	public TextoId(final Long sequencial) {
+		Validate.notNull(sequencial, "textoId.sequencial.required");
+		
+		this.sequencial = sequencial;
+	}
+	
 	public Long toLong() {
 		return sequencial;
 	}

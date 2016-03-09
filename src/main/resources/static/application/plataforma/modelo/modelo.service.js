@@ -17,6 +17,11 @@
 				return $http.get(properties.apiUrl + "/modelos").then(function(response) {
 					return response.data;
 				});
+			},
+			extrairTags: function(id) {
+				return $http.get(properties.apiUrl + "/documentos/" + id + "/tags").then(function(response) {
+					return response.data;
+				});
 			}
 		};
 	});

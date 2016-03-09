@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
+import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoComTags;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.SubstituicaoTagDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.shared.util.DocxMultipartFile;
 import br.jus.stf.processamentoinicial.suporte.domain.DocumentoAdapter;
+import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -50,6 +54,15 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	public DocumentoTemporarioId upload(String nome, byte[] documento) {
 		MultipartFile file = new DocxMultipartFile(nome, documento);
 		return new DocumentoTemporarioId(documentoRestResource.upload(new UploadDocumentoCommand(file)));
+	}
+
+	@Override
+	public DocumentoId gerarDocumentoComTags(DocumentoId documentoId, List<SubstituicaoTagTexto> substituicoes) {
+		List<SubstituicaoTagDocumento> substituicoesDocumento = substituicoes.stream()
+		        .map(stt -> new SubstituicaoTagDocumento(stt.getNome(), stt.getValor())).collect(Collectors.toList());
+		Long id = documentoRestResource
+		        .gerarDocumentoComTags(new GerarDocumentoComTags(documentoId.toLong(), substituicoesDocumento));
+		return new DocumentoId(id);
 	}
 
 }

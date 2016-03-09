@@ -99,4 +99,11 @@ public class PeticaoRestResource {
     	headers.setContentType(mediaType);
 	    return headers;
     }
+    
+    @ApiOperation("Associa um texto de devolução a uma petição.")
+    @RequestMapping(value = "/{peticaoId}/associar-texto-devolucao/{textoId}", method = RequestMethod.POST)
+    public void associarTextoDevolucao(@PathVariable("peticaoId") Long peticaoId, @PathVariable("textoId") Long textoId) {
+    	peticaoServiceFacade.associarTextoDevolucao(peticaoId, textoId);
+    }
+    
 }
