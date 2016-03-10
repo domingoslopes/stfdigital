@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('OrganizaPecasController', function ($stateParams, $state, $cookies, messages, properties,ProcessoService, FileUploader, PeticaoService, PecaService, DTOptionsBuilder) {
+	angular.autuacao.controller('OrganizaPecasController', function ($stateParams, $state, $cookies, messages, properties,ProcessoService, FileUploader, PeticaoService, DTOptionsBuilder) {
 		
 		var organiza = this;
 		
@@ -16,6 +16,8 @@
 		var resource = $stateParams.resources[0];
 		
 		organiza.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
+		
+		organiza.peticao = {};
 		
 		organiza.tiposPeca = [];
 		
@@ -28,16 +30,21 @@
 //		organiza.pecas = [];
 		
 		organiza.buildSelectedObject = function(item) {
-			return {'documentoId': item.documentoId};
+			return {'peca': item,
+					'processoId': organiza.processo.id};
 		};
 		
 		organiza.atualizaEstado = function(){
 			if (organiza.habilitado){
-				organiza.sortableOptions.disable = false;
+				organiza.sortableOptions.disabled = false;
 			}else{
-				organiza.sortableOptions.disable = true;
+				organiza.sortableOptions.disabled = true;
 			}
 		};
+		
+		PeticaoService.consultar(organiza.peticaoId).then(function(data){
+			organiza.peticao = data;
+		});
 		
 		ProcessoService.consultarPorPeticao(organiza.peticaoId).success(function(data){
 			organiza.processo = data;

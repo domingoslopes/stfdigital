@@ -357,4 +357,32 @@ public class ProcessoOriginarioUnitTests {
 		assertEquals("Processo deveria ter 2 peças originais vinculadas.", 2L, processo.pecasOriginaisVinculadas().size());
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void tentaEditarPecaParaOrdemInvalida() {
+		Processo processo = processo();
+		
+		processo.editarPeca(peca, peca.tipo(), peca.descricao(), 2L, peca.visibilidade());
+	}
+	
+	@Test
+	public void editaUmaPecaAlterandoNumeroOrdem() {
+		Processo processo = processo();
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		
+		processo.adicionarPeca(peca2);
+		processo.editarPeca(peca2, peca2.tipo(), peca2.descricao(), 1L, peca2.visibilidade());
+		
+		assertEquals("Peça 1 deveria ter número de ordem 2.", 2L, peca.numeroOrdem().longValue());
+		assertEquals("Peça 2 deveria ter número de ordem 1.", 1L, peca2.numeroOrdem().longValue());
+	}
+	
+	@Test
+	public void editaUmaPecaMantendoNumeroOrdem() {
+		Processo processo = processo();
+		
+		processo.editarPeca(peca, peca.tipo(), "Nova descrição.", 1L, peca.visibilidade());
+		
+		assertEquals("Peça 1 deveria ter descrição nova.", "Nova descrição.", peca.descricao());
+	}
+	
 }

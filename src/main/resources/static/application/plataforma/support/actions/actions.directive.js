@@ -199,6 +199,7 @@
 				result : '=', //opcional, resultado da execução da ação
 				fnValidate : '&', //opcional, uma função para ser executada antes de enviar a requisição
 				fnResult : '&', //opcional, uma função para ser executada após receber o resultado, o resultado é passado como parâmetro
+				fnError : '&?', //opcional, uma função para ser executada após ocorrer um erro.
 				btnClass : '@', //opcional, classes do botão, default= 'btn btn-default'
 				iconClass : '@', //opcional, classes do ícone
 				description : '@', //opcional, descrição do botão, se não informado usará a descrição da ação
@@ -245,7 +246,11 @@
 									$scope.fnResult()(result.data);
 								}
 							}, function(err) {
-								messages.error(err);
+								if (angular.isDefined($scope.fnError)) {
+									$scope.fnError({'error': err.data});
+								} else {
+									messages.error(err);
+								}
 							});
 					};
 				});

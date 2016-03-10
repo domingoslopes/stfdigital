@@ -6,7 +6,7 @@
 (function(){
 	'use strict';
 
-	angular.plataforma.controller('VisualizacaoPeticaoController', function ($scope, $log, $state, $stateParams, messages, properties, PeticaoService, PecaService) {
+	angular.plataforma.controller('VisualizacaoPeticaoController', function ($scope, $log, $state, $stateParams, messages, properties, PeticaoService, DocumentoTemporarioService) {
 		
 		$scope.peticao = {};
 		
@@ -19,7 +19,7 @@
 		});
 		
 		$scope.urlConteudo = function(peca) {
-			return PecaService.montarUrlConteudo(peca);
+			return DocumentoTemporarioService.montarUrlConteudo(peca);
 		};
 		
 		

@@ -90,6 +90,12 @@
 		    options.first().click();
 		};
 		
+		util.substituirValor = function(el, valor) {
+			return el.clear().then(function() {
+				return el.sendKeys(valor);
+			});
+		};
+		
 	};
 
 	module.exports = Utils;

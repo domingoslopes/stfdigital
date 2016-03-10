@@ -48,8 +48,8 @@ public class PecaActionResource {
 	
 	@ActionMapping(id = "editar-peca", name = "Editar Peça Processual", resourcesMode = ResourcesMode.One)
 	public void editarPeca(EditarPecaCommand command) {
-		processoServiceFacade.editarPeca(command.getPecaId(), command.getTipoPecaId(), command.getDescricao(), 
-				command.getNumeroOrdem(), command.getVisibilidade());
+		processoServiceFacade.editarPeca(command.getProcessoId(), command.getPecaId(), command.getTipoPecaId(), 
+				command.getDescricao(), command.getNumeroOrdem(), command.getVisibilidade());
 	}
 	
 	@ActionMapping(id = "juntar-peca", name = "Juntar Peça Processual", resourcesMode = ResourcesMode.One)

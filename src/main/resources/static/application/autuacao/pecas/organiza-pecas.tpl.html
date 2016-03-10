@@ -23,7 +23,7 @@
 	                        	<h5>Peças</h5>
 	                        	<h6>Peças do processo</h6>
 	                        </div>
-	                        <div class="bootstrap-switch pull-right" id="classificacao" >
+	                        <div class="bootstrap-switch pull-right" id="classificacao">
 				       			<input data-bs-switch data-ng-model="organiza.habilitado" type="checkbox" ng-change="organiza.atualizaEstado()"
 				       				data-switch-on-text="Habilitado" data-switch-off-text="Desabilitado"
 				       				data-switch-on-color="info" data-switch-off-color="warning" data-switch-size="small" />
@@ -33,7 +33,7 @@
 							<actions resources="organiza.selecao.objetos" groups="peca" btn-class="btn-default" />
 						</div>
                         <div class="card-description">
-							<table datatable="ng" class="table" dt-options="organiza.dtOptions">
+							<table datatable="ng" class="table" dt-options="organiza.dtOptions" id="tabelaPecas">
 								<thead>
 							        <tr>
 							        	<th style="width: 10px;"><input type="checkbox" ng-model="organiza.checkToggle" ng-change="organiza.toggleCheck()"></th>
@@ -41,16 +41,18 @@
 							            <th>descricao</th>
 							            <th>Numero Ordem</th>
 							            <th>visibilidade</th>
+							            <th>situação</th>
 							        </tr>
 							    </thead>
-						        <tbody ui-sortable="organiza.sortableOptions">
-						        <tr ng-repeat="peca in ::organiza.processo.pecas">
-						        	<td><input type="checkbox" checklist-model="organiza.selecao.objetos" checklist-value="organiza.buildSelectedObject(peca)"></td>
-						            <td>{{ peca.sequencial }}</td>
-						            <td>{{ peca.descricao }}</td>
-						            <td>{{ peca.numeroOrdem }}</td>
-						            <td>{{ peca.visibilidade }}</td>
-						        </tr>
+						        <tbody ui-sortable="organiza.sortableOptions" ng-model="organiza.processo.pecas">
+							        <tr ng-repeat="peca in organiza.processo.pecas" ng-class='{"line-through": peca.situacao === "EXCLUIDA"}'>
+							        	<td><input type="checkbox" checklist-model="organiza.selecao.objetos" checklist-value="organiza.buildSelectedObject(peca)"></td>
+							            <td>{{ peca.sequencial }}</td>
+							            <td>{{ peca.descricao }}</td>
+							            <td>{{ peca.numeroOrdem }}</td>
+							            <td>{{ peca.visibilidade }}</td>
+							            <td>{{ peca.situacao }}</td>
+							        </tr>
 						        </tbody>
 							</table>
 							
@@ -63,7 +65,7 @@
 				<action id="inserir-pecas" groups="novapeca" resources="[organiza.peticaoId]" btn-class="btn btn-cons m-t-10"></action>
 				<action-executor id="organizar-pecas" resources="organiza.recursos" fn-validate="organiza.validar"
 					fn-result="organiza.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Concluir tarefa" enable="tarefa.dono">
-				</action-executor>
+				</action-executor>	
 			</p>
 		</form>
 	</div>

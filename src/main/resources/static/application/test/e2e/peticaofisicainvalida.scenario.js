@@ -115,8 +115,6 @@
 		    
 			var autuacaoPage = new AutuacaoPage();
 			
-			autuacaoPage.classificar('AP');
-			
 			//seta o radio "inválida" 
 			autuacaoPage.invalidarPeticaoRadio()
 			

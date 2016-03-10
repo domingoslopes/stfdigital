@@ -18,6 +18,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
@@ -44,6 +46,7 @@ public class PecaProcesso extends Peca {
 	@JoinTable(name = "VINCULO_PECA_ORIGINAL", schema = "AUTUACAO",
 	joinColumns = @JoinColumn(name = "SEQ_PROCESSO_PECA", nullable = false),
 	inverseJoinColumns = @JoinColumn(name = "SEQ_PROCESSO_PECA_ORIGINAL", nullable = false))
+	@JsonIgnore
 	private List<PecaProcessoOriginal> pecasOriginaisVinculadas = new LinkedList<PecaProcessoOriginal>();
 	
 	PecaProcesso() {

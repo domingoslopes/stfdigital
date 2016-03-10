@@ -6,11 +6,22 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('InserePecasController', function ($scope, messages, properties, $window, $cookies, FileUploader) {
-		$scope.recursos = [];
+	angular.autuacao.controller('InserePecasController', function ($scope, $stateParams, $state, messages, properties, $window, $cookies, FileUploader, PeticaoService, DocumentoTemporarioService, ProcessoService) {
+		$scope.peticaoId = angular.isObject($stateParams.resources[0]) ? $stateParams.resources[0].peticaoId : $stateParams.resources[0];
+		$scope.processo = null;
 		$scope.pecas = [];
-		$scope.visibilidades = ["Público", "Pendente de visualização"];
-				
+		$scope.visibilidades = [{id:"PUBLICO", descricao:"Público"}, {id:"PENDENTE_VISUALIZACAO", descricao:"Pendente de visualização"}];
+		$scope.tiposPecas = [];
+		$scope.recursos = [];
+
+		PeticaoService.listarTipoPecas().then(function(tiposPecas) {
+			$scope.tiposPecas = tiposPecas;
+		});
+		
+		ProcessoService.consultarPorPeticao($scope.peticaoId).success(function(data){
+			$scope.processo = data;
+		});
+		
 		var uploader = $scope.uploader = new FileUploader({
             url: properties.apiUrl + '/documentos/upload/assinado',
             headers : {'X-XSRF-TOKEN': $cookies.get('XSRF-TOKEN')},
@@ -42,10 +53,12 @@
             		fileItem : fileItem,
                 	documentoTemporario : null,
                 	tipo : null,
+                	descricao : null,
+                	visibilidade : null,
                 	uploadFinished: false
             };
             fileItem.peca = peca;
-            $scope.pecas.push(peca);						
+            $scope.pecas.push(peca);
 			fileItem.upload();
 		};
 		
@@ -66,8 +79,6 @@
         	}
         	$scope.remover(peca, false);
         };
-        
-        // FILTERS
 
         uploader.filters.push({
             name: 'customFilter',
@@ -92,10 +103,11 @@
 			angular.forEach($scope.pecas, function(peca) {
 				arquivosTemporarios.push(peca.documentoTemporario);
 			});
-			PecaService.excluirArquivosTemporarios(arquivosTemporarios);
+			
+			DocumentoTemporarioService.excluirArquivosTemporarios(arquivosTemporarios);
 			uploader.clearQueue();
 			uploader.progress = 0;
-			PecaService.limpar(pecas);
+			DocumentoTemporarioService.limpar($scope.pecas);
 		};
 		
 		$scope.visualizar = function(peca){
@@ -104,45 +116,90 @@
              $window.open(fileURL);
 	    };
 	    
+	    //remove uma peça.
+		$scope.removerPeca = function(peca, apagarDoServidor) {
+			if (apagarDoServidor) {
+				var pecaFull = recuperarPecaPorItem(peca.fileItem);
+				var arquivoTemporario = [pecaFull.documentoTemporario];
+				DocumentoTemporarioService.excluirArquivosTemporarios(arquivoTemporario);
+			}
+			
+			peca.fileItem.remove();
+			removeArrayItem($scope.pecas, peca);
+		};
+	    
 	    $scope.validar = function() {
-	    	var errors = null;
-	    	
-			if ($scope.partesPoloAtivo.length === 0) {
-				errors = 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>ativo</b>.<br/>';
+	    	var errors = '';
+	    	var camposErros = '';
+	    	var pecaInserida = null;
+			
+			if ($scope.pecas.length === 0) {
+				errors += 'Nenhuma peça foi informada.<br/>';
+			} else {
+				for (var i = 0; i < $scope.pecas.length; i++) {
+					pecaInserida = $scope.pecas[i];
+					
+					if (pecaInserida.descricao == '' || pecaInserida.descricao == null) {
+						camposErros += '- Descrição<br/>';
+					}
+					
+					if (pecaInserida.visibilidade == null) {
+						camposErros += '- Visibilidade<br/>';
+					}
+					
+					if (pecaInserida.tipo == null) {
+						camposErros += '- Tipo de peça<br/>';
+					}
+					
+					if (camposErros != '') {
+						errors += 'Campo(s) não informado(s) para a peça ' + pecaInserida.fileItem.file.name + ': <br/>' + camposErros + '<br/>';
+					}
+					
+					if (errors) {
+						messages.error(errors);
+					}
+				}
 			}
 			
-			if ($scope.partesPoloPassivo.length === 0) {
-				errors += 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>passivo</b>.<br/>';
+	    	if (errors) {
+				return false;
 			}
-			
-	    	if($scope.pecas.length === 0){
-	    		errors += 'Você precisa adicionar <b>pelo menos uma peça</b> na sua petição.<br/>';
-	    	}
-			
-			var tiposSelecionados = [];
-			
-	    	angular.forEach($scope.pecas, function(peca){
-	    		if(peca.tipo) tiposSelecionados.push(peca.tipo);
-	    	});
 	    	
-	    	if(tiposSelecionados.length < $scope.pecas.length){
-	    		errors += 'Por favor, classifique todas as peças da sua petição.<br/>';
-	    	}
+	    	$scope.recursos[0] = new SalvarPecasCommand($scope.processo.id, $scope.pecas);
 	    	
-	    	if(angular.isFunction($scope.child.validar)) {
-	    		return $scope.child.validar(errors);
-	    	}
-	    	return false;
+	    	return true;
+	    };
+	    
+	    $scope.completar = function() {
+	    	$state.go('organizar-pecas');
+	    	messages.success('Peças inseridas com sucesso.');
 	    };
 
-    	$scope.command = function PeticionarCommand(){
+    	function SalvarPecasCommand(processoId, pecas){
     		var dto = {};
-    		    		
-    		dto.pecas = pecas;
+    		
+    		dto.processoId = processoId;
+    		dto.pecas = montarDtoPecas(pecas);
     		
     		return dto;
     	};
 		
+    	function montarDtoPecas(pecas) {
+    		var pecasDto = [];
+    		
+    		for (var i = 0; i < pecas.length; i++) {
+    			var dto = {};
+    			dto.documentoTemporarioId = pecas[i].documentoTemporario;
+        		dto.tipoPecaId = pecas[i].tipo;
+        		dto.visibilidade = pecas[i].visibilidade;
+        		dto.situacao = 'Pendente de juntada';
+        		dto.descricao = pecas[i].descricao;
+        		
+        		pecasDto.push(dto);
+    		}
+    		
+    		return pecasDto;
+    	};
 	});
 
 })();

@@ -91,12 +91,9 @@
 		
 		autuacao.validar = function() {
 			var errors = null;
-			if (autuacao.classe.length === 0) {
-				errors = 'Você precisa selecionar <b>a classe processual definitiva</b>.<br/>';
-			}
-			
+
 			if (autuacao.valida === 'false' && autuacao.motivo.length === 0) {
-				errors += 'Para petição inválidas, você precisa informar o motivo da inaptidão.<br/>';
+				errors = 'Para petição inválidas, você precisa informar o motivo da inaptidão.<br/>';
 			}
 			
 			if (errors) {

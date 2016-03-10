@@ -28,6 +28,8 @@
 	
 	var loginPage;
 	
+	var organizaPecasPage;
+	
 	var pos;
 	
 	var peticaoId;
@@ -117,7 +119,7 @@
 		    	peticaoId = text.substr(pos, text.length);
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
-			
+		    
 		    distribuir('COMUM');
 		    
 		    distribuir('PREVENCAO');
@@ -125,34 +127,62 @@
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			
 			loginPage.logout();
-		}); 
+		});
 		
-		it('Deveria logar como organizador de peças', function() {
+		it('Deveria logar como organizador-pecas', function(){
 			login('organizador-pecas');
 		});
-
-		it('Deveria organizar as peças do processo distribuído', function() {
-					    
-		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+		
+		it('Deveria inserir uma peça', function(){
+			expect(principalPage.tarefas().count()).toBeGreaterThan(0);
+			
 		    
 		    principalPage.tarefas().get(0).getText().then(function(text) {
 		    	pos = text.search("#");
 		    	pos = pos + 1;
-		    	processoId = text.substr(pos, text.length);
-		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Organizar Peças #' + processoId);
+		    	peticaoId = text.substr(pos, text.length);
+		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Organizar Peças #' + peticaoId);
 		    });
 		    
 		    principalPage.executarTarefa();
 		    
-		    var organizaPecasPage = new OrganizaPecasPage();
-		    
-		    organizaPecasPage.finalizar();
-		    
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
-			
-			loginPage.logout();
+		    inserirPecas();
+		});
+		
+		it ('Deveria alterar o status da ultima peca para juntada', function(){
+			organizaPecasPage.executarAcaoJuntar();
+		});
+		
+		it('Deveria editar uma peça', function(){
+			editarPeca();
+		});
+		
+		it('Deveria unir as duas primeiras peças', function(){
+			organizaPecasPage.executarAcaoUnir(2);
 		}); 
 		
+		it('Deveria dividir uma peça', function(){
+			organizaPecasPage.executarAcaoDividir();
+			organizaPecasPage.recuperarTotalPaginas().then(function(numeroTotalPaginas){
+				if (numeroTotalPaginas > 2){
+					organizaPecasPage.selecionarTipoPeca('Documentos comprobatórios');
+					organizaPecasPage.setarDescricao('Descricao primeira peça');
+					organizaPecasPage.setarPaginaInicialFinal(1, 2);
+					organizaPecasPage.adicionarPeca();
+					organizaPecasPage.selecionarTipoPeca('Peticão Inicial');
+					organizaPecasPage.setarDescricao('Descricao segunda peça');
+					organizaPecasPage.setarPaginaInicialFinal(2, numeroTotalPaginas);
+					organizaPecasPage.adicionarPeca();
+					organizaPecasPage.confirmarAcaoDividir();
+				}
+			});
+		});
+		
+		it ('Deveria excluir uma peça', function(){
+			organizaPecasPage.executarAcaoExcluir();
+			loginPage.logout();
+		});
+				
 		it('Deveria logar como gestor-autuacao', function() {
 			login('gestor-autuacao');
 		});
@@ -171,6 +201,54 @@
 			loginPage.logout();
 		});
 		
+		var editarPeca = function() {
+			if (!organizaPecasPage) {
+		    	organizaPecasPage = new OrganizaPecasPage();
+		    }
+			
+			organizaPecasPage.executarAcaoEditarPeca();
+			organizaPecasPage.alteraNumeroOrdemPeca('2');
+			organizaPecasPage.alteraTipoPeca('Ato coator');
+			organizaPecasPage.alteraDescricaoPeca('Peça alterada');
+			organizaPecasPage.alteraVisibilidadePeca('Pendente de visualização');
+			organizaPecasPage.salvarEdicaoPeca();
+		}
+		
+		var inserirPecas = function(){
+			if (!organizaPecasPage) {
+		    	organizaPecasPage = new OrganizaPecasPage();
+		    }
+		    
+			//Acessa a página de inserção de peças.
+			organizaPecasPage.acionarOpcaoInserirPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			//Remove a peça.
+			organizaPecasPage.removerPeca();
+			
+			//Insere duas peças.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			//Exclui as duas peças.
+			organizaPecasPage.removerTodasPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			//Edita os campos da peça inserida.
+			organizaPecasPage.setarDescricao('Nova peça');
+			//organizaPecasPage.selecionarTipoPeca('Documentos Comprobatórios');
+			organizaPecasPage.selecionarVisibilidadePeca('Pendente de visualização');
+			
+			organizaPecasPage.executarInsercaoPecas();
+		}
 		
 		var peticionar = function(siglaClasse){
 			
@@ -196,7 +274,7 @@
 			peticionamentoPage.waitUploadFinished(0);
 			
 			peticionamentoPage.selecionarTipoPeca('Documentos Comprobatórios', 1);
-		    
+			
 			peticionamentoPage.registrar('registrar-peticao-eletronica');
 			
 			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
@@ -253,5 +331,38 @@
 			distribuicaoPage.finalizar();
 		}
 		
+		var inserirPecas = function(){
+			if (!organizaPecasPage) {
+		    	organizaPecasPage = new OrganizaPecasPage();
+		    }
+		    
+			//Acessa a página de inserção de peças.
+			organizaPecasPage.acionarOpcaoInserirPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			
+			//Remove a peça.
+			organizaPecasPage.removerPeca();
+			
+			//Insere duas peças.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+
+			//Exclui as duas peças.
+			organizaPecasPage.removerTodasPecas();
+			
+			//Faz o upload de uma peça.
+			organizaPecasPage.uploadPecas();
+			organizaPecasPage.waitUploadFinished(0);
+			organizaPecasPage.setarDescricao('Teste')
+			organizaPecasPage.selecionarTipoPeca('Ato coator');
+			organizaPecasPage.selecionarVisibilidadePeca('Público')
+			
+			organizaPecasPage.executarInsercaoPecas();
+		}
 	});
 })();

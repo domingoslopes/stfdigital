@@ -1,1 +1,0 @@
-ALTER TABLE autuacao.peticao DROP tip_status_peticao;

@@ -34,12 +34,16 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
@@ -108,6 +112,7 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	@OneToMany(cascade = CascadeType.ALL, targetEntity = PecaProcessoOriginal.class)
 	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	@JsonIgnore
 	private List<PecaProcessoOriginal> pecasOriginaisVinculadas = new LinkedList<PecaProcessoOriginal>();
 	
 	Processo() {
@@ -260,13 +265,12 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * Altera a situação da peça no processo para JUNTADA.
 	 * 
 	 * @param peca
-	 * @return true para peça juntada ou false para peça inexistente no processo.
 	 */
-	public boolean juntarPeca(final Peca peca) {
+	public void juntarPeca(final Peca peca) {
 		Validate.notNull(peca, "processo.peca.required");
 		Validate.isTrue(peca.situacao() == Situacao.PENDENTE_JUNTADA, "processo.peca.situacao.invalid");
 		
-		return alterarSituacaoPeca(peca, Situacao.JUNTADA);
+		peca.juntar();
 	}
 
 	/**
@@ -282,6 +286,31 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		Validate.notNull(pecaSubstituta, "processo.pecaSubstituta.required");
 		
 		controladorOrdenacaoPecas.substituirPeca(pecaOriginal, pecaSubstituta);
+	}
+	
+	/**
+	 * Edita as informações de uma peça do processo.
+	 * 
+	 * @param pecaOriginal
+	 * @param tipoPeca
+	 * @param descricao
+	 * @param numeroOrdem
+	 * @param visibilidade
+	 */
+	public void editarPeca(Peca pecaOriginal, TipoPeca tipoPeca, String descricao, Long numeroOrdem, Visibilidade visibilidade) {
+		Validate.notNull(pecaOriginal, "processo.pecaModificada.required");
+		Validate.notNull(tipoPeca, "processo.tipoPeca.required");
+		Validate.notBlank(descricao, "processo.descricao.required");
+		Validate.notNull(numeroOrdem, "processo.numeroOrdem.required");
+		Validate.notNull(visibilidade, "processo.visibilidade.required");
+		Validate.isTrue(numeroOrdem <= controladorOrdenacaoPecas.ultimoNumeroOrdemPeca() &&
+				numeroOrdem >= controladorOrdenacaoPecas.primeiroNumeroOrdemPeca(), "processo.peca.numeroOrdem.invalid");
+		
+		if (!pecaOriginal.numeroOrdem().equals(numeroOrdem)) {
+			controladorOrdenacaoPecas.reordenarPeca(pecaOriginal, numeroOrdem);
+		}
+		
+		pecaOriginal.editar(tipoPeca, descricao, visibilidade);
 	}
 	
 	/**
@@ -333,12 +362,12 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * Marca uma peça como removida.
 	 * 
 	 * @param peca
-	 * * @return true para peça juntada ou false para peça inexistente no processo.
 	 */
-	public boolean removerPeca(final Peca peca){
+	public void removerPeca(final Peca peca){
 		Validate.notNull(peca, "processo.peca.required");
+		Validate.isTrue(peca.situacao() != Situacao.EXCLUIDA, "processo.peca.situacao.invalid");
 	
-		return alterarSituacaoPeca(peca, Situacao.EXCLUIDA);
+		peca.excluir();
 	}
 	
 	/**
@@ -445,23 +474,4 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 			.append(classe.toString()).append(" ").append(numero).toString();
 	}
 	
-	/**
-	 * Altera a situação de uma peça no processo.
-	 * 
-	 * @param peca
-	 * @param situacao
-	 * @return true quando a situação da peça for alterada ou false quando a peça não existir no processo.
-	 */
-	private boolean alterarSituacaoPeca(final Peca peca, final Situacao situacao) {
-		int indicePecaAAlterar = pecas.indexOf(peca);   
-		
-		if (indicePecaAAlterar == -1) {
-			return false;
-		}
-		
-		pecas.get(indicePecaAAlterar).alterarSituacao(situacao);
-		
-		return true;
-	}
-
 }
