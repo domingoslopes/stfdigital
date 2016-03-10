@@ -211,7 +211,7 @@ public class ManipulacaoPecaProcessualIntegrationTests extends AbstractIntegrati
 		
 		StringBuilder json = new StringBuilder();
 		json.append("{\"resources\": ");
-		json.append("[{\"pecaId\":" + pecaId + ", \"tipoPecaId\":" + tipoPecaId + ", \"descricao\": \"" + descricao + "\", \"numeroOrdem\": " + numeroOrdem + ", \"visibilidade\": \"" + visibilidade + "\"}]}");
+		json.append("[{\"processoId\":" + processoId + ", \"pecaId\":" + pecaId + ", \"tipoPecaId\":" + tipoPecaId + ", \"descricao\": \"" + descricao + "\", \"numeroOrdem\": " + numeroOrdem + ", \"visibilidade\": \"" + visibilidade + "\"}]}");
 		
 		return json.toString();
 	}

@@ -22,9 +22,7 @@
 		};
 		
 		this.executarAcaoJuntar = function() {
-			element.all(by.repeater('peca in organiza.processo.pecas')).count().then(function(count) {
-				  selecionaPeca(count - 1);
-			});
+			selecionaPeca(2)
 			selecionaAcao(3);
 			element(by.id('btn_exec_juntar-peca')).click();
 			browser.waitForAngular();
@@ -43,10 +41,6 @@
 			browser.waitForAngular();
 		};
 		
-		this.recuperarTotalPaginas = function(){
-			return element(by.css('[for=numeroPaginas]')).getAttribute("data-numero-total-paginas");
-		}
-		
 		this.executarAcaoDividir = function(){
 			selecionaPeca(1)
 			selecionaAcao(0);
@@ -59,12 +53,13 @@
 		}
 		
 		this.executarAcaoExcluir = function() {
-			selecionaPeca(1)
+			selecionaPeca(2)
 			selecionaAcao(2);
 			element(by.id('btn_exec_excluir-pecas')).click();
 			browser.waitForAngular();
 		};
 		
+<<<<<<< HEAD
 		this.executarAcaoEditarPeca = function() {
 			var peca = element(by.repeater('peca in organiza.processo.pecas').row(0));
 			peca.element(by.css('input')).click();
@@ -96,7 +91,7 @@
 			element(by.id('btn_exec_editar-peca')).click();
 			browser.waitForAngular();
 		};
-		
+=======
 		this.setarPaginaInicialFinal = function(inicio, fim){
 			element(by.id('intervaloInicialPagina')).sendKeys(inicio);
 			element(by.id('intervaloFinalPagina')).sendKeys(fim);
@@ -105,6 +100,7 @@
 		this.adicionarPeca = function(){
 			element(by.id('botaoAdicionarIntervalosPeca')).click();
 		}
+>>>>>>> 54372b3318da0c1f45989d5f369ea7172a384524
 		
 		this.acionarOpcaoInserirPecas = function () {
 			element(by.id('btn_inserir-pecas')).click();
@@ -162,8 +158,12 @@
 		
 		this.selecionarTipoPeca = function(tipoPeca, id) {
 			var index = !id ? 0 : id;
+<<<<<<< HEAD
 			utils.select('div#s2id_tipoPecaId-' + index, tipoPeca);
+=======
+			utils.select('div#s2id_tipoPecaId-' + index, descricao);
 			browser.waitForAngular();
+>>>>>>> 54372b3318da0c1f45989d5f369ea7172a384524
 		};
 		
 		this.selecionarVisibilidadePeca = function(visibilidade, id) {
