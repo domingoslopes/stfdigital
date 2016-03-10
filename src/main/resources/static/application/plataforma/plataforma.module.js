@@ -14,8 +14,6 @@
 		$stateProvider.state('dashboard', {
 			parent: 'root',
 			url : '/dashboard',
-			deepStateRedirect: true,
-		    sticky: true,
 			params : { dashboard : {} },
 			views: {
 				'content@root': {
@@ -27,8 +25,15 @@
 			parent: 'root',
 			url : '/erro',
 			templateUrl : 'application/plataforma/support/error-handling/error.tpl.html'
-		})
-		.state('registrar-associado', {
+		}).state('visualizar', {
+			abstract: true,
+			parent: 'root',
+			url: '/visualizacao'
+		}).state('pesquisa', {
+			abstract: true,
+			parent: 'root',
+			url: '/pesquisa'
+		}).state('registrar-associado', {
 			parent: 'root',
 			url: '/associado',
 			views: {
@@ -38,8 +43,7 @@
 					controllerAs: 'vm'
 				}
 			}
-		})		
-		.state('configurar-permissao', {
+		}).state('configurar-permissao', {
 			parent: 'root',
 			url: '/permissoes',
 			views: {
@@ -49,8 +53,7 @@
 					controllerAs: 'vm'
 				}
 			}
-		})
-		.state('informacoes-usuario', {
+		}).state('informacoes-usuario', {
 			parent: 'root',
 			url: '/usuario',
 			views: {
@@ -60,8 +63,7 @@
 					controllerAs: 'vm'
 				}
 			}
-		})
-		.state('assumir-tarefa', {
+		}).state('assumir-tarefa', {
 			parent: 'action',
 			params : { resources : [] },
 			views: {
@@ -70,14 +72,22 @@
 					controller: 'AssumirController'
 				}
 			}
-		})
-		.state('delegar-tarefa', {
+		}).state('delegar-tarefa', {
 			parent: 'action',
 			params : { resources : [] },
 			views: {
 				'@action': {
 					templateUrl: 'application/plataforma/workflow/tarefa/delegar.tpl.html',
 					controller: 'DelegarController'
+				}
+			}
+		}).state('salvar-pesquisa-avancada', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/plataforma/pesquisa-avancada/salvar.tpl.html',
+					controller: 'SalvarPesquisaAvancadaController'
 				}
 			}
 		});

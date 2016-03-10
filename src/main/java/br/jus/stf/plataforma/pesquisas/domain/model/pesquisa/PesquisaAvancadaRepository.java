@@ -52,4 +52,14 @@ public interface PesquisaAvancadaRepository {
 	 * @return
 	 */
 	List<Resultado> executar(Pesquisa pesquisa, Pageable paginacao);
+	
+	/**
+	 * Lista os critérios de pesquisa avançada
+	 * 
+	 * @param indices
+	 * @return
+	 */
+	List<Criterio> listarCriterios(String[] indices);
+	
+	
 }

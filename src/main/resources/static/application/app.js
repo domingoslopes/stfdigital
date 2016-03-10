@@ -12,7 +12,7 @@
 		angular.bootstrap(document, ['app']);
 	});
 
-	angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'properties', 'ui.select2', 'ngSanitize', 'ngCookies', 'angularFileUpload'])
+	angular.module('app', ['ui.router', 'ct.ui.router.extras.sticky', 'ct.ui.router.extras.previous', 'plataforma', 'autuacao', 'properties', 'ui.select2', 'ngSanitize', 'ngCookies', 'angularFileUpload', 'angular-elastic-builder'])
 	
 	.config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, $locationProvider) {
 		$httpProvider.interceptors.push('security-interceptor');
@@ -24,6 +24,8 @@
 		
 		$stateProvider
 			.state('root', {
+				deepStateRedirect: true,
+			    sticky: true,
 				views: {
 					'main@': {
 						templateUrl: 'application/plataforma/template/default.tpl.html',

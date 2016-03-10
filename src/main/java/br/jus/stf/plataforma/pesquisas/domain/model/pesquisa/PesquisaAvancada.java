@@ -49,8 +49,8 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 	
 	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome, final String consulta, final String[] indices) {
 		Validate.notNull(id, "pesquisaAvancada.id.required");
-		Validate.notEmpty(nome, "pesquisaAvancada.nome.required");
-		Validate.notEmpty(consulta, "pesquisaAvancada.consulta.required");
+		Validate.notBlank(nome, "pesquisaAvancada.nome.required");
+		Validate.notBlank(consulta, "pesquisaAvancada.consulta.required");
 		Validate.notEmpty(indices, "pesquisaAvancada.indices.required");
 		
 		this.id = id;
@@ -82,7 +82,18 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 			indicesArray = indices.replace("[", "").replace("]", "").split(",");
 		}
 		return indicesArray;
-	}; 
+	};
+	
+	public void alterar(String nome, String consulta, String[] indices) {
+		Validate.notBlank(nome, "pesquisaAvancada.nome.required");
+		Validate.notBlank(consulta, "pesquisaAvancada.consulta.required");
+		Validate.notEmpty(indices, "pesquisaAvancada.indices.required");
+		
+		this.nome = nome;
+		this.consulta = consulta;
+		this.indicesArray = indices;
+		this.indices = Arrays.toString(indices);
+	}
 
 	@Override
 	public int hashCode() {

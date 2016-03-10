@@ -1,0 +1,16 @@
+<div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group form-group-default">
+				<label>Nome da pesquisa</label>
+				<input id="nome" type="text" ng-model="nome" class="form-control" />
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer text-center">
+		<span>
+			<action-executor id="salvar-pesquisa-avancada" fn-validate="validar" fn-result="modal.close()" description="Salvar" resources="commands" />
+		</span>
+		<button ng-click="modal.close()" class="btn btn-default">Cancelar</button>
+	</div>
+</div>

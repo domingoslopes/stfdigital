@@ -11,12 +11,7 @@
 	
 	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
 		
-		$stateProvider.state('visualizar', {
-			abstract: true,
-			parent: 'root',
-			url: '/visualizacao'
-		}).state('visualizar.processo', {
-			parent: 'root',
+		$stateProvider.state('visualizar.processo', {
 			url: '/processo/:processoId',
 			views: {
 				'content@root': {
@@ -56,6 +51,14 @@
 							return ClasseService.listar();
 						}
 					}
+				}
+			}
+		}).state('pesquisar.processos.avancada', {
+			url: '/avancada',
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pesquisa/avancada/processos.tpl.html',
+					controller: 'PesquisaProcessosAvancadaController'
 				}
 			}
 		}).state('action.autuacao', { // estado abstrato para agrupar as ações do contexto
@@ -224,12 +227,58 @@
 				}
 			}
 		}).state('inserir-pecas', {
+			parent: 'action.autuacao',
+			url: '/autuacao/pecas',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pecas/insere-pecas.tpl.html',
+					controller: 'InserePecasController'
+				}
+			}
+		}).state('juntar-peca', {
 			parent: 'action',
 			params : { resources : [] },
 			views: {
 				'@action': {
-					templateUrl: 'application/autuacao/pecas/insere-pecas.tpl.html',
-					controller: 'InserePecasController'
+					templateUrl: 'application/autuacao/pecas/juntar-peca.tpl.html',
+					controller: 'JuntaPecasController'
+				}
+			}
+		}).state('excluir-pecas', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/excluir-pecas.tpl.html',
+					controller: 'ExcluiPecasController'
+				}
+			}
+		}).state('unir-pecas', {
+			parent: 'action',
+			params : { resources : [] },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/unir-pecas.tpl.html',
+					controller: 'UnePecasController'
+				}
+			}
+		}).state('dividir-peca', {
+			parent: 'action',
+			params : { resources : [], modalClass:"modal-lg"},
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/dividir-pecas.tpl.html',
+					controller: 'DividePecasController'
+				}
+			}
+		}).state('editar-peca', {
+			parent: 'action',
+			params : { resources : [], modalClass:"modal-lg" },
+			views: {
+				'@action': {
+					templateUrl: 'application/autuacao/pecas/edita-peca.tpl.html',
+					controller: 'EditaPecaController'
 				}
 			}
 		}).state('revisar-repercussao-geral', {

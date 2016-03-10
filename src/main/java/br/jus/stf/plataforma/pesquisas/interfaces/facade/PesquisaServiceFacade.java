@@ -2,6 +2,8 @@ package br.jus.stf.plataforma.pesquisas.interfaces.facade;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,8 +17,10 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.plataforma.pesquisas.application.PesquisaApplicationService;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaId;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaRepository;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaRepository;
+import br.jus.stf.plataforma.pesquisas.interfaces.dto.CriterioDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.PesquisaAvancadaDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.PesquisaAvancadaDtoAssembler;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDto;
@@ -107,7 +111,7 @@ public class PesquisaServiceFacade {
 	}
 
 	/**
-	 * Realiza uma pesquisa avançada
+	 * Realiza uma pesquisa avançada paginada
 	 * 
 	 * @param consulta
 	 * @param indices
@@ -118,18 +122,46 @@ public class PesquisaServiceFacade {
 	public PagedResources<Resource<ResultadoDto>> pesquisarAvancado(String consulta, String[] indices, Integer page, Integer size) {
 		Pageable paginacao = new PageRequest(page, size);
 		Pesquisa pesquisa = new Pesquisa(consulta, indices);
+		
 		List<ResultadoDto> dtos = resultadoDtoAssembler.toDto(pesquisaAvancadaRepository.executar(pesquisa, paginacao));
 		Page<ResultadoDto> dtosPaginados = new PageImpl<ResultadoDto>(dtos, paginacao, dtos.size());
+		
 	    return paginacaoAssembler.toResource(dtosPaginados);
     }
 
 	/**
-	 * Recupera as pesquisas avançadas salvas
+	 * Recupera os dtos das pesquisas avançadas salvas
 	 * 
 	 * @return
 	 */
-	public List<PesquisaAvancadaDto> recuperarAvancadas() {
-	    return pesquisaAvancadaDtoAssembler.toDto(pesquisaAvancadaRepository.listarMinhas());
+	public List<PesquisaAvancadaDto> recuperarMinhasPesquisas() {
+	    return pesquisaAvancadaRepository.listarMinhas().stream()
+	    		.map(p -> pesquisaAvancadaDtoAssembler.toDto(p))
+	    		.collect(Collectors.toList());
+    }
+	
+	/**
+	 * Recupera os dtos das pesquisas avançadas salvas
+	 * 
+	 * @return
+	 */
+	public PesquisaAvancadaDto recuperarPesquisa(Long pesquisaId) {
+		PesquisaAvancadaId id = new PesquisaAvancadaId(pesquisaId);
+	    return Optional.ofNullable(pesquisaAvancadaRepository.findOne(id))
+	    		.map(p -> pesquisaAvancadaDtoAssembler.toDto(p))
+	    		.orElseThrow(IllegalArgumentException::new);
+    }
+
+	/**
+	 * Recupera os dtos dos critérios de pesquisa
+	 * 
+	 * @param indices
+	 * @return
+	 */
+	public List<CriterioDto> listarCriterios(String[] indices) {
+	    return pesquisaAvancadaRepository.listarCriterios(indices).stream()
+	    		.map(c -> pesquisaAvancadaDtoAssembler.toDto(c))
+	    		.collect(Collectors.toList());
     }
 	
 }
