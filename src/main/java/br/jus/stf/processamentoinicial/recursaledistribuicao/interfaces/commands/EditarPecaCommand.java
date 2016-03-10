@@ -10,6 +10,9 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(value = "Usado para enviar dados da peça editada para o back-end.")
 public class EditarPecaCommand {
+	@ApiModelProperty(value = "Id do processo", required=true)
+	private Long processoId;
+	
 	@ApiModelProperty(value = "Id da peça", required=true)
 	private Long pecaId;
 	
@@ -24,6 +27,10 @@ public class EditarPecaCommand {
 	
 	@ApiModelProperty(value = "Nº de ordem da peça dentro do processo.", required=true)
 	private String visibilidade;
+	
+	public Long getProcessoId(){
+		return processoId;
+	}
 	
 	public Long getPecaId(){
 		return pecaId;

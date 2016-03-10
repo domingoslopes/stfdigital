@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import br.jus.stf.plataforma.shared.actions.support.ActionException;
+
 /**
  * Intercepta e processa qualquer exceção lançada pelos serviços da API e as trata
  * adequadamente para que o cliente possa interpretá-la corretamente.
@@ -41,6 +43,21 @@ class GlobalControllerExceptionHandler {
     	LOGGER.error(exception.getClass().getName(), exception);
     	
     	return new ErrorMessageDto(Arrays.asList(new ErrorDto(exception.getMessage())));
+    }
+    
+    /**
+     * Captura as exceções do mecanismo de ações.
+     * 
+     * @param exception
+     * @return
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ActionException.class)
+    @ResponseBody
+    public ErrorMessageDto handleActionExceptions(ActionException exception) {
+    	LOGGER.error(exception.getClass().getName(), exception);
+    	
+    	return new ErrorMessageDto(Arrays.asList(new ErrorDto(exception.getCause().getMessage())));
     }
     
     /**
