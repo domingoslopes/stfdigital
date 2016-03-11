@@ -1,7 +1,5 @@
 package br.jus.stf.plataforma.pesquisas.application;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +21,28 @@ public class PesquisaApplicationService {
 	@Autowired
 	private PesquisaAvancadaRepository pesquisaAvancadaRepository;
 	
-	public void salvar(String nome, String consulta, String[] indices) {
+	public void salvar(Long pesquisaId, String nome, String consulta, String[] indices) {
 		
-		PesquisaAvancadaId id = pesquisaAvancadaRepository.nextId();
-		PesquisaAvancada pesquisa = new PesquisaAvancada(id, nome, consulta, indices);
+		PesquisaAvancada pesquisa = null;
+		
+		if (pesquisaId != null) {
+			pesquisa = alterar(pesquisaId, nome, consulta, indices);
+		} else {
+			pesquisa = criar(nome, consulta, indices);
+		}
 		pesquisaAvancadaRepository.save(pesquisa);
 	}
 	
-	public void alterar(Long pesquisaId, String nome, String consulta, String[] indices) {
-		
+	private PesquisaAvancada alterar(Long pesquisaId, String nome, String consulta, String[] indices) {
 		PesquisaAvancadaId id = new PesquisaAvancadaId(pesquisaId);
-		Optional.ofNullable(pesquisaAvancadaRepository.findOne(id))
-			.ifPresent(pesquisa -> {
-				pesquisa.alterar(nome, consulta, indices);
-				pesquisaAvancadaRepository.save(pesquisa);
-			});
+		PesquisaAvancada pesquisa = pesquisaAvancadaRepository.findOne(id);
+		pesquisa.alterar(nome, consulta, indices);
+		return pesquisa;
+	}
+	
+	private PesquisaAvancada criar(String nome, String consulta, String[] indices) {
+		PesquisaAvancadaId id = pesquisaAvancadaRepository.nextId();
+		return new PesquisaAvancada(id, nome, consulta, indices);
 	}
 	
 }

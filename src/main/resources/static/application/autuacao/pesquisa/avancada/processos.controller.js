@@ -8,16 +8,17 @@
 
 	angular.plataforma.controller('PesquisaProcessosAvancadaController', function ($scope, $stateParams, messages, PesquisaService) {
 		
-		$scope.elasticBuilderData = { fields : {}, query : []};
+		$scope.isPesquisaNova = true;
+		$scope.elasticBuilderData = { fields : {}, query : {}};
 		$scope.indices = [];
-		$scope.recursos = [{
+		$scope.pesquisa = {
     		indices : $scope.indices,
     		consulta : $scope.elasticBuilderData.query
-		}];
+		};
 				
 		var carregarCampos = function(indices) {
 			angular.forEach(indices, function(indice) {
-				$scope.indices.push(indices);
+				$scope.indices.push(indice);
 			});
 			
 			PesquisaService.carregarCampos($scope.elasticBuilderData.fields, indices)
@@ -25,11 +26,14 @@
 					$scope.elasticBuilderData.needsUpdate = true;
 				});
 		};
-		//{ query : { constant_score : { filter : { and : filters }}}};
 				
 		if (angular.isDefined($stateParams.pesquisa)) {	
+			$scope.isPesquisaNova = false;
+			$scope.pesquisa.pesquisaId = $stateParams.pesquisa;
+			
 			PesquisaService.consultar($stateParams.pesquisa)
 				.then(function(result) {
+					$scope.pesquisa.nome = result.data.nome;
 					$scope.elasticBuilderData.query = result.data.consulta;
 					carregarCampos(result.data.indices);
 				});
@@ -37,30 +41,34 @@
 			carregarCampos(["distribuicao"]);
 		}
 		
+		$scope.$watch('elasticBuilderData.query', function() {
+			$scope.pesquisa.consulta = $scope.elasticBuilderData.query;
+		});
+		
 		$scope.pesquisar = function() {
 			
 			var command = new PesquisarCommand();
-			if ($.isEmptyObject(command.filtros)) {
+			if ($.isEmptyObject(command.consulta) || 
+					$scope.elasticBuilderData.query.query.constant_score.filter.and.length == 0) {
 				messages.error('Informe pelo menos um filtro para pesquisa!');
 				return;
 			}
-			PesquisaService.pesquisar(command)
+			console.log(command.consulta);
+			PesquisaService.pesquisarAvancado(command)
 				.then(function(resultados) {
-					$scope.resultados = resultados.data;
+					$scope.resultados = resultados.data.content;
 				}, function(data, status) {
 					messages.error('Ocorreu um erro e a pesquisa não pode ser realizada!');
 				});
 		};
 		
-    	function SalvarPesquisaCommand() {
-    		var dto = {};
-
-    		
-    		return dto;
-    	}
-		
-		$scope.showQuery = function() {
-			return JSON.stringify($scope.elasticBuilderData.query, null, 2);
+		function PesquisarCommand(consulta, indices) {
+			var command = {};
+			command.consulta = JSON.stringify($scope.elasticBuilderData.query);
+			command.indices = $scope.indices;
+			command.page = 0;
+			command.size = 15;
+			return command;
 		};
 		
 		$scope.resultados = [];

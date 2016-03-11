@@ -49,13 +49,6 @@
 		};
 		
 		/**
-		 * Salva uma pesquisa configurada pelo usuário
-		 */
-		this.salvar = function(command) {
-			return $http.post(properties.apiUrl + /*'/' + context + */'/pesquisas/avancadas', command);
-		};
-		
-		/**
 		 * Recupera as pesquisas salvas pelo usuário
 		 */
 		this.recuperarMinhasPesquisas = function() {
@@ -66,8 +59,8 @@
 		 * Consulta uma pesquisa avançada salva
 		 */
 		this.consultar = function(pesquisaId) {
-			if (!angular.isNumber(pesquisaId)) {
-				throw "O id da pesquisa deve ser informado!";
+			if (Number.isNaN(parseInt(pesquisaId))) {
+				throw new Error("O id da pesquisa deve ser informado!");
 			}
 			return $http.get(properties.apiUrl + /*'/' + context + */'/pesquisas/avancadas/' + pesquisaId);
 		};
@@ -110,7 +103,7 @@
 				campo.type = 'term';
 			}
 			
-			if (criterio.tipo == "BOLEANO") {
+			if (criterio.tipo == "BOOLEANO") {
 				campo.type = 'boolean';
 			}
 			

@@ -1,4 +1,5 @@
 <div>
+	<messages api="modalMessages"></messages>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="form-group form-group-default">
@@ -9,7 +10,8 @@
 	</div>
 	<div class="modal-footer text-center">
 		<span>
-			<action-executor id="salvar-pesquisa-avancada" fn-validate="validar" fn-result="modal.close()" description="Salvar" resources="commands" />
+			<action-executor id="salvar-pesquisa-avancada" fn-validate="validar"
+			 fn-result="finalizar" description="Salvar" resources="commands" />
 		</span>
 		<button ng-click="modal.close()" class="btn btn-default">Cancelar</button>
 	</div>

@@ -3,12 +3,12 @@ package br.jus.stf.plataforma.pesquisas.interfaces;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -88,7 +88,7 @@ public class PesquisaRestResource {
 	
 	@ApiOperation("Recupera uma pesquisa avançada pelo id")
 	@RequestMapping(value = "/avancadas/{id}", method = RequestMethod.GET)
-	public PesquisaAvancadaDto recuperarAvancadas(@PathParam("id") Long pesquisaId) {		
+	public PesquisaAvancadaDto recuperarAvancadas(@PathVariable("id") Long pesquisaId) {		
 		return pesquisaServiceFacade.recuperarPesquisa(pesquisaId);
 	}
 	

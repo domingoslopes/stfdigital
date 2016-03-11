@@ -24,8 +24,6 @@
 		
 		$stateProvider
 			.state('root', {
-				deepStateRedirect: true,
-			    sticky: true,
 				views: {
 					'main@': {
 						templateUrl: 'application/plataforma/template/default.tpl.html',

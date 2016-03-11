@@ -6,44 +6,52 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('SalvarPesquisaAvancadaController', function($scope, $stateParams, messages) {
+	angular.plataforma.controller('SalvarPesquisaAvancadaController', function($rootScope, $scope, $stateParams, messages) {
 		
-		$scope.nome = ''; 
-		$scope.commands = [];
 		var pesquisa = $stateParams.resources[0];
 		
-		var command = {
-			nome : $scope.nome,
-			consulta : pesquisa.consulta,
-			indices : pesquisa.indices
-		};
-			
-		if (angular.isNumber(pesquisa.pesquisaId)) {
-			command.pesquisaId = pesquisaId;
-		}
-		$scope.commands.push(command);
+		$scope.modalMessages = {};
+		$scope.nome = angular.isDefined(pesquisa.nome) ? pesquisa.nome : ''; 
+		$scope.commands = [];
 		
 		$scope.validar = function() {
-			var erros = null;
+			var erro = false;
 			
 			if ($scope.nome.length == 0) {
-				erros = 'Nome de pesquisa inválido!<br/>';
+				$scope.modalMessages.error('Nome de pesquisa inválido!');
+				erro = true;
 			}
 			
 			if (pesquisa.consulta.length == 0) {
-				erros += 'Consulta inválida!<br/>';
+				$scope.modalMessages.error('Consulta inválida!');
+				erro = true;
 			}
 			
 			if (pesquisa.indices.length == 0) {
-				erros += 'Nenhum índice informado!<br/>';
+				$scope.modalMessages.error('Nenhum índice informado!');
+				erro = true;
 			}
 			
-			if (erros) {
-				messages.error(erros);
-				return false;
+			if (!erro) {
+				var command = {
+					nome : $scope.nome,
+					consulta : JSON.stringify(pesquisa.consulta),
+					indices : pesquisa.indices
+				};
+						
+				if (angular.isNumber(pesquisa.pesquisaId)) {
+					command.pesquisaId = pesquisa.pesquisaId;
+				}
+				$scope.commands.push(command);
 			}
-			return true;
-		};	
+			return !erro;
+		};
+		
+		$scope.finalizar = function() {
+			$scope.$parent.modal.close();
+			messages.success('Pesquisa salva com sucesso!');
+			$rootScope.$broadcast('atualizarMinhasPesquisas');
+		};
 	});
 	
 })();

@@ -55,6 +55,7 @@
 			}
 		}).state('pesquisar.processos.avancada', {
 			url: '/avancada',
+			params : { pesquisa : undefined },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/pesquisa/avancada/processos.tpl.html',
@@ -224,6 +225,7 @@
 				'content@root': {
 					templateUrl: 'application/autuacao/pecas/organiza-pecas.tpl.html',
 					controller: 'OrganizaPecasController',
+					controllerAs: 'organiza'
 				}
 			}
 		}).state('inserir-pecas', {

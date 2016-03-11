@@ -47,14 +47,19 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 	
 	PesquisaAvancada() { }
 	
-	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome, final String consulta, final String[] indices) {
+	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome) { 
 		Validate.notNull(id, "pesquisaAvancada.id.required");
 		Validate.notBlank(nome, "pesquisaAvancada.nome.required");
-		Validate.notBlank(consulta, "pesquisaAvancada.consulta.required");
-		Validate.notEmpty(indices, "pesquisaAvancada.indices.required");
 		
 		this.id = id;
 		this.nome = nome;
+	}
+	
+	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome, final String consulta, final String[] indices) {
+		this(id, nome);
+		Validate.notBlank(consulta, "pesquisaAvancada.consulta.required");
+		Validate.notEmpty(indices, "pesquisaAvancada.indices.required");
+		
 		this.consulta = consulta;
 		this.indicesArray = indices;
 		this.indices = Arrays.toString(indices);
@@ -78,7 +83,7 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 	}
 	
 	public String[] indices() {
-		if (indicesArray == null) {
+		if (indicesArray == null && indices != null) {
 			indicesArray = indices.replace("[", "").replace("]", "").split(",");
 		}
 		return indicesArray;

@@ -20,7 +20,7 @@ public class PesquisaActionResource {
 
 	@ActionMapping(id = "salvar-pesquisa-avancada", name = "Salvar pesquisa", resourcesMode = ResourcesMode.One)
 	public void salvar(SalvarPesquisaAvancadaCommand command) {
-		pesquisaApplicationService.salvar(command.getNome(), command.getConsulta(), command.getIndices());
+		pesquisaApplicationService.salvar(command.getPesquisaId(), command.getNome(), command.getConsulta(), command.getIndices());
 	}
 	
 }

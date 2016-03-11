@@ -52,9 +52,9 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <ng-form name="partesPoloAtivoForm"> 
-                                	<input type="text" id="partePoloAtivo" name="partePoloAtivo" ng-model="autuacao.partePoloAtivo" size="30" placeholder="Nome da Parte" autofocus> 
-                                	<input type="submit" id="botaoAdicionarPartePoloAtivo" value="Adicionar" ng-if="autuacao.partePoloAtivo.length > 0" ng-click="autuacao.adicionarPoloAtivo()"> 
+                                <ng-form name="partesPoloAtivoForm" class="form-inline"> 
+                                	<input type="text" id="partePoloAtivo" name="partePoloAtivo" class="form-control" ng-model="autuacao.partePoloAtivo" size="50" placeholder="Nome da Parte" autofocus> 
+                                	<input type="submit" id="botaoAdicionarPartePoloAtivo" value="Adicionar" class="btn btn-success" ng-if="autuacao.partePoloAtivo.length > 0" ng-click="autuacao.adicionarPoloAtivo()"> 
                             	</ng-form>
                             </div>
                         </div>
@@ -77,9 +77,9 @@
 					                    </tr>
 					                </tbody>
 					            </table>
-                                <ng-form name="partesPoloPassivoForm"> 
-                                	<input type="text" id="partePoloPassivo" name="partePoloPassivo" ng-model="autuacao.partePoloPassivo" size="30" placeholder="Nome da Parte" autofocus> 
-                                	<input type="submit" id="botaoAdicionarPartePoloPassivo" value="Adicionar" ng-if="autuacao.partePoloPassivo.length > 0" ng-click="autuacao.adicionarPoloPassivo()"> 
+                                <ng-form name="partesPoloPassivoForm" class="form-inline"> 
+                                	<input type="text" id="partePoloPassivo" name="partePoloPassivo" class="form-control" ng-model="autuacao.partePoloPassivo" size="50" placeholder="Nome da Parte" autofocus> 
+                                	<input type="submit" id="botaoAdicionarPartePoloPassivo" value="Adicionar" class="btn btn-success" ng-if="autuacao.partePoloPassivo.length > 0" ng-click="autuacao.adicionarPoloPassivo()"> 
                             	</ng-form>
 					        </div>
 					    </div>

@@ -67,7 +67,7 @@ public class PesquisaAvancadaRepositoryImpl extends SimpleJpaRepository<Pesquisa
 	@Override
 	public List<PesquisaAvancada> listarMinhas() {
 		UsuarioId usuarioId = SecurityContextUtil.getUser().getUserDetails().getUsuarioId();
-		String sql = "select pa.id, pa.nome from PesquisaAvancada pa where pa.usuario = :usuario";
+		String sql = "select new PesquisaAvancada(pa.id, pa.nome) from PesquisaAvancada pa where pa.usuario = :usuario";
 		
 		TypedQuery<PesquisaAvancada> query = entityManager.createQuery(sql, PesquisaAvancada.class);
 		query.setParameter("usuario", usuarioId);
