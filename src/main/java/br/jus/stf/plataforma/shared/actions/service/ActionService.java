@@ -1,5 +1,6 @@
 package br.jus.stf.plataforma.shared.actions.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,16 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import br.jus.stf.plataforma.shared.actions.handler.ActionConditionHandler;
-import br.jus.stf.plataforma.shared.actions.support.ActionConditionHandlerInfo;
-import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
-import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
-import br.jus.stf.plataforma.shared.security.SecurityChecker;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+
+import br.jus.stf.plataforma.shared.actions.handler.ActionConditionHandler;
+import br.jus.stf.plataforma.shared.actions.support.ActionConditionHandlerInfo;
+import br.jus.stf.plataforma.shared.actions.support.ActionException;
+import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
+import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
+import br.jus.stf.plataforma.shared.security.SecurityChecker;
 
 
 /**
@@ -101,8 +103,8 @@ public class ActionService {
 						return method.invoke(controller, converted);
 					}
 					return method.invoke(controller, converted.get(0));
-				} catch(Exception e) {
-					throw new Exception("Erro ao executar ação: " + action.getDescription(), e);
+				} catch(InvocationTargetException e) {
+					throw new ActionException("Erro ao executar ação: " + action.getDescription(), e.getTargetException());
 				}
 			}
 			throw new Exception("Não foi permitida execução da ação: " + action.getDescription());

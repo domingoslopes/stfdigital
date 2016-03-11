@@ -36,7 +36,7 @@
 		<sonar.host.url>http://digital.stf.jus.br:9000</sonar.host.url>
 		<sonar.jdbc.url>jdbc:h2:tcp://digital.stf.jus.br:9092/sonar</sonar.jdbc.url>
 		<junit-toolbox.version>2.2</junit-toolbox.version>
-		<docker.image.prefix>stfdigital</docker.image.prefix>
+		<docker.image.prefix>plataforma</docker.image.prefix>
 		<poi-ooxml.version>3.13</poi-ooxml.version>
     </properties>
 
@@ -351,21 +351,26 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.2.3</version>
-				<configuration>
-					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-					<dockerDirectory>src/main/docker</dockerDirectory>
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
-				</configuration>
-			</plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.2.3</version>
+            	<configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                  	<resources>
+                       	<resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                        	<include>${project.build.finalName}.jar</include>
+                        </resource>
+                       	<resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.basedir}/keystores</directory>
+                        	<include>localhost.p12</include>
+                    	</resource>
+                	</resources>
+            	</configuration>
+        	</plugin>
 		</plugins>
 	</build>
 

@@ -34,6 +34,8 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
@@ -110,6 +112,7 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	@OneToMany(cascade = CascadeType.ALL, targetEntity = PecaProcessoOriginal.class)
 	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	@JsonIgnore
 	private List<PecaProcessoOriginal> pecasOriginaisVinculadas = new LinkedList<PecaProcessoOriginal>();
 	
 	Processo() {

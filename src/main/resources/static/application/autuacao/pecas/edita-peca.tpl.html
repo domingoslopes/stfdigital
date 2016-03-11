@@ -42,7 +42,7 @@
 	</form>
 	<div align="center" class="modal-footer">
 		<span>
-	    	<action-executor id="editar-peca" resources="recursos" fn-validate="validar" fn-result="modal.close()" btn-class="btn btn-complete" description="Salvar" />
+	    	<action-executor id="editar-peca" resources="recursos" fn-validate="validar" fn-result="modal.close()" fn-error="tratarErro(error)" btn-class="btn btn-complete" description="Salvar" />
 		</span>
 		<button ng-click="modal.close()" class="btn btn-default">Cancelar</button>
 	</div>

@@ -16,6 +16,8 @@
 		$scope.visibilidades = [{id:"PUBLICO", descricao:"Público"}, {id:"PENDENTE_VISUALIZACAO", descricao:"Pendente de visualização"}];
 		$scope.tiposPecas = [];
 		$scope.recursos = [];
+		
+		$scope.messages = {};
 
 		PeticaoService.listarTipoPecas().then(function(tiposPecas) {
 			$scope.tiposPecas = tiposPecas;
@@ -56,6 +58,10 @@
 	    	messages.success('Peça editada com sucesso.');
 	    };
 
+	    $scope.tratarErro = function(error) {
+	    	$scope.messages.api.error(error.errors[0].message);
+	    };
+	    
     	function editarPecaCommand(processoId, pecaId, tipoPecaId, descricao, numeroOrdem, visibilidade){
     		var dto = {};
     		

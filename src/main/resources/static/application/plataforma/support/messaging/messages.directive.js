@@ -36,6 +36,9 @@
 					},
 					warning: function(message){
 						scope.alerts.push(new Alert(scope.alerts, message, 'warning'));
+					},
+					error: function(message) {
+						scope.alerts.push(new Alert(scope.alerts, message, 'danger'));
 					}
 				}
 			}

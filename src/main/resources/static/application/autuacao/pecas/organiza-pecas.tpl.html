@@ -45,7 +45,7 @@
 							        </tr>
 							    </thead>
 						        <tbody ui-sortable="organiza.sortableOptions" ng-model="organiza.processo.pecas">
-							        <tr ng-repeat="peca in organiza.processo.pecas">
+							        <tr ng-repeat="peca in organiza.processo.pecas" ng-class='{"line-through": peca.situacao === "EXCLUIDA"}'>
 							        	<td><input type="checkbox" checklist-model="organiza.selecao.objetos" checklist-value="organiza.buildSelectedObject(peca)"></td>
 							            <td>{{ peca.sequencial }}</td>
 							            <td>{{ peca.descricao }}</td>
