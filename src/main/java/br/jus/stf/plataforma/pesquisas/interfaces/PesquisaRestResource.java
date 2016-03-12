@@ -8,15 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.plataforma.pesquisas.application.PesquisaApplicationService;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.PesquisarAvancadoCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.PesquisarCommand;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.SalvarPesquisaAvancadaCommand;
+import br.jus.stf.plataforma.pesquisas.interfaces.dto.CriterioDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.PesquisaAvancadaDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.facade.PesquisaServiceFacade;
@@ -78,25 +80,22 @@ public class PesquisaRestResource {
 		return pesquisaServiceFacade.pesquisarAvancado(command.getConsulta(), command.getIndices(), command.getPage(), command.getSize());
 	}
 	
-	@ApiOperation("Pesquisa avançada")
+	@ApiOperation("Recupera as pesquisas avançadas salvas")
 	@RequestMapping(value = "/avancadas", method = RequestMethod.GET)
 	public List<PesquisaAvancadaDto> recuperarAvancadas() {		
-		return pesquisaServiceFacade.recuperarAvancadas();
+		return pesquisaServiceFacade.recuperarMinhasPesquisas();
 	}
 	
-	@ApiOperation("Pesquisa avançada")
-	@RequestMapping(value = "/avancadas", method = RequestMethod.POST)
-	public void salvarAvancada(@RequestBody @Valid SalvarPesquisaAvancadaCommand command, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new IllegalArgumentException(result.getAllErrors().toString());
-		}		
-		pesquisaApplicationService.salvar(command.getNome(), command.getConsulta(), command.getIndices());
+	@ApiOperation("Recupera uma pesquisa avançada pelo id")
+	@RequestMapping(value = "/avancadas/{id}", method = RequestMethod.GET)
+	public PesquisaAvancadaDto recuperarAvancadas(@PathVariable("id") Long pesquisaId) {		
+		return pesquisaServiceFacade.recuperarPesquisa(pesquisaId);
 	}
 	
-	@ApiOperation("Pesquisa avançada")
+	@ApiOperation("Lista os critérios de pesquisa avançada")
 	@RequestMapping(value = "/criterios", method = RequestMethod.GET)
-	public List<PesquisaAvancadaDto> recuperarCriterios() {		
-		return pesquisaServiceFacade.recuperarAvancadas();
+	public List<CriterioDto> listarCriterios(@RequestParam("indices") String[] indices) {		
+		return pesquisaServiceFacade.listarCriterios(indices);
 	}
 	
 }

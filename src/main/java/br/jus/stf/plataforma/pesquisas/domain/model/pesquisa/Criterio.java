@@ -38,6 +38,9 @@ public class Criterio implements ValueObject<Criterio> {
 	@Column(name = "DSC_CAMPO")
 	private String campo;
 	
+	@Column(name = "DSC_INDICE")
+	private String indice;
+	
 	@Column(name = "TIP_CRITERIO")
 	@Enumerated(EnumType.STRING)
 	private TipoCriterio tipo;
@@ -49,25 +52,35 @@ public class Criterio implements ValueObject<Criterio> {
 		
 	}
 	
-    public Criterio(String descricao, String campo, TipoCriterio tipo) {
+    public Criterio(String descricao, String campo, String indice, TipoCriterio tipo) {
     	Validate.notBlank(descricao, "criterio.descricao.required");
     	Validate.notBlank(campo, "criterio.campo.required");
+    	Validate.notBlank(indice, "criterio.indice.required");
     	Validate.notNull(tipo, "criterio.tipo.required");   	
     	
     	this.descricao = descricao;
     	this.campo = campo;
+    	this.indice = indice;
     	this.tipo = tipo;
     }
     
-    public Criterio(String descricao, String campo, TipoCriterio tipo, FonteDados fonteDados) {
-    	this(descricao, campo, tipo);
+    public Criterio(String descricao, String campo, String indice, TipoCriterio tipo, FonteDados fonteDados) {
+    	this(descricao, campo, indice, tipo);
     	Validate.notNull(fonteDados, "criterio.fonteDados.required");
     	
     	this.fonteDados = fonteDados;
     }
+    
+    public String campo() {
+    	return campo;
+    }
 	
 	public String descricao() {
 		return descricao;
+	}
+	
+	public String indice() {
+		return indice;
 	}
 	
 	public TipoCriterio tipo() {

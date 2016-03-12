@@ -11,12 +11,7 @@
 	
 	angular.autuacao.config(function config($stateProvider, DashletsProvider) {
 		
-		$stateProvider.state('visualizar', {
-			abstract: true,
-			parent: 'root',
-			url: '/visualizacao'
-		}).state('visualizar.processo', {
-			parent: 'root',
+		$stateProvider.state('visualizar.processo', {
 			url: '/processo/:processoId',
 			views: {
 				'content@root': {
@@ -56,6 +51,15 @@
 							return ClasseService.listar();
 						}
 					}
+				}
+			}
+		}).state('pesquisar.processos.avancada', {
+			url: '/avancada',
+			params : { pesquisa : undefined },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pesquisa/avancada/processos.tpl.html',
+					controller: 'PesquisaProcessosAvancadaController'
 				}
 			}
 		}).state('action.autuacao', { // estado abstrato para agrupar as ações do contexto
@@ -221,6 +225,7 @@
 				'content@root': {
 					templateUrl: 'application/autuacao/pecas/organiza-pecas.tpl.html',
 					controller: 'OrganizaPecasController',
+					controllerAs: 'organiza'
 				}
 			}
 		}).state('inserir-pecas', {
@@ -278,7 +283,6 @@
 					controller: 'EditaPecaController'
 				}
 			}
-
 		}).state('revisar-repercussao-geral', {
 			parent: 'action.autuacao',
 			url: '/processo/repercussao/revisar',

@@ -9,7 +9,6 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.EditarPecaCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.ExcluirPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.JuntarPecaCommand;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.OrganizarPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.UnirPecasCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
 
@@ -29,11 +28,6 @@ public class PecaActionResource {
 	@ActionMapping(id = "excluir-pecas", name = "Excluir Peças Processuais", resourcesMode = ResourcesMode.OneOrMany)
 	public void excluirPecas(ExcluirPecasCommand command) {
 		processoServiceFacade.excluirPecas(command.getProcessoId(), command.getPecas());
-	}
-	
-	@ActionMapping(id = "organizar-pecas", name = "Organizar Peças", resourcesMode = ResourcesMode.OneOrMany)
-	public void organizarPecas(OrganizarPecasCommand command) {
-		processoServiceFacade.organizarPecas(command.getProcessoId(), command.getPecasOrganizadas(), command.isConcluirTarefa());
 	}
 	
 	@ActionMapping(id = "dividir-peca", name = "Dividir Peça Processual", resourcesMode = ResourcesMode.One)

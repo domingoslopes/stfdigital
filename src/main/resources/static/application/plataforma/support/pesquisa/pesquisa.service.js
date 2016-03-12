@@ -8,7 +8,7 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.service('PesquisaService', ['$q', '$http', '$window', 'properties', function($q, $http, $window, properties) {
+	angular.plataforma.service('PesquisaService', ['$q', '$http', 'properties', function($q, $http, properties) {
 		
 		//public methods
 		
@@ -39,14 +39,95 @@
 		};
 		
 		/**
-		 * Salva uma pesquisa configurada pelo usuário
+		 * Realiza uma pesquisa avançada de forma paginada 
+		 * 
+		 * @param command
+		 * @return os resultados da pesquisa paginada
 		 */
-		this.salvar = function(pesquisa) {
-			if (!angular.isObject(pesquisa)) {
-				throw "A pesquisa deve ser um objeto!";
+		this.pesquisarAvancado = function(command) {
+			return $http.post(properties.apiUrl + /*'/' + context + */'/pesquisas/avancada', command);
+		};
+		
+		/**
+		 * Recupera as pesquisas salvas pelo usuário
+		 */
+		this.recuperarMinhasPesquisas = function() {
+			return $http.get(properties.apiUrl + /*'/' + context + */'/pesquisas/avancadas');
+		};
+		
+		/**
+		 * Consulta uma pesquisa avançada salva
+		 */
+		this.consultar = function(pesquisaId) {
+			if (Number.isNaN(parseInt(pesquisaId))) {
+				throw new Error("O id da pesquisa deve ser informado!");
 			}
-			var command = {indice:'pesquisa', tipo:'Pesquisa', objeto: pesquisa};
-			return $http.post(properties.apiUrl + /*'/' + context + */'/indices/documentos', command);
+			return $http.get(properties.apiUrl + /*'/' + context + */'/pesquisas/avancadas/' + pesquisaId);
+		};
+		
+		/**
+		 * Recupera os critérios de pesquisas já no formato do angular-elastic-builder
+		 */
+		this.carregarCampos = function(campos, indices) {
+			
+			if (!angular.isArray(indices) || indices.length == 0) {
+				throw "Especifique os índices para carregar os critérios de pesquisa!"; 
+			}
+			
+			var deferred = $q.defer();
+			var config = { params : { indices : indices } };
+			
+			$http.get(properties.apiUrl + /*'/' + context + */'/pesquisas/criterios', config)
+				.then(function(result) {
+					var criterios = result.data;
+					angular.forEach(criterios, function(criterio) {
+						campos[criterio.campo] = (montaCampo(criterio));
+					});
+					deferred.resolve();
+				}, function() {
+					deferred.reject();
+				});
+			return deferred.promise;
+		};
+		
+		var montaCampo = function(criterio) {
+			
+			var campo = {};
+			campo.description = criterio.descricao;
+			
+			if (criterio.tipo == "NUMERO") {
+				campo.type = 'number';
+			}
+			
+			if (criterio.tipo == "TEXTO") {
+				campo.type = 'term';
+			}
+			
+			if (criterio.tipo == "BOOLEANO") {
+				campo.type = 'boolean';
+			}
+			
+			if (criterio.tipo == "DATA") {
+				campo.type = 'date';
+			}
+			
+			if (criterio.tipo == "SELECAO") {
+				campo.type = 'multi';
+				campo.choices = [];
+				
+				$http.get(properties.apiUrl + criterio.fonteDados.api).then(function(result) {
+					if (angular.isArray(result.data)) { 
+						angular.forEach(result.data, function(r) {
+							var choice = {
+								value : r[criterio.fonteDados.valor],
+								description : r[criterio.fonteDados.descricao]
+							};
+							campo.choices.push(choice);
+						});
+					}
+				});
+			}
+			return campo;
 		};
 		
 	}]);

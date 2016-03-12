@@ -1,15 +1,14 @@
 package br.jus.stf.plataforma.pesquisas.infra.persistence;
 
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.Validate;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -18,10 +17,10 @@ import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Criterio;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancada;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaId;
@@ -68,13 +67,12 @@ public class PesquisaAvancadaRepositoryImpl extends SimpleJpaRepository<Pesquisa
 	@Override
 	public List<PesquisaAvancada> listarMinhas() {
 		UsuarioId usuarioId = SecurityContextUtil.getUser().getUserDetails().getUsuarioId();
-		return super.findAll(new Specification<PesquisaAvancada>() {
-			
-			@Override
-			public Predicate toPredicate(Root<PesquisaAvancada> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return cb.equal(root.get("usuario"), usuarioId);
-			}
-		});
+		String sql = "select new PesquisaAvancada(pa.id, pa.nome) from PesquisaAvancada pa where pa.usuario = :usuario";
+		
+		TypedQuery<PesquisaAvancada> query = entityManager.createQuery(sql, PesquisaAvancada.class);
+		query.setParameter("usuario", usuarioId);
+		
+		return query.getResultList();
 	}
 
 	@Override
@@ -107,4 +105,23 @@ public class PesquisaAvancadaRepositoryImpl extends SimpleJpaRepository<Pesquisa
 		});
 		return new ResultadoPesquisa().extract(builder.get());
 	}
+
+	@Override
+    public List<Criterio> listarCriterios(String[] indices) {
+		StringBuilder query = new StringBuilder("select c from Criterio c");
+		Optional.ofNullable(indices)
+			.ifPresent(ids -> {
+				query.append(" where c.indice in (");
+				Iterator<String> itr = Arrays.asList(ids).iterator();
+				
+				while(itr.hasNext()) {
+					query.append("'").append(itr.next()).append("'");
+					if (itr.hasNext()) {
+						query.append(",");
+					}
+				}
+				query.append(")");
+			});
+	    return entityManager.createQuery(query.toString(), Criterio.class).getResultList();
+    }
 }

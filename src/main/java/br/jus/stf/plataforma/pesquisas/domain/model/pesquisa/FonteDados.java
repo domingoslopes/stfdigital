@@ -1,9 +1,10 @@
 
 package br.jus.stf.plataforma.pesquisas.domain.model.pesquisa;
 
+import java.net.URI;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Lob;
 
 import org.apache.commons.lang3.Validate;
 
@@ -19,24 +20,31 @@ public class FonteDados implements ValueObject<FonteDados> {
 	
     private static final long serialVersionUID = 1L;
 
-	@Column(name = "TXT_CONSULTA")
-	@Lob
-	public String consulta;
+	@Column(name = "DSC_API")
+	private String api;
 	
 	@Column(name = "DSC_VALOR")
-	public String valor;
+	private String valor;
 	
-	@Column(name = "DSC_CONSULTA")
-	public String descricao;
+	@Column(name = "DSC_DESCRICAO")
+	private String descricao;
 	
 	FonteDados() {
 		
 	}
 	 
-    public FonteDados(final String consulta) {
-    	Validate.notBlank(consulta, "fonteDados.consulta.required");
+    public FonteDados(final URI api, final String valor, final String descricao) {
+    	Validate.notNull(api, "fonteDados.api.required");
+    	Validate.notEmpty(valor, "fonteDados.valor.required");
+    	Validate.notEmpty(descricao, "fonteDados.descricao.required");
 
-    	this.consulta = consulta;
+    	this.api = api.toString();
+    	this.valor = valor;
+    	this.descricao = descricao;
+    }
+    
+    public String api() {
+    	return api;
     }
     
     public String valor() {
@@ -51,7 +59,7 @@ public class FonteDados implements ValueObject<FonteDados> {
     public int hashCode() {
 	    final int prime = 31;
 	    int result = 1;
-	    result = prime * result + ((consulta == null) ? 0 : consulta.hashCode());
+	    result = prime * result + ((api == null) ? 0 : api.hashCode());
 	    return result;
     }
 	
@@ -61,15 +69,15 @@ public class FonteDados implements ValueObject<FonteDados> {
 	    if (obj == null) return false;
 	    if (getClass() != obj.getClass()) return false;
 	    FonteDados other = (FonteDados) obj;
-	    if (consulta == null) {
-		    if (other.consulta != null) return false;
-	    } else if (!consulta.equals(other.consulta)) return false;
+	    if (api == null) {
+		    if (other.api != null) return false;
+	    } else if (!api.equals(other.api)) return false;
 	    return true;
     }
 	
 	@Override
     public boolean sameValueAs(FonteDados other) {
-	    return other != null && other.consulta.equals(consulta);
+	    return other != null && other.api.equals(api);
     }
 	
 }

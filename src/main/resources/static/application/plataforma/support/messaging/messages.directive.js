@@ -22,7 +22,7 @@
 			}, 3000);
 		};
 		return {
-			restrict: 'A',
+			restrict: 'EA',
 			replace: true,
 			templateUrl : 'application/plataforma/support/messaging/messages.tpl.html',
 			scope: {

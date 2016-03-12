@@ -95,6 +95,10 @@
 					<ul class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10" role="menu">
 						<li><a style="line-height: 15px" ui-sref="pesquisar.peticoes" id="pesquisar-peticoes">Petições</a></li>
 						<li><a style="line-height: 15px" ui-sref="pesquisar.processos" id="pesquisar-processos">Processos</a></li>
+						<li><a style="line-height: 15px" ui-sref="pesquisar.processos.avancada({pesquisa : undefined})" ui-sref-opts="{reload: true}"
+						 id="pesquisar-processos-avancada">Nova Pesquisa Avançada de Processo</a></li>
+						<li ng-repeat="pesquisa in pesquisas"><a style="line-height: 15px" ui-sref="pesquisar.processos.avancada({pesquisa : pesquisa.id})"
+						 ui-sref-opts="{reload: true}" id="pesquisar-{{pesquisa.id}}">{{pesquisa.nome}}</a></li>
 					</ul>
 				</div>
 			</div>
