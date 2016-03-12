@@ -139,11 +139,14 @@ public class PeticaoServiceFacade {
 
 	/**
 	 * Devolve uma petição.
-	 * @param peticaoId Id da petição.
+	 * 
+	 * @param peticaoId
+	 * @param tipoDevolucao
+	 * @param numero
 	 */
-	public void devolver(Long peticaoId, String documento, TipoDevolucao tipoDevolucao, Long numero) {
+	public void devolver(Long peticaoId, TipoDevolucao tipoDevolucao, Long numero) {
 		Peticao peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.prepararDevolucao(peticao, documento, tipoDevolucao, numero);
+		peticaoApplicationService.prepararDevolucao(peticao, tipoDevolucao, numero);
 	}
 	
 	public void assinarDevolucao(Long peticaoId, String documentoId) {

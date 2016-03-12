@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('DevolucaoController', function (PeticaoService, ModeloService, TextoService, OnlyofficeService, SecurityService, $state, $stateParams, $scope, messages) {
+	angular.autuacao.controller('DevolucaoController', function (PeticaoService, ModeloService, TextoService, OnlyofficeService, SecurityService, $state, $stateParams, $scope, $q, messages) {
 		var devolucao = this;
 		
 		var resource = $stateParams.resources[0];
@@ -66,29 +66,33 @@
 		};
 		
 		var iniciarEditor = function(nome, documentoId, numeroEdicao) {
-			devolucao.config = {
-				editorConfig : {
-					lang: 'pt-BR',
-					customization: {
-			            about: true,
-			            chat: true
-					},
-					user: {
-			            id: SecurityService.user().login,
-			            name: SecurityService.user().nome
-			        },
-				},
-				document: {
-					src: OnlyofficeService.criarUrlConteudoDocumento(documentoId),
-					key: numeroEdicao,
-					name: 'Texto: ' + nome,
-					callbackUrl: OnlyofficeService.recuperarUrlCallback(documentoId)
-				}
-			};
+			$q.all([OnlyofficeService.criarUrlConteudoDocumento(documentoId),
+				OnlyofficeService.recuperarUrlCallback(documentoId)])
+				.then(function(urls) {
+					devolucao.config = {
+						editorConfig : {
+							lang: 'pt-BR',
+							customization: {
+					            about: true,
+					            chat: true
+							},
+							user: {
+					            id: SecurityService.user().login,
+					            name: SecurityService.user().nome
+					        },
+						},
+						document: {
+							src: urls[0],
+							key: numeroEdicao,
+							name: 'Texto: ' + nome,
+							callbackUrl: urls[1]
+						}
+					};
+				});
 		};
 
 		devolucao.save = function() {
-			console.log('save');
+			console.log('salvando conteúdo');
 		};
 		
 		devolucao.validar = function() {
@@ -105,7 +109,7 @@
 				messages.error(errors);
 				return false;
 			}
-			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.tipoDevolucao, devolucao.numeroOficio, devolucao.documento));
+			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.tipoDevolucao, devolucao.numeroOficio));
 			return true;
 		};
 		
@@ -119,7 +123,6 @@
 			command.peticaoId = peticaoId;
 			command.tipoDevolucao = tipoDevolucao; 
 			command.numeroOficio = numeroOficio;
-			command.documento = documento;
 			return command;
 		}
 	});

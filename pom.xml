@@ -202,6 +202,10 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>${poi-ooxml.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+		</dependency>
     </dependencies>
     
     <dependencyManagement>

@@ -8,7 +8,7 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 @ApiModel("Comando para gerar documento com substituição de tags")
-public class GerarDocumentoComTags {
+public class GerarDocumentoComTagsCommand {
 
 	@ApiModelProperty("Id do documento")
 	private Long documentoId;
@@ -16,11 +16,11 @@ public class GerarDocumentoComTags {
 	@ApiModelProperty("Lista de substituições a serem realizadas")
 	private List<SubstituicaoTagDocumento> substituicoes;
 
-	public GerarDocumentoComTags() {
+	public GerarDocumentoComTagsCommand() {
 
 	}
 
-	public GerarDocumentoComTags(final Long documentoId, final List<SubstituicaoTagDocumento> substituicoes) {
+	public GerarDocumentoComTagsCommand(final Long documentoId, final List<SubstituicaoTagDocumento> substituicoes) {
 		Validate.notNull(documentoId);
 		Validate.notNull(substituicoes);
 

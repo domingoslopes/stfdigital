@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,10 @@ public class OnlyofficeIntegrationRestResource {
 
 	@Autowired
 	private OnlyofficeCallbackFacade onlyofficeCallbackFacade;
+	
+	@Autowired
+	@Qualifier("doocumentServerBaseUrl")
+	private String doocumentServerBaseUrl;
 
 	@ApiOperation("Recupera o conteúdo de um documento")
 	@RequestMapping(value = "/documentos/{documentoId}/conteudo.docx", method = RequestMethod.GET)
@@ -82,4 +87,10 @@ public class OnlyofficeIntegrationRestResource {
 		return onlyofficeCallbackFacade.callback(documentoId, json);
 	}
 
+	@ApiOperation("Recupera a url base do servidor de documentos")
+	@RequestMapping(value = "/server/baseUrl", method = RequestMethod.GET)
+	public String serverBaseUrl() {
+		return doocumentServerBaseUrl;
+	}
+	
 }

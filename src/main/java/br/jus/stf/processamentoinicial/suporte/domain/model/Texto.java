@@ -1,5 +1,7 @@
 package br.jus.stf.processamentoinicial.suporte.domain.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Table;
@@ -19,6 +21,10 @@ public class Texto implements Entity<Texto, TextoId> {
 
 	@Embedded
 	private DocumentoId documento;
+	
+	@Embedded
+	@AttributeOverride(name = "sequencial", column = @Column(name = "SEQ_DOCUMENTO_FINAL"))
+	private DocumentoId documentoFinal;
 
 	Texto() {
 
@@ -41,6 +47,17 @@ public class Texto implements Entity<Texto, TextoId> {
 		return documento;
 	}
 
+	/**
+	 * Associa o documento final do texto.
+	 * 
+	 * @param documentoFinal
+	 */
+	public void associarDocumentoFinal(DocumentoId documentoFinal) {
+		Validate.notNull(documentoFinal, "texto.documentoFinal.required");
+		
+		this.documentoFinal = documentoFinal;
+	}
+	
 	@Override
 	public boolean sameIdentityAs(Texto other) {
 		return other != null && this.id.sameValueAs(other.id);

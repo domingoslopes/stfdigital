@@ -39,7 +39,7 @@ public class PeticaoActionsResource {
 	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição", resourcesMode = ResourcesMode.One)
 	public void devolver(DevolverPeticaoCommand command) {
 		TipoDevolucao tipoDevolucao = TipoDevolucao.valueOf(command.getTipoDevolucao());
-		peticaoServiceFacade.devolver(command.getPeticaoId(), command.getDocumento(), tipoDevolucao, command.getNumeroOficio()); 
+		peticaoServiceFacade.devolver(command.getPeticaoId(), tipoDevolucao, command.getNumeroOficio()); 
 	}
 	
 	@ActionMapping(id = "assinar-devolucao-peticao", name = "Assinar Documento de Devolução", resourcesMode = ResourcesMode.OneOrMany)

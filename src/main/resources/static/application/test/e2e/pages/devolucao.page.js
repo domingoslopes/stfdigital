@@ -23,6 +23,15 @@
 			element(by.id('numero')).sendKeys(1000);
 		};
 		
+		devolucao.aguardarTagsCarregadas = function() {
+			browser.wait(element(by.id('painel-tags')).isDisplayed);
+		};
+		
+		devolucao.gerarTexto = function() {
+			element(by.id('botao-gerar-texto')).click();
+			browser.wait(element(by.id('painel-editor')).isDisplayed);
+		};
+		
 		devolucao.finalizar = function() {
 			element(by.id('btn_exec_devolver-peticao')).click();
 		};

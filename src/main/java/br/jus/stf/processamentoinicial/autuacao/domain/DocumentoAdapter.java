@@ -34,5 +34,13 @@ public interface DocumentoAdapter {
 	List<DocumentoId> dividirDocumento(DocumentoId documento, List<Range<Integer>> intervalosDivisao);
 	
 	DocumentoId unirDocumentos(List<DocumentoId> documentos);
+
+	/**
+	 * Gera o documento final a partir de um documento editável.
+	 * 
+	 * @param documentoId
+	 * @return
+	 */
+	DocumentoId gerarDocumentoFinal(DocumentoId documentoId);
 	
 }

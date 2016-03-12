@@ -1,7 +1,6 @@
 package br.jus.stf.processamentoinicial.suporte.domain.model;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
@@ -37,7 +36,7 @@ public class Modelo implements Entity<Modelo, ModeloId> {
 	private String nome;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "sequencial", column = @Column(name = "SEQ_DOCUMENTO_TEMPLATE") ) })
+	@AttributeOverride(name = "sequencial", column = @Column(name = "SEQ_DOCUMENTO_TEMPLATE"))
 	private DocumentoId documento;
 
 	Modelo() {

@@ -92,4 +92,8 @@ public class DocumentoServiceFacade {
 		return documentoGeradoId.toLong();
 	}
 
+	public Long gerarDocumentoFinal(Long documento) {
+		return documentoApplicationService.gerarDocumentoFinal(new DocumentoId(documento)).toLong();
+	}
+
 }

@@ -16,7 +16,7 @@ public interface TextoRepository extends Repository<Texto, TextoId> {
 
 	TextoId nextId();
 
-	<T extends Texto> T save(T modelo);
+	<T extends Texto> T save(T texto);
 
 	Texto findOne(TextoId id);
 	

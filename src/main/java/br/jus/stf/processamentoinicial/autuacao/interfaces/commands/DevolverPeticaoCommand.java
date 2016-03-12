@@ -29,10 +29,6 @@ public class DevolverPeticaoCommand {
 	@ApiModelProperty(value = "O código indicando o tipo de devolução", required=true)
 	private String tipoDevolucao;
 	
-	@NotBlank
-	@ApiModelProperty(value = "O documento do ofício de devolução em HTML", required = true)
-	private String documento;
-	
 	public Long getPeticaoId() {
 		return this.peticaoId;
 	}
@@ -43,10 +39,6 @@ public class DevolverPeticaoCommand {
 	
 	public String getTipoDevolucao() {
 		return tipoDevolucao;
-	}
-	
-	public String getDocumento() {
-		return documento;
 	}
 
 	@Override

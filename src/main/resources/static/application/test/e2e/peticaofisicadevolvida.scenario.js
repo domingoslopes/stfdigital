@@ -122,9 +122,13 @@
 		    
 			var devolucaoPage = new DevolucaoPage();
 			
-			devolucaoPage.classificar('Transitado');
+			devolucaoPage.classificar('Remessa Indevida');
 			
 			devolucaoPage.registrarNumeroOficio();
+			
+			devolucaoPage.aguardarTagsCarregadas();
+			
+			devolucaoPage.gerarTexto();
 			
 			devolucaoPage.finalizar();
 		    

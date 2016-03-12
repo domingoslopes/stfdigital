@@ -2,6 +2,8 @@ package br.jus.stf.plataforma.documentos.infra.configuration;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -19,7 +21,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
+import org.springframework.http.converter.xml.SourceHttpMessageConverter;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.client.RestTemplate;
+
+import br.jus.stf.plataforma.documentos.infra.OnlyofficeConversionReply;
 
 /**
  * Configurações necessárias para a integração com o onlyoffice.
@@ -40,12 +47,26 @@ public class OnlyofficeConfiguration {
 	public RestTemplate onlyofficeRestTemplate() throws Exception {
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 		messageConverters.add(new ByteArrayHttpMessageConverter());
+		messageConverters.add(new SourceHttpMessageConverter<>());
+		messageConverters.add(new MarshallingHttpMessageConverter(new Jaxb2Marshaller()));
 
 		RestTemplate restTemplate = new RestTemplate(messageConverters);
 
 		return restTemplate;
 	}
 
+	@Bean(name = "onlyofficeMarshaller")
+	public Jaxb2Marshaller onlyofficeMarshaller() {
+		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+		marshaller.setClassesToBeBound(OnlyofficeConversionReply.class);
+		return marshaller;
+	}
+	
+	@Bean(name = "doocumentServerBaseUrl")
+	public String documentServerHost() throws UnknownHostException {
+		return "https://" + InetAddress.getLocalHost().getHostName() + ":8443";
+	}
+	
 	@PostConstruct
 	public void configureTrustStore() throws Exception {
 		String keystoreType = "JKS";

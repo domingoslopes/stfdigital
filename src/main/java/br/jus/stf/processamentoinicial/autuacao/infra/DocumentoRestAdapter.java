@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoFinalCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
@@ -72,6 +73,11 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 	public DocumentoId unirDocumentos(List<DocumentoId> documentos) {
 		UnirDocumentosCommand command = new UnirDocumentosCommand(documentos.stream().map(d -> d.toLong()).collect(Collectors.toList()));
 		return new DocumentoId(documentoRestResource.unirDocumentos(command, new BeanPropertyBindingResult(command, "unirDocumentosCommands")));
+	}
+
+	@Override
+	public DocumentoId gerarDocumentoFinal(DocumentoId documentoId) {
+		return new DocumentoId(documentoRestResource.gerarDocumentoFinal(new GerarDocumentoFinalCommand(documentoId.toLong())));
 	}
 
 }

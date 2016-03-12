@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.jus.stf.plataforma.documentos.domain.ControladorEdicaoDocumento;
+import br.jus.stf.plataforma.documentos.domain.ConversorDocumentoService;
 import br.jus.stf.plataforma.documentos.domain.DocumentoService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
@@ -49,6 +50,9 @@ public class DocumentoApplicationService {
 	
 	@Autowired
 	private ControladorEdicaoDocumento controladorEdicaoDocumento;
+	
+	@Autowired
+	private ConversorDocumentoService conversorDocumentoService;
 
 	/**
 	 * Salva os documentos temporários no repositório
@@ -163,6 +167,12 @@ public class DocumentoApplicationService {
 		ConteudoDocumento conteudo = documentoRepository.download(documentoId);
 		DocumentoTemporario documentoTemporario = documentoService.preencherTags(substituicoes, conteudo);
 
+		String documentoTemporarioId = salvarDocumentoTemporario(documentoTemporario);
+		return salvar(new DocumentoTemporarioId(documentoTemporarioId));
+	}
+
+	public DocumentoId gerarDocumentoFinal(DocumentoId documentoId) {
+		DocumentoTemporario documentoTemporario = conversorDocumentoService.converterDocumentoFinal(documentoId);
 		String documentoTemporarioId = salvarDocumentoTemporario(documentoTemporario);
 		return salvar(new DocumentoTemporarioId(documentoTemporarioId));
 	}

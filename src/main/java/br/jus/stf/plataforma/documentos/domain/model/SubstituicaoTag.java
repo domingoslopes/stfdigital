@@ -1,5 +1,7 @@
 package br.jus.stf.plataforma.documentos.domain.model;
 
+import java.util.Optional;
+
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.shared.stereotype.ValueObject;
@@ -19,10 +21,9 @@ public class SubstituicaoTag implements ValueObject<SubstituicaoTag> {
 
 	public SubstituicaoTag(final String nome, final String valor) {
 		Validate.notBlank(nome, "substituicaoTag.nome.required");
-		Validate.notBlank(valor, "substituicaoTag.valor.required");
 
 		this.nome = nome;
-		this.valor = valor;
+		this.valor = Optional.ofNullable(valor).orElse("");
 	}
 
 	public String nome() {

@@ -21,7 +21,7 @@ public class SubstituicaoTagDocumento {
 
 	public SubstituicaoTagDocumento(final String nome, final String valor) {
 		Validate.notBlank(nome);
-		Validate.notBlank(nome);
+		Validate.notNull(nome);
 		
 		this.nome = nome;
 		this.valor = valor;

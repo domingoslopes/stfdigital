@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
-import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoComTags;
+import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoComTagsCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SubstituicaoTagDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
@@ -61,7 +61,7 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 		List<SubstituicaoTagDocumento> substituicoesDocumento = substituicoes.stream()
 		        .map(stt -> new SubstituicaoTagDocumento(stt.getNome(), stt.getValor())).collect(Collectors.toList());
 		Long id = documentoRestResource
-		        .gerarDocumentoComTags(new GerarDocumentoComTags(documentoId.toLong(), substituicoesDocumento));
+		        .gerarDocumentoComTags(new GerarDocumentoComTagsCommand(documentoId.toLong(), substituicoesDocumento));
 		return new DocumentoId(id);
 	}
 

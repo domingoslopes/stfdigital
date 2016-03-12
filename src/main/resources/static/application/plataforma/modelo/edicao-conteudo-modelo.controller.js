@@ -27,34 +27,33 @@
 		});
 		
 		var iniciarEditor = function(numeroEdicao) {
-			self.config = {
-				editorConfig : {
-					lang: 'pt-BR',
-					customization: {
-			            about: true,
-			            chat: true
-					},
-					user: {
-			            id: SecurityService.user().login,
-			            name: SecurityService.user().nome
-			        },
-				},
-				document: {
-					src: OnlyofficeService.criarUrlConteudoDocumento(self.modelo.documento),
-					key: numeroEdicao,
-					name: 'Modelo: ' + self.modelo.tipoModelo.descricao + ' - ' + self.modelo.nome,
-					callbackUrl: OnlyofficeService.recuperarUrlCallback(self.modelo.documento)
-				}
-			};
-//			self.document = {
-//				src : 'https://eti078143:8443/api/modelos/conteudo/' + $stateParams.idModelo + '.docx',
-//				name : 'Modelo: ' + self.modelo.tipoModelo.descricao + ' - ' + self.modelo.nome,
-//				callbackUrl: 'https://eti078143:8443/api/modelos/callback'
-//			};
+			$q.all([OnlyofficeService.criarUrlConteudoDocumento(self.modelo.documento),
+				OnlyofficeService.recuperarUrlCallback(self.modelo.documento)])
+				.then(function(urls) {
+					self.config = {
+							editorConfig : {
+								lang: 'pt-BR',
+								customization: {
+						            about: true,
+						            chat: true
+								},
+								user: {
+						            id: SecurityService.user().login,
+						            name: SecurityService.user().nome
+						        },
+							},
+							document: {
+								src: urls[0],
+								key: numeroEdicao,
+								name: 'Modelo: ' + self.modelo.tipoModelo.descricao + ' - ' + self.modelo.nome,
+								callbackUrl: urls[1]
+							}
+						};
+				});
 		};
 
 		self.save = function() {
-			console.log('save');
+			console.log('salvando conteúdo');
 		};
 		
 		self.finalizar = function() {

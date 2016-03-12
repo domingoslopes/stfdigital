@@ -33,7 +33,8 @@ import com.wordnik.swagger.annotations.ApiResponses;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
-import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoComTags;
+import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoComTagsCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoFinalCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoAssinadoCommand;
@@ -161,8 +162,14 @@ public class DocumentoRestResource {
 	
 	@ApiOperation("Gera um documento subsitituindo as tags")
 	@RequestMapping(value = "/gerar-com-tags")
-	public Long gerarDocumentoComTags(GerarDocumentoComTags command) {
+	public Long gerarDocumentoComTags(GerarDocumentoComTagsCommand command) {
 		return documentoServiceFacade.gerarDocumentoComTags(command.getDocumentoId(), command.getSubstituicoes());
+	}
+	
+	@ApiOperation("Gera um documento final a partir do editável")
+	@RequestMapping(value = "/gerar-final")
+	public Long gerarDocumentoFinal(GerarDocumentoFinalCommand command) {
+		return documentoServiceFacade.gerarDocumentoFinal(command.getDocumento());
 	}
 	
 }
