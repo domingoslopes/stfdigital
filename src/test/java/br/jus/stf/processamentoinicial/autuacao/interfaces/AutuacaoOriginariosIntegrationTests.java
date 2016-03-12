@@ -67,6 +67,8 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String postSignCommand;
 	private String assinarDevolucaoPeticaoCommand;
 	
+	private String gerarTextoPeticaoCommand;
+	
 	@Spy
 	private IndexadorRestAdapter indexadorRestAdapter;
 	
@@ -202,6 +204,8 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		processoParaOrganizarPecas.append("\"concluirTarefa\": true,");
 		processoParaOrganizarPecas.append("\"pecasOrganizadas\": [@1,@2]}]}");
 		this.processoParaOrganizarPecas = processoParaOrganizarPecas.toString();
+		
+		this.gerarTextoPeticaoCommand = "{\"resources\":[{\"peticaoId\":@peticaoId,\"modeloId\":@modeloId,\"substituicoes\":[]}]}";
 	}
 	
 	@Test
@@ -352,6 +356,9 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
     	assumirTarefa(tarefaObject);
 		
+    	this.mockMvc.perform(post("/api/actions/gerar-texto/execute").contentType(MediaType.APPLICATION_JSON)
+				.content(this.gerarTextoPeticaoCommand.replace("@peticaoId", peticaoId).replace("@modeloId", "1"))).andExpect(status().isOk());
+    	
 		//Devolve a petição.
 		this.mockMvc.perform(post("/api/actions/devolver-peticao/execute").contentType(MediaType.APPLICATION_JSON)
 				.content(this.peticaoFisicaParaDevolucao.replace("@", peticaoId))).andExpect(status().isOk());
