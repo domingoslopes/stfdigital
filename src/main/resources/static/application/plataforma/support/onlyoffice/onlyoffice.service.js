@@ -33,7 +33,7 @@
 			},
 			recuperarUrlCallback: function(id) {
 				return $q.when(getBaseUrl()).then(function(baseUrl) {
-					return 'https://eti078143:8443/api/onlyoffice/documentos/' + id + '/callback';
+					return baseUrl + '/api/onlyoffice/documentos/' + id + '/callback';
 				});
 			}
 		};
