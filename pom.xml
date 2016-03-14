@@ -372,6 +372,11 @@
                             <directory>${project.basedir}/keystores</directory>
                         	<include>localhost.p12</include>
                     	</resource>
+                    	<resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.basedir}/truststores</directory>
+                        	<include>truststore.jks</include>
+                    	</resource>
                 	</resources>
             	</configuration>
         	</plugin>
