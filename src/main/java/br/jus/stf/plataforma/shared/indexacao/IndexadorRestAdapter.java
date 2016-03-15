@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarColecaoCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.CriarIndiceCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 import br.jus.stf.shared.stereotype.Entity;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Lucas.Rodrigues

@@ -3,14 +3,14 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.wordnik.swagger.annotations.ApiModel;
-import com.wordnik.swagger.annotations.ApiModelProperty;
-
 import br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
+
+import com.fasterxml.jackson.annotation.JsonView;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
 
 
 /**

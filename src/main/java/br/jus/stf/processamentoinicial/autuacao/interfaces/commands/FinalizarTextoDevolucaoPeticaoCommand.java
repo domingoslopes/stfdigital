@@ -16,6 +16,9 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 public class FinalizarTextoDevolucaoPeticaoCommand {
 	@ApiModelProperty("Id da petição")
 	private Long peticaoId;
+	
+	@ApiModelProperty("Id do modelo de documento.")
+	private Long modeloId;
 
 	@ApiModelProperty("Id do texto finalizado.")
 	private Long textoId;
@@ -25,6 +28,10 @@ public class FinalizarTextoDevolucaoPeticaoCommand {
 
 	public Long getPeticaoId() {
 		return peticaoId;
+	}
+	
+	public Long getModeloId() {
+		return modeloId;
 	}
 
 	public Long getTextoId() {

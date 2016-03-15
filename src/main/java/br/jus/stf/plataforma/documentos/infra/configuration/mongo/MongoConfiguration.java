@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
+import br.jus.stf.plataforma.shared.settings.AndProfilesCondition;
+import br.jus.stf.plataforma.shared.settings.Profiles;
+
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-
-import br.jus.stf.plataforma.shared.settings.AndProfilesCondition;
-import br.jus.stf.plataforma.shared.settings.Profiles;
 
 /**
  * @author Rafael.Alencar

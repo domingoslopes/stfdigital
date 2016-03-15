@@ -44,7 +44,7 @@ public class TextoApplicationService {
 		
 		texto = textoRepository.save(texto);
 		
-		peticaoAdapter.associarTextoDevolucao(peticaoId, texto.id());
+		peticaoAdapter.associarTextoDevolucao(peticaoId, texto.id(), modeloId);
 		
 		return texto;
 	}

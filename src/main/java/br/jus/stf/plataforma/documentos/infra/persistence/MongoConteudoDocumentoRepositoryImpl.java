@@ -12,15 +12,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.stereotype.Repository;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.gridfs.GridFSDBFile;
-
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 import br.jus.stf.plataforma.shared.settings.AndProfilesCondition;
 import br.jus.stf.plataforma.shared.settings.Profiles;
 import br.jus.stf.shared.DocumentoId;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.gridfs.GridFSDBFile;
 
 /**
  * Implementação do repositório de conteúdo com armazenamento no Mongo.

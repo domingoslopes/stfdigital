@@ -31,6 +31,7 @@ import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflowId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * @author Rafael Alencar
@@ -63,7 +64,7 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 	
 	private List<Peca> carregarPecas(List<PecaDto> pecasDto) {
 		return pecasDto.stream()
-				.map(pecaDto -> new PecaPeticao(new DocumentoId(pecaDto.getDocumentoId()), new TipoPeca(pecaDto.getTipoId(),
+				.map(pecaDto -> new PecaPeticao(new DocumentoId(pecaDto.getDocumentoId()), new TipoPeca(new TipoDocumentoId(pecaDto.getTipoId()),
 						pecaDto.getTipoNome()), pecaDto.getDescricao(), Visibilidade.valueOf(pecaDto.getVisibilidade()),
 						Situacao.valueOf(pecaDto.getSituacao())))
 				.collect(Collectors.toList());

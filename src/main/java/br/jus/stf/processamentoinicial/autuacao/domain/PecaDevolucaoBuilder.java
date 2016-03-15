@@ -1,6 +1,6 @@
 package br.jus.stf.processamentoinicial.autuacao.domain;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao;
 
 /**
  * Representa a classe de geração automática do ofício para devolução das petições "indevidas", 
@@ -22,10 +22,10 @@ public interface PecaDevolucaoBuilder {
 	 * manualmente pelo usuário.
 	 *  
 	 * @param peticao a petição que será devolvida
-	 * @param tipoDevolucao o tipo de devolução
+	 * @param motivoDevolucao o motivo da devolução
 	 * @param numero o número do ofício
 	 * @return o ofício geral
 	 */
-	byte[] build(String identificacao, TipoDevolucao tipoDevolucao, Long numero);
+	byte[] build(String identificacao, MotivoDevolucao motivoDevolucao, Long numero);
 
 }

@@ -154,6 +154,7 @@ public class PeticaoServiceFacade {
 	/**
 	 * Devolve uma petição.
 	 * 
+<<<<<<< HEAD
 	 * @param peticaoId Id da petição.
 	 * @param modeloId Id do modelo de documento usado para gerar o texto.
 	 * @param substituicoes Textos que substituirão as tags dos modelos.
@@ -169,15 +170,23 @@ public class PeticaoServiceFacade {
 	/**
 	 * Finzaliza a edição do texto de devolução de uma petição.
 	 * @param peticaoId Id da petição.
-	 * @param modelo Id do modelo de documento usado para gerar o texto.
 	 * @param textoId Id do texto finalizado.
 	 * @param numero Nº do documento gerado.
 	 */
-	public void finalizarTextoDevolucao(Long peticaoId, Long modeloId, Long textoId, String numero) {
+	public void finalizarTextoDevolucao(Long peticaoId, Long textoId, String numero) {
 		Peticao peticao = carregarPeticao(peticaoId);
-		Modelo modelo = modeloRepository.findOne(new ModeloId(modeloId));
 		Texto texto = textoRepository.findOne(new TextoId(textoId));
-		peticaoApplicationService.finalizarTextoDevolucao(peticao, modelo, texto, numero);
+		peticaoApplicationService.finalizarTextoDevolucao(peticao, texto, numero);
+=======
+	 * @param peticaoId
+	 * @param motivoDevolucao
+	 * @param numero
+	 */
+	public void devolver(Long peticaoId, Long motivoDevolucao, Long numero) {
+		Peticao peticao = carregarPeticao(peticaoId);
+		MotivoDevolucao motivo = peticaoRepository.findOneMotivoDevolucao(motivoDevolucao);
+		peticaoApplicationService.prepararDevolucao(peticao, motivo, numero);
+>>>>>>> 7afe414d315a1ba976492a7f373ec2fb504b406a
 	}
 	
 	public void devolver(Long peticaoId, String documentoId) {
@@ -245,7 +254,7 @@ public class PeticaoServiceFacade {
 	
 	public InputStream consultarTemplateDevolucao(Long motivoDevolucao, String extensao) throws Exception {
 		MotivoDevolucao motivo = peticaoRepository.findOneMotivoDevolucao(motivoDevolucao);
-		return devolucaoTemplateService.carregarTemplate(motivo, extensao);
+	    return devolucaoTemplateService.carregarTemplate(motivo, extensao);
     }
 	
 	/**
@@ -298,8 +307,8 @@ public class PeticaoServiceFacade {
 	    return new PecaTemporaria(documentoTemporario, tipo, tipo.nome(), visibilidade, situacao);
     }
 
-	public void associarTextoDevolucao(Long peticaoId, Long modeloId, Long textoId) {
-		peticaoApplicationService.associarTextoDevolucao(new PeticaoId(peticaoId), new ModeloId(modeloId), new TextoId(textoId));
+	public void associarTextoDevolucao(Long peticaoId, Long textoId, Long modeloId) {
+		peticaoApplicationService.associarTextoDevolucao(new PeticaoId(peticaoId), new TextoId(textoId), new ModeloId(modeloId));
 	}
 	
 }

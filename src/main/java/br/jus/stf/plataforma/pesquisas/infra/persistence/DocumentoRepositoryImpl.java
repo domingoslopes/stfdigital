@@ -14,14 +14,14 @@ import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Documento;
 import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.DocumentoRepository;
 import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
 import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.SubDocumento;
+
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Lucas.Rodrigues

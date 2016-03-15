@@ -18,13 +18,13 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.DocumentoId;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Rafael.Alencar

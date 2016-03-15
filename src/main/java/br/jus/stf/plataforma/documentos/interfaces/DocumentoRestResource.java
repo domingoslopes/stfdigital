@@ -26,10 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
-
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DeleteTemporarioCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
@@ -46,6 +42,10 @@ import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade
 import br.jus.stf.plataforma.shared.errorhandling.ValidationException;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiResponse;
+import com.wordnik.swagger.annotations.ApiResponses;
 
 /**
  * Api REST para salvar e recuperar documentos

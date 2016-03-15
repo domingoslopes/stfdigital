@@ -16,7 +16,7 @@
 		var devolucao = this;
 		
 		devolucao.classificar = function(tipo){
-			utils.select('div#s2id_tipoDevolucao', tipo);
+			utils.select('div#s2id_motivoDevolucao', tipo);
 		};
 		
 		devolucao.registrarNumeroOficio = function(){

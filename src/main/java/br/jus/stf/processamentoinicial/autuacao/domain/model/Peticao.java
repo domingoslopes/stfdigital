@@ -47,6 +47,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
+import br.jus.stf.shared.ModeloId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
@@ -84,9 +85,6 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	@Column(name = "DSC_MOTIVO_REJEICAO")
 	private String motivoRejeicao;
 	
-	@Column(name = "DSC_MOTIVO_DEVOLUCAO")
-	private String motivoDevolucao;
-	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = PartePeticao.class)
 	@JoinColumn(name = "SEQ_PETICAO", nullable = false)
 	private Set<Parte> partes = new HashSet<Parte>(0);
@@ -117,8 +115,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	private Set<PreferenciaId> preferencias = new HashSet<PreferenciaId>(0);
 	
 	@Embedded
-	@AttributeOverride(name = "sequencial", column = @Column(name = "SEQ_TEXTO_DEVOLUCAO"))
-	private TextoId textoDevolucao;
+	private Devolucao devolucao;
 		
 	@Transient
 	private String identificacao;
@@ -197,14 +194,16 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		  .collect(Collectors.toSet()));
 	}
 
-	public TextoId textoDevolucao() {
-		return textoDevolucao;
+	public Devolucao devolucao() {
+		return devolucao;
 	}
 	
-	public void associarTextoDevolucao(TextoId texto) {
-		Validate.notNull(texto, "peticao.textoDevolucao.required");
+	public void associarTextoDevolucao(final TextoId texto, final ModeloId modelo) {
+		Validate.notNull(devolucao, "peticao.devolucao.required");
+		Validate.notNull(texto, "peticao.texto.required");
+		Validate.notNull(modelo, "peticao.modelo.required");
 		
-		this.textoDevolucao = texto;
+		devolucao = new Devolucao(devolucao.motivo(), texto, modelo);
 	}
 	
 	/**
@@ -294,10 +293,6 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		return motivoRejeicao;
 	}
 	
-	public String motivoDevolucao() {
-		return motivoDevolucao;
-	}
-	
 	public TipoProcesso tipoProcesso() {
 		return tipoProcesso;
 	}
@@ -354,10 +349,10 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 * 
 	 * @param motivoDevolucao Descrição do motivo da devolução da petição.
 	 */
-	public void devolver(final String motivoDevolucao) {
+	public void registrarMotivoDevolucao(final String motivoDevolucao) {
 		Validate.notBlank(motivoDevolucao, "peticao.motivoDevolucao.required");
 			
-		this.motivoDevolucao = motivoDevolucao;
+		devolucao = new Devolucao(motivoDevolucao);
 	}
 
 	public Set<ProcessoWorkflow> processosWorkflow() {

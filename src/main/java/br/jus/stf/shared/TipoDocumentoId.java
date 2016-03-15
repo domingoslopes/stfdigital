@@ -15,18 +15,18 @@ import br.jus.stf.shared.stereotype.ValueObject;
  *
  */
 @Embeddable
-public class TipoModeloId implements ValueObject<TipoModeloId> {
+public class TipoDocumentoId implements ValueObject<TipoDocumentoId> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "SEQ_TIPO_MODELO", nullable = false)
 	private Long sequencial;
 
-	TipoModeloId() {
+	TipoDocumentoId() {
 
 	}
 
-	public TipoModeloId(final Long sequencial) {
+	public TipoDocumentoId(final Long sequencial) {
 		Validate.notNull(sequencial, "tipoModeloId.sequencial.required");
 		
 		this.sequencial = sequencial;
@@ -56,12 +56,12 @@ public class TipoModeloId implements ValueObject<TipoModeloId> {
 			return false;
 		}
 
-		TipoModeloId other = (TipoModeloId) o;
+		TipoDocumentoId other = (TipoDocumentoId) o;
 		return sameValueAs(other);
 	}
 
 	@Override
-	public boolean sameValueAs(final TipoModeloId other) {
+	public boolean sameValueAs(final TipoDocumentoId other) {
 		return other != null && this.sequencial.equals(other.sequencial);
 	}
 

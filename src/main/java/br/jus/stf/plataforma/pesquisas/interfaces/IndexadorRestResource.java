@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarColecaoCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.AtualizarCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.CriarIndiceCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.facade.IndexadorServiceFacade;
+
+import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Controlador com API Rest para indexação
