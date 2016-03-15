@@ -12,7 +12,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoModelo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoModeloRepository;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.ModeloId;
-import br.jus.stf.shared.TipoModeloId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 @Component
 @Transactional
@@ -27,7 +27,7 @@ public class ModeloApplicationService {
 	@Autowired
 	private ModeloFactory modeloFactory;
 
-	public Modelo criarModelo(TipoModeloId tipoModeloId, String nome) {
+	public Modelo criarModelo(TipoDocumentoId tipoModeloId, String nome) {
 		TipoModelo tipoModelo = tipoModeloRepository.findOne(tipoModeloId);
 		ModeloId modeloId = modeloRepository.nextId();
 		DocumentoId documentoId = modeloFactory.criarDocumentoModeloPadrao(tipoModeloId, nome);

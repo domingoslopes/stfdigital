@@ -8,7 +8,6 @@ import br.jus.stf.plataforma.shared.actions.annotation.ActionController;
 import br.jus.stf.plataforma.shared.actions.annotation.ActionMapping;
 import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.AssinarDevolucaoPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.AutuarPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.DevolverPeticaoCommand;
@@ -38,8 +37,7 @@ public class PeticaoActionsResource {
 	
 	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição", resourcesMode = ResourcesMode.One)
 	public void devolver(DevolverPeticaoCommand command) {
-		TipoDevolucao tipoDevolucao = TipoDevolucao.valueOf(command.getTipoDevolucao());
-		peticaoServiceFacade.devolver(command.getPeticaoId(), tipoDevolucao, command.getNumeroOficio()); 
+		peticaoServiceFacade.devolver(command.getPeticaoId(), command.getMotivoDevolucao(), command.getNumeroOficio()); 
 	}
 	
 	@ActionMapping(id = "assinar-devolucao-peticao", name = "Assinar Documento de Devolução", resourcesMode = ResourcesMode.OneOrMany)

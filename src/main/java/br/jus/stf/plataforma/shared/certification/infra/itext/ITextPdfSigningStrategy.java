@@ -4,11 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfSignatureAppearance;
-import com.itextpdf.text.pdf.PdfStamper;
-
 import br.jus.stf.plataforma.shared.certification.domain.PdfFileDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.Document;
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.DocumentSignature;
@@ -20,6 +15,11 @@ import br.jus.stf.plataforma.shared.certification.domain.model.signature.SignedD
 import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
 import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
 import br.jus.stf.plataforma.shared.certification.infra.PdfTempSignedDocument;
+
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfSignatureAppearance;
+import com.itextpdf.text.pdf.PdfStamper;
 
 public class ITextPdfSigningStrategy implements PdfSigningStrategy {
 

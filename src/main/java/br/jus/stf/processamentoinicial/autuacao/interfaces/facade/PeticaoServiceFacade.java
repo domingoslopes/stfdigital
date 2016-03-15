@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.processamentoinicial.autuacao.application.PeticaoApplicationService;
 import br.jus.stf.processamentoinicial.autuacao.domain.DevolucaoTemplateService;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
@@ -31,10 +31,12 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+import br.jus.stf.shared.ModeloId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.TextoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 
 /**
@@ -141,12 +143,13 @@ public class PeticaoServiceFacade {
 	 * Devolve uma petição.
 	 * 
 	 * @param peticaoId
-	 * @param tipoDevolucao
+	 * @param motivoDevolucao
 	 * @param numero
 	 */
-	public void devolver(Long peticaoId, TipoDevolucao tipoDevolucao, Long numero) {
+	public void devolver(Long peticaoId, Long motivoDevolucao, Long numero) {
 		Peticao peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.prepararDevolucao(peticao, tipoDevolucao, numero);
+		MotivoDevolucao motivo = peticaoRepository.findOneMotivoDevolucao(motivoDevolucao);
+		peticaoApplicationService.prepararDevolucao(peticao, motivo, numero);
 	}
 	
 	public void assinarDevolucao(Long peticaoId, String documentoId) {
@@ -212,9 +215,9 @@ public class PeticaoServiceFacade {
 		return null;
 	}
 	
-	public InputStream consultarTemplateDevolucao(String tipoDevolucao, String extensao) throws Exception {
-		TipoDevolucao tipo = TipoDevolucao.valueOf(tipoDevolucao.toUpperCase());
-	    return devolucaoTemplateService.carregarTemplate(tipo, extensao);
+	public InputStream consultarTemplateDevolucao(Long motivoDevolucao, String extensao) throws Exception {
+		MotivoDevolucao motivo = peticaoRepository.findOneMotivoDevolucao(motivoDevolucao);
+	    return devolucaoTemplateService.carregarTemplate(motivo, extensao);
     }
 	
 	/**
@@ -261,14 +264,14 @@ public class PeticaoServiceFacade {
      */
     private PecaTemporaria criarPecaTemporaria(Map<String, String> peca) {
 	    DocumentoTemporarioId documentoTemporario = new DocumentoTemporarioId(peca.get("documentoTemporario"));
-	    TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(peca.get("tipo")));
+	    TipoPeca tipo = peticaoRepository.findOneTipoPeca(new TipoDocumentoId(Long.valueOf(peca.get("tipo"))));
 	    Visibilidade visibilidade = Visibilidade.valueOf(Optional.ofNullable(peca.get("visibilidade")).orElse(Visibilidade.PUBLICO.toString()));
 	    Situacao situacao = Situacao.valueOf(Optional.ofNullable(peca.get("situacao")).orElse(Situacao.JUNTADA.toString()));
 	    return new PecaTemporaria(documentoTemporario, tipo, tipo.nome(), visibilidade, situacao);
     }
 
-	public void associarTextoDevolucao(Long peticaoId, Long textoId) {
-		peticaoApplicationService.associarTextoDevolucao(new PeticaoId(peticaoId), new TextoId(textoId));
+	public void associarTextoDevolucao(Long peticaoId, Long textoId, Long modeloId) {
+		peticaoApplicationService.associarTextoDevolucao(new PeticaoId(peticaoId), new TextoId(textoId), new ModeloId(modeloId));
 	}
 	
 }

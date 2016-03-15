@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -16,13 +17,16 @@ import br.jus.stf.plataforma.identidades.domain.model.TipoAssociado;
 import br.jus.stf.plataforma.shared.security.AcessosRestAdapter;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Orgao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * @author Lucas.Rodrigues
@@ -82,16 +86,15 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	}
 	
 	@Override
-	public TipoPeca findOneTipoPeca(Long id) {
-		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo WHERE tipo.sequencial = :id");
+	public TipoPeca findOneTipoPeca(TipoDocumentoId id) {
+		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo WHERE tipo.id = :id");
 		query.setParameter("id", id);
 		return (TipoPeca)query.getSingleResult();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<TipoPeca> findAllTipoPeca() {
-		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo ORDER BY tipo.nome");
+		TypedQuery<TipoPeca> query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo ORDER BY tipo.nome", TipoPeca.class);
 		return query.getResultList();
 	}
 	
@@ -102,10 +105,9 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 		return (Orgao)query.getSingleResult();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Orgao> findAllOrgao() {
-		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao ORDER BY orgao.nome");
+		TypedQuery<Orgao> query = entityManager.createQuery("SELECT orgao FROM Orgao orgao ORDER BY orgao.nome", Orgao.class);
 		return query.getResultList();
 	}
 	
@@ -138,12 +140,32 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 		entityManager.refresh(peticao);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@Override
+	public MotivoDevolucao findOneMotivoDevolucao(Long id) {
+		Query query = entityManager.createQuery("SELECT motivo FROM MotivoDevolucao motivo WHERE motivo.sequencial = :id");
+		query.setParameter("id", id);
+		return (MotivoDevolucao)query.getSingleResult();
+	}
+	
+	@Override
+	public List<MotivoDevolucao> findAllMotivoDevolucao() {
+		TypedQuery<MotivoDevolucao> query = entityManager.createQuery("SELECT motivo FROM MotivoDevolucao motivo ORDER BY motivo.descricao", MotivoDevolucao.class);
+		return query.getResultList();
+	}
+	
+	@Override
+	public List<Modelo> findModeloByMotivoDevolucao(MotivoDevolucao motivoDevolucao) {
+		TypedQuery<Modelo> query = entityManager.createQuery("SELECT modelo FROM Modelo modelo WHERE modelo.tipoModelo IN :tipos ORDER BY modelo.nome", Modelo.class);
+		
+		query.setParameter("tipos", motivoDevolucao.tiposModelo());
+		return query.getResultList();
+	}
+	
 	private List<Orgao> findOrgaoByTipoAssociacao(PessoaId id, TipoAssociado... tipos){
-		Query query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo IN :tipos AND asso.pessoa.id = :id) ORDER BY orgao.nome");
+		TypedQuery<Orgao> query = entityManager.createQuery("SELECT orgao FROM Orgao orgao WHERE orgao.id IN (SELECT asso.orgao FROM Associado asso WHERE asso.tipo IN :tipos AND asso.pessoa.id = :id) ORDER BY orgao.nome", Orgao.class);
+		
 		query.setParameter("tipos", Arrays.asList(tipos));
 		query.setParameter("id", id);
-		
 		return query.getResultList();
 	}
 	

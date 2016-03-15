@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoModeloRepository;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TipoModeloDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TipoModeloDtoAssembler;
+
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/tipos-modelo")

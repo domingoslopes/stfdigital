@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import br.jus.stf.plataforma.documentos.domain.ControladorEdicaoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
@@ -31,6 +29,8 @@ import br.jus.stf.plataforma.documentos.interfaces.dto.EdicaoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.documentos.interfaces.facade.OnlyofficeCallbackFacade;
 import br.jus.stf.shared.DocumentoId;
+
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/onlyoffice")

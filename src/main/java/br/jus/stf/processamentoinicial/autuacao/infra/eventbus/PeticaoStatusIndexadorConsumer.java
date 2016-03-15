@@ -9,12 +9,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
-import br.jus.stf.processamentoinicial.autuacao.infra.configuration.AutuacaoConfiguration;
-import br.jus.stf.shared.PeticaoStatusModificado;
 import reactor.bus.Event;
 import reactor.bus.EventBus;
 import reactor.fn.Consumer;
+import br.jus.stf.plataforma.shared.indexacao.IndexadorRestAdapter;
+import br.jus.stf.processamentoinicial.autuacao.infra.configuration.AutuacaoConfiguration;
+import br.jus.stf.shared.PeticaoStatusModificado;
 
 @Component
 public class PeticaoStatusIndexadorConsumer implements Consumer<Event<PeticaoStatusModificado>>, InitializingBean {

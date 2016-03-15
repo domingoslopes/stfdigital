@@ -9,12 +9,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BeanPropertyBindingResult;
 
-import br.jus.stf.plataforma.notificacoes.interfaces.NotificacaoRestResource;
-import br.jus.stf.plataforma.notificacoes.interfaces.command.NotificarCommand;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import reactor.bus.Event;
 import reactor.bus.EventBus;
 import reactor.fn.Consumer;
+import br.jus.stf.plataforma.notificacoes.interfaces.NotificacaoRestResource;
+import br.jus.stf.plataforma.notificacoes.interfaces.command.NotificarCommand;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 
 /**
  * Notifica os usuário(s) sobre a rejeição de uma petição.

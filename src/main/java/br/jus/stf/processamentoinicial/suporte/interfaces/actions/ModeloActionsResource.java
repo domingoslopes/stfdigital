@@ -8,7 +8,7 @@ import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
 import br.jus.stf.processamentoinicial.suporte.application.ModeloApplicationService;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
 import br.jus.stf.processamentoinicial.suporte.interfaces.commands.CriarModeloCommand;
-import br.jus.stf.shared.TipoModeloId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * Ações de Modelo.
@@ -24,7 +24,7 @@ public class ModeloActionsResource {
 
 	@ActionMapping(id = "criar-modelo", name = "Modelo", resourcesMode = ResourcesMode.None)
 	public Long criarModelo(CriarModeloCommand command) {
-		Modelo modelo = modeloApplicationService.criarModelo(new TipoModeloId(command.getTipoModelo()),
+		Modelo modelo = modeloApplicationService.criarModelo(new TipoDocumentoId(command.getTipoModelo()),
 		        command.getNome());
 		return modelo.id().toLong();
 	}

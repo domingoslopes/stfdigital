@@ -3,7 +3,6 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces.commands;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.NotBlank;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -25,9 +24,9 @@ public class DevolverPeticaoCommand {
 	@ApiModelProperty(value = "O número do ofício de devolução", required=true)
 	private Long numeroOficio;
 	
-	@NotBlank
-	@ApiModelProperty(value = "O código indicando o tipo de devolução", required=true)
-	private String tipoDevolucao;
+	@NotNull
+	@ApiModelProperty(value = "O código indicando o motivo da devolução", required=true)
+	private Long motivoDevolucao;
 	
 	public Long getPeticaoId() {
 		return this.peticaoId;
@@ -37,8 +36,8 @@ public class DevolverPeticaoCommand {
 		return numeroOficio;
 	}
 	
-	public String getTipoDevolucao() {
-		return tipoDevolucao;
+	public Long getMotivoDevolucao() {
+		return motivoDevolucao;
 	}
 
 	@Override

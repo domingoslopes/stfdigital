@@ -11,10 +11,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
-import com.mongodb.Mongo;
-
 import br.jus.stf.plataforma.shared.settings.AndProfilesCondition;
 import br.jus.stf.plataforma.shared.settings.Profiles;
+
+import com.mongodb.Mongo;
+
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 

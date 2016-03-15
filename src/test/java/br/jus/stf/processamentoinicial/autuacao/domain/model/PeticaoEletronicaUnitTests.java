@@ -26,6 +26,7 @@ import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * Testes unitários da petição eletrônica.
@@ -58,7 +59,7 @@ public class PeticaoEletronicaUnitTests {
 	}
 
 	private PecaPeticao criarPecaPI() {
-		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		return new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(new TipoDocumentoId(1L), "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 	}
 
 	@Test
@@ -159,7 +160,7 @@ public class PeticaoEletronicaUnitTests {
 		Peca pecaCustas = incluirPecaCustas();
 		incluirPecaAtoCoator();
 		PeticaoEletronica peticao = criarPeticaoPadrao();
-		Peca pecaCustasNova = new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(2L, "Custas"), "Custas Nova", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		Peca pecaCustasNova = new PecaPeticao(new DocumentoId(proximoIdDocumento()), new TipoPeca(new TipoDocumentoId(2L), "Custas"), "Custas Nova", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		peticao.substituirPeca(pecaCustas, pecaCustasNova);
 		Assert.assertEquals("Total de peças deveria ter sido mantida em 3.", 3L, peticao.pecas().size());
 		Assert.assertEquals("Peça 1 deveria ter sido ordenada com valor 1.", new Long(1L), recuperarPecaPI(peticao).numeroOrdem());
@@ -177,7 +178,7 @@ public class PeticaoEletronicaUnitTests {
 	}
 	
 	private Peca incluirPecaCustas() {
-		PecaPeticao pecaPeticao = criarPeca(new TipoPeca(2L, "Custas"), "Custas");
+		PecaPeticao pecaPeticao = criarPeca(new TipoPeca(new TipoDocumentoId(2L), "Custas"), "Custas");
 		incluirPeca(pecaPeticao);
 		return pecaPeticao;
 	}
@@ -187,7 +188,7 @@ public class PeticaoEletronicaUnitTests {
 	}
 	
 	private Peca incluirPecaAtoCoator() {
-		PecaPeticao pecaPeticao = criarPeca(new TipoPeca(5L, "Ato coator"), "Ato coator");
+		PecaPeticao pecaPeticao = criarPeca(new TipoPeca(new TipoDocumentoId(5L), "Ato coator"), "Ato coator");
 		incluirPeca(pecaPeticao);
 		return pecaPeticao;
 	}
@@ -198,7 +199,7 @@ public class PeticaoEletronicaUnitTests {
 	}
 	
 	private Peca pecaPorTipo(Collection<Peca> pecas, Long idTipo) {
-		return pecas.stream().filter(p -> p.tipo().toLong().equals(idTipo)).findFirst().orElseThrow(() -> new IllegalArgumentException("Peça não encontrada."));
+		return pecas.stream().filter(p -> p.tipo().id().toLong().equals(idTipo)).findFirst().orElseThrow(() -> new IllegalArgumentException("Peça não encontrada."));
 	}
 
 	private Long proximoIdDocumento() {

@@ -61,7 +61,7 @@
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/fisica/);
 		});
 		
-		it('Deveria registrar uma petição física (fluxo de peticao devolvida', function(){
+		it('Deveria registrar uma petição física (fluxo de peticao devolvida)', function(){
 			var registroPage = new RegistroPage();
 			
 			registroPage.preencherQtdVolumes(10);

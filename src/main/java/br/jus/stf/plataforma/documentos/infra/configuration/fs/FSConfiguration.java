@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
-import com.google.common.io.Files;
-
 import br.jus.stf.plataforma.shared.settings.Profiles;
+
+import com.google.common.io.Files;
 
 @Configuration
 @Profile(Profiles.DOCUMENTO_FS)

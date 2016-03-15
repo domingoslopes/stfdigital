@@ -12,7 +12,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.suporte.domain.ModeloFactory;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
-import br.jus.stf.shared.TipoModeloId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * Implementação do Modelo Factory
@@ -30,7 +30,7 @@ public class ModeloFactoryImpl implements ModeloFactory {
 	private ResourceLoader resourceLoader;
 
 	@Override
-	public DocumentoId criarDocumentoModeloPadrao(TipoModeloId tipoModelo, String nome) {
+	public DocumentoId criarDocumentoModeloPadrao(TipoDocumentoId tipoModelo, String nome) {
 		Resource resource = resourceLoader.getResource("classpath:templates/modelo/padrao-brasao.docx");
 		DocumentoTemporarioId documentoTemporarioId;
 		try {

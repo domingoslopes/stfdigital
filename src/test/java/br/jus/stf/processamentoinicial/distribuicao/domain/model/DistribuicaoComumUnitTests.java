@@ -38,6 +38,7 @@ import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 public class DistribuicaoComumUnitTests {
 	
@@ -139,7 +140,7 @@ public class DistribuicaoComumUnitTests {
 
 	private PeticaoFisica preparaPeticao() {
 		PeticaoFisica peticao = new PeticaoFisica(new PeticaoId(1L), 1L, "DISTRIBUIDOR", 1, 1, FormaRecebimento.SEDEX, "BR123456789AD", TipoProcesso.ORIGINARIO);
-		TipoPeca tipo = new TipoPeca(1L, "Petição Inicial");
+		TipoPeca tipo = new TipoPeca(new TipoDocumentoId(1L), "Petição Inicial");
 		
 		peticao.adicionarPeca(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.JUNTADA));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
