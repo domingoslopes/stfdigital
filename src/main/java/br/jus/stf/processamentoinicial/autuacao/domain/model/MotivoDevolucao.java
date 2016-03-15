@@ -8,6 +8,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -32,7 +33,7 @@ public class MotivoDevolucao implements ValueObject<MotivoDevolucao> {
 	@Column(name = "DSC_MOTIVO_DEVOLUCAO", nullable = false)
 	private String descricao;
 	
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "MOTIVO_DEVOLUCAO_TIPO_MODELO", schema = "AUTUACAO",
 		joinColumns = @JoinColumn(name = "SEQ_MOTIVO_DEVOLUCAO", nullable = false))
 	private Set<TipoDocumentoId> tiposModelo = new HashSet<TipoDocumentoId>(0);
