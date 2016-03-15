@@ -25,12 +25,19 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.ModeloRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Texto;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TextoRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
+import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TextoDto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+import br.jus.stf.shared.ModeloId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoWorkflow;
@@ -59,6 +66,12 @@ public class PeticaoServiceFacade {
 	
 	@Autowired
 	private DevolucaoTemplateService devolucaoTemplateService;
+	
+	@Autowired
+	private ModeloRepository modeloRepository;
+	
+	@Autowired
+	private TextoRepository textoRepository;
 	
 	/**
 	 * Inicia o processo de peticionamento de uma petição eletônica.
@@ -140,18 +153,33 @@ public class PeticaoServiceFacade {
 	/**
 	 * Devolve uma petição.
 	 * 
-	 * @param peticaoId
-	 * @param tipoDevolucao
-	 * @param numero
+	 * @param peticaoId Id da petição.
+	 * @param modeloId Id do modelo de documento usado para gerar o texto.
+	 * @param substituicoes Textos que substituirão as tags dos modelos.
+	 * @return Texto gerado.
 	 */
-	public void devolver(Long peticaoId, TipoDevolucao tipoDevolucao, Long numero) {
+	public TextoDto gerarTextoDevolucao(Long peticaoId, Long modeloId, List<SubstituicaoTagTexto> substituicoes) {
 		Peticao peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.prepararDevolucao(peticao, tipoDevolucao, numero);
+		Modelo modelo = modeloRepository.findOne(new ModeloId(modeloId));
+		Texto textoGerado = peticaoApplicationService.gerarTextoDevolucao(peticao, modelo, substituicoes);
+		return new TextoDto(textoGerado.id().toLong(), textoGerado.documento().toLong());
 	}
 	
-	public void assinarDevolucao(Long peticaoId, String documentoId) {
+	/**
+	 * Finzaliza a edição do texto de devolução de uma petição.
+	 * @param peticaoId Id da petição.
+	 * @param textoId Id do texto finalizado.
+	 * @param numero Nº do documento gerado.
+	 */
+	public void finalizarTextoDevolucao(Long peticaoId, Long textoId, String numero) {
 		Peticao peticao = carregarPeticao(peticaoId);
-		peticaoApplicationService.assinarDevolucao(peticao, new DocumentoTemporarioId(documentoId));
+		Texto texto = textoRepository.findOne(new TextoId(textoId));
+		peticaoApplicationService.finalizarTextoDevolucao(peticao, texto, numero);
+	}
+	
+	public void devolver(Long peticaoId, String documentoId) {
+		Peticao peticao = carregarPeticao(peticaoId);
+		peticaoApplicationService.devolver(peticao, new DocumentoTemporarioId(documentoId));
 	}
 	
 	/**

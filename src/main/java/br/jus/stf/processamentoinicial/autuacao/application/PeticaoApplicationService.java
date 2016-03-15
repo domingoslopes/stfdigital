@@ -24,8 +24,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
-import br.jus.stf.processamentoinicial.autuacao.infra.PecaDevolucaoITextFromHtmlBuilder;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Texto;
@@ -34,6 +33,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
+import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -169,26 +169,22 @@ public class PeticaoApplicationService {
 	 * @param tipoDevolucao
 	 * @param numero
 	 */
-	public void prepararDevolucao(Peticao peticao, TipoDevolucao tipoDevolucao, Long numero) {
-		// Passo 01: Recuperando o texto de devolução
-		TextoId textoId = peticao.textoDevolucao();
-		Texto texto = textoRepository.findOne(textoId);
-		
-		// Passo 02: Gerando o documento final e associando ao texto
-		DocumentoId documentoFinalId = documentoAdapter.gerarDocumentoFinal(texto.documento());
-		
-		texto.associarDocumentoFinal(documentoFinalId);
+	public Texto gerarTextoDevolucao(Peticao peticao, Modelo modelo, List<SubstituicaoTagTexto> substituicoes) {
+		DocumentoId documentoId = documentoAdapter.gerarDocumentoComTags(modelo.documento(), substituicoes);
+		TextoId textoId = textoRepository.nextId();
+		Texto texto = new Texto(textoId, documentoId);
 		texto = textoRepository.save(texto);
 		
-		// Passo 03: Juntando a Peça de Devolução (Ofício) à Petição...
-		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8)); // TODO: Alterar o Tipo de Peça.
-		peticao.adicionarPeca(new PecaPeticao(documentoFinalId, tipo, String.format("Ofício nº %s", numero), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA));
+		associarTextoDevolucao(peticao.id(), texto.id());
+		
+		return texto;
+	}
+	
+	public void finalizarTextoDevolucao(Peticao peticao, Texto texto, String numero) {
+		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8)); // TODO: Substituir pelo tipo de modelo que deve ser recuperado do objeto modelo, este contido no objeto Texto.
+		peticao.adicionarPeca(new PecaPeticao(texto.documento(), tipo, String.format("Ofício nº %s", numero), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA));
 		peticaoRepository.save(peticao);
-		
-		// Passo 04: Completando a tarefa no BPM...
 		tarefaAdapter.completarPreparacaoParaDevolucao(peticao);
-		
-		//Passo 05: Gera o evento de peticao inválida.
 		peticaoApplicationEvent.peticaoPreparadaParaDevolucao(peticao);
 	}
 	
@@ -198,7 +194,7 @@ public class PeticaoApplicationService {
 	 * @param peticao
 	 * @param documentoTemporarioId
 	 */
-	public void assinarDevolucao(Peticao peticao, DocumentoTemporarioId documentoTemporarioId) {
+	public void devolver(Peticao peticao, DocumentoTemporarioId documentoTemporarioId) {
 		// Salva definitivamente o documento assinado.
 		DocumentoId documentoId = documentoAdapter.salvar(documentoTemporarioId);
 		TipoPeca tipo = peticaoRepository.findOneTipoPeca(Long.valueOf(8));
