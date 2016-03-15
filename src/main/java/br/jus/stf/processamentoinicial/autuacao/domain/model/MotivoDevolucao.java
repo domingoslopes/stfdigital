@@ -9,8 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -28,6 +31,8 @@ public class MotivoDevolucao implements ValueObject<MotivoDevolucao> {
 	
 	@Id
 	@Column(name = "SEQ_MOTIVO_DEVOLUCAO")
+	@SequenceGenerator(name = "MOTIVODEVOLUCAOID", sequenceName = "AUTUACAO.SEQ_MOTIVO_DEVOLUCAO", allocationSize = 1)
+	@GeneratedValue(generator = "MOTIVODEVOLUCAOID", strategy=GenerationType.SEQUENCE)
 	private Long sequencial;
 	
 	@Column(name = "DSC_MOTIVO_DEVOLUCAO", nullable = false)
