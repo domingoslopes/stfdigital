@@ -36,7 +36,7 @@ public class TarefaRestAdapter implements TarefaAdapter {
 	
 	@Autowired
 	private EventBus eventBus;
-	
+		
 	@Override
 	public void completarAnalisePressupostosFormais(ProcessoRecursal processo, Classificacao classificacao) {
 		completarTarefa(processo, Classificacao.APTO.equals(classificacao) ? ProcessoSituacao.A_ANALISAR : ProcessoSituacao.A_REVISAR);	
@@ -91,8 +91,6 @@ public class TarefaRestAdapter implements TarefaAdapter {
 			eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao.id(), peticao.tipo(), peticao.processoWorkflowId(), PeticaoStatus.DISTRIBUIDA)));
 		}
 	}
-	
-
 	
 	/**
 	 * Executa o comando de completar e retorna a petição associada ao processo

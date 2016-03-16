@@ -20,10 +20,10 @@ import br.jus.stf.shared.ProcessoWorkflowId;
  * @since 26.06.2015
  */
 @Component
-public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
+public class WorkflowRestAdapter implements WorkflowAdapter {
 	
 	@Autowired
-	private WorkflowRestResource processoRestService;
+	private WorkflowRestResource workflowRestResource;
 	
 	@Override
 	public ProcessoWorkflow iniciarWorkflow(PeticaoEletronica peticaoEletronica) {
@@ -34,7 +34,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setTipoInformacao(peticaoEletronica.getClass().getSimpleName());
 		command.setDescricao(peticaoEletronica.identificacao());
 		
-		Long id = processoRestService.iniciar(command);
+		Long id = workflowRestResource.iniciar(command);
 		return new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_AUTUAR.name());
 	}
 
@@ -51,7 +51,7 @@ public class ProcessoWorkflowRestAdapter implements WorkflowAdapter {
 		command.setTipoInformacao(peticaoFisica.getClass().getSimpleName());
 		command.setDescricao(peticaoFisica.identificacao());
 		
-		Long id = processoRestService.iniciarPorMensagem(command);
+		Long id = workflowRestResource.iniciarPorMensagem(command);
 		return new ProcessoWorkflow(new ProcessoWorkflowId(id), PeticaoStatus.A_PREAUTUAR.name());
 	}
 	

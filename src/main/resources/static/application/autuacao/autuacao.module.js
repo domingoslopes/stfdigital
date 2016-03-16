@@ -132,7 +132,7 @@
 		}).state('autuar-recursal-criminal-eleitoral',{
 			parent: 'action.autuacao',
 			url: '/processo/autuacao-criminal',
-			params : { resources : [] },
+			params : { resources : [], task : null },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-criminal.tpl.html'
@@ -141,7 +141,7 @@
 		}).state('autuar-recursal',{
 			parent: 'action.autuacao',
 			url: '/processo/autuacao-recursal',
-			params : { resources : [] },
+			params : { resources : [], task : null },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/autuacao/autuacao-recursal.tpl.html'
@@ -150,7 +150,7 @@
 		}).state('analisar-pressupostos-formais',{
 			parent: 'action.autuacao',
 			url: '/processo/analise',
-			params : { resources : [] },
+			params : { resources : [], task : null },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/pressuposto/analise-pressupostos.tpl.html'
@@ -159,7 +159,7 @@
 		}).state('revisar-processo-inapto',{
 			parent: 'action.autuacao',
 			url: '/processo/revisao',
-			params : { resources : [] },
+			params : { resources : [], task : null },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/revisao/revisao-processo-inapto.tpl.html'
@@ -168,10 +168,21 @@
 		}).state('analisar-repercussao-geral',{
 			parent: 'action.autuacao',
 			url: '/processo/repercussao',
-			params : { resources : [] },
+			params : { resources : [], task : null },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/repercussao/analise-repercussao-geral.tpl.html'
+				}
+			}
+		}).state('revisar-repercussao-geral', {
+			parent: 'action.autuacao',
+			url: '/processo/repercussao/revisar',
+			params : { resources : [], task : null },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/repercussao/revisao-repercussao-geral.tpl.html',
+					controller: 'RevisaoRepercussaoGeralController',
+					controllerAs: 'vm'
 				}
 			}
 		}).state('autuar', {
@@ -281,17 +292,6 @@
 				'@action': {
 					templateUrl: 'application/autuacao/pecas/edita-peca.tpl.html',
 					controller: 'EditaPecaController'
-				}
-			}
-		}).state('revisar-repercussao-geral', {
-			parent: 'action.autuacao',
-			url: '/processo/repercussao/revisar',
-			params : { resources : [] },
-			views: {
-				'content@root': {
-					templateUrl: 'application/autuacao/recursal/repercussao/revisao-repercussao-geral.tpl.html',
-					controller: 'RevisaoRepercussaoGeralController',
-					controllerAs: 'vm'
 				}
 			}
 		});

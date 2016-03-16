@@ -61,5 +61,10 @@ public interface PesquisaAvancadaRepository {
 	 */
 	List<Criterio> listarCriterios(String[] indices);
 	
-	
+	/**
+	 * Deleta uma pesquisa avançada
+	 * 
+	 * @param pesquisaId
+	 */
+	void delete(PesquisaAvancadaId pesquisaId);
 }

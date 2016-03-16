@@ -92,6 +92,12 @@ public class PesquisaRestResource {
 		return pesquisaServiceFacade.recuperarPesquisa(pesquisaId);
 	}
 	
+	@ApiOperation("Exclui uma pesquisa avançada pelo id")
+	@RequestMapping(value = "/avancadas/{id}", method = RequestMethod.DELETE)
+	public void excluirAvancada(@PathVariable("id") Long pesquisaId) {		
+		pesquisaServiceFacade.excluirPesquisa(pesquisaId);
+	}
+	
 	@ApiOperation("Lista os critérios de pesquisa avançada")
 	@RequestMapping(value = "/criterios", method = RequestMethod.GET)
 	public List<CriterioDto> listarCriterios(@RequestParam("indices") String[] indices) {		
