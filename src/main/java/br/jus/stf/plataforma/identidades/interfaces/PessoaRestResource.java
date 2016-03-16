@@ -43,7 +43,7 @@ public class PessoaRestResource {
 	}
 	
 	/**
-	 * Pesquisa uma pessoa pela identificacao
+	 * Pesquisa uma pessoa pela identificação
 	 * 
 	 * @param pessoaId
 	 * @return
@@ -51,6 +51,16 @@ public class PessoaRestResource {
 	@RequestMapping(value = "/{pessoaId}", method = RequestMethod.GET)
 	public PessoaDto pesquisar(@PathVariable("pessoaId") Long pessoaId) {
 		return pessoaServiceFacade.pesquisarPessoa(pessoaId);
+	}
+	
+	/**
+	 * Retorna uma lista com todas as pessoas
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public List<PessoaDto> listar() {
+		return pessoaServiceFacade.listar();
 	}
 	
 }

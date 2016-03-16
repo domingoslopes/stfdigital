@@ -53,6 +53,15 @@
 					}
 				}
 			}
+		}).state('pesquisar.peticoes.avancada', {
+			url: '/avancada',
+			params : { pesquisa : undefined },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pesquisa/avancada/peticoes.tpl.html',
+					controller: 'PesquisaPeticoesAvancadaController'
+				}
+			}
 		}).state('pesquisar.processos.avancada', {
 			url: '/avancada',
 			params : { pesquisa : undefined },
