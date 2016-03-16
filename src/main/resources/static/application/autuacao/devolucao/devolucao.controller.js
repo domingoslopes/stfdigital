@@ -13,8 +13,8 @@
 		var resource = $stateParams.resources[0];
 		devolucao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
 		devolucao.recursos = [];
-		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida", modelo: 1}, {id : 'TRANSITADO', nome : "Transitado", modelo: 2}, {id : 'BAIXADO', nome : "Baixado", modelo: 3}];
-		devolucao.tipoDevolucao = '';
+		devolucao.motivosDevolucao = [{id : '1', nome : "Remessa Indevida", modelo: 1}, {id : '2', nome : "Transitado", modelo: 2}, {id : '3', nome : "Baixado", modelo: 3}];
+		devolucao.motivoDevolucao = '';
 		devolucao.documento = '';
 		devolucao.tags = [];
 		
@@ -24,17 +24,17 @@
 			devolucao.processoWorkflowId = data;
 		});
 		
-		var recuperarIdModelo = function(tipoDevolucao) {
-			for (var i in devolucao.tiposDevolucao) {
-				if (devolucao.tiposDevolucao[i].id == tipoDevolucao) {
-					return devolucao.tiposDevolucao[i].modelo;
+		var recuperarIdModelo = function(motivoDevolucao) {
+			for (var i in devolucao.motivosDevolucao) {
+				if (devolucao.motivosDevolucao[i].id == motivoDevolucao) {
+					return devolucao.motivosDevolucao[i].modelo;
 				}
 			}
 		};
 		
-		$scope.$watch('devolucao.tipoDevolucao', function() {
-			if (devolucao.tipoDevolucao != '') {
-				ModeloService.consultar(recuperarIdModelo(devolucao.tipoDevolucao)).then(function(modelo) {
+		$scope.$watch('devolucao.motivoDevolucao', function() {
+			if (devolucao.motivoDevolucao != '') {
+				ModeloService.consultar(recuperarIdModelo(devolucao.motivoDevolucao)).then(function(modelo) {
 					devolucao.modelo = modelo;
 					ModeloService.extrairTags(devolucao.modelo.documento).then(function(tags) {
 						devolucao.tags = tags;
@@ -97,8 +97,8 @@
 		
 		devolucao.validar = function() {
 			var errors = null;
-			if (devolucao.tipoDevolucao.length === 0) {
-				errors = 'Você precisa selecionar <b>o tipo de devolução</b>.<br/>';
+			if (devolucao.motivoDevolucao.length === 0) {
+				errors = 'Você precisa selecionar <b>o motivo da devolução</b>.<br/>';
 			}
 			
 			if (!angular.isNumber(devolucao.numeroOficio)) {
@@ -109,7 +109,7 @@
 				messages.error(errors);
 				return false;
 			}
-			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.tipoDevolucao, devolucao.numeroOficio));
+			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.motivoDevolucao, devolucao.numeroOficio));
 			return true;
 		};
 		
@@ -118,10 +118,10 @@
 			messages.success('Petição devolvida com sucesso.');
 		};
 		
-		function DevolverCommand(peticaoId, tipoDevolucao, numeroOficio, documento) {
+		function DevolverCommand(peticaoId, motivoDevolucao, numeroOficio, documento) {
 			var command = {};
 			command.peticaoId = peticaoId;
-			command.tipoDevolucao = tipoDevolucao; 
+			command.motivoDevolucao = motivoDevolucao; 
 			command.numeroOficio = numeroOficio;
 			return command;
 		}

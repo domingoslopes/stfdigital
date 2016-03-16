@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import br.jus.stf.processamentoinicial.suporte.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.ModeloRepository;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.ModeloDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.ModeloDtoAssembler;
 import br.jus.stf.shared.ModeloId;
+
+import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Serviços Rest de Modelo.

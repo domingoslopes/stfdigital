@@ -33,6 +33,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 @Component
 public class ProcessoServiceFacade {
@@ -248,7 +249,7 @@ public class ProcessoServiceFacade {
 	public void editarPeca(Long processoId, Long pecaId, Long tipoPecaId, String descricao, Long numeroOrdem, String visibilidade){
 		Processo processo = processoRepository.findOne(new ProcessoId(processoId));
 		PecaProcesso pecaOriginal = (PecaProcesso)processoRepository.findOnePeca(pecaId);
-		TipoPeca tipoPeca = processoRepository.findOneTipoPeca(tipoPecaId);
+		TipoPeca tipoPeca = processoRepository.findOneTipoPeca(new TipoDocumentoId(tipoPecaId));
 		processoApplicationService.editarPeca(processo, pecaOriginal, tipoPeca, descricao, numeroOrdem, Visibilidade.valueOf(visibilidade));
 	}
 	

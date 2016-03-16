@@ -6,7 +6,7 @@
 					<li>
 						<p>Pesquisa</p>
 					</li>
-					<li ng-if="isPesquisaNova"><a href="#" id="subtitulo" class="active">Nova pesquisa avançada de Processo</a></li>
+					<li ng-if="isPesquisaNova"><a href="#" id="subtitulo" class="active">Nova pesquisa avançada de Petição</a></li>
 					<li ng-if="!isPesquisaNova"><a href="#" id="subtitulo" class="active">{{pesquisa.nome}}</a></li>
 				</ul>
 			</div>
@@ -35,7 +35,7 @@
 						<div class="panel-title">Resultados</div>
 					</div>
 					<div class="actions-wrapper">
-						<actions resources="selecao.objetos" groups="processo" context="autuacao" btn-class="btn-default" />
+						<actions resources="selecao.objetos" groups="peticao" context="autuacao" btn-class="btn-default" />
 					</div>
 					<div class="auto-overflow" ng-class="(resultados.length > 0) ? 'widget-11-2-table' : ''">
 						<div class="panel-body actions-enabled">	
@@ -43,8 +43,8 @@
 								<thead>
 									<tr>
 										<th style="width: 10px;"><input type="checkbox" ng-model="checkToggle" ng-change="toggleCheck()"></th>
-										<th>Classe</th>
-										<th>Número</th>
+										<th>Identificação</th>
+										<th>Classe sugerida</th>
 										<th>Ações</th>
 									</tr>
 								</thead>
@@ -54,9 +54,9 @@
 									</tr>
 									<tr ng-repeat="resultado in resultados">
 										<td><input type="checkbox" checklist-model="selecao.objetos" checklist-value="buildSelectedObject(resultado)"></td>
-										<td>{{resultado.objeto.classe.sigla}}</td>
-										<td>{{resultado.objeto.numero}}</td>
-										<td><a ui-sref="visualizar.processo({processoId: resultado.objeto.id.sequencial})" title="Visualizar"><i class="fa fa-eye" /></a></td>
+										<td>{{resultado.objeto.identificacao}}</td>
+										<td>{{resultado.objeto.classeSugerida.sigla}}</td>
+										<td><a ui-sref="visualizar.peticao({peticaoId: resultado.objeto.id.sequencial})" title="Visualizar"><i class="fa fa-eye" /></a></td>
 									</tr>
 								</tbody>
 							</table>

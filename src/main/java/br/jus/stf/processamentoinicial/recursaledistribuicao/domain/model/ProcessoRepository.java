@@ -10,6 +10,7 @@ import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * @author Rafael.Alencar
@@ -86,7 +87,7 @@ public interface ProcessoRepository {
 	 * @param id Id do tipo de peça.
 	 * @return Dados do tipo de peça.
 	 */
-	public TipoPeca findOneTipoPeca(Long id);
+	public TipoPeca findOneTipoPeca(TipoDocumentoId id);
 	
 	/**
 	 * Recupera uma peça.

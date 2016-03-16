@@ -16,11 +16,6 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfCopy;
-import com.itextpdf.text.pdf.PdfReader;
-
 import br.jus.stf.plataforma.documentos.domain.ContadorPaginas;
 import br.jus.stf.plataforma.documentos.domain.DocumentoService;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
@@ -33,6 +28,11 @@ import br.jus.stf.plataforma.shared.util.DocxMultipartFile;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfReader;
 
 /**
  * Service para manipulação de documentos do tipo Pdf.

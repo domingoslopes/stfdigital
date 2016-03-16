@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-
 import br.jus.stf.plataforma.shared.certification.application.SignatureApplicationService;
 import br.jus.stf.plataforma.shared.certification.domain.PdfTempDocument;
 import br.jus.stf.plataforma.shared.certification.domain.model.certificate.CertificateUtils;
@@ -39,6 +37,8 @@ import br.jus.stf.plataforma.shared.certification.interfaces.dto.PreSignatureDto
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignedDocumentDto;
 import br.jus.stf.plataforma.shared.certification.interfaces.dto.SignerDto;
 import br.jus.stf.shared.DocumentoTemporarioId;
+
+import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Serviços REST para a assinatura de documentos.

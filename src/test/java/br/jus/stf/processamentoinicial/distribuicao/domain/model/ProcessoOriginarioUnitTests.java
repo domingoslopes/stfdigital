@@ -31,6 +31,7 @@ import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 public class ProcessoOriginarioUnitTests {
 	
@@ -47,7 +48,7 @@ public class ProcessoOriginarioUnitTests {
 
 		pecas = new LinkedHashSet<PecaProcesso>(0);
 		
-		peca = new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		peca = new PecaProcesso(new DocumentoId(1L), new TipoPeca(new TipoDocumentoId(1L), "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		peca.atribuirSequencial(1L);
 		pecas.add(peca);
@@ -146,7 +147,7 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void adicionaPecaAProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(new TipoDocumentoId(1L), "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		processo.adicionarPeca(peca);
 		assertEquals(2, processo.pecas().size());
@@ -163,7 +164,7 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void removePecaDaProcesso() {
 		Processo processo = processo();
-		Peca peca = new PecaProcesso(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		Peca peca = new PecaProcesso(new DocumentoId(1L), new TipoPeca(new TipoDocumentoId(1L), "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		processo.adicionarPeca(peca);
 		processo.removerPeca(peca);
@@ -285,7 +286,7 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void modificaOrdemDasPecas() {
 		Processo processo = processo();
-		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(new TipoDocumentoId(2L), "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 		
 		peca2.atribuirSequencial(2L);
 		processo.adicionarPeca(peca2);
@@ -302,7 +303,7 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void juntaPecaAoProcesso() {
 		Processo processo = processo();
-		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(new TipoDocumentoId(2L), "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 		
 		processo.adicionarPeca(peca2);
 		processo.juntarPeca(peca2);
@@ -320,8 +321,8 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void fazDivisaoDeUmaPecaEmDuas() {
 		Processo processo = processo();
-		PecaProcesso pecaDividida1 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Custas"), "Custas", Visibilidade.PUBLICO, Situacao.JUNTADA);
-		PecaProcesso pecaDividida2 = new PecaProcesso(new DocumentoId(3L), new TipoPeca(5L, "Ato coator"), "Ato coator", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		PecaProcesso pecaDividida1 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(new TipoDocumentoId(2L), "Custas"), "Custas", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		PecaProcesso pecaDividida2 = new PecaProcesso(new DocumentoId(3L), new TipoPeca(new TipoDocumentoId(5L), "Ato coator"), "Ato coator", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		List<Peca> pecasDivididas = new ArrayList<Peca>(2);
 		
 		pecaDividida1.atribuirSequencial(2L);
@@ -338,9 +339,9 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void fazUniaoDeDuasPecasEmUma() {
 		Processo processo = processo();
-		PecaProcesso peca1 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Custas"), "Custas", Visibilidade.PUBLICO, Situacao.JUNTADA);
-		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(3L), new TipoPeca(5L, "Ato coator"), "Ato coator", Visibilidade.PUBLICO, Situacao.JUNTADA);
-		PecaProcesso pecaUnida = new PecaProcesso(new DocumentoId(4L), new TipoPeca(3L, "Documentos diversos"), "Documentos diversos", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		PecaProcesso peca1 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(new TipoDocumentoId(2L), "Custas"), "Custas", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(3L), new TipoPeca(new TipoDocumentoId(5L), "Ato coator"), "Ato coator", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		PecaProcesso pecaUnida = new PecaProcesso(new DocumentoId(4L), new TipoPeca(new TipoDocumentoId(3L), "Documentos diversos"), "Documentos diversos", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		List<PecaProcesso> pecasUnidas = new ArrayList<PecaProcesso>(2);
 		
 		peca1.atribuirSequencial(2L);
@@ -367,7 +368,7 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void editaUmaPecaAlterandoNumeroOrdem() {
 		Processo processo = processo();
-		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(2L, "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
+		PecaProcesso peca2 = new PecaProcesso(new DocumentoId(2L), new TipoPeca(new TipoDocumentoId(2L), "Documento"), "Documento", Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA);
 		
 		processo.adicionarPeca(peca2);
 		processo.editarPeca(peca2, peca2.tipo(), peca2.descricao(), 1L, peca2.visibilidade());

@@ -1,16 +1,15 @@
 package br.jus.stf.processamentoinicial.suporte.domain.model;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.shared.TipoDocumentoId;
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
@@ -19,11 +18,9 @@ public class TipoPeca implements ValueObject<TipoPeca> {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "SEQ_TIPO_PECA")
-	@SequenceGenerator(name = "TIPOPECAID", sequenceName = "AUTUACAO.SEQ_TIPO_PECA", allocationSize = 1)
-	@GeneratedValue(generator = "TIPOPECAID", strategy=GenerationType.SEQUENCE)
-	private Long sequencial;
+	@EmbeddedId
+	@AttributeOverride(name = "sequencial", column = @Column(name = "SEQ_TIPO_PECA"))
+	private TipoDocumentoId id;
 	
 	@Column(name = "NOM_TIPO_PECA", nullable = false)
 	private String nome;
@@ -32,25 +29,25 @@ public class TipoPeca implements ValueObject<TipoPeca> {
 
 	}
 	
-	public TipoPeca(final Long sequencial, final String nome) {
-		Validate.notNull(sequencial, "tipoPeca.sequencial.required");
+	public TipoPeca(final TipoDocumentoId id, final String nome) {
+		Validate.notNull(id, "tipoPeca.id.required");
 		Validate.notBlank(nome, "tipoPeca.nome.required");
 		
-		this.sequencial = sequencial;
+		this.id = id;
 		this.nome = nome;
 	}
 	
-	public Long toLong() {
-		return this.sequencial;
+	public TipoDocumentoId id() {
+		return id;
 	}
 	
 	public String nome() {
-		return this.nome;
+		return nome;
 	}
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(sequencial).toHashCode();
+		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
 	@Override
@@ -69,7 +66,7 @@ public class TipoPeca implements ValueObject<TipoPeca> {
 	
 	@Override
 	public boolean sameValueAs(final TipoPeca other){
-		return other != null && this.sequencial.equals(other.sequencial);
+		return other != null && this.id.sameValueAs(other.id);
 	}
 	
 }

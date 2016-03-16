@@ -186,7 +186,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoFisicaParaDevolucao.append("{\"resources\": ");
 		peticaoFisicaParaDevolucao.append("[{\"peticaoId\": @,");		
 		peticaoFisicaParaDevolucao.append("\"numeroOficio\":1234,");
-		peticaoFisicaParaDevolucao.append("\"tipoDevolucao\":\"REMESSA_INDEVIDA\"}]}");
+		peticaoFisicaParaDevolucao.append("\"motivoDevolucao\":1}]}");
 		this.peticaoFisicaParaDevolucao = peticaoFisicaParaDevolucao.toString();
 		
 		this.prepareCommand = "{\"certificateAsHex\":\"@\"}";

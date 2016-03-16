@@ -27,6 +27,7 @@ import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 public class PeticaoUnitTests {
 	
@@ -235,7 +236,7 @@ public class PeticaoUnitTests {
 	@Test
 	public void adicionaPecaAPeticao() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(new TipoDocumentoId(1L), "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		assertEquals(0, peticao.pecas().size());
 		peticao.adicionarPeca(peca);
@@ -253,7 +254,7 @@ public class PeticaoUnitTests {
 	@Test
 	public void removePecaDaPeticao() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
-		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(1L, "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
+		Peca peca = new PecaPeticao(new DocumentoId(1L), new TipoPeca(new TipoDocumentoId(1L), "Petição inicial"), "Petição inicial", Visibilidade.PUBLICO, Situacao.JUNTADA);
 		
 		peticao.adicionarPeca(peca);
 		assertEquals(1, peticao.pecas().size());

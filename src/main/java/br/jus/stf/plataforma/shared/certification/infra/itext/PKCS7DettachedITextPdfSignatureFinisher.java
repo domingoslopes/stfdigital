@@ -12,6 +12,14 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.AuthenticatedAttributes;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashToSign;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PdfSigningSpecification;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
+import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
+import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
+
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfDate;
 import com.itextpdf.text.pdf.PdfDictionary;
@@ -23,14 +31,6 @@ import com.itextpdf.text.pdf.security.DigestAlgorithms;
 import com.itextpdf.text.pdf.security.ExternalDigest;
 import com.itextpdf.text.pdf.security.MakeSignature.CryptoStandard;
 import com.itextpdf.text.pdf.security.PdfPKCS7;
-
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.AuthenticatedAttributes;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.HashToSign;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.PdfSigningSpecification;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.PreSignature;
-import br.jus.stf.plataforma.shared.certification.domain.model.signature.SigningException;
-import br.jus.stf.plataforma.shared.certification.domain.model.validation.CertificateValidation;
 
 public class PKCS7DettachedITextPdfSignatureFinisher implements ITextPdfSignatureFinisher {
 

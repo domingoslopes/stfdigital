@@ -74,9 +74,9 @@ public class PeticaoRestResource {
     
     @ApiOperation(value = "Retorna o template de documento de devolução.")
     @RequestMapping(value = "/template-devolucao", method = RequestMethod.GET)
-    public ResponseEntity<InputStreamResource> consultarTemplateDevolucao(@RequestParam("tipo") String tipoDevolucao, @RequestParam(value = "ext", defaultValue = "html") String extensao)
+    public ResponseEntity<InputStreamResource> consultarTemplateDevolucao(@RequestParam("motivo") Long motivoDevolucao, @RequestParam(value = "ext", defaultValue = "html") String extensao)
     		throws Exception {
-    	InputStream is = peticaoServiceFacade.consultarTemplateDevolucao(tipoDevolucao, extensao);
+    	InputStream is = peticaoServiceFacade.consultarTemplateDevolucao(motivoDevolucao, extensao);
     	InputStreamResource isr = new InputStreamResource(is);
     	HttpHeaders headers = createResponseHeaders(extensao);
     	return new ResponseEntity<InputStreamResource>(isr, headers, HttpStatus.OK);
@@ -102,8 +102,8 @@ public class PeticaoRestResource {
     
     @ApiOperation("Associa um texto de devolução a uma petição.")
     @RequestMapping(value = "/{peticaoId}/associar-texto-devolucao/{textoId}", method = RequestMethod.POST)
-    public void associarTextoDevolucao(@PathVariable("peticaoId") Long peticaoId, @PathVariable("textoId") Long textoId) {
-    	peticaoServiceFacade.associarTextoDevolucao(peticaoId, textoId);
+    public void associarTextoDevolucao(@PathVariable("peticaoId") Long peticaoId, @PathVariable("textoId") Long textoId, @PathVariable("modeloId") Long modeloId) {
+    	peticaoServiceFacade.associarTextoDevolucao(peticaoId, textoId, modeloId);
     }
     
 }

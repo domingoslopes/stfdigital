@@ -1,7 +1,7 @@
 package br.jus.stf.processamentoinicial.suporte.domain;
 
 import br.jus.stf.shared.DocumentoId;
-import br.jus.stf.shared.TipoModeloId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * Factory de Modelo.
@@ -18,6 +18,6 @@ public interface ModeloFactory {
 	 * @param nome Nome do modelo
 	 * @return
 	 */
-	DocumentoId criarDocumentoModeloPadrao(TipoModeloId tipoModelo, String nome);
+	DocumentoId criarDocumentoModeloPadrao(TipoDocumentoId tipoModelo, String nome);
 
 }
