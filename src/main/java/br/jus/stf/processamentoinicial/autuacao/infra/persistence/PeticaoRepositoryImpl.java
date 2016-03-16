@@ -155,7 +155,7 @@ public class PeticaoRepositoryImpl extends SimpleJpaRepository<Peticao, PeticaoI
 	
 	@Override
 	public List<Modelo> findModeloByMotivoDevolucao(MotivoDevolucao motivoDevolucao) {
-		TypedQuery<Modelo> query = entityManager.createQuery("SELECT modelo FROM Modelo modelo WHERE modelo.tipoModelo IN :tipos ORDER BY modelo.nome", Modelo.class);
+		TypedQuery<Modelo> query = entityManager.createQuery("SELECT modelo FROM Modelo modelo WHERE modelo.tipoModelo.id IN :tipos ORDER BY modelo.nome", Modelo.class);
 		
 		query.setParameter("tipos", motivoDevolucao.tiposModelo());
 		return query.getResultList();
