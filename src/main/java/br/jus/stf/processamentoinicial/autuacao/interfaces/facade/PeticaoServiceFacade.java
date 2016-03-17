@@ -25,6 +25,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDtoAssembler;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.ModeloRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
@@ -34,6 +35,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.MeioTramitacaoDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TextoDto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -298,6 +300,22 @@ public class PeticaoServiceFacade {
 
 	public void associarTextoDevolucao(Long peticaoId, Long modeloId, Long textoId) {
 		peticaoApplicationService.associarTextoDevolucao(new PeticaoId(peticaoId), new ModeloId(modeloId), new TextoId(textoId));
+	}
+	
+	/**
+	 * Retorna os possíveis meios de tramitação de uma petição.
+	 * 
+	 * @return Lista de meios de tramitação.
+	 */
+	public List<MeioTramitacaoDto> consultarMeiosTramitacaoPeticao() {
+		
+		List<MeioTramitacaoDto> meiosTramitacaoPeticao = new ArrayList<MeioTramitacaoDto>();
+		
+		for (MeioTramitacao p : MeioTramitacao.values()) {
+			meiosTramitacaoPeticao.add(new MeioTramitacaoDto(p.name(), p.descricao()));
+		}
+		
+		return meiosTramitacaoPeticao.stream().sorted((s1, s2) -> s1.getNome().compareTo(s2.getNome())).collect(Collectors.toList());
 	}
 	
 }

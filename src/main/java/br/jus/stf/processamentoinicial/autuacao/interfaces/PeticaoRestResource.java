@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoStatusDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.facade.PeticaoServiceFacade;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.MeioTramitacaoDto;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -104,6 +105,12 @@ public class PeticaoRestResource {
     @RequestMapping(value = "/{peticaoId}/associar-texto-devolucao/{textoId}", method = RequestMethod.POST)
     public void associarTextoDevolucao(@PathVariable("peticaoId") Long peticaoId, @PathVariable("textoId") Long textoId, @PathVariable("modeloId") Long modeloId) {
     	peticaoServiceFacade.associarTextoDevolucao(peticaoId, textoId, modeloId);
+    }
+    
+    @ApiOperation(value = "Retorna a lista de meios de tramitação que podem ser atribuídos a uma petição.")
+    @RequestMapping(value = "/meiosTramitacao", method = RequestMethod.GET)
+    public List<MeioTramitacaoDto> consultarMeiosTramitacao() {
+    	return peticaoServiceFacade.consultarMeiosTramitacaoPeticao();
     }
     
 }
