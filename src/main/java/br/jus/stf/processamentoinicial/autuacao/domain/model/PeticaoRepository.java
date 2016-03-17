@@ -4,13 +4,23 @@ import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * @author Rafael.Alencar
  * @version 1.0
  * @created 14-ago-2015 18:33:25
+ */
+/**
+ * @author Rafael.Alencar
+ *
+ */
+/**
+ * @author Rafael.Alencar
+ *
  */
 public interface PeticaoRepository {
 
@@ -61,7 +71,7 @@ public interface PeticaoRepository {
 	 * @para id
 	 * @return o tipo de peça
 	 */
-	public TipoPeca findOneTipoPeca(Long id);
+	public TipoPeca findOneTipoPeca(TipoDocumentoId id);
 	
 	/**
 	 * @return a lista de tipos de peças
@@ -99,5 +109,22 @@ public interface PeticaoRepository {
 	 * @param peticao
 	 */
 	public void refresh(Peticao peticao);
+	
+	/**
+	 * @para id
+	 * @return o motivo de devolução
+	 */
+	public MotivoDevolucao findOneMotivoDevolucao(Long id);
+	
+	/**
+	 * @return a lista de motivos de devolução
+	 */
+	public List<MotivoDevolucao> findAllMotivoDevolucao();
+	
+	/**
+	 * @param motivoDevolucao
+	 * @return lista de modelos para um tipo de devolução
+	 */
+	public List<Modelo> findModeloByMotivoDevolucao(MotivoDevolucao motivoDevolucao);
 	
 }

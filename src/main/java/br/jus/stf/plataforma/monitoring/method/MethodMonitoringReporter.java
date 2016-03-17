@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 
+import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 
 /**
  * Componente para indexação das operações de monitoramento de métodos.

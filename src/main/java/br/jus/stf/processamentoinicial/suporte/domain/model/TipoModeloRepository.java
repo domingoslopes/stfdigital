@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.Repository;
 
-import br.jus.stf.shared.TipoModeloId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * Repositório de Tipo de Modelo.
@@ -12,10 +12,10 @@ import br.jus.stf.shared.TipoModeloId;
  * @author Tomas.Godoi
  *
  */
-public interface TipoModeloRepository extends Repository<TipoModelo, TipoModeloId> {
+public interface TipoModeloRepository extends Repository<TipoModelo, TipoDocumentoId> {
 
 	List<TipoModelo> findAll();
 
-	TipoModelo findOne(TipoModeloId id);
+	TipoModelo findOne(TipoDocumentoId id);
 
 }

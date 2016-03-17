@@ -56,7 +56,7 @@
 										<td><input type="checkbox" checklist-model="selecao.objetos" checklist-value="buildSelectedObject(resultado)"></td>
 										<td>{{resultado.objeto.classe.sigla}}</td>
 										<td>{{resultado.objeto.numero}}</td>
-										<td><a ui-sref="visualizar.processo({processoId: resultado.objeto.numero})" title="Visualizar"><i class="fa fa-eye" /></a></td>
+										<td><a ui-sref="visualizar.processo({processoId: resultado.objeto.id.sequencial})" title="Visualizar"><i class="fa fa-eye" /></a></td>
 									</tr>
 								</tbody>
 							</table>

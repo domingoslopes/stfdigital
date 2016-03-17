@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wordnik.swagger.annotations.ApiOperation;
-
+import br.jus.stf.processamentoinicial.suporte.domain.model.ModeloRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoModeloRepository;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.ModeloDtoAssembler;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TipoModeloDto;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TipoModeloDtoAssembler;
+
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/tipos-modelo")
@@ -20,15 +22,19 @@ public class TipoModeloRestResource {
 
 	@Autowired
 	private TipoModeloRepository tipoModeloRepository;
+	
+	@Autowired
+	private ModeloRepository modeloRepository;
 
 	@Autowired
 	private TipoModeloDtoAssembler tipoModeloDtoAssembler;
+	
+	@Autowired
+	private ModeloDtoAssembler modeloDtoAssembler;
 
 	@ApiOperation("Recupera os tipos de modelo cadastrados")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<TipoModeloDto> listar() {
-		return tipoModeloRepository.findAll().stream().map(tm -> tipoModeloDtoAssembler.toDto(tm))
-		        .collect(Collectors.toList());
+		return tipoModeloRepository.findAll().stream().map(tm -> tipoModeloDtoAssembler.toDto(tm)).collect(Collectors.toList());
 	}
-
 }

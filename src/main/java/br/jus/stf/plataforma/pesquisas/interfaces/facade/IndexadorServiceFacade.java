@@ -7,12 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
-import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
 
 /**
  * Serviço de fachada que concentra o acesso à indexação

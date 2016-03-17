@@ -1,0 +1,69 @@
+<div class="content">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Pesquisa</p>
+					</li>
+					<li ng-if="isPesquisaNova"><a href="#" id="subtitulo" class="active">Nova pesquisa avançada de Petição</a></li>
+					<li ng-if="!isPesquisaNova"><a href="#" id="subtitulo" class="active">{{pesquisa.nome}}</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		<div class="row">
+			<div class="col-lg-7">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<form id="searchForm" role="form">
+							<div class="row">
+								<div data-elastic-builder="elasticBuilderData"></div>
+							</div>
+							<p>
+								<button id="botaoPesquisar" class="btn btn-complete btn-cons m-t-10" ng-click="pesquisar()">Pesquisar</button>
+								<action id="salvar-pesquisa-avancada" btn-class="btn btn-complete btn-cons m-t-10" resources="[pesquisa]"></action>
+							</p>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-5">
+				<div class="panel panel-default widget-11-2">
+					<div class="panel-heading">
+						<div class="panel-title">Resultados</div>
+					</div>
+					<div class="actions-wrapper">
+						<actions resources="selecao.objetos" groups="peticao" context="autuacao" btn-class="btn-default" />
+					</div>
+					<div class="auto-overflow" ng-class="(resultados.length > 0) ? 'widget-11-2-table' : ''">
+						<div class="panel-body actions-enabled">	
+							<table class="table table-responsive table-hover table-condensed">
+								<thead>
+									<tr>
+										<th style="width: 10px;"><input type="checkbox" ng-model="checkToggle" ng-change="toggleCheck()"></th>
+										<th>Identificação</th>
+										<th>Classe sugerida</th>
+										<th>Ações</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-if="resultados.length == 0">
+										<td colspan="4">Nenhum resultado disponível!</td>
+									</tr>
+									<tr ng-repeat="resultado in resultados">
+										<td><input type="checkbox" checklist-model="selecao.objetos" checklist-value="buildSelectedObject(resultado)"></td>
+										<td>{{resultado.objeto.identificacao}}</td>
+										<td>{{resultado.objeto.classeSugerida.sigla}}</td>
+										<td><a ui-sref="visualizar.peticao({peticaoId: resultado.objeto.id.sequencial})" title="Visualizar"><i class="fa fa-eye" /></a></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

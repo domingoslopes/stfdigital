@@ -1,9 +1,5 @@
 package br.jus.stf.processamentoinicial.autuacao.application;
 
-import static br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao.BAIXADO;
-import static br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao.REMESSA_INDEVIDA;
-import static br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao.TRANSITADO;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,6 +7,7 @@ import java.nio.file.Paths;
 import org.junit.Test;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.infra.PecaDevolucaoITextBuilder;
 
 /**
@@ -35,9 +32,10 @@ public class PecaDevolucaoBuilderUnitTests {
 	 */
 	@Test
 	public void testBuilderRemessaIndevida() throws IOException {
-		byte[] oficio = builder.build("06/2015", REMESSA_INDEVIDA, 33445L);
+		MotivoDevolucao motivoDevolucao = new MotivoDevolucao(1L, "remessa_indevida");
+		byte[] oficio = builder.build("06/2015", motivoDevolucao, 33445L);
 		
-		Files.write(Paths.get(String.format(NOME_OFICIO_PATTERN, REMESSA_INDEVIDA.nome())), oficio);
+		Files.write(Paths.get(String.format(NOME_OFICIO_PATTERN, motivoDevolucao.descricao())), oficio);
 	}
 
 	/**
@@ -47,9 +45,10 @@ public class PecaDevolucaoBuilderUnitTests {
 	 */
 	@Test
 	public void testBuilderTransitado() throws IOException {
-		byte[] oficio = builder.build("06/2015", TRANSITADO, 33445L);
+		MotivoDevolucao motivoDevolucao = new MotivoDevolucao(2L, "transitado");
+		byte[] oficio = builder.build("06/2015", motivoDevolucao, 33445L);
 		
-		Files.write(Paths.get(String.format(NOME_OFICIO_PATTERN, TRANSITADO.nome())), oficio);
+		Files.write(Paths.get(String.format(NOME_OFICIO_PATTERN, motivoDevolucao.descricao())), oficio);
 	}
 
 	/**
@@ -59,9 +58,10 @@ public class PecaDevolucaoBuilderUnitTests {
 	 */
 	@Test
 	public void testBuilderBaixado() throws IOException {
-		byte[] oficio = builder.build("06/2015", BAIXADO, 33445L);
+		MotivoDevolucao motivoDevolucao = new MotivoDevolucao(2L, "baixado");
+		byte[] oficio = builder.build("06/2015", motivoDevolucao, 33445L);
 		
-		Files.write(Paths.get(String.format(NOME_OFICIO_PATTERN, BAIXADO.nome())), oficio);
+		Files.write(Paths.get(String.format(NOME_OFICIO_PATTERN, motivoDevolucao.descricao())), oficio);
 	}
 
 }

@@ -1,0 +1,2 @@
+alter table autuacao.peticao add column seq_modelo_devolucao bigint;
+alter table autuacao.peticao add constraint fk_modelo_peti foreign key (seq_modelo_devolucao) references corporativo.modelo(seq_modelo);

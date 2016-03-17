@@ -14,12 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.jus.stf.plataforma.documentos.interfaces.DocumentoRestResource;
 import br.jus.stf.plataforma.documentos.interfaces.commands.DividirDocumentoCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoComTagsCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.GerarDocumentoFinalCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.SalvarDocumentosCommand;
+import br.jus.stf.plataforma.documentos.interfaces.commands.SubstituicaoTagDocumento;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UnirDocumentosCommand;
 import br.jus.stf.plataforma.documentos.interfaces.commands.UploadDocumentoCommand;
 import br.jus.stf.plataforma.shared.util.PDFMultipartFile;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
+import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -80,4 +83,12 @@ public class DocumentoRestAdapter implements DocumentoAdapter {
 		return new DocumentoId(documentoRestResource.gerarDocumentoFinal(new GerarDocumentoFinalCommand(documentoId.toLong())));
 	}
 
+	@Override
+	public DocumentoId gerarDocumentoComTags(DocumentoId documentoId, List<SubstituicaoTagTexto> substituicoes) {
+		List<SubstituicaoTagDocumento> substituicoesDocumento = substituicoes.stream()
+		        .map(stt -> new SubstituicaoTagDocumento(stt.getNome(), stt.getValor())).collect(Collectors.toList());
+		Long id = documentoRestResource
+		        .gerarDocumentoComTags(new GerarDocumentoComTagsCommand(documentoId.toLong(), substituicoesDocumento));
+		return new DocumentoId(id);
+	}
 }

@@ -22,9 +22,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-group-default">
                                         <label>Motivo da Devolução</label>
-                                        <select ui-select2 id="tipoDevolucao" ng-model="devolucao.tipoDevolucao" ng-change="devolucao.carregarModelo()"class="full-width">
+                                        <select ui-select2 id="motivoDevolucao" ng-model="devolucao.motivoDevolucao" ng-change="devolucao.carregarModelo()" class="full-width">
                                             <option value=""></option>
-                                            <option ng-repeat="tipoDevolucao in devolucao.tiposDevolucao" value="{{tipoDevolucao.id}}">{{tipoDevolucao.nome}}</option>
+                                            <option ng-repeat="motivoDevolucao in devolucao.motivosDevolucao" value="{{motivoDevolucao.id}}">{{motivoDevolucao.nome}}</option>
 			                            </select>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		<p>
-			<action-executor id="devolver-peticao" resources="devolucao.recursos" fn-validate="devolucao.validar" fn-result="devolucao.completar"
+			<action-executor id="finalizar-texto-devolucao" resources="devolucao.recursos" fn-validate="devolucao.validar" fn-result="devolucao.completar"
 				btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
 		</p>
 	</div>

@@ -43,6 +43,7 @@ import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.TeseId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * @author Lucas Rodrigues
@@ -205,7 +206,7 @@ public class ProcessoApplicationService {
  		
  		for (PecaProcessual pecaProcessual : pecas){
  			DocumentoId documentoId = documentoAdapter.salvar(new DocumentoTemporarioId(pecaProcessual.getDocumentoTemporarioId()));
- 			tipoPeca = processoRepository.findOneTipoPeca(pecaProcessual.getTipoPecaId());
+ 			tipoPeca = processoRepository.findOneTipoPeca(new TipoDocumentoId(pecaProcessual.getTipoPecaId()));
 
 			visibilidade = Visibilidade.valueOf(pecaProcessual.getVisibilidade());
 			situacao = Situacao.PENDENTE_JUNTADA;

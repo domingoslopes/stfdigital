@@ -6,6 +6,9 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoFromHtmlBuilder;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
@@ -26,13 +29,10 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 
-import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoFromHtmlBuilder;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
-
 @Component
 public class PecaDevolucaoITextFromHtmlBuilder implements PecaDevolucaoFromHtmlBuilder {
 
-	public byte[] build(String html, String identificacao, TipoDevolucao tipoDevolucao, Long numero) {
+	public byte[] build(String html, String identificacao, MotivoDevolucao motivoDevolucao, Long numero) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Document document = new Document(PageSize.A4, 40, 20, 34, 20);
 		try {

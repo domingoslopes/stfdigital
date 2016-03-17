@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands;
 
 import javax.validation.constraints.NotNull;

@@ -20,6 +20,7 @@ import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * @author Lucas.Rodrigues
@@ -94,8 +95,8 @@ public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, Proces
     }
 	
 	@Override
-	public TipoPeca findOneTipoPeca(Long id) {
-		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo WHERE tipo.sequencial = :id");
+	public TipoPeca findOneTipoPeca(TipoDocumentoId id) {
+		Query query = entityManager.createQuery("SELECT tipo FROM TipoPeca tipo WHERE tipo.id = :id");
 		query.setParameter("id", id);
 		return (TipoPeca)query.getSingleResult();
 	}

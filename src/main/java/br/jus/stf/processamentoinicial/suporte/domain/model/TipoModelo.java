@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import br.jus.stf.shared.TipoModeloId;
+import br.jus.stf.shared.TipoDocumentoId;
 import br.jus.stf.shared.stereotype.Entity;
 
 /**
@@ -18,10 +18,10 @@ import br.jus.stf.shared.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Table(name = "TIPO_MODELO", schema = "CORPORATIVO")
-public class TipoModelo implements Entity<TipoModelo, TipoModeloId> {
+public class TipoModelo implements Entity<TipoModelo, TipoDocumentoId> {
 
 	@EmbeddedId
-	private TipoModeloId id;
+	private TipoDocumentoId id;
 
 	@Column(name = "DSC_TIPO_MODELO", nullable = false)
 	private String descricao;
@@ -30,7 +30,7 @@ public class TipoModelo implements Entity<TipoModelo, TipoModeloId> {
 
 	}
 
-	public TipoModelo(final TipoModeloId id, final String descricao) {
+	public TipoModelo(final TipoDocumentoId id, final String descricao) {
 		Validate.notNull(id, "tipoModelo.id.required");
 		Validate.notBlank(descricao, "tipoModelo.descricao.required");
 
@@ -39,7 +39,7 @@ public class TipoModelo implements Entity<TipoModelo, TipoModeloId> {
 	}
 
 	@Override
-	public TipoModeloId id() {
+	public TipoDocumentoId id() {
 		return id;
 	}
 

@@ -50,5 +50,14 @@ public class PessoaServiceFacade {
 		PessoaId id = new PessoaId(pessoaId); 
 		return pessoaDtoAssembler.toDto(pessoaRepository.findOne(id));
 	}
+	
+	/**
+	 * Retorna uma lista de todas as pessoas
+	 * 
+	 * @return a lista de pessoas
+	 */
+	public List<PessoaDto> listar() {
+		return pessoaRepository.findAll().stream().map(pessoa -> pessoaDtoAssembler.toDto(pessoa)).collect(Collectors.toList());
+	}
 
 }

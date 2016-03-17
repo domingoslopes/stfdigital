@@ -2,10 +2,10 @@ package br.jus.stf.jurisprudencia.controletese.interfaces.dto;
 
 import java.util.List;
 
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
+
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
-
-import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
 
 /**
  * Classe usada para transportar dados de motivo de inaptidão de processo recursal do front-end para o back-end.

@@ -16,7 +16,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao;
+import br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -53,12 +53,12 @@ public class PecaDevolucaoITextBuilder implements PecaDevolucaoBuilder {
 	private static final Locale PT_BR = new Locale("pt", "BR");
 	
 	/**
-	 * @see br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder#build(br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao, br.jus.stf.processamentoinicial.autuacao.domain.model.TipoDevolucao, java.lang.Long)
+	 * @see br.jus.stf.processamentoinicial.autuacao.domain.PecaDevolucaoBuilder#build(br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao, br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao, java.lang.Long)
 	 */
 	@Override
-	public byte[] build(String identificacao, TipoDevolucao tipoDevolucao, Long numero) {
+	public byte[] build(String identificacao, MotivoDevolucao motivoDevolucao, Long numero) {
 		// O path do template é determinado pelo tipo de devolução. TODO: Analisar a possibilidade de usar o banco para armazenamento
-		String templatePath = format("templates/devolucao/%s.pdf", tipoDevolucao.name().toLowerCase());
+		String templatePath = format("templates/devolucao/%s.pdf", motivoDevolucao.descricao().toLowerCase());
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Document document = new Document();
 		

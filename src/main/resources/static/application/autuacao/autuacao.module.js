@@ -53,6 +53,15 @@
 					}
 				}
 			}
+		}).state('pesquisar.peticoes.avancada', {
+			url: '/avancada',
+			params : { pesquisa : undefined },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/pesquisa/avancada/peticoes.tpl.html',
+					controller: 'PesquisaPeticoesAvancadaController'
+				}
+			}
 		}).state('pesquisar.processos.avancada', {
 			url: '/avancada',
 			params : { pesquisa : undefined },
@@ -183,7 +192,7 @@
 					templateUrl: 'application/autuacao/autuacao/autuacao.tpl.html'
 				}
 			}
-		}).state('devolver-peticao', {
+		}).state('finalizar-texto-devolucao', {
 			parent: 'action.autuacao',
 			url: '/peticao/devolucao',
 			params : { resources : [] },
@@ -192,7 +201,7 @@
 					templateUrl: 'application/autuacao/devolucao/devolucao.tpl.html'
 				}
 			}
-		}).state('assinar-devolucao-peticao', {
+		}).state('devolver-peticao', {
 			parent: 'action.autuacao',
 			url: '/peticao/assinatura-devolucao',
 			params : { resources : [] },

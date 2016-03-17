@@ -3,6 +3,8 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.infra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import reactor.bus.Event;
+import reactor.bus.EventBus;
 import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
@@ -17,8 +19,6 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.PeticaoStatusModificado;
 import br.jus.stf.shared.ProcessoWorkflowId;
-import reactor.bus.Event;
-import reactor.bus.EventBus;
 
 /**
  * @author Rafael Alencar

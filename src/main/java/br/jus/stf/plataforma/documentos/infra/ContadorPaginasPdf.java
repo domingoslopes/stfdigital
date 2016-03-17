@@ -2,12 +2,12 @@ package br.jus.stf.plataforma.documentos.infra;
 
 import java.io.IOException;
 
+import br.jus.stf.plataforma.documentos.domain.ContadorPaginas;
+import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
+
 import com.itextpdf.text.io.RandomAccessSourceFactory;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.RandomAccessFileOrArray;
-
-import br.jus.stf.plataforma.documentos.domain.ContadorPaginas;
-import br.jus.stf.plataforma.documentos.domain.model.DocumentoTemporario;
 
 public class ContadorPaginasPdf implements ContadorPaginas {
 

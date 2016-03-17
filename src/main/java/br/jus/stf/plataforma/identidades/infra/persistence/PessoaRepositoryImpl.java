@@ -53,14 +53,6 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 		return query.getResultList();
 	}
 	
-	/**
-	 * Recupera uma pessoa de acordo com o CPF informado.
-	 * 
-	 * @param cpf Nº do CPF da pessoa.
-	 * 
-	 * @return Dados da pessoa.
-	 */
-
 	@Override
 	public Pessoa findByCpf(String cpf) {
 		
@@ -73,6 +65,11 @@ public class PessoaRepositoryImpl extends SimpleJpaRepository<Pessoa, PessoaId> 
 		catch(NoResultException e){
 			return null;
 		}
+	}
+	
+	@Override
+	public List<Pessoa> findAll() {
+		return super.findAll();
 	}
 
 }
