@@ -170,14 +170,12 @@ public class PeticaoServiceFacade {
 	 * Finzaliza a edição do texto de devolução de uma petição.
 	 * @param peticaoId Id da petição.
 	 * @param modelo Id do modelo de documento usado para gerar o texto.
-	 * @param textoId Id do texto finalizado.
 	 * @param numero Nº do documento gerado.
 	 */
-	public void finalizarTextoDevolucao(Long peticaoId, Long modeloId, Long textoId, String numero) {
+	public void finalizarTextoDevolucao(Long peticaoId, Long modeloId, String numero) {
 		Peticao peticao = carregarPeticao(peticaoId);
 		Modelo modelo = modeloRepository.findOne(new ModeloId(modeloId));
-		Texto texto = textoRepository.findOne(new TextoId(textoId));
-		peticaoApplicationService.finalizarTextoDevolucao(peticao, modelo, texto, numero);
+		peticaoApplicationService.finalizarTextoDevolucao(peticao, modelo, numero);
 	}
 	
 	public void devolver(Long peticaoId, String documentoId) {

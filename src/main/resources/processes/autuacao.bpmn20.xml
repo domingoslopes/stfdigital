@@ -87,20 +87,20 @@
         <extensionElements>
           <modeler:conditionDefinition modeler:index="0" modeler:leftRestResponseId="status" modeler:rightValue="A_REVISAR" modeler:operator="=="/>
         </extensionElements>
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'status') && status == 'A_REVISAR')}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'A_REVISAR'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="sid-D9498BB0-A832-4E42-BF6E-42318079A90C" name="Apto" sourceRef="sid-D3E81F23-3AF7-4DA9-A62D-BADAD2F54820" targetRef="analisar-repercussao-geral"/>
       <sequenceFlow id="sid-20DF8DEB-FA9B-46D6-A767-E5413EEF74C1" name="Inapto" sourceRef="sid-D3E81F23-3AF7-4DA9-A62D-BADAD2F54820" targetRef="sid-75895BA1-A2AA-4DD7-8CF7-60FAE7AB7308">
         <extensionElements>
           <modeler:conditionDefinition modeler:index="0" modeler:leftRestResponseId="status" modeler:rightValue="A_AUTUAR" modeler:operator="=="/>
         </extensionElements>
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'status') && status == 'A_AUTUAR')}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'A_AUTUAR'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="sid-231DB59C-B55D-467F-8764-CD03A018F9C6" name="Sim" sourceRef="sid-CC32B917-7487-4A76-8D24-0D5864B28AC6" targetRef="revisar-repercussao-geral">
         <extensionElements>
           <modeler:conditionDefinition modeler:index="0" modeler:leftRestResponseId="status" modeler:rightValue="A_REVISAR" modeler:operator="=="/>
         </extensionElements>
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'status') && status == 'A_REVISAR')}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'A_REVISAR'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="sid-2FE5C75F-057C-4388-A71E-450176BD0C4E" name="Não" sourceRef="sid-CC32B917-7487-4A76-8D24-0D5864B28AC6" targetRef="sid-75895BA1-A2AA-4DD7-8CF7-60FAE7AB7308"/>
       <sequenceFlow id="sid-78D47A8E-F29F-4B67-98A6-F08FA6154A7A" name="Não&#xa;" sourceRef="sid-3EB82D0F-E2D9-46FD-A59C-82052048EA3D" targetRef="analisar-pressupostos-formais"/>
@@ -108,7 +108,7 @@
         <extensionElements>
           <modeler:conditionDefinition modeler:index="0" modeler:leftRestResponseId="status" modeler:rightValue="A_AUTUAR" modeler:operator="=="/>
         </extensionElements>
-        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'status') && status == 'A_AUTUAR')}]]></conditionExpression>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'A_AUTUAR'}]]></conditionExpression>
       </sequenceFlow>
       <sequenceFlow id="sid-FCE27365-9F59-4305-AF36-8AD20F5D2B3F" sourceRef="autuar-recursal-criminal-eleitoral" targetRef="sid-4C046B38-C2F7-4B9C-A0C0-84968C16E6C5"/>
     </subProcess>
@@ -144,19 +144,19 @@
       <extensionElements>
         <modeler:conditionDefinition modeler:index="0" modeler:leftRestResponseId="status" modeler:rightValue="REJEITADA" modeler:operator="=="/>
       </extensionElements>
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'status') && status == 'REJEITADA')}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'REJEITADA'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-6D7DE747-7736-46AB-989F-E60F9EC61521" name="Devolver" sourceRef="preautuar" targetRef="sid-2691DD25-D69A-4158-BEDE-9B48B2348364">
       <extensionElements>
         <modeler:conditionDefinition modeler:index="0" modeler:leftRestResponseId="status" modeler:rightValue="A_DEVOLVER" modeler:operator="=="/>
       </extensionElements>
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'status') && status == 'A_DEVOLVER')}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'A_DEVOLVER'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-68C6E458-4641-4E36-85DF-3B4C9823C9E9" name="Devolver" sourceRef="preautuar-recursal" targetRef="sid-2691DD25-D69A-4158-BEDE-9B48B2348364">
       <extensionElements>
         <modeler:conditionDefinition modeler:index="0" modeler:leftRestResponseId="status" modeler:rightValue="A_DEVOLVER" modeler:operator="=="/>
       </extensionElements>
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(activiti_flowConditionsBean.exists(execution, 'status') && status == 'A_DEVOLVER')}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'A_DEVOLVER'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="organizar-pecas" name="Organizar Peças" default="sid-35339197-5EFF-47F7-BAC3-1B60A3029469" activiti:candidateGroups="${grupoCandidatoService.grupos('organizar-pecas')}">
       <extensionElements>

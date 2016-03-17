@@ -20,9 +20,6 @@ public class FinalizarTextoDevolucaoPeticaoCommand {
 	@ApiModelProperty("Id do modelo de documento.")
 	private Long modeloId;
 
-	@ApiModelProperty("Id do texto finalizado.")
-	private Long textoId;
-
 	@ApiModelProperty("Nº do documento.")
 	private String numeroDocumento;
 
@@ -32,10 +29,6 @@ public class FinalizarTextoDevolucaoPeticaoCommand {
 	
 	public Long getModeloId() {
 		return modeloId;
-	}
-
-	public Long getTextoId() {
-		return textoId;
 	}
 
 	public String getNumeroDocumento() {

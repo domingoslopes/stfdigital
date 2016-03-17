@@ -185,13 +185,19 @@ public class PeticaoApplicationService {
 	 * Finaliza a criação do texto do documento de devolução da petição.
 	 * @param peticao Dados da petição.
 	 * @param modelo Dados do modelo de documento.
-	 * @param texto Texto criado.
 	 * @param numero Nº do documento.
 	 */
-	public void finalizarTextoDevolucao(Peticao peticao, Modelo modelo, Texto texto, String numero) {
+	public void finalizarTextoDevolucao(Peticao peticao, Modelo modelo, String numero) {
+		TextoId textoId = peticao.devolucao().texto();
+		Texto texto = textoRepository.findOne(textoId);
+		DocumentoId documentoFinal = documentoAdapter.gerarDocumentoFinal(texto.documento());
+		texto.associarDocumentoFinal(documentoFinal);
+		texto = textoRepository.save(texto);
+		
 		TipoPeca tipo = peticaoRepository.findOneTipoPeca(modelo.tipoModelo().id());
-		peticao.adicionarPeca(new PecaPeticao(texto.documento(), tipo, String.format("Ofício nº %s", numero), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA));
+		peticao.adicionarPeca(new PecaPeticao(documentoFinal, tipo, String.format("Ofício nº %s", numero), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA));
 		peticaoRepository.save(peticao);
+		
 		tarefaAdapter.completarPreparacaoParaDevolucao(peticao);
 		peticaoApplicationEvent.peticaoPreparadaParaDevolucao(peticao);
 	}

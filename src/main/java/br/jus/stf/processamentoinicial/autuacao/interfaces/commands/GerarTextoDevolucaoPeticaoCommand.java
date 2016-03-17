@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.jus.stf.processamentoinicial.autuacao.interfaces.commands;
 
 import java.util.List;

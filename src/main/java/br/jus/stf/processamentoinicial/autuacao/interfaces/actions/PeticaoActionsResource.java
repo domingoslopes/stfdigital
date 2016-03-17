@@ -42,9 +42,9 @@ public class PeticaoActionsResource {
 		return peticaoServiceFacade.gerarTextoDevolucao(command.getPeticaoId(), command.getModeloId(), command.getSubstituicoes()); 
 	}
 	
-	@ActionMapping(id = "finalizar-texto-devolucao", name = "Finalizar Texto da Devolução", resourcesMode = ResourcesMode.OneOrMany)
+	@ActionMapping(id = "finalizar-texto-devolucao", name = "Finalizar Texto", resourcesMode = ResourcesMode.OneOrMany)
 	public void finalizarTextoDevolucao(FinalizarTextoDevolucaoPeticaoCommand command) {
-		peticaoServiceFacade.finalizarTextoDevolucao(command.getPeticaoId(), command.getModeloId(), command.getTextoId(), command.getNumeroDocumento());
+		peticaoServiceFacade.finalizarTextoDevolucao(command.getPeticaoId(), command.getModeloId(), command.getNumeroDocumento());
 	}
 	
 	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição", resourcesMode = ResourcesMode.OneOrMany)
