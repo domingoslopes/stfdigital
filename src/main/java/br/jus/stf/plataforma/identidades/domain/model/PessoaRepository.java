@@ -48,4 +48,11 @@ public interface PessoaRepository {
 	 */
 	public Pessoa findByCpf(String cpf);
 	
+	/**
+	 * Recupera uma lista de pessoas
+	 * 
+	 * @return Dados da pessoa.
+	 */
+	public List<Pessoa> findAll();
+	
 }
