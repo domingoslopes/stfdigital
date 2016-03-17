@@ -33,9 +33,9 @@
 	];
 	
 	var mockMotivoDevolucao = [
-	    {id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida"}, 
-	    {id : 'TRANSITADO', nome : "Transitado"}, 
-	    {id : 'BAIXADO', nome : "Baixado"}
+	    {id : 1, descricao : "Remessa Indevida"}, 
+	    {id : 2, descricao : "Transitado"}, 
+	    {id : 3, descricao : "Baixado"}
 	];
 	
 	var mockModelos = [
@@ -83,13 +83,12 @@
 		});
 
 		it('Deveria carregar corretamente os modelos pelo motivo de devolução selecionado', function() {
-			controller.tipoDevolucao = "TRANSITADO";
-			$httpBackend.expectGET(properties.apiUrl + '/tipoDevolucao/TRANSITADO/modelos').respond(mockModelos);
+			controller.motivoDevolucao = "transitado";
+			$httpBackend.expectGET(properties.apiUrl + '/tipoDevolucao/transitado/modelos').respond(mockModelos);
 			controller.carregarModelos();
 			$httpBackend.flush();
 			
-			expect(controller.preferenciasSelecionadas).toEqual([]);
-			expect(controller.preferencias).toEqual(mockPreferencias);
+			expect(controller.modelos).toEqual(mockModelos);
 		});
 		
 	/*	it('Deveria não validar a pré-autuação quando não for selecionada uma classe', function() {

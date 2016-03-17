@@ -56,6 +56,10 @@
 			
 			urlTemplateDevolucao : function(tipoDevolucao, extensao) {
 				return properties.apiUrl + '/peticoes/template-devolucao?tipo=' + tipoDevolucao + '&ext=' + extensao;
+			},
+			
+			consultarMotivoDevolucao : function(){
+				return $http.get(properties.apiUrl + '/motivos-devolucao');
 			}
 		};
 	});

@@ -15,7 +15,6 @@
 		devolucao.recursos = [];
 		devolucao.modelos = [];
 		devolucao.modeloId = '';
-		devolucao.motivosDevolucao = [{id : '1', nome : "Remessa Indevida", modelo: 1}, {id : '2', nome : "Transitado", modelo: 2}, {id : '3', nome : "Baixado", modelo: 3}];
 		devolucao.motivoDevolucao = '';
 		devolucao.documento = '';
 		devolucao.tags = [];
@@ -26,9 +25,9 @@
 			devolucao.processoWorkflowId = data;
 		});
 		
-		/*PeticaoService.consultarMotivoDevolucao().then(function(data){
-			devolucao.tiposDevolucao = data;
-		});*/
+		PeticaoService.consultarMotivoDevolucao().then(function(data){
+			devolucao.motivosDevolucao = data;
+		});
 		
 		devolucao.carregarModelos = function(){
 			ModeloService.consultarModeloPelaDevoluccao(motivoDevolucao).then(function(modelos){

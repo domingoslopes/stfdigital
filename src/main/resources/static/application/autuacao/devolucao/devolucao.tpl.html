@@ -24,7 +24,7 @@
                                         <label>Motivo da Devolução</label>
                                         <select ui-select2 id="motivoDevolucao" ng-model="devolucao.motivoDevolucao" ng-change="devolucao.carregarModelo()" class="full-width">
                                             <option value=""></option>
-                                            <option ng-repeat="motivoDevolucao in devolucao.motivosDevolucao" value="{{motivoDevolucao.id}}">{{motivoDevolucao.nome}}</option>
+                                            <option ng-repeat="motivoDevolucao in devolucao.motivosDevolucao" value="{{motivoDevolucao.id}}">{{motivoDevolucao.descricao}}</option>
 			                            </select>
                                     </div>
                                 </div>
