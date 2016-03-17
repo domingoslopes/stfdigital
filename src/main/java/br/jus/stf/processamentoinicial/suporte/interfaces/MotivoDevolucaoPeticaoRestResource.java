@@ -27,6 +27,7 @@ public class MotivoDevolucaoPeticaoRestResource {
 	@Autowired
 	private PeticaoRepository peticaoRepository;
 	
+	@Autowired
 	private MotivoDevolucaoDtoAssembler motivoDevolucaoDtoAssembler;
 	
 	@ApiOperation("Recupera os motivos de devolução de petição cadastrados.")
