@@ -15,6 +15,8 @@
 		devolucao.recursos = [];
 		devolucao.tiposDevolucao = [{id : 'REMESSA_INDEVIDA', nome : "Remessa Indevida", modelo: 1}, {id : 'TRANSITADO', nome : "Transitado", modelo: 2}, {id : 'BAIXADO', nome : "Baixado", modelo: 3}];
 		devolucao.tipoDevolucao = '';
+		devolucao.modelos = [];
+		devolucao.modeloId = '';
 		devolucao.documento = '';
 		devolucao.tags = [];
 		
@@ -24,17 +26,27 @@
 			devolucao.processoWorkflowId = data;
 		});
 		
-		var recuperarIdModelo = function(tipoDevolucao) {
+		/*PeticaoService.consultarMotivoDevolucao().then(function(data){
+			devolucao.tiposDevolucao = data;
+		});*/
+		
+		devolucao.carregarModelos = function(){
+			ModeloService.consultarModeloPelaDevoluccao(tipoDevolucao).then(function(modelos){
+				devolucao.modelos = modelos;
+			});
+		};
+		
+/*		var recuperarIdModelo = function(tipoDevolucao) {
 			for (var i in devolucao.tiposDevolucao) {
 				if (devolucao.tiposDevolucao[i].id == tipoDevolucao) {
 					return devolucao.tiposDevolucao[i].modelo;
 				}
 			}
-		};
+		};*/
 		
-		$scope.$watch('devolucao.tipoDevolucao', function() {
-			if (devolucao.tipoDevolucao != '') {
-				ModeloService.consultar(recuperarIdModelo(devolucao.tipoDevolucao)).then(function(modelo) {
+		$scope.$watch('devolucao.modeloId', function() {
+			if (devolucao.modeloId != '') {
+				ModeloService.consultar(modeloId).then(function(modelo) {
 					devolucao.modelo = modelo;
 					ModeloService.extrairTags(devolucao.modelo.documento).then(function(tags) {
 						devolucao.tags = tags;

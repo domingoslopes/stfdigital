@@ -19,19 +19,24 @@
                     <div class="panel-body">
                         <form role="form">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-group-default">
-                                        <label>Tipo de Devolução</label>
-                                        <select ui-select2 id="tipoDevolucao" ng-model="devolucao.tipoDevolucao" class="full-width">
+                                        <label>Motivo da Devolução</label>
+                                        <select ui-select2 id="tipoDevolucao" ng-model="devolucao.tipoDevolucao" ng-change="devolucao.carregarModelo()"class="full-width">
                                             <option value=""></option>
                                             <option ng-repeat="tipoDevolucao in devolucao.tiposDevolucao" value="{{tipoDevolucao.id}}">{{tipoDevolucao.nome}}</option>
 			                            </select>
                                     </div>
-                                    <div class="form-group form-group-default">
-                                        <label>Número do Ofício</label>
-                                        <input id="numero" type="number" ng-model="devolucao.numeroOficio" class="form-control" autofocus="autofocus" />
-                                    </div>
                                 </div>
+								<div class="col-md-6">
+                                    <div class="form-group form-group-default">
+                                        <label>Modelo</label>
+                                        <select ui-select2 id="modelo" ng-model="devolucao.modeloId" class="full-width">
+                                            <option value=""></option>
+                                            <option ng-repeat="modelo in devolucao.modelos" value="{{modeloId.id}}">{{modelo.nome}}</option>
+			                            </select>
+                                    </div>
+                                </div>                                
                             </div>
                         </form>
                     </div>

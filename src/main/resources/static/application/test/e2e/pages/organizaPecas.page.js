@@ -29,7 +29,7 @@
 			element(by.id('btn_exec_juntar-peca')).click();
 			browser.waitForAngular();
 		};
-		
+		//qtdPecas representa a quantidade de peças que serão juntadas
 		this.executarAcaoUnir = function(qtdPecas) {
 			var i = 0;
 			for (i ; i < qtdPecas ; i++){
@@ -41,6 +41,10 @@
 			selecionaAcao(0);
 			element(by.id('btn_exec_unir-pecas')).click();
 			browser.waitForAngular();
+		};
+		
+		this.recuperarTotalDePecas = function(){
+			return element.all(by.repeater("peca in organiza.processo.pecas")).count();
 		};
 		
 		this.recuperarTotalPaginas = function(){
@@ -74,6 +78,10 @@
 			acao.element(by.css('a.dropdown-toggle')).click();
 			acao.element(by.repeater('action in actions').row(1)).click();
 			browser.waitForAngular();
+		};
+		
+		this.confirmarOrganicaoPecas = function(){
+			element(by.id('btn_exec_organizar-pecas')).click();
 		};
 		
 		this.alteraNumeroOrdemPeca = function(numeroOrdem) {

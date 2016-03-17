@@ -158,11 +158,28 @@
 		});
 		
 		it('Deveria unir as duas primeiras peças', function(){
+			var quantidadePecas = 0;
+			
+			organizaPecasPage.recuperarTotalDePecas().then(function(data){
+				quantidadePecas = data;
+			});
+			
 			organizaPecasPage.executarAcaoUnir(2);
+			organizaPecasPage.recuperarTotalDePecas().then(function(data){
+				var quantidadePecasUnidas = data;
+				expect(quantidadePecasUnidas).toEqual(quantidadePecas - 1);
+			}); 
 		}); 
 		
 		it('Deveria dividir uma peça', function(){
+			var quantidadePecas = 0;
+			
+			organizaPecasPage.recuperarTotalDePecas().then(function(data){
+				quantidadePecas = data;
+			});
+			
 			organizaPecasPage.executarAcaoDividir();
+			
 			organizaPecasPage.recuperarTotalPaginas().then(function(numeroTotalPaginas){
 				if (numeroTotalPaginas > 2){
 					organizaPecasPage.selecionarTipoPeca('Documentos comprobatórios');
@@ -174,12 +191,21 @@
 					organizaPecasPage.setarPaginaInicialFinal(2, numeroTotalPaginas);
 					organizaPecasPage.adicionarPeca();
 					organizaPecasPage.confirmarAcaoDividir();
+					organizaPecasPage.recuperarTotalDePecas().then(function(data){
+						var quantidadePecasDivididas = data;
+						expect(quantidadePecasDivididas).toEqual(quantidadePecas + 1);
+					});
 				}
 			});
 		});
 		
 		it ('Deveria excluir uma peça', function(){
 			organizaPecasPage.executarAcaoExcluir();
+		});
+		
+		it ('Deveria salvar as peças organizadas', function(){
+			organizaPecasPage.confirmarOrganicaoPecas();
+			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 			loginPage.logout();
 		});
 				
