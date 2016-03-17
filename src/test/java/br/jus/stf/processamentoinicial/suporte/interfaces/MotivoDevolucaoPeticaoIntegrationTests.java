@@ -29,4 +29,9 @@ public class MotivoDevolucaoPeticaoIntegrationTests extends AbstractIntegrationT
 	public void listarMotivosDevolucaoPeticao() throws Exception {
 		mockMvc.perform(get("/api/motivos-devolucao")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)));
 	}
+	
+	@Test
+	public void consultarModelosDocumentosDoMotivo() throws Exception {
+		mockMvc.perform(get("/api/motivos-devolucao/1/modelos")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
+	}
 }

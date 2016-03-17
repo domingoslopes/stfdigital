@@ -3,6 +3,7 @@ package br.jus.stf.processamentoinicial.suporte.domain.model;
 import java.util.List;
 
 import br.jus.stf.shared.ModeloId;
+import br.jus.stf.shared.TipoDocumentoId;
 
 /**
  * Repositório de Modelo.
@@ -19,5 +20,4 @@ public interface ModeloRepository {
 	Modelo findOne(ModeloId id);
 	
 	List<Modelo> findAll();
-
 }

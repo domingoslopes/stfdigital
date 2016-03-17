@@ -36,5 +36,4 @@ public class ModeloRepositoryImpl extends SimpleJpaRepository<Modelo, ModeloId> 
 		Long sequencial = ((BigInteger) query.getSingleResult()).longValue();
 		return new ModeloId(sequencial);
 	}
-
 }
