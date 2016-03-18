@@ -15,15 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.jus.stf.plataforma.pesquisas.application.PesquisaApplicationService;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import br.jus.stf.plataforma.pesquisas.interfaces.command.PesquisarAvancadoCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.command.PesquisarCommand;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.CriterioDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.PesquisaAvancadaDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.dto.ResultadoDto;
 import br.jus.stf.plataforma.pesquisas.interfaces.facade.PesquisaServiceFacade;
-
-import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * Interface Rest de pesquisa
@@ -37,9 +36,6 @@ public class PesquisaRestResource {
 	
 	@Autowired
 	private PesquisaServiceFacade pesquisaServiceFacade;
-	
-	@Autowired
-	private PesquisaApplicationService pesquisaApplicationService;
 
 	@ApiOperation("Pesquisa genérica de objetos indexados")
 	@RequestMapping(value = "", method = RequestMethod.POST)
@@ -90,12 +86,6 @@ public class PesquisaRestResource {
 	@RequestMapping(value = "/avancadas/{id}", method = RequestMethod.GET)
 	public PesquisaAvancadaDto recuperarAvancadas(@PathVariable("id") Long pesquisaId) {		
 		return pesquisaServiceFacade.recuperarPesquisa(pesquisaId);
-	}
-	
-	@ApiOperation("Exclui uma pesquisa avançada pelo id")
-	@RequestMapping(value = "/avancadas/{id}", method = RequestMethod.DELETE)
-	public void excluirAvancada(@PathVariable("id") Long pesquisaId) {		
-		pesquisaServiceFacade.excluirPesquisa(pesquisaId);
 	}
 	
 	@ApiOperation("Lista os critérios de pesquisa avançada")
