@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 
-import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 
 /**
  * Reporta o processamento de uma requisição, com informações de identificação, erros e performance. Registra
@@ -28,10 +28,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class RequestTraceReporter {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(RequestTraceReporter.class);
+	
 	@Autowired
 	private IndexadorRestResource indexadorRestResource;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(RequestTraceReporter.class);
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	/**
 	 * Registra as informações de tracing encapuladas no objeto do tipo {@link RequestTrace} no Elasticsearch. Utiliza a mesma
@@ -64,8 +67,7 @@ public class RequestTraceReporter {
 	 * @return o {@link JsonNode} correspondente
 	 */
 	private JsonNode parseToJson(RequestTrace requestTrace) throws IOException, JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		return objectMapper.readTree(objectMapper.writeValueAsString(requestTrace));
+		return objectMapper.reader().readTree(objectMapper.writeValueAsString(requestTrace));
 	}
 
 }

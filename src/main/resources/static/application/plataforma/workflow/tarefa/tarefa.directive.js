@@ -40,7 +40,8 @@
 										}
 									});
 									if(donoTodas) {
-										$scope.tarefa = tarefas[0];
+										$scope.tarefa.dono = true;
+										$scope.tarefa.responsavel = tarefas[0].responsavel;
 									}
 									deferred.resolve(tarefas);
 								}, function() {

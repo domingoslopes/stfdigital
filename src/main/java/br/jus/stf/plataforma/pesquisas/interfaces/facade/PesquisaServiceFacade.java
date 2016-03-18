@@ -15,7 +15,6 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.application.PesquisaApplicationService;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaId;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaRepository;
@@ -47,9 +46,6 @@ public class PesquisaServiceFacade {
 	
 	@Autowired
 	private PesquisaAvancadaDtoAssembler pesquisaAvancadaDtoAssembler;
-	
-	@Autowired
-	private PesquisaApplicationService pesquisaApplicationService;
 	
 	/**
 	 * Pesquisa objetos indexados

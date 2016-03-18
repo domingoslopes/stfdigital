@@ -33,6 +33,16 @@ public class PesquisaApplicationService {
 		pesquisaAvancadaRepository.save(pesquisa);
 	}
 	
+	/**
+	 * Exclui uma pesquisa avançada
+	 * 
+	 * @param pesquisaId
+	 */
+	public void excluir(Long pesquisaId) {
+		PesquisaAvancadaId id = new PesquisaAvancadaId(pesquisaId);
+		pesquisaAvancadaRepository.delete(id);
+    }
+	
 	private PesquisaAvancada alterar(Long pesquisaId, String nome, String consulta, String[] indices) {
 		PesquisaAvancadaId id = new PesquisaAvancadaId(pesquisaId);
 		PesquisaAvancada pesquisa = pesquisaAvancadaRepository.findOne(id);

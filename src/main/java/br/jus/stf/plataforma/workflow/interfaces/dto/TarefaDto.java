@@ -12,7 +12,7 @@ public class TarefaDto {
 	private Long id;
 	private String nome;
 	private String descricao;
-	private Long processoWorkflow;
+	private Long processoWorkflowId;
 	private String responsavel;
 	private boolean dono;
 	private MetadadoDto metadado;
@@ -23,7 +23,7 @@ public class TarefaDto {
 		this.descricao = descricao;
 		this.responsavel = responsavel;
 		this.dono = dono;
-		this.processoWorkflow = processoWorkflow;
+		this.processoWorkflowId = processoWorkflow;
 		this.metadado = metadado;
 	}
 
@@ -47,8 +47,8 @@ public class TarefaDto {
 		return responsavel;
 	}
 	
-	public Long getProcessoWorkflow() {
-		return processoWorkflow;
+	public Long getProcessoWorkflowId() {
+		return processoWorkflowId;
 	}
 	
 	public MetadadoDto getMetadado() {

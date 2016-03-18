@@ -17,7 +17,8 @@
 				.then(function(action) {
 					var params = {
 							action : action,
-							resources : [tarefa.metadado.informacao]
+							resources : [tarefa.metadado.informacao],
+							task : tarefa
 						};
 					$state.go(action.id, params);
 				}, function() {

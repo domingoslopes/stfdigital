@@ -6,12 +6,11 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AnaliseRepercussaoGeralController', function ($scope, $log, $state, $stateParams, messages, properties, ProcessoService, PeticaoService) {
+	angular.autuacao.controller('AnaliseRepercussaoGeralController', function ($stateParams, messages, properties, ProcessoService) {
 		var analise = this;
 		
 		var resource = $stateParams.resources[0];
 		
-		analise.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
 		analise.assuntos = [];
 		analise.tiposTeses = [{id:"CONTROVERSIA", descricao : "Controvérsia"}, 
 		                 {id:"PRE_TEMA", descricao : "Pré-tema"},
@@ -22,12 +21,26 @@
 		analise.observacao = '';
 		analise.recursos = [];
 		
-		PeticaoService.consultar(analise.peticaoId).then(function(data) {
-			analise.peticao = data;
-		});
+		if (angular.isObject(resource)) {
+			if (angular.isDefined(resource.peticaoId)) {
+				analise.id = resource.peticaoId;
+			} else if (angular.isDefined(resource.processoId)) {
+				analise.id = resource.processoId;
+			}
+		} else {
+			analise.id = resource;
+		}
 		
-		ProcessoService.consultarPorPeticao(analise.peticaoId).success(function(data){
-			analise.processo = data;
+		var consultarProcesso = null;
+		analise.tarefa = $stateParams.task;
+		
+		if (analise.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
+			consultarProcesso = ProcessoService.consultar(analise.id);
+		} else {
+			consultarProcesso = ProcessoService.consultarPorPeticao(analise.id);
+		}
+		consultarProcesso.success(function(processo) {
+			analise.processo = processo;
 		});
 		
 		analise.selecionarTipoTese = function(tipo) {

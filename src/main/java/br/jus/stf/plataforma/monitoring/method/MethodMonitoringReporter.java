@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 
-import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
-import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.jus.stf.plataforma.pesquisas.interfaces.IndexadorRestResource;
+import br.jus.stf.plataforma.pesquisas.interfaces.command.IndexarCommand;
 
 /**
  * Componente para indexação das operações de monitoramento de métodos.
@@ -26,8 +26,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class MethodMonitoringReporter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodMonitoringReporter.class);
+	
 	@Autowired
 	private IndexadorRestResource indexadorRestResource;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	public void reportDocumentoOperation(MethodCall documentoOperation) {
 		IndexarCommand command = new IndexarCommand();
@@ -43,7 +47,6 @@ public class MethodMonitoringReporter {
 	}
 
 	private JsonNode parseToJson(MethodCall documentoOperation) throws IOException, JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		return objectMapper.readTree(objectMapper.writeValueAsString(documentoOperation));
+		return objectMapper.reader().readTree(objectMapper.writeValueAsString(documentoOperation));
 	}
 }

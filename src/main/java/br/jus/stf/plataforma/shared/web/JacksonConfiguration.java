@@ -14,7 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 public class JacksonConfiguration {
 
-	@Bean public ObjectMapper objectMapper() {
+	@Bean
+	public ObjectMapper objectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
 		return mapper;
