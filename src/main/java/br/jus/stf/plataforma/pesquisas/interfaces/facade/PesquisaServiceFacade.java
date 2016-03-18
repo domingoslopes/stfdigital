@@ -15,7 +15,6 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.application.PesquisaApplicationService;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.Pesquisa;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaId;
 import br.jus.stf.plataforma.pesquisas.domain.model.pesquisa.PesquisaAvancadaRepository;
@@ -47,9 +46,6 @@ public class PesquisaServiceFacade {
 	
 	@Autowired
 	private PesquisaAvancadaDtoAssembler pesquisaAvancadaDtoAssembler;
-	
-	@Autowired
-	private PesquisaApplicationService pesquisaApplicationService;
 	
 	/**
 	 * Pesquisa objetos indexados
@@ -150,16 +146,6 @@ public class PesquisaServiceFacade {
 	    return Optional.ofNullable(pesquisaAvancadaRepository.findOne(id))
 	    		.map(p -> pesquisaAvancadaDtoAssembler.toDto(p))
 	    		.orElseThrow(IllegalArgumentException::new);
-    }
-	
-	/**
-	 * Exclui uma pesquisa avançada
-	 * 
-	 * @param pesquisaId
-	 */
-	public void excluirPesquisa(Long pesquisaId) {
-		PesquisaAvancadaId id = new PesquisaAvancadaId(pesquisaId);
-		pesquisaAvancadaRepository.delete(id);
     }
 
 	/**
