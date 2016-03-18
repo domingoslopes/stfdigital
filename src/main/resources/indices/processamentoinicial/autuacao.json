@@ -145,9 +145,13 @@
             },
             "status": {
               "type": "string",
-              "analyzer": "keyword_analyzer"
+              "index": "not_analyzed"
             }
           }
+        },
+        "meioTramitacao": {
+          "type": "string",
+          "index": "not_analyzed"
         }
       }
     },
@@ -268,7 +272,7 @@
             },
             "status": {
               "type": "string",
-              "analyzer": "keyword_analyzer"
+              "index": "not_analyzed"
             }
           }
         },
@@ -288,6 +292,10 @@
           "include_in_all" : false
         },
         "numeroSedex": {
+          "type": "string",
+          "index": "not_analyzed"
+        },
+        "meioTramitacao": {
           "type": "string",
           "index": "not_analyzed"
         }

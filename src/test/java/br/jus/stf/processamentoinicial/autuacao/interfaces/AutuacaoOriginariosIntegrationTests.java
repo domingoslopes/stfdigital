@@ -207,7 +207,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		this.gerarTextoPeticaoCommand = gerarTextoPeticaoCommand.toString();
 		
 		StringBuilder finalizarTextoDevolucao = new StringBuilder();
-		finalizarTextoDevolucao.append("{\"resources\":[{\"peticaoId\":@peticaoId,\"modeloId\":@modeloId, \"numeroDocumento\":@numeroDocumento}]}");
+		finalizarTextoDevolucao.append("{\"resources\":[{\"peticaoId\":@peticaoId,\"modeloId\":@modeloId}]}");
 		this.finalizarTextoDevolucao = finalizarTextoDevolucao.toString();
 	}
 	
@@ -364,8 +364,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
     	
 		//Devolve a petição.
 		this.mockMvc.perform(post("/api/actions/finalizar-texto-devolucao/execute").contentType(MediaType.APPLICATION_JSON)
-				.content(this.finalizarTextoDevolucao.replace("@peticaoId", peticaoId).replace("@modeloId", "1")
-				.replace("@numeroDocumento", "123456"))).andExpect(status().isOk());
+				.content(this.finalizarTextoDevolucao.replace("@peticaoId", peticaoId).replace("@modeloId", "1"))).andExpect(status().isOk());
 		
 		//Tenta recuperar as tarefas do cartoraria.
 		tarefaObject = this.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "gestor-recebimento")).andExpect(status().isOk())
