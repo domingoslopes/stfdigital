@@ -28,15 +28,14 @@ import br.jus.stf.shared.stereotype.Entity;
 @Component
 public class IndexadorRestAdapter {
 
+	@Autowired
 	private IndexadorRestResource indexadorRestResource;
 	
 	private ObjectWriter objectWriter;
 	
 	private ObjectReader objectReader;
 	
-	@Autowired
-	public IndexadorRestAdapter(IndexadorRestResource indexadorRestResource) {
-		this.indexadorRestResource = indexadorRestResource;
+	public IndexadorRestAdapter() {
 		loadMapper();
 	}
 		
