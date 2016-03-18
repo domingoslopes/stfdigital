@@ -50,4 +50,68 @@ public class EnviarProcessoCommand {
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required = true)
 	private List<String> partesPoloPassivo;
+	
+	public String getClasseId() {
+		return classeId;
+	}
+
+	public void setClasseId(String classeId) {
+		this.classeId = classeId;
+	}
+
+	public String getSigilo() {
+		return sigilo;
+	}
+
+	public void setSigilo(String sigilo) {
+		this.sigilo = sigilo;
+	}
+
+	public Long getNumeroRecursos() {
+		return numeroRecursos;
+	}
+
+	public void setNumeroRecursos(Long numeroRecursos) {
+		this.numeroRecursos = numeroRecursos;
+	}
+
+	public List<Long> getPreferencias() {
+		return preferencias;
+	}
+
+	public void setPreferencias(List<Long> preferencias) {
+		this.preferencias = preferencias;
+	}
+
+	public List<OrigemProcesso> getOrigens() {
+		return origens;
+	}
+
+	public void setOrigens(List<OrigemProcesso> origens) {
+		this.origens = origens;
+	}
+
+	public String getAssuntoId() {
+		return assuntoId;
+	}
+
+	public void setAssuntoId(String assuntoId) {
+		this.assuntoId = assuntoId;
+	}
+
+	public List<String> getPartesPoloAtivo() {
+		return partesPoloAtivo;
+	}
+
+	public void setPartesPoloAtivo(List<String> partesPoloAtivo) {
+		this.partesPoloAtivo = partesPoloAtivo;
+	}
+
+	public List<String> getPartesPoloPassivo() {
+		return partesPoloPassivo;
+	}
+
+	public void setPartesPoloPassivo(List<String> partesPoloPassivo) {
+		this.partesPoloPassivo = partesPoloPassivo;
+	}
 }
