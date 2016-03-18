@@ -15,17 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+
 import br.jus.stf.plataforma.shared.actions.handler.ActionConditionHandler;
 import br.jus.stf.plataforma.shared.actions.support.ActionConditionHandlerInfo;
 import br.jus.stf.plataforma.shared.actions.support.ActionException;
 import br.jus.stf.plataforma.shared.actions.support.ActionMappingInfo;
 import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
-import br.jus.stf.plataforma.shared.security.SecurityChecker;
-
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 
 /**
@@ -48,7 +47,7 @@ public class ActionService {
 	private Validator validator;
 	
 	@Autowired
-	private SecurityChecker securityChecker;
+	private ObjectMapper objectMapper;
 
 	/**
 	 * Retorna a lista de ações de ações registradas.
@@ -162,9 +161,8 @@ public class ActionService {
 			return Collections.emptyList();
 		}
 		try {
-			ObjectMapper mapper = new ObjectMapper();
 			JavaType type = TypeFactory.defaultInstance().constructParametricType(List.class, actionInfo.getResourcesClass());
-			return mapper.convertValue(resources, type);
+			return objectMapper.convertValue(resources, type);
 		} catch (Exception e) {
 			throw new RuntimeException("Erro ao converter recursos!", e);
 		}

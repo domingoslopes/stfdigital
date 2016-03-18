@@ -7,59 +7,41 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AutuacaoCriminalController', function ($scope, $log, $state, $stateParams, messages, properties, ProcessoService, PeticaoService) {
+	angular.autuacao.controller('AutuacaoCriminalController', function ($stateParams, messages, properties, ProcessoService) {
+		
 		var autuacao = this;
-		
 		var resource = $stateParams.resources[0];
-		
 		autuacao.classe = '';
-		
 		autuacao.partesPoloAtivo = [];
-		
 		autuacao.partesPoloPassivo = [];
-		
 		autuacao.poloAtivoController = new PartesController(autuacao.partesPoloAtivo);
-		
 		autuacao.poloPassivoController = new PartesController(autuacao.partesPoloPassivo);
-		
 		autuacao.valida = 'true';
-		
 		autuacao.motivo = '';
-		
 		autuacao.assuntosSelecionados = [];
-		
 		autuacao.recursos = [];
 		
 		if (angular.isObject(resource)) {
-			if (anangular.isDefined(resource.peticaoId)) {
+			if (angular.isDefined(resource.peticaoId)) {
 				autuacao.id = resource.peticaoId;
-			} else if (anangular.isDefined(resource.processoId)) {
+			} else if (angular.isDefined(resource.processoId)) {
 				autuacao.id = resource.processoId;
 			}
 		} else {
 			autuacao.id = resource;
 		}
 		
-		if (angular.isDefined($stateParams.task)) {
-			autuacao.tarefa = $stateParams.task;
-			if (autuacao.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
-				ProcessoService.consultar(autuacao.id).success(function(data){
-					autuacao.processo = data;
-				});
-			} else {
-				ProcessoService.consultarPorPeticao(autuacao.id).success(function(data){
-					autuacao.processo = data;
-				});
-			}
-		} else { 
-			PeticaoService.consultar(autuacao.id).then(function(data) {
-				autuacao.tarefa = {};
-				autuacao.tarefa.processoWorkflowId = data.processoWorkflowId;
-			});
-			ProcessoService.consultarPorPeticao(autuacao.id).success(function(data){
-				autuacao.processo = data;
-			});
+		var consultarProcesso = null;
+		autuacao.tarefa = $stateParams.task;
+		
+		if (autuacao.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
+			consultarProcesso = ProcessoService.consultar(autuacao.id);
+		} else {
+			consultarProcesso = ProcessoService.consultarPorPeticao(autuacao.id);
 		}
+		consultarProcesso.success(function(processo){
+			autuacao.processo = processo;
+		});
 		
 		autuacao.select2Options = {
 			dropdownAutoWidth: 'true',

@@ -7,37 +7,42 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('RevisaoProcessosInaptosController', function ($scope, $log, $state, $stateParams, messages, properties, ProcessoService, PeticaoService) {
+	angular.autuacao.controller('RevisaoProcessosInaptosController', function ($stateParams, messages, properties, ProcessoService) {
+		
 		var revisao = this;
-		
 		var resource = $stateParams.resources[0];
-		
-		revisao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
-		
 		revisao.obsMotivo = '';
-		
 		revisao.obsAnalise = '';
-		
 		revisao.apto = false;
-		
 		revisao.motivos = [];
-		
 		revisao.motivoId = '';
-		
 		revisao.recursos = [];
+		
+		if (angular.isObject(resource)) {
+			if (angular.isDefined(resource.peticaoId)) {
+				revisao.id = resource.peticaoId;
+			} else if (angular.isDefined(resource.processoId)) {
+				revisao.id = resource.processoId;
+			}
+		} else {
+			revisao.id = resource;
+		}
 		
 		ProcessoService.consultarMotivos().success(function(motivos){
 			revisao.motivos = motivos;
 		});
 		
-		ProcessoService.consultarPorPeticao(revisao.peticaoId).success(function(data){
-			revisao.processo = data;
-		});
+		var consultarProcesso = null;
+		revisao.tarefa = $stateParams.task;
 		
-		PeticaoService.consultar(revisao.peticaoId).then(function(data) {
-			revisao.peticao = data;
+		if (revisao.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
+			consultarProcesso = ProcessoService.consultar(revisao.id);
+		} else {
+			consultarProcesso = ProcessoService.consultarPorPeticao(revisao.id);
+		}
+		consultarProcesso.success(function(processo) {
+			revisao.processo = processo;
 		});
-		
 		
 		revisao.validar = function() {
 			var errors = '';
