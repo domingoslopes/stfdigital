@@ -151,6 +151,16 @@ public class PesquisaServiceFacade {
 	    		.map(p -> pesquisaAvancadaDtoAssembler.toDto(p))
 	    		.orElseThrow(IllegalArgumentException::new);
     }
+	
+	/**
+	 * Exclui uma pesquisa avançada
+	 * 
+	 * @param pesquisaId
+	 */
+	public void excluirPesquisa(Long pesquisaId) {
+		PesquisaAvancadaId id = new PesquisaAvancadaId(pesquisaId);
+		pesquisaAvancadaRepository.delete(id);
+    }
 
 	/**
 	 * Recupera os dtos dos critérios de pesquisa

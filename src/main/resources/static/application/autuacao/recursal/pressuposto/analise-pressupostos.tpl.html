@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-		<div tarefa-actions processo="analise.peticao.processoWorkflowId" tarefa="tarefa" />
+		<div tarefa-actions processo="analise.tarefa.processoWorkflowId" tarefa="analise.tarefa" />
     	<form>
             <div class="row">
             	<div class="col-md-4">
@@ -79,7 +79,7 @@
 	       
             <p>
                 <action-executor id="analisar-pressupostos-formais" resources="analise.recursos" fn-validate="analise.validar"
-	 				fn-result="analise.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
+	 				fn-result="analise.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="analise.tarefa.dono" />
             </p>
 	  	</form>
     </div>

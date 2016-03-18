@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.ApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.jus.stf.plataforma.actions.dummy.DummyActionController;
 import br.jus.stf.plataforma.shared.actions.service.ActionMappingRegistry;
 import br.jus.stf.plataforma.shared.actions.service.ActionService;
@@ -28,6 +30,9 @@ public class ActionServiceUnitTests {
 	
 	@Mock
 	private ApplicationContext applicationContext;
+	
+	@Mock
+	private ObjectMapper objectMapper;
 	
 	@InjectMocks
 	private ActionService actionService;

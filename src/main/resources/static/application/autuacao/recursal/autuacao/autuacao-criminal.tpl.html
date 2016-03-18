@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-		<div tarefa-actions processo="autuacao.peticao.processoWorkflowId" tarefa="tarefa" />
+		<div tarefa-actions processo="autuacao.tarefa.processoWorkflowId" tarefa="autuacao.tarefa" />
     	<form>
             <div class="row">
             	<div class="col-md-6">
@@ -127,7 +127,7 @@
 			</div>
 			<p>
 				<action-executor id="autuar-recursal-criminal-eleitoral" resources="autuacao.recursos" fn-validate="autuacao.validar"
-					fn-result="autuacao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" description="Autuar Processo Criminal">
+					fn-result="autuacao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="autuacao.tarefa.dono" description="Autuar Processo Criminal">
 				</action-executor>
 			</p>
 		</form>

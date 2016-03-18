@@ -7,12 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
-import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.jus.stf.plataforma.pesquisas.application.IndexadorApplicationService;
+import br.jus.stf.plataforma.pesquisas.domain.model.indexacao.Indice;
 
 /**
  * Serviço de fachada que concentra o acesso à indexação
@@ -26,7 +26,8 @@ public class IndexadorServiceFacade {
 	@Autowired
 	private IndexadorApplicationService indexadorApplicationService;
 	
-	private ObjectMapper objectMapper = new ObjectMapper();
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	/**
 	 * Cria o índice
@@ -86,7 +87,7 @@ public class IndexadorServiceFacade {
 	 * @throws JsonProcessingException
 	 */
 	private String converterJsonString(JsonNode json) throws JsonProcessingException {
-		return objectMapper.writeValueAsString(json);
+		return objectMapper.writer().writeValueAsString(json);
 	}
 
 	public void atualizarColecao(String id, String tipo, String indice, String campoColecao, String expressaoId,

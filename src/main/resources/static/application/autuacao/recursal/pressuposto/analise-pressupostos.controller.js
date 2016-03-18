@@ -7,37 +7,42 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AnalisePressupostoController', function ($scope, $log, $state, $stateParams, messages, properties, ProcessoService, PeticaoService) {
+	angular.autuacao.controller('AnalisePressupostoController', function ($stateParams, messages, properties, ProcessoService) {
+		
 		var analise = this;
-		
 		var resource = $stateParams.resources[0];
-		
-		analise.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
-		
 		analise.obsMotivo = '';
-		
 		analise.obsAnalise = '';
-		
 		analise.apto = true;
-		
 		analise.motivos = [];
-		
 		analise.motivoId = '';
-		
 		analise.recursos = [];
+		
+		if (angular.isObject(resource)) {
+			if (angular.isDefined(resource.peticaoId)) {
+				analise.id = resource.peticaoId;
+			} else if (angular.isDefined(resource.processoId)) {
+				analise.id = resource.processoId;
+			}
+		} else {
+			analise.id = resource;
+		}
 		
 		ProcessoService.consultarMotivos().success(function(motivos){
 			analise.motivos = motivos;
 		});
 		
-		PeticaoService.consultar(analise.peticaoId).then(function(data) {
-			analise.peticao = data;
-		});
+		var consultarProcesso = null;
+		analise.tarefa = $stateParams.task;
 		
-		ProcessoService.consultarPorPeticao(analise.peticaoId).success(function(data){
-			analise.processo = data;
+		if (analise.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
+			consultarProcesso = ProcessoService.consultar(analise.id);
+		} else {
+			consultarProcesso = ProcessoService.consultarPorPeticao(analise.id);
+		}
+		consultarProcesso.success(function(processo) {
+			analise.processo = processo;
 		});
-		
 		
 		analise.validar = function() {
 			var errors = '';
@@ -59,7 +64,7 @@
 				return false;
 			}
 			
-			analise.recursos.push(new AnalisePressupostosCommand(analise.processo.id, analise.peticaoId, analise.apto, analise.motivoId, analise.obsMotivo, analise.obsAnalise));
+			analise.recursos.push(new AnalisePressupostosCommand(analise.processo.id, analise.apto, analise.motivoId, analise.obsMotivo, analise.obsAnalise));
 			return true;
 		}
 		
@@ -68,10 +73,9 @@
 			messages.success('Processo <b>' + analise.processo.classe + '/' + analise.processo.numero + '</b> analisado com sucesso.');
 		};
 
-    	function AnalisePressupostosCommand(processoId, peticaoId, aptidao, motivoId, obsMotivo,  obsAnalise){
+    	function AnalisePressupostosCommand(processoId, aptidao, motivoId, obsMotivo,  obsAnalise){
     		var dto = {};
     		dto.processoId = processoId;
-    		//dto.peticaoId = peticaoId;
     		dto.classificacao = '';
     		dto.motivos = {};
     		dto.observacao = obsAnalise;

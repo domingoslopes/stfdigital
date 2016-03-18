@@ -32,7 +32,7 @@
     "hwcrypto": "~0.0.10",
     "ngMask": "angular-mask#~3.0.16",
     "angular-bootstrap-switch" : "0.4.1",
-    "angular-elastic-builder" : "lucas-a-rodrigues/angular-elastic-builder#~1.5.2",
+    "angular-elastic-builder" : "lucas-a-rodrigues/angular-elastic-builder#~1.5.3",
     "angular-recursion" : "1.0.5"
   },
   "resolutions": { "angular": "1.4.7" },

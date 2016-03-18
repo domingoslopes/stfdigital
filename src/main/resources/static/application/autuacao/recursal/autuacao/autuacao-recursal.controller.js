@@ -7,32 +7,42 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AutuacaoRecursalController', function ($scope, $log, $state, $stateParams, messages, properties, ProcessoService, PeticaoService) {
+	angular.autuacao.controller('AutuacaoRecursalController', function ($stateParams, messages, properties, ProcessoService) {
+		
 		var autuacao = this;
-		
 		var resource = $stateParams.resources[0];
-		
-		autuacao.peticaoId = angular.isObject(resource) ? resource.peticaoId : resource;
-		
 		autuacao.classe = '';
-		
 		autuacao.partesPoloAtivo = [];
-		
 		autuacao.partesPoloPassivo = [];
-		
 		autuacao.poloAtivoController = new PartesController(autuacao.partesPoloAtivo);
-		
 		autuacao.poloPassivoController = new PartesController(autuacao.partesPoloPassivo);
-		
 		autuacao.valida = 'true';
-		
 		autuacao.recursos = [];
 		
-		ProcessoService.consultarPorPeticao(autuacao.peticaoId).then(function(response) {
-			autuacao.processo = response.data;
-			autuacao.motivosInaptidao = response.data.motivosInaptidao;
-			autuacao.teses = response.data.teses;
-			autuacao.assuntos = response.data.assuntos;
+		if (angular.isObject(resource)) {
+			if (angular.isDefined(resource.peticaoId)) {
+				autuacao.id = resource.peticaoId;
+			} else if (angular.isDefined(resource.processoId)) {
+				autuacao.id = resource.processoId;
+			}
+		} else {
+			autuacao.id = resource;
+		}
+		
+		var consultarProcesso = null;
+		autuacao.tarefa = $stateParams.task;
+		
+		if (autuacao.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
+			consultarProcesso = ProcessoService.consultar(autuacao.id);
+		} else {
+			consultarProcesso = ProcessoService.consultarPorPeticao(autuacao.id);
+		}
+			
+		consultarProcesso.success(function(processo) {
+			autuacao.processo = processo;
+			autuacao.motivosInaptidao = processo.motivosInaptidao;
+			autuacao.teses = processo.teses;
+			autuacao.assuntos = processo.assuntos;
 			if (autuacao.processo.partes.PoloAtivo.length > 0){
 				angular.forEach(autuacao.peticao.partes.PoloAtivo, function(parteAtiva) {
 					PessoaService.pesquisar(parteAtiva).then(function(dado){
@@ -49,10 +59,6 @@
 					});
 				});
 			}
-		});
-		
-		PeticaoService.consultar(autuacao.peticaoId).then(function(data) {
-			autuacao.peticao = data;
 		});
 
 		autuacao.adicionarPoloAtivo = function() {
