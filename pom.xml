@@ -26,10 +26,10 @@
         <reactor-bus.version>2.0.4.RELEASE</reactor-bus.version>
         <powermock.version>1.6.2</powermock.version>
         <sonar-jacoco-listeners.version>2.1</sonar-jacoco-listeners.version>
-        <frontend-maven-plugin.version>0.0.25</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>0.0.27</frontend-maven-plugin.version>
         <spring-security.version>4.0.2.RELEASE</spring-security.version>
-        <node.version>v0.12.4</node.version>
-        <npm.version>1.4.9</npm.version>
+        <node.version>v5.9.0</node.version>
+        <npm.version>3.8.3</npm.version>
         <bouncycastle.version>1.53</bouncycastle.version>
         <jacoco-maven-plugin.version>0.7.5.201505241946</jacoco-maven-plugin.version>
         <scm.git>scm:git:git@github.com:supremotribunalfederal/stfdigital.git</scm.git>
