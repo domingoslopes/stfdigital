@@ -56,7 +56,6 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String peticaoFisicaParaRegistro;
 	private String peticaoFisicaParaPreautuacao;
 	private String peticaoFisicaInvalidaParaPreautuacao;
-	private String peticaoFisicaParaDevolucao;
 	private String peticaoInvalidaParaAutuacao;
 	private String tarefaParaAssumir;
 	private String processoParaOrganizarPecas;
@@ -66,8 +65,8 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 	private String preSignCommand;
 	private String postSignCommand;
 	private String assinarDevolucaoPeticaoCommand;
-	
 	private String gerarTextoPeticaoCommand;
+	private String finalizarTextoDevolucao;
 	
 	@Spy
 	private IndexadorRestAdapter indexadorRestAdapter;
@@ -181,14 +180,6 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		peticaoFisicaInvalidaParaPreautuacao.append("\"valida\":false}]}");
 		this.peticaoFisicaInvalidaParaPreautuacao = peticaoFisicaInvalidaParaPreautuacao.toString();
 		
-		//Cria um objeto para ser usado no processo de devolução de uma petição física.
-		StringBuilder peticaoFisicaParaDevolucao =  new StringBuilder();
-		peticaoFisicaParaDevolucao.append("{\"resources\": ");
-		peticaoFisicaParaDevolucao.append("[{\"peticaoId\": @,");		
-		peticaoFisicaParaDevolucao.append("\"numeroOficio\":1234,");
-		peticaoFisicaParaDevolucao.append("\"motivoDevolucao\":1}]}");
-		this.peticaoFisicaParaDevolucao = peticaoFisicaParaDevolucao.toString();
-		
 		this.prepareCommand = "{\"certificateAsHex\":\"@\"}";
 		this.provideToSignCommand = "{\"documentId\":@documentId,\"signerId\":\"@signerId\"}";
 		this.preSignCommand = "{\"signerId\":\"@\"}";
@@ -205,7 +196,19 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		processoParaOrganizarPecas.append("\"pecasOrganizadas\": [@1,@2]}]}");
 		this.processoParaOrganizarPecas = processoParaOrganizarPecas.toString();
 		
-		this.gerarTextoPeticaoCommand = "{\"resources\":[{\"peticaoId\":@peticaoId,\"modeloId\":@modeloId,\"substituicoes\":[]}]}";
+		StringBuilder gerarTextoPeticaoCommand = new StringBuilder();
+		gerarTextoPeticaoCommand.append("{\"resources\":[{\"peticaoId\":@peticaoId,\"modeloId\":@modeloId,\"substituicoes\":");
+		gerarTextoPeticaoCommand.append("[{\"nome\":\"NÚMERO DO OFÍCIO\", \"valor\":\"12345\"},");
+		gerarTextoPeticaoCommand.append("{\"nome\":\"DATA ATUAL\", \"valor\":\"16/03/2016\"},");
+		gerarTextoPeticaoCommand.append("{\"nome\":\"NÚMERO DA PETIÇÃO\", \"valor\":\"RE 1234\"},");
+		gerarTextoPeticaoCommand.append("{\"nome\":\"VOCATIVO\", \"valor\":\"FULANO DE TAL\"},");
+		gerarTextoPeticaoCommand.append("{\"nome\":\"SECRETÁRIO JUDICIÁRIO\", \"valor\":\"BAZINGA DA SILVA\"},");
+		gerarTextoPeticaoCommand.append("{\"nome\":\"DESTINATÁRIO\", \"valor\":\"GODOFREDO TELES\"}]}]}");
+		this.gerarTextoPeticaoCommand = gerarTextoPeticaoCommand.toString();
+		
+		StringBuilder finalizarTextoDevolucao = new StringBuilder();
+		finalizarTextoDevolucao.append("{\"resources\":[{\"peticaoId\":@peticaoId,\"modeloId\":@modeloId}]}");
+		this.finalizarTextoDevolucao = finalizarTextoDevolucao.toString();
 	}
 	
 	@Test
@@ -352,20 +355,20 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		
 		//Recuperar as tarefas de cartoraria.
 		tarefaObject = this.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "cartoraria")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("devolver-peticao"))).andReturn().getResponse().getContentAsString();
+			.andExpect(jsonPath("$[0].nome", is("finalizar-texto-devolucao"))).andReturn().getResponse().getContentAsString();
 		
     	assumirTarefa(tarefaObject);
 		
-    	this.mockMvc.perform(post("/api/actions/gerar-texto/execute").contentType(MediaType.APPLICATION_JSON)
+    	this.mockMvc.perform(post("/api/actions/gerar-texto-devolucao/execute").contentType(MediaType.APPLICATION_JSON)
 				.content(this.gerarTextoPeticaoCommand.replace("@peticaoId", peticaoId).replace("@modeloId", "1"))).andExpect(status().isOk());
     	
 		//Devolve a petição.
-		this.mockMvc.perform(post("/api/actions/devolver-peticao/execute").contentType(MediaType.APPLICATION_JSON)
-				.content(this.peticaoFisicaParaDevolucao.replace("@", peticaoId))).andExpect(status().isOk());
+		this.mockMvc.perform(post("/api/actions/finalizar-texto-devolucao/execute").contentType(MediaType.APPLICATION_JSON)
+				.content(this.finalizarTextoDevolucao.replace("@peticaoId", peticaoId).replace("@modeloId", "1"))).andExpect(status().isOk());
 		
 		//Tenta recuperar as tarefas do cartoraria.
 		tarefaObject = this.mockMvc.perform(get("/api/workflow/tarefas/papeis").header("login", "gestor-recebimento")).andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].nome", is("assinar-devolucao-peticao"))).andReturn().getResponse().getContentAsString();
+			.andExpect(jsonPath("$[0].nome", is("devolver-peticao"))).andReturn().getResponse().getContentAsString();
 		
 		assumirTarefa(tarefaObject);
 		
@@ -416,7 +419,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 			.andExpect(status().isOk()).andExpect(jsonPath("$.documentId").exists()).andReturn().getResponse().getContentAsString();
 		String signedDocumentId = JsonPath.read(documentJson, "$.documentId");
 		
-		this.mockMvc.perform(post("/api/actions/assinar-devolucao-peticao/execute").header("login", "gestor-recebimento")
+		this.mockMvc.perform(post("/api/actions/devolver-peticao/execute").header("login", "gestor-recebimento")
 				.contentType(MediaType.APPLICATION_JSON).content(this.assinarDevolucaoPeticaoCommand.replace("@peticaoId", peticaoId)
 					.replace("@documentoId", signedDocumentId))).andExpect(status().isOk());
 		

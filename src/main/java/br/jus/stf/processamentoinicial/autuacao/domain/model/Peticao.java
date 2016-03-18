@@ -42,6 +42,7 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -151,6 +152,8 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.identificacao = montarIdentificacao();
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
 	}
+	
+	public abstract MeioTramitacao meioTramitacao();
 	
 	@Override
 	public PeticaoId id() {

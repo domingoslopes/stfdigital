@@ -16,7 +16,6 @@ import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.FormaRecebimento;
-import br.jus.stf.processamentoinicial.autuacao.domain.model.MotivoDevolucao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PartePeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaPeticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PecaTemporaria;
@@ -25,6 +24,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFactory;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Modelo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Texto;
@@ -33,6 +33,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
+import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
@@ -170,26 +171,33 @@ public class PeticaoApplicationService {
 	 * @param tipoDevolucao
 	 * @param numero
 	 */
-	public void prepararDevolucao(Peticao peticao, MotivoDevolucao motivoDevolucao, Long numero) {
-		// Passo 01: Recuperando o texto de devolução
+	public Texto gerarTextoDevolucao(Peticao peticao, Modelo modelo, List<SubstituicaoTagTexto> substituicoes) {
+		DocumentoId documentoId = documentoAdapter.gerarDocumentoComTags(modelo.documento(), substituicoes);
+		TextoId textoId = textoRepository.nextId();
+		Texto texto = new Texto(textoId, documentoId);
+		texto = textoRepository.save(texto);
+		associarTextoDevolucao(peticao.id(), modelo.id(), texto.id());
+		
+		return texto;
+	}
+	
+	/**
+	 * Finaliza a criação do texto do documento de devolução da petição.
+	 * @param peticao Dados da petição.
+	 * @param modelo Dados do modelo de documento.
+	 */
+	public void finalizarTextoDevolucao(Peticao peticao, Modelo modelo) {
 		TextoId textoId = peticao.devolucao().texto();
 		Texto texto = textoRepository.findOne(textoId);
-		
-		// Passo 02: Gerando o documento final e associando ao texto
-		DocumentoId documentoFinalId = documentoAdapter.gerarDocumentoFinal(texto.documento());
-		
-		texto.associarDocumentoFinal(documentoFinalId);
+		DocumentoId documentoFinal = documentoAdapter.gerarDocumentoFinal(texto.documento());
+		texto.associarDocumentoFinal(documentoFinal);
 		texto = textoRepository.save(texto);
 		
-		// Passo 03: Juntando a Peça de Devolução (Ofício) à Petição...
-		TipoPeca tipo = peticaoRepository.findOneTipoPeca(new TipoDocumentoId(8L)); // TODO: Alterar o Tipo de Peça.
-		peticao.adicionarPeca(new PecaPeticao(documentoFinalId, tipo, String.format("Ofício nº %s", numero), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA));
+		TipoPeca tipo = peticaoRepository.findOneTipoPeca(modelo.tipoModelo().id());
+		peticao.adicionarPeca(new PecaPeticao(documentoFinal, tipo, modelo.tipoModelo().descricao(), Visibilidade.PUBLICO, Situacao.PENDENTE_JUNTADA));
 		peticaoRepository.save(peticao);
 		
-		// Passo 04: Completando a tarefa no BPM...
 		tarefaAdapter.completarPreparacaoParaDevolucao(peticao);
-		
-		//Passo 05: Gera o evento de peticao inválida.
 		peticaoApplicationEvent.peticaoPreparadaParaDevolucao(peticao);
 	}
 	
@@ -199,7 +207,7 @@ public class PeticaoApplicationService {
 	 * @param peticao
 	 * @param documentoTemporarioId
 	 */
-	public void assinarDevolucao(Peticao peticao, DocumentoTemporarioId documentoTemporarioId) {
+	public void devolver(Peticao peticao, DocumentoTemporarioId documentoTemporarioId) {
 		// Salva definitivamente o documento assinado.
 		DocumentoId documentoId = documentoAdapter.salvar(documentoTemporarioId);
 		TipoPeca tipo = peticaoRepository.findOneTipoPeca(new TipoDocumentoId(8L));
@@ -226,7 +234,7 @@ public class PeticaoApplicationService {
 		peticao.atribuirPartes(partes, tipo);
 	}
 
-	public void associarTextoDevolucao(PeticaoId peticaoId, TextoId textoId, ModeloId modeloId) {
+	public void associarTextoDevolucao(PeticaoId peticaoId, ModeloId modeloId, TextoId textoId) {
 		Peticao peticao = peticaoRepository.findOne(peticaoId);
 		peticao.associarTextoDevolucao(textoId, modeloId);
 		peticaoRepository.save(peticao);

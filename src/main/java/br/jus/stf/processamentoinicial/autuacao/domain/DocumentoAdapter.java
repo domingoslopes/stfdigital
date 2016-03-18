@@ -6,6 +6,7 @@ import java.util.Set;
 import org.apache.commons.lang3.Range;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.processamentoinicial.suporte.interfaces.commands.SubstituicaoTagTexto;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 
@@ -42,5 +43,13 @@ public interface DocumentoAdapter {
 	 * @return
 	 */
 	DocumentoId gerarDocumentoFinal(DocumentoId documentoId);
+	
+	/**
+	 * Gera um documento e substitui suas tags pelos respectivos valores.
+	 * @param documento Id do documento.
+	 * @param substituicoes Lista contendo as tags e seus respectivos valores
+	 * @return Id do documento gerado.
+	 */
+	DocumentoId gerarDocumentoComTags(DocumentoId documento, List<SubstituicaoTagTexto> substituicoes);
 	
 }

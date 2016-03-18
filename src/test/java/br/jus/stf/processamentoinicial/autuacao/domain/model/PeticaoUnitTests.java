@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
@@ -340,6 +341,10 @@ public class PeticaoUnitTests {
 
 		public boolean hasRepresentacao() {
 			return false;
+		}
+		
+		public MeioTramitacao meioTramitacao() {
+			return MeioTramitacao.FISICO;
 		}
 	}
 	

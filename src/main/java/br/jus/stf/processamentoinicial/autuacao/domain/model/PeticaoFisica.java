@@ -8,10 +8,12 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
@@ -37,6 +39,9 @@ public class PeticaoFisica extends Peticao {
 	
 	@Column(name = "NUM_SEDEX")
 	private String numeroSedex;
+	
+	@Transient
+	private final MeioTramitacao meioTramitacao = MeioTramitacao.FISICO;
 	
 	PeticaoFisica() {
 
@@ -86,7 +91,12 @@ public class PeticaoFisica extends Peticao {
 			}
 		});
 	}
-		
+	
+	@Override
+	public MeioTramitacao meioTramitacao() {
+		return meioTramitacao;
+	}
+	
 	@Override
 	public boolean hasRepresentacao() {
 		return false;

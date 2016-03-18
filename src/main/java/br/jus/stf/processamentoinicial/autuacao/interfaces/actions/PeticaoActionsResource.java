@@ -10,9 +10,11 @@ import br.jus.stf.plataforma.shared.actions.support.ResourcesMode;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoStatus;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.AssinarDevolucaoPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.AutuarPeticaoCommand;
-import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.DevolverPeticaoCommand;
+import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.FinalizarTextoDevolucaoPeticaoCommand;
+import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.GerarTextoDevolucaoPeticaoCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.commands.PreautuarPeticaoFisicaCommand;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.facade.PeticaoServiceFacade;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TextoDto;
 
 @ActionController(groups = "peticao")
 public class PeticaoActionsResource {
@@ -35,15 +37,19 @@ public class PeticaoActionsResource {
 		peticaoServiceFacade.autuar(command.getPeticaoId(), command.getClasseId(), command.isValida(), command.getMotivo(), command.getPartesPoloAtivo(), command.getPartesPoloPassivo()); 
 	}
 	
-	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição", resourcesMode = ResourcesMode.One)
-	public void devolver(DevolverPeticaoCommand command) {
-		peticaoServiceFacade.devolver(command.getPeticaoId(), command.getMotivoDevolucao(), command.getNumeroOficio()); 
+	@ActionMapping(id = "gerar-texto-devolucao", name = "Gerar Texto de Devolução de Petição", resourcesMode = ResourcesMode.One)
+	public TextoDto gerarTextoDevolucao(GerarTextoDevolucaoPeticaoCommand command) {
+		return peticaoServiceFacade.gerarTextoDevolucao(command.getPeticaoId(), command.getModeloId(), command.getSubstituicoes()); 
 	}
 	
-	@ActionMapping(id = "assinar-devolucao-peticao", name = "Assinar Documento de Devolução", resourcesMode = ResourcesMode.OneOrMany)
+	@ActionMapping(id = "finalizar-texto-devolucao", name = "Finalizar Texto", resourcesMode = ResourcesMode.OneOrMany)
+	public void finalizarTextoDevolucao(FinalizarTextoDevolucaoPeticaoCommand command) {
+		peticaoServiceFacade.finalizarTextoDevolucao(command.getPeticaoId(), command.getModeloId());
+	}
+	
+	@ActionMapping(id = "devolver-peticao", name = "Devolver Petição", resourcesMode = ResourcesMode.OneOrMany)
 	@FiltrarPeticaoPorStatus(PeticaoStatus.ASSINAR_DEVOLUCAO)
-	public void assinarDevolucao(List<AssinarDevolucaoPeticaoCommand> commands) {
-		commands.forEach(c -> peticaoServiceFacade.assinarDevolucao(c.getPeticaoId(), c.getDocumentoId()));
+	public void devolverPeticao(List<AssinarDevolucaoPeticaoCommand> commands) {
+		commands.forEach(c -> peticaoServiceFacade.devolver(c.getPeticaoId(), c.getDocumentoId()));
 	}
-	
 }

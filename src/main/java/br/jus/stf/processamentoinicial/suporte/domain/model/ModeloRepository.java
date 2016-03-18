@@ -19,5 +19,4 @@ public interface ModeloRepository {
 	Modelo findOne(ModeloId id);
 	
 	List<Modelo> findAll();
-
 }

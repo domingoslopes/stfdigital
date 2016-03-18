@@ -7,9 +7,11 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.Validate;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
@@ -20,6 +22,9 @@ import br.jus.stf.shared.PeticaoId;
 @Entity
 @DiscriminatorValue("ELETRONICO")
 public class PeticaoEletronica extends Peticao {
+	
+	@Transient
+	private final MeioTramitacao meioTramitacao = MeioTramitacao.ELETRONICO;
 
 	@ManyToOne
 	@JoinColumn(name = "SEQ_ORGAO_REPRESENTADO", referencedColumnName = "SEQ_ORGAO")
@@ -62,6 +67,11 @@ public class PeticaoEletronica extends Peticao {
 
 	public Orgao orgaoRepresentado() {
 		return this.orgaoRepresentado;
+	}
+	
+	@Override
+	public MeioTramitacao meioTramitacao() {
+		return meioTramitacao;
 	}
 	
 	@Override
