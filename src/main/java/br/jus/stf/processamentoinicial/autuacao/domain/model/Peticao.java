@@ -45,6 +45,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.ClasseId;
@@ -63,7 +64,7 @@ import br.jus.stf.shared.stereotype.Entity;
  */
 @javax.persistence.Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "TIP_MEIO_PETICAO")
+@DiscriminatorColumn(name = "TIP_MEIO_TRAMITACAO")
 @Table(name = "PETICAO", schema = "AUTUACAO", uniqueConstraints = @UniqueConstraint(columnNames = {"NUM_PETICAO", "NUM_ANO_PETICAO"}))
 public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 
@@ -123,6 +124,14 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	
 	@Transient
 	private ControladorOrdenacaoPecas controladorOrdenacaoPecas;
+	
+	@Column(name = "DAT_AUTUACAO")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataAutuacao;
+	
+	@Column(name = "TIP_SIGILO")
+	@Enumerated(EnumType.STRING)
+	private Sigilo sigilo;
 
 	Peticao() {
 
@@ -141,8 +150,18 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 		this.dataCadastramento = new Date();
 		this.usuarioCadastramento = usuarioCadastramento;
 		this.tipoProcesso = tipoProcesso;
+		this.sigilo = Sigilo.PUBLICO;
 		
 		this.controladorOrdenacaoPecas = new ControladorOrdenacaoPecas(this.pecas);
+	}
+	
+	public Peticao(final PeticaoId id, final Long numero, final String usuarioCadastramento, final TipoProcesso tipoProcesso,
+			final Sigilo sigilo) {
+		this(id, numero, usuarioCadastramento, tipoProcesso);
+		
+		Validate.notNull(sigilo, "peticao.sigilo.required");
+		
+		this.sigilo = sigilo;
 	}
 
 	@PostLoad
@@ -328,11 +347,12 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	 * 
 	 * @param classeProcessual
 	 */
-	public void aceitar(final ClasseId classeProcessual) {
+	public void autuar(final ClasseId classeProcessual) {
 		Validate.notNull(classeProcessual, "peticao.classeProcessual.required");
 		Validate.notNull(classeSugerida, "peticao.aceitar.classeSugerida.invalid");
 		
 		this.classeProcessual = classeProcessual;
+		this.dataAutuacao = new Date();
 	}
 
 	/**
@@ -373,7 +393,7 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	}
 	
 	public boolean isEletronica() {
-		return this.getClass().equals(PeticaoEletronica.class);
+		return MeioTramitacao.ELETRONICO.equals(meioTramitacao());
 	}
 	
 	/**
@@ -388,6 +408,20 @@ public abstract class Peticao implements Entity<Peticao, PeticaoId> {
 	}
 	
 	public abstract boolean hasRepresentacao();
+	
+	/**
+	 * @return data de autuação da petição.
+	 */
+	public Date dataAutuacao() {
+		return dataAutuacao;
+	}
+	
+	/**
+	 * @return sigilo da petição.s
+	 */
+	public Sigilo sigilo() {
+		return sigilo;
+	}
 	
 	/**
 	 * Sugestão de classe

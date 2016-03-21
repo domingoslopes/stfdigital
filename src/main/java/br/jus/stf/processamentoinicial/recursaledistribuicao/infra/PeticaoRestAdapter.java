@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.infra;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,8 +18,10 @@ import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PeticaoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.PeticaoAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Peticao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -47,7 +50,13 @@ public class PeticaoRestAdapter implements PeticaoAdapter {
 	@Override
 	public Peticao consultar(Long id) {
 		PeticaoDto peticaoDto = peticaoRestResource.consultar(id);
-		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), peticaoDto.getTipo(), carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()), new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()), TipoProcesso.valueOf(peticaoDto.getTipoProcesso()), carregarPreferencias(peticaoDto.getPreferencias()));
+		Date dataAutuacao = Optional.ofNullable(peticaoDto.getDataAutuacao()).isPresent() ? new Date(peticaoDto.getDataAutuacao()) : null;
+		
+		return new Peticao(new PeticaoId(id), new ClasseId(peticaoDto.getClasse()), peticaoDto.getTipo(),
+				carregarPartes(peticaoDto.getPartes()), carregarPecas(peticaoDto.getPecas()),
+				new ProcessoWorkflowId(peticaoDto.getProcessoWorkflowId()), TipoProcesso.valueOf(peticaoDto.getTipoProcesso()),
+				carregarPreferencias(peticaoDto.getPreferencias()), new Date(peticaoDto.getDataCadastramento()), dataAutuacao,
+				MeioTramitacao.valueOf(peticaoDto.getMeioTramitacao()), Sigilo.valueOf(peticaoDto.getSigilo()));
 	}
 	
 	private Set<Parte> carregarPartes(Map<String, List<Long>> partesDto) {

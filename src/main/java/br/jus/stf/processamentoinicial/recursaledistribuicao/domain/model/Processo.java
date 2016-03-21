@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +29,8 @@ import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
@@ -35,8 +38,10 @@ import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -115,28 +120,56 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@JsonIgnore
 	private List<PecaProcessoOriginal> pecasOriginaisVinculadas = new LinkedList<PecaProcessoOriginal>();
 	
+	@Column(name = "DAT_RECEBIMENTO")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataRecebimento;
+	
+	@Column(name = "DAT_AUTUACAO")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataAutuacao;
+	
+	@Column(name = "TIP_MEIO_TRAMITACAO")
+	@Enumerated(EnumType.STRING)
+	private MeioTramitacao meioTramitacao;
+	
+	@Column(name = "TIP_SIGILO")
+	@Enumerated(EnumType.STRING)
+	private Sigilo sigilo;
+	
 	Processo() {
 
 	}
 	
 	/**
+	 * @param id
 	 * @param classe
 	 * @param numero
 	 * @param peticao
 	 * @param situacao
+	 * @param preferencias
+	 * @param dataRecebimento
+	 * @param meioTramitacao
+	 * @param sigilo o valor padrão é PUBLICO
 	 */
-	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao, final ProcessoSituacao situacao, final Set<PreferenciaId> preferencias) {
+	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
+			final ProcessoSituacao situacao, final Set<PreferenciaId> preferencias, final Date dataRecebimento,
+			final MeioTramitacao meioTramitacao, final Sigilo sigilo) {
 		Validate.notNull(id, "processo.id.required");
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
 		Validate.notNull(peticao, "processo.peticao.required");
 		Validate.notNull(situacao, "processo.situacao.required");
+		Validate.notNull(dataRecebimento, "processo.dataRecebimento.required");
+		Validate.notNull(meioTramitacao, "processo.meioTramitacao.required");
 		
 		this.id = id;
 		this.classe = classe;
 		this.numero = numero;
 		this.peticao = peticao;
 		this.situacao = situacao;
+		this.dataRecebimento = dataRecebimento;
+		this.meioTramitacao = meioTramitacao;
+		this.sigilo = Optional.ofNullable(sigilo).orElse(Sigilo.PUBLICO);
 
 		Optional.ofNullable(preferencias).ifPresent(prefs -> {
 			if (!prefs.isEmpty()) {
@@ -150,15 +183,23 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	}
 
 	/**
+	 * @param id
 	 * @param classe
 	 * @param numero
-	 * @param relator
 	 * @param peticao
 	 * @param partes
-	 * @param documentos
+	 * @param pecas
+	 * @param situacao
+	 * @param preferencias
+	 * @param dataRecebimento
+	 * @param meioTramitacao
+	 * @param sigilo
 	 */
-	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao, final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao, final Set<PreferenciaId> preferencias) {
-		this(id, classe, numero, peticao, situacao, preferencias);
+	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
+			final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao,
+			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
+			final Sigilo sigilo) {
+		this(id, classe, numero, peticao, situacao, preferencias, dataRecebimento, meioTramitacao, sigilo);
 		this.partes.addAll(partes);
 		this.identificacao = montarIdentificacao();
 		
@@ -438,6 +479,28 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		distribuicoes.add(distribuicao);
 	}
 	
+	public Date dataRecebimento() {
+		return dataRecebimento;
+	}
+	
+	public Date dataAutuacao() {
+		return dataAutuacao;
+	}
+	
+	public MeioTramitacao meioTramitacao() {
+		return meioTramitacao;
+	}
+	
+	public Sigilo sigilo() {
+		return sigilo;
+	}
+	
+	public void alterarSigilo(Sigilo sigilo) {
+		Validate.notNull(sigilo, "processo.sigilo.required");
+		
+		this.sigilo = sigilo;
+	}
+	
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(id).toHashCode();
@@ -463,10 +526,19 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	}
 	
 	/**
-	 * Define a situacao do processo como A_AUTUAR
+	 * Define a situação do processo como A_AUTUAR
 	 */
 	protected void aAutuar() {
 		situacao = ProcessoSituacao.A_AUTUAR;
+	}
+	
+	/**
+	 * Atribui uma data de atuação ao processo.
+	 * 
+	 * @param dataAutuacao
+	 */
+	protected void atribuirDataAutuacao(Date dataAutuacao) {
+		this.dataAutuacao = dataAutuacao;
 	}
 	
 	private String montarIdentificacao() {

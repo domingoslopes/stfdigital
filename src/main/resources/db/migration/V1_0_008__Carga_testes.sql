@@ -16,7 +16,7 @@ INSERT INTO corporativo.pessoa (seq_pessoa, nom_pessoa) VALUES (corporativo.seq_
 
 INSERT INTO corporativo.documento VALUES (corporativo.seq_documento.nextval, FILE_READ('classpath:banner.txt'));
 
-INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, tip_meio_peticao) VALUES (autuacao.seq_peticao.nextval, 2015, 1, 'ADI', 'ELETRONICO');
+INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, tip_meio_tramitacao) VALUES (autuacao.seq_peticao.nextval, 2015, 1, 'ADI', 'ELETRONICO');
 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 1, 'POLO_ATIVO'); 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 2, 'POLO_ATIVO');
@@ -25,7 +25,7 @@ INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, 
 
 INSERT INTO autuacao.peticao_documento (seq_peticao, seq_documento) VALUES (autuacao.seq_peticao.currval, 1);
 
-INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, qtd_volume, qtd_apenso, tip_forma_recebimento, num_sedex, tip_meio_peticao) VALUES (autuacao.seq_peticao.nextval, 2015, 2, 'ADPF', 10, 1, 'SEDEX', 'SS123456789BR', 'FISICO');
+INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, qtd_volume, qtd_apenso, tip_forma_recebimento, num_sedex, tip_meio_tramitacao) VALUES (autuacao.seq_peticao.nextval, 2015, 2, 'ADPF', 10, 1, 'SEDEX', 'SS123456789BR', 'FISICO');
 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 5, 'POLO_ATIVO'); 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 6, 'POLO_ATIVO');
@@ -34,14 +34,14 @@ INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, 
 
 INSERT INTO autuacao.peticao_documento (seq_peticao, seq_documento) VALUES (autuacao.seq_peticao.currval, 1);
 
-INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, tip_meio_peticao, dsc_motivo_rejeicao) VALUES (autuacao.seq_peticao.nextval, 2015, 3, 'ADI', 'ELETRONICO', 'Comprovação insuficiente.');
+INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, tip_meio_tramitacao, dsc_motivo_rejeicao) VALUES (autuacao.seq_peticao.nextval, 2015, 3, 'ADI', 'ELETRONICO', 'Comprovação insuficiente.');
 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 10, 'POLO_ATIVO'); 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 11, 'POLO_PASSIVO');
 
 INSERT INTO autuacao.peticao_documento (seq_peticao, seq_documento) VALUES (autuacao.seq_peticao.currval, 1);
 
-INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, qtd_volume, qtd_apenso, tip_forma_recebimento, tip_meio_peticao, sig_classe_sugerida) VALUES (autuacao.seq_peticao.nextval, 2015, 4, 'ACO', 5, 2, 'BALCAO', 'FISICO', 'ACO');
+INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, qtd_volume, qtd_apenso, tip_forma_recebimento, tip_meio_tramitacao, sig_classe_sugerida) VALUES (autuacao.seq_peticao.nextval, 2015, 4, 'ACO', 5, 2, 'BALCAO', 'FISICO', 'ACO');
 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 12, 'POLO_ATIVO'); 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 13, 'POLO_PASSIVO');
@@ -55,7 +55,7 @@ INSERT INTO autuacao.processo_parte (seq_processo_parte, seq_processo, seq_pesso
 
 INSERT INTO autuacao.processo_documento (seq_processo, seq_documento) VALUES (autuacao.seq_processo.currval, 1);
 
-INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, tip_meio_peticao, sig_classe_sugerida) VALUES (autuacao.seq_peticao.nextval, 2015, 5, 'ACO', 'ELETRONICO', 'OACO');
+INSERT INTO autuacao.peticao (seq_peticao, num_ano_peticao, num_peticao, sig_classe, tip_meio_tramitacao, sig_classe_sugerida) VALUES (autuacao.seq_peticao.nextval, 2015, 5, 'ACO', 'ELETRONICO', 'OACO');
 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 14, 'POLO_ATIVO'); 
 INSERT INTO autuacao.peticao_parte (seq_peticao_parte, seq_peticao, seq_pessoa, tip_polo) VALUES (autuacao.seq_peticao_parte.nextval, autuacao.seq_peticao.currval, 15, 'POLO_PASSIVO');

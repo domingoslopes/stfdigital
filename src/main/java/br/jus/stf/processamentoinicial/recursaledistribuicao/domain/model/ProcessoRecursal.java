@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +19,8 @@ import javax.persistence.OneToMany;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.AssuntoId;
@@ -55,19 +58,37 @@ public class ProcessoRecursal extends Processo {
 	@Column(name = "TIP_CLASSIFICACAO")
 	@Enumerated(EnumType.STRING)
 	private Classificacao classificacao;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Origem.class)
+	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
+	private Set<Origem> origens = new HashSet<Origem>(0);
 
 	ProcessoRecursal() {
 
 	}
 	
-	public ProcessoRecursal(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao, final Set<PreferenciaId> preferencias) {
-		super(id, classe, numero, peticao, ProcessoSituacao.A_ANALISAR, preferencias);
+	public ProcessoRecursal(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
+			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
+			final Sigilo sigilo) {
+		super(id, classe, numero, peticao, ProcessoSituacao.A_ANALISAR, preferencias, dataRecebimento,
+				meioTramitacao, sigilo);
 		
 		if(isCriminalEleitoral()) {
-			aAutuar();
+			super.aAutuar();
 		}
 	}
+	
+	public ProcessoRecursal(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
+			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
+			final Sigilo sigilo, final Set<Origem> origens) {
+		this(id, classe, numero, peticao, preferencias, dataRecebimento, meioTramitacao, sigilo);
+		
+		Validate.notEmpty(origens, "processoRecursal.origens.required");
+		
+		this.origens = origens;
+	}
 
+	@Override
 	public TipoProcesso tipoProcesso() {
 		return TipoProcesso.RECURSAL;
 	}
@@ -102,7 +123,19 @@ public class ProcessoRecursal extends Processo {
 		return observacaoAnalise;
 	}
 	
+	public Set<Origem> origens(){
+		return Collections.unmodifiableSet(origens);
+	}
+	
+	public void atribuirOrigens(final Set<Origem> origens) {
+		Validate.notNull(origens, "processoRecursal.origens.required");
+		
+		this.origens.retainAll(origens);
+		this.origens.addAll(origens);
+	}
+	
 	public void autuar(Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {
+		super.atribuirDataAutuacao(new Date());
 		atribuirAssuntos(assuntos);
 		atribuirPartes(poloAtivo, TipoPolo.POLO_ATIVO);
 		atribuirPartes(poloPassivo, TipoPolo.POLO_PASSIVO);
