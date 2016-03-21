@@ -23,24 +23,6 @@
 		teses: []
 	};
 	
-	var mockPeticao = {
-		ano: 2016,
-		apensos: 1,
-		classe: "RE",
-		formaRecebimento: "SEDEX",
-		id: 15,
-		identificacao: "7/2016",
-		numero: 7,
-		numeroSedex: "1",
-		partes: {PoloAtivo: [], PoloPassivo: []},
-		pecas: [],
-		preferencias: null,
-		processoWorkflowId: 10001,
-		tipo: "PeticaoFisica",
-		tipoProcesso: "RECURSAL",
-		volumes: 1
-	};
-	
 	var mockTese = [{
 		assuntos: [
 	        {codigo: "4292", descricao: "Jurisdição e Competência"},
@@ -62,22 +44,20 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $log, messages, properties, $state, ProcessoService, PeticaoService) {
+		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $log, messages, properties, $state, ProcessoService) {
 			$httpBackend = _$httpBackend_;
 			
-			$httpBackend.expectGET(properties.apiUrl + '/peticoes/14').respond(mockPeticao);
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/14/processo').respond(mockProcessoRecursal);
 			
 			scope = $rootScope.$new();
 			controller = $controller('AnaliseRepercussaoGeralController', {
 				$scope: scope,
-				$stateParams: {resources: [14]},
+				$stateParams: {resources: [14], task: { id : '1', metadado : { informacao : '1', tipoInformacao: 'PeticaoFisica' }}},
 				$log: $log,
 				messages: messages,
 				properties: properties,
 				$state: $state,
-				ProcessoService: ProcessoService,
-				PeticaoService: PeticaoService
+				ProcessoService: ProcessoService
 			});
 			
 			$httpBackend.flush();
@@ -89,10 +69,6 @@
 		
 		it('Deveria carregar informações do processo recursal', function() {
 			expect(controller.processo).toEqual(mockProcessoRecursal);
-		});
-		
-		it('Deveria carregar informações da petição', function() {
-			expect(controller.peticao).toEqual(mockPeticao);
 		});
 		
 		it('Deveria validar o formulário quando os parâmetros não forem alterados', function() {

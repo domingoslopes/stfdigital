@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AnalisePressupostoController', function ($stateParams, messages, properties, ProcessoService) {
+	angular.autuacao.controller('AnalisePressupostoController', function ($state, $stateParams, messages, properties, ProcessoService) {
 		
 		var analise = this;
 		var resource = $stateParams.resources[0];

@@ -7,7 +7,7 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('AutuacaoRecursalController', function ($stateParams, messages, properties, ProcessoService) {
+	angular.autuacao.controller('AutuacaoRecursalController', function ($state, $stateParams, messages, properties, ProcessoService) {
 		
 		var autuacao = this;
 		var resource = $stateParams.resources[0];
