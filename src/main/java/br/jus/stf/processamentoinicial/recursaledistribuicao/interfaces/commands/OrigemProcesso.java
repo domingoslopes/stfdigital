@@ -16,6 +16,10 @@ public class OrigemProcesso {
 	private Long numeroProcesso;
 	private Long numeroOrdem;
 		
+	public OrigemProcesso(){
+		
+	}
+	
 	public OrigemProcesso (Long unidadeFederacaoId, long codigoJuizoOrigem, Long numeroProcesso, Long numeroOrdem){
 		this.unidadeFederacaoId = unidadeFederacaoId;
 		this.codigoJuizoOrigem = codigoJuizoOrigem;
