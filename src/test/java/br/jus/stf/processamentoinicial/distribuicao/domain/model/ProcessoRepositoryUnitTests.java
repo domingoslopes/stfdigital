@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaPr
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoOriginario;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -65,7 +67,8 @@ public class ProcessoRepositoryUnitTests {
 	}
 
 	private Processo processo() {
-		return new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, new PeticaoId(1L), partes, pecas, null);
+		return new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, new PeticaoId(1L), partes, pecas, null, new Date(),
+				MeioTramitacao.ELETRONICO, null);
 	}
 	
 	@Test

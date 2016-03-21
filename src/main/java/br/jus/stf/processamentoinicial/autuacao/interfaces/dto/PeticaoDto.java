@@ -50,11 +50,25 @@ public class PeticaoDto {
 	@ApiModelProperty(value = "A lista de preferências")
 	private List<PreferenciaDto> preferencias;
 	
+	@ApiModelProperty(value = "Representa a data de cadastramento da petição")
+	private Long dataCadastramento;
+	
+	@ApiModelProperty(value = "Representa a data de autação da petição")
+	private Long dataAutuacao;
+	
+	@ApiModelProperty(value = "Representa o meio de tramitação da petição")
+	private String meioTramitacao;
+	
+	@ApiModelProperty(value = "Representa o sigilo da petição")
+	private String sigilo;
+	
 	PeticaoDto() {
 		
 	}
 	
-	public PeticaoDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas, Long processoWorkflowId, String tipoProcesso) {
+	public PeticaoDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes,
+			List<PecaDto> pecas, Long processoWorkflowId, String tipoProcesso, Long dataCadastramento, Long dataAutuacao,
+			String meioTramitacao, String sigilo) {
 		this.id = id;
 		this.numero = numero;
 		this.ano = ano;
@@ -64,6 +78,10 @@ public class PeticaoDto {
 		this.pecas = pecas;
 		this.processoWorkflowId = processoWorkflowId;
 		this.tipoProcesso = tipoProcesso;
+		this.dataCadastramento = dataCadastramento;
+		this.dataAutuacao = dataAutuacao;
+		this.meioTramitacao = meioTramitacao;
+		this.sigilo = sigilo;
 	}
 	
 	public Long getId() {
@@ -114,4 +132,19 @@ public class PeticaoDto {
 		return preferencias;
 	}
 	
+	public Long getDataCadastramento() {
+		return dataCadastramento;
+	}
+	
+	public Long getDataAutuacao() {
+		return dataAutuacao;
+	}
+	
+	public String getMeioTramitacao() {
+		return meioTramitacao;
+	}
+	
+	public String getSigilo() {
+		return sigilo;
+	}
 }

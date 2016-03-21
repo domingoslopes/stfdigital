@@ -36,6 +36,7 @@ public class ProcessoFactory {
 	public static Processo criar(PeticaoId peticaoId) {
 		Peticao peticao = peticaoAdapter.consultar(peticaoId.toLong());
 		Processo processo = null;
+		
 		if (TipoProcesso.ORIGINARIO.equals(peticao.tipoProcesso())) {
 			processo = criarProcessoOriginario(peticao);
 		} else if (TipoProcesso.RECURSAL.equals(peticao.tipoProcesso())) {
@@ -60,7 +61,12 @@ public class ProcessoFactory {
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(peticao.classeProcessual());
 		
-		return new ProcessoOriginario(id, peticao.classeProcessual(), numero, peticao.id(), partesProcesso, pecasProcesso, peticao.preferencias());
+		ProcessoOriginario processo = new ProcessoOriginario(id, peticao.classeProcessual(), numero, peticao.id(),
+				partesProcesso, pecasProcesso, peticao.preferencias(), peticao.dataCadastramento(), peticao.meioTramitacao(),
+				peticao.sigilo());
+		
+		processo.atribuirDataAutuacao(peticao.dataAutuacao());
+		return processo;
 	}
 	
 	/**
@@ -77,7 +83,9 @@ public class ProcessoFactory {
 		if (processo == null){
 			ProcessoId id = processoRepository.nextId();
 			Long numero = processoRepository.nextNumero(peticao.classeProcessual());
-			processo = new ProcessoRecursal(id, peticao.classeProcessual(), numero, peticao.id(), peticao.preferencias());
+			processo = new ProcessoRecursal(id, peticao.classeProcessual(), numero, peticao.id(),
+					peticao.preferencias(), peticao.dataCadastramento(), peticao.meioTramitacao(),
+					peticao.sigilo());
 		}
 		
 		return processo;

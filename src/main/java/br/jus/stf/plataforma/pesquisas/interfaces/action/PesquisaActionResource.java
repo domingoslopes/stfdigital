@@ -25,7 +25,7 @@ public class PesquisaActionResource {
 	}
 	
 	@ActionMapping(id = "excluir-pesquisa-avancada", name = "Excluir pesquisa", resourcesMode = ResourcesMode.One)
-	public void salvar(ExcluirPesquisaAvancadaCommand command) {
+	public void excluir(ExcluirPesquisaAvancadaCommand command) {
 		pesquisaApplicationService.excluir(command.getPesquisaId());
 	}
 	
