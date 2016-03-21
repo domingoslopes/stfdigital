@@ -152,7 +152,7 @@ public class PeticaoApplicationService {
 		if (peticaoValida) {
 			carregarPartes(peticao, partesPoloAtivo, TipoPolo.POLO_ATIVO);
 			carregarPartes(peticao, partesPoloPassivo, TipoPolo.POLO_PASSIVO);
-			peticao.aceitar(classe);
+			peticao.autuar(classe);
 			peticaoRepository.save(peticao);
 			tarefaAdapter.completarAutuacao(peticao);
 			peticaoApplicationEvent.peticaoAutuada(peticao);

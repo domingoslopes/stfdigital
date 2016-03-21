@@ -107,7 +107,7 @@ public class PeticaoUnitTests {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
 		
 		peticao.sugerirClasse(new ClasseId("ADI"));
-		peticao.aceitar(new ClasseId("ADO"));
+		peticao.autuar(new ClasseId("ADO"));
 		
 		assertEquals(new ClasseId("ADO"), peticao.classeProcessual());
 	}
@@ -117,14 +117,14 @@ public class PeticaoUnitTests {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
 		
 		peticao.sugerirClasse(new ClasseId("ADI"));
-		peticao.aceitar(null);
+		peticao.autuar(null);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaAceitarPeticaoSemSugerirClasse() {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
 		
-		peticao.aceitar(new ClasseId("ADO"));
+		peticao.autuar(new ClasseId("ADO"));
 	}
 	
 	@Test
@@ -165,7 +165,7 @@ public class PeticaoUnitTests {
 		Peticao peticao = new PeticaoImpl(new PeticaoId(1L), 5L, "PETICIONADOR");
 		
 		peticao.sugerirClasse(new ClasseId("ADI"));
-		peticao.aceitar(new ClasseId("ADO"));
+		peticao.autuar(new ClasseId("ADO"));
 		peticao.rejeitar("Dados incompletos.");
 	}
 

@@ -58,7 +58,9 @@ public class DistribuicaoComumUnitTests {
 		when(mockProcessoRepository.nextId()).thenReturn(new ProcessoId(1L));
 		when(mockProcessoRepository.nextNumero(new ClasseId("ADI"))).thenReturn(1L);
 		PeticaoFisica peticao = preparaPeticao();
-		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
+		Peticao peticaoVO = new Peticao(peticao.id(), peticao.classeProcessual(), peticao.getClass().getSimpleName(),peticao.partesPoloAtivo(),
+				peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias(),
+				peticao.dataCadastramento(), peticao.dataAutuacao(), peticao.meioTramitacao(), peticao.sigilo());
 		when(mockPeticaoAdapter.consultar(1L)).thenReturn(peticaoVO);
 	}
 	
@@ -145,7 +147,7 @@ public class DistribuicaoComumUnitTests {
 		peticao.adicionarPeca(new PecaPeticao(new DocumentoId(1L), tipo, tipo.nome(), Visibilidade.PUBLICO, Situacao.JUNTADA));
 		peticao.adicionarParte(new PartePeticao(new PessoaId(1L), TipoPolo.POLO_ATIVO));
 		peticao.preautuar(new ClasseId("ADI"), null);
-		peticao.aceitar(new ClasseId("ADI"));
+		peticao.autuar(new ClasseId("ADI"));
 		peticao.associarProcessoWorkflow(new ProcessoWorkflow(new ProcessoWorkflowId(1L), "A_PREAUTUAR"));
 		return peticao;
 	}

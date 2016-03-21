@@ -13,6 +13,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -43,6 +45,7 @@ public abstract class Distribuicao implements ValueObject<Distribuicao> {
 	private String justificativa;
 	
 	@Column(name = "DAT_DISTRIBUICAO", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataDistribuicao;
 	
 	@Column(name = "SIG_USUARIO_DISTRIBUICAO", nullable = false)

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParteP
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoOriginario;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
@@ -73,27 +75,32 @@ public class ProcessoOriginarioUnitTests {
 	}
 
 	private Processo processo() {
-		return new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, new PeticaoId(1L), partes, pecas, null);
+		return new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, new PeticaoId(1L), partes, pecas, null, new Date(),
+				MeioTramitacao.ELETRONICO, null);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComIdNulo() {
-		new ProcessoOriginario(null, new ClasseId("HD"), 1L, new PeticaoId(1L), partes, pecas, null);
+		new ProcessoOriginario(null, new ClasseId("HD"), 1L, new PeticaoId(1L), partes, pecas, null, new Date(),
+				MeioTramitacao.ELETRONICO, null);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComClasseNula() {
-		new ProcessoOriginario(new ProcessoId(1L), null, 1L, new PeticaoId(1L), partes, pecas, null);
+		new ProcessoOriginario(new ProcessoId(1L), null, 1L, new PeticaoId(1L), partes, pecas, null, new Date(),
+				MeioTramitacao.ELETRONICO, null);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComNumeroNulo() {
-		new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), null, new PeticaoId(1L), partes, pecas, null);
+		new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), null, new PeticaoId(1L), partes, pecas, null, new Date(),
+				MeioTramitacao.ELETRONICO, null);
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void tentaCriarProcessoComPeticaoNula() {
-		new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, null, partes, pecas, null);
+		new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, null, partes, pecas, null, new Date(),
+				MeioTramitacao.ELETRONICO, null);
 	}
 	
 	@Test
@@ -123,7 +130,8 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void comparaProcessosDiferentes() {
 		Processo processo1 = processo();
-		Processo processo2 = new ProcessoOriginario(new ProcessoId(2L), new ClasseId("HC"), 1L, new PeticaoId(2L), partes, pecas, null);
+		Processo processo2 = new ProcessoOriginario(new ProcessoId(2L), new ClasseId("HC"), 1L, new PeticaoId(2L), partes, pecas,
+				null, new Date(), MeioTramitacao.ELETRONICO, null);
 		
 		assertFalse(processo1.equals(processo2));
 	}
@@ -131,7 +139,8 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void comparaProcessosComIdentidadesDiferentes() {
 		Processo processo1 = processo();
-		Processo processo2 = new ProcessoOriginario(new ProcessoId(2L), new ClasseId("HC"), 1L, new PeticaoId(2L), partes, pecas, null);
+		Processo processo2 = new ProcessoOriginario(new ProcessoId(2L), new ClasseId("HC"), 1L, new PeticaoId(2L), partes, pecas,
+				null, new Date(), MeioTramitacao.ELETRONICO, null);
 		
 		assertFalse(processo1.sameIdentityAs(processo2));
 	}
@@ -139,7 +148,8 @@ public class ProcessoOriginarioUnitTests {
 	@Test
 	public void comparaProcessosComHashesDiferentes() {
 		Processo processo1 = processo();
-		Processo processo2 = new ProcessoOriginario(new ProcessoId(2L), new ClasseId("HC"), 1L, new PeticaoId(2L), partes, pecas, null);
+		Processo processo2 = new ProcessoOriginario(new ProcessoId(2L), new ClasseId("HC"), 1L, new PeticaoId(2L), partes, pecas,
+				null, new Date(), MeioTramitacao.ELETRONICO, null);
 		
 		assertFalse(processo1.hashCode() == processo2.hashCode());
 	}
