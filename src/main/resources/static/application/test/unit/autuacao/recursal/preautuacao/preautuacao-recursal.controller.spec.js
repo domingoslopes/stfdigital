@@ -52,23 +52,18 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $state, messages, _properties_, ClasseService, PeticaoService) {
+		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $state, messages, _properties_, ProcessoService) {
 			$httpBackend = _$httpBackend_;
 			properties = _properties_;
 			
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/16').respond(mockPeticao);
 			$httpBackend.expectGET(properties.apiUrl + '/classes/tipoprocesso/recursal').respond(classesRecursais);
 			
-			scope = $rootScope.$new();
-			
 			controller = $controller('PreautuacaoRecursalController', {
-				$scope: scope,
 				$stateParams: {resources: [16]},
 				messages: messages,
 				properties: properties,
-				$state: $state,
-				ClasseService: ClasseService,
-				PeticaoService: PeticaoService
+				ProcessoService: ProcessoService
 			});
 			
 			$httpBackend.flush();

@@ -10,7 +10,7 @@
 	describe('Directive: TarefaActions', function() {
 		var rootScope, compile, tarefaService;
 		
-		var tarefa = {responsave: 'Chapolin', dono: true};
+		var tarefa = {responsavel: 'Chapolin', dono: true};
 
 		beforeEach(module('appDev'));
 
@@ -42,7 +42,7 @@
 			var iScope = template.isolateScope();
 			
 			expect(template[0].outerHTML).not.toBeNull();
-			expect(iScope.tarefa).toBe(tarefa);
+			expect(iScope.tarefa).toEqual(tarefa);
 		});
 		
 		it('Deveria compilar a diretiva de tarefa para vários processos', function() {
@@ -54,7 +54,7 @@
 			var iScope = template.isolateScope();
 			
 			expect(template[0].outerHTML).not.toBeNull();
-			expect(iScope.tarefa).toBe(tarefa);
+			expect(iScope.tarefa).toEqual(tarefa);
 		});
 
 	});

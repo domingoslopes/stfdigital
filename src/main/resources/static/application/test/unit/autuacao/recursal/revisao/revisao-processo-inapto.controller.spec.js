@@ -8,24 +8,6 @@
 (function() {
 	'use strict';
 	
-	var mockPeticao = {
-		ano: 2016,
-		apensos: 1,
-		classe: "RE",
-		formaRecebimento: "SEDEX",
-		id: 17,
-		identificacao: "9/2016",
-		numero: 9,
-		numeroSedex: "3",
-		partes: {PoloAtivo: [], PoloPassivo: []},
-		pecas: [],
-		preferencias: null,
-		processoWorkflowId: 10044,
-		tipo: "PeticaoFisica",
-		tipoProcesso: "RECURSAL",
-		volumes: 1
-	};
-	
 	var mockProcesso = {
 		assuntos: [],
 		classe: "RE",
@@ -59,24 +41,22 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $state, messages, _properties_, ClasseService, PeticaoService) {
+		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $state, messages, _properties_, ProcessoService) {
 			$httpBackend = _$httpBackend_;
 			properties = _properties_;
 			
 			$httpBackend.expectGET(properties.apiUrl + '/motivos').respond(mockMotivos);
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/17/processo').respond(mockProcesso);
-			$httpBackend.expectGET(properties.apiUrl + '/peticoes/17').respond(mockPeticao);
 			
 			var scope = $rootScope.$new();
 			
 			controller = $controller('RevisaoProcessosInaptosController', {
 				$scope: scope,
-				$stateParams: {resources: [17]},
+				$stateParams: {resources: [17], task: { id : '1', metadado : { informacao : '1', tipoInformacao: 'PeticaoFisica' }}},
 				messages: messages,
 				properties: properties,
 				$state: $state,
-				ClasseService: ClasseService,
-				PeticaoService: PeticaoService
+				ProcessoService: ProcessoService
 			});
 			
 			$httpBackend.flush();

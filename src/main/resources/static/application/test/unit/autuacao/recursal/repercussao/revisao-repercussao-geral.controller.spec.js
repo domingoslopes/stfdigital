@@ -52,27 +52,6 @@
 		"observacaoAnalise": "123"
 	};
 	
-	var mockPeticao = {
-		ano: 2016,
-		apensos: 2,
-		classe: "RE",
-		formaRecebimento: "SEDEX",
-		id: 14,
-		identificacao: "6/2016",
-		numero: 6,
-		numeroSedex: "3",
-		partes: {
-			PoloAtivo: [],
-			PoloPassivo: []
-		},
-		pecas: [],
-		preferencias: null,
-		processoWorkflowId: 7511,
-		tipo: "PeticaoFisica",
-		tipoProcesso: "RECURSAL",
-		volumes: 1
-	};
-	
 	var mockTese = [{
 		assuntos: [
 	        {codigo: "4292", descricao: "Jurisdição e Competência"},
@@ -94,21 +73,18 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $log, messages, properties, $state, ProcessoService, PeticaoService) {
+		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, messages, properties, $state, ProcessoService) {
 			$httpBackend = _$httpBackend_;
 			$httpBackend.expectGET(properties.apiUrl + '/peticoes/14/processo').respond(mockProcessoRecursal);
-			$httpBackend.expectGET(properties.apiUrl + '/peticoes/14').respond(mockPeticao);
 			
 			scope = $rootScope.$new();
 			controller = $controller('RevisaoRepercussaoGeralController', {
 				$scope: scope,
-				$stateParams: {resources: [14]},
-				$log: $log,
+				$stateParams: {resources: [14], task: { id : '1', metadado : { informacao : '1', tipoInformacao: 'PeticaoFisica' }}},
 				messages: messages,
 				properties: properties,
 				$state: $state,
-				ProcessoService: ProcessoService,
-				PeticaoService: PeticaoService
+				ProcessoService: ProcessoService
 			});
 			
 			$httpBackend.flush();
@@ -123,10 +99,6 @@
 			expect(controller.observacao).toEqual(mockProcessoRecursal.observacaoAnalise);
 			expect(controller.teses).toEqual(mockProcessoRecursal.teses);
 			expect(controller.assuntos).toEqual(mockProcessoRecursal.assuntos);
-		});
-		
-		it('Deveria carregar informações da petição', function() {
-			expect(controller.peticao).toEqual(mockPeticao);
 		});
 		
 		it('Deveria validar o formulário quando os parâmetros não forem alterados', function() {
