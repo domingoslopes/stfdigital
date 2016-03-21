@@ -440,8 +440,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	public void atribuirPreferencias(final Set<PreferenciaId> preferencias) {
 		Validate.notNull(preferencias, "processo.preferencias.required");
 		
-		this.preferencias.addAll(preferencias);
 		this.preferencias.retainAll(preferencias);
+		this.preferencias.addAll(preferencias);
 	}
 	
 	public void atribuirPartes(final Set<ParteProcesso> partes, final TipoPolo polo) {

@@ -68,7 +68,7 @@ public class PeticaoDto {
 	
 	public PeticaoDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes,
 			List<PecaDto> pecas, Long processoWorkflowId, String tipoProcesso, Long dataCadastramento, Long dataAutuacao,
-			String meioTramitacao, String sigilo) {
+			String meioTramitacao, String sigilo, List<PreferenciaDto> preferencias) {
 		this.id = id;
 		this.numero = numero;
 		this.ano = ano;
@@ -82,6 +82,7 @@ public class PeticaoDto {
 		this.dataAutuacao = dataAutuacao;
 		this.meioTramitacao = meioTramitacao;
 		this.sigilo = sigilo;
+		this.preferencias = preferencias;
 	}
 	
 	public Long getId() {
