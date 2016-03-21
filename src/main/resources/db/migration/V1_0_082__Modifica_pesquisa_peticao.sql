@@ -1,5 +1,5 @@
 insert into plataforma.criterio_pesquisa (seq_criterio_pesquisa, dsc_criterio, dsc_campo, dsc_indice, tip_criterio, dsc_api, dsc_valor, dsc_descricao)
-values (plataforma.seq_criterio_pesquisa.nextval, 'Meio de tramitação', 'meioTramitacao', 'autuacao', 'SELECAO', '/peticoes/meiosTramitacao', 'nome', 'descricao');
+values (plataforma.seq_criterio_pesquisa.nextval, 'Meio de tramitação', 'meioTramitacao', 'autuacao', 'SELECAO', '/meiosTramitacao', 'nome', 'descricao');
 
 insert into plataforma.criterio_pesquisa (seq_criterio_pesquisa, dsc_criterio, dsc_campo, dsc_indice, tip_criterio)
 values (plataforma.seq_criterio_pesquisa.nextval, 'Ano', 'ano', 'autuacao', 'NUMERO');
