@@ -11,14 +11,14 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel("DTO usado para transportar dados sobre juízo de origem.")
-public class JuizoOrigemDto {
+public class TribunalJuizoDto {
 	@ApiModelProperty("Código do juízo.")
 	private Long codigo;
 	
 	@ApiModelProperty("Nome do juízo.")
 	private String nome;
 	
-	public JuizoOrigemDto(Long codigo, String nome){
+	public TribunalJuizoDto(Long codigo, String nome){
 		this.codigo = codigo;
 		this.nome = nome;
 	}

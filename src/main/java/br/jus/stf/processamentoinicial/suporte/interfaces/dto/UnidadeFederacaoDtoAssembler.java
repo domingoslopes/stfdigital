@@ -2,6 +2,8 @@ package br.jus.stf.processamentoinicial.suporte.interfaces.dto;
 
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.UnidadeFederacao;
+
 /**
  * Cria objetos UnidadeFederacaoDto.
  * 
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UnidadeFederacaoDtoAssembler {
-	public UnidadeFederacaoDto toDo(){
-		return null;
+	public UnidadeFederacaoDto toDo(UnidadeFederacao unidadeFederacao){
+		return new UnidadeFederacaoDto(unidadeFederacao.toLong(), unidadeFederacao.nome(), unidadeFederacao.sigla());
 	}
 }

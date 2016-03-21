@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.jus.stf.processamentoinicial.suporte.interfaces.dto.JuizoOrigemDto;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.TribunalJuizoDto;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -19,10 +19,10 @@ import com.wordnik.swagger.annotations.ApiOperation;
  */
 @RestController
 @RequestMapping("/api/juizo-origem")
-public class JuizoOrigemRestResource {
+public class TribunalJuizoRestResource {
 	@ApiOperation("Retorna uma lista de juízos de origem")
 	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<JuizoOrigemDto> listar(){
+	public List<TribunalJuizoDto> listar(){
 		return null;
 	}
 }
