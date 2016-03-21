@@ -11,6 +11,7 @@
 var HtmlReporter = require('protractor-html-screenshot-reporter');
 var baseDir = 'src/main/resources/static';
 var port = 3000;
+var JasmineTestContainerSupport = require('jasmine-test-container-support');
 
 exports.config = {
 	jasmineNodeOpts : {
@@ -32,9 +33,12 @@ exports.config = {
 	
 	onPrepare: function() {
 		browser.driver.manage().window().maximize();
-		jasmine.getEnv().addReporter(new HtmlReporter({
-			baseDirectory : 'src/main/resources/static/application/test/e2e/results',
-			takeScreenShotsOnlyForFailedSpecs: true
-		}));
+		browser.getCapabilities().then(function() {
+			jasmine.getEnv().currentSpec = { description : 'TESTE'};
+			jasmine.getEnv().addReporter(new HtmlReporter({
+				baseDirectory : 'src/main/resources/static/application/test/e2e/results',
+				takeScreenShotsOnlyForFailedSpecs: true
+			}));
+		});
 	}
 };
