@@ -23,7 +23,7 @@ import com.wordnik.swagger.annotations.ApiOperation;
  *
  */
 @RestController
-@RequestMapping("/api/juizo-origem")
+@RequestMapping("/api/tribunais-juizos")
 public class TribunalJuizoRestResource {
 	
 	@Autowired
