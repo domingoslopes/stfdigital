@@ -35,6 +35,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classe;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -325,7 +326,7 @@ public class ProcessoApplicationService {
 	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
 	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
 	 */
-	public void salvarProcessoParaEnvio(Classe classe, String sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, List<OrigemProcesso> origens, 
+	public void salvarProcessoParaEnvio(Classe classe, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, List<OrigemProcesso> origens, 
 			Assunto assunto, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
 		
 	}
@@ -342,7 +343,7 @@ public class ProcessoApplicationService {
 	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
 	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
 	 */
-	public void enviarProcesso(Classe classe, String sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, List<OrigemProcesso> origens, 
+	public void enviarProcesso(Classe classe, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, List<OrigemProcesso> origens, 
 			Assunto assunto, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
 		
 	}
