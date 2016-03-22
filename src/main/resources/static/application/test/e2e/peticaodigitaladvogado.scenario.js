@@ -43,12 +43,8 @@
 		expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
 		browser.ignoreSynchronization = false;
 	};
-		
-	describe('Autuação de Petições Digitais Originárias:', function() { 
-		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
+	
+	describe('Autuação de Petições Digitais Originárias', function() { 
 		
 		it('Deveria logar como peticionador', function() {
 			login('peticionador');

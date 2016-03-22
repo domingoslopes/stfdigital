@@ -21,11 +21,7 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Pesquisa de petição:', function() {
-		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
+	describe('Pesquisa de petição', function() {
 		
 		it('Deveria logar como peticionador', function() {
 			login('peticionador');

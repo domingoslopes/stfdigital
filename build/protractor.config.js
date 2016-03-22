@@ -9,14 +9,15 @@
 'use strict';
 
 var HtmlReporter = require('protractor-html-screenshot-reporter');
+var SpecReporter = require('jasmine-spec-reporter');
 var baseDir = 'src/main/resources/static';
 var port = 3000;
-var JasmineTestContainerSupport = require('jasmine-test-container-support');
 
 exports.config = {
 	jasmineNodeOpts : {
 		showColors : true,
-		defaultTimeoutInterval : 40000
+		defaultTimeoutInterval : 40000,
+		print: function() {}
 	},
 
 	specs : [ baseDir + '/application/test/e2e/**/{pattern}.scenario.js' ],
@@ -34,7 +35,7 @@ exports.config = {
 	onPrepare: function() {
 		browser.driver.manage().window().maximize();
 		browser.getCapabilities().then(function() {
-			jasmine.getEnv().currentSpec = { description : 'TESTE'};
+			jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
 			jasmine.getEnv().addReporter(new HtmlReporter({
 				baseDirectory : 'src/main/resources/static/application/test/e2e/results',
 				takeScreenShotsOnlyForFailedSpecs: true

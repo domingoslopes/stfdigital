@@ -3,6 +3,8 @@ package br.jus.stf.jurisprudencia.controletese.domain.model;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -12,7 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import br.jus.stf.shared.AssuntoId;
 
 @Entity
-@Table(name = "ASSUNTO", schema = "JURISPRUDENCIA", uniqueConstraints = @UniqueConstraint(columnNames = {"DSC_ASSUNTO"}))
+@Table(name = "ASSUNTO", schema = "JURISPRUDENCIA", uniqueConstraints = @UniqueConstraint(columnNames = {"DSC_ASSUNTO", "COD_ASSUNTO_PAI"}))
 public class Assunto implements br.jus.stf.shared.stereotype.Entity<Assunto, AssuntoId> {
 	
 	@EmbeddedId
@@ -21,16 +23,21 @@ public class Assunto implements br.jus.stf.shared.stereotype.Entity<Assunto, Ass
 	@Column(name = "DSC_ASSUNTO", nullable = false)
 	private String descricao;
 	
+	@ManyToOne
+	@JoinColumn(name = "COD_ASSUNTO_PAI")
+	private Assunto assuntoPai;
+	
 	Assunto() {
 		
 	}
 	
-	public Assunto(final AssuntoId codigo, final String descricao) {
+	public Assunto(final AssuntoId codigo, final String descricao, final Assunto assuntoPai) {
 		Validate.notNull(codigo, "assunto.codigo.required");
 		Validate.notBlank(descricao, "assunto.descricao.required");
 		
 		this.codigo = codigo;
 		this.descricao = descricao;
+		this.assuntoPai = assuntoPai;
 	}
 	
 	public String descricao() {
@@ -40,6 +47,10 @@ public class Assunto implements br.jus.stf.shared.stereotype.Entity<Assunto, Ass
 	@Override
 	public AssuntoId id() {
 		return this.codigo;
+	}
+	
+	public Assunto assuntoPai() {
+		return assuntoPai;
 	}
 	
 	@Override

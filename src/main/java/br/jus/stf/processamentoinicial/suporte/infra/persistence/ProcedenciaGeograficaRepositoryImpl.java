@@ -40,13 +40,13 @@ public class ProcedenciaGeograficaRepositoryImpl extends SimpleJpaRepository<Pai
 	}
 	
 	public List<UnidadeFederacao> findAllUnidadeFederacao() {
-		TypedQuery<UnidadeFederacao> query = entityManager.createQuery("SELECT uf FROM UnidadeFederacao uf", UnidadeFederacao.class);
+		TypedQuery<UnidadeFederacao> query = entityManager.createQuery("SELECT uf FROM UnidadeFederacao uf ORDER BY uf.sigla", UnidadeFederacao.class);
 		
 		return query.getResultList();
 	}
 	
 	public List<UnidadeFederacao> findUnidadeFederacaoByPais(Pais pais) {
-		TypedQuery<UnidadeFederacao> query = entityManager.createQuery("SELECT uf FROM UnidadeFederacao uf WHERE uf.pais = :pais", UnidadeFederacao.class);
+		TypedQuery<UnidadeFederacao> query = entityManager.createQuery("SELECT uf FROM UnidadeFederacao uf WHERE uf.pais = :pais ORDER BY uf.sigla", UnidadeFederacao.class);
 		query.setParameter("pais", pais);
 		
 		return query.getResultList();

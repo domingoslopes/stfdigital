@@ -10,9 +10,6 @@
 	'use strict';
 	
 	describe('Realizar cadastro', function() {
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
 		
 		it('Deveria acessar a página de login', function() {
 			browser.get('/login');

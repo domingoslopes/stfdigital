@@ -47,11 +47,7 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Autuação de Petições Físicas Recursais:', function() {
-		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
+	describe('Autuação de Petições Físicas Recursais', function() {
 		
 		it('Deveria logar como recebedor', function() {
 			login('recebedor');

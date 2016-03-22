@@ -40,11 +40,7 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Autuação de Petições Físicas Originárias (teste do fluxo de peticao devolvida):', function() {
-		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
+	describe('Autuação de Petições Físicas Originárias (teste do fluxo de petição devolvida)', function() {
 		
 		it('Deveria logar como recebedor', function() {
 			login('recebedor');

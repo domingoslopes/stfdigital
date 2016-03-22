@@ -38,12 +38,8 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Autuação de Petições Físicas Originárias:', function() {
-		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
-		
+	describe('Autuação de Petições Físicas Originárias', function() {
+
 		it('Deveria logar como recebedor', function() {
 			login('recebedor');
 		});
