@@ -85,7 +85,7 @@ public class ProcessoFactory {
 			Long numero = processoRepository.nextNumero(peticao.classeProcessual());
 			processo = new ProcessoRecursal(id, peticao.classeProcessual(), numero, peticao.id(),
 					peticao.preferencias(), peticao.dataCadastramento(), peticao.meioTramitacao(),
-					peticao.sigilo());
+					peticao.sigilo(), 0L);
 		}
 		
 		return processo;

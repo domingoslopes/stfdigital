@@ -62,6 +62,9 @@ public class ProcessoRecursal extends Processo {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Origem.class)
 	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
 	private Set<Origem> origens = new HashSet<Origem>(0);
+	
+	@Column(name = "QTD_RECURSO")
+	private Long quantidadeRecursos;
 
 	ProcessoRecursal() {
 
@@ -69,23 +72,17 @@ public class ProcessoRecursal extends Processo {
 	
 	public ProcessoRecursal(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
 			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
-			final Sigilo sigilo) {
+			final Sigilo sigilo, final Long quantidadeRecursos) {
 		super(id, classe, numero, peticao, ProcessoSituacao.A_ANALISAR, preferencias, dataRecebimento,
 				meioTramitacao, sigilo);
+		
+		Validate.isTrue(quantidadeRecursos >= 0, "processoRecursal.quantidadeRecursos.invalid");
+		
+		this.quantidadeRecursos = quantidadeRecursos;
 		
 		if(isCriminalEleitoral()) {
 			super.aAutuar();
 		}
-	}
-	
-	public ProcessoRecursal(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
-			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
-			final Sigilo sigilo, final Set<Origem> origens) {
-		this(id, classe, numero, peticao, preferencias, dataRecebimento, meioTramitacao, sigilo);
-		
-		Validate.notEmpty(origens, "processoRecursal.origens.required");
-		
-		this.origens = origens;
 	}
 
 	@Override
@@ -132,6 +129,10 @@ public class ProcessoRecursal extends Processo {
 		
 		this.origens.retainAll(origens);
 		this.origens.addAll(origens);
+	}
+	
+	public Long quantidadeRecursos() {
+		return quantidadeRecursos;
 	}
 	
 	public void autuar(Set<AssuntoId> assuntos, Set<ParteProcesso> poloAtivo, Set<ParteProcesso> poloPassivo) {

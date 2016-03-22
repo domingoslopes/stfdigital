@@ -30,7 +30,7 @@ public class AssuntoIntegrationTests extends AbstractIntegrationTests {
 	
 	@Test
 	public void listarAssuntosPorDescricao() throws Exception {
-		mockMvc.perform(get("/api/assuntos?termo=direito")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(4)));
+		mockMvc.perform(get("/api/assuntos?termo=direito")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(6)));
 	}
 	
 	@Test
