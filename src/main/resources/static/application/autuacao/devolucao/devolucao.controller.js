@@ -26,34 +26,25 @@
 		});
 		
 		PeticaoService.consultarMotivoDevolucao().then(function(data){
-			devolucao.motivosDevolucao = data;
+			devolucao.motivosDevolucao = data.data;
 		});
 		
-		devolucao.carregarModelos = function(){
-			ModeloService.consultarModeloPelaDevoluccao(motivoDevolucao).then(function(modelos){
-				devolucao.modelos = modelos;
-			});
-		};
-		
-/*		var recuperarIdModelo = function(tipoDevolucao) {
-			for (var i in devolucao.tiposDevolucao) {
-				if (devolucao.tiposDevolucao[i].id == tipoDevolucao) {
-					return devolucao.tiposDevolucao[i].modelo;
-				}
-			}
-		};*/
-		
-
 		$scope.$watch('devolucao.motivoDevolucao', function() {
 			if (devolucao.motivoDevolucao != '') {
-				ModeloService.consultar(recuperarIdModelo(devolucao.motivoDevolucao)).then(function(modelo) {
-					devolucao.modelo = modelo;
-					ModeloService.extrairTags(devolucao.modelo.documento).then(function(tags) {
-						devolucao.tags = tags;
-					});
+				ModeloService.consultarModelosPorMotivo(devolucao.motivoDevolucao).then(function(modelos){
+					devolucao.modelos = modelos;
 				});
 			}
 		});
+		
+		devolucao.extrairTags = function(){
+			ModeloService.consultar(devolucao.modeloId).then(function(modelo) {
+				devolucao.modelo = modelo;
+				ModeloService.extrairTags(devolucao.modelo.documento).then(function(tags) {
+					devolucao.tags = tags;
+				});
+			});
+		}
 		
 		devolucao.tagsCarregadas = function() {
 			return devolucao.tags.length > 0;
@@ -113,15 +104,11 @@
 				errors = 'Você precisa selecionar <b>o motivo da devolução</b>.<br/>';
 			}
 			
-			if (!angular.isNumber(devolucao.numeroOficio)) {
-				errors += 'Você precisa informar <b>o número do ofício</b>.<br/>';
-			}
-			
 			if (errors) {
 				messages.error(errors);
 				return false;
 			}
-			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.motivoDevolucao, devolucao.numeroOficio));
+			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.modeloId, devolucao.motivoDevolucao));
 			return true;
 		};
 		
@@ -130,11 +117,10 @@
 			messages.success('Petição devolvida com sucesso.');
 		};
 		
-		function DevolverCommand(peticaoId, motivoDevolucao, numeroOficio, documento) {
+		function DevolverCommand(peticaoId, modeloId , documento) {
 			var command = {};
 			command.peticaoId = peticaoId;
-			command.motivoDevolucao = motivoDevolucao; 
-			command.numeroOficio = numeroOficio;
+			command.modeloId = modeloId; 
 			return command;
 		}
 	});

@@ -23,8 +23,8 @@
 					return response.data;
 				});
 			}, 
-			consultarModeloPelaDevoluccao : function(idDevolucao){
-				return $http.get(properties.apiUrl + "/modelos/" + id).then(function(response) {
+			consultarModelosPorMotivo : function(idDevolucao){
+				return $http.get(properties.apiUrl + "/motivos-devolucao/" + idDevolucao + "/modelos").then(function(response) {
 					return response.data;
 				});
 			}

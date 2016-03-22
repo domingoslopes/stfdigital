@@ -122,9 +122,9 @@
 		    
 			var devolucaoPage = new DevolucaoPage();
 			
-			devolucaoPage.classificar('Remessa Indevida');
+			devolucaoPage.classificarMotivo('Remessa Indevida');
 			
-			devolucaoPage.registrarNumeroOficio();
+			devolucaoPage.classificarModelo('Ofício de devolução');
 			
 			devolucaoPage.aguardarTagsCarregadas();
 			

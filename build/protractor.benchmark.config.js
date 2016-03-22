@@ -34,7 +34,7 @@ exports.config = {
 	allScriptsTimeout: 300000,
 	
 	seleniumArgs : [ 
-	    '-browserTimeout=60' 
+	    '-browserTimeout=100' 
 	],
 	
 	baseUrl : 'https://digital.stf.jus.br:' + port,

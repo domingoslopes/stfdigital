@@ -15,8 +15,14 @@
 	var DevolucaoPage = function () {
 		var devolucao = this;
 		
-		devolucao.classificar = function(tipo){
+		devolucao.classificarMotivo = function(tipo){
 			utils.select('div#s2id_motivoDevolucao', tipo);
+			browser.waitForAngular();
+		};
+		
+		devolucao.classificarModelo = function(tipo){
+			utils.select('div#s2id_modelo', tipo);
+			browser.waitForAngular();
 		};
 		
 		devolucao.registrarNumeroOficio = function(){
@@ -33,7 +39,8 @@
 		};
 		
 		devolucao.finalizar = function() {
-			element(by.id('btn_exec_devolver-peticao')).click();
+			browser.sleep(16000);
+			element(by.id('btn_exec_finalizar-texto-devolucao')).click();
 		};
 	};
 

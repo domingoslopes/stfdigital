@@ -26,12 +26,6 @@
 		volumes: 1
 	};
 	
-	var classesRecursais = [
-	    {sigla: "RE", nome: "Recurso Extraordinário"},
-		{sigla: "ARE", nome: "Recurso Extraordinário com Agravo"},
-		{sigla: "AI", nome: "Agravo de Instrumento"}
-	];
-	
 	var mockMotivoDevolucao = [
 	    {id : 1, descricao : "Remessa Indevida"}, 
 	    {id : 2, descricao : "Transitado"}, 
@@ -55,13 +49,12 @@
 		
 		beforeEach(module('appDev'));
 		
-		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $state, messages, _properties_, ClasseService, PeticaoService) {
+		beforeEach(inject(function(_$httpBackend_, $rootScope, $controller, $state, messages, _properties_, PeticaoService, ModeloService) {
 			$httpBackend = _$httpBackend_;
 			properties = _properties_;
 			
-			$httpBackend.expectGET(properties.apiUrl + '/peticoes/16').respond(mockPeticao);
-			$httpBackend.expectGET(properties.apiUrl + '/tipodevolucao').respond(mockMotivoDevolucao);
-			$httpBackend.expectGET(properties.apiUrl + '/classes/tipoprocesso/recursal').respond(classesRecursais);
+			$httpBackend.expectGET(properties.apiUrl + '/peticoes/16/processo-workflow').respond(mockPeticao);
+			$httpBackend.expectGET(properties.apiUrl + '/motivos-devolucao').respond(mockMotivoDevolucao);
 			
 			scope = $rootScope.$new();
 			
@@ -71,8 +64,8 @@
 				messages: messages,
 				properties: properties,
 				$state: $state,
-				ClasseService: ClasseService,
-				PeticaoService: PeticaoService
+				PeticaoService: PeticaoService,
+				ModeloService : ModeloService
 			});
 			
 			$httpBackend.flush();
@@ -81,14 +74,12 @@
 		it('Deveria inicializar o controlador', function() {
 			expect(controller).not.toBeNull();
 		});
-
+		
 		it('Deveria carregar corretamente os modelos pelo motivo de devolução selecionado', function() {
-			controller.motivoDevolucao = "transitado";
-			$httpBackend.expectGET(properties.apiUrl + '/tipoDevolucao/transitado/modelos').respond(mockModelos);
-			controller.carregarModelos();
-			$httpBackend.flush();
+			controller.motivoDevolucao = 1;
+			$httpBackend.expectGET(properties.apiUrl + '/motivos-devolucao/1/modelos').respond(mockModelos);
 			
-			expect(controller.modelos).toEqual(mockModelos);
+			expect(controller.modelos.length).toEqual(3);
 		});
 		
 	/*	it('Deveria não validar a pré-autuação quando não for selecionada uma classe', function() {

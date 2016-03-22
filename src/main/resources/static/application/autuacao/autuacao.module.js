@@ -101,6 +101,15 @@
 					controller: 'PeticionamentoAdvogadoController'
 				}
 			}
+		}).state('enviar-processo', {
+			parent: 'action.autuacao',
+			url: '/envio/processo',
+			params : { resources : [] },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/envio/envio-processo.tpl.html'
+				}
+			}
 		}).state('registrar-peticao-eletronica-orgao', {
 			parent: 'registrar-peticao',
 			url: '/orgao',

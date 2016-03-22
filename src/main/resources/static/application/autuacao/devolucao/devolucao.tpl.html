@@ -31,9 +31,9 @@
 								<div class="col-md-6">
                                     <div class="form-group form-group-default">
                                         <label>Modelo</label>
-                                        <select ui-select2 id="modelo" ng-model="devolucao.modeloId" class="full-width">
+                                        <select ui-select2 id="modelo" ng-model="devolucao.modeloId" ng-change="devolucao.extrairTags()" class="full-width">
                                             <option value=""></option>
-                                            <option ng-repeat="modelo in devolucao.modelos" value="{{modeloId.id}}">{{modelo.nome}}</option>
+                                            <option ng-repeat="modelo in devolucao.modelos" value="{{modelo.id}}">{{modelo.nome}}</option>
 			                            </select>
                                     </div>
                                 </div>                                
