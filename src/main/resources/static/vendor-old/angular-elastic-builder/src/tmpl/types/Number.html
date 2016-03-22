@@ -1,0 +1,21 @@
+<span class="number-rule">
+  <select data-ng-model="rule.subType" data-ui-select2="uiSelectOptions">
+    <optgroup label="Numeral">
+      <option value="equals">=</option>
+      <option value="notEquals">!=</option>
+      <option value="gt">&gt;</option>
+      <option value="gte">&ge;</option>
+      <option value="lt">&lt;</option>
+      <option value="lte">&le;</option>
+    </optgroup>
+
+    <optgroup label="Gen&eacute;rico">
+      <option value="exists">Existe</option>
+      <option value="notExists">N&atilde;o existe</option>
+    </optgroup>
+  </select>
+
+  <!-- Range Fields -->
+  <input type="number" class="form-control" data-ng-if="inputNeeded()"
+    data-ng-model="rule.value" min="{{ guide.minimum }}" max="{{ guide.maximum }}" />
+</span>
