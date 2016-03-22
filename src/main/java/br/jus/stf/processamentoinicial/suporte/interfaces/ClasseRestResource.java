@@ -53,4 +53,9 @@ public class ClasseRestResource {
 		return classeRepository.findPreferenciaByClasse(classeId).stream().map(pref -> preferenciaDtoAssembler.toDto(pref)).collect(Collectors.toList());
 	}
 	
+	@RequestMapping(value = "/preferencias", method = RequestMethod.GET)
+	public List<PreferenciaDto> consultar() {
+		return classeRepository.findAllPreferencia().stream().map(pref -> preferenciaDtoAssembler.toDto(pref)).collect(Collectors.toList());
+	}
+	
 }

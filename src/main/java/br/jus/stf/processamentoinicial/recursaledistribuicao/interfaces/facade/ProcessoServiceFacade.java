@@ -33,6 +33,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.Proc
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classe;
 import br.jus.stf.processamentoinicial.suporte.domain.model.ClasseRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.AssuntoId;
@@ -297,8 +298,9 @@ public class ProcessoServiceFacade {
 		Classe classe = Optional.ofNullable(classeRepository.findOne(new ClasseId(classeId))).orElseThrow(IllegalArgumentException::new);
 		Set<PreferenciaId> preferencias = Optional.ofNullable(idsPreferencias).map(ids -> ids.stream().map(id -> new PreferenciaId(id)).collect(Collectors.toSet())).orElse(Collections.emptySet());
 		Assunto assunto = Optional.ofNullable(assuntoRepository.findOne(new AssuntoId(assuntoId))).orElseThrow(IllegalArgumentException::new);
+		Sigilo sigiloProcesso = Sigilo.valueOf(sigilo); 
 		
-		processoApplicationService.salvarProcessoParaEnvio(classe, sigilo, numeroRecursos, preferencias, origens, assunto, partesPoloAtivo, partesPoloPassivo);
+		processoApplicationService.salvarProcessoParaEnvio(classe, sigiloProcesso, numeroRecursos, preferencias, origens, assunto, partesPoloAtivo, partesPoloPassivo);
 	}
 	
 	/**
@@ -318,7 +320,8 @@ public class ProcessoServiceFacade {
 		Classe classe = Optional.ofNullable(classeRepository.findOne(new ClasseId(classeId))).orElseThrow(IllegalArgumentException::new);
 		Set<PreferenciaId> preferencias = Optional.ofNullable(idsPreferencias).map(ids -> ids.stream().map(id -> new PreferenciaId(id)).collect(Collectors.toSet())).orElse(Collections.emptySet());
 		Assunto assunto = Optional.ofNullable(assuntoRepository.findOne(new AssuntoId(assuntoId))).orElseThrow(IllegalArgumentException::new);
+		Sigilo sigiloProcesso = Sigilo.valueOf(sigilo); 
 		
-		processoApplicationService.enviarProcesso(classe, sigilo, numeroRecursos, preferencias, origens, assunto, partesPoloAtivo, partesPoloPassivo);
+		processoApplicationService.enviarProcesso(classe, sigiloProcesso, numeroRecursos, preferencias, origens, assunto, partesPoloAtivo, partesPoloPassivo);
 	}
 }

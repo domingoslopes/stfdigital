@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.Peticao;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoEletronica;
 import br.jus.stf.processamentoinicial.autuacao.domain.model.PeticaoFisica;
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.PreferenciaDto;
 import br.jus.stf.shared.ClasseId;
 
 @Component
@@ -61,6 +63,11 @@ public class PeticaoDtoAssembler {
 		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
 		Long processoWorkflowId = peticao.processosWorkflow().iterator().next().id().toLong();
 		String tipoProcesso = peticao.tipoProcesso().toString();
+		Long dataAutuacao = Optional.ofNullable(peticao.dataAutuacao()).isPresent() ? peticao.dataAutuacao().getTime() : null;
+		String meioTramitacao = peticao.meioTramitacao().toString();
+		String sigilo = peticao.sigilo().toString();
+		List<PreferenciaDto> preferencias = peticao.preferencias().stream()
+				.map(p -> new PreferenciaDto(p.toLong(), "")).collect(Collectors.toList());
 		
 		peticao.partesPoloAtivo().forEach(parte -> partesPoloAtivo.add(parte.pessoaId().toLong()));
 		
@@ -72,9 +79,11 @@ public class PeticaoDtoAssembler {
 		peticao.pecas().forEach(peca -> pecas.add(pecaDtoAssembler.toDto(peca)));
 		
 		if (isFisica) {
-			return new PeticaoFisicaDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId, tipoProcesso);
+			return new PeticaoFisicaDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId,
+					tipoProcesso, peticao.dataCadastramento().getTime(), dataAutuacao, meioTramitacao, sigilo, preferencias);
 		} else {
-			return new PeticaoDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId, tipoProcesso);
+			return new PeticaoDto(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId,
+					tipoProcesso, peticao.dataCadastramento().getTime(), dataAutuacao, meioTramitacao, sigilo, preferencias);
 		}
 
 	}

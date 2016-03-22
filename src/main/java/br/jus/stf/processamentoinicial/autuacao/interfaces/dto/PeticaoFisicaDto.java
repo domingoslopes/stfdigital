@@ -3,6 +3,8 @@ package br.jus.stf.processamentoinicial.autuacao.interfaces.dto;
 import java.util.List;
 import java.util.Map;
 
+import br.jus.stf.processamentoinicial.suporte.interfaces.dto.PreferenciaDto;
+
 import com.wordnik.swagger.annotations.ApiModel;
 
 /**
@@ -16,8 +18,11 @@ public class PeticaoFisicaDto extends PeticaoDto {
 	private String formaRecebimento;
 	private String numeroSedex;
 
-	public PeticaoFisicaDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes, List<PecaDto> pecas, Long processoWorkflowId, String tipoProcesso) {
-		super(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId, tipoProcesso);
+	public PeticaoFisicaDto(Long id, Long numero, Short ano, String identificacao, String classe, Map<String, List<Long>> partes,
+			List<PecaDto> pecas, Long processoWorkflowId, String tipoProcesso, Long dataCadastramento, Long dataAutuacao,
+			String meioTramitacao, String sigilo, List<PreferenciaDto> preferencias) {
+		super(id, numero, ano, identificacao, classe, partes, pecas, processoWorkflowId, tipoProcesso,
+				dataCadastramento, dataAutuacao, meioTramitacao, sigilo, preferencias);
 	}
 	
 	/**
