@@ -56,7 +56,7 @@ public class ClasseRepositoryImpl extends SimpleJpaRepository<Classe, ClasseId> 
 	}
 	
 	public List<Preferencia> findPreferenciaByClasse(ClasseId classeId) {
-		TypedQuery<Preferencia> query = entityManager.createQuery("SELECT pref FROM Classe clas INNER JOIN clas.preferencias pref WITH clas.sigla = :sigla", Preferencia.class);
+		TypedQuery<Preferencia> query = entityManager.createQuery("SELECT pref FROM Classe clas INNER JOIN clas.preferencias pref WHERE clas.sigla = :sigla", Preferencia.class);
 		query.setParameter("sigla", classeId);
 		
 		return query.getResultList();

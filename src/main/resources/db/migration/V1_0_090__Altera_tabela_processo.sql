@@ -3,6 +3,7 @@ update autuacao.processo proc set proc.dat_recebimento = (select peti.dat_cadast
 alter table autuacao.processo alter column dat_recebimento set not null;
 
 alter table autuacao.processo add column dat_autuacao date;
+alter table autuacao.processo add column qtd_recurso bigint;
 
 alter table autuacao.processo add tip_meio_tramitacao VARCHAR2(10);
 update autuacao.processo proc set proc.tip_meio_tramitacao = (select peti.tip_meio_tramitacao from autuacao.peticao peti where proc.seq_peticao = peti.seq_peticao);
