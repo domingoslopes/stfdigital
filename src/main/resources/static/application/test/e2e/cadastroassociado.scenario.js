@@ -64,16 +64,14 @@
 		
 	describe('Cadastrando associado como GESTOR DE CADASTRO', function() {
 		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
-		
+		principalPage = new PrincipalPage();
+		cadastroAssociado = new CadastroAssociado();
+				
 		it('Deveria logar como gestor de cadastro', function() {
 			login('gestor-cadastro');
 		});
 
 		it('Deveria navegar para a página de cadastro de associado', function() {
-			principalPage = new PrincipalPage();
 			expect(browser.isElementPresent(principalPage.conteudo)).toBeTruthy();
 			
 			// Navega até a página e espera que seja a página correta
@@ -87,7 +85,6 @@
 			    return $('#nome').isPresent();
 			});
 			
-			cadastroAssociado = new CadastroAssociado();
 			cadastroAssociado.nome("João da Silva");
 			cadastroAssociado.cpf(gerarCPFAleatorio());
 			cadastroAssociado.cargo("Servidor");
@@ -101,18 +98,16 @@
 		});
 	});
 		
-	describe('Cadastrando associado como GESTOR DE ÓRGÃO', function() {
+	xdescribe('Cadastrando associado como GESTOR DE ÓRGÃO', function() {
 		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
+		principalPage = new PrincipalPage();
+		cadastroAssociado = new CadastroAssociado();
 		
 		it('Deveria logar como gestor de órgão', function() {
 			login('gestor-orgao');
 		});
 
 		it('Deveria navegar para a página de cadastro de associado', function() {
-			principalPage = new PrincipalPage();
 			expect(browser.isElementPresent(principalPage.conteudo)).toBeTruthy;
 			
 			// Navega até a página e espera que seja a página correta
@@ -126,7 +121,6 @@
 			    return $('#nome').isPresent();
 			});
 			
-			cadastroAssociado = new CadastroAssociado();
 			cadastroAssociado.nome("João da Silva");
 			cadastroAssociado.cpf(gerarCPFAleatorio());
 			cadastroAssociado.cargo("Servidor");

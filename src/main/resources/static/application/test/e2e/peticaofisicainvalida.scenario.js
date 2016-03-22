@@ -36,11 +36,7 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Autuação de Petições Físicas Originárias (teste do fluxo de peticoes inválidas):', function() {
-		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
+	describe('Autuação de Petições Físicas Originárias (teste do fluxo de peticoes inválidas)', function() {
 		
 		it('Deveria logar como recebedor', function() {
 			login('recebedor');

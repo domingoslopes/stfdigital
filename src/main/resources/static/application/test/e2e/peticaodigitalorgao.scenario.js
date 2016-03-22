@@ -34,11 +34,7 @@
 		browser.ignoreSynchronization = false;
 	};
 		
-	describe('Autuação de Petições Digitais Originárias por Órgãos:', function() {
-		
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
+	describe('Autuação de Petições Digitais Originárias por Órgãos', function() {
 		
 		it('Deveria logar como representante', function() {
 			login('representante');

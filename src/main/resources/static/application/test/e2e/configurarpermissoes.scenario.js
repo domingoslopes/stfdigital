@@ -25,9 +25,6 @@
 	};
 	
 	describe('Configurar permissões de usuário', function() {
-		beforeEach(function() {
-			console.info('\nrodando:', jasmine.getEnv().currentSpec.description);
-		});
 		
 		it('Deveria logar como gestor de autuação', function() {
 			login('gestor-autuacao');

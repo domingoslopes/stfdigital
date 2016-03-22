@@ -18,26 +18,11 @@
 		this.dashletGestaoAutuacao = element(by.cssContainingText('.panel-title', 'Gráfico de Autuações'));
 
 		this.iniciarProcesso = function (idIcon) {
+			
 			browser.waitForAngular();
-//			browser.actions().mouseMove(element(by.css('i.pg-home'))).perform();
 			var elem = element(by.id(idIcon));
-//			browser.actions().mouseMove(elem).perform();
-//			browser.wait(elem.isDisplayed, 3000); // Aguarda o menu aparecer com timeout de 3000
-//			elem.click();
-			
 			browser.executeScript("arguments[0].click()", elem.getWebElement());
-			
 			browser.waitForAngular();
-			
-			// Força a saída do mouse da barra de menus para que essa barra recue à esquerda
-//			browser.actions().mouseMove(element(by.id('papeis'))).perform();
-			
-			// Aguarda o menu desaparecer com timeout de 3000
-//			browser.wait(function() {
-//				return elem.isDisplayed().then(function(isDisplayed) {
-//					return !isDisplayed;
-//				});
-//			}, 3000);
 		};
 		
 		this.executarTarefa = function() {

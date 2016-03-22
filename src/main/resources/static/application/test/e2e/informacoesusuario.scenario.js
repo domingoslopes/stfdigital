@@ -22,18 +22,14 @@
 		browser.ignoreSynchronization = false;
 	};
 	
-	describe('Acessando o sistema como PETICIONADOR.', function() {
+	describe('Acessando o sistema como PETICIONADOR', function() {
 		
-		beforeEach(function(){
-			console.info('\nRodando o', jasmine.getEnv().currentSpec.description);
-		});
-		
-		it('Deve logar como peticionador.', function(){
+		it('Deve logar como peticionador.', function() {
 			login('peticionador');
 		});
 		
 		
-		it('Deve ir para a página principal.', function(){
+		it('Deve ir para a página principal.', function() {
 			informacoesUsuarioPage = new InformacoesUsuarioPage();
 			informacoesUsuarioPage.exibirInformacoesUsuario();
 			expect(browser.getCurrentUrl()).toMatch(/\/usuario/);
