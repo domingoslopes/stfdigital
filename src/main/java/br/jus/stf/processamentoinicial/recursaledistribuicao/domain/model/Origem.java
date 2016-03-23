@@ -48,6 +48,10 @@ public class Origem implements ValueObject<Origem> {
 	@Type(type = "yes_no")
 	private boolean origemPrincipal;
 	
+	Origem() {
+		
+	}
+	
 	public Origem(final Long sequencial, final UnidadeFederacao procedenciaGeografica, final TribunalJuizo tribunalJuizo,
 			final Long numeroProcesso, final boolean origemPrincipal) {
 		Validate.notNull(sequencial, "origem.sequencial.required");
