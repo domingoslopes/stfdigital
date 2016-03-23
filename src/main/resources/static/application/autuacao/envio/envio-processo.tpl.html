@@ -79,36 +79,88 @@
 				        	<div class="col-md-8">
 				            	<div class="form-group form-group-default">
 				                	<label>Tribunal ou Juízo de Origem</label>
-				                 	<select ui-select2 id="origem" ng-model="envio.origem" data-placeholder="Selecione a origem" style="width: 450px;">
+				                 	<select ui-select2 id="origem" ng-model="envio.tribunalJuizo" data-placeholder="Selecione a origem" style="width: 450px;">
 	                                	<option value=""></option>
-	                                	<option ng-repeat="origem in envio.origens" value="{{origem.codigo}}">{{origem.nome}}</option>
+	                                	<option ng-repeat="tribunalJuizo in envio.tribunalJuizos" value="{{tribunalJuizo.codigo}}">{{tribunalJuizo.nome}}</option>
 	                            	</select>
 				            	</div>
 				        	</div>
 				        	<div class="col-md-4">
 								<div class="form-group form-group-default">
 							         <label>Número</label>
-							         <input type= "text" class="form-control" id="numeroOrigem" ng-model="envio.numeroOrigem" placeholder="Informeo numero da origem"></input>
+							         <input type= "text" class="form-control" id="numeroOrigem" ng-model="envio.numeroOrigem" onkeypress="envio.handle(event)" onplaceholder="Informeo numero da origem"></input>
 							      </div>
 							</div>
 					     </div>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group form-group-default">
-							         <label>Origens</label>
-							         
-							      </div>
+									<label>Origens</label>
+									<div class="auto-overflow widget-11-2-table">
+										<table class="table table-condensed table-hover">
+											<thead>
+												<tr>
+		                                			<th width="90%">Título</th>
+					                                <th width="10%"></th>
+		                            			</tr>
+		                        			</thead>
+	                            			<tbody>
+	                                			<tr ng-repeat="origem in envio.origens">
+				                                    <td class="font-montserrat fs-12 col-lg-12">{{origem}}</td>
+			                                        <td class="font-montserrat fs-12 col-lg-12">
+ 														<a title="Remover origem" id= "btnRemoveOrigem" data-placement="top" ng-click="envio.removerOrigem(origem)" class="close">
+		                                        			<span class="glyphicon glyphicon-trash"></span>
+		                                    			</a>
+													</td>
+	                                			</tr>
+	                            			</tbody>
+	                        			</table>
+	                    			</div>
+								</div>
 							</div>
-							
 						</div>
 			        </div>
 			    </div>
             </div>
-          
+       		<div class="row">
+            	<div class="col-md-12">
+            		<div class="card share" data-social="item" style="width: 100%; padding: 10px">
+            			<div class="row">
+            				<p>Assuntos</p>
+            			</div>
+	            		<div class="row">
+	                    	<div class="col-md-12">
+				        		<div class="form-group form-group-default">
+				                	<label>Assunto</label>
+									<input type="hidden" id="assunto" name="assunto" ng-model="envio.assunto" placeholder="Código ou descrição" style="width: 100%" ui-select2="envio.select2Options"/>
+								</div>
+								<div class="auto-overflow widget-11-2-table">
+									<table class="table table-condensed table-hover" ng-show="envio.assuntosSelecionados.length > 0">
+										<thead>
+				                            <tr>
+				                                <th>Código</th>
+				                                <th>Descrição</th>
+				                                <th>Ações</th>
+				                            </tr>
+				                        </thead>
+										<tbody>
+											<tr ng-repeat="ass in envio.assuntosSelecionados">
+												<td class="font-montserrat fs-12 col-lg-12">{{ass.codigo}}</td>
+												<td class="font-montserrat fs-12 col-lg-12">{{ass.descricao}}</td>
+												<td class="text-center b-l b-dashed b-grey col-lg-2"><span class="hint-text small"><a href="#" ng-click="envio.removerAssunto(ass)">Remover</a></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<p>
-				<action-executor id="autuar-recursal-criminal-eleitoral" resources="autuacao.recursos" fn-validate="autuacao.validar"
+			<!--  	<action-executor id="autuar-recursal-criminal-eleitoral" resources="autuacao.recursos" fn-validate="autuacao.validar"
 					fn-result="autuacao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="autuacao.tarefa.dono" description="Autuar Processo Criminal">
-				</action-executor>
+				</action-executor> -->
 			</p>
 		</form>
 	</div>

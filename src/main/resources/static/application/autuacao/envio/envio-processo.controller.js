@@ -13,33 +13,27 @@
 		//var resource = $stateParams.resources[0];
 		envio.classe = '';
 		envio.classes = [];
-		envio.sigilos = [{codigo: '1', nome: 'público'}, {codigo: '2', nome: 'privado'}];
+		envio.sigilos = [{codigo: '1', nome: 'Público'}, {codigo: '2', nome: 'Segredo de Justiça'}];
 		envio.sigilo = ''
 		envio.preferenciasSelecionadas = [];
 		envio.preferencias = [];
 		envio.procedencias = [];
+		envio.tribunalJuizos = [];
+		envio.origens = [];
 		envio.procedencia;
-		envio.origens = [];	
-		envio.origem;
+		envio.tribunalJuizo;
 		envio.numeroOrigem;
-		/*autuacao.partesPoloAtivo = [];
-		autuacao.partesPoloPassivo = [];
-		autuacao.poloAtivoController = new PartesController(autuacao.partesPoloAtivo);
-		autuacao.poloPassivoController = new PartesController(autuacao.partesPoloPassivo);
-		autuacao.valida = 'true';
-		autuacao.motivo = '';
-		autuacao.assuntosSelecionados = [];
-		autuacao.recursos = [];*/
+		envio.assuntosSelecionados = []; 
+		/*envio.partesPoloAtivo = [];
+		envio.partesPoloPassivo = [];
+		envio.poloAtivoController = new PartesController(envio.partesPoloAtivo);
+		envio.poloPassivoController = new PartesController(envio.partesPoloPassivo); */
+
 		
 		ClasseService.listar().success(function(classes) {
 			envio.classes = classes;
 		});
 		
-		OrigemService.listarTribunalJuizo(envio.procedencia).then(function(data){
-			envio.origens = data;
-		});
-		
-
 		envio.carregarPreferencias = function() {
 			ClasseService.consultarPreferencias(envio.classe).success(function(preferencias) {
 				envio.preferenciasSelecionadas = [];
@@ -48,113 +42,128 @@
 		};
 		
 		envio.carregarOrigens = function() {
-			OrigemService.listarUnidadesFederacao(envio.procedencia).success(function(origens) {
-				envio.origens = origens;
+			OrigemService.listarUnidadesFederacao(envio.procedencia).success(function(tribunalJuizos) {
+				envio.tribunalJuizos = tribunalJuizos;
 			});
 		};
 		
-	/*	
-		if (angular.isObject(resource)) {
-			if (angular.isDefined(resource.peticaoId)) {
-				autuacao.id = resource.peticaoId;
-			} else if (angular.isDefined(resource.processoId)) {
-				autuacao.id = resource.processoId;
+		envio.handle = function(e){
+			if (e.keyCode === 13){
+				var origemConcat = envio.tribunalJuizo + envio.numeroOrigem;
+				origens.push(origemConcat);
 			}
-		} else {
-			autuacao.id = resource;
-		}
-		
-		var consultarProcesso = null;
-		autuacao.tarefa = $stateParams.task;
-		
-		if (autuacao.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
-			consultarProcesso = ProcessoService.consultar(autuacao.id);
-		} else {
-			consultarProcesso = ProcessoService.consultarPorPeticao(autuacao.id);
-		}
-		consultarProcesso.success(function(processo){
-			autuacao.processo = processo;
-		});
-		
-		autuacao.select2Options = {
-			dropdownAutoWidth: 'true',
-			minimumInputLength: 3,
-	        quietMillis: 500,
-			ajax : {
-				url: properties.apiUrl + '/assuntos',
-				dataType: 'json',
-				data: function (term, page) {
-					return {
-				         termo: term, // search term
-					};
-				},
-		        results: function (data, page) {
-		        	
-		        	var resultados = data.map(function(item){
-		        			return {id:item.codigo, codigo: item.codigo, descricao : item.descricao};
-		        	});
-		        	return {results: resultados};
-		        }
-			},
-	        formatResult: function(object, container, query) {
-	        	return object.id + " - " + object.descricao;
-			},
-	        formatSelection: function (item) { 
-	        	return item.descricao; 
-	        }
 		};
-
-		$scope.$watch('autuacao.assunto', function(novo){
+		
+		envio.removerOrigem = function(origem){
+			var index = origens.indexOf(origem);
+			if (index > -1) {
+				origem.splice(index, 1);
+			}
+		};
+		
+		envio.select2Options = {
+				dropdownAutoWidth: 'true',
+				minimumInputLength: 3,
+				quietMillis: 500,
+				ajax : {
+					url: properties.apiUrl + '/assuntos',
+					dataType: 'json',
+					data: function (term, page) {
+						return {
+							termo: term, // search term
+						};
+					},
+					results: function (data, page) {
+						
+						var resultados = data.map(function(item){
+							return {id:item.codigo, codigo: item.codigo, descricao : item.descricao};
+						});
+						return {results: resultados};
+					}
+				},
+				formatResult: function(object, container, query) {
+					return object.id + " - " + object.descricao;
+				},
+				formatSelection: function (item) { 
+					return item.descricao; 
+				}
+		};
+		
+		$scope.$watch('envio.assunto', function(novo){
 			if (novo){
-				autuacao.adicionarAssuntoNaLista(novo);
+				envio.adicionarAssuntoNaLista(novo);
 			}
 		});
 		
-		autuacao.adicionarAssuntoNaLista = function(assunto){
+		envio.adicionarAssuntoNaLista = function(assunto){
 			var verificaSeAssuntoExiste = false;
-			angular.forEach(autuacao.assuntosSelecionados, function(assuntoS) {
+			angular.forEach(envio.assuntosSelecionados, function(assuntoS) {
 				if (assuntoS.id == assunto.id) {
 					verificaSeAssuntoExiste = true;
 				}
 			});
 			if (!verificaSeAssuntoExiste){
-				autuacao.assuntosSelecionados.push(assunto);
-				autuacao.assunto = null;
+				envio.assuntosSelecionados.push(assunto);
+				envio.assunto = null;
 			}
 		};
 		
-		autuacao.removerAssuntoSelecionadoLista = function($index){
-			autuacao.assuntosSelecionados.splice($index,1);
+		envio.removerAssuntoSelecionadoLista = function($index){
+			envio.assuntosSelecionados.splice($index,1);
+		}
+	/*	
+		if (angular.isObject(resource)) {
+			if (angular.isDefined(resource.peticaoId)) {
+				envio.id = resource.peticaoId;
+			} else if (angular.isDefined(resource.processoId)) {
+				envio.id = resource.processoId;
+			}
+		} else {
+			envio.id = resource;
 		}
 		
-		autuacao.adicionarPoloAtivo = function() {
-			autuacao.poloAtivoController.adicionar(autuacao.partePoloAtivo);
-			autuacao.partePoloAtivo = '';
+		var consultarProcesso = null;
+		envio.tarefa = $stateParams.task;
+		
+		if (envio.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
+			consultarProcesso = ProcessoService.consultar(envio.id);
+		} else {
+			consultarProcesso = ProcessoService.consultarPorPeticao(envio.id);
+		}
+		consultarProcesso.success(function(processo){
+			envio.processo = processo;
+		});
+		
+
+		
+		envio.adicionarPoloAtivo = function() {
+			envio.poloAtivoController.adicionar(envio.partePoloAtivo);
+			envio.partePoloAtivo = '';
 			$('partePoloAtivo').focus();
 		};
 	
-		autuacao.removerPoloAtivo = function(parteSelecionada) {
-			autuacao.poloAtivoController.remover(parteSelecionada);
+		envio.removerPoloAtivo = function(parteSelecionada) {
+			envio.poloAtivoController.remover(parteSelecionada);
 		};
 
-		autuacao.adicionarPoloPassivo = function() {
-			autuacao.poloPassivoController.adicionar(autuacao.partePoloPassivo);
-			autuacao.partePoloPassivo = '';
+		envio.adicionarPoloPassivo = function() {
+			envio.poloPassivoController.adicionar(envio.partePoloPassivo);
+			envio.partePoloPassivo = '';
 			$('partePoloPassivo').focus();
 		};
 	
-		autuacao.removerPoloPassivo = function(parteSelecionada) {
-			autuacao.poloPassivoController.remover(parteSelecionada);
+		envio.removerPoloPassivo = function(parteSelecionada) {
+			envio.poloPassivoController.remover(parteSelecionada);
 		};
 		
-		autuacao.validar = function() {
+		envio.validar = function() {
 			var errors = null;
 			
-			if (autuacao.partesPoloAtivo.length === 0) {
+			if (envio.partesPoloAtivo.length === 0) {
 				errors = 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>ativo</b>.<br/>';
 			}
 			
-			if (autuacao.partesPoloPassivo.length === 0) {
+			if (envio.partesPoloPassivo.length === 0) {
 				errors += 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>passivo</b>.<br/>';
 			}
 			
@@ -162,13 +171,13 @@
 				messages.error(errors);
 				return false;
 			}
-			autuacao.recursos.push( new AutuarProcessoCriminalEleitoralCommand(autuacao.processo.id, autuacao.partesPoloAtivo, autuacao.partesPoloPassivo, autuacao.assuntosSelecionados));
+			envio.recursos.push( new AutuarProcessoCriminalEleitoralCommand(envio.processo.id, envio.partesPoloAtivo, envio.partesPoloPassivo, envio.assuntosSelecionados));
 			return true;
 		}
 		
-		autuacao.completar = function() {
+		envio.completar = function() {
 			$state.go('dashboard');
-			messages.success('Processo <b>' + autuacao.processo.classe + '/' + autuacao.processo.numero + '</b> autuado com sucesso.');
+			messages.success('Processo <b>' + envio.processo.classe + '/' + envio.processo.numero + '</b> autuado com sucesso.');
 		};
 		
 		
