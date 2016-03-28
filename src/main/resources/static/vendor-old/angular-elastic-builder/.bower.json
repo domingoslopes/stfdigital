@@ -1,0 +1,32 @@
+{
+  "name": "angular-elastic-builder",
+  "version": "1.5.3",
+  "homepage": "https://github.com/lucas-a-rodrigues/angular-elastic-builder",
+  "authors": [
+    "Dan Crews <crewsd@gmail.com>",
+    "Lucas Rodrigues <lucasmoc@gmail.com>"
+  ],
+  "description": "Angular Module for building an Elasticsearch Query",
+  "main": "dist/angular-elastic-builder.js",
+  "keywords": [
+    "elasticsearch",
+    "angular"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "1.5.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.5.3",
+    "commit": "d6cd6b0c541072d65ad316f0a16e2dca03f2af4a"
+  },
+  "_source": "git://github.com/lucas-a-rodrigues/angular-elastic-builder.git",
+  "_target": "~1.5.3",
+  "_originalSource": "lucas-a-rodrigues/angular-elastic-builder"
+}

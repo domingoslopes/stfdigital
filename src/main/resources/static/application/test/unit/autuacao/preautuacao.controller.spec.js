@@ -53,7 +53,6 @@
 			controller.finalizar();
 			expect(mockMessages.success).toHaveBeenCalledWith('Petição <b>1/2016</b> pré-autuada com sucesso.');
 			// TODO Complementar esse teste assim que a controller estiver com essa implementação completa.
-//			expect(controller.peticao.tipoRecebimento).toEqual('Sedex');
 		});
 		
 	});

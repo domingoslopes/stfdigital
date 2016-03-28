@@ -1,0 +1,12 @@
+<div class="elastic-builder-rule">
+  <select data-ui-select2="uiSelectOptions" data-ng-model="rule.field" data-ng-change="initRule()">
+  	<option data-ng-repeat="(key, value) in elasticFields" value="{{ key }}">{{ value.description }}</option>
+  </select>
+
+  <span data-elastic-type="getType()" data-rule="rule" data-guide="elasticFields[rule.field]"></span>
+
+  <a class="btn btn-xs btn-danger remover" data-ng-click="onRemove()">
+    <i class="fa fa-minus"></i>
+  </a>
+
+</div>

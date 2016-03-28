@@ -22,7 +22,14 @@
 				return $http.get(properties.apiUrl + "/documentos/" + id + "/tags").then(function(response) {
 					return response.data;
 				});
+			}, 
+			consultarModelosPorMotivo : function(idDevolucao){
+				return $http.get(properties.apiUrl + "/motivos-devolucao/" + idDevolucao + "/modelos").then(function(response) {
+					return response.data;
+				});
 			}
+		
+			
 		};
 	});
 })();

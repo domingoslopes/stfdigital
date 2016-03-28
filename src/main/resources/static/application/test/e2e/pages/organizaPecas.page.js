@@ -28,7 +28,7 @@
 			selecionaAcao(3);
 			executarAcao('juntar-peca');
 		};
-		
+		//qtdPecas representa a quantidade de peças que serão juntadas
 		this.executarAcaoUnir = function(qtdPecas) {
 			var i = 0;
 			for (i ; i < qtdPecas ; i++){
@@ -78,6 +78,10 @@
 		
 		this.confirmarOrganicaoPecas = function(){
 			executarAcao('organizar-pecas');
+		};
+		
+		this.confirmarOrganicaoPecas = function(){
+			element(by.id('btn_exec_organizar-pecas')).click();
 		};
 		
 		this.alteraNumeroOrdemPeca = function(numeroOrdem) {

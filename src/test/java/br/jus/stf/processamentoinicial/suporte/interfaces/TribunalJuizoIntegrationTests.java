@@ -21,4 +21,9 @@ public class TribunalJuizoIntegrationTests extends AbstractIntegrationTests {
 	public void listarTribunaisJuizos() throws Exception {
 		mockMvc.perform(get("/api/tribunais-juizos")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(19)));
 	}
+	
+	@Test
+	public void consultarTribunaisJuizosPorOrigem() throws Exception {
+		mockMvc.perform(get("/api/tribunais-juizos/origens/14")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(15)));
+	}
 }

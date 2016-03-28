@@ -19,19 +19,24 @@
                     <div class="panel-body">
                         <form role="form">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-group-default">
                                         <label>Motivo da Devolução</label>
-                                        <select ui-select2 id="motivoDevolucao" ng-model="devolucao.motivoDevolucao" class="full-width">
+                                        <select ui-select2 id="motivoDevolucao" ng-model="devolucao.motivoDevolucao" ng-change="devolucao.carregarModelo()" class="full-width">
                                             <option value=""></option>
-                                            <option ng-repeat="motivoDevolucao in devolucao.motivosDevolucao" value="{{motivoDevolucao.id}}">{{motivoDevolucao.nome}}</option>
+                                            <option ng-repeat="motivoDevolucao in devolucao.motivosDevolucao" value="{{motivoDevolucao.id}}">{{motivoDevolucao.descricao}}</option>
 			                            </select>
                                     </div>
-                                    <div class="form-group form-group-default">
-                                        <label>Número do Ofício</label>
-                                        <input id="numero" type="number" ng-model="devolucao.numeroOficio" class="form-control" autofocus="autofocus" />
-                                    </div>
                                 </div>
+								<div class="col-md-6">
+                                    <div class="form-group form-group-default">
+                                        <label>Modelo</label>
+                                        <select ui-select2 id="modelo" ng-model="devolucao.modeloId" ng-change="devolucao.extrairTags()" class="full-width">
+                                            <option value=""></option>
+                                            <option ng-repeat="modelo in devolucao.modelos" value="{{modelo.id}}">{{modelo.nome}}</option>
+			                            </select>
+                                    </div>
+                                </div>                                
                             </div>
                         </form>
                     </div>
