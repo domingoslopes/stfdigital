@@ -95,7 +95,7 @@ public class ProcessoRecursal extends Processo {
 	}
 
 	public void atribuirAssuntos(final Set<AssuntoId> assuntos) {
-		Validate.notNull(assuntos, "processoRecursal.assuntos.required");
+		Validate.notEmpty(assuntos, "processoRecursal.assuntos.required");
 		
 		this.assuntos.retainAll(assuntos);
 		this.assuntos.addAll(assuntos);
@@ -106,7 +106,7 @@ public class ProcessoRecursal extends Processo {
 	}
 
 	public void atribuirTeses(final Set<TeseId> teses) {
-		Validate.notNull(teses, "processoRecursal.teses.required");
+		Validate.notEmpty(teses, "processoRecursal.teses.required");
 		
 		this.teses.retainAll(teses);
 		this.teses.addAll(teses);
@@ -114,6 +114,10 @@ public class ProcessoRecursal extends Processo {
 	
 	public Set<MotivoInaptidaoProcesso> motivosInaptidao(){
 		return Collections.unmodifiableSet(motivosInaptidao);
+	}
+	
+	public Classificacao classificacao() {
+		return classificacao;
 	}
 	
 	public String observacaoAnalise() {
@@ -125,7 +129,10 @@ public class ProcessoRecursal extends Processo {
 	}
 	
 	public void atribuirOrigens(final Set<Origem> origens) {
-		Validate.notNull(origens, "processoRecursal.origens.required");
+		Validate.notEmpty(origens, "processoRecursal.origens.required");
+		Validate.isTrue(origens.stream()
+				.filter(origem -> origem.origemPrincipal())
+				.count() == 1, "processoRecursal.origens.invalid");
 		
 		this.origens.retainAll(origens);
 		this.origens.addAll(origens);
