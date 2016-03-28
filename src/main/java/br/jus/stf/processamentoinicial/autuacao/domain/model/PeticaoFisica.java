@@ -54,8 +54,8 @@ public class PeticaoFisica extends Peticao {
 		Validate.isTrue(volumes != null && volumes > 0, "peticaoFisica.volumes.maiorQueZero");
 		Validate.isTrue(apensos != null && apensos >= 0, "peticaoFisica.apensos.maiorIgualAZero");
 		Validate.notNull(formaRecebimento, "peticaoFisica.formaRecebimento.required");
-		Validate.isTrue((formaRecebimento != FormaRecebimento.SEDEX && StringUtils.isBlank(numeroSedex)) ||
-						(formaRecebimento == FormaRecebimento.SEDEX && !StringUtils.isBlank(numeroSedex)),
+		Validate.isTrue((!formaRecebimento.exigeNumero() && StringUtils.isBlank(numeroSedex)) ||
+						(formaRecebimento.exigeNumero() && !StringUtils.isBlank(numeroSedex)),
 						"peticaoFisica.formaRecebimento.invalid");
 		
 		this.volumes = volumes;
