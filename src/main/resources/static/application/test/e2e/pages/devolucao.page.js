@@ -15,8 +15,14 @@
 	var DevolucaoPage = function () {
 		var devolucao = this;
 		
-		devolucao.classificar = function(tipo){
+		devolucao.classificarMotivo = function(tipo){
 			utils.select('div#s2id_motivoDevolucao', tipo);
+			browser.waitForAngular();
+		};
+		
+		devolucao.classificarModelo = function(tipo){
+			utils.select('div#s2id_modelo', tipo);
+			browser.waitForAngular();
 		};
 		
 		devolucao.registrarNumeroOficio = function(){
@@ -24,16 +30,23 @@
 		};
 		
 		devolucao.aguardarTagsCarregadas = function() {
-			browser.wait(element(by.id('painel-tags')).isDisplayed);
+			browser.isElementPresent(by.id('painel-tags')).then(function() {
+				browser.waitForAngular();
+			});
 		};
 		
 		devolucao.gerarTexto = function() {
 			element(by.id('botao-gerar-texto')).click();
-			browser.wait(element(by.id('painel-editor')).isDisplayed);
+			browser.isElementPresent(by.id('painel-editor')).then(function() {
+				browser.waitForAngular();
+			});
 		};
 		
 		devolucao.finalizar = function() {
-			element(by.id('btn_exec_devolver-peticao')).click();
+			var btn = by.id('btn_exec_finalizar-texto-devolucao')
+			browser.isElementPresent(btn).then(function() {
+				element(btn).click();
+			});
 		};
 	};
 

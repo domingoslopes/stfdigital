@@ -51,7 +51,6 @@
         "protractor": "~3.2.1",
         "run-sequence": "~1.1.0",
         "protractor-html-screenshot-reporter": "~0.0.21",
-        "connect-modrewrite": "~0.8.2",
         "connect-history-api-fallback": "~1.1.0",
         "jasmine-spec-reporter": "~2.4.0" 
     },

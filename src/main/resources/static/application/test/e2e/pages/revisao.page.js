@@ -40,7 +40,10 @@
 		};
 		
 		this.finalizarRevisao = function() {
-			element(by.id('btn_exec_revisar-processo-inapto')).click();
+			var btn = by.id('btn_exec_revisar-processo-inapto')
+			browser.isElementPresent(btn).then(function() {
+				element(btn).click();
+			});
 		};
 		
 	};

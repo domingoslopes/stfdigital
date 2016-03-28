@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="container-fluid container-fixed-lg">
-		<div tarefa-actions processo="revisao.peticao.processoWorkflowId" tarefa="tarefa" />
+		<div tarefa-actions processo="revisao.tarefa.processoWorkflowId" tarefa="revisao.tarefa" />
     	<form>
             <div class="row">
             	<div class="col-md-4">
@@ -79,7 +79,7 @@
 	       
             <p>
                 <action-executor id="revisar-processo-inapto" resources="revisao.recursos" fn-validate="revisao.validar"
-	 				fn-result="revisao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="tarefa.dono" />
+	 				fn-result="revisao.completar" btn-class="btn btn-complete btn-cons m-t-10" enable="revisao.tarefa.dono" />
             </p>
 	  	</form>
     </div>

@@ -89,7 +89,7 @@
 			login('autuador');
 		});
 		
-		it('Deveria atuar como válida a petição recebida com órgão', function() {
+		it('Deveria autuar como válida a petição recebida com órgão', function() {
 			
 		    expect(principalPage.tarefas().count()).toBeGreaterThan(0);
 		    

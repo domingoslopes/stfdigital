@@ -36,10 +36,12 @@
 			acao.element(by.repeater('action in actions').row(0)).click();
 			browser.waitForAngular();
 			
-			browser.wait(element(by.id('btn_exec_assumir-tarefa')).isDisplayed, 3000);
-			element(by.id('btn_exec_assumir-tarefa')).click();
-			tarefa.element(by.css('a')).click();
-			browser.waitForAngular();
+			var assumirTarefa = by.id('btn_exec_assumir-tarefa');
+			browser.isElementPresent(assumirTarefa).then(function(el) {
+				element(assumirTarefa).click();
+				tarefa.element(by.css('a')).click();
+				browser.waitForAngular();
+			});
 		};
 		
 		this.tarefas = function () {

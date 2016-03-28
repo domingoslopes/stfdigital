@@ -21,7 +21,6 @@ var $ = require('gulp-load-plugins')();
 var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
-var modRewrite = require('connect-modrewrite');
 var historyApiFallback = require('connect-history-api-fallback');
 var pkg = require('./package');
 var karma = require('karma').server;
@@ -307,15 +306,7 @@ gulp.task('serve', ['build'], function() {
 		proxy: {
 			target: "https://localhost:8443",
 			ws: true
-		},
-		rewriteRules: [
-           {
-               match: /api\/ws/,
-               fn: function (match) {
-                   return 'https://localhost:8443/api/ws';
-               }
-           }
-		]
+		}
 	});
 	
 	gulp.watch(config.index, reload);
