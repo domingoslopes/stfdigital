@@ -23,6 +23,14 @@
 		
 		registro.tipoProcesso = registro.tiposProcessos[0];
 		
+		registro.desabilitarNumSedex = function() {
+			if (registro.tipoRecebimento != 'SEDEX') {
+				registro.numSedex = '';
+				return true;
+			}
+			return false;
+		};
+		
 		registro.validar = function() {
 			var errors = null;
 			
