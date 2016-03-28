@@ -38,6 +38,11 @@
 				errors += "Você precisa selecionar uma <b>forma de envio</b>";
 			}
 			
+			if (registro.tipoRecebimento === 'SEDEX' &&
+					registro.numSedex.length === 0) {
+				errors += "Você precisa informar o número do <b>sedex</b>";
+			}
+			
 			if (registro.tipoProcesso.length === 0) {
 				errors += "Você precisa selecionar um <b>tipo de processo</b>";
 			}
