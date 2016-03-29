@@ -54,15 +54,16 @@
 		};
 		
 		this.adicionarProcessoSuggestion = function(siglaNumeroProcesso){
-			utils.select('div#s2id_processo', siglaNumeroProcesso);
-			 browser.sleep(2000);
-			browser.waitForAngular();
+			browser.isElementPresent(by.id('s2id_processo')).then(function() {
+				utils.select('div#s2id_processo', siglaNumeroProcesso);
+			});
 		};
 		
 		this.finalizar = function() {
-			element(by.id('btn_exec_distribuir-processo')).click();
-			
-		    browser.waitForAngular();
+			var btn = by.id('btn_exec_distribuir-processo')
+			browser.isElementPresent(btn).then(function() {
+				element(btn).click();
+			});
 		};
 		
 		

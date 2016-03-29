@@ -93,15 +93,23 @@
 						<i class="pg-search"></i> Pesquisar
 					</span>
 
-					<ul class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10" role="menu">
-						<li><a style="line-height: 15px" ui-sref="pesquisar.peticoes" id="pesquisar-peticoes">Petições</a></li>
-						<li><a style="line-height: 15px" ui-sref="pesquisar.processos" id="pesquisar-processos">Processos</a></li>
-						<li><a style="line-height: 15px" ui-sref="pesquisar.peticoes.avancada({pesquisa : undefined})" ui-sref-opts="{reload: true}"
-						 id="pesquisar-peticoes-avancada">Nova Pesquisa Avançada de Petição</a></li>
-						<li><a style="line-height: 15px" ui-sref="pesquisar.processos.avancada({pesquisa : undefined})" ui-sref-opts="{reload: true}"
-						 	id="pesquisar-processos-avancada">Nova Pesquisa Avançada de Processo</a></li>
-						<li ng-repeat="pesquisa in pesquisas"><a style="line-height: 20px" ui-sref="pesquisar.processos.avancada({pesquisa : pesquisa.id})"
-							 ui-sref-opts="{reload: true}" id="pesquisar-{{pesquisa.id}}">{{pesquisa.nome}}</a><a id="excluir-pesquisa" ui-sref="excluir-pesquisa({pesquisa : pesquisa.id})"><i class="fs-14 pg-close"></i></a></li>
+					<ul class="dropdown-menu dropdown-menu-left profile-dropdown p-b-10" role="menu" aria-labelledby="dropdownMenuDivider">
+						<li><a style="line-height: 20px" ui-sref="pesquisar.peticao" id="pesquisar-peticoes">Petições</a></li>
+						<li><a style="line-height: 20px" ui-sref="pesquisar.processo" id="pesquisar-processos">Processos</a></li>
+						<li><a style="line-height: 20px" ui-sref="pesquisar.peticao.avancada({pesquisaId : undefined})" ui-sref-opts="{reload: true}"
+						 id="pesquisar-peticoes-avancada">Pesquisa Avançada de Petições</a></li>
+						<li><a style="line-height: 20px" ui-sref="pesquisar.processo.avancada({pesquisaId : undefined})" ui-sref-opts="{reload: true}"
+						 	id="pesquisar-processos-avancada">Pesquisa Avançada de Processos</a></li>
+						<li role="separator" class="divider"></li>
+						<li class="dropdown-header"><h5>Minhas pesquisas</h5></li>
+						<li ng-repeat="pesquisa in pesquisas">
+							<div style="padding-left: 17px">
+								<a ng-click="carregarPesquisa(pesquisa)" id="pesquisar-{{pesquisa.id}}" style="line-height: 15px">{{pesquisa.nome}}</a>
+								<a id="excluir-pesquisa-{{pesquisa.id}}" ui-sref="excluir-pesquisa-avancada({resource : pesquisa.id})" class="pull-right" style="color:red; cursor:pointer;">
+									<i class="fs-14 pg-close"></i>
+								</a>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>

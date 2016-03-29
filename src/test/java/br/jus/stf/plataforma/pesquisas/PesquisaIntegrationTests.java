@@ -118,7 +118,7 @@ public class PesquisaIntegrationTests extends AbstractIntegrationTests {
 	public void recuperarPesquisaAvancada() throws Exception {
 		
 		mockMvc.perform(post("/api/actions/salvar-pesquisa-avancada/execute").contentType(MediaType.APPLICATION_JSON).header("login", "peticionador")
-				.content("{ \"resources\" : [{\"nome\" : \"teste\", \"consulta\" : \"{\\\"query\\\":{\\\"match\\\":{\\\"sigla\\\":\\\"hc\\\"}}}\", \"indices\" : [\"teste-distribuicao\"]}]}"))
+				.content("{ \"resources\" : [{\"nome\" : \"teste\", \"tipo\" : \"processo\", \"consulta\" : \"{\\\"query\\\":{\\\"match\\\":{\\\"sigla\\\":\\\"hc\\\"}}}\", \"indices\" : [\"teste-distribuicao\"]}]}"))
 			.andExpect(status().isOk());
 		
 		mockMvc.perform(get("/api/pesquisas/avancadas").contentType(MediaType.APPLICATION_JSON).header("login", "peticionador"))

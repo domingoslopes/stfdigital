@@ -16,7 +16,6 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -43,9 +42,6 @@ public class PesquisaAvancadaRepositoryImpl extends SimpleJpaRepository<Pesquisa
 	private Client elasticsearchClient;
 	
 	@Autowired
-	private ElasticsearchTemplate elasticsearchTemplate;
-	
-	@Autowired
 	public PesquisaAvancadaRepositoryImpl(EntityManager entityManager) {
 	    super(PesquisaAvancada.class, entityManager);
 	    this.entityManager = entityManager;
@@ -67,7 +63,7 @@ public class PesquisaAvancadaRepositoryImpl extends SimpleJpaRepository<Pesquisa
 	@Override
 	public List<PesquisaAvancada> listarMinhas() {
 		UsuarioId usuarioId = SecurityContextUtil.getUser().getUserDetails().getUsuarioId();
-		String sql = "select new PesquisaAvancada(pa.id, pa.nome) from PesquisaAvancada pa where pa.usuario = :usuario";
+		String sql = "select new PesquisaAvancada(pa.id, pa.nome, pa.tipo) from PesquisaAvancada pa where pa.usuario = :usuario";
 		
 		TypedQuery<PesquisaAvancada> query = entityManager.createQuery(sql, PesquisaAvancada.class);
 		query.setParameter("usuario", usuarioId);

@@ -144,21 +144,20 @@
 		    	expect(principalPage.tarefas().get(0).getText()).toEqual('Distribuir Processo #' + peticaoId);
 		    });
 		    
-		    
 		    principalPage.executarTarefa();
 
 			expect(browser.getCurrentUrl()).toMatch(/\/peticao\/distribuicao/);
 
 			var distribuicaoPage = new DistribuicaoPage();
 			
-			distribuicaoPage.selecionarTipoDistribuicao('PREVENCAO');
+			distribuicaoPage.selecionarTipoDistribuicao('COMUM');
 			
-			distribuicaoPage.adicionarProcessoSuggestion('AP 1');
-				
-			//verifica se a lista de processos preventos possui ao menos um processo
-			expect(distribuicaoPage.listaProcessosPreventos().count()).toEqual(1);
+			distribuicaoPage.criarListaDeMinistrosImpedidos();
 			
-			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao');
+			//verifica se a lista de ministros impedidos possui ao menos um ministro
+			expect(distribuicaoPage.listaMinistrosImpedidos().count()).toEqual(1);
+			
+			distribuicaoPage.criarJustificativa('Teste tipo ditribuicao COMUM');
 			
 			distribuicaoPage.finalizar();
 		    
