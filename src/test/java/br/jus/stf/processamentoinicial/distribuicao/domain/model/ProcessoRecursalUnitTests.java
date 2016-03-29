@@ -3,6 +3,7 @@ package br.jus.stf.processamentoinicial.distribuicao.domain.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +34,8 @@ import br.jus.stf.shared.TeseId;
 
 public class ProcessoRecursalUnitTests {
 	
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+	
 	@Test
 	public void criaProcessoNaoEleitoralNemCriminalValido() {
 		ProcessoRecursal processo = processo();
@@ -45,7 +48,7 @@ public class ProcessoRecursalUnitTests {
 	    assertEquals(new Long(10), processo.numero());
 	    assertEquals(new PeticaoId(12L), processo.peticao());
 	    assertEquals(new Long(1), processo.quantidadeRecursos());
-	    assertEquals(new Date(), processo.dataRecebimento());
+	    assertEquals(dateFormat.format(new Date()), dateFormat.format(processo.dataRecebimento()));
 	}
 	
 	@Test
@@ -155,7 +158,7 @@ public class ProcessoRecursalUnitTests {
 		assuntos.add(new AssuntoId("120"));
 		processo.autuar(assuntos, poloAtivo, poloPassivo);
 		
-		assertEquals(new Date(), processo.dataAutuacao());
+		assertEquals(dateFormat.format(new Date()), dateFormat.format(processo.dataAutuacao()));
 		assertEquals(poloAtivo, processo.partesPoloAtivo());
 		assertEquals(poloPassivo, processo.partesPoloPassivo());
 		assertEquals(assuntos, processo.assuntos());
