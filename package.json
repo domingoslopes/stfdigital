@@ -39,6 +39,7 @@
         "jsdoc": "~3.3.0",
         "angular-jsdoc": "~1.2.1",
         "jshint-stylish": "~1.0.2",
+        "phantomjs-prebuilt": "2.1.4",
         "karma": "~0.13.22",
         "karma-chrome-launcher": "~0.2.2",
         "karma-coverage": "~0.5.5",

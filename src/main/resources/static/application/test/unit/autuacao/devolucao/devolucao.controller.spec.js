@@ -68,6 +68,8 @@
 				ModeloService : ModeloService
 			});
 			
+			scope.devolucao = controller;
+			
 			$httpBackend.flush();
 		}));
 
@@ -76,8 +78,11 @@
 		});
 		
 		it('Deveria carregar corretamente os modelos pelo motivo de devolução selecionado', function() {
-			controller.motivoDevolucao = 1;
 			$httpBackend.expectGET(properties.apiUrl + '/motivos-devolucao/1/modelos').respond(mockModelos);
+			
+			scope.$apply('devolucao.motivoDevolucao = 1');
+			
+			$httpBackend.flush();
 			
 			expect(controller.modelos.length).toEqual(3);
 		});
