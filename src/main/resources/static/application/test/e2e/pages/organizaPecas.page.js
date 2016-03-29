@@ -141,15 +141,15 @@
 		};
 		
 		this.waitUploadFinished = function(index, timeout) {
-			browser.isElementPresent(by.css('#tabPecas')).then(function() {
-				var uploadedRow = element.all(by.repeater('peca in pecas')).get(index);
-				var finishedMark = uploadedRow.element(by.css('td.progress-row'));
-				
-				browser.wait(function() {
-					return hasClass(finishedMark, 'upload-finished');
-				}, (!timeout) ? 3000 : timeout).then(function() {
-					browser.waitForAngular();
-				});
+			browser.wait(browser.isElementPresent(by.css('#tabPecas')));
+			
+			var uploadedRow = element.all(by.repeater('peca in pecas')).get(index);
+			var finishedMark = uploadedRow.element(by.css('td.progress-row'));
+			
+			browser.wait(function() {
+				return hasClass(finishedMark, 'upload-finished');
+			}, (!timeout) ? 3000 : timeout).then(function() {
+				browser.waitForAngular();
 			});
 		};
 		
@@ -202,10 +202,9 @@
 		
 		var executarAcao = function(acao) {
 			var btn = by.id('btn_exec_' + acao);
-			browser.isElementPresent(btn).then(function() {
-				element(btn).click();
-				browser.waitForAngular();				
-			});
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
+			browser.waitForAngular();
 		};
 	};
 

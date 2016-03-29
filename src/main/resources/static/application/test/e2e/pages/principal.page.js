@@ -37,11 +37,10 @@
 			browser.waitForAngular();
 			
 			var assumirTarefa = by.id('btn_exec_assumir-tarefa');
-			browser.isElementPresent(assumirTarefa).then(function(el) {
-				element(assumirTarefa).click();
-				tarefa.element(by.css('a')).click();
-				browser.waitForAngular();
-			});
+			browser.wait(browser.isElementPresent(assumirTarefa));
+			element(assumirTarefa).click();
+			tarefa.element(by.css('a')).click();
+			browser.waitForAngular();
 		};
 		
 		this.tarefas = function () {

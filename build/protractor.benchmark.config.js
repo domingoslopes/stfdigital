@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var HtmlReporter = require('protractor-html-screenshot-reporter');
+var Jasmine2HtmlReporter = require('protractor-jasmine2-html-reporter');
 var baseDir = 'src/main/resources/static';
 var port = 443;
 
@@ -41,9 +41,11 @@ exports.config = {
 	
 	onPrepare: function() {
 		browser.driver.manage().window().maximize();
-		jasmine.getEnv().addReporter(new HtmlReporter({
-			baseDirectory : 'src/main/resources/static/application/test/benchmark/results',
-			takeScreenShotsOnlyForFailedSpecs: true
+		jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
+			savePath : 'src/main/resources/static/application/test/e2e/results/',
+			screenshotsFolder: 'screenshots',
+			takeScreenshots: true,
+			takeScreenshotsOnlyOnFailures: true
 		}));
 	}
 };

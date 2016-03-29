@@ -39,9 +39,8 @@
 		
 		this.registrar = function () {
 			var btn = by.id('btn_exec_registrar-peticao-fisica')
-			browser.isElementPresent(btn).then(function() {
-				element(btn).click();
-			});
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
 		};
 		
 		this.registrarVariasPeticoes = function(qtd){

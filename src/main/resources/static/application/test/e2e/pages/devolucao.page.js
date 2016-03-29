@@ -30,23 +30,18 @@
 		};
 		
 		devolucao.aguardarTagsCarregadas = function() {
-			browser.isElementPresent(by.id('painel-tags')).then(function() {
-				browser.waitForAngular();
-			});
+			browser.wait(browser.isElementPresent(by.id('painel-tags')));
 		};
 		
 		devolucao.gerarTexto = function() {
 			element(by.id('botao-gerar-texto')).click();
-			browser.isElementPresent(by.id('painel-editor')).then(function() {
-				browser.waitForAngular();
-			});
+			browser.wait(browser.isElementPresent(by.id('painel-editor')));
 		};
 		
 		devolucao.finalizar = function() {
 			var btn = by.id('btn_exec_finalizar-texto-devolucao')
-			browser.isElementPresent(btn).then(function() {
-				element(btn).click();
-			});
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
 		};
 	};
 

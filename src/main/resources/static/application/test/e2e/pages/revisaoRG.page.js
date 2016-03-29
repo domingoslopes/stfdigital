@@ -40,9 +40,8 @@
 		
 		this.finalizar = function() {
 			var btn = by.id('btn_exec_revisar-repercussao-geral')
-			browser.isElementPresent(btn).then(function() {
-				element(btn).click();
-			});
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
 		};
 		
 	};

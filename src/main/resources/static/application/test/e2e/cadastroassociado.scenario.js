@@ -98,7 +98,7 @@
 		});
 	});
 		
-	xdescribe('Cadastrando associado como GESTOR DE ÓRGÃO', function() {
+	describe('Cadastrando associado como GESTOR DE ÓRGÃO', function() {
 		
 		principalPage = new PrincipalPage();
 		cadastroAssociado = new CadastroAssociado();

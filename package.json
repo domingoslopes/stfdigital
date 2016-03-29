@@ -51,7 +51,7 @@
         "yargs": "3.31.0",
         "protractor": "~3.2.1",
         "run-sequence": "~1.1.0",
-        "protractor-html-screenshot-reporter": "~0.0.21",
+        "protractor-jasmine2-html-reporter": "~0.0.6",
         "connect-history-api-fallback": "~1.1.0",
         "jasmine-spec-reporter": "~2.4.0" 
     },

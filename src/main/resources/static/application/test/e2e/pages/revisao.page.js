@@ -41,9 +41,8 @@
 		
 		this.finalizarRevisao = function() {
 			var btn = by.id('btn_exec_revisar-processo-inapto')
-			browser.isElementPresent(btn).then(function() {
-				element(btn).click();
-			});
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
 		};
 		
 	};
