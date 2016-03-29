@@ -69,11 +69,7 @@
 			var peca = element(by.repeater('peca in organiza.processo.pecas').row(0));
 			peca.element(by.css('input')).click();
 			browser.waitForAngular();
-			
-			var acao = element(by.css('actions'));
-			acao.element(by.css('a.dropdown-toggle')).click();
-			acao.element(by.repeater('action in actions').row(1)).click();
-			browser.waitForAngular();
+			selecionaAcao(1);
 		};
 		
 		this.confirmarOrganicaoPecas = function(){
@@ -198,11 +194,19 @@
 			acao.element(by.css('a.dropdown-toggle')).click();
 			acao.element(by.repeater('action in actions').row(indiceAcao)).click();
 			browser.waitForAngular();
+			var modal = by.id('actionModal');
+			browser.wait(browser.isElementPresent(modal));
+			browser.wait(function() {
+				return element(modal).isDisplayed();
+			});
 		};
 		
 		var executarAcao = function(acao) {
 			var btn = by.id('btn_exec_' + acao);
 			browser.wait(browser.isElementPresent(btn));
+			browser.wait(function() {
+				return element(btn).isDisplayed();
+			});
 			element(btn).click();
 			browser.waitForAngular();
 		};

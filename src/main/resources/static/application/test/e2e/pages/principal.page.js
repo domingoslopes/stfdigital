@@ -26,7 +26,7 @@
 		};
 		
 		this.executarTarefa = function() {
-
+			browser.wait(browser.isElementPresent(element(by.cssContainingText('.panel-title', 'Tarefas dos meus papéis'))));
 			var tarefa = element(by.repeater('tarefa in tarefasDosPapeis').row(0));
 			tarefa.element(by.css('input')).click();
 			browser.waitForAngular();
@@ -38,6 +38,9 @@
 			
 			var assumirTarefa = by.id('btn_exec_assumir-tarefa');
 			browser.wait(browser.isElementPresent(assumirTarefa));
+			browser.wait(function() {
+				return element(assumirTarefa).isDisplayed();
+			});
 			element(assumirTarefa).click();
 			tarefa.element(by.css('a')).click();
 			browser.waitForAngular();
