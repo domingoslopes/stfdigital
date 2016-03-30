@@ -71,8 +71,6 @@ public class OnlyofficeConfiguration {
 	
 	@Bean(name = "doocumentServerBaseUrl")
 	public String documentServerHost() throws UnknownHostException {
-		System.out.println("Host");
-		System.out.println(host);
 		if (StringUtils.isBlank(host)) {
 			return "https://" + InetAddress.getLocalHost().getHostName() + ":" + port;
 		} else {
