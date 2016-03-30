@@ -23,7 +23,7 @@
 			},
 			
 			assinarDevolucao : function(assinarDevolucaoCommands) {
-				return ActionService.execute('assinar-devolucao-peticao', assinarDevolucaoCommands);
+				return ActionService.execute('devolver-peticao', assinarDevolucaoCommands);
 			},
 			
 			listarTipoPecas : function() {
