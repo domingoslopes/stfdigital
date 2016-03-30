@@ -64,14 +64,13 @@
 		
 	describe('Cadastrando associado como GESTOR DE CADASTRO', function() {
 		
-		principalPage = new PrincipalPage();
-		cadastroAssociado = new CadastroAssociado();
-				
 		it('Deveria logar como gestor de cadastro', function() {
 			login('gestor-cadastro');
 		});
 
 		it('Deveria navegar para a página de cadastro de associado', function() {
+			principalPage = new PrincipalPage();
+			
 			expect(browser.isElementPresent(principalPage.conteudo)).toBeTruthy();
 			
 			// Navega até a página e espera que seja a página correta
@@ -80,6 +79,8 @@
 		});
 		
 		it('Deveria enviar o formulário com todos os dados', function() {
+			cadastroAssociado = new CadastroAssociado();
+			
 			// Espera até que o formulário esteja presente
 			browser.wait(function() {
 			    return $('#nome').isPresent();
@@ -100,15 +101,14 @@
 		
 	describe('Cadastrando associado como GESTOR DE ÓRGÃO', function() {
 		
-		principalPage = new PrincipalPage();
-		cadastroAssociado = new CadastroAssociado();
-		
 		it('Deveria logar como gestor de órgão', function() {
 			login('gestor-orgao');
 		});
 
 		it('Deveria navegar para a página de cadastro de associado', function() {
-			expect(browser.isElementPresent(principalPage.conteudo)).toBeTruthy;
+			principalPage = new PrincipalPage();
+			
+			expect(browser.isElementPresent(principalPage.conteudo)).toBeTruthy();
 			
 			// Navega até a página e espera que seja a página correta
 			principalPage.iniciarProcesso('link_registrar-associado');
@@ -116,6 +116,8 @@
 		});
 		
 		it('Deveria enviar o formulário com todos os dados', function() {
+			cadastroAssociado = new CadastroAssociado();
+			
 			// Espera até que o formulário esteja presente
 			browser.wait(function() {
 			    return $('#nome').isPresent();
