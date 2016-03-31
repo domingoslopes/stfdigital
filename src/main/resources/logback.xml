@@ -17,6 +17,7 @@
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.jmx" level="WARN"/>
     <logger name="org.springframework.orm" level="WARN"/>
+    <logger name="org.springframework.oxm" level="WARN"/>
     <logger name="org.springframework.remoting" level="WARN"/>
     <logger name="org.springframework.scheduling" level="WARN"/>
     <logger name="org.springframework.messaging" level="WARN"/>
