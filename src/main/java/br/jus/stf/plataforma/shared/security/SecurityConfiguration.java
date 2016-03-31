@@ -23,7 +23,6 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import br.jus.stf.plataforma.shared.web.CsrfHeaderFilter;
-import br.jus.stf.plataforma.shared.web.StfCsrfFilter;
 
 /**
  * @author Lucas.Rodrigues
@@ -71,8 +70,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**").authenticated()
   				.and()
   			.csrf()
+  				.ignoringAntMatchers("/api/onlyoffice/documentos/*/callback")
   				.csrfTokenRepository(csrfTokenRepository()).and()
-  			.addFilterBefore(stfCsrfFilter(), CsrfFilter.class) // TODO Remover esse filtro quando o onlyoffice estiver preparado para utilizar o CRSF.
   			.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
   			.exceptionHandling()
   				.authenticationEntryPoint(new SecurityAuthenticationEntryPoint(LOGIN))
@@ -90,14 +89,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     	auth.authenticationProvider(authenticationProvider);
     }
-  
-  	@Bean
-  	public StfCsrfFilter stfCsrfFilter() {
-  		return new StfCsrfFilter(csrfTokenRepository());
-  	}
   	
-  	@Bean
-	public CsrfTokenRepository csrfTokenRepository() {
+	private CsrfTokenRepository csrfTokenRepository() {
 		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
 		repository.setHeaderName("X-XSRF-TOKEN");
 		return repository;
