@@ -1,1 +1,0 @@
-alter table plataforma.pesquisa_avancada add column tip_pesquisa varchar2(20) not null;

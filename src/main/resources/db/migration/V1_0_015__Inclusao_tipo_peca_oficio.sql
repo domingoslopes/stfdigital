@@ -1,1 +1,0 @@
-insert into autuacao.tipo_peca (seq_tipo_peca, nom_tipo_peca) values (autuacao.seq_tipo_peca.nextval, 'Ofício');
