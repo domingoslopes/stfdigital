@@ -1,0 +1,24 @@
+#pesquisa-avancada {
+	.sidebar {
+		.sidebar-search-search {
+			padding: 0;
+			margin: 0;
+			width: 100%;
+
+			md-icon {
+				color: rgba(0,0,0,0.6);
+    			margin-top: -2px;
+    			font-weight: bold;
+			}
+
+			input {
+				padding-left: 32px;
+				border: none;
+			}
+
+			.md-errors-spacer {
+				display: none;
+			}
+		}
+	}
+}

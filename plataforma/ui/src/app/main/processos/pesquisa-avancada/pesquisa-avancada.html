@@ -1,0 +1,106 @@
+<div id="pesquisa-avancada">
+	<stf-header
+		fab-icon="{{ vm.selectedTab == 1 ? 'icon-content-save' : 'icon-magnify' }}" 
+		fab-text="{{ 'PROCESSOS.PESQUISA-AVANCADA.' + (vm.selectedTab == 1 ? 'SALVAR-PESQUISA' : 'BUSCAR') | translate }}"
+		fab-action="vm.selectedTab == 1 ? vm.saveSearch($event) : vm.doSearch()"
+		fab-active="vm.selectedTab == 0 ? vm.canSearch() : true">
+
+		<div class="text-right header-saved-search-button">
+			<md-button class="md-raised" ng-click="vm.openSavedSearchs()">
+				<md-icon md-font-icon="icon-folder" class="s20"></md-icon>
+				<small>Pesquisas Salvas</small>
+			</md-button>
+		</div>
+
+	</stf-header>
+
+	<div class="content" flex layout="column">
+	 	<md-tabs md-dynamic-height md-border-bottom md-selected="vm.selectedTab">
+      		<md-tab label="{{ 'PROCESSOS.PESQUISA-AVANCADA.NOVA-PESQUISA' | translate }}">
+				<criterias-summary class="md-whiteframe-1dp md-block" criterias="vm.newSearch.criterias"></criterias-summary>
+				<search-builder traits="vm.traits" search="vm.newSearch">
+			</md-tab>
+
+			<md-tab label="{{ 'PROCESSOS.PESQUISA-AVANCADA.RESULTADOS' | translate }}" ng-disabled="!vm.searchComplete">
+				<criterias-summary class="md-whiteframe-1dp md-block" criterias="vm.resultSearch.criterias"></criterias-summary>
+				
+				<div class="dataTables_noTop">
+					<table class=" row-border hover" datatable="ng" dt-options="vm.resultsDtOptions">
+						<thead>
+							<tr>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title" translate="PROCESSOS.PESQUISA-AVANCADA.PROCESSO">Processo</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title" translate="PROCESSOS.PESQUISA-AVANCADA.TEXTO">Texto</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title" translate="PROCESSOS.PESQUISA-AVANCADA.OBSERVACAO">Observação</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.FASE">Fase</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.MINISTRO">Ministro</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.RESPONSAVEL">Responsável</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.DATA-INICIO">Data Início</span>
+	                    			</div>
+	                			</th>
+								<th class="secondary-text">
+	                    			<div class="table-header">
+	                        			<span class="column-title text-center" translate="PROCESSOS.PESQUISA-AVANCADA.CONTROLE-DE-VOTO">Controle de Voto</span>
+	                    			</div>
+	                			</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr ng-repeat="result in vm.searchResults">
+								<td>{{ result.processo }}</td>
+								<td>{{ result.texto }}</td>
+								<td>{{ result.observacao }}</td>
+								<td class="text-center">{{ result.fase }}</td>
+								<td class="text-center">{{ result.ministro }}</td>
+								<td class="text-center">{{ result.responsavel }}</td>
+								<td class="text-center">{{ result.dataInicio * 1000 | date:'longDate' }}</td>
+								<td class="text-center">{{ 'PROCESSOS.PESQUISA-AVANCADA.CONTROLE-VOTO.' + (result.controleVoto ? 'SIM' : 'NAO') | translate }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</md-tab>
+
+			<md-tab label="{{ 'PROCESSOS.PESQUISA-AVANCADA.EDITAR-CRITERIOS' | translate }}" ng-disabled="!vm.editEnabled">
+				<criterias-summary class="md-whiteframe-1dp md-block" criterias="vm.loadedSearch.criterias"></criterias-summary>
+				<search-builder traits="vm.traits" search="vm.loadedSearch">
+			</md-tab>
+		</md-tabs>
+	</div>
+
+	<md-sidenav 
+ 		class="sidenav details-sidenav md-sidenav-right"
+    	md-is-locked-open="$mdMedia('gt-lg')"
+    	md-component-id="sidenav"
+    	ms-scroll="{suppressScrollX: true}"
+    	ms-sidenav-helper
+    	ng-include="'app/main/processos/pesquisa-avancada/sidebar-direita/sidebar-direita.html'">
+
+	</md-sidenav>
+</div>

@@ -1,0 +1,139 @@
+<div id="cadastro-form">
+    <div class="logo" hide-gt-sm>
+        <span><img src="/assets/images/logos/stfdigital.png"/></span>
+    </div>
+
+    <div class="title" translate="CADASTRO.TITULO">Crie sua conta no STF Digital</div>
+
+    <form name="cadastroForm" ng-submit="vm.cadastrar()" novalidate>
+        <div class="md-light-blue-50-bg md-hue-3 cadastro-user-type">
+            <label>Como você deseja se identificar?</label>
+
+            <md-radio-group ng-model="vm.form.tipoCadastro">
+                <md-radio-button value="1"><span translate="PLATAFORMA.TERMO.CIDADAO">Cidadão</span></md-radio-button>
+                <md-radio-button value="2"><span translate="PLATAFORMA.TERMO.ADVOGADO">Advogado</span></md-radio-button>
+            </md-radio-group>
+        </div>
+
+        <md-input-container  class="md-block">
+            <label translate="PLATAFORMA.CAMPO.NOME">Nome</label>
+            <input type="text" name="nome" ng-model="vm.form.nome" required>
+
+            <div ng-messages="cadastroForm.nome.$error" ng-show="cadastroForm.nome.$touched" role="alert" multiple>
+                <div ng-message="required">
+                    <span translate="CADASTRO.ERRO.NOME_REQUERIDO">Nome é um campo obrigatório.</span>
+                </div>
+            </div>
+        </md-input-container>
+
+
+        <div layout="row">
+            <md-input-container flex class="md-block">
+                <label translate="PLATAFORMA.CAMPO.USUARIO">Usuário</label>
+                <input type="text" name="usuario" ng-model="vm.form.usuario" required>
+
+                <div ng-messages="cadastroForm.usuario.$error" ng-show="cadastroForm.usuario.$touched" role="alert" multiple>
+                    <div ng-message="required">
+                        <span translate="CADASTRO.ERRO.USUARIO_REQUERIDO">Usuário é um campo obrigatório.</span>
+                    </div>
+                </div>
+            </md-input-container>        
+
+            <md-input-container flex class="md-block">
+                <label translate="PLATAFORMA.CAMPO.EMAIL">Email</label>
+                <input type="email" name="email" ng-model="vm.form.email" ng-pattern="/^.+@.+\..+$/">
+
+                <div ng-messages="cadastroForm.email.$error" ng-show="cadastroForm.email.$touched" role="alert" multiple>
+                    <div ng-message="pattern">
+                        <span translate="PLATAFORMA.ERRO.EMAIL_INVALIDO">E-mail inválido</span>
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div layout="row">
+            <md-input-container flex class="md-block">
+                <label translate="PLATAFORMA.CAMPO.TELEFONE">Telefone</label>
+                <input type="text" name="telefone" ng-model="vm.form.telefone" mask="(99) 9?9999-9999" mask-clean="true" mask-restrict="reject">
+
+                <div ng-messages="cadastroForm.telefone.$error" ng-show="cadastroForm.telefone.$touched" role="alert" multiple>
+                    <div ng-message="mask">
+                        <span translate="PLATAFORMA.ERRO.TELEFONE_INVALIDO">Telefone inválido</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+            <md-input-container flex class="md-block">
+                <label translate="PLATAFORMA.CAMPO.CPF">CPF</label>
+                <input type="text" name="cpf" ng-model="vm.form.cpf" mask="999.999.999-99" mask-clean="true" mask-restrict="reject" stf-cpf>
+
+                <div ng-messages="cadastroForm.cpf.$error" ng-show="cadastroForm.cpf.$touched" role="alert" multiple>
+                    <div ng-message="cpf">
+                        <span translate="PLATAFORMA.ERRO.CPF_INVALIDO">CPF inválido</span>
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div class="animate-slide-up" ng-show="vm.form.tipoCadastro == 2">
+            <md-input-container class="md-block">
+                <label translate="PLATAFORMA.CAMPO.OAB">OAB</label>
+                <input type="text" name="oab" ng-model="vm.form.oab" mask="@@999999?" mask-clean="true" mask-restrict="reject" required="{{vm.form.tipoCadastro == 2}}"ng-if="vm.form.tipoCadastro == 2">
+
+                <div ng-messages="cadastroForm.oab.$error" ng-show="cadastroForm.oab.$touched" role="alert" multiple>
+                    <div ng-message="required">
+                        <span translate="CADASTRO.ERRO.OAB_REQUERIDO">OAB é obrigatório para advogados.</span>
+                    </div>
+
+                    <div ng-message="mask">
+                        <span translate="PLATAFORMA.ERRO.OAB_FORMATO_INVALIDO">OAB em formato inválido</span>
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div layout="row">
+            <md-input-container flex class="md-block">
+                <label translate="PLATAFORMA.CAMPO.SENHA">Senha</label>
+                <input type="password" name="senha" ng-model="vm.form.senha" required>
+
+                <div ng-messages="cadastroForm.senha.$error" ng-show="cadastroForm.senha.$touched" role="alert" multiple>
+                    <div ng-message="required">
+                        <span translate="CADASTRO.ERRO.SENHA_REQUERIDA">Senha é um campo obrigatório.</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+            <md-input-container flex class="md-block">
+                <label translate="CADASTRO.CAMPO.REPETIR_SENHA">Repetir senha</label>
+                <input type="password" name="repetir_senha" ng-model="vm.form.repetir_senha" required stf-matches="vm.form.senha">
+
+                <div ng-messages="cadastroForm.repetir_senha.$error" ng-show="cadastroForm.repetir_senha.$touched" role="alert" multiple>
+                    <div ng-message="required">
+                        <span translate="CADASTRO.ERRO.REPETIR_SENHA_REQUERIDA">É obrigatório repetir a senha.</span>
+                    </div>
+                    <div ng-message="matches">
+                        <span translate="CADASTRO.ERRO.REPETIR_SENHA_INCORRETA">As senhas são diferentes.</span>
+                    </div>
+                </div>
+            </md-input-container>
+        </div>
+
+        <div layout="row" layout-align="center center">
+            <md-checkbox ng-model="vm.form.aceitoTermos" aria-label="Eu li e aceito os termos e condições">
+                <span translate="CADASTRO.LI_E_ACEITO">Eu li e aceito</span>
+                <a class="clickable link" translate="CADASTRO.TERMOS_E_CONDICOES">os termos e condições</a>
+            </md-checkbox>
+        </div>
+
+        <md-button type="submit" class="md-raised md-accent" aria-label="ENTRAR" ng-disabled="cadastroForm.$invalid || cadastroForm.$pristine || !vm.form.aceitoTermos" translate="CADASTRO.CRIAR_CONTA" translate-attr-aria-label="CADASTRO.CRIAR_CONTA">
+            Quero criar minha conta
+        </md-button>
+    </form>
+
+    <div layout="row" layout-sm="column" layout-align="center center">
+        <span class="text" translate="CADASTRO.JA_TEM_CONTA">Já tem uma conta?</span>
+        &nbsp;
+        <a class="clickable link" ui-sref="app.login" translate="CADASTRO.ENTRE_AGORA">Entre agora!</a>
+    </div>
+</div>

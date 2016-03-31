@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples" xmlns:modeler="http://activiti.com/modeler" modeler:version="1.0ev" modeler:exportDateTime="20151226193121" modeler:modelId="952053" modeler:modelVersion="2" modeler:modelLastUpdated="1451158249779">
+
+	<message id="peticionamentoOrgao" name="peticionamentoOrgao" />
+	
+	<process id="originarios" name="originarios" isExecutable="true">
+	
+		<startEvent id="inicio" name="Enviar Petição Digital" />
+		
+        <sequenceFlow id="autuar" sourceRef="inicio" targetRef="autuacao" />
+        
+        <userTask id="autuacao" name="Autuar Processo Originário" activiti:candidateGroups="autuadores">
+            <documentation>AUTUACAO</documentation>
+        </userTask>
+        
+		<sequenceFlow id="rejeitar" sourceRef="autuacao" targetRef="rejeitado">
+            <conditionExpression xsi:type="tFormalExpression">${transition == 'rejeitar'}</conditionExpression>
+        </sequenceFlow>
+		
+        <endEvent id="rejeitado" name="Processo Rejeitado">
+            <documentation>REJEITADO</documentation>
+        </endEvent>
+        
+		<startEvent id="peticaoOrgao" name="Enviar Petição Digital por Órgão">
+			<messageEventDefinition messageRef="peticionamentoOrgao" />
+		</startEvent>
+		
+		<sequenceFlow id="autuarOrgao" sourceRef="peticaoOrgao" targetRef="autuacao" />
+		
+		<sequenceFlow id="distribuir" sourceRef="autuacao" targetRef="distribuicao">
+            <conditionExpression xsi:type="tFormalExpression">${transition == 'distribuir'}</conditionExpression>
+        </sequenceFlow>
+
+        <endEvent id="distribuicao" name="Distribuir">
+            <documentation>AUTUADO</documentation>
+            <extensionElements>
+                <activiti:executionListener expression="${autuacaoFinalizadaListener.handle(execution)}" event="end"/>
+            </extensionElements>
+        </endEvent>
+        
+	</process>
+
+</definitions>

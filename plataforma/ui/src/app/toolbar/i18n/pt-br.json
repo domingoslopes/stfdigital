@@ -1,0 +1,16 @@
+{
+	"TOOLBAR": {
+		"ALTERNAR_NAVEGACAO": "Alternar navegação",
+		"ALTERNAR_PESQUISA": "Alterar pesquisa",
+		
+		"PESQUISA": {
+			"PLACEHOLDER_PROCESSO": "Digite a classe e o número do PROCESSO e pressione [enter]...",
+			"PLACEHOLDER_PETICAO": "Digite o protocolo e o ano da PETIÇÃO e pressione [enter]...",
+			"PLACEHOLDER_PROCESSO_REDUZIDO": "Classe e o número do PROCESSO",
+			"PLACEHOLDER_PETICAO_REDUZIDO": "Protocolo e o ano da PETIÇÃO",
+			"PESQUISA_AVANCADA": "Pesquisa avançada",
+			"PESQUISAR_PROCESSO": "Pesquisar Processo",
+			"PESQUISAR_PETICAO": "Pesquisar petição"
+		}
+	}
+}

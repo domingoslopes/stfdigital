@@ -1,0 +1,28 @@
+<md-toolbar class="navigation-header md-whiteframe-1dp" layout="row" layout-align="space-between center">
+    <div class="logo" layout="row" layout-align="start center">
+        <span class="logo-image"><img src="/assets/images/logos/stfdigital.png"/></span>
+        <span class="logo-text">STF Digital</span>
+    </div>
+</md-toolbar>
+
+<div class="scrollable" ms-scroll="vm.msScrollOptions">
+	<div class="call-to-action">
+	    <md-button class="md-raised md-float md-warn primary-action md-center md-call-to-action large"
+	               ms-nav-button md-ink-ripple
+	               translate="NAVEGACAO.INICIAR_PROCESSO"
+	               aria-label="Iniciar Processo"
+	               translate-attr-aria-label="NAVEGACAO.INICIAR_PROCESSO"
+	               ui-sref="app.novo-processo">
+	        Iniciar Processo
+	    </md-button>
+
+	    <md-button class="md-fab md-mini md-warn primary-action md-center md-call-to-action small"
+	               aria-label="Iniciar Processo" 
+	               translate-attr-aria-label="NAVEGACAO.INICIAR_PROCESSO"
+	               ui-sref="app.novo-processo">
+	        <md-icon md-font-icon="icon-plus"></md-icon>
+	    </md-button>
+	</div>
+
+	<ms-navigation></ms-navigation>
+</div>

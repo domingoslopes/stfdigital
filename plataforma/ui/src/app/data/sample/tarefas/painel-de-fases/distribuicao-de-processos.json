@@ -1,0 +1,590 @@
+{
+    "id": "distribuicao-de-processos",
+    "name": "Distribuição de Processos",
+    "settings": {
+        "color": "blue-grey",
+        "subscribed": false,
+        "cardCoverImages": false
+    },
+    "lists": [
+        {
+            "id": "56027cf5a2ca3839a5d36103",
+            "name": "Peticionados e Recebidos",
+            "idCards": [
+                "1",
+                "2",
+                "3"
+            ]
+        },
+        {
+            "id": "56127cf2a2ca3539g7d36103",
+            "name": "Analisados",
+            "idCards": [
+                "4",
+                "5"
+            ]
+        },
+        {
+            "id": "19ff2df00b2f48f0a934a79d",
+            "name": "Distribuídos",
+            "idCards": [
+                "6"
+            ]
+        }
+    ],
+    "cards": [
+        {
+            "id": "1",
+            "name": "Petição: 123/2015",
+            "description": "",
+            "idAttachmentCover": "5603a2ae2bbd55bb2db57478",
+            "idMembers": [
+                "56027c1930450d8bf7b10758",
+                "26027s1930450d8bf7b10828",
+                "76027g1930450d8bf7b10958",
+                "36027j1930450d8bf7b10158"
+            ],
+            "idLabels": [
+                "56027e4119ad3a5dc28b36cd"
+            ],
+            "attachments": [
+                {
+                    "id": "1",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 21-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "2",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 28-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "3",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 04-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "4",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 11-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "5",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 18-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "6",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 25-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "7",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 03-03-2015",
+                    "type": "link"
+                }
+            ],
+            "subscribed": false,
+            "checklists": [],
+            "checkItems": 0,
+            "checkItemsChecked": 0,
+            "comments": [
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado!",
+                    "time": "12 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei um link para nos ajudar",
+                    "time": "30 mins. atrás"
+                }
+            ],
+            "activities": [],
+            "due": null,
+            "additionalInfo": {
+                "footer": {
+                    "name": "Classe sugerida: AC"
+                }
+            }
+        },
+        {
+            "id": "2",
+            "name": "Petição: 124/2015",
+            "description": "",
+            "idAttachmentCover": "5603a2ae2bbd55bb2db57478",
+            "idMembers": [
+                "76027g1930450d8bf7b10958"
+            ],
+            "idLabels": [],
+            "attachments": [
+                {
+                    "id": "8",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 11-04-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "9",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 18-04-2015",
+                    "type": "link"
+                }
+            ],
+            "subscribed": false,
+            "checklists": [],
+            "checkItems": 0,
+            "checkItemsChecked": 0,
+            "comments": [
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei um link para nos ajudar",
+                    "time": "30 mins. atrás"
+                }
+            ],
+            "activities": [],
+            "due": null,
+            "additionalInfo": {
+                "footer": {
+                    "name": "Classe sugerida: AC"
+                }
+            }
+        },
+        {
+            "id": "3",
+            "name": "Protocolo: 432/2015",
+            "description": "",
+            "idAttachmentCover": "5603a2ae2bbd55bb2db57478",
+            "idMembers": [],
+            "idLabels": [
+                "56027e4119ad3a5dc28b36cd"
+            ],
+            "attachments": [
+                {
+                    "id": "10",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 21-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "11",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 28-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "12",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 04-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "13",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 11-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "14",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 18-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "15",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 25-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "16",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 03-03-2015",
+                    "type": "link"
+                }
+            ],
+            "subscribed": false,
+            "checklists": [],
+            "checkItems": 0,
+            "checkItemsChecked": 0,
+            "comments": [
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado novamente!",
+                    "time": "Segundos atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei mais um link para nos ajudar",
+                    "time": "8 mins. atrás"
+                },
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado!",
+                    "time": "12 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei um link para nos ajudar",
+                    "time": "30 mins. atrás"
+                }
+            ],
+            "activities": [],
+            "due": null,
+            "additionalInfo": {
+                "icon": "icon-email",
+                "left": "Correio: 2345425",
+                "right": "2 volumes, 3 apensos",
+                "footer": {
+                    "name": "Classe sugerida: AC"
+                }
+            }
+        },
+
+        {
+            "id": "4",
+            "name": "Processo: HC/234",
+            "description": "",
+            "idAttachmentCover": "5603a2ae2bbd55bb2db57478",
+            "idMembers": [
+                "56027c1930450d8bf7b10758",
+                "26027s1930450d8bf7b10828",
+                "76027g1930450d8bf7b10958",
+                "36027j1930450d8bf7b10158"
+            ],
+            "idLabels": [
+                "56027e4119ad3a5dc28b36cd"
+            ],
+            "attachments": [
+                {
+                    "id": "10",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 21-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "11",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 28-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "12",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 04-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "13",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 11-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "14",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 18-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "15",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 25-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "16",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 03-03-2015",
+                    "type": "link"
+                }
+            ],
+            "subscribed": false,
+            "checklists": [],
+            "checkItems": 0,
+            "checkItemsChecked": 0,
+            "comments": [
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado novamente!",
+                    "time": "Segundos atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Também adicionei mais um link para nos ajudar",
+                    "time": "2 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei mais um link para nos ajudar",
+                    "time": "8 mins. atrás"
+                },
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado!",
+                    "time": "12 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei um link para nos ajudar",
+                    "time": "30 mins. atrás"
+                }
+            ],
+            "activities": [],
+            "due": null,
+            "additionalInfo": {
+                "icon": "icon-email",
+                "left": "Correio: 2345425",
+                "right": "2 volumes, 3 apensos",
+                "footer": {
+                    "name": "Classe sugerida: AC"
+                }
+            }
+        },
+        {
+            "id": "5",
+            "name": "Processo: ADC/234",
+            "description": "",
+            "idAttachmentCover": "5603a2ae2bbd55bb2db57478",
+            "idMembers": [
+                "56027c1930450d8bf7b10758",
+                "26027s1930450d8bf7b10828",
+                "76027g1930450d8bf7b10958",
+                "36027j1930450d8bf7b10158"
+            ],
+            "idLabels": [
+                "56027e4119ad3a5dc28b36cd"
+            ],
+            "attachments": [
+                {
+                    "id": "10",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 21-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "11",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 28-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "12",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 04-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "13",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 11-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "14",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 18-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "15",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 25-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "16",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 03-03-2015",
+                    "type": "link"
+                }
+            ],
+            "subscribed": false,
+            "checklists": [],
+            "checkItems": 0,
+            "checkItemsChecked": 0,
+            "comments": [
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado novamente!",
+                    "time": "Segundos atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Também adicionei mais um link para nos ajudar",
+                    "time": "2 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei mais um link para nos ajudar",
+                    "time": "8 mins. atrás"
+                },
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado!",
+                    "time": "12 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei um link para nos ajudar",
+                    "time": "30 mins. atrás"
+                }
+            ],
+            "activities": [],
+            "due": null,
+            "additionalInfo": {
+                "icon": "icon-email",
+                "left": "Correio: 2345425",
+                "right": "2 volumes, 3 apensos",
+                "footer": {
+                    "name": "Classe sugerida: AC"
+                }
+            }
+        },
+
+        {
+            "id": "6",
+            "name": "Processo: HC/235",
+            "description": "",
+            "idAttachmentCover": "5603a2ae2bbd55bb2db57478",
+            "idMembers": [
+                "56027c1930450d8bf7b10758",
+                "26027s1930450d8bf7b10828",
+                "76027g1930450d8bf7b10958",
+                "36027j1930450d8bf7b10158"
+            ],
+            "idLabels": [
+                "56027e4119ad3a5dc28b36cd"
+            ],
+            "attachments": [
+                {
+                    "id": "10",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 21-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "11",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 28-01-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "12",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 04-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "13",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 11-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "14",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 18-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "15",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 25-02-2015",
+                    "type": "link"
+                },
+                {
+                    "id": "16",
+                    "url": "assets/images/sample/calendar-app-design.jpg",
+                    "time": "Adicionado em 03-03-2015",
+                    "type": "link"
+                }
+            ],
+            "subscribed": false,
+            "checklists": [],
+            "checkItems": 0,
+            "checkItemsChecked": 0,
+            "comments": [
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado novamente!",
+                    "time": "Segundos atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Também adicionei mais um link para nos ajudar",
+                    "time": "2 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei mais um link para nos ajudar",
+                    "time": "8 mins. atrás"
+                },
+                {
+                    "idMember": "56027c1930450d8bf7b10758",
+                    "message": "Obrigado!",
+                    "time": "12 mins. atrás"
+                },
+                {
+                    "idMember": "36027j1930450d8bf7b10158",
+                    "message": "Adicionei um link para nos ajudar",
+                    "time": "30 mins. atrás"
+                }
+            ],
+            "activities": [],
+            "due": null,
+            "additionalInfo": {
+                "footer": {
+                    "avatar": "assets/images/sample/carmem-lucia.jpg",
+                    "name": "Gab. Min. Carmem Lúcia"
+                }
+            }
+        }
+    ],
+    "members": [
+        {
+            "id": "56027c1930450d8bf7b10758",
+            "name": "Alice Freeman",
+            "avatar": "assets/images/avatars/profile.jpg"
+        },
+        {
+            "id": "26027s1930450d8bf7b10828",
+            "name": "Danielle Obrien",
+            "avatar": "assets/images/avatars/profile.jpg"
+        },
+        {
+            "id": "76027g1930450d8bf7b10958",
+            "name": "James Lewis",
+            "avatar": "assets/images/avatars/profile.jpg"
+        },
+        {
+            "id": "36027j1930450d8bf7b10158",
+            "name": "Vincent Munoz",
+            "avatar": "assets/images/avatars/profile.jpg"
+        }
+    ],
+    "labels": [
+        {
+            "id": "56027e4119ad3a5dc28b36cd",
+            "name": "Liminar",
+            "color": "red"
+        },
+        {
+            "id": "5640635e19ad3a5dc21416b2",
+            "name": "Criminal",
+            "color": "amber"
+        },
+        {
+            "id": "6540635g19ad3s5dc31412b2",
+            "name": "Maior de 65 anos",
+            "color": "blue"
+        }
+    ]
+}

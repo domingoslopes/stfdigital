@@ -1,0 +1,46 @@
+/*----------------------------------------------------------------*/
+/*  Mixins
+/*----------------------------------------------------------------*/
+
+// Maintain aspect ratio
+@mixin maintain-aspect-ratio($widthRatio, $heightRatio, $padding, $contentClass) {
+    position: relative;
+
+    &:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: ($heightRatio / $widthRatio) * 100%;
+    }
+
+    > .#{$contentClass} {
+        position: absolute;
+        top: $padding;
+        left: $padding;
+        right: $padding;
+        bottom: $padding;
+    }
+}
+
+@mixin input-placeholder($color, $opacity: 1, $fontWeight: normal) {
+    &::-webkit-input-placeholder {
+        color: $color;
+        opacity: $opacity;
+        font-weight: $fontWeight;
+    }
+    &:-moz-placeholder {
+        color: $color;
+        opacity: $opacity;
+        font-weight: $fontWeight;
+    }
+    &::-moz-placeholder {
+        color: $color;
+        opacity: $opacity;
+        font-weight: $fontWeight;
+    }
+    &:-ms-input-placeholder {
+        color: $color;
+        opacity: $opacity;
+        font-weight: $fontWeight;
+    }
+}

@@ -1,0 +1,21 @@
+{
+	"GESTAO": {
+		"MEUS-PAINEIS": {
+			"MEUS-PAINEIS": "Meus Paineis",
+			"PRINCIPAL": "Principal",
+			"PETICOES": "Petições",
+			"AUTUACOES": "Autuações",
+			"PRODUTIVIDADE-DO-TIME": "Produtividade do Time",
+
+            "PETICOES-VIEW": {
+                "PETICOES": "Petições ADI, ADC, ADO e ADPF",
+                "ULTIMA-SEMANA": "Última semana:",
+                "PROCESSOS-PETICIONADOS": "Processos Peticionados",
+                "VEJA-MAIS-DETALHES": "Veja mais detalhes",
+                "PROCESSOS-AUTUADOS": "Processos Autuados",
+                "ENTRADA-DE-PROCESSOS": "Entrade de Processos",
+                "PETICIONADOS-NOS-ULTIMOS-5-MESES": "Peticionados nos últimos 5 meses"
+            }
+		}
+	}
+}

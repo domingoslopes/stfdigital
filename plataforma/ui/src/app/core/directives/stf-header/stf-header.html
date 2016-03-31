@@ -1,0 +1,49 @@
+<div class="header stf-header md-accent-bg">
+
+	<div class="header-content" ng-if="!layoutOnly" layout="row" layout-align="space-between">
+		<div layout="column">
+			<div class="breadcrumb" layout="row" layout-align="start center">
+			    <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+			    <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+			    
+			    <span 
+			    	ng-repeat-start="item in info.breadcrumbs.parents" 
+			    	class="parent" 
+			    	translate="{{ item.label }}"
+			    	ng-if="item.link.length == 0">
+			    </span>
+
+			    <span 
+			    	class="parent" 
+			    	translate="{{ item.label }}"
+			    	ui-sref="item.link"
+			    	ng-if="item.link.length != 0">
+			    </span>
+
+			    <md-icon ng-repeat-end md-font-icon="icon-chevron-right" class="s16 separator mr-8 ml-8"></md-icon>
+			    
+			    <span 
+			    	class="current" 
+			    	flex 
+			    	translate="{{ info.breadcrumbs.current.label }}" 
+			    	ng-attr-ui-sref="{{ info.breadcrumbs.current.link.length == 0 ? undefined : info.breadcrumbs.current.link }}">
+			    </span>
+			</div>
+		    
+		    <span class="md-display-1 font-weight-400" translate="{{ info.title }}"></span>
+		</div>
+		
+	    <div flex ng-transclude></div>
+   </div>
+   	<md-button
+   		class="fab md-warn" 
+   		ng-class="{'md-fab' : !fabText, 'md-raised with-text': fabText}"
+   		ng-click="fabAction()"
+        aria-label="fabAriaLabel"
+        ng-if="hasFabAction"
+        ng-disabled="!fabActive">
+
+		<i class="icon {{ fabIcon }}"></i>
+		<span class="text" ng-if="fabText">{{ fabText }}</span>
+	</md-button>
+</div>
