@@ -78,7 +78,7 @@
                 var ops = _.keys(operatorMapping);
                 return _.reject(ops, function(op) {
                     var types = operatorMapping[op];
-                    return !_.include(types, dataType);
+                    return !_.includes(types, dataType);
                 });
             },
 

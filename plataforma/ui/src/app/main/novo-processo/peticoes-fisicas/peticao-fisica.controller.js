@@ -60,7 +60,7 @@
             vm.formWizard = {};
             */
 
-            $http.post("http://localhost:8080/api/remessas", "{\"formaRecebimento\":\"SEDEX\", \"volumes\":1, \"apensos\":1, \"numeroSedex\":\"SR123456789BR\", \"tipoProcesso\":\"originario\"}").success(function() {
+            $http.post("http://localhost:8091/api/remessas", "{\"formaRecebimento\":\"SEDEX\", \"volumes\":1, \"apensos\":1, \"numeroSedex\":\"SR123456789BR\", \"tipoProcesso\":\"originario\"}").success(function() {
                 vm.formWizard = {};
                 $state.go('app.tarefas.minhas-tarefas', $state.params, { reload: true });
             });
