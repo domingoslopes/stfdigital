@@ -216,7 +216,7 @@ public class AutuacaoOriginariosIntegrationTests extends AbstractIntegrationTest
 		//Recupera as informações do usuário.
 		this.mockMvc.perform(get("/api/peticoes/status")
 			.header("login", "autuador")).andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(9)));
+			.andExpect(jsonPath("$", hasSize(8)));
 	}
 	
 	@Test
