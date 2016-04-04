@@ -37,7 +37,7 @@ public class PesquisaAvancadaDtoAssembler implements InitializingBean {
 	        	throw new IllegalArgumentException(e);
 	        }
 		}
-		return new PesquisaAvancadaDto(pesquisa.id().toLong(), pesquisa.nome(), json, pesquisa.indices());
+		return new PesquisaAvancadaDto(pesquisa.id().toLong(), pesquisa.nome(), pesquisa.tipo(), json, pesquisa.indices());
 	}
 	
 	/**

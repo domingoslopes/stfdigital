@@ -41,7 +41,7 @@ public class RegistrarPeticaoFisicaCommand {
 	
 	@AssertTrue
 	public boolean isValid() {
-		if (FormaRecebimento.SEDEX.equals(FormaRecebimento.valueOf(formaRecebimento))) {
+		if (FormaRecebimento.valueOf(formaRecebimento).exigeNumero()) {
 			return StringUtils.isNotBlank(numeroSedex);
 		}
 		return true;

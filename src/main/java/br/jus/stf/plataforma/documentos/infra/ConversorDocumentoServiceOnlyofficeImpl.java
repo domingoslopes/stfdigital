@@ -33,8 +33,8 @@ public class ConversorDocumentoServiceOnlyofficeImpl implements ConversorDocumen
 	@Qualifier("onlyofficeRestTemplate")
 	private RestTemplate restTemplate;
 
-	@Value("${onlyoffice.server.host}")
-	private String onlyofficeHost;
+	@Value("${onlyoffice.server.address}")
+	private String onlyofficeAddress;
 	
 	@Autowired
 	@Qualifier("doocumentServerBaseUrl")
@@ -51,7 +51,7 @@ public class ConversorDocumentoServiceOnlyofficeImpl implements ConversorDocumen
 		
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString("https://" + onlyofficeHost + "/ConvertService.ashx")
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(onlyofficeAddress + "/ConvertService.ashx")
 			.queryParam("key", UUID.randomUUID().toString())
 			.queryParam("url", doocumentServerBaseUrl + "/api/onlyoffice/documentos/" + documentoId.toLong() + "/conteudo.docx")
 			.queryParam("fileType", "docx")

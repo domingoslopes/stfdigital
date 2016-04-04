@@ -26,8 +26,7 @@
 				  selecionaPeca(count - 1);
 			});
 			selecionaAcao(3);
-			element(by.id('btn_exec_juntar-peca')).click();
-			browser.waitForAngular();
+			executarAcao('juntar-peca');
 		};
 		//qtdPecas representa a quantidade de peças que serão juntadas
 		this.executarAcaoUnir = function(qtdPecas) {
@@ -39,8 +38,7 @@
 			}
 			
 			selecionaAcao(0);
-			element(by.id('btn_exec_unir-pecas')).click();
-			browser.waitForAngular();
+			executarAcao('unir-pecas');
 		};
 		
 		this.recuperarTotalDePecas = function(){
@@ -58,26 +56,24 @@
 		}
 		
 		this.confirmarAcaoDividir = function(){
-			element(by.id('btn_exec_dividir-peca')).click();
-			browser.waitForAngular();
+			executarAcao('dividir-peca');
 		}
 		
 		this.executarAcaoExcluir = function() {
 			selecionaPeca(1)
 			selecionaAcao(2);
-			element(by.id('btn_exec_excluir-pecas')).click();
-			browser.waitForAngular();
+			executarAcao('excluir-pecas');
 		};
 		
 		this.executarAcaoEditarPeca = function() {
 			var peca = element(by.repeater('peca in organiza.processo.pecas').row(0));
 			peca.element(by.css('input')).click();
 			browser.waitForAngular();
-			
-			var acao = element(by.css('actions'));
-			acao.element(by.css('a.dropdown-toggle')).click();
-			acao.element(by.repeater('action in actions').row(1)).click();
-			browser.waitForAngular();
+			selecionaAcao(1);
+		};
+		
+		this.confirmarOrganicaoPecas = function(){
+			executarAcao('organizar-pecas');
 		};
 		
 		this.confirmarOrganicaoPecas = function(){
@@ -101,8 +97,7 @@
 		};
 		
 		this.salvarEdicaoPeca = function(){
-			element(by.id('btn_exec_editar-peca')).click();
-			browser.waitForAngular();
+			executarAcao('editar-peca');
 		};
 		
 		this.setarPaginaInicialFinal = function(inicio, fim){
@@ -142,7 +137,7 @@
 		};
 		
 		this.waitUploadFinished = function(index, timeout) {
-			browser.wait(element(by.css('#tabPecas')).isDisplayed);
+			browser.wait(browser.isElementPresent(by.css('#tabPecas')));
 			
 			var uploadedRow = element.all(by.repeater('peca in pecas')).get(index);
 			var finishedMark = uploadedRow.element(by.css('td.progress-row'));
@@ -185,8 +180,7 @@
 		};
 		
 		this.executarInsercaoPecas = function(){
-			element(by.id('btn_exec_inserir-pecas')).click();
-			browser.waitForAngular();
+			executarAcao('inserir-pecas');
 		};
 		
 		var selecionaPeca = function(indicePecas){
@@ -199,6 +193,21 @@
 			var acao = element(by.css('actions'));
 			acao.element(by.css('a.dropdown-toggle')).click();
 			acao.element(by.repeater('action in actions').row(indiceAcao)).click();
+			browser.waitForAngular();
+			var modal = by.id('actionModal');
+			browser.wait(browser.isElementPresent(modal));
+			browser.wait(function() {
+				return element(modal).isDisplayed();
+			});
+		};
+		
+		var executarAcao = function(acao) {
+			var btn = by.id('btn_exec_' + acao);
+			browser.wait(browser.isElementPresent(btn));
+			browser.wait(function() {
+				return element(btn).isDisplayed();
+			});
+			element(btn).click();
 			browser.waitForAngular();
 		};
 	};

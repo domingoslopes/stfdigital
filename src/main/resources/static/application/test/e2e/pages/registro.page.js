@@ -38,7 +38,9 @@
 		};
 		
 		this.registrar = function () {
-			element(by.id('btn_exec_registrar-peticao-fisica')).click();
+			var btn = by.id('btn_exec_registrar-peticao-fisica')
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
 		};
 		
 		this.registrarVariasPeticoes = function(qtd){

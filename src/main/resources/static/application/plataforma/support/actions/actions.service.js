@@ -163,9 +163,9 @@
 					} else if (isResourcesNullOrUndefined(resources)){
 						return $http.get(properties.apiUrl + /*'/' + context +*/ '/actions/' + id + '/execute');
 					}
-					return $q.defer().reject(ARRAY_EXCEPTION);
+					return $q.reject(ARRAY_EXCEPTION);
 				}, function(err) {
-					return $q.defer().reject(err);
+					return $q.reject(err);
 				});
 		};
 		

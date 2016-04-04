@@ -32,6 +32,9 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 	@Column(name = "NOM_PESQUISA", nullable = false)
 	private String nome;
 	
+	@Column(name = "TIP_PESQUISA", nullable = false)
+	private String tipo;
+	
 	@Column(name = "TXT_CONSULTA", nullable = false)
 	@Lob
 	private String consulta;
@@ -47,16 +50,18 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 	
 	PesquisaAvancada() { }
 	
-	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome) { 
+	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome, final String tipo) { 
 		Validate.notNull(id, "pesquisaAvancada.id.required");
 		Validate.notBlank(nome, "pesquisaAvancada.nome.required");
+		Validate.notBlank(tipo, "pesquisaAvancada.tipo.required");
 		
 		this.id = id;
 		this.nome = nome;
+		this.tipo = tipo.toUpperCase();
 	}
 	
-	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome, final String consulta, final String[] indices) {
-		this(id, nome);
+	public PesquisaAvancada(final PesquisaAvancadaId id, final String nome, final String tipo, final String consulta, final String[] indices) {
+		this(id, nome, tipo);
 		Validate.notBlank(consulta, "pesquisaAvancada.consulta.required");
 		Validate.notEmpty(indices, "pesquisaAvancada.indices.required");
 		
@@ -71,7 +76,11 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 	}
 	
 	public String nome(){
-		return this.nome;
+		return nome;
+	}
+	
+	public String tipo() {
+		return tipo;
 	}
 	
 	public String consulta() {
@@ -89,12 +98,14 @@ public class PesquisaAvancada implements Entity<PesquisaAvancada, PesquisaAvanca
 		return indicesArray;
 	};
 	
-	public void alterar(String nome, String consulta, String[] indices) {
+	public void alterar(String nome, String tipo, String consulta, String[] indices) {
 		Validate.notBlank(nome, "pesquisaAvancada.nome.required");
+		Validate.notBlank(tipo, "pesquisaAvancada.tipo.required");
 		Validate.notBlank(consulta, "pesquisaAvancada.consulta.required");
 		Validate.notEmpty(indices, "pesquisaAvancada.indices.required");
 		
 		this.nome = nome;
+		this.tipo = tipo;
 		this.consulta = consulta;
 		this.indicesArray = indices;
 		this.indices = Arrays.toString(indices);

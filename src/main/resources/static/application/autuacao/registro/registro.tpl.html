@@ -19,7 +19,7 @@
 						<div class="circle" data-toggle="tooltip" title=""
 							data-container="body" data-original-title="Label"></div>
 						<div class="card-header clearfix">
-							<h5>Quantidade de volumes</h5>
+							<h5>Quantidade de Volumes</h5>
 							<h6>Quantidade de volumes ou peças do processo</h6>
 						</div>
 						<div class="card-description">
@@ -67,7 +67,7 @@
                             <h6>Número de envio do Sedex dos Correios</h6>
                         </div>
                         <div class="card-description">
-                                <input type="text" id="numSedex" name="numeroSedex" ng-model="registro.numSedex" size="30" placeholder="Número do Sedex" autofocus> 
+                                <input type="text" id="numSedex" name="numeroSedex" ng-model="registro.numSedex" size="30" ng-disabled="registro.desabilitarNumSedex()" placeholder="Número do Sedex" autofocus> 
                         </div>
                     </div>
                 </div>

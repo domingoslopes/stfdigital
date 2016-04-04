@@ -23,6 +23,14 @@
 		
 		registro.tipoProcesso = registro.tiposProcessos[0];
 		
+		registro.desabilitarNumSedex = function() {
+			if (registro.tipoRecebimento != 'SEDEX') {
+				registro.numSedex = '';
+				return true;
+			}
+			return false;
+		};
+		
 		registro.validar = function() {
 			var errors = null;
 			
@@ -36,6 +44,11 @@
 			
 			if (registro.tipoRecebimento.length === 0) {
 				errors += "Você precisa selecionar uma <b>forma de envio</b>";
+			}
+			
+			if (registro.tipoRecebimento === 'SEDEX' &&
+					registro.numSedex.length === 0) {
+				errors += "Você precisa informar o número do <b>sedex</b>";
 			}
 			
 			if (registro.tipoProcesso.length === 0) {

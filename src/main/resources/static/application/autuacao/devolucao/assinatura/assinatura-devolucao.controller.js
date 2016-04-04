@@ -123,6 +123,8 @@
 	            			lastStepFinished = true;
 	            			peticoesAssinadas.push(peticao);
 	            			checarTerminoAssinatura();
+	    				}, function() {
+	    					messages.error('Erro ao devolver a petição.');
 	    				});
 	            	});
 	            });

@@ -12,6 +12,7 @@
 		$scope.elasticBuilderData = { fields : {}, query : {}};
 		$scope.indices = [];
 		$scope.pesquisa = {
+			tipo : 'PROCESSO',
     		indices : $scope.indices,
     		consulta : $scope.elasticBuilderData.query
 		};
@@ -27,15 +28,17 @@
 				});
 		};
 				
-		if (angular.isDefined($stateParams.pesquisa)) {	
+		if (angular.isDefined($stateParams.pesquisaId)) {	
 			$scope.isPesquisaNova = false;
-			$scope.pesquisa.pesquisaId = $stateParams.pesquisa;
+			$scope.pesquisa.pesquisaId = $stateParams.pesquisaId;
 			
-			PesquisaService.consultar($stateParams.pesquisa)
+			PesquisaService.consultar($stateParams.pesquisaId)
 				.then(function(result) {
 					$scope.pesquisa.nome = result.data.nome;
 					$scope.elasticBuilderData.query = result.data.consulta;
 					carregarCampos(result.data.indices);
+				}, function() {
+					carregarCampos(["distribuicao"]);
 				});
 		} else {
 			carregarCampos(["distribuicao"]);

@@ -90,13 +90,13 @@
 					controller: 'SalvarPesquisaAvancadaController'
 				}
 			}
-		}).state('excluir-pesquisa', {
+		}).state('excluir-pesquisa-avancada', {
 			parent: 'action',
-			params : {pesquisa : undefined },
+			params : { resource : undefined },
 			views: {
 				'@action': {
-					templateUrl: 'application/plataforma/pesquisa-avancada/excluir-pesquisa.tpl.html',
-					controller: 'ExcluirPesquisaController'
+					templateUrl: 'application/plataforma/pesquisa-avancada/excluir.tpl.html',
+					controller: 'ExcluirPesquisaAvancadaController'
 				}
 			}
 		}).state('criar-modelo', {

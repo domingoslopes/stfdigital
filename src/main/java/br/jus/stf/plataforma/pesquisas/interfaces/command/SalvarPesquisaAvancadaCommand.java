@@ -14,18 +14,22 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
 @ApiModel("Comando para salvar uma pesquisa avançada")
 public class SalvarPesquisaAvancadaCommand {
 	
-	@ApiModelProperty("Id da consulta")
+	@ApiModelProperty("Id da pesquisa")
 	private Long pesquisaId;
 	
-	@ApiModelProperty("Nome da consulta")
+	@ApiModelProperty("Nome da pesquisa")
 	@NotBlank
 	private String nome;
+	
+	@ApiModelProperty("Tipo da pesquisa")
+	@NotBlank
+	private String tipo;
 	
 	@ApiModelProperty("Consulta a ser salva")
 	@NotBlank
 	private String consulta;
 	
-	@ApiModelProperty("Indíces para a consulta")
+	@ApiModelProperty("Indíces para a pesquisa")
 	@NotEmpty
 	private String[] indices;
 	
@@ -35,6 +39,10 @@ public class SalvarPesquisaAvancadaCommand {
 	
 	public String getNome() {
 		return nome;
+	}
+	
+	public String getTipo() {
+		return tipo;
 	}
 	
 	public String getConsulta() {

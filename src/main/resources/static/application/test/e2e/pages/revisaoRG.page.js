@@ -39,7 +39,9 @@
 		};
 		
 		this.finalizar = function() {
-			element(by.id('btn_exec_revisar-repercussao-geral')).click();
+			var btn = by.id('btn_exec_revisar-repercussao-geral')
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
 		};
 		
 	};

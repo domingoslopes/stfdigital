@@ -27,7 +27,7 @@
 					controller: 'VisualizacaoPeticaoController'
 				}
 			}
-		}).state('pesquisar.peticoes', {
+		}).state('pesquisar.peticao', {
 			url: '/peticoes',
 			views: {
 				'content@root': {
@@ -40,7 +40,7 @@
 					}
 				}
 			}
-		}).state('pesquisar.processos', {
+		}).state('pesquisar.processo', {
 			url: '/processos',
 			views: {
 				'content@root': {
@@ -53,18 +53,18 @@
 					}
 				}
 			}
-		}).state('pesquisar.peticoes.avancada', {
+		}).state('pesquisar.peticao.avancada', {
 			url: '/avancada',
-			params : { pesquisa : undefined },
+			params : { pesquisaId : undefined },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/pesquisa/avancada/peticoes.tpl.html',
 					controller: 'PesquisaPeticoesAvancadaController'
 				}
 			}
-		}).state('pesquisar.processos.avancada', {
+		}).state('pesquisar.processo.avancada', {
 			url: '/avancada',
-			params : { pesquisa : undefined },
+			params : { pesquisaId : undefined },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/pesquisa/avancada/processos.tpl.html',

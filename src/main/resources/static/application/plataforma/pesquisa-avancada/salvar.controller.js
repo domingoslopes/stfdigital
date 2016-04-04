@@ -22,6 +22,11 @@
 				erro = true;
 			}
 			
+			if (pesquisa.tipo.length == 0) {
+				$scope.modalMessages.error('Tipo de pesquisa inválido!');
+				erro = true;
+			}
+			
 			if (pesquisa.consulta.length == 0) {
 				$scope.modalMessages.error('Consulta inválida!');
 				erro = true;
@@ -35,6 +40,7 @@
 			if (!erro) {
 				var command = {
 					nome : $scope.nome,
+					tipo : pesquisa.tipo,
 					consulta : JSON.stringify(pesquisa.consulta),
 					indices : pesquisa.indices
 				};

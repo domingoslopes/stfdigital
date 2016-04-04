@@ -39,6 +39,7 @@
         "jsdoc": "~3.3.0",
         "angular-jsdoc": "~1.2.1",
         "jshint-stylish": "~1.0.2",
+        "phantomjs-prebuilt": "2.1.4",
         "karma": "~0.13.22",
         "karma-chrome-launcher": "~0.2.2",
         "karma-coverage": "~0.5.5",
@@ -50,8 +51,7 @@
         "yargs": "3.31.0",
         "protractor": "~3.2.1",
         "run-sequence": "~1.1.0",
-        "protractor-html-screenshot-reporter": "~0.0.21",
-        "connect-modrewrite": "~0.8.2",
+        "protractor-jasmine2-html-reporter": "~0.0.6",
         "connect-history-api-fallback": "~1.1.0",
         "jasmine-spec-reporter": "~2.4.0" 
     },

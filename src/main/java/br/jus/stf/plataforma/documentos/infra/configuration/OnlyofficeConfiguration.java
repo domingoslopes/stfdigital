@@ -16,6 +16,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,12 @@ public class OnlyofficeConfiguration {
 
 	@Value("${http.client.ssl.trust-store-password}")
 	private char[] trustStorePassword;
+	
+	@Value("${host:}")
+	private String host;
+	
+	@Value("${port:8443}")
+	private Integer port;
 
 	@Bean(name = "onlyofficeRestTemplate")
 	public RestTemplate onlyofficeRestTemplate() throws Exception {
@@ -64,7 +71,11 @@ public class OnlyofficeConfiguration {
 	
 	@Bean(name = "doocumentServerBaseUrl")
 	public String documentServerHost() throws UnknownHostException {
-		return "https://" + InetAddress.getLocalHost().getHostName() + ":8443";
+		if (StringUtils.isBlank(host)) {
+			return "https://" + InetAddress.getLocalHost().getHostName() + ":" + port;
+		} else {
+			return "https://" + host + ":" + port;
+		}
 	}
 	
 	@PostConstruct

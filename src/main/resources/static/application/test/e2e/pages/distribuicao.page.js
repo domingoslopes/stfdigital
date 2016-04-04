@@ -54,15 +54,14 @@
 		};
 		
 		this.adicionarProcessoSuggestion = function(siglaNumeroProcesso){
+			browser.wait(browser.isElementPresent(by.id('s2id_processo')));
 			utils.select('div#s2id_processo', siglaNumeroProcesso);
-			 browser.sleep(2000);
-			browser.waitForAngular();
 		};
 		
 		this.finalizar = function() {
-			element(by.id('btn_exec_distribuir-processo')).click();
-			
-		    browser.waitForAngular();
+			var btn = by.id('btn_exec_distribuir-processo')
+			browser.wait(browser.isElementPresent(btn));
+			element(btn).click();
 		};
 		
 		
