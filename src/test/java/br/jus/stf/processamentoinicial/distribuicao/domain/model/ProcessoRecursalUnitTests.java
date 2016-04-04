@@ -121,7 +121,7 @@ public class ProcessoRecursalUnitTests {
 		ProcessoRecursal processo = processo();
 		Set<Origem> origens = new HashSet<Origem>(0);
 		
-		origens.add(new Origem(1L, new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, false));
+		origens.add(new Origem(new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, false));
 		processo.atribuirOrigens(origens);
 	}
 	
@@ -130,8 +130,8 @@ public class ProcessoRecursalUnitTests {
 		ProcessoRecursal processo = processo();
 		Set<Origem> origens = new HashSet<Origem>(0);
 		
-		origens.add(new Origem(1L, new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, true));
-		origens.add(new Origem(2L, new UnidadeFederacao(1L, "Acre", "AC", new Pais(16L, "Brasil")), new TribunalJuizo(2L, "TJ-AC"), 65420L, true));
+		origens.add(new Origem(new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, true));
+		origens.add(new Origem(new UnidadeFederacao(1L, "Acre", "AC", new Pais(16L, "Brasil")), new TribunalJuizo(2L, "TJ-AC"), 65420L, true));
 		processo.atribuirOrigens(origens);
 	}
 	
@@ -140,7 +140,7 @@ public class ProcessoRecursalUnitTests {
 		ProcessoRecursal processo = processo();
 		Set<Origem> origens = new HashSet<Origem>(0);
 		
-		origens.add(new Origem(1L, new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, true));
+		origens.add(new Origem(new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, true));
 		processo.atribuirOrigens(origens);
 		
 		assertEquals(origens, processo.origens());
