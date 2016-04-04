@@ -26,16 +26,6 @@ public class EnviaProcessoIntegrationTests extends AbstractIntegrationTests {
 	}
 	
 	@Test
-	public void salvarProcessoParaEnvio() throws Exception{
-		String urlServico = "/api/actions/salvar-processo/execute";
-		String salvarProcessoCommand = gerarCommand();
-		
-		super.mockMvc.perform(
-				post(urlServico).header("login", login).contentType(MediaType.APPLICATION_JSON).content(salvarProcessoCommand)
-		).andExpect(status().isOk());
-	}
-	
-	@Test
 	public void enviarProcessoParaSTF() throws Exception{
 		String urlServico = "/api/actions/enviar-processo/execute";
 		String enviarProcessoCommand = gerarCommand();
@@ -47,9 +37,9 @@ public class EnviaProcessoIntegrationTests extends AbstractIntegrationTests {
 	
 	private String gerarCommand(){
 		StringBuilder command = new StringBuilder();
-		command.append("{\"resources\":[{\"classeId\":\"HC\", \"sigilo\": \"Público\", \"numeroRecursos\": 2, \"preferencias\": [1, 2], ");
-		command.append("\"origens\": [{\"unidadeFederacaoId\": 1, \"codigoJuizoOrigem\": 1, \"numeroProcesso\": 1, \"numeroOrdem\": 1}], ");
-		command.append("\"assuntoId\": \"864\", \"partesPoloAtivo\": [\"FULADO DA SILVA\"], \"partesPoloPassivo\": [\"BELTRANO LEMOS\"]");
+		command.append("{\"resources\":[{\"classeId\":\"HC\", \"sigilo\": \"PUBLICO\", \"numeroRecursos\": 2, \"preferencias\": [1, 2], ");
+		command.append("\"origens\": [{\"unidadeFederacaoId\": 1, \"codigoJuizoOrigem\": 90, \"numeroProcesso\": 1, \"numeroOrdem\": 1, \"isPrincipal\":true}], ");
+		command.append("\"assuntos\": [\"864\"], \"partesPoloAtivo\": [\"FULADO DA SILVA\"], \"partesPoloPassivo\": [\"BELTRANO LEMOS\"]");
 		command.append("}]}");
 		
 		return command.toString();
