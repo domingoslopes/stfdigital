@@ -40,8 +40,8 @@ public class EnviarProcessoCommand {
 	private List<OrigemProcesso> origens;
 	
 	@NotEmpty
-	@ApiModelProperty(value = "Id do assunto.", required = true)
-	private String assuntoId;
+	@ApiModelProperty(value = "Assuntos do processo.", required = true)
+	private List<String> assuntos;
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo ativo", required = true)
@@ -91,12 +91,12 @@ public class EnviarProcessoCommand {
 		this.origens = origens;
 	}
 
-	public String getAssuntoId() {
-		return assuntoId;
+	public List<String> getAssuntos() {
+		return assuntos;
 	}
 
-	public void setAssuntoId(String assuntoId) {
-		this.assuntoId = assuntoId;
+	public void setAssuntos(List<String> assuntos) {
+		this.assuntos = assuntos;
 	}
 
 	public List<String> getPartesPoloAtivo() {

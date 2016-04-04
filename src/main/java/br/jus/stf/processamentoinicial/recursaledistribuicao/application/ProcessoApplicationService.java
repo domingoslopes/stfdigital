@@ -1,5 +1,6 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.application;
 
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +23,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TeseAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Distribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidaoProcesso;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Origem;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParteProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaProcesso;
@@ -34,6 +36,7 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classe;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
@@ -41,6 +44,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.AssuntoId;
+import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.DocumentoId;
 import br.jus.stf.shared.DocumentoTemporarioId;
 import br.jus.stf.shared.PessoaId;
@@ -334,18 +338,27 @@ public class ProcessoApplicationService {
 	/**
 	 * Salva os dados do processo a ser enviado para o STF.
 	 * 
-	 * @param classe Dados da classe processual.
-	 * @param sigilo - Sigilo do processo.
-	 * @param numeroRecursos - Nº de recursos do processo.
-	 * @param preferencias - Lista de preferências do processo.
-	 * @param origens - Origens do processo.
-	 * @param assunto - Dados do assunto tratado no processo.
-	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
-	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
+	 * @param ClasseId Id da classe processual.
+	 * @param sigilo Sigilo do processo.
+	 * @param numeroRecursos Nº de recursos do processo.
+	 * @param preferencias Lista de preferências do processo.
+	 * @param origens Origens do processo.
+	 * @param assuntos Ids dos assunto tratado no processo.
+	 * @param partesPoloAtivo Lista de partes do polo ativo do processo.
+	 * @param partesPoloPassivo Lista de partes do polo passivo do processo.
 	 */
-	public void enviarProcesso(Classe classe, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, List<OrigemProcesso> origens, 
-			Assunto assunto, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
+	public void enviarProcesso(ClasseId classeId, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, Set<Origem> origens, 
+			Set<AssuntoId> assuntos, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
 		
+		ProcessoId processoId = processoRepository.nextId();
+		Long numeroProcesso = processoRepository.nextNumero(classeId);
+		PeticaoId peticaoId = new PeticaoId(1L); //Será criado um novo construtor para a classe ProcessoRecursal, pois, no caso de envio de processos, não há petição.
+		Date dataRecebimento = new Date();
+		ProcessoRecursal processo = new ProcessoRecursal(processoId, classeId, numeroProcesso, peticaoId, preferencias, dataRecebimento, MeioTramitacao.ELETRONICO, sigilo, numeroRecursos);
+		processo.atribuirOrigens(origens);
+		processo.atribuirAssuntos(assuntos);
+		
+		processoRepository.save(processo);
 	}
 	
 	private Long getNumeroOrdem(List<PecaProcesso> pecas){

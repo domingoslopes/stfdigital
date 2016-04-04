@@ -15,16 +15,18 @@ public class OrigemProcesso {
 	private Long codigoJuizoOrigem;
 	private Long numeroProcesso;
 	private Long numeroOrdem;
+	private Boolean isPricipal;
 		
 	public OrigemProcesso(){
 		
 	}
 	
-	public OrigemProcesso (Long unidadeFederacaoId, long codigoJuizoOrigem, Long numeroProcesso, Long numeroOrdem){
+	public OrigemProcesso (Long unidadeFederacaoId, long codigoJuizoOrigem, Long numeroProcesso, Long numeroOrdem, Boolean isPrincipal){
 		this.unidadeFederacaoId = unidadeFederacaoId;
 		this.codigoJuizoOrigem = codigoJuizoOrigem;
 		this.numeroProcesso = numeroProcesso;
 		this.numeroOrdem = numeroOrdem;
+		this.isPricipal = isPrincipal;
 	}
 	
 	public Long getUnidadeFederacaoId() {
@@ -57,5 +59,13 @@ public class OrigemProcesso {
 	
 	public void setNumeroOrdem(Long numeroOrdem) {
 		this.numeroOrdem = numeroOrdem;
+	}
+	
+	public Boolean getIsPrincipal() {
+		return isPricipal;
+	}
+	
+	public void setIsPrincipal(Boolean isPrincipal) {
+		this.isPricipal = isPrincipal;
 	}
 }

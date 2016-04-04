@@ -1,8 +1,9 @@
 package br.jus.stf.processamentoinicial.suporte.interfaces;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDtoAssemble
 import br.jus.stf.shared.AssuntoId;
 
 /**
- * Api REST de consulta de assuntos.
+ * API REST de consulta de assuntos.
  * 
  * @author Anderson.Araújo
  */
@@ -43,7 +44,7 @@ public class AssuntoRestResource {
 				assuntos.add(assuntoDtoAssembler.toDto(assunto));
 			}
 		} else {
-			assuntos = assuntoRepository.findAssuntoByDescricao(termo.toUpperCase()).stream().map(assunto -> assuntoDtoAssembler.toDto(assunto)).collect(Collectors.toList());
+			assuntos = getArvoreAssuntos(assuntoRepository.findAssuntoByDescricao(termo.toUpperCase()));
 		}
 		
 		return assuntos;
@@ -52,5 +53,46 @@ public class AssuntoRestResource {
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public AssuntoDto consultar(@PathVariable String id) {
 		return assuntoDtoAssembler.toDto(assuntoRepository.findOne(new AssuntoId(id)));
+	}
+	
+	public List<AssuntoDto> getArvoreAssuntos(List<Assunto> assuntos){
+		if (assuntos == null || assuntos.isEmpty()) {
+			return new ArrayList<AssuntoDto>();
+		}
+		
+		Map<String,AssuntoDto> coletor = new HashMap<String,AssuntoDto>(0);
+		coletor.put("raiz", new AssuntoDto());
+		for (Assunto assunto : assuntos) {
+			adicionarNo(assunto, coletor);
+		}
+		
+		return coletor.get("raiz").getAssuntosFilhos();
+	}
+
+	private void adicionarNo(Assunto assunto, Map<String, AssuntoDto> coletor) {
+		if (coletor.get(assunto.id().toString()) != null) {
+			return;
+		}
+		
+		AssuntoDto dto = assuntoDtoAssembler.toDto(assunto);
+		Assunto pai = assunto.assuntoPai();
+		
+		if (pai != null) {
+			//Tenta recuperar o nó-pai da lista.
+			AssuntoDto paiDto = coletor.get(pai.id().toString());
+			
+			//Se conseguiu recuperá-lo
+			if (paiDto != null) {
+				//Adiciona o nó em questão à lsita de nós-filhos do pai.
+				paiDto.getAssuntosFilhos().add(dto);
+			} else {
+				adicionarNo(pai, coletor);
+				coletor.get(pai.id().toString()).getAssuntosFilhos().add(dto);
+			}
+		} else {
+			coletor.get("raiz").getAssuntosFilhos().add(dto);
+		}
+		
+		coletor.put(assunto.id().toString(), dto);
 	}
 }

@@ -9,15 +9,12 @@
 
 	angular.plataforma.factory('OrigemService', function($http, $q, properties) {
 		return {
-			listarTribunalJuizo : function(idProcedencia) {
-				return $http.get(properties.apiUrl + '/tribunais-juizos/origens/' + idProcedencia).then(function(response) {
-					return response.data;
-				});
+			consultarTribunaisJuizos : function(idProcedencia) {
+				return $http.get(properties.apiUrl + '/tribunais-juizos/origens/' + idProcedencia);
 			},
+			
 			listarUnidadesFederacao : function() {
-				return $http.get(properties.apiUrl + '/unidades-federacao').then(function(response) {
-					return response.data;
-				});
+				return $http.get(properties.apiUrl + '/unidades-federacao');
 			}
 		};
 	});

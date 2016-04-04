@@ -52,14 +52,12 @@ public class Origem implements ValueObject<Origem> {
 		
 	}
 	
-	public Origem(final Long sequencial, final UnidadeFederacao procedenciaGeografica, final TribunalJuizo tribunalJuizo,
+	public Origem(final UnidadeFederacao procedenciaGeografica, final TribunalJuizo tribunalJuizo,
 			final Long numeroProcesso, final boolean origemPrincipal) {
-		Validate.notNull(sequencial, "origem.sequencial.required");
 		Validate.notNull(procedenciaGeografica, "origem.procedenciaGeografica.required");
 		Validate.notNull(tribunalJuizo, "origem.tribunalJuizo.required");
 		Validate.notNull(numeroProcesso, "origem.numeroProcesso.required");
 		
-		this.sequencial = sequencial;
 		this.procedenciaGeografica = procedenciaGeografica;
 		this.tribunalJuizo = tribunalJuizo;
 		this.numeroProcesso = numeroProcesso;

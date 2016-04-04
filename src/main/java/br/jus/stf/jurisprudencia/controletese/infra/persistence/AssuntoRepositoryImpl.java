@@ -41,7 +41,7 @@ public class AssuntoRepositoryImpl extends SimpleJpaRepository<Assunto, AssuntoI
 	}
 	
 	public List<Assunto> findAssuntoByDescricao(String descricao) {
-		TypedQuery<Assunto> query = entityManager.createQuery("SELECT assu FROM Assunto assu LEFT JOIN FETCH assu.assuntoPai WHERE UPPER(assu.descricao) LIKE UPPER(:descricao)", Assunto.class);
+		TypedQuery<Assunto> query = entityManager.createQuery("SELECT assu FROM Assunto assu LEFT JOIN FETCH assu.assuntoPai WHERE UPPER(assu.descricao) LIKE UPPER(:descricao) ORDER BY assu.assuntoPai", Assunto.class);
 		
 		query.setParameter("descricao", "%" + descricao + "%");
 		return query.getResultList();

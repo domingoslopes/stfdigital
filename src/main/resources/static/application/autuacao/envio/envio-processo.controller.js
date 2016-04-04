@@ -7,223 +7,381 @@
 (function() {
 	'use strict';
 	
-	angular.autuacao.controller('EnvioProcessoController', function ($scope, $state, $stateParams, messages, properties, ClasseService, ProcessoService, OrigemService) {
+	angular.autuacao.controller('EnvioProcessoController', function ($scope, $state, $stateParams, messages, properties, ClasseService, ProcessoService, OrigemService, AssuntoService) {
 		
 		var envio = this;
-		//var resource = $stateParams.resources[0];
-		envio.classe = '';
+		envio.classeId = '';
 		envio.classes = [];
-		envio.sigilos = [{codigo: '1', nome: 'Público'}, {codigo: '2', nome: 'Segredo de Justiça'}];
-		envio.sigilo = ''
+		envio.sigilos = [{codigo: 'PUBLICO', nome: 'Público'}, {codigo: 'SEGREDO_JUSTICA', nome: 'Segredo de Justiça'}];
+		envio.sigilo = '';
+		envio.numeroRecursos = 0;
 		envio.preferenciasSelecionadas = [];
 		envio.preferencias = [];
 		envio.procedencias = [];
-		envio.tribunalJuizos = [];
+		envio.tribunaisJuizos = [];
 		envio.origens = [];
-		envio.procedencia;
-		envio.tribunalJuizo;
-		envio.numeroOrigem;
-		envio.assuntosSelecionados = []; 
-		/*envio.partesPoloAtivo = [];
+		envio.origensAdicionadas = [];
+		envio.procedencia = '';
+		envio.tribunalJuizo = '';
+		envio.numeroOrigem = '';
+		envio.assuntosSelecionados = [];
+		envio.assuntosAdicionados = [];
+		envio.assuntoInformado = '';
+		envio.partesPoloAtivo = [];
 		envio.partesPoloPassivo = [];
-		envio.poloAtivoController = new PartesController(envio.partesPoloAtivo);
-		envio.poloPassivoController = new PartesController(envio.partesPoloPassivo); */
-
+		envio.parteInformada = '';
+		envio.poloSelecionado = 'AT';
+		envio.recursos = [];
 		
 		ClasseService.listar().success(function(classes) {
 			envio.classes = classes;
 		});
 		
 		envio.carregarPreferencias = function() {
-			ClasseService.consultarPreferencias(envio.classe).success(function(preferencias) {
+			ClasseService.consultarPreferencias(envio.classeId).success(function(data) {
 				envio.preferenciasSelecionadas = [];
-				envio.preferencias = preferencias;
+				envio.preferencias = data;
 			});
 		};
+		
+		OrigemService.listarUnidadesFederacao().success(function(data) {
+			envio.procedencias = data;
+		});
+		
 		
 		envio.carregarOrigens = function() {
-			OrigemService.listarUnidadesFederacao(envio.procedencia).success(function(tribunalJuizos) {
-				envio.tribunalJuizos = tribunalJuizos;
+			OrigemService.consultarTribunaisJuizos(envio.procedencia).success(function(data) {
+				envio.tribunaisJuizos = data;
 			});
 		};
 		
-		envio.handle = function(e){
-			if (e.keyCode === 13){
-				var origemConcat = envio.tribunalJuizo + envio.numeroOrigem;
-				origens.push(origemConcat);
+		envio.marcarOrigemPrincipal = function(indice){
+			if (envio.origensAdicionadas[indice].isPrincipal){
+				envio.origensAdicionadas[indice].isPrincipal = false;
+			} else {
+				envio.origensAdicionadas[indice].isPrincipal = true;
 			}
+			
+			return envio.origensAdicionadas[indice].isPrincipal;
+		};
+		
+		envio.isProcedenciaSelecionada = function(){
+			return envio.procedencia != '';
+		};
+		
+		envio.adicionarOrigem = function() {
+			var erros = '';
+			
+			if (envio.procedencia === '' || envio.procedencia == null){
+				erros = 'Informe a procedência do processo. <br />'
+			}
+			
+			if (envio.tribunalJuizo === '' || envio.tribunalJuizo == null){
+				erros += 'Informe o tribunal ou juízo de origem do processo. <br />'
+			}
+			
+			if (envio.numeroOrigem === '' || envio.numeroOrigem == null){
+				erros += 'Informe o nº do processo de origem.'
+			}
+			
+			if (erros != ''){
+				messages.error(erros);
+				return false;
+			}
+			
+			var origemConcat = getNomeObjeto(envio.tribunaisJuizos, 'codigo', envio.tribunalJuizo) + ' ' + getNomeObjeto(envio.procedencias, 'id', envio.procedencia) + ' ' + envio.numeroOrigem;
+			envio.origens.push(origemConcat);
+			
+			var origemAdicionada = {unidadeFederacaoId:envio.procedencia, codigoJuizoOrigem:envio.tribunalJuizo, numeroProcesso:envio.numeroOrigem, numeroOrdem:1, isPrincipal:false};
+			envio.origensAdicionadas.push(origemAdicionada);
+			
+			envio.procedencia = '';
+			envio.tribunalJuizo = '';
+			envio.numeroOrigem = '';
 		};
 		
 		envio.removerOrigem = function(origem){
-			var index = origens.indexOf(origem);
+			var index = envio.origens.indexOf(origem);
 			if (index > -1) {
-				origem.splice(index, 1);
+				envio.origens.splice(index, 1);
+				envio.origensAdicionadas.splice(index, 1);
 			}
 		};
 		
-		envio.select2Options = {
-				dropdownAutoWidth: 'true',
-				minimumInputLength: 3,
-				quietMillis: 500,
-				ajax : {
-					url: properties.apiUrl + '/assuntos',
-					dataType: 'json',
-					data: function (term, page) {
-						return {
-							termo: term, // search term
-						};
-					},
-					results: function (data, page) {
-						
-						var resultados = data.map(function(item){
-							return {id:item.codigo, codigo: item.codigo, descricao : item.descricao};
-						});
-						return {results: resultados};
+		function getNomeObjeto(array, key, value) {
+		    for (var i = 0; i < array.length; i++) {
+		        if (array[i][key] == value) {
+		            return array[i].nome;
+		        }
+		    }
+		    return null;
+		};
+		
+		envio.pesquisarAssunto = function(){
+			var verificadorNumero = /^[0-9]+$/g;
+			
+			if (verificadorNumero.test(envio.assuntoInformado)){
+				AssuntoService.listar(envio.assuntoInformado).success(function(data){
+					if (data.length > 0){
+						adicionarAssunto(data[0]);
+					} else {
+						messages.error('Não existe assunto com o código ' + envio.assuntoInformado);
 					}
-				},
-				formatResult: function(object, container, query) {
-					return object.id + " - " + object.descricao;
-				},
-				formatSelection: function (item) { 
-					return item.descricao; 
+				});
+			} else {
+				if (envio.assuntoInformado.length < 3) {
+					messages.error('Informe ao menos 3 caracteres.');
+				} else {
+					AssuntoService.listar(envio.assuntoInformado).success(function(assuntosPesquisados){
+						if (assuntosPesquisados.length > 0){
+							envio.assuntosSelecionados = assuntosPesquisados;
+						} else {
+							messages.error('Nenhum assunto encontrado com o termo pesquisado.');
+						}
+					});	
 				}
+			}
 		};
 		
-		$scope.$watch('envio.assunto', function(novo){
-			if (novo){
-				envio.adicionarAssuntoNaLista(novo);
-			}
-		});
+		envio.vincularAssunto = function (assunto) {
+			adicionarAssunto(assunto);
+			limparPesquisa();
+        };
+        
+        var limparPesquisa = function () {
+            envio.assuntosSelecionados = null;
+            envio.assuntoInformado = '';
+            $("#txtPesquisarAssunto").focus();
+        };
+        
+        var limparCampos = function(){
+        	envio.classeId = '';
+    		envio.classes = [];
+    		envio.sigilos = [{codigo: 'PUBLICO', nome: 'Público'}, {codigo: 'SEGREDO_JUSTICA', nome: 'Segredo de Justiça'}];
+    		envio.sigilo = '';
+    		envio.numeroRecursos = 0;
+    		envio.preferenciasSelecionadas = [];
+    		envio.preferencias = [];
+    		envio.procedencias = [];
+    		envio.tribunaisJuizos = [];
+    		envio.origens = [];
+    		envio.origensAdicionadas = [];
+    		envio.procedencia = '';
+    		envio.tribunalJuizo = '';
+    		envio.numeroOrigem = '';
+    		envio.assuntosSelecionados = [];
+    		envio.assuntosAdicionados = [];
+    		envio.assuntoInformado = '';
+    		envio.partesPoloAtivo = [];
+    		envio.partesPoloPassivo = [];
+    		envio.parteInformada = '';
+    		envio.poloSelecionado = 'AT';
+    		envio.recursos = [];
+        };
 		
-		envio.adicionarAssuntoNaLista = function(assunto){
-			var verificaSeAssuntoExiste = false;
-			angular.forEach(envio.assuntosSelecionados, function(assuntoS) {
-				if (assuntoS.id == assunto.id) {
-					verificaSeAssuntoExiste = true;
+		var adicionarAssunto = function(assunto){
+			var isAssuntoAdicionado = false;
+			
+			angular.forEach(envio.assuntosAdicionados, function(assuntoS) {
+				if (assuntoS.codigo == assunto.codigo) {
+					isAssuntoAdicionado = true;
 				}
 			});
-			if (!verificaSeAssuntoExiste){
-				envio.assuntosSelecionados.push(assunto);
-				envio.assunto = null;
-			}
-		};
-		
-		envio.removerAssuntoSelecionadoLista = function($index){
-			envio.assuntosSelecionados.splice($index,1);
-		}
-	/*	
-		if (angular.isObject(resource)) {
-			if (angular.isDefined(resource.peticaoId)) {
-				envio.id = resource.peticaoId;
-			} else if (angular.isDefined(resource.processoId)) {
-				envio.id = resource.processoId;
-			}
-		} else {
-			envio.id = resource;
-		}
-		
-		var consultarProcesso = null;
-		envio.tarefa = $stateParams.task;
-		
-		if (envio.tarefa.metadado.tipoInformacao == 'ProcessoRecursal') {
-			consultarProcesso = ProcessoService.consultar(envio.id);
-		} else {
-			consultarProcesso = ProcessoService.consultarPorPeticao(envio.id);
-		}
-		consultarProcesso.success(function(processo){
-			envio.processo = processo;
-		});
-		
-
-		
-		envio.adicionarPoloAtivo = function() {
-			envio.poloAtivoController.adicionar(envio.partePoloAtivo);
-			envio.partePoloAtivo = '';
-			$('partePoloAtivo').focus();
-		};
-	
-		envio.removerPoloAtivo = function(parteSelecionada) {
-			envio.poloAtivoController.remover(parteSelecionada);
-		};
-
-		envio.adicionarPoloPassivo = function() {
-			envio.poloPassivoController.adicionar(envio.partePoloPassivo);
-			envio.partePoloPassivo = '';
-			$('partePoloPassivo').focus();
-		};
-	
-		envio.removerPoloPassivo = function(parteSelecionada) {
-			envio.poloPassivoController.remover(parteSelecionada);
-		};
-		
-		envio.validar = function() {
-			var errors = null;
 			
-			if (envio.partesPoloAtivo.length === 0) {
-				errors = 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>ativo</b>.<br/>';
+			if (!isAssuntoAdicionado){
+				envio.assuntosAdicionados.push(assunto);
+				envio.assuntoInformado = '';
+			} else {
+				messages.error('Assunto já adicionado à lista.');
+			}
+		};
+		
+		envio.removerAssunto = function(assunto){
+			var indice = 0;
+			
+			for (var i = 0; i < envio.assuntosAdicionados.length; i++){
+				if (assunto.codigo == envio.assuntosAdicionados[i].codigo){
+					indice = i;
+					break;
+				}
 			}
 			
-			if (envio.partesPoloPassivo.length === 0) {
-				errors += 'Você precisa informar <b>pelo menos uma parte</b> para o polo <b>passivo</b>.<br/>';
+			envio.assuntosAdicionados.splice(indice,1);
+		};
+		
+		envio.adicionarParte = function(){
+			if (envio.parteInformada == ''){
+				messages.error('Parte não informada.');
+				return;
 			}
 			
-			if (errors) {
-				messages.error(errors);
+			switch(envio.poloSelecionado){
+			case 'AT':
+				adicionarPartePoloAtivo(envio.parteInformada.toUpperCase())
+				break;
+			case 'PA':
+				adicionarPartePoloPassivo(envio.parteInformada.toUpperCase())
+				break;
+			default:
+				messages.error('Informe o polo da parte.');
+			}
+			
+			envio.parteInformada = '';
+		};
+		
+		var adicionarPartePoloAtivo = function(parteAdicionada){
+			var isParteAdicionada = false;
+			
+			for (var i = 0; i < envio.partesPoloAtivo.length; i++){
+				if (parteAdicionada == envio.partesPoloAtivo[i]) {
+					isParteAdicionada = true;
+					break;
+				}
+			}
+			
+			if (isParteAdicionada){
+				messages.error('A parte já foi adicionada ao polo ativo.');
+			} else {
+				envio.partesPoloAtivo.push(parteAdicionada);
+			}
+		};
+		
+		var adicionarPartePoloPassivo = function(parteAdicionada){
+			var isParteAdicionada = false;
+			
+			for (var i = 0; i < envio.partesPoloPassivo.length; i++){
+				if (parteAdicionada == envio.partesPoloPassivo[i]) {
+					isParteAdicionada = true;
+					break;
+				}
+			}
+			
+			if (isParteAdicionada){
+				messages.error('A parte já foi adicionada ao polo passivo.');
+			} else {
+				envio.partesPoloPassivo.push(parteAdicionada);
+			}
+		};
+		
+		envio.removerPartePoloAtivo = function(parte){
+			var indice = 0;
+			
+			for (var i = 0; i < envio.partesPoloAtivo.length; i++){
+				if (parte == envio.partesPoloAtivo[i]){
+					indice = i;
+					break;
+				}
+			}
+			
+			envio.partesPoloAtivo.splice(indice,1);
+		};
+		
+		envio.removerPartePoloPassivo = function(parte){
+			var indice = 0;
+			
+			for (var i = 0; i < envio.partesPoloPassivo.length; i++){
+				if (parte == envio.partesPoloPassivo[i]){
+					indice = i;
+					break;
+				}
+			}
+			
+			envio.partesPoloPassivo.splice(indice,1);
+		};
+		
+		envio.setPolo = function(polo){
+			envio.poloSelecionado = polo;
+			$("#txtPesquisaParte").focus();
+		};
+		
+		envio.validar = function(){
+			var erros = 'Campo(s) não informado(s): ';
+			
+			if (envio.classeId == ''){
+				erros += 'classe, ';
+			}
+			
+			if (envio.sigilo == ''){
+				erros += 'sigilo, '
+			}
+			
+			if (envio.numeroRecursos < 0){
+				erros += 'recurso, ';
+			}
+			
+			if (envio.preferenciasSelecionadas.length === 0){
+				erros += 'preferências, '
+			}
+			
+			if (envio.origens.length === 0){
+				erros += 'origem(s), ';
+			}
+			
+			if (envio.assuntosAdicionados.length === 0){
+				erros += 'assunto(s), '
+			}
+			
+			if (envio.partesPoloAtivo.length === 0){
+				erros += 'parte(s) do polo ativo, ';
+			}
+			
+			if (envio.partesPoloPassivo.length === 0){
+				erros += 'parte(s) do polo passivo, ';
+			}
+			
+			if (erros == ''){
+				messages.error(erros.substring(0, erros.length - 2));
 				return false;
 			}
-			envio.recursos.push( new AutuarProcessoCriminalEleitoralCommand(envio.processo.id, envio.partesPoloAtivo, envio.partesPoloPassivo, envio.assuntosSelecionados));
+			
+			envio.recursos[0] = new EnviarProcessoCommand(envio.classeId, envio.sigilo, envio.numeroRecursos, envio.preferenciasSelecionadas, 
+					criarListaDtosOrigem(envio.origensAdicionadas), envio.assuntosAdicionados, envio.partesPoloAtivo, envio.partesPoloPassivo);
+			limparCampos();
+			
 			return true;
-		}
-		
-		envio.completar = function() {
-			$state.go('dashboard');
-			messages.success('Processo <b>' + envio.processo.classe + '/' + envio.processo.numero + '</b> autuado com sucesso.');
 		};
 		
+		envio.completar = function() {
+	    	$state.go('enviar-processo');
+	    	messages.success('Processo enviado com sucesso.');
+	    };
 		
-    	function PartesController(partes){
-    		var partesController = {};
-    		
-    		partesController.adicionar = function(parte) {
-				partes.push({
-					text : parte,
-					selected : false
-				});
-			};
-		
-			partesController.remover = function(index) {
-				partes.splice(index, 1);
-			};
-			
-			partesController.clear = function(array) {
-				while (array.length) {
-					array.pop();
-				}
-			};
-			return partesController;
-		}
-
-    	function AutuarProcessoCriminalEleitoralCommand(id, partesPoloAtivo, partesPoloPassivo, assuntosSelecionados){
+		function EnviarProcessoCommand(classeId, sigilo, numeroRecursos, preferencias, origens, assuntos, partesPoloAtivo, partesPoloPassivo){
     		var dto = {};
-    		dto.processoId = id;
-    		dto.partesPoloAtivo = [];
-    		dto.partesPoloPassivo = [];
+    		dto.classeId = classeId;
+    		dto.sigilo = sigilo;
+    		dto.numeroRecursos = numeroRecursos;
+    		dto.preferencias = preferencias;
+    		dto.origens = origens;
     		dto.assuntos = [];
     		
-    		angular.forEach(partesPoloAtivo, function(parte) {
-    			dto.partesPoloAtivo.push(parte.text);
-    		});
+    		for(var i = 0; i < assuntos.length; i++){
+    			dto.assuntos.push(assuntos[i].codigo);
+    		}
     		
-    		angular.forEach(partesPoloPassivo, function(parte) {
-    			dto.partesPoloPassivo.push(parte.text);
-    		});
+    		dto.partesPoloAtivo = partesPoloAtivo;
+    		dto.partesPoloPassivo = partesPoloPassivo;
     		
-    		angular.forEach(assuntosSelecionados, function(assunto) {
-    			dto.assuntos.push(assunto.id);
-    		});
     		return dto;
-    	}
-		*/
+    	};
+    	
+    	function criarListaDtosOrigem(origens) {
+    		var origensDto = [];
+    		
+    		for (var i = 0; i < origens.length; i++) {
+    			var dto = {};
+    			
+    			dto.unidadeFederacaoId = origens[i].unidadeFederacaoId;
+    			dto.codigoJuizoOrigem = origens[i].codigoJuizoOrigem;
+    			dto.numeroProcesso = origens[i].numeroProcesso;
+    			dto.numeroOrdem = origens[i].numeroOrdem;
+    			dto.isPrincipal = origens[i].isPrincipal;
+    			        		
+    			origensDto.push(dto);
+    		}
+    		
+    		return origensDto;
+    	};
 	});
 
 })();

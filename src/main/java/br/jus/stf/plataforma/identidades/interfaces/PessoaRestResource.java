@@ -63,4 +63,8 @@ public class PessoaRestResource {
 		return pessoaServiceFacade.listar();
 	}
 	
+	@RequestMapping(value = "/documento/{numero}", method = RequestMethod.GET)
+	public List<PessoaDto> consultarPessoasPorNumero(@PathVariable("numero") String numero) {
+		return pessoaServiceFacade.consultarPessoasPorNumeroDocumento(numero);
+	}
 }

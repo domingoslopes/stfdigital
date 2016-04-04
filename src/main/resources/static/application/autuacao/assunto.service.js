@@ -1,21 +1,17 @@
 /**
- * @author Rodrigo Barreiros
+ * @author Anderson.Araujo
  * 
- * @since 1.0.0
- * @since 08.01.2016
+ * @since 28.03.2016
  */
 (function() {
 	'use strict';
 
-	angular.autuacao.service('AssuntoService', function ($http, $q, properties) {
-		
-/*		this.pesquisaAssuntoSuggestion = function(valor) {
-			
-			var assuntos = [{id: 1, descricao = "Pena de morte"}, {id: 2, descricao: "Fraude eleicao"}, {id: 3, descricao: "Crime do colarinho branco"}];
-  	
-    	};*/
-    	
-    	
-		
+	angular.plataforma.factory('AssuntoService', function ($http, $q, properties) {
+		return {
+			listar : function(parametro) {
+				var params = { termo:parametro };
+				return $http.get(properties.apiUrl + '/assuntos', {params:params});
+			}
+		};
 	});
 })();

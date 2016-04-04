@@ -107,7 +107,8 @@
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/envio/envio-processo.tpl.html'
+					templateUrl: 'application/autuacao/envio/envio-processo.tpl.html',
+					controller: 'EnvioProcessoController'
 				}
 			}
 		}).state('registrar-peticao-eletronica-orgao', {

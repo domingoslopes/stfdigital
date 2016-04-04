@@ -1,5 +1,8 @@
 package br.jus.stf.processamentoinicial.suporte.interfaces.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -20,9 +23,25 @@ public class AssuntoDto {
 	@ApiModelProperty(value = "Descrição do assunto")
 	private String descricao;
 	
+	@ApiModelProperty(value = "Assunto pai.")
+	private AssuntoDto assuntoPai;
+	
+	@ApiModelProperty(value = "Assuntos vinculados.")
+	private List<AssuntoDto> assuntosFilhos = new ArrayList<AssuntoDto>();
+	
+	public AssuntoDto(){
+		
+	}
+	
 	public AssuntoDto(String codigo, String descricao) {
 		this.codigo = codigo;
 		this.descricao = descricao;
+	}
+	
+	public AssuntoDto(String codigo, String descricao, AssuntoDto assuntoPai) {
+		this.codigo = codigo;
+		this.descricao = descricao;
+		this.assuntoPai = assuntoPai;
 	}
 	
 	public String getCodigo() {
@@ -31,5 +50,13 @@ public class AssuntoDto {
 	
 	public String getDescricao() {
 		return descricao;
+	}
+	
+	public AssuntoDto getAssuntoPai() {
+		return assuntoPai;
+	}
+	
+	public List<AssuntoDto> getAssuntosFilhos() {
+		return assuntosFilhos;
 	}
 }

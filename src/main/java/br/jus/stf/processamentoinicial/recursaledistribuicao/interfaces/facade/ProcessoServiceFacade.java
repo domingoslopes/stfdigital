@@ -2,6 +2,7 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +13,10 @@ import org.apache.commons.lang3.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.jurisprudencia.controletese.domain.model.Assunto;
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationService;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Origem;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
@@ -30,11 +31,14 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.Peca
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoStatusDto;
-import br.jus.stf.processamentoinicial.suporte.domain.model.Classe;
 import br.jus.stf.processamentoinicial.suporte.domain.model.ClasseRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.ProcedenciaGeograficaRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TribunalJuizo;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TribunalJuizoRepository;
+import br.jus.stf.processamentoinicial.suporte.domain.model.UnidadeFederacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.ClasseId;
@@ -67,6 +71,12 @@ public class ProcessoServiceFacade {
 	
 	@Autowired
 	private AssuntoRepository assuntoRepository;
+	
+	@Autowired
+	private ProcedenciaGeograficaRepository procedenciaGeograficaRepository;
+	
+	@Autowired
+	private TribunalJuizoRepository tribunalJuizoRepository;
 
 	/**
 	 * Consulta um processo judicial, dado o seu identificador primário
@@ -283,7 +293,7 @@ public class ProcessoServiceFacade {
 	/**
 	 * Salva os dados do processo a ser enviado para o STF.
 	 * 
-	 * @param classeId Id da classe processual.
+	 * @param classe Id da classe processual.
 	 * @param sigilo - Sigilo do processo.
 	 * @param numeroRecursos - Nº de recursos do processo.
 	 * @param preferencias - Lista de preferências do processo.
@@ -292,36 +302,39 @@ public class ProcessoServiceFacade {
 	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
 	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
 	 */
-	public void salvarProcessoParaEnvio(String classeId, String sigilo, Long numeroRecursos, List<Long> idsPreferencias, List<OrigemProcesso> origens, 
+	public void salvarProcessoParaEnvio(String classe, String sigilo, Long numeroRecursos, List<Long> idsPreferencias, List<OrigemProcesso> origensProcesso, 
 			String assuntoId, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
-		
-		Classe classe = Optional.ofNullable(classeRepository.findOne(new ClasseId(classeId))).orElseThrow(IllegalArgumentException::new);
-		Set<PreferenciaId> preferencias = Optional.ofNullable(idsPreferencias).map(ids -> ids.stream().map(id -> new PreferenciaId(id)).collect(Collectors.toSet())).orElse(Collections.emptySet());
-		Assunto assunto = Optional.ofNullable(assuntoRepository.findOne(new AssuntoId(assuntoId))).orElseThrow(IllegalArgumentException::new);
-		Sigilo sigiloProcesso = Sigilo.valueOf(sigilo); 
-		
-		processoApplicationService.salvarProcessoParaEnvio(classe, sigiloProcesso, numeroRecursos, preferencias, origens, assunto, partesPoloAtivo, partesPoloPassivo);
 	}
 	
 	/**
 	 * Salva os dados do processo a ser enviado para o STF.
 	 * 
-	 * @param classeId Id da classe processual.
-	 * @param sigilo - Sigilo do processo.
-	 * @param numeroRecursos - Nº de recursos do processo.
-	 * @param preferencias - Lista de preferências do processo.
-	 * @param origens - Origens do processo.
-	 * @param assuntoId - Id do assunto tratado no processo.
-	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
-	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
+	 * @param classe Id da classe processual.
+	 * @param sigilo Sigilo do processo.
+	 * @param numeroRecursos Nº de recursos do processo.
+	 * @param preferencias Lista de preferências do processo.
+	 * @param origens Origens do processo.
+	 * @param idsAssuntos Lista de assuntos tratados no processo.
+	 * @param partesPoloAtivo Lista de partes do polo ativo do processo.
+	 * @param partesPoloPassivo Lista de partes do polo passivo do processo.
 	 */
-	public void enviarProcesso(String classeId, String sigilo, Long numeroRecursos, List<Long> idsPreferencias, List<OrigemProcesso> origens, 
-			String assuntoId, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
-		Classe classe = Optional.ofNullable(classeRepository.findOne(new ClasseId(classeId))).orElseThrow(IllegalArgumentException::new);
+	public void enviarProcesso(String classe, String sigilo, Long numeroRecursos, List<Long> idsPreferencias, List<OrigemProcesso> origensProcesso, 
+			List<String> idsAssuntos, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
+		ClasseId classeId = new ClasseId(classe);
 		Set<PreferenciaId> preferencias = Optional.ofNullable(idsPreferencias).map(ids -> ids.stream().map(id -> new PreferenciaId(id)).collect(Collectors.toSet())).orElse(Collections.emptySet());
-		Assunto assunto = Optional.ofNullable(assuntoRepository.findOne(new AssuntoId(assuntoId))).orElseThrow(IllegalArgumentException::new);
-		Sigilo sigiloProcesso = Sigilo.valueOf(sigilo); 
+		Set<AssuntoId> assuntos = new HashSet<AssuntoId>(); 
+		idsAssuntos.stream().map(id -> assuntos.add(new AssuntoId(id))).collect(Collectors.toSet());
+		Sigilo sigiloProcesso = Sigilo.valueOf(sigilo);
+		Set<Origem> origens = new HashSet<Origem>();
 		
-		processoApplicationService.enviarProcesso(classe, sigiloProcesso, numeroRecursos, preferencias, origens, assunto, partesPoloAtivo, partesPoloPassivo);
+		if (origensProcesso != null){
+			for(OrigemProcesso origemProcesso : origensProcesso){
+				UnidadeFederacao uf = procedenciaGeograficaRepository.findOneUnidadeFederacao(origemProcesso.getUnidadeFederacaoId());
+				TribunalJuizo tribunal = tribunalJuizoRepository.findOne(origemProcesso.getCodigoJuizoOrigem());
+				origens.add(new Origem(uf, tribunal, origemProcesso.getNumeroProcesso(), origemProcesso.getIsPrincipal()));
+			}
+		}
+		
+		processoApplicationService.enviarProcesso(classeId, sigiloProcesso, numeroRecursos, preferencias, origens, assuntos, partesPoloAtivo, partesPoloPassivo);
 	}
 }
