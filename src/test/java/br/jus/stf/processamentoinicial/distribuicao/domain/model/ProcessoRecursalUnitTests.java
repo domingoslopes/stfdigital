@@ -34,7 +34,7 @@ import br.jus.stf.shared.TeseId;
 
 public class ProcessoRecursalUnitTests {
 	
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+	private final SimpleDateFormat formatadorData = new SimpleDateFormat("dd/mm/yyyy");
 	
 	@Test
 	public void criaProcessoNaoEleitoralNemCriminalValido() {
@@ -48,7 +48,7 @@ public class ProcessoRecursalUnitTests {
 	    assertEquals(new Long(10), processo.numero());
 	    assertEquals(new PeticaoId(12L), processo.peticao());
 	    assertEquals(new Long(1), processo.quantidadeRecursos());
-	    assertEquals(dateFormat.format(new Date()), dateFormat.format(processo.dataRecebimento()));
+	    assertEquals(formatadorData.format(new Date()), formatadorData.format(processo.dataRecebimento()));
 	}
 	
 	@Test
@@ -158,7 +158,7 @@ public class ProcessoRecursalUnitTests {
 		assuntos.add(new AssuntoId("120"));
 		processo.autuar(assuntos, poloAtivo, poloPassivo);
 		
-		assertEquals(dateFormat.format(new Date()), dateFormat.format(processo.dataAutuacao()));
+		assertEquals(formatadorData.format(new Date()), formatadorData.format(processo.dataAutuacao()));
 		assertEquals(poloAtivo, processo.partesPoloAtivo());
 		assertEquals(poloPassivo, processo.partesPoloPassivo());
 		assertEquals(assuntos, processo.assuntos());
@@ -232,6 +232,34 @@ public class ProcessoRecursalUnitTests {
 		assertEquals(assuntos, processo.assuntos());
 		assertEquals(teses, processo.teses());
 		assertEquals("Processo com RG.", processo.observacaoAnalise());
+	}
+	
+	@Test
+	public void criaProcessoRecursalParaEnvio() {
+		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(5L), new ClasseId("RE"), 114L, null,
+				null, new Date(), MeioTramitacao.ELETRONICO, Sigilo.PUBLICO, 1L);
+		Set<ParteProcesso> poloAtivo = new HashSet<ParteProcesso>(0);
+		Set<ParteProcesso> poloPassivo = new HashSet<ParteProcesso>(0);
+		Set<AssuntoId> assuntos = new HashSet<AssuntoId>(0);
+		Set<Origem> origens = new HashSet<Origem>(0);
+		
+		origens.add(new Origem(new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, true));
+		processo.atribuirOrigens(origens);
+		
+		assuntos.add(new AssuntoId("120"));
+		processo.atribuirAssuntos(assuntos);
+		
+		poloAtivo.add(new ParteProcesso(new PessoaId(1L), TipoPolo.POLO_ATIVO));
+		processo.atribuirPartes(poloAtivo, TipoPolo.POLO_ATIVO);
+		
+		poloPassivo.add(new ParteProcesso(new PessoaId(2L), TipoPolo.POLO_PASSIVO));
+		processo.atribuirPartes(poloPassivo, TipoPolo.POLO_PASSIVO);
+		
+		assertEquals(origens, processo.origens());
+		assertEquals(assuntos, processo.assuntos());
+		assertEquals(poloAtivo, processo.partesPoloAtivo());
+		assertEquals(poloPassivo, processo.partesPoloPassivo());
+		assertEquals(null, processo.peticao());
 	}
 	
 	private ProcessoRecursal processo() {

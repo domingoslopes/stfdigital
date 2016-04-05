@@ -25,6 +25,8 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Petica
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -85,6 +87,38 @@ public class DistribuicaoComumUnitTests {
 		
 		PeticaoFisica peticao = preparaPeticao();
 		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.COMUM, peticao.id(), "Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos, ministrosImpedidos, null);
+		Distribuicao distribuicao = Distribuicao.criar(parametros);
+		MinistroId relator = distribuicao.executar().relator();
+		
+		Assert.assertTrue(ministrosCanditatos.contains(relator));
+		Assert.assertFalse(ministrosImpedidos.contains(relator));
+		
+		verify(mockProcessoRepository, times(1)).nextId();
+		verify(mockProcessoRepository, times(1)).nextNumero(new ClasseId("ADI"));
+	}
+	
+	@Test
+	public void distribuiProcessoRecursalSemPeticao() {
+		Set<MinistroId> ministrosCanditatos = new HashSet<MinistroId>();
+		
+		ministrosCanditatos.add(new MinistroId(42L));
+		ministrosCanditatos.add(new MinistroId(28L));
+		ministrosCanditatos.add(new MinistroId(44L));
+		ministrosCanditatos.add(new MinistroId(49L));
+		ministrosCanditatos.add(new MinistroId(36L));
+		ministrosCanditatos.add(new MinistroId(45L));
+		ministrosCanditatos.add(new MinistroId(30L));
+		ministrosCanditatos.add(new MinistroId(48L));
+		
+		Set<MinistroId> ministrosImpedidos = new HashSet<MinistroId>();
+		
+		ministrosImpedidos.add(new MinistroId(46L));
+		ministrosImpedidos.add(new MinistroId(47L));
+		ministrosImpedidos.add(new MinistroId(1L));
+		
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.COMUM,
+				"Familiares ou amigos relacionados aos ministros impedidos.", "DISTRIBUIDOR", ministrosCanditatos,
+				ministrosImpedidos, null, new ClasseId("ADI"), null, MeioTramitacao.ELETRONICO, Sigilo.PUBLICO, 1L);
 		Distribuicao distribuicao = Distribuicao.criar(parametros);
 		MinistroId relator = distribuicao.executar().relator();
 		

@@ -1,5 +1,6 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.PeticaoAdapter;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
+import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 
 /**
@@ -44,6 +49,14 @@ public class ProcessoFactory {
 		}
 	    return processo;
     }
+	
+	public static ProcessoRecursal criarProcessoRecursal(ClasseId classeProcessual, Set<PreferenciaId> preferencias, MeioTramitacao meioTramitacao, Sigilo sigilo, Long quantidadeRecursos) {
+		ProcessoId id = processoRepository.nextId();
+		Long numero = processoRepository.nextNumero(classeProcessual);
+		ProcessoRecursal processo = new ProcessoRecursal(id, classeProcessual, numero, null, preferencias, new Date(),
+				meioTramitacao, sigilo, quantidadeRecursos);
+		return processo;
+    }
 		
 	/**
 	 * Cria um processo originário
@@ -72,10 +85,8 @@ public class ProcessoFactory {
 	/**
 	 * Cria um processo recursal
 	 * 
-	 * @param classe
-	 * @param peticaoId
-	 * @param preferencias
-	 * @return
+	 * @param peticao
+	 * @return processo recursal
 	 */
 	private static ProcessoRecursal criarProcessoRecursal(Peticao peticao) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findByPeticao(peticao.id());

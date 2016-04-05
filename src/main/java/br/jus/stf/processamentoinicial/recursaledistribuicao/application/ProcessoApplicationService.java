@@ -1,6 +1,5 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.application;
 
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -349,12 +348,7 @@ public class ProcessoApplicationService {
 	 */
 	public void enviarProcesso(ClasseId classeId, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, Set<Origem> origens, 
 			Set<AssuntoId> assuntos, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
-		
-		ProcessoId processoId = processoRepository.nextId();
-		Long numeroProcesso = processoRepository.nextNumero(classeId);
-		PeticaoId peticaoId = new PeticaoId(1L); //Será criado um novo construtor para a classe ProcessoRecursal, pois, no caso de envio de processos, não há petição.
-		Date dataRecebimento = new Date();
-		ProcessoRecursal processo = new ProcessoRecursal(processoId, classeId, numeroProcesso, peticaoId, preferencias, dataRecebimento, MeioTramitacao.ELETRONICO, sigilo, numeroRecursos);
+		ProcessoRecursal processo = ProcessoFactory.criarProcessoRecursal(classeId, preferencias, MeioTramitacao.ELETRONICO, sigilo, numeroRecursos);
 		processo.atribuirOrigens(origens);
 		processo.atribuirAssuntos(assuntos);
 		
