@@ -1,7 +1,6 @@
 package br.jus.stf.core.shared.eventos;
 
 import br.jus.stf.core.framework.domaindrivendesign.DomainEvent;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rodrigo Barreiros
@@ -13,17 +12,17 @@ public class AutuacaoFinalizada implements DomainEvent<AutuacaoFinalizada> {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private ProcessoId processoId;
+	private Long processoId;
 	
 	public AutuacaoFinalizada() {
     	// Usado pelo Jackson durante a conversação de Json para uma nova instância.
 	}
 
-    public AutuacaoFinalizada(ProcessoId processoId) {
+    public AutuacaoFinalizada(Long processoId) {
     	this.processoId = processoId;
     }
     
-    public ProcessoId getProcessoId() {
+    public Long getProcessoId() {
 		return processoId;
 	}
 
