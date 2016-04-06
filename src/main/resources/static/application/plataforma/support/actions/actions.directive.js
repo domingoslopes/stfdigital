@@ -98,6 +98,7 @@
 				resources : '=', //obrigatório, recursos que sofrerão a ação
 				btnClass : '@', //opcional, classes do botão, default= 'btn btn-default'
 				iconClass : '@', //opcional, classes do ícone
+				description : '@', //opcional, descrição do botão, se não informado usará a descrição da ação
 				showDescription : '=', //opcional, indica se deve aparecer a descrição, default= true
 				showNotAllowed : '=' //opcional, indica se deve aparecer o botão mesmo não permitido,default= true
 			},
@@ -110,6 +111,8 @@
 				$scope.showIcon = angular.isString($scope.iconClass);
 				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
 				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
+				
+				$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
 				
 				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
 					$scope.showDescription = true;

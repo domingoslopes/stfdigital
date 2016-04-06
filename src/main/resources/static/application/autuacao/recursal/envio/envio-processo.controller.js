@@ -24,7 +24,6 @@
 		envio.procedencia = '';
 		envio.tribunalJuizo = '';
 		envio.numeroOrigem = '';
-		envio.assuntosSelecionados = [];
 		envio.assuntosAdicionados = [];
 		envio.assuntoInformado = '';
 		envio.partesPoloAtivo = [];
@@ -32,16 +31,18 @@
 		envio.parteInformada = '';
 		envio.poloSelecionado = 'AT';
 		envio.recursos = [];
+		envio.chaveProcesso = $stateParams.resources[0];
 		
 		ClasseService.listar().success(function(classes) {
 			envio.classes = classes;
 		});
 		
 		envio.carregarPreferencias = function() {
-			ClasseService.consultarPreferencias(envio.classeId).success(function(data) {
-				envio.preferenciasSelecionadas = [];
-				envio.preferencias = data;
-			});
+			if ('' != envio.classeId){
+				ClasseService.consultarPreferencias(envio.classeId).success(function(data) {
+					envio.preferencias = data;
+				});
+			}
 		};
 		
 		OrigemService.listarUnidadesFederacao().success(function(data) {
@@ -54,6 +55,27 @@
 				envio.tribunaisJuizos = data;
 			});
 		};
+		
+		envio.carregarProcessoSalvo = function(chave){
+			var processo = '';
+			
+			if ('' != chave){
+				processo = JSON.parse(localStorage[chave]);
+				
+				envio.classeId = processo.classeId;
+				envio.sigilo = processo.sigilo;
+				envio.numeroRecursos = processo.numeroRecursos;
+				envio.carregarPreferencias();
+				envio.preferenciasSelecionadas = processo.preferencias;
+				envio.origensAdicionadas = processo.origensAdicionadas;
+				envio.origens = processo.origens;
+				envio.assuntosAdicionados = processo.assuntos;
+				envio.partesPoloAtivo = processo.partesPoloAtivo; 
+				envio.partesPoloPassivo = processo.partesPoloPassivo;
+			}
+		};
+		
+		envio.carregarProcessoSalvo(envio.chaveProcesso);
 		
 		envio.marcarOrigemPrincipal = function(indice){
 			if (envio.origensAdicionadas[indice].isPrincipal){
@@ -98,6 +120,10 @@
 			envio.procedencia = '';
 			envio.tribunalJuizo = '';
 			envio.numeroOrigem = '';
+		};
+		
+		envio.verificarOrigemPrincipal = function(indice){
+			return envio.origensAdicionadas[indice].isPrincipal;
 		};
 		
 		envio.removerOrigem = function(origem){
@@ -338,12 +364,37 @@
 					criarListaDtosOrigem(envio.origensAdicionadas), envio.assuntosAdicionados, envio.partesPoloAtivo, envio.partesPoloPassivo);
 			limparCampos();
 			
+			if ('' != envio.chaveProcesso){
+				localStorage.removeItem(envio.chaveProcesso);
+			}
+			
 			return true;
 		};
 		
 		envio.completar = function() {
-	    	$state.go('enviar-processo');
+	    	$state.go('consultar-processo-envio');
 	    	messages.success('Processo enviado com sucesso.');
+	    };
+	    
+	    envio.salvar = function(){
+	    	var processo = new criarProcessoLocal(envio.classeId, envio.sigilo, envio.numeroRecursos, envio.preferenciasSelecionadas, 
+	    			envio.origens, envio.origensAdicionadas, envio.assuntosAdicionados, envio.partesPoloAtivo, envio.partesPoloPassivo);
+	    	
+	    	var existe = localStorage.getItem(envio.chaveProcesso);
+	    		    	
+	    	if ('' == existe || 'undefined' == existe || null == existe){
+		    	localStorage.setItem("Processo " + envio.classeId + " - " + envio.sigilo + " - " + envio.numeroRecursos, JSON.stringify(processo));
+	    	} else {
+	    		localStorage.setItem(envio.chaveProcesso, JSON.stringify(processo));
+	    	}
+	    	
+	    	limparCampos();
+	    	$state.go('consultar-processo-envio');
+	    	messages.success('O processo foi salvo com sucesso.');
+	    };
+	    
+	    var excluirProcessoLocal = function(chave){
+	    	localStorage.removeItem(chave);
 	    };
 		
 		function EnviarProcessoCommand(classeId, sigilo, numeroRecursos, preferencias, origens, assuntos, partesPoloAtivo, partesPoloPassivo){
@@ -381,6 +432,21 @@
     		}
     		
     		return origensDto;
+    	};
+    	
+    	function criarProcessoLocal(classeId, sigilo, numeroRecursos, preferencias, origens, origensAdicionadas, assuntos, partesPoloAtivo, partesPoloPassivo){
+    		var processo = {};
+    		processo.classeId = classeId;
+    		processo.sigilo = sigilo;
+    		processo.numeroRecursos = numeroRecursos;
+    		processo.preferencias = preferencias;
+    		processo.origens = origens;
+    		processo.origensAdicionadas = origensAdicionadas;
+    		processo.assuntos = assuntos;
+    		processo.partesPoloAtivo = partesPoloAtivo;
+    		processo.partesPoloPassivo = partesPoloPassivo;
+    		
+    		return processo;
     	};
 	});
 

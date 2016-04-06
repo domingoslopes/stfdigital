@@ -1,0 +1,57 @@
+<div class="content">
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Enviar Processos</p>
+					</li>
+					<li><a href="#" class="active">Envio</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+    	<form>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card share" style="width:100%; padding:10px;border:0px;">
+						<div class="actions-wrapper">
+							<actions resources="chaveProcessoSelecionada" groups="enviaprocesso" btn-class="btn-default" />
+						</div>
+						<div class="form-group form-group-default">
+							<label>Processos Salvos</label>
+							<table class="table table-condensed table-striped">
+								<thead>
+									<tr>
+										<th width="10%"></th>
+										<th width="80%">Nome</th>
+										<th width="10%"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="processo in processos">
+										
+										<td width="10%">
+											<input type="radio" name="optProcesso" value="{{processo.isSelecionado}}" ng-model="chaveProcessoSelecionada" ng-click="selecionarProcesso(processo)" />
+										</td>
+										<td width="80%">{{processo.chave}}</th>
+										<td  width="10%" align="left">
+											<a title="Remover processo" id= "btnRemoveProcesso" data-placement="top" ng-click="removerProcesso(processo)" class="close">
+                                        		<span class="glyphicon glyphicon-trash"></span>
+                                    		</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p>
+				<action id="enviar-processo" groups="enviaprocesso" resources="[chaveProcessoSelecionada]" description="Enviar Novo Processo" btn-class="btn btn-complete btn-cons m-t-10"></action>
+			</p>
+		</form>
+	</div>
+</div>
+
