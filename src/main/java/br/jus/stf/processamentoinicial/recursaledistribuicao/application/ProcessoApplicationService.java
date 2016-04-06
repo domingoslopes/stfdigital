@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.jurisprudencia.controletese.domain.model.Assunto;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TarefaAdapter;
@@ -30,10 +29,8 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.OrigemProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
-import br.jus.stf.processamentoinicial.suporte.domain.model.Classe;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
@@ -320,23 +317,6 @@ public class ProcessoApplicationService {
 	/**
 	 * Salva os dados do processo a ser enviado para o STF.
 	 * 
-	 * @param classe Dados da classe processual.
-	 * @param sigilo - Sigilo do processo.
-	 * @param numeroRecursos - Nº de recursos do processo.
-	 * @param preferencias - Lista de preferências do processo.
-	 * @param origens - Origens do processo.
-	 * @param assunto - Dados do assunto tratado no processo.
-	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
-	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
-	 */
-	public void salvarProcessoParaEnvio(Classe classe, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, List<OrigemProcesso> origens, 
-			Assunto assunto, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
-		
-	}
-	
-	/**
-	 * Salva os dados do processo a ser enviado para o STF.
-	 * 
 	 * @param ClasseId Id da classe processual.
 	 * @param sigilo Sigilo do processo.
 	 * @param numeroRecursos Nº de recursos do processo.
@@ -347,11 +327,11 @@ public class ProcessoApplicationService {
 	 * @param partesPoloPassivo Lista de partes do polo passivo do processo.
 	 */
 	public void enviarProcesso(ClasseId classeId, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, Set<Origem> origens, 
-			Set<AssuntoId> assuntos, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
+			Set<AssuntoId> assuntos, List<ParteProcesso> partesPoloAtivo, List<ParteProcesso> partesPoloPassivo){
 		ProcessoRecursal processo = ProcessoFactory.criarProcessoRecursal(classeId, preferencias, MeioTramitacao.ELETRONICO, sigilo, numeroRecursos);
 		processo.atribuirOrigens(origens);
 		processo.atribuirAssuntos(assuntos);
-		
+
 		processoRepository.save(processo);
 	}
 	
