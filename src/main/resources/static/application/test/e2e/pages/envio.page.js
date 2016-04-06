@@ -49,16 +49,25 @@
         
         this.selecionarTarefaEnviaProcesso = function(){
             selecionaAcao(0);
+            browser.waitForAngular();
         };
 		
 		this.classificarTribunalJuizo = function(juizo){
 			utils.select('div#s2id_origem', juizo);
+            browser.waitForAngular();
 		};
 		
 		this.preencherNumeroOrigem = function(){
 			var inputOrigem = element(by.id("numeroOrigem"));
 			inputOrigem.sendKeys(1000, protractor.Key.ENTER);
+            browser.waitForAngular();
 		};
+        
+        this.setaOrigemPrincipal = function(){
+            browser.wait(browser.isElementPresent(by.id('ckOrigemPrincipal')));
+            element.all(by.repeater('origem in envio.origens')).get(0).
+                element(by.css('input[ng-click="envio.marcarOrigemPrincipal($index)"]')).click();
+        }
 		
 		this.classificarAssuntos = function(assunto){
 			var inputAssunto = element(by.id('txtPesquisarAssunto'));

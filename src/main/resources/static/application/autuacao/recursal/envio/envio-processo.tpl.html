@@ -118,7 +118,7 @@
 	                                			<tr ng-repeat="origem in envio.origens">
 				                                    <td class="font-montserrat fs-12 col-lg-12">{{origem}}</td>
 				                                    <td>
-				                                    	<input type="checkbox" ng-click="envio.marcarOrigemPrincipal($index)" ng-checked="envio.verificarOrigemPrincipal($index)" />
+				                                    	<input id="ckOrigemPrincipal" type="checkbox" ng-click="envio.marcarOrigemPrincipal($index)" ng-checked="envio.verificarOrigemPrincipal($index)" />
 				                                    </td>
 			                                        <td class="font-montserrat fs-12 col-lg-12">
  														<a title="Remover origem" id= "btnRemoveOrigem" data-placement="top" ng-click="envio.removerOrigem(origem)" class="close">

@@ -77,6 +77,8 @@
 			envioPage.classificarTribunalJuizo('Juiz Eleitoral');
 			
 			envioPage.preencherNumeroOrigem();
+            
+            envioPage.setaOrigemPrincipal();
 			
 			envioPage.classificarAssuntos('direito sindical');
             
@@ -88,7 +90,7 @@
             
             envioPage.finalizarEnvio();
 			
-			expect(browser.getCurrentUrl()).toMatch(/\/dashboard/);
+			expect(browser.getCurrentUrl()).toMatch(/\/processo\/envio\/consulta/);
 			
 			loginPage.logout();
 		    
