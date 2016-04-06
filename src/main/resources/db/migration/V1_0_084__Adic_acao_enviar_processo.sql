@@ -10,8 +10,8 @@ insert into plataforma.papel(seq_papel, nom_papel, seq_grupo) VALUES (23, 'repre
 insert into plataforma.papel_usuario(seq_papel, seq_usuario) VALUES (23, plataforma.seq_usuario.currval);
 
 --Cria a ação salvar-processo
-insert into plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (48, 'salvar-processo', 'ACAO');
-insert into plataforma.papel_recurso (seq_papel, seq_recurso) VALUES (23, 48); /* TAREFA SALVAR-PROCESSO -> PAPEL REPRESENTANTE-TRIBUNAL -> EXECUTAR */
+insert into plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (48, 'consultar-processo-envio', 'ACAO');
+insert into plataforma.papel_recurso (seq_papel, seq_recurso) VALUES (23, 48); /* TAREFA CONSULTAR-PROCESSO-ENVIO -> PAPEL REPRESENTANTE-TRIBUNAL -> EXECUTAR */
 
 --Cria a ação enviar-processo
 insert into plataforma.recurso (seq_recurso, nom_recurso, tip_recurso) VALUES (49, 'enviar-processo', 'ACAO');

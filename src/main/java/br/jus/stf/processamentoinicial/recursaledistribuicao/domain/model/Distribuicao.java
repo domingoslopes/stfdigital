@@ -1,6 +1,8 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model;
 
 import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -15,12 +17,17 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
+import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
 import br.jus.stf.shared.PeticaoId;
+import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.stereotype.ValueObject;
 
 @Entity
@@ -38,7 +45,6 @@ public abstract class Distribuicao implements ValueObject<Distribuicao> {
 	private Long sequencial;
 	
 	@Embedded
-	@Column(nullable = false)
 	private PeticaoId peticaoId;
 	
 	@Column(name = "DSC_JUSTIFICATIVA")
@@ -51,18 +57,39 @@ public abstract class Distribuicao implements ValueObject<Distribuicao> {
 	@Column(name = "SIG_USUARIO_DISTRIBUICAO", nullable = false)
 	private String usuarioDistribuicao;
 	
+	@Transient
+	private ClasseId classeProcessual;
+	
+	@Transient
+	private Set<PreferenciaId> preferencias;
+	
+	@Transient
+	private MeioTramitacao meioTramitacao;
+	
+	@Transient
+	private Sigilo sigilo;
+	
+	@Transient
+	private Long quantidadeRecursos;
+	
 	Distribuicao() {
 		
 	}
 	
 	protected Distribuicao(ParametroDistribuicao parametroDistribuicao) {
 		Validate.notBlank(parametroDistribuicao.usuarioDistribuicao(), "distribuicao.usuarioDistribuicao.required");
-		Validate.notNull(parametroDistribuicao.peticaoId(), "distribuicao.peticao.required");
 		
-		this.peticaoId = parametroDistribuicao.peticaoId();
+		this.usuarioDistribuicao = parametroDistribuicao.usuarioDistribuicao();
 		this.justificativa = parametroDistribuicao.justificativa();
 		this.dataDistribuicao = new Date();
-		this.usuarioDistribuicao = parametroDistribuicao.usuarioDistribuicao();
+		
+		this.peticaoId = parametroDistribuicao.peticaoId();
+		
+		this.classeProcessual = parametroDistribuicao.classeProcessual();
+		this.preferencias = parametroDistribuicao.preferencias();
+		this.meioTramitacao = parametroDistribuicao.meioTramitacao();
+		this.sigilo = parametroDistribuicao.sigilo();
+		this.quantidadeRecursos = parametroDistribuicao.quantidadeRecursos();
 	}
 	
 	public abstract TipoDistribuicao tipo();
@@ -103,7 +130,12 @@ public abstract class Distribuicao implements ValueObject<Distribuicao> {
 	}
 	
 	public Processo executar() {
-		Processo processo = ProcessoFactory.criar(peticaoId);
+		Processo processo = Optional.ofNullable(peticaoId).isPresent() ? ProcessoFactory.criar(peticaoId) : null;
+		
+		if(processo == null) {
+			processo = ProcessoFactory.criarProcessoRecursal(classeProcessual, preferencias, meioTramitacao, sigilo, quantidadeRecursos);
+		}
+		
 		processo.associarRelator(sorteio());
 		processo.associarDistribuicao(this);
 		return processo;

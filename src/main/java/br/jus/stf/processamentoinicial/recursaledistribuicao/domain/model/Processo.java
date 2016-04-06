@@ -37,6 +37,8 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
@@ -53,8 +55,6 @@ import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.stereotype.Entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 /**
@@ -85,7 +85,6 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	private MinistroId relator;
 
 	@Embedded
-	@Column(nullable = false)
 	private PeticaoId peticao;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -157,7 +156,8 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		Validate.notNull(id, "processo.id.required");
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
-		Validate.notNull(peticao, "processo.peticao.required");
+		Validate.isTrue((TipoProcesso.ORIGINARIO == tipoProcesso() && Optional.ofNullable(peticao).isPresent()) ||
+				TipoProcesso.RECURSAL == tipoProcesso(), "processo.peticao.required");
 		Validate.notNull(situacao, "processo.situacao.required");
 		Validate.notNull(dataRecebimento, "processo.dataRecebimento.required");
 		Validate.notNull(meioTramitacao, "processo.meioTramitacao.required");

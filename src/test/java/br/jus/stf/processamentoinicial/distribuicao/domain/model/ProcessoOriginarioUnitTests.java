@@ -97,7 +97,7 @@ public class ProcessoOriginarioUnitTests {
 				MeioTramitacao.ELETRONICO, null);
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void tentaCriarProcessoComPeticaoNula() {
 		new ProcessoOriginario(new ProcessoId(1L), new ClasseId("HD"), 1L, null, partes, pecas, null, new Date(),
 				MeioTramitacao.ELETRONICO, null);
