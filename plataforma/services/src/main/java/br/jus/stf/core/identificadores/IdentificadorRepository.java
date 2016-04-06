@@ -42,7 +42,7 @@ public class IdentificadorRepository {
 	}
 	
 	public Long novoIdentificadorId() {
-		Query query = entityManager.createNativeQuery("select identificadores.seq_identificador.nextval from dual");
+		Query query = entityManager.createNativeQuery("SELECT identificador.seq_identificador.NEXTVAL FROM DUAL");
 		return ((BigInteger) query.getSingleResult()).longValue();
 	}
 

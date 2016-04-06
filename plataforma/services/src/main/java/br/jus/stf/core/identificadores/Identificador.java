@@ -3,6 +3,7 @@ package br.jus.stf.core.identificadores;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 
@@ -13,12 +14,14 @@ import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
  * @since 27.02.2016
  */
 @Entity
+@Table(name = "IDENTIFICADOR", schema = "IDENTIFICADOR")
 public class Identificador extends EntitySupport<Identificador, String> {
 	
 	@Id
+	@Column(name = "DSC_CATEGORIA")
 	private String categoria;
 	
-	@Column
+	@Column(name = "NUM_IDENTIFICADOR")
 	private Long numero;
 	
 	public Identificador() {
