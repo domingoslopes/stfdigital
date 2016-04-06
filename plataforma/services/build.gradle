@@ -6,6 +6,7 @@ buildscript {
 		jacksonMapperVersion = '1.9.13'
 		swaggerVersion = '1.0.2'
 		guavaVersion = '19.0'
+		flywayVersion = '4.0'
 	}
     repositories {
     	mavenLocal()
@@ -60,6 +61,8 @@ dependencies {
     compile("br.jus.stf.digital:core:0.0.1-SNAPSHOT")
     
     compile("com.h2database:h2")
+    
+    compile("org.flywaydb:flyway-core:$flywayVersion")
     
     compile("com.jayway.jsonpath:json-path")
     
