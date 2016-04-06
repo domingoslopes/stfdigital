@@ -76,7 +76,7 @@
 	                    	<div class="col-md-12">
 				        		<div class="form-group form-group-default required">
 				                	<label>Procedência</label>
-				                	<select ui-select2 id="classe" ng-model="envio.procedencia" ng-change="envio.carregarOrigens()" data-placeholder="Selecione a procedência" style="width: 100%;">
+				                	<select ui-select2 id="procedencia" ng-model="envio.procedencia" ng-change="envio.carregarOrigens()" data-placeholder="Selecione a procedência" style="width: 100%;">
 	                                	<option value=""></option>
 	                                	<option ng-repeat="procedencia in envio.procedencias" value="{{procedencia.id}}">{{procedencia.nome}} </option>
 	                            	</select>
@@ -195,8 +195,8 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="btn-group pull-left">
-										<button type="button" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
-										<button type="button" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
+										<button type="button" id="btnAtivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
+										<button type="button" id="btnPassivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
 									</div>
 								</div>
 								<div class="row">
