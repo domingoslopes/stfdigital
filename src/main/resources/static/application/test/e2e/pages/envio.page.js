@@ -2,7 +2,7 @@
  * @author Rodrigo Barreiros
  * 
  * @since 1.0.0
- * @since 12.02.2015
+ * @since 04.04.2016
  */
 /*jshint undef:false */
 (function() {
@@ -14,7 +14,10 @@
 	
 	var EnvioPage = function () {
 		
-		
+		this.clicaBotaoEnvioProcesso = function(){
+            element(by.id('btn_enviar-processo')).click();   
+        };
+        
 		this.classificarClasse = function(sigla) {
 			utils.select('div#s2id_classe', sigla);
 		};
@@ -34,6 +37,19 @@
 		this.classificarProcedencia = function(procedencia){
 			utils.select('div#s2id_procedencia', procedencia);
 		};
+        
+        this.salvarProcesso = function(){
+            element(by.id('btnSalvar')).click();
+        };
+        
+        this.selecionarPrimeiroProcesso = function(){
+            element.all(by.repeater('processo in processos')).
+			  get(0).element(by.css('input')).click();
+        };
+        
+        this.selecionarTarefaEnviaProcesso = function(){
+            selecionaAcao(0);
+        };
 		
 		this.classificarTribunalJuizo = function(juizo){
 			utils.select('div#s2id_origem', juizo);
@@ -74,6 +90,13 @@
             browser.wait(browser.isElementPresent(btn));
             element(btn).click();
         };
+        
+        var selecionaAcao = function(indiceAcao){
+			var acao = element(by.css('actions'));
+			acao.element(by.css('a.dropdown-toggle')).click();
+			acao.element(by.repeater('action in actions').row(indiceAcao)).click();
+			browser.waitForAngular();
+		};
 		
 	};
 
