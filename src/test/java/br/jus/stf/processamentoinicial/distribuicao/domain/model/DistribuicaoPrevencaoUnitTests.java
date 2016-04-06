@@ -26,6 +26,8 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.TipoDistribuicao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
+import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Situacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
@@ -85,6 +87,24 @@ public class DistribuicaoPrevencaoUnitTests {
 		
 		//Peticao peticaoVO = new Peticao(, peticao.classeProcessual(), peticao.getClass().getSimpleName(), peticao.partesPoloAtivo(), peticao.pecas(), peticao.processosWorkflow().iterator().next().id(), TipoProcesso.ORIGINARIO, peticao.preferencias());
 		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.PREVENCAO, peticao.id(), "Assuntos correlatos.", "DISTRIBUIDOR", null, null, processosPreventos);
+		Distribuicao distribuicao = Distribuicao.criar(parametros);
+		
+		Assert.assertEquals(mockPreventoRelator1.relator(), distribuicao.executar().relator());
+		
+		verify(mockProcessoRepository, times(1)).nextId();
+		verify(mockProcessoRepository, times(1)).nextNumero(new ClasseId("ADI"));
+		verify(mockPreventoRelator1, times(4)).relator();
+	}
+	
+	@Test
+	public void distribuiProcessoRecursalSemPeticao() {
+		Set<Processo> processosPreventos = new HashSet<Processo>();
+		
+		processosPreventos.add(mockPreventoRelator1);
+
+		ParametroDistribuicao parametros = new ParametroDistribuicao(TipoDistribuicao.PREVENCAO, "Assuntos correlatos.",
+				"DISTRIBUIDOR", null, null, processosPreventos, new ClasseId("ADI"), null, MeioTramitacao.ELETRONICO,
+				Sigilo.PUBLICO, 1L);
 		Distribuicao distribuicao = Distribuicao.criar(parametros);
 		
 		Assert.assertEquals(mockPreventoRelator1.relator(), distribuicao.executar().relator());
