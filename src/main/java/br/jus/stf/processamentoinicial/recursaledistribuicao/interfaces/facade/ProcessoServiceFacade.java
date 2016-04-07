@@ -328,10 +328,11 @@ public class ProcessoServiceFacade {
 			}
 		}
 		
-		Set<PessoaId> pessoasPeloAtivo = pessoaAdapter.cadastrarPessoas(partesPoloAtivo);
+		Set<PessoaId> pessoasPoloAtivo = pessoaAdapter.cadastrarPessoas(partesPoloAtivo);
+		Set<PessoaId> pessoasPoloPassivo = pessoaAdapter.cadastrarPessoas(partesPoloPassivo);
 		
-		pessoasPeloAtivo.forEach(p1 -> poloAtivo.add(new ParteProcesso(p1, TipoPolo.POLO_ATIVO)));
-		pessoasPeloAtivo.forEach(p2 -> poloPassivo.add(new ParteProcesso(p2, TipoPolo.POLO_PASSIVO)));
+		pessoasPoloAtivo.forEach(p1 -> poloAtivo.add(new ParteProcesso(p1, TipoPolo.POLO_ATIVO)));
+		pessoasPoloPassivo.forEach(p2 -> poloPassivo.add(new ParteProcesso(p2, TipoPolo.POLO_PASSIVO)));
 		
 		processoApplicationService.enviarProcesso(classeId, sigiloProcesso, numeroRecursos, preferencias, origens, assuntos, poloAtivo, poloPassivo);
 	}

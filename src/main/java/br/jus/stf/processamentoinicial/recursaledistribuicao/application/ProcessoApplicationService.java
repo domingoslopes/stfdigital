@@ -331,6 +331,8 @@ public class ProcessoApplicationService {
 		ProcessoRecursal processo = ProcessoFactory.criarProcessoRecursal(classeId, preferencias, MeioTramitacao.ELETRONICO, sigilo, numeroRecursos);
 		processo.atribuirOrigens(origens);
 		processo.atribuirAssuntos(assuntos);
+		partesPoloAtivo.forEach(p1 -> processo.adicionarParte(p1));
+		partesPoloPassivo.forEach(p2 -> processo.adicionarParte(p2));
 
 		processoRepository.save(processo);
 	}

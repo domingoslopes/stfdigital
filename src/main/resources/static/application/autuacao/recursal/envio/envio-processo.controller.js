@@ -32,6 +32,8 @@
 		envio.poloSelecionado = 'AT';
 		envio.recursos = [];
 		envio.chaveProcesso = $stateParams.resources[0];
+		envio.interessados = [{codigo: 1, nome: 'Amicus Curiae'}, {codigo: 2, nome: 'Assistente Litisconsorcial'}, {codigo: 3, nome: 'Assistente(s)'},
+		                      {codigo: 4, nome: 'Beneficiário(a/s)'}, {codigo: 5, nome: 'Curador(a/s)(es) Especial(ais)'}, {codigo: 6, nome: 'Interessado(a/s)'}];
 		
 		ClasseService.listar().success(function(classes) {
 			envio.classes = classes;
@@ -59,7 +61,7 @@
 		envio.carregarProcessoSalvo = function(chave){
 			var processo = '';
 			
-			if ('' != chave){
+			if ('' != chave && undefined != chave){
 				processo = JSON.parse(localStorage[chave]);
 				
 				envio.classeId = processo.classeId;
@@ -448,6 +450,24 @@
     		
     		return processo;
     	};
+    	
+    	envio.exibirMsgConfirmacaoGeracaoAcronimo = function() {
+            return $modal.open({
+                size: 'lg',
+                templateUrl: 'caixaDialogoConversaoEletronico',
+                controller: ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+                    $scope.confirma = false;
+                    $scope.ok = function () {
+                        $scope.confirma = true;
+                        $modalInstance.close($scope.confirma);
+                    };
+                    $scope.cancelar = function () {
+                    	$scope.confirma = false;
+                        $modalInstance.dismiss('cancelar');
+                    };
+                }]
+            });
+        };
 	});
 
 })();

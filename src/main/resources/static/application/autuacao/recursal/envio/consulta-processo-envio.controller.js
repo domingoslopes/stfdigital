@@ -36,7 +36,7 @@
 			
 			$scope.processos.splice(indice, 1);
 			localStorage.removeItem(processo.chave);
-		}
+		};
 	});
 
 })();
