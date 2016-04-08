@@ -295,29 +295,10 @@
 		};
 		
 		envio.removerPartePoloAtivo = function(indice){
-			/*
-			var indice = 0;
-			
-			for (var i = 0; i < envio.partesPoloAtivo.length; i++){
-				if (parte.nome == envio.partesPoloAtivo[i].nome){
-					indice = i;
-					break;
-				}
-			}
-			*/
 			envio.partesPoloAtivo.splice(indice,1);
 		};
 		
-		envio.removerPartePoloPassivo = function(parte){
-			var indice = 0;
-			
-			for (var i = 0; i < envio.partesPoloPassivo.length; i++){
-				if (parte == envio.partesPoloPassivo[i]){
-					indice = i;
-					break;
-				}
-			}
-			
+		envio.removerPartePoloPassivo = function(indice){
 			envio.partesPoloPassivo.splice(indice,1);
 		};
 		
