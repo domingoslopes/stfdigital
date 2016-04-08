@@ -43,7 +43,7 @@
 				                	<label>Sigilo</label>
 				                 	<select ui-select2 id="sigilo" ng-model="envio.sigilo" data-placeholder="Selecione o sigilo" style="width: 450px;">
 	                                	<option value=""></option>
-	                                	<option ng-repeat="sigilo in envio.sigilos" value="{{sigilo.codigo}}" ng-click="gerarAcronimos()">{{sigilo.nome}}</option>
+	                                	<option ng-repeat="sigilo in envio.sigilos" value="{{sigilo.codigo}}">{{sigilo.nome}}</option>
 	                            	</select>
 				            	</div>
 				        	</div>
@@ -194,10 +194,10 @@
 							<label>Partes</label>
 							<div class="form-group">
 								<div class="row">
+<<<<<<< HEAD
 									<div class="btn-group">
-										<button type="button" id="btnAtivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
-										<button type="button" id="btnPassivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
-										<!-- 
+										<button type="button" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
+										<button type="button" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
 										<button type="button" class="btn btn-sm btn-small btn-success">Interessado(a/s)</button>
 										<button type="button" class="btn btn-sm btn-small btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id='btnTeseDropDown'>
 											<span class="caret"></span>
@@ -207,7 +207,11 @@
 												<a href="#" ng-click="" id="optTese">{{interessado.nome}}</a>
 											</li>
 										</ul>
-										 -->
+=======
+									<div class="btn-group pull-left">
+										<button type="button" id="btnAtivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
+										<button type="button" id="btnPassivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
+>>>>>>> 9bf83fc520b6747b979e3238ac63eccde01e09b9
 									</div>
 								</div>
 								<div class="row">
@@ -230,9 +234,9 @@
 										</thead>
 										<tbody>
 											<tr ng-repeat="parte in envio.partesPoloAtivo">
-												<td>{{parte.nome}}</td>
+												<td>{{parte}}</td>
 												<td align="left">
-													<a title="Remover parte polo ativo" id= "btnRemovePartePoloAtivo" data-placement="top" ng-click="envio.removerPartePoloAtivo($index)" class="close">
+													<a title="Remover parte polo ativo" id= "btnRemovePartePoloAtivo" data-placement="top" ng-click="envio.removerPartePoloAtivo(parte)" class="close">
 		                                        		<span class="glyphicon glyphicon-trash"></span>
 		                                    		</a>
 												</td>
@@ -254,9 +258,9 @@
 										</thead>
 										<tbody>
 											<tr ng-repeat="parte in envio.partesPoloPassivo">
-												<td>{{parte.nome}}</th>
+												<td>{{parte}}</th>
 												<td align="left">
-													<a title="Remover parte polo passivo" id= "btnRemovePartePoloPassivo" data-placement="top" ng-click="envio.removerPartePoloAtivo($index)" class="close">
+													<a title="Remover parte polo passivo" id= "btnRemovePartePoloPassivo" data-placement="top" ng-click="envio.removerPartePoloAtivo(parte)" class="close">
 		                                        		<span class="glyphicon glyphicon-trash"></span>
 		                                    		</a>
 												</td>

@@ -28,12 +28,15 @@
 		envio.assuntoInformado = '';
 		envio.partesPoloAtivo = [];
 		envio.partesPoloPassivo = [];
+		envio.partesPoloInteressados = [];
 		envio.parteInformada = '';
 		envio.poloSelecionado = 'AT';
 		envio.recursos = [];
 		envio.chaveProcesso = $stateParams.resources[0];
 		envio.interessados = [{codigo: 1, nome: 'Amicus Curiae'}, {codigo: 2, nome: 'Assistente Litisconsorcial'}, {codigo: 3, nome: 'Assistente(s)'},
 		                      {codigo: 4, nome: 'Beneficiário(a/s)'}, {codigo: 5, nome: 'Curador(a/s)(es) Especial(ais)'}, {codigo: 6, nome: 'Interessado(a/s)'}];
+		
+		//envio.processo = angular.isDefined($stateParams.processo) : null
 		
 		ClasseService.listar().success(function(classes) {
 			envio.classes = classes;
@@ -261,7 +264,7 @@
 			var isParteAdicionada = false;
 			
 			for (var i = 0; i < envio.partesPoloAtivo.length; i++){
-				if (parteAdicionada == envio.partesPoloAtivo[i]) {
+				if (parteAdicionada == envio.partesPoloAtivo[i].nome) {
 					isParteAdicionada = true;
 					break;
 				}
@@ -270,7 +273,7 @@
 			if (isParteAdicionada){
 				messages.error('A parte já foi adicionada ao polo ativo.');
 			} else {
-				envio.partesPoloAtivo.push(parteAdicionada);
+				envio.partesPoloAtivo.push({nome:parteAdicionada, acronimo: ''});
 			}
 		};
 		
@@ -278,7 +281,7 @@
 			var isParteAdicionada = false;
 			
 			for (var i = 0; i < envio.partesPoloPassivo.length; i++){
-				if (parteAdicionada == envio.partesPoloPassivo[i]) {
+				if (parteAdicionada == envio.partesPoloPassivo[i].nome) {
 					isParteAdicionada = true;
 					break;
 				}
@@ -287,20 +290,21 @@
 			if (isParteAdicionada){
 				messages.error('A parte já foi adicionada ao polo passivo.');
 			} else {
-				envio.partesPoloPassivo.push(parteAdicionada);
+				envio.partesPoloPassivo.push({nome:parteAdicionada, acronimo: ''});
 			}
 		};
 		
-		envio.removerPartePoloAtivo = function(parte){
+		envio.removerPartePoloAtivo = function(indice){
+			/*
 			var indice = 0;
 			
 			for (var i = 0; i < envio.partesPoloAtivo.length; i++){
-				if (parte == envio.partesPoloAtivo[i]){
+				if (parte.nome == envio.partesPoloAtivo[i].nome){
 					indice = i;
 					break;
 				}
 			}
-			
+			*/
 			envio.partesPoloAtivo.splice(indice,1);
 		};
 		
@@ -323,7 +327,8 @@
 		};
 		
 		envio.validar = function(){
-			var erros = 'Campo(s) não informado(s): ';
+			var msgInicial = 'Campo(s) não informado(s): ';
+			var erros = '';
 			
 			if (envio.classeId == ''){
 				erros += 'classe, ';
@@ -357,8 +362,24 @@
 				erros += 'parte(s) do polo passivo, ';
 			}
 			
-			if (erros == ''){
-				messages.error(erros.substring(0, erros.length - 2));
+			var numeroOrigensPrincipais = 0;
+			
+			for(var i = 0; i < envio.origensAdicionadas.length; i++){
+				if (envio.origensAdicionadas[i].isPrincipal){
+					numeroOrigensPrincipais +=1;
+				}
+			}
+			
+			if (numeroOrigensPrincipais === 0){
+				erros += 'nenhuma origem foi marcada como principal, ';
+			}
+			
+			if (numeroOrigensPrincipais > 1){
+				erros += 'há mais de uma origem marcada como principal, ';
+			}
+			
+			if (erros != ''){
+				messages.error(msgInicial + erros.substring(0, erros.length - 2));
 				return false;
 			}
 			
@@ -395,6 +416,17 @@
 	    	messages.success('O processo foi salvo com sucesso.');
 	    };
 	    
+	    envio.gerarAcronimos = function() {
+	    	
+	    	var partes = {
+	    			poloAtivo: envio.partesPoloAtivo,
+	    			poloPassivo: envio.partesPoloPassivo,
+	    			poloInteressados: envio.partesPoloInteressados
+	    	}
+	    	
+	    	//$state.go('gerar-acronimos', { resources : [ partes ]});
+	    };
+	    
 	    var excluirProcessoLocal = function(chave){
 	    	localStorage.removeItem(chave);
 	    };
@@ -407,13 +439,20 @@
     		dto.preferencias = preferencias;
     		dto.origens = origens;
     		dto.assuntos = [];
+    		dto.partesPoloAtivo = [];
+    		dto.partesPoloPassivo = [];
     		
     		for(var i = 0; i < assuntos.length; i++){
     			dto.assuntos.push(assuntos[i].codigo);
     		}
     		
-    		dto.partesPoloAtivo = partesPoloAtivo;
-    		dto.partesPoloPassivo = partesPoloPassivo;
+    		for(var j = 0; j < partesPoloAtivo.length; j++){
+    			dto.partesPoloAtivo.push(partesPoloAtivo[j].nome)
+    		}
+    		
+    		for(var k = 0; k < partesPoloPassivo.length; k++){
+    			dto.partesPoloPassivo.push(partesPoloPassivo[k].nome)
+    		}
     		
     		return dto;
     	};
@@ -451,6 +490,20 @@
     		return processo;
     	};
     	
+    	function GerarAcronimosPartesCommand(partesPoloAtivo, partesPoloPassivo, partesPoloInteressados){
+    		var dto = {};
+    		dto.partesPoloAtivo = partesPoloAtivo;
+    		dto.partesPoloPassivo = partesPoloPassivo;
+    		dto.partesPoloInteressados = partesPoloInteressados;
+    		
+    		return dto;
+    	}
+    	
+    	envio.gerarAcronimos = function(acronimos){
+    		envio.recursos[0] = new GerarAcronimosPartesCommand(envio.partesPoloAtivo, envio.partesPoloPassivo, envio.partesPoloInteressados);
+    	};
+    	
+    	/*
     	envio.exibirMsgConfirmacaoGeracaoAcronimo = function() {
             return $modal.open({
                 size: 'lg',
@@ -467,7 +520,7 @@
                     };
                 }]
             });
-        };
+        };*/
 	});
 
 })();

@@ -112,8 +112,6 @@
 				$scope.btn = angular.isString($scope.btnClass) ? $scope.btnClass : "btn btn-default";
 				$scope.icon = $scope.showIcon ? $scope.iconClass : "";
 				
-				$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
-				
 				if (angular.isUndefined($scope.showDescription) || !$scope.showIcon) {
 					$scope.showDescription = true;
 				}
@@ -121,7 +119,7 @@
 				ActionService.get($scope.id).then(function(theAction) {
 					
 					action = theAction;
-					$scope.description = action.description;
+					$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
 					
 					$q.when($scope.resources, function(resources) {
 						$scope.resources = resources;

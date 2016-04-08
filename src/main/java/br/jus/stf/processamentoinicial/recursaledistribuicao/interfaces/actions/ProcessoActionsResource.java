@@ -1,5 +1,10 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.actions;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
@@ -14,8 +19,12 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoCriminalEleitoralCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.DistribuirPeticaoCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.GerarAcronimosPartesCommand;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.AcronimoParteDto;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.AcronimoParteDtoAssembler;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto.ProcessoDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.facade.ProcessoServiceFacade;
+
 
 @ActionController(groups = "processo")
 public class ProcessoActionsResource {
@@ -34,6 +43,9 @@ public class ProcessoActionsResource {
 	
 	@Autowired
 	private PeticaoServiceFacade peticaoServiceFacade;
+	
+	@Autowired
+	private AcronimoParteDtoAssembler acronimoParteDtoAssembler;
 	
 	@ActionMapping(id = "autuar-recursal-criminal-eleitoral", name = "Autuar Petição Física Recursal Criminal/Eleitoral", resourcesMode = ResourcesMode.One)
 	public void autuarRecursalCriminalEleitoral(AutuarProcessoCriminalEleitoralCommand command) {
@@ -73,4 +85,30 @@ public class ProcessoActionsResource {
 				command.getMinistrosCandidatos(), command.getMinistrosImpedidos(), command.getProcessosPreventos());
 	}
 	
+	@ActionMapping(id = "gerar-acronimos", name = "Gerar Acrônimos", resourcesMode = ResourcesMode.Many)
+	public Map<String, List<AcronimoParteDto>> gerarAcronimoPartes(GerarAcronimosPartesCommand command){
+		
+		Map<String, List<AcronimoParteDto>> acronimos = new LinkedHashMap<String, List<AcronimoParteDto>>();
+		List<AcronimoParteDto> acronimosPoloAtivo = new LinkedList<AcronimoParteDto>();
+		List<AcronimoParteDto> acronimosPoloPassivo = new LinkedList<AcronimoParteDto>();
+		List<AcronimoParteDto> acronimosPoloInteressados = new LinkedList<AcronimoParteDto>();
+		
+		if (command.getPartesPoloAtivo() != null && command.getPartesPoloAtivo().size() > 0){
+			command.getPartesPoloAtivo().forEach(ppa -> acronimosPoloAtivo.add(acronimoParteDtoAssembler.toDto(ppa)));
+		}
+		
+		if (command.getPartesPoloPassivo() != null && command.getPartesPoloPassivo().size() > 0){
+			command.getPartesPoloPassivo().forEach(ppp -> acronimosPoloPassivo.add(acronimoParteDtoAssembler.toDto(ppp)));
+		}
+		
+		if (command.getPartesPoloInteressados() != null && command.getPartesPoloInteressados().size() > 0){
+			command.getPartesPoloInteressados().forEach(ppi -> acronimosPoloInteressados.add(acronimoParteDtoAssembler.toDto(ppi)));
+		}
+		
+		acronimos.put("PoloAtivo", acronimosPoloAtivo);
+		acronimos.put("PoloPassivo", acronimosPoloPassivo);
+		acronimos.put("PoloPassivo", acronimosPoloPassivo);
+		
+		return acronimos;
+	}
 }

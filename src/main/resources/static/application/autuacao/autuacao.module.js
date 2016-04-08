@@ -114,7 +114,7 @@
 		}).state('enviar-processo', {
 			parent: 'action.autuacao',
 			url: '/processo/envio/novo',
-			params : { resources : [] },
+			params : { resources : [], acronimos : {}, processo : {} },
 			views: {
 				'content@root': {
 					templateUrl: 'application/autuacao/recursal/envio/envio-processo.tpl.html',
