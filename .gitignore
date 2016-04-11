@@ -88,6 +88,34 @@ plataforma/services/bin
 plataforma/services/data
 
 # --------------------------------
+# Discovery
+
+# Eclipse
+plataforma/discovery/.settings/
+plataforma/discovery/.classpath
+plataforma/discovery/.project
+
+# Gradle
+plataforma/discovery/.gradle
+plataforma/discovery/build
+plataforma/discovery/bin
+plataforma/discovery/data
+
+# --------------------------------
+# Gateway
+
+# Eclipse
+plataforma/gateway/.settings/
+plataforma/gateway/.classpath
+plataforma/gateway/.project
+
+# Gradle
+plataforma/gateway/.gradle
+plataforma/gateway/build
+plataforma/gateway/bin
+plataforma/gateway/data
+
+# --------------------------------
 # UI
 
 # Node
