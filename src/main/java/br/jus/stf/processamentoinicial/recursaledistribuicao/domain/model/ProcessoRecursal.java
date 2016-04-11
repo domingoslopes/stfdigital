@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -13,7 +14,9 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
@@ -28,6 +31,7 @@ import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.TeseId;
 
 /**
@@ -65,6 +69,11 @@ public class ProcessoRecursal extends Processo {
 	
 	@Column(name = "QTD_RECURSO")
 	private Long quantidadeRecursos;
+	
+	@OneToMany(cascade = CascadeType.REFRESH, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinTable(name = "PROCESSO_PROCESSO_WORKFLOW", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "NUM_PROCESS_INSTANCE", nullable = false))
+	private Set<ProcessoWorkflow> processosWorkflow = new TreeSet<ProcessoWorkflow>((p1, p2) -> p1.id().toLong().compareTo(p2.id().toLong()));
 
 	ProcessoRecursal() {
 
@@ -72,17 +81,18 @@ public class ProcessoRecursal extends Processo {
 	
 	public ProcessoRecursal(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
 			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
+			final Sigilo sigilo) {
+		super(id, classe, numero, peticao, preferencias, dataRecebimento, meioTramitacao, sigilo);
+	}
+	
+	public ProcessoRecursal(final ProcessoId id, final ClasseId classe, final Long numero,
+			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
 			final Sigilo sigilo, final Long quantidadeRecursos) {
-		super(id, classe, numero, peticao, ProcessoSituacao.A_ANALISAR, preferencias, dataRecebimento,
-				meioTramitacao, sigilo);
+		super(id, classe, numero, null, preferencias, dataRecebimento, meioTramitacao, sigilo);
 		
 		Validate.isTrue(quantidadeRecursos >= 0, "processoRecursal.quantidadeRecursos.invalid");
 		
 		this.quantidadeRecursos = quantidadeRecursos;
-		
-		if(isCriminalEleitoral()) {
-			super.aAutuar();
-		}
 	}
 
 	@Override
@@ -165,6 +175,16 @@ public class ProcessoRecursal extends Processo {
 		atribuirAssuntos(assuntos);
 		atribuirTeses(teses);
 		this.observacaoAnalise = observacaoAnalise;
+	}
+	
+	public void associarProcessoWorkflow(final ProcessoWorkflow processoWorkflow) {
+		Validate.notNull(processoWorkflow, "processoRecursal.processoWorkflow.required");
+	
+		this.processosWorkflow.add(processoWorkflow);
+	}
+	
+	public Set<ProcessoWorkflow> processosWorkflow() {
+		return Collections.unmodifiableSet(processosWorkflow);
 	}
 
 }

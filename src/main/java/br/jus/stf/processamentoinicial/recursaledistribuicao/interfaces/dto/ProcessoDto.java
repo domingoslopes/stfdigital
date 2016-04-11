@@ -3,14 +3,14 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.dto;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.wordnik.swagger.annotations.ApiModel;
+import com.wordnik.swagger.annotations.ApiModelProperty;
+
 import br.jus.stf.jurisprudencia.controletese.interfaces.dto.TeseDto;
 import br.jus.stf.processamentoinicial.autuacao.interfaces.dto.PecaDto;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.suporte.interfaces.dto.AssuntoDto;
-
-import com.fasterxml.jackson.annotation.JsonView;
-import com.wordnik.swagger.annotations.ApiModel;
-import com.wordnik.swagger.annotations.ApiModelProperty;
 
 
 /**
@@ -41,9 +41,6 @@ public class ProcessoDto {
 	@ApiModelProperty(value = "A lista de peças anexadas.")
 	private List<PecaDto> pecas;
 	
-	@ApiModelProperty(value = "Dituação do processo.")
-	private String situacao;
-	
 	@ApiModelProperty(value = "A lista de preferências.")
 	private List<Long> preferencias;
 	
@@ -62,20 +59,19 @@ public class ProcessoDto {
 	@ApiModelProperty("Observações da análise")
 	private String observacaoAnalise;
 	
-	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, List<Long> preferencias, String identificacao) {
+	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, List<Long> preferencias, String identificacao) {
 		this.id = id;
 		this.classe = classe;
 		this.numero = numero;
 		this.relator = relator;
 		this.partes = partes;
 		this.pecas = pecas;
-		this.situacao = situacao;
 		this.preferencias = preferencias;
 		this.identificacao = identificacao;
 	}
 	
-	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, String situacao, List<Long> preferencias, String identificacao, List<TeseDto> teses, List<AssuntoDto> assuntos, String observacaoAnalise) {
-		this(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao);
+	public ProcessoDto(Long id, String classe, Long numero, Long relator, Map<String, List<Long>> partes, List<PecaDto> pecas, List<Long> preferencias, String identificacao, List<TeseDto> teses, List<AssuntoDto> assuntos, String observacaoAnalise) {
+		this(id, classe, numero, relator, partes, pecas, preferencias, identificacao);
 		this.teses = teses;
 		this.assuntos = assuntos;
 		this.observacaoAnalise = observacaoAnalise;
@@ -103,10 +99,6 @@ public class ProcessoDto {
 	
 	public List<PecaDto> getPecas() {
 		return pecas;
-	}
-	
-	public String getSituacao(){
-		return situacao;
 	}
 	
 	public List<Long> getPreferencias() {

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.plataforma.workflow.domain.model.ProcessoWokflowRepository;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.PeticaoAdapter;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
@@ -31,11 +32,13 @@ public class ProcessoFactory {
 	
 	private static ProcessoRepository processoRepository;
 	private static PeticaoAdapter peticaoAdapter;
+	private static ProcessoWokflowRepository workflowRepository;
 	
 	@Autowired
-	public ProcessoFactory(ProcessoRepository processoRepository, PeticaoAdapter peticaoAdapter) {
+	public ProcessoFactory(ProcessoRepository processoRepository, PeticaoAdapter peticaoAdapter, ProcessoWokflowRepository workflowRepository) {
 		ProcessoFactory.processoRepository = processoRepository;
 		ProcessoFactory.peticaoAdapter = peticaoAdapter;
+		ProcessoFactory.workflowRepository = workflowRepository;
 	}
 	
 	public static Processo criar(PeticaoId peticaoId) {
@@ -46,14 +49,25 @@ public class ProcessoFactory {
 			processo = criarProcessoOriginario(peticao);
 		} else if (TipoProcesso.RECURSAL.equals(peticao.tipoProcesso())) {
 			processo = criarProcessoRecursal(peticao);
+			((ProcessoRecursal)processo).associarProcessoWorkflow(workflowRepository.findOne(peticao.processoWorkflowId()));
 		}
 	    return processo;
     }
 	
+	/**
+	 * Cria um processo recursal para envio 
+	 * 
+	 * @param classeProcessual
+	 * @param preferencias
+	 * @param meioTramitacao
+	 * @param sigilo
+	 * @param quantidadeRecursos
+	 * @return
+	 */
 	public static ProcessoRecursal criarProcessoRecursal(ClasseId classeProcessual, Set<PreferenciaId> preferencias, MeioTramitacao meioTramitacao, Sigilo sigilo, Long quantidadeRecursos) {
 		ProcessoId id = processoRepository.nextId();
 		Long numero = processoRepository.nextNumero(classeProcessual);
-		ProcessoRecursal processo = new ProcessoRecursal(id, classeProcessual, numero, null, preferencias, new Date(),
+		ProcessoRecursal processo = new ProcessoRecursal(id, classeProcessual, numero, preferencias, new Date(),
 				meioTramitacao, sigilo, quantidadeRecursos);
 		return processo;
     }
@@ -83,7 +97,7 @@ public class ProcessoFactory {
 	}
 	
 	/**
-	 * Cria um processo recursal
+	 * Cria um processo recursal a partir de uma petição
 	 * 
 	 * @param peticao
 	 * @return processo recursal
@@ -96,7 +110,7 @@ public class ProcessoFactory {
 			Long numero = processoRepository.nextNumero(peticao.classeProcessual());
 			processo = new ProcessoRecursal(id, peticao.classeProcessual(), numero, peticao.id(),
 					peticao.preferencias(), peticao.dataCadastramento(), peticao.meioTramitacao(),
-					peticao.sigilo(), 0L);
+					peticao.sigilo());
 		}
 		
 		return processo;

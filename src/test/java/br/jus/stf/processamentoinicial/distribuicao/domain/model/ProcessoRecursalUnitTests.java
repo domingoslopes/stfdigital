@@ -15,7 +15,6 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Motivo
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Origem;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParteProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoSituacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Pais;
@@ -42,12 +41,11 @@ public class ProcessoRecursalUnitTests {
 
 	    assertNotNull(processo);
 	    assertEquals(TipoProcesso.RECURSAL, processo.tipoProcesso());
-	    assertEquals(ProcessoSituacao.A_ANALISAR, processo.situacao());
 	    assertEquals(new ProcessoId(5L), processo.id());
 	    assertEquals(new ClasseId("ADI"), processo.classe());
 	    assertEquals(new Long(10), processo.numero());
 	    assertEquals(new PeticaoId(12L), processo.peticao());
-	    assertEquals(new Long(1), processo.quantidadeRecursos());
+	    assertEquals(null, processo.quantidadeRecursos());
 	    assertEquals(formatadorData.format(new Date()), formatadorData.format(processo.dataRecebimento()));
 	}
 	
@@ -58,18 +56,15 @@ public class ProcessoRecursalUnitTests {
 		preferencias.add(new PreferenciaId(2L));
 		preferencias.add(new PreferenciaId(3L));
 		
-		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(9L), new ClasseId("ADI"), 18L, new PeticaoId(15L),
-				preferencias, new Date(), MeioTramitacao.FISICO,
-				Sigilo.PUBLICO, 0L);
+		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(9L), new ClasseId("ADI"), 18L,
+				new PeticaoId(15L), preferencias, new Date(), MeioTramitacao.FISICO, Sigilo.PUBLICO);
 
 	    assertNotNull(processo);
-	    assertEquals(ProcessoSituacao.A_AUTUAR, processo.situacao());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaCriarProcessoComQuantidadeRecursoInvalida() {
-		new ProcessoRecursal(new ProcessoId(5L), new ClasseId("ADI"), 10L, new PeticaoId(12L),
-				null, new Date(), MeioTramitacao.FISICO,
+		new ProcessoRecursal(new ProcessoId(5L), new ClasseId("ADI"), 10L, null, new Date(), MeioTramitacao.FISICO,
 				Sigilo.PUBLICO, -1L);
 	}
 	
@@ -236,8 +231,8 @@ public class ProcessoRecursalUnitTests {
 	
 	@Test
 	public void criaProcessoRecursalParaEnvio() {
-		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(5L), new ClasseId("RE"), 114L, null,
-				null, new Date(), MeioTramitacao.ELETRONICO, Sigilo.PUBLICO, 1L);
+		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(5L), new ClasseId("RE"), 114L, null, new Date(),
+				MeioTramitacao.ELETRONICO, Sigilo.PUBLICO, 1L);
 		Set<ParteProcesso> poloAtivo = new HashSet<ParteProcesso>(0);
 		Set<ParteProcesso> poloPassivo = new HashSet<ParteProcesso>(0);
 		Set<AssuntoId> assuntos = new HashSet<AssuntoId>(0);
@@ -265,7 +260,7 @@ public class ProcessoRecursalUnitTests {
 	private ProcessoRecursal processo() {
 		return new ProcessoRecursal(new ProcessoId(5L), new ClasseId("ADI"), 10L, new PeticaoId(12L),
 				null, new Date(), MeioTramitacao.FISICO,
-				Sigilo.PUBLICO, 1L);
+				Sigilo.PUBLICO);
 	}
 	
 }

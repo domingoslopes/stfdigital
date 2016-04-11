@@ -73,7 +73,6 @@ public class ProcessoDtoAssembler {
 		List<Long> partesPoloPassivo = new LinkedList<Long>();
 		List<PecaDto> pecas = new LinkedList<PecaDto>();
 		Map<String, List<Long>> partes = new HashMap<String, List<Long>>();
-		String situacao = processo.situacao().descricao();
 		List<Long> preferencias = new LinkedList<Long>();
 		String identificacao = processo.identificacao();
 		List<String> motivosInaptidao = new LinkedList<String>();
@@ -98,9 +97,9 @@ public class ProcessoDtoAssembler {
 			
 			processoRecursal.motivosInaptidao().forEach(motivo -> motivosInaptidao.add(motivo.motivoInaptidao().descricao()));
 			
-			return new ProcessoRecursalDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao, teses, assuntos, motivosInaptidao, observacao);
+			return new ProcessoRecursalDto(id, classe, numero, relator, partes, pecas, preferencias, identificacao, teses, assuntos, motivosInaptidao, observacao);
 		} else {
-			return new ProcessoDto(id, classe, numero, relator, partes, pecas, situacao, preferencias, identificacao);
+			return new ProcessoDto(id, classe, numero, relator, partes, pecas, preferencias, identificacao);
 		}
 	}
 

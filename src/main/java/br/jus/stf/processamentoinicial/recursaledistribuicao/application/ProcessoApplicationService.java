@@ -18,6 +18,7 @@ import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TeseAdapter;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Distribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidaoProcesso;
@@ -47,6 +48,7 @@ import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.TeseId;
 import br.jus.stf.shared.TipoDocumentoId;
 
@@ -64,6 +66,10 @@ public class ProcessoApplicationService {
 	@Autowired
 	@Qualifier("processoTarefaRestAdapter")
 	private TarefaAdapter tarefaAdapter;
+	
+	@Autowired
+	@Qualifier("processoWorkflowRestAdapter")
+	private WorkflowAdapter processoAdapter;
 	
 	@Autowired
 	private ProcessoRepository processoRepository;
@@ -334,6 +340,8 @@ public class ProcessoApplicationService {
 		partesPoloAtivo.forEach(p1 -> processo.adicionarParte(p1));
 		partesPoloPassivo.forEach(p2 -> processo.adicionarParte(p2));
 
+		ProcessoWorkflow processoWorkflow = processoAdapter.iniciarWorkflow(processo);
+		processo.associarProcessoWorkflow(processoWorkflow);
 		processoRepository.save(processo);
 	}
 	
