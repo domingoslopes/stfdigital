@@ -21,16 +21,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 
+import com.wordnik.swagger.annotations.ApiOperation;
+
 import br.jus.stf.plataforma.documentos.domain.ControladorEdicaoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
 import br.jus.stf.plataforma.documentos.interfaces.dto.EdicaoDto;
+import br.jus.stf.plataforma.documentos.interfaces.dto.StatusEdicaoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.documentos.interfaces.facade.OnlyofficeCallbackFacade;
 import br.jus.stf.shared.DocumentoId;
-
-import com.wordnik.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/onlyoffice")
@@ -73,13 +74,24 @@ public class OnlyofficeIntegrationRestResource {
 		return headers;
 	}
 
-	@ApiOperation("Recupera o número de edição de um documento")
-	@RequestMapping(value = "/documentos/{documentoId}/edicao", method = RequestMethod.GET)
+	@ApiOperation("Gera ou reutiliza o número de edição para um documento")
+	@RequestMapping(value = "/documentos/{documentoId}/edicao", method = RequestMethod.PUT)
 	public EdicaoDto recuperarEdicao(@PathVariable("documentoId") Long documentoId) throws IOException {
 		Documento documento = documentoRepository.findOne(new DocumentoId(documentoId));
 		return new EdicaoDto(controladorEdicaoDocumento.gerarEdicao(documento.id()));
 	}
 
+	@ApiOperation("Verifica se um documento está em edição")
+	@RequestMapping(value = "/documentos/{documentoId}/em-edicao")
+	public ResponseEntity<StatusEdicaoDto> estaEmEdicao(@PathVariable("documentoId") Long documentoId) {
+		String numeroEdicao = controladorEdicaoDocumento.recuperarEdicao(new DocumentoId(documentoId));
+		if (numeroEdicao != null) {
+			return new ResponseEntity<>(new StatusEdicaoDto(false), HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<>(new StatusEdicaoDto(true), HttpStatus.OK);
+		}
+	}
+	
 	@ApiOperation("Callback para o onlyoffice")
 	@RequestMapping(value = "/documentos/{documentoId}/callback", method = RequestMethod.POST)
 	public Map<String, Object> callback(@PathVariable("documentoId") Long documentoId,
