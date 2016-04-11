@@ -38,7 +38,6 @@ public class Documento implements Entity<Documento, DocumentoId> {
 	public Documento(final DocumentoId id, final String numeroConteudo, Integer quantidadePaginas, Long tamanho) {
 		Validate.notNull(id, "documento.id.required");
 		Validate.notBlank(numeroConteudo, "documento.numeroConteudo.required");
-		Validate.notNull(quantidadePaginas, "documento.quantidadePaginas.required");
 		Validate.notNull(tamanho, "documento.tamanho.required");
 		
 		this.id = id;
@@ -47,10 +46,11 @@ public class Documento implements Entity<Documento, DocumentoId> {
 		this.tamanho = tamanho;
 	}
 
-	public void alterarConteudo(String numeroConteudo) {
+	public void alterarConteudo(String numeroConteudo, Integer quantidadePaginas) {
 		Validate.notBlank(numeroConteudo, "documento.numeroConteudo.required");
 		
 		this.numeroConteudo = numeroConteudo;
+		this.quantidadePaginas = quantidadePaginas;
 	}
 	
 	@Override

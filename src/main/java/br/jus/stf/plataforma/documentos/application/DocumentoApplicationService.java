@@ -158,7 +158,7 @@ public class DocumentoApplicationService {
 		Documento documento = documentoRepository.findOne(documentoId);
 		conteudoDocumentoRepository.deleteConteudo(documento.numeroConteudo());
 		String numeroConteudo = conteudoDocumentoRepository.save(documentoId, documentoTemporario);
-		documento.alterarConteudo(numeroConteudo);
+		documento.alterarConteudo(numeroConteudo, documentoService.contarPaginas(documentoTemporario));
 		documentoRepository.save(documento);
 		controladorEdicaoDocumento.excluirEdicao(numeroEdicao);
 	}

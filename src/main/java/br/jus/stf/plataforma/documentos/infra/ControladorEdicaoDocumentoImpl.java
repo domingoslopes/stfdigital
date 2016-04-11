@@ -25,7 +25,12 @@ public class ControladorEdicaoDocumentoImpl implements ControladorEdicaoDocument
 
 	@Override
 	public void excluirEdicao(String numeroEdicao) {
-		edicoes.entrySet().removeIf(e -> e.equals(numeroEdicao));
+		edicoes.entrySet().removeIf(e -> e.getValue().equals(numeroEdicao));
+	}
+
+	@Override
+	public String recuperarEdicao(DocumentoId id) {
+		return edicoes.get(id.toLong());
 	}
 
 }
