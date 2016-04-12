@@ -48,7 +48,7 @@ Neste ponto, todas as imagens docker já foram geradas.
     peticionamento               latest              eb5ada3f8d4c        10 hours ago        325.8 MB
     frolvlad/alpine-oraclejdk8   slim                a7754f3b301e        7 days ago          167.4 MB
 
-Você poderá rodar todas elas de uma única fez usando <i>Docker Compose</i>:	
+Você poderá rodar todas elas de uma única vez usando <i>Docker Compose</i>:	
 
     $ docker-compose up -d
     
@@ -56,7 +56,7 @@ Você poderá acompanhar as mensagens de log pelo comando:
 
     $ docker-compose logs
     
-À medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://docker:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
+A medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://docker:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
 
 <img src="plataforma/ui/src/assets/images/custom/discovery.png" width="800">
 
