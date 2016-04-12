@@ -79,7 +79,7 @@ Se optar por uma organização com <i>Working Sets</i>, você deverá ter uma es
 
 <img src="plataforma/ui/src/assets/images/custom/eclipse.png" width="150">    
 
-Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Spring Devtools<i>, que permite o `hot restart` de aplicações <i>Spring Boot</i> rodando dentro de um container docker. Os serviços da plataforma já estão configurados para viabilizar tal funcionalidade. No Eclipse, basta executar a sequência abaixo:
+Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Spring Devtools</i>, que permite o `hot restart` de aplicações <i>Spring Boot</i> rodando dentro de um container docker. Os serviços da plataforma já estão configurados para viabilizar tal funcionalidade. No Eclipse, basta executar a sequência abaixo:
 
     - Com o botão direito, clique no projeto "services"
     - Em seguida, clique em "Run As" -> "Sprint Devtools Client"
