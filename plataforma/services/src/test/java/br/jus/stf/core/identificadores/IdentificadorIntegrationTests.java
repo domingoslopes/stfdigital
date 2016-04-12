@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.web.servlet.ResultActions;
@@ -20,6 +21,7 @@ import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
  * @since 1.0.0
  * @since 25.03.2016
  */
+@Ignore
 @SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
 public class IdentificadorIntegrationTests extends IntegrationTestsSupport {
 

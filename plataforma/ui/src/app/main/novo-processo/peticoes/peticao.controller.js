@@ -5,7 +5,7 @@
     angular.module('app.novo-processo.peticao').controller('FormsController', formsController);
 
     /** @ngInject */
-    function formsController($mdDialog, $http, $state) {
+    function formsController($mdDialog, $http, $state, properties) {
         var vm = this;
 
         // Data
@@ -60,7 +60,7 @@
             vm.formWizard = {};
             */
 
-            $http.post("http://localhost:8090/api/peticoes", "{\"classeId\":\"ADI\", \"poloAtivo\":[\"João da Silva\"], \"poloPassivo\":[\"Maria da Silva\"], \"anexos\": [{\"documento\":1, \"tipo\":1}]}").success(function() {
+            $http.post(properties.url + ":" +  properties.port + "/peticionamento/api/peticoes", "{\"classeId\":\"ADI\", \"poloAtivo\":[\"João da Silva\"], \"poloPassivo\":[\"Maria da Silva\"], \"anexos\": [{\"documento\":1, \"tipo\":1}]}").success(function() {
                 vm.formWizard = {};
                 $state.go('app.tarefas.minhas-tarefas', $state.params, { reload: true });
             });

@@ -5,12 +5,12 @@
     app.classy.controller({
         name: 'TarefasMinhasTarefasController',
 
-        inject: ['$document', '$mdDialog', '$mdSidenav', '$filter', 'Tasks', 'Tags', '$scope', '$http', 'TarefasService'],
+        inject: ['$document', '$mdDialog', '$mdSidenav', '$filter', 'Tasks', 'Tags', '$scope', '$http', 'TarefasService', 'properties'],
 
         init: function() {
             var self = this;
             this.tasks = this.Tasks;
-            this.$http.get('http://localhost:8081/api/tarefas').then(function (response) {
+            this.$http.get(this.properties.url + ':' +  this.properties.port + '/services/api/tarefas').then(function (response) {
                 self.tasks = response.data;
                 angular.forEach(self.tasks, function (task) {
                     if ( task.startDate ) {

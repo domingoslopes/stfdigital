@@ -2,17 +2,17 @@ package br.jus.stf.core.workflow;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.wordnik.swagger.annotations.ApiOperation;
 
@@ -25,29 +25,29 @@ import com.wordnik.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/tarefas")
 public class TarefaRestResource {
-
-	@Autowired
-    private RuntimeService runtimeService;
-	
-	@Autowired
-    private TaskService taskService;
+    
+    @Autowired
+    private DiscoveryClient discoveryClient;
 	
     @ApiOperation(value = "Lista todas as tarefas associadas ao usuário corrente")
 	@RequestMapping(method = GET)
 	public List<TarefaDto> tarefas() {
     	List<TarefaDto> tarefas = new LinkedList<>();
     	
-        List<Task> tasks = taskService.createTaskQuery().list();
-        for (Task task : tasks) {
-        	ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
-        	tarefas.add(toDto(process.getBusinessKey(), task));
-		}
-        
-        return tarefas;
+    	List<String> servicos = Arrays.asList("recebimento", "autuacao", "distribuicao");
+    	
+    	servicos.forEach(servico -> tarefas.addAll(tarefas(servico)));
+    	
+		return tarefas;
 	}
 
-	private TarefaDto toDto(String businessKey, Task task) {
-		return new TarefaDto(businessKey, task.getName(), task.getCreateTime(), false, false, false, Arrays.asList(new RotuloDto(1L,  "Criminal", "Criminal", "red")));
+    @SuppressWarnings("unchecked")
+	private List<TarefaDto> tarefas(String servico) {
+		URI servicesUri = discoveryClient.getInstances(servico).get(0).getUri();
+		
+		URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/tarefas").build().toUri();
+		
+		return new RestTemplate().getForObject(uri, List.class);
 	}
     
 }

@@ -5,7 +5,7 @@
     app.classy.controller({
         name: 'TaskDialogController',
 
-        inject: ['$mdDialog', 'Task', 'Tasks', 'event', '$filter', '$http', '$state'],
+        inject: ['$mdDialog', 'Task', 'Tasks', 'event', '$filter', '$http', '$state', 'properties'],
 
         init: function() {
             this.translate = this.$filter('translate');
@@ -58,13 +58,13 @@
                 var close = this.closeDialog;
 
                 if (this.task.title === 'Autuar Processo Originário') {
-                    this.$http.post("http://localhost:8092/api/processos/autuacao", "{\"processoId\":" + this.task.id.substring(3) + ", \"classeId\":\"ADI\"}").success(function() {
+                    this.$http.post(this.properties.url + ":" +  this.properties.port + "/autuacao/api/processos/autuacao", "{\"processoId\":" + this.task.id.substring(3) + ", \"classeId\":\"ADI\"}").success(function() {
                         close();
                     });
                 }
 
                 if (this.task.title === 'Distribuir Processo') {
-                    this.$http.post("http://localhost:8093/api/distribuicao", "{\"distribuicaoId\":" + this.task.id.substring(3) + "}").success(function() {
+                    this.$http.post(this.properties.url + ":" +  this.properties.port + "/distribuicao/api/distribuicao", "{\"distribuicaoId\":" + this.task.id.substring(3) + "}").success(function() {
                         close();
                     });
                 }

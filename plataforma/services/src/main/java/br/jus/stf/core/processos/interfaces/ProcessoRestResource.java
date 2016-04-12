@@ -1,6 +1,8 @@
 package br.jus.stf.core.processos.interfaces;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -12,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.core.processos.application.PesquisarProcessosQuery;
@@ -32,7 +33,7 @@ public class ProcessoRestResource {
 	@Autowired
 	private ProcessoFinder finder;
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = POST)
 	public List<Processo> pesquisar(@RequestBody @Valid PesquisarProcessosQuery query, BindingResult result) {
 		if (isBlank(query.getProtocolo()) && isBlank(query.getParte())) {
 			throw new IllegalArgumentException(result.getAllErrors().toString());
@@ -41,7 +42,7 @@ public class ProcessoRestResource {
 		return finder.execute(query);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(method = GET)
 	public List<ProcessoDto> pesquisar() {
 		List<ProcessoDto> dtos = new LinkedList<>();
 		

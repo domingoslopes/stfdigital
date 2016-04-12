@@ -1,12 +1,10 @@
 (function() {
     'use strict';
 
-    angular.module('app.processos.pesquisa-avancada',
-            [ 'app.processos', 'classy' ]).config(config);
+    angular.module('app.processos.pesquisa-avancada', [ 'app.processos', 'classy' ]).config(config);
 
     /** @ngInject * */
-    function config($translatePartialLoaderProvider, $stateProvider,
-            msNavigationServiceProvider) {
+    function config($translatePartialLoaderProvider, $stateProvider, msNavigationServiceProvider) {
         $translatePartialLoaderProvider
                 .addPart('app/main/processos/pesquisa-avancada');
         $stateProvider
@@ -41,14 +39,13 @@
                                     return traits;
                                 },
                                 results : /** @ngInject */
-                                function($http) {
+                                function($http, properties) {
                                     var results = {
                                         data : []
                                     };
 
                                     $http
-                                            .get(
-                                                    'http://localhost:8081/api/processos')
+                                            .get(properties.url + ":" +  properties.port + "/services/api/processos")
                                             .then(
                                                     function(response) {
                                                         angular.copy(

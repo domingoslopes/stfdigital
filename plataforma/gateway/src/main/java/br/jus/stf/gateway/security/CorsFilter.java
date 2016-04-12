@@ -1,4 +1,4 @@
-package br.jus.stf.core.framework.security;
+package br.jus.stf.gateway.security;
 
 import java.io.IOException;
 
@@ -7,11 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import br.jus.stf.core.framework.Profiles;
 
 /**
  * A <a href="http://www.w3.org/Security/wiki/Same_Origin_Policy">Política de Mesma Origem</a>
@@ -28,7 +25,6 @@ import br.jus.stf.core.framework.Profiles;
  * @since 22.07.2015
  */
 @Component
-@Profile(value = Profiles.DEVELOPMENT)
 public class CorsFilter extends OncePerRequestFilter {
 	
     /**
@@ -54,7 +50,7 @@ public class CorsFilter extends OncePerRequestFilter {
     /**
      * Todos os métodos abaixo são suportados. Uma requisição com método fora dessa lista será rejeitada.
      */
-    public static final String ALLOWED_METHODS = "GET,POST,PUT,HEAD,OPTIONS";
+    public static final String ALLOWED_METHODS = "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH";
     
     /**
      * Apenas os headers abaixo são suportados. Uma requisição com um header fora dessa lista será rejeitada.
@@ -68,7 +64,7 @@ public class CorsFilter extends OncePerRequestFilter {
 	 */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-
+		
 		// Indica quais headers o cliente pode adicionar à sua requisição.
 		response.setHeader(HEADERS, ALLOWED_HEADERS);
 		
@@ -77,7 +73,7 @@ public class CorsFilter extends OncePerRequestFilter {
 		
 		// Indica quais os domínios de origem permitidos para o cliente
 		response.setHeader(ORIGINS, ALLOWED_ORIGINS);
-
+		
 		// Por fim, apenas repassa a requisição
 		chain.doFilter(request, response);
 		
