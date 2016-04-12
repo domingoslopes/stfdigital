@@ -1,24 +1,30 @@
-(function() {
-    'use strict';
+var app;
+(function (app) {
+    var novoProcesso;
+    (function (novoProcesso) {
+        var peticoes;
+        (function (peticoes) {
+            'use strict';
+            /** @ngInject * */
+            config.$inject = ["$translatePartialLoaderProvider", "$stateProvider"];
+            function config($translatePartialLoaderProvider, $stateProvider) {
+                $translatePartialLoaderProvider.addPart('app/main/novo-processo/peticoes');
+                $stateProvider.state('app.novo-processo.peticoes', {
+                    url: '/peticao',
+                    views: {
+                        'content@app.autenticado': {
+                            templateUrl: 'app/main/novo-processo/peticoes/peticao.html',
+                            controller: peticoes.PeticaoController,
+                            controllerAs: 'vm'
+                        }
+                    }
+                });
+            }
+            angular
+                .module('app.novo-processo.peticoes', ['app.novo-processo'])
+                .config(config);
+        })(peticoes = novoProcesso.peticoes || (novoProcesso.peticoes = {}));
+    })(novoProcesso = app.novoProcesso || (app.novoProcesso = {}));
+})(app || (app = {}));
 
-    angular.module('app.novo-processo.peticao',
-            [ 'app.novo-processo', 'classy' ]).config(config);
-
-    /** @ngInject * */
-    function config($translatePartialLoaderProvider, $stateProvider) {
-        $translatePartialLoaderProvider
-                .addPart('app/main/novo-processo/peticoes');
-        $stateProvider
-                .state(
-                        'app.novo-processo.peticao',
-                        {
-                            url : '/peticao',
-                            views : {
-                                'content@app.autenticado' : {
-                                    templateUrl : 'app/main/novo-processo/peticoes/peticao.html',
-                                    controller : 'FormsController as vm'
-                                }
-                            }
-                        });
-    }
-})();
+//# sourceMappingURL=peticao.module.js.map

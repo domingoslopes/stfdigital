@@ -1,20 +1,16 @@
-(function ()
-{
+(function () {
     'use strict';
-
     angular
         .module('app.tarefas.painel-de-fases')
         .factory('CardFilters', CardFiltersService);
-
     /** @ngInject */
     function CardFiltersService() {
         var service = {
-            name   : '',
-            labels : [],
-            clear  : clear,
-            isOn   : isOn
+            name: '',
+            labels: [],
+            clear: clear,
+            isOn: isOn
         };
-
         /**
          * Clear
          */
@@ -22,19 +18,17 @@
             service.name = '';
             service.labels = [];
         }
-
         /**
          * Is on
          *
          * @returns {boolean}
          */
         function isOn() {
-            return (
-                (service.name !== '') || 
-                (service.labels.length !== 0)
-            );
+            return ((service.name !== '') ||
+                (service.labels.length !== 0));
         }
-
         return service;
     }
 })();
+
+//# sourceMappingURL=card-filters.service.js.map

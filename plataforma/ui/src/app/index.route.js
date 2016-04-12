@@ -19,19 +19,23 @@
                 views   : {
                     'main@'         : {
                         templateUrl: 'app/core/layouts/vertical-navigation.html',
-                        controller : 'MainController as vm'
+                        controller : 'app.MainController',
+                        controllerAs: 'vm'
                     },
                     'toolbar@app'   : {
                         templateUrl: 'app/toolbar/toolbar.html',
-                        controller : 'ToolbarController as vm'
+                        controller : 'ToolbarController',
+                        controllerAs: 'vm'
                     },
                     'navigation@app': {
                         templateUrl: 'app/navigation/navigation.html',
-                        controller : 'NavigationController as vm'
+                        controller : 'NavigationController',
+                        controllerAs: 'vm'
                     },
                     'quickPanel@app': {
                         templateUrl: 'app/quick-panel/quick-panel.html',
-                        controller : 'QuickPanelController as vm'
+                        controller : 'QuickPanelController',
+                        controllerAs: 'vm'
                     },
                 },
             });

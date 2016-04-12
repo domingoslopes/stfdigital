@@ -100,3 +100,6 @@ plataforma/ui/bower_components
 # Gulp
 plataforma/ui/.tmp
 plataforma/ui/dist
+
+# Typings
+plataforma/ui/typings

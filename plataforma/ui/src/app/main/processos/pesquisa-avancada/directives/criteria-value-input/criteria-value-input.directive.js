@@ -1,72 +1,79 @@
-(function() {
-
-    'use strict';
-
-    var app = angular.module('app.processos.pesquisa-avancada');
-
-    app.directive('criteriaValueInput', /** @ngInject */ function() {
-        return {
-            restrict: 'E',
-            scope: {
-                criteria: '='
-            },
-            templateUrl: 'app/main/processos/pesquisa-avancada/directives/criteria-value-input/criteria-value-input.html',
-            link: function($scope, el, attr) {
-
-                var updateCriteriaValidity = function(criteria) {
+var app;
+(function (app) {
+    var processos;
+    (function (processos) {
+        var pesquisaAvancada;
+        (function (pesquisaAvancada) {
+            'use strict';
+            var CriteriaValueInputDirective = (function () {
+                function CriteriaValueInputDirective() {
+                    this.restrict = 'E';
+                    this.templateUrl = 'app/main/processos/pesquisa-avancada/directives/criteria-value-input/criteria-value-input.html';
+                    this.scope = {
+                        criteria: "="
+                    };
+                    this.link = function () {
+                        return function ($scope, el, attrs) {
+                            $scope.$watch('criteria.value', function () {
+                                CriteriaValueInputDirective.updateCriteriaValidity($scope.criteria);
+                            });
+                            $scope.$watch('criteria.value[0]', function () {
+                                CriteriaValueInputDirective.updateCriteriaValidity($scope.criteria);
+                            });
+                            $scope.$watch('criteria.value[1]', function () {
+                                CriteriaValueInputDirective.updateCriteriaValidity($scope.criteria);
+                            });
+                            $scope.$watch('criteria.comparisonOperator', function (op) {
+                                var criteria = $scope.criteria, value = criteria.value;
+                                if (op == pesquisaAvancada.ComparisionOperator.ENTRE) {
+                                    criteria.value = _.isArray(value) ? value : [value];
+                                }
+                                else {
+                                    criteria.value = _.isArray(value) ? value[0] : value;
+                                }
+                                CriteriaValueInputDirective.updateCriteriaValidity(criteria);
+                            });
+                        };
+                    };
+                }
+                CriteriaValueInputDirective.updateCriteriaValidity = function (criteria) {
                     switch (criteria.comparisonOperator) {
-                        case 'IGUAL':
-                        case 'CONTEM':
-                        case 'MAIOR-QUE':
-                        case 'MENOR-QUE':
+                        case pesquisaAvancada.ComparisionOperator.IGUAL:
+                        case pesquisaAvancada.ComparisionOperator.CONTEM:
+                        case pesquisaAvancada.ComparisionOperator.MAIORQUE:
+                        case pesquisaAvancada.ComparisionOperator.MENORQUE:
                             if (criteria.trait.dataType == 'date') {
                                 criteria.valid = (!!criteria.value);
-                            } else {
+                            }
+                            else {
                                 criteria.valid = ((!!criteria.value) && (criteria.value.length > 0));
                             }
                             break;
-
-                        case 'ENTRE':
+                        case pesquisaAvancada.ComparisionOperator.ENTRE:
                             if (criteria.trait.dataType == 'date') {
                                 criteria.valid = ((!!criteria.value[0]) && (!!criteria.value[1]));
-                            } else {
+                            }
+                            else {
                                 criteria.valid = ((!!criteria.value[0]) && (!!criteria.value[1]) && (criteria.value[0].length > 0) && (criteria.value[1].length > 0));
                             }
-
                             break;
-
-                        case 'EXISTE':
+                        case pesquisaAvancada.ComparisionOperator.EXISTE:
                             criteria.valid = true;
                             break;
                     }
                 };
+                CriteriaValueInputDirective.factory = function () {
+                    return function () {
+                        return new CriteriaValueInputDirective();
+                    };
+                };
+                return CriteriaValueInputDirective;
+            }());
+            angular
+                .module('app.processos.pesquisa-avancada')
+                .directive('criteriaValueInput', CriteriaValueInputDirective.factory());
+        })(pesquisaAvancada = processos.pesquisaAvancada || (processos.pesquisaAvancada = {}));
+    })(processos = app.processos || (app.processos = {}));
+})(app || (app = {}));
 
-                $scope.$watch('criteria.value', function(value) {
-                    updateCriteriaValidity($scope.criteria);
-                });
-
-                $scope.$watch('criteria.value[0]', function(value) {
-                    updateCriteriaValidity($scope.criteria);
-                });
-
-                $scope.$watch('criteria.value[1]', function(value) {
-                    updateCriteriaValidity($scope.criteria);
-                });
-
-                $scope.$watch('criteria.comparisonOperator', function(op) {
-                    var criteria = $scope.criteria,
-                        value = criteria.value;
-
-                    if (op == 'ENTRE') {
-                        criteria.value = _.isArray(value) ? value : [value];
-                    } else {
-                        criteria.value = _.isArray(value) ? value[0] : value;
-                    }
-
-                    updateCriteriaValidity(criteria);
-                });
-            }
-        };
-    });
-
-})();
+//# sourceMappingURL=criteria-value-input.directive.js.map

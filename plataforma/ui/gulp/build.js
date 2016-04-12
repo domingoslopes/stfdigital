@@ -98,7 +98,7 @@ gulp.task('other', function ()
         .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
-gulp.task('clean', function ()
+gulp.task('clean', ['clean-ts'], function ()
 {
     return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });

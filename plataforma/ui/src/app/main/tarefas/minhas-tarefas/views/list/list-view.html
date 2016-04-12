@@ -3,7 +3,7 @@
 
     <div class="todo-item" md-ink-ripple layout="row" layout-align="start center"
          ng-click="vm.openTaskDialog($event, task)"
-         ng-repeat="task in vm.tasks | orderBy:vm.taskOrder:vm.taskOrderDescending | filter:vm.taskFilters.search | filterByTags:vm.taskFilters.tags | filter:{'completed': vm.taskFilters.completed} | filter:{'deleted': vm.taskFilters.deleted} | filter:{'important': vm.taskFilters.important} | filter:{'starred':vm.taskFilters.starred} | filter:vm.filterByDueDate track by $index"
+         ng-repeat="task in vm.tasks | orderBy:vm.taskOrder:vm.taskOrderDescending | filter:vm.taskFilters.search | filterByTags:vm.taskFilters.tags | filter:{'completed': vm.taskFilters.completed} | filter:{'deleted': vm.taskFilters.deleted} | filter:{'important': vm.taskFilters.important} | filter:{'starred':vm.taskFilters.starred} | filter:vm.filterByDueDate() track by $index"
          ng-class="{'starred': task.starred, 'selected': task.selected, 'completed': task.completed}">
 
         <div class="handle" ng-click="vm.preventDefault($event)">

@@ -1,32 +1,23 @@
-(function() {
-    'use strict';
+var app;
+(function (app) {
+    var gestao;
+    (function (gestao) {
+        var meusPaineis;
+        (function (meusPaineis) {
+            var ProdutividadeDoTimeController = (function () {
+                function ProdutividadeDoTimeController(meusPaineisService) {
+                    this.meusPaineisService = meusPaineisService;
+                    this.widget11 = meusPaineisService.loadDashboardWidget('Widget11');
+                }
+                ProdutividadeDoTimeController.$inject = ['app.gestao.meus-paineis.MeusPaineisService'];
+                return ProdutividadeDoTimeController;
+            }());
+            meusPaineis.ProdutividadeDoTimeController = ProdutividadeDoTimeController;
+            angular
+                .module('app.gestao.meus-paineis')
+                .controller('app.gestao.meus-paineis.ProdutividadeDoTimeController', ProdutividadeDoTimeController);
+        })(meusPaineis = gestao.meusPaineis || (gestao.meusPaineis = {}));
+    })(gestao = app.gestao || (app.gestao = {}));
+})(app || (app = {}));
 
-    var app = angular.module('app.gestao.meus-paineis');
-
-    app.classy.controller({
-        name: 'GestaoMeusPaineisProdutividadeDoTimeController',
-
-        inject: ['$http'],
-
-        init: function() {
-            this.$http.get('app/data/sample/gestao/meus-paineis/dashboard-widgets.json').then(function(response) {
-                var dashboardData = response.data;
-
-                // Widget 11
-                this.widget11 = {
-                    title    : dashboardData.widget11.title,
-                    table    : dashboardData.widget11.table,
-                    dtOptions: {
-                        dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-                        pagingType: 'simple',
-                        order     : [0, 'asc'],
-                    }
-                };
-
-            }.bind(this));
-        },
-
-        methods: {
-        }
-    });
-})();
+//# sourceMappingURL=produtividade-do-time.controller.js.map

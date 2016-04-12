@@ -49,4 +49,6 @@ gulp.task('watch', ['inject'], function ()
     {
         browserSync.reload(event.path);
     });
+
+    gulp.watch([path.join(conf.paths.src, '/app/main/**/*.ts')], ['compile-ts']);
 });

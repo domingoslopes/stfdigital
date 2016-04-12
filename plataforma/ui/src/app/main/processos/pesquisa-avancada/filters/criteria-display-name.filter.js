@@ -1,44 +1,58 @@
-(function() {
-    'use strict';
-
-    var app = angular.module('app.processos.pesquisa-avancada');
-
-    app.filter('criteriaDisplayName', /** @ngInject */ function($filter) {
-        var translate = $filter('translate');
-        var date = $filter('date');
-
-        return function(criteria) {
-            var name = angular.copy(criteria.value);
-            
-            if (criteria.trait.dataType == 'date') {
-                if (_.isArray(name)) {
-                    name[0] = date(name[0], 'dd/MM/yyyy');
-                    name[1] = date(name[1], 'dd/MM/yyyy');
-                } else {
-                    name = date(name, 'dd/MM/yyyy');
+var app;
+(function (app) {
+    var processos;
+    (function (processos) {
+        var pesquisaAvancada;
+        (function (pesquisaAvancada) {
+            'use strict';
+            /** @ngInject **/
+            var CriteriaDisplayNameFilter = (function () {
+                function CriteriaDisplayNameFilter() {
                 }
-            }
+                CriteriaDisplayNameFilter.getFilter = function ($filter, $translate) {
+                    return function (criteria) {
+                        var date = $filter('date');
+                        var name = angular.copy(criteria.value);
+                        if (criteria.trait.dataType === 'date') {
+                            if (_.isArray(name)) {
+                                name[0] = date(name[0], 'dd/MM/yyyy');
+                                name[1] = date(name[1], 'dd/MM/yyyy');
+                            }
+                            else {
+                                name = date(name, 'dd/MM/yyyy');
+                            }
+                        }
+                        switch (criteria.comparisonOperator) {
+                            case pesquisaAvancada.ComparisionOperator.ENTRE:
+                                name = (name[0] || '') + ' < ' + criteria.trait.name + ' < ' + (name[1] || '');
+                                break;
+                            case pesquisaAvancada.ComparisionOperator.MAIORQUE:
+                                name = criteria.trait.name + ' > ' + name;
+                                break;
+                            case pesquisaAvancada.ComparisionOperator.MENORQUE:
+                                name = criteria.trait.name + ' < ' + name;
+                                break;
+                            case pesquisaAvancada.ComparisionOperator.EXISTE:
+                                name = $translate.instant('PROCESSOS.PESQUISA-AVANCADA.OPERADOR-COMPARACAO.EXISTE');
+                        }
+                        return name;
+                    };
+                };
+                CriteriaDisplayNameFilter.filter = function () {
+                    /** @ngInject **/
+                    var filter = function ($filter, $translate) {
+                        return CriteriaDisplayNameFilter.getFilter($filter, $translate);
+                    };
+                    filter.$inject = ["$filter", "$translate"];
+                    return filter;
+                };
+                return CriteriaDisplayNameFilter;
+            }());
+            angular
+                .module('app.processos.pesquisa-avancada')
+                .filter('criteriaDisplayName', CriteriaDisplayNameFilter.filter());
+        })(pesquisaAvancada = processos.pesquisaAvancada || (processos.pesquisaAvancada = {}));
+    })(processos = app.processos || (app.processos = {}));
+})(app || (app = {}));
 
-            switch (criteria.comparisonOperator) {
-                case 'ENTRE':
-                    name = (name[0] || '') + ' < ' + criteria.trait.name + ' < ' + (name[1] || '');
-                    break;
-
-                case 'MAIOR-QUE':
-                    name = criteria.trait.name + ' > ' + name;
-                    break;
-
-                case 'MENOR-QUE':
-                    name = criteria.trait.name + ' < ' + name;
-                    break;
-
-                case 'EXISTE':
-                    name = translate('PROCESSOS.PESQUISA-AVANCADA.OPERADOR-COMPARACAO.EXISTE');
-                    break;
-            }
-
-            return name;
-        };
-    });
-
-})();
+//# sourceMappingURL=criteria-display-name.filter.js.map
