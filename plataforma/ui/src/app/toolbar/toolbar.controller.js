@@ -71,7 +71,7 @@
              * Logout Function
              */
             logout: function () {
-                this.$state.go('app.nao-autenticado.login');
+                this.$state.go('app.login');
                 console.log("TODO: Fazer logout do usuário");
             },
 

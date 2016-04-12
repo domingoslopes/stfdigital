@@ -64,11 +64,14 @@ module.exports = function(config) {
     browsers : ['PhantomJS'],
 
     plugins : [
+      'karma-chrome-launcher',
       'karma-phantomjs-launcher',
       'karma-angular-filesort',
-      'karma-coverage',
+      //'karma-coverage',
       'karma-jasmine',
       'karma-ng-html2js-preprocessor'
+	  'karma-html-reporter',
+	  'karma-mocha-reporter' 
     ],
 
     coverageReporter: {
@@ -91,20 +94,6 @@ module.exports = function(config) {
   pathSrcHtml.forEach(function(path) {
     configuration.preprocessors[path] = ['ng-html2js'];
   });
-
-  // This block is needed to execute Chrome on Travis
-  // If you ever plan to use Chrome and Travis, you can keep it
-  // If not, you can safely remove it
-  // https://github.com/karma-runner/karma/issues/1144#issuecomment-53633076
-  if(configuration.browsers[0] === 'Chrome' && process.env.TRAVIS) {
-    configuration.customLaunchers = {
-      'chrome-travis-ci': {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    };
-    configuration.browsers = ['chrome-travis-ci'];
-  }
 
   config.set(configuration);
 };

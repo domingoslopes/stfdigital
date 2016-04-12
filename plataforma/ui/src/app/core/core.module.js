@@ -20,8 +20,6 @@
                 'pascalprecht.translate',
                 'timer',
                 'ui.router',
-                'uiGmapgoogle-maps',
-                'textAngular',
                 'ui.sortable',
                 'ng-sortable',
                 'xeditable',

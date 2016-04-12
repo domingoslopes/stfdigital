@@ -118,6 +118,10 @@ plataforma/gateway/data
 # --------------------------------
 # UI
 
+# Eclipse
+plataforma/ui/.settings/
+plataforma/ui/.project
+
 # Node
 plataforma/ui/node_modules
 plataforma/ui/node
@@ -128,3 +132,6 @@ plataforma/ui/bower_components
 # Gulp
 plataforma/ui/.tmp
 plataforma/ui/dist
+
+# Typings
+plataforma/ui/typings

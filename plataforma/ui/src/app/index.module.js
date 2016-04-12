@@ -25,9 +25,10 @@
             'app.cadastro',
 
             'app.novo-processo',
-            'app.novo-processo.peticao',
-            'app.novo-processo.peticao-fisica',
+            'app.novo-processo.peticoes',
+            'app.novo-processo.peticoes-fisicas',
 
+            //'app.gestao',
             //'app.gestao.meus-paineis',
 
             //'app.processos.ultimos-acessos',
