@@ -4,6 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -16,6 +19,7 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
  * @since 04.02.2016
  */
 @Entity
+@Table(name = "PROCESSO", schema = "AUTUACAO")
 public class Processo extends EntitySupport<Processo, ProcessoId> {
 
     @EmbeddedId 
@@ -24,10 +28,11 @@ public class Processo extends EntitySupport<Processo, ProcessoId> {
     @Embedded
     private ProtocoloId protocoloId;
     
-    @Column
+    @Column(name = "TIP_STATUS")
+	@Enumerated(EnumType.STRING)
     private Status status;
     
-    @Column
+    @Column(name = "SIG_CLASSE")
     private String classeId;
     
     public Processo() {

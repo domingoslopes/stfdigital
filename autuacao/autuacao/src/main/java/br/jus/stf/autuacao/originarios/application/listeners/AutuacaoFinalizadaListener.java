@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.originarios.infra.RabbitConfiguration;
 import br.jus.stf.core.shared.eventos.AutuacaoFinalizada;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * TODO Rodrigo Barreiros Analisar se esse listener está no lugar certo
@@ -28,7 +27,7 @@ public class AutuacaoFinalizadaListener {
 	private RabbitTemplate rabbitTemplate;
     
     public void handle(DelegateExecution execution) {
-    	rabbitTemplate.convertAndSend(RabbitConfiguration.AUTUACAO_FINALIZADA_QUEUE, new AutuacaoFinalizada(new ProcessoId(Long.valueOf(execution.getProcessBusinessKey().substring(3)))));
+    	rabbitTemplate.convertAndSend(RabbitConfiguration.AUTUACAO_FINALIZADA_QUEUE, new AutuacaoFinalizada(Long.valueOf(execution.getProcessBusinessKey().substring(3))));
     }
     
 }
