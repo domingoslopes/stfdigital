@@ -1,6 +1,10 @@
 buildscript {
 	ext {
-		springIntegrationVersion = '1.0.2.RELEASE'
+	    springBootVersion = '1.3.3.RELEASE'
+        springPlatformVersion = '2.0.3.RELEASE'
+		springIntegrationVersion = '1.0.7.RELEASE'
+		dependencyManagementPlugin = '0.5.2.RELEASE'
+        springCloudVersion = '1.0.7.RELEASE'
 		apacheCommonsVersion = '3.3.2'
 		jacksonVersion = '2.7.2'
 		jacksonMapperVersion = '1.9.13'
@@ -11,20 +15,24 @@ buildscript {
     repositories {
     	mavenLocal()
         mavenCentral()
+        maven { url "http://repo.spring.io/release" }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementPlugin}")
         classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
-apply plugin: 'java'
+apply plugin: "io.spring.dependency-management"
 
-apply plugin: 'maven'
+apply plugin: 'spring-boot'
 
 apply plugin: 'eclipse'
 
-apply plugin: 'spring-boot'
+apply plugin: 'maven'
+
+apply plugin: 'java'
 
 apply plugin: 'docker'
 
@@ -33,8 +41,18 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        mavenBom("org.springframework.cloud:spring-cloud-netflix:${springCloudVersion}")
+        mavenBom("io.spring.platform:platform-bom:${springPlatformVersion}")
+    }
+}
+
 dependencies {
     compile("org.springframework.boot:spring-boot-starter")
+    
+    compile("org.springframework.boot:spring-boot-starter-actuator")
 		
     compile("org.springframework.boot:spring-boot-starter-web") {
         exclude module: 'spring-boot-starter-tomcat'
@@ -47,6 +65,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-amqp")
                 
     compile("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+    
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
         
     compile("com.google.guava:guava:${guavaVersion}")
         
@@ -67,6 +87,8 @@ dependencies {
     compile("com.jayway.jsonpath:json-path")
     
     compile("org.springframework.boot:spring-boot-starter-test")
+    
+    compile("org.springframework.boot:spring-boot-devtools")
 }
 
 task buildDocker(type: Docker, dependsOn: build) {

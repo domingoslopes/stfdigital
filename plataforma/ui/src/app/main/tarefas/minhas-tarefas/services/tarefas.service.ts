@@ -34,13 +34,13 @@ module app.tarefas.minhasTarefas {
     
     export class MinhasTarefasService {
         
-        private static apiTarefas: string = 'http://localhost:8081/api/tarefas';
+        private static apiTarefas: string = '/services/api/tarefas';
         
         /** @ngInject **/
-        constructor(private $http: IHttpService) { }
+        constructor(private $http: IHttpService, private properties) { }
         
         public get(): IPromise<ITask[]> {
-            return this.$http.get(MinhasTarefasService.apiTarefas)
+            return this.$http.get(this.properties.url + ":" + this.properties.port + MinhasTarefasService.apiTarefas)
                         .then(response => {
                             var tasks: ITask[] = <ITask[]>response.data;
                             angular.forEach(tasks, task => {

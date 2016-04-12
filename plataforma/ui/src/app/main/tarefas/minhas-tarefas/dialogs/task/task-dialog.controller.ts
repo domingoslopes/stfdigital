@@ -9,8 +9,10 @@ module app.tarefas.minhasTarefas {
     
     export class TaskDialogController {
 
-        private task: ITask;
         public newTask: boolean = false;
+        private task: ITask;
+        private static apiAutuacao: string = "/autuacao/api/processos/autuacao";
+        private static apiDistribuicao: string = "/distribuicao/api/distribuicao";
         
         /** @ngInject **/
         constructor(private $mdDialog: IDialogService,
@@ -19,7 +21,8 @@ module app.tarefas.minhasTarefas {
                     private $state: IStateService,
                     task: ITask,
                     private tasks: ITask[],
-                    private event: MouseEvent) {
+                    private event: MouseEvent,
+                    private properties) {
 
             this.task = angular.copy(task);
 
@@ -46,7 +49,7 @@ module app.tarefas.minhasTarefas {
         /**
          * Add new task
          */
-        public addNewTask() {
+        public addNewTask(): void {
             this.tasks.unshift(this.task);
             this.closeDialog();
         }
@@ -54,25 +57,28 @@ module app.tarefas.minhasTarefas {
         /**
          * Save task
          */
-        public saveTask() {
+        public saveTask(): void {
             for ( var i = 0; i < this.tasks.length; i++ ) {
                 if ( this.tasks[i].id === this.task.id ) {
                     this.tasks[i] = angular.copy(this.task);
                     break;
                 }
             }
-            var close = this.closeDialog;
 
             if (this.task.title === 'Autuar Processo Originário') {
-                this.$http.post("http://localhost:8092/api/processos/autuacao", "{\"processoId\":" + this.task.id.substring(3) + ", \"classeId\":\"ADI\"}").success(function() {
-                    close();
-                });
+            	var data: string = "{\"processoId\":" + this.task.id.substring(3) + ", \"classeId\":\"ADI\"}";
+                this.$http.post(this.properties.url + ":" +  this.properties.port + TaskDialogController.apiAutuacao, data)
+                	.success(() => {
+                    	this.closeDialog();
+                	});
             }
 
             if (this.task.title === 'Distribuir Processo') {
-                this.$http.post("http://localhost:8093/api/distribuicao", "{\"distribuicaoId\":" + this.task.id.substring(3) + "}").success(function() {
-                    close();
-                });
+            	var data: string = "{\"distribuicaoId\":" + this.task.id.substring(3) + "}";
+                this.$http.post(this.properties.url + ":" +  this.properties.port + TaskDialogController.apiDistribuicao, data)
+                	.success(() => {
+                		this.closeDialog();
+                	});
             }
             this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
         }
@@ -80,7 +86,7 @@ module app.tarefas.minhasTarefas {
         /**
          * Delete task
          */
-        public deleteTask() {
+        public deleteTask(): void {
             var confirm = this.$mdDialog.confirm()
                 .title(this.$translate.instant('TAREFAS.MINHAS-TAREFAS.DIALOGO.VOCE-TEM-CERTEZA'))
                 .textContent(this.$translate.instant('TAREFAS.MINHAS-TAREFAS.DIALOGO.ESSA-TAREFA-SERA-DELETADA'))
@@ -118,7 +124,7 @@ module app.tarefas.minhasTarefas {
         /**
          * Close dialog
          */
-        public closeDialog() {
+        public closeDialog(): void {
             this.$mdDialog.hide();
         }
 
@@ -128,7 +134,7 @@ module app.tarefas.minhasTarefas {
          * @param attachment
          * @param task
          */
-        public deleteAttachment(attachment: ITaskAttachment, task: ITask) {
+        public deleteAttachment(attachment: ITaskAttachment, task: ITask): void {
             var index = task.attachments.indexOf(attachment);
             if (index > -1) {
                 task.attachments.splice(index, 1);

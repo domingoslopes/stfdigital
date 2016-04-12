@@ -19,13 +19,13 @@ module app.novoProcesso.peticoesFisicas {
     
     export class PeticaoFisicaService {
 
-        private static apiRemessa: string = 'http://localhost:8091/api/remessas';
+        private static apiRemessa: string = '/recebimento/api/remessas';
 
         /** @ngInject **/
-        constructor(private $http: IHttpService) { }
+        constructor(private $http: IHttpService, private properties) { }
 
         public registrar(peticao: PeticaoFisica): IPromise<any> {
-            return this.$http.post(PeticaoFisicaService.apiRemessa, peticao);
+            return this.$http.post(this.properties.url + ":" + this.properties.port + PeticaoFisicaService.apiRemessa, peticao);
         }
     }
 

@@ -17,13 +17,13 @@ module app.novoProcesso.peticoes {
     
     export class PeticaoService {
 
-        private static apiPeticionamento: string = 'http://localhost:8090/api/peticoes';
+        private static apiPeticionamento: string = '/peticionamento/api/peticoes';
 
         /** @ngInject **/
-        constructor(private $http: IHttpService) { }
+        constructor(private $http: IHttpService, private properties) { }
 
         public peticionar(peticao: IPeticao): IPromise<any> {
-            return this.$http.post(PeticaoService.apiPeticionamento, peticao);
+            return this.$http.post(this.properties.url + ":" + this.properties.port + PeticaoService.apiPeticionamento, peticao);
         }
     }
 

@@ -26,8 +26,8 @@ module app.processos.pesquisaAvancada {
                             return angular.copy(response.data);
                         });
                 },
-                searchResults: /** @ngInject */ $http => {
-                    return $http.get('http://localhost:8081/api/processos')
+                searchResults: /** @ngInject */ ($http, properties) => {
+                    return $http.get(properties.url + ":" +  properties.port + '/services/api/processos')
                         .then(response => {
                             return angular.copy(response.data);
                         });
