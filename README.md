@@ -60,8 +60,9 @@ Você poderá acompanhar as mensagens de log pelo comando:
 
 <img src="plataforma/ui/src/assets/images/custom/discovery.png" width="800">
 
-A interface plataforma não está em uma imagem docker. Ela deve ser executada separadamente. A sequência abaixo vai instalar as dependências necessárias:
+A interface da plataforma não está em uma imagem docker. Ela deve ser executada separadamente. Em outro terminal, execute a sequência abaixo para instalar as dependências necessárias:
 
+    $ cd plataforma/ui
     $ npm install
     $ npm install tslint
     
@@ -71,7 +72,7 @@ Após, basta rodar a aplicação:
     
 #### Livereload e Debug Remoto
 
-Usamos <a href="https://spring.io/tools">Eclipse STS</a> como IDE. Certifique-se que você tem a última versão. Você vai precisar importar todos os componentes separadamente. Você pode importar cada projeto diretamente pelo Eclipse, como um Projeto Gradle, ou pode executar o comando abaixo para gerar os arquivos necessários antes de importá-lo como um projeto já existente. 
+Usamos <a href="https://spring.io/tools">Eclipse STS</a> como IDE. Certifique-se que você tem a última versão. Você vai precisar importar todos os componentes separadamente. Você pode importar cada projeto diretamente pelo Eclipse, como um Projeto Gradle, ou pode executar o comando abaixo, no diretório de cada projeto, para gerar os arquivos necessários antes de importá-lo como um projeto já existente. 
 
     $ gradle eclipse
 
