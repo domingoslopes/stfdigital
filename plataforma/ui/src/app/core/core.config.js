@@ -33,7 +33,7 @@
             urlTemplate: '{part}/i18n/{lang}.json'
         });
         $translateProvider.preferredLanguage('pt-br');
-        $translateProvider.useSanitizeValueStrategy('sanitize');
+        $translateProvider.useSanitizeValueStrategy('escape');
 
         // Fuse theme configurations
         fuseConfigProvider.config({
