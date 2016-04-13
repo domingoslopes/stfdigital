@@ -135,3 +135,7 @@ plataforma/ui/dist
 
 # Typings
 plataforma/ui/typings
+
+# JS Main
+plataforma/ui/src/app/main/**/*.js
+plataforma/ui/src/app/main/**/*.js.map
