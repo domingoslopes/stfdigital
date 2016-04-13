@@ -16,6 +16,8 @@ services:
     image: services
     ports:
      - "8081:8081"
+    environment:
+     - JAVA_OPTS:"-Xdebug -Xrunjdwp:server=y,transport=dt_socket,suspend=n"
   peticionamento:
     image: peticionamento
     ports:
