@@ -14,15 +14,13 @@
 	<div class="container-fluid container-fixed-lg">
 		<form>
 			<div class="row">
-				<div class="col-md-12" style="height: 700px;">
-					<div onlyoffice-editor="ecmc.config"
-						save="ecmc.save(url, close)" id="onlyoffice-editor">
-					</div>
+				<div class="col-md-12">
+					<div ng-if="ecmc.documento" editor="ecmc.documento" api="ecmc.editor.api" edicao-concluida="ecmc.concluiuEdicao()" aguardar-conclusao="false"></div>
 				</div>
 			</div>
 			<br />
 			<p>
-    			<input type="button" class="btn btn-complete btn-cons m-t-10" id="editar-conteudo-modelo" value="Finalizar" ng-click="ecmc.finalizar()"> 
+				<input type="button" class="btn btn-complete btn-cons m-t-10" value="Finalizar" ng-click="ecmc.finalizar()"> 
  			</p>
 		</form>
 	</div>

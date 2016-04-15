@@ -19,6 +19,9 @@
 		devolucao.documento = '';
 		devolucao.tags = [];
 		
+		devolucao.editor = {};
+		var concluirEdicaoDeferred = null;
+		
 		devolucao.showEditor = false;
 		
 		PeticaoService.consultarProcessoWorkflow(devolucao.peticaoId).then(function(data) {
@@ -53,13 +56,23 @@
 		devolucao.gerarTexto = function() {
 			TextoService.gerarTextoComTags(new GerarTextoPeticaoCommand(devolucao.peticaoId, devolucao.modelo.id, devolucao.tags)).then(function(texto) {
 				messages.success("Texto gerado com sucesso");
-				OnlyofficeService.recuperarNumeroEdicao(texto.documentoId).then(function(edicao) {
-					iniciarEditor('Documento de Devolução', texto.documentoId, edicao.numero);
-					devolucao.showEditor = true;
-				});
+				devolucao.documento = {
+					id: texto.documentoId,
+					nome: 'Documento de Devolução'
+				};
+				devolucao.showEditor = true;
 			}, function() {
 				messages.error("Erro ao gerar o texto");
 			});
+		};
+		
+		devolucao.concluiuEdicao = function() {
+			concluirEdicaoDeferred.resolve();
+		};
+		
+		devolucao.timeoutEdicao = function() {
+			concluirEdicaoDeferred.reject();
+			messages.error("Não foi possível concluir a edição do texto.");
 		};
 		
 		var GerarTextoPeticaoCommand = function(peticaoId, modeloId, tags) {
@@ -68,48 +81,24 @@
 			this.substituicoes = tags;
 		};
 		
-		var iniciarEditor = function(nome, documentoId, numeroEdicao) {
-			$q.all([OnlyofficeService.criarUrlConteudoDocumento(documentoId),
-				OnlyofficeService.recuperarUrlCallback(documentoId)])
-				.then(function(urls) {
-					devolucao.config = {
-						editorConfig : {
-							lang: 'pt-BR',
-							customization: {
-					            about: true,
-					            chat: true
-							},
-							user: {
-					            id: SecurityService.user().login,
-					            name: SecurityService.user().nome
-					        },
-						},
-						document: {
-							src: urls[0],
-							key: numeroEdicao,
-							name: 'Texto: ' + nome,
-							callbackUrl: urls[1]
-						}
-					};
-				});
-		};
-
-		devolucao.save = function() {
-			console.log('salvando conteúdo');
-		};
-		
 		devolucao.validar = function() {
-			var errors = null;
-			if (devolucao.motivoDevolucao.length === 0) {
-				errors = 'Você precisa selecionar <b>o motivo da devolução</b>.<br/>';
-			}
-			
-			if (errors) {
-				messages.error(errors);
+			concluirEdicaoDeferred = $q.defer();
+			devolucao.editor.api.salvar();
+			return concluirEdicaoDeferred.promise.then(function() {
+				var errors = null;
+				if (devolucao.motivoDevolucao.length === 0) {
+					errors = 'Você precisa selecionar <b>o motivo da devolução</b>.<br/>';
+				}
+				
+				if (errors) {
+					messages.error(errors);
+					return false;
+				}
+				devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.modeloId, devolucao.motivoDevolucao));
+				return true;
+			}, function() {
 				return false;
-			}
-			devolucao.recursos.push(new DevolverCommand(devolucao.peticaoId, devolucao.modeloId, devolucao.motivoDevolucao));
-			return true;
+			});
 		};
 		
 		devolucao.completar = function() {

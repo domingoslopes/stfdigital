@@ -8,11 +8,12 @@
 (function() {
 	'use strict';
 
-	angular.plataforma.controller('EdicaoConteudoModeloController', function(TipoModeloService, ModeloService, OnlyofficeService, $state, $stateParams, $q, SecurityService) {
+	angular.plataforma.controller('EdicaoConteudoModeloController', function(TipoModeloService, ModeloService, OnlyofficeService, $state, $stateParams, $q, SecurityService, messages) {
 		var self = this;
 		
 		self.modelo = {};
 		self.tiposModelo = [];
+		self.editor = {};
 		
 		TipoModeloService.listar().then(function(tiposModelo) {
 			self.tiposModelo = tiposModelo;
@@ -21,43 +22,23 @@
 		
 		ModeloService.consultar($stateParams.idModelo).then(function(modelo) {
 			self.modelo = modelo;
-			OnlyofficeService.recuperarNumeroEdicao(self.modelo.documento).then(function(edicao) {
-				iniciarEditor(edicao.numero);
-			});
+			self.documento = {
+				id: self.modelo.documento,
+				nome: 'Modelo: ' + self.modelo.tipoModelo.descricao + ' - ' + self.modelo.nome
+			};
 		});
-		
-		var iniciarEditor = function(numeroEdicao) {
-			$q.all([OnlyofficeService.criarUrlConteudoDocumento(self.modelo.documento),
-				OnlyofficeService.recuperarUrlCallback(self.modelo.documento)])
-				.then(function(urls) {
-					self.config = {
-							editorConfig : {
-								lang: 'pt-BR',
-								customization: {
-						            about: true,
-						            chat: true
-								},
-								user: {
-						            id: SecurityService.user().login,
-						            name: SecurityService.user().nome
-						        },
-							},
-							document: {
-								src: urls[0],
-								key: numeroEdicao,
-								name: 'Modelo: ' + self.modelo.tipoModelo.descricao + ' - ' + self.modelo.nome,
-								callbackUrl: urls[1]
-							}
-						};
-				});
-		};
 
-		self.save = function() {
-			console.log('salvando conteúdo');
+		self.concluiuEdicao = function() {
+			messages.success('Modelo editado com sucesso.');
+			$state.go('dashboard');
+		};
+		
+		self.timeoutEdicao = function() {
+			messages.error('Não foi possível concluir a edição do modelo.');
 		};
 		
 		self.finalizar = function() {
-			$state.go('dashboard');
+			self.editor.api.salvar();
 		};
 	});
 })();

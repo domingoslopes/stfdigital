@@ -126,7 +126,13 @@
 			
 			devolucaoPage.gerarTexto();
 			
+			devolucaoPage.aguardarTextoCriado();
+			
 			devolucaoPage.finalizar();
+			
+			principalPage.aguardarMensagemSucesso('Petição devolvida com sucesso.');
+			
+			expect(principalPage.isMensagemSucessoApresentada()).toBeTruthy();
 		    
 			expect(browser.getCurrentUrl()).toMatch(/\/visualizacao\/peticao\/\d+/);
 			

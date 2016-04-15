@@ -26,6 +26,11 @@
 					return baseUrl + '/api/onlyoffice/documentos/' + id + '/conteudo.docx';
 				});
 			},
+			gerarNumeroEdicao: function(id) {
+				return $http.put(properties.apiUrl + '/onlyoffice/documentos/' + id + '/edicao').then(function(response) {
+					return response.data;
+				});
+			},
 			recuperarNumeroEdicao: function(id) {
 				return $http.get(properties.apiUrl + '/onlyoffice/documentos/' + id + '/edicao').then(function(response) {
 					return response.data;

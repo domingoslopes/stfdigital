@@ -38,6 +38,15 @@
 			browser.wait(browser.isElementPresent(by.id('painel-editor')));
 		};
 		
+		devolucao.aguardarTextoCriado = function() {
+			return browser.wait(function() {
+				var els = element.all(by.css('.editor-directive.edicao-iniciada'));
+				return els.count().then(function(size) {
+					return size > 0;
+				});
+			}, 10000);
+		};
+		
 		devolucao.finalizar = function() {
 			var btn = by.id('btn_exec_finalizar-texto-devolucao')
 			browser.wait(browser.isElementPresent(btn));

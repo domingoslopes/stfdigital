@@ -67,9 +67,7 @@
 		</div>
 		<div id="painel-editor" class="row" ng-show="devolucao.showEditor">
 			<div class="col-md-12" style="height: 700px;">
-				<div onlyoffice-editor="devolucao.config"
-					save="devolucao.save(url, close)" id="onlyoffice-editor">
-				</div>
+				<div ng-if="devolucao.documento" editor="devolucao.documento" api="devolucao.editor.api" edicao-concluida="devolucao.concluiuEdicao()" edicao-timeout="devolucao.timeoutEdicao()" aguardar-conclusao="true"></div>
 			</div>
 		</div>
 		<p>

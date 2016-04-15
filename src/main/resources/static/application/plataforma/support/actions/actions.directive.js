@@ -207,7 +207,7 @@
 				enable : '=' //opcional, indica se a ação deve estar habilitada, default = true
 			},
 			templateUrl : 'application/plataforma/support/actions/executor.tpl.html',
-			controller : function($scope) {
+			controller : function($scope, $q) {
 				
 				$scope.disabled = true;
 				$scope.showAction = false;
@@ -228,30 +228,36 @@
 						$scope.disabled = angular.isDefined($scope.enable) ? !$scope.enable : false;
 					});
 					
+					var executeAction = function() {
+						ActionService.execute($scope.id, $scope.resources)
+						.then(function(result) {
+							if (angular.isDefined($scope.result)) {
+								$scope.result = result.data;
+							}
+							// verifica se o callback é uma função e executa
+							if (angular.isFunction($scope.fnResult())) {
+								$scope.fnResult()(result.data);
+							}
+						}, function(err) {
+							if (angular.isDefined($scope.fnError)) {
+								$scope.fnError({'error': err.data});
+							} else {
+								messages.error(err);
+							}
+						});
+					};
+					
 					// Executa a ação
 					$scope.execute = function() {
 						if (angular.isFunction($scope.fnValidate())) {
-							if (!$scope.fnValidate()()) {
-								return;
-							}
-						}
-						
-						ActionService.execute($scope.id, $scope.resources)
-							.then(function(result) {
-								if (angular.isDefined($scope.result)) {
-									$scope.result = result.data;
-								}
-								// verifica se o callback é uma função e executa
-								if (angular.isFunction($scope.fnResult())) {
-									$scope.fnResult()(result.data);
-								}
-							}, function(err) {
-								if (angular.isDefined($scope.fnError)) {
-									$scope.fnError({'error': err.data});
-								} else {
-									messages.error(err);
+							$q.when($scope.fnValidate()()).then(function(val) {
+								if (val) {
+									executeAction();
 								}
 							});
+						} else {
+							executeAction();
+						}
 					};
 				});
 			}

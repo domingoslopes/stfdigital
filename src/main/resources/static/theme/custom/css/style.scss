@@ -140,3 +140,54 @@ table.dataTable thead .sorting_desc:after {
 .divAssuntosProcesso tbody tr{
 	cursor: pointer;
 }
+
+/* Animação do editor */
+.loadmask {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	border: none;
+	background-color: #f4f4f4;
+}
+
+.loader-page {
+	top: 50%;
+	left: 50%;
+	width: 300px;
+	height: 180px;
+	position: absolute;
+	margin-top: -37.5px;
+	margin-left: -128.5px;
+}
+
+.asc-loadmask-body {
+    position: absolute;
+    padding: 20px;
+    line-height: 33px;
+    border: none;
+    background-image: none;
+    background-color: rgba(30,30,30,.7);
+    color: #f1f1f1;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px
+}
+
+.asc-loadmask-body>div {
+    display: inline-block;
+    vertical-align: middle
+}
+
+.asc-loadmask-body .asc-loadmask-image {
+    background-image: url("/theme/custom/img/loading.gif");
+    height: 33px;
+    width: 33px;
+    float: left;
+    margin-left: 20px
+}
+
+.asc-loadmask-body .asc-loadmask-title {
+    font-size: 13px;
+    margin: 0 20px
+}
+/* Fim de animação do editor */

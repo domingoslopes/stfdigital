@@ -60,6 +60,21 @@
 			return element(by.css('div.pgn-wrapper')).all(by.css('div.alert.alert-success')).get(0).isDisplayed();
 		};
 		
+		this.aguardarMensagemSucesso = function(mensagem) {
+			return browser.wait(function() {
+				var el = element(by.css('div.pgn-wrapper')).element(by.css('div.alert.alert-success > span'));
+				return el.isPresent().then(function(present) {
+					if (present) {
+						return el.getText().then(function(text) {
+							return text === mensagem;
+						});
+					} else {
+						return false;
+					}
+				});
+			}, 20000);
+		};
+		
 		this.dashletMinhasTarefas = element(by.cssContainingText('.panel-title', 'Tarefas dos meus papéis'));
 		
 		this.dashletMinhasPeticoes = element(by.cssContainingText('.panel-title', 'Minhas Petições'));

@@ -1,0 +1,14 @@
+<div class="editor-directive" ng-class="{'edicao-iniciada': edicaoIniciada}">
+	<div ng-if="showEditor" onlyoffice-editor="config" save="save(url, close)" style="height: 700px;"></div>
+	<div ng-if="showProgress" style="height: 700px;">
+		<div class="loadmask">
+			<div class="loader-page">
+				<div class="asc-loadmask-body" role="presentation" tabindex="-1">
+					<div class="asc-loadmask-image"></div>
+					<div class="asc-loadmask-title">Salvando documento</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
