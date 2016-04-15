@@ -81,6 +81,8 @@ public class OnlyofficeCallbackFacade {
 	}
 
 	private Map<String, Object> callbackDocumentBeingEdited(Long documentoId, Map<String, Object> json) {
+		String numeroEdicao = (String) json.get("key");
+		controladorEdicaoDocumento.ativarEdicao(numeroEdicao);
 		return new HashMap<>();
 	}
 

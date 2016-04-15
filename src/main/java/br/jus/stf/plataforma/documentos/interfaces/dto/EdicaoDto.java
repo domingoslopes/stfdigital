@@ -9,9 +9,11 @@ package br.jus.stf.plataforma.documentos.interfaces.dto;
 public class EdicaoDto {
 
 	private String numero;
+	private boolean ativo;
 
-	public EdicaoDto(final String numero) {
+	public EdicaoDto(final String numero, final boolean ativo) {
 		this.numero = numero;
+		this.ativo = ativo;
 	}
 
 	public String getNumero() {
@@ -22,4 +24,12 @@ public class EdicaoDto {
 		this.numero = numero;
 	}
 
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+	
 }

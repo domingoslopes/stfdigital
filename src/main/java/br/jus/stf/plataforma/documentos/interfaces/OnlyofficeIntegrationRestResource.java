@@ -27,8 +27,8 @@ import br.jus.stf.plataforma.documentos.domain.ControladorEdicaoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.ConteudoDocumento;
 import br.jus.stf.plataforma.documentos.domain.model.Documento;
 import br.jus.stf.plataforma.documentos.domain.model.DocumentoRepository;
+import br.jus.stf.plataforma.documentos.domain.model.Edicao;
 import br.jus.stf.plataforma.documentos.interfaces.dto.EdicaoDto;
-import br.jus.stf.plataforma.documentos.interfaces.dto.StatusEdicaoDto;
 import br.jus.stf.plataforma.documentos.interfaces.facade.DocumentoServiceFacade;
 import br.jus.stf.plataforma.documentos.interfaces.facade.OnlyofficeCallbackFacade;
 import br.jus.stf.shared.DocumentoId;
@@ -78,17 +78,18 @@ public class OnlyofficeIntegrationRestResource {
 	@RequestMapping(value = "/documentos/{documentoId}/edicao", method = RequestMethod.PUT)
 	public EdicaoDto recuperarEdicao(@PathVariable("documentoId") Long documentoId) throws IOException {
 		Documento documento = documentoRepository.findOne(new DocumentoId(documentoId));
-		return new EdicaoDto(controladorEdicaoDocumento.gerarEdicao(documento.id()));
+		Edicao edicao = controladorEdicaoDocumento.gerarEdicao(documento.id());
+		return new EdicaoDto(edicao.numero(), edicao.ativo());
 	}
 
 	@ApiOperation("Verifica se um documento está em edição")
-	@RequestMapping(value = "/documentos/{documentoId}/em-edicao")
-	public ResponseEntity<StatusEdicaoDto> estaEmEdicao(@PathVariable("documentoId") Long documentoId) {
-		String numeroEdicao = controladorEdicaoDocumento.recuperarEdicao(new DocumentoId(documentoId));
-		if (numeroEdicao != null) {
-			return new ResponseEntity<>(new StatusEdicaoDto(false), HttpStatus.BAD_REQUEST);
+	@RequestMapping(value = "/documentos/{documentoId}/edicao")
+	public ResponseEntity<EdicaoDto> estaEmEdicao(@PathVariable("documentoId") Long documentoId) {
+		Edicao edicao = controladorEdicaoDocumento.recuperarEdicao(new DocumentoId(documentoId));
+		if (edicao != null) {
+			return new ResponseEntity<>(new EdicaoDto(edicao.numero(), edicao.ativo()), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(new StatusEdicaoDto(true), HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
