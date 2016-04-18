@@ -3,8 +3,6 @@ package br.jus.stf.processamentoinicial.recursaledistribuicao.infra;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import reactor.bus.Event;
-import reactor.bus.EventBus;
 import br.jus.stf.plataforma.workflow.interfaces.TarefaRestResource;
 import br.jus.stf.plataforma.workflow.interfaces.commands.CompletarTarefaCommand;
 import br.jus.stf.plataforma.workflow.interfaces.dto.TarefaDto;
@@ -18,7 +16,10 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.infra.eventbus.Proc
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoProcesso;
 import br.jus.stf.shared.PeticaoStatusModificado;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.ProcessoWorkflowId;
+import reactor.bus.Event;
+import reactor.bus.EventBus;
 
 /**
  * @author Rafael Alencar
@@ -82,13 +83,22 @@ public class TarefaRestAdapter implements TarefaAdapter {
 		CompletarTarefaCommand command = new CompletarTarefaCommand();
 		command.setStatus(situacao.toString());
 		
-		Peticao peticao = peticaoRestAdapter.consultar(processo.peticao().toLong());
-		executarComando(peticao.processoWorkflowId(), command);
+		ProcessoWorkflowId processoWorkflowId = null;
+		Peticao peticao = null;
 		
-		if (TipoProcesso.RECURSAL.equals(peticao.tipoProcesso())) {
-			eventBus.notify("indexadorEventBus", Event.wrap(new ProcessoSituacaoModificado(processo.id(), processo.getClass().getSimpleName(), peticao.processoWorkflowId(), situacao)));
+		if(processo.peticao() != null) {
+			peticao = peticaoRestAdapter.consultar(processo.peticao().toLong());
+			processoWorkflowId = peticao.processoWorkflowId();
 		} else {
-			eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao.id(), peticao.tipo(), peticao.processoWorkflowId(), PeticaoStatus.DISTRIBUIDA)));
+			ProcessoWorkflow workflow = ((ProcessoRecursal)processo).processosWorkflow().iterator().next();
+			processoWorkflowId = workflow.id();
+		}
+		executarComando(processoWorkflowId, command);
+		
+		if (TipoProcesso.RECURSAL.equals(processo.tipoProcesso())) {
+			eventBus.notify("indexadorEventBus", Event.wrap(new ProcessoSituacaoModificado(processo.id(), processo.getClass().getSimpleName(), processoWorkflowId, situacao)));
+		} else {
+			eventBus.notify("indexadorEventBus", Event.wrap(new PeticaoStatusModificado(peticao.id(), peticao.tipo(), processoWorkflowId, PeticaoStatus.DISTRIBUIDA)));
 		}
 	}
 	

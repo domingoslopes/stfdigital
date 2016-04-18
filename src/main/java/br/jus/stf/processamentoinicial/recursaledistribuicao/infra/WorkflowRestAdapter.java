@@ -31,7 +31,7 @@ public class WorkflowRestAdapter implements WorkflowAdapter {
 		command.setTipoInformacao(processoRecursal.getClass().getSimpleName());
 		command.setDescricao(processoRecursal.identificacao());
 		
-		Long id = workflowRestResource.iniciar(command);
+		Long id = workflowRestResource.iniciarPorMensagem(command);
 		return new ProcessoWorkflow(new ProcessoWorkflowId(id), ProcessoSituacao.A_AUTUAR.name());
     }
 	

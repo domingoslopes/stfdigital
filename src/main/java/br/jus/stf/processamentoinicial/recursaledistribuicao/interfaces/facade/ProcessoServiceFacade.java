@@ -15,9 +15,11 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.jurisprudencia.controletese.domain.model.AssuntoRepository;
 import br.jus.stf.plataforma.shared.security.SecurityContextUtil;
+import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.application.ProcessoApplicationService;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Origem;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParametroDistribuicao;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParteProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.PecaProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Processo;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
@@ -36,6 +38,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
 import br.jus.stf.processamentoinicial.suporte.domain.model.ProcedenciaGeograficaRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Sigilo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPeca;
+import br.jus.stf.processamentoinicial.suporte.domain.model.TipoPolo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TribunalJuizo;
 import br.jus.stf.processamentoinicial.suporte.domain.model.TribunalJuizoRepository;
 import br.jus.stf.processamentoinicial.suporte.domain.model.UnidadeFederacao;
@@ -43,6 +46,7 @@ import br.jus.stf.processamentoinicial.suporte.domain.model.Visibilidade;
 import br.jus.stf.shared.AssuntoId;
 import br.jus.stf.shared.ClasseId;
 import br.jus.stf.shared.MinistroId;
+import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
@@ -77,6 +81,9 @@ public class ProcessoServiceFacade {
 	
 	@Autowired
 	private TribunalJuizoRepository tribunalJuizoRepository;
+	
+	@Autowired
+	private PessoaAdapter pessoaAdapter;
 
 	/**
 	 * Consulta um processo judicial, dado o seu identificador primário
@@ -294,22 +301,6 @@ public class ProcessoServiceFacade {
 	 * Salva os dados do processo a ser enviado para o STF.
 	 * 
 	 * @param classe Id da classe processual.
-	 * @param sigilo - Sigilo do processo.
-	 * @param numeroRecursos - Nº de recursos do processo.
-	 * @param preferencias - Lista de preferências do processo.
-	 * @param origens - Origens do processo.
-	 * @param assuntoId - Id do assunto tratado no processo.
-	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
-	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
-	 */
-	public void salvarProcessoParaEnvio(String classe, String sigilo, Long numeroRecursos, List<Long> idsPreferencias, List<OrigemProcesso> origensProcesso, 
-			String assuntoId, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
-	}
-	
-	/**
-	 * Salva os dados do processo a ser enviado para o STF.
-	 * 
-	 * @param classe Id da classe processual.
 	 * @param sigilo Sigilo do processo.
 	 * @param numeroRecursos Nº de recursos do processo.
 	 * @param preferencias Lista de preferências do processo.
@@ -326,6 +317,8 @@ public class ProcessoServiceFacade {
 		idsAssuntos.stream().map(id -> assuntos.add(new AssuntoId(id))).collect(Collectors.toSet());
 		Sigilo sigiloProcesso = Sigilo.valueOf(sigilo);
 		Set<Origem> origens = new HashSet<Origem>();
+		List<ParteProcesso> poloAtivo = new LinkedList<ParteProcesso>();
+		List<ParteProcesso> poloPassivo = new LinkedList<ParteProcesso>();
 		
 		if (origensProcesso != null){
 			for(OrigemProcesso origemProcesso : origensProcesso){
@@ -335,6 +328,12 @@ public class ProcessoServiceFacade {
 			}
 		}
 		
-		processoApplicationService.enviarProcesso(classeId, sigiloProcesso, numeroRecursos, preferencias, origens, assuntos, partesPoloAtivo, partesPoloPassivo);
+		Set<PessoaId> pessoasPoloAtivo = pessoaAdapter.cadastrarPessoas(partesPoloAtivo);
+		Set<PessoaId> pessoasPoloPassivo = pessoaAdapter.cadastrarPessoas(partesPoloPassivo);
+		
+		pessoasPoloAtivo.forEach(p1 -> poloAtivo.add(new ParteProcesso(p1, TipoPolo.POLO_ATIVO)));
+		pessoasPoloPassivo.forEach(p2 -> poloPassivo.add(new ParteProcesso(p2, TipoPolo.POLO_PASSIVO)));
+		
+		processoApplicationService.enviarProcesso(classeId, sigiloProcesso, numeroRecursos, preferencias, origens, assuntos, poloAtivo, poloPassivo);
 	}
 }

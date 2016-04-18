@@ -15,7 +15,6 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Motivo
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Origem;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ParteProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoSituacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Pais;
@@ -34,7 +33,7 @@ import br.jus.stf.shared.TeseId;
 
 public class ProcessoRecursalUnitTests {
 	
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+	private final SimpleDateFormat formatadorData = new SimpleDateFormat("dd/mm/yyyy");
 	
 	@Test
 	public void criaProcessoNaoEleitoralNemCriminalValido() {
@@ -42,13 +41,12 @@ public class ProcessoRecursalUnitTests {
 
 	    assertNotNull(processo);
 	    assertEquals(TipoProcesso.RECURSAL, processo.tipoProcesso());
-	    assertEquals(ProcessoSituacao.A_ANALISAR, processo.situacao());
 	    assertEquals(new ProcessoId(5L), processo.id());
 	    assertEquals(new ClasseId("ADI"), processo.classe());
 	    assertEquals(new Long(10), processo.numero());
 	    assertEquals(new PeticaoId(12L), processo.peticao());
-	    assertEquals(new Long(1), processo.quantidadeRecursos());
-	    assertEquals(dateFormat.format(new Date()), dateFormat.format(processo.dataRecebimento()));
+	    assertEquals(null, processo.quantidadeRecursos());
+	    assertEquals(formatadorData.format(new Date()), formatadorData.format(processo.dataRecebimento()));
 	}
 	
 	@Test
@@ -58,18 +56,15 @@ public class ProcessoRecursalUnitTests {
 		preferencias.add(new PreferenciaId(2L));
 		preferencias.add(new PreferenciaId(3L));
 		
-		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(9L), new ClasseId("ADI"), 18L, new PeticaoId(15L),
-				preferencias, new Date(), MeioTramitacao.FISICO,
-				Sigilo.PUBLICO, 0L);
+		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(9L), new ClasseId("ADI"), 18L,
+				new PeticaoId(15L), preferencias, new Date(), MeioTramitacao.FISICO, Sigilo.PUBLICO);
 
 	    assertNotNull(processo);
-	    assertEquals(ProcessoSituacao.A_AUTUAR, processo.situacao());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void tentaCriarProcessoComQuantidadeRecursoInvalida() {
-		new ProcessoRecursal(new ProcessoId(5L), new ClasseId("ADI"), 10L, new PeticaoId(12L),
-				null, new Date(), MeioTramitacao.FISICO,
+		new ProcessoRecursal(new ProcessoId(5L), new ClasseId("ADI"), 10L, null, new Date(), MeioTramitacao.FISICO,
 				Sigilo.PUBLICO, -1L);
 	}
 	
@@ -158,7 +153,7 @@ public class ProcessoRecursalUnitTests {
 		assuntos.add(new AssuntoId("120"));
 		processo.autuar(assuntos, poloAtivo, poloPassivo);
 		
-		assertEquals(dateFormat.format(new Date()), dateFormat.format(processo.dataAutuacao()));
+		assertEquals(formatadorData.format(new Date()), formatadorData.format(processo.dataAutuacao()));
 		assertEquals(poloAtivo, processo.partesPoloAtivo());
 		assertEquals(poloPassivo, processo.partesPoloPassivo());
 		assertEquals(assuntos, processo.assuntos());
@@ -234,10 +229,38 @@ public class ProcessoRecursalUnitTests {
 		assertEquals("Processo com RG.", processo.observacaoAnalise());
 	}
 	
+	@Test
+	public void criaProcessoRecursalParaEnvio() {
+		ProcessoRecursal processo = new ProcessoRecursal(new ProcessoId(5L), new ClasseId("RE"), 114L, null, new Date(),
+				MeioTramitacao.ELETRONICO, Sigilo.PUBLICO, 1L);
+		Set<ParteProcesso> poloAtivo = new HashSet<ParteProcesso>(0);
+		Set<ParteProcesso> poloPassivo = new HashSet<ParteProcesso>(0);
+		Set<AssuntoId> assuntos = new HashSet<AssuntoId>(0);
+		Set<Origem> origens = new HashSet<Origem>(0);
+		
+		origens.add(new Origem(new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(16L, "Brasil")), new TribunalJuizo(1L, "TJ-PE"), 65423L, true));
+		processo.atribuirOrigens(origens);
+		
+		assuntos.add(new AssuntoId("120"));
+		processo.atribuirAssuntos(assuntos);
+		
+		poloAtivo.add(new ParteProcesso(new PessoaId(1L), TipoPolo.POLO_ATIVO));
+		processo.atribuirPartes(poloAtivo, TipoPolo.POLO_ATIVO);
+		
+		poloPassivo.add(new ParteProcesso(new PessoaId(2L), TipoPolo.POLO_PASSIVO));
+		processo.atribuirPartes(poloPassivo, TipoPolo.POLO_PASSIVO);
+		
+		assertEquals(origens, processo.origens());
+		assertEquals(assuntos, processo.assuntos());
+		assertEquals(poloAtivo, processo.partesPoloAtivo());
+		assertEquals(poloPassivo, processo.partesPoloPassivo());
+		assertEquals(null, processo.peticao());
+	}
+	
 	private ProcessoRecursal processo() {
 		return new ProcessoRecursal(new ProcessoId(5L), new ClasseId("ADI"), 10L, new PeticaoId(12L),
 				null, new Date(), MeioTramitacao.FISICO,
-				Sigilo.PUBLICO, 1L);
+				Sigilo.PUBLICO);
 	}
 	
 }

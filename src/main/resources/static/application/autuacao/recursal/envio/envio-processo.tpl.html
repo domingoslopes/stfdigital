@@ -1,0 +1,281 @@
+<script type="text/ng-template"  id="assunto_tree.html">
+	<a href="javascript:void(0)" ng-click="envio.vincularAssunto(assunto);$event.stopPropagation()" class='descricao'>
+		<span ng-class='{bold: node.nivel == 1}' data-tooltip-bs3="{{assunto.descricao}}">{{assunto.codigo}} - {{assunto.descricao}}</span>
+	</a>
+    <ul class='filhos'>
+        <li ng-repeat="assunto in assunto.assuntosFilhos" ng-include="'assunto_tree.html'"></li>
+    </ul>
+</script>
+<div class="content" ng-click="assuntosSelecionados = []" data-loading-blocker>
+	<div class="jumbotron" data-pages="parallax">
+		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+			<div class="inner">
+				<ul class="breadcrumb">
+					<li>
+						<p>Enviar Processos</p>
+					</li>
+					<li><a href="#" class="active">Envio</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid container-fixed-lg">
+		
+    	<form>
+           	<div class="row">
+            	<div class="col-md-6">
+            		<div class="card share" data-social="item" style="width: 100%; padding: 10px">
+            			<div class="row">
+            				<p>Processo Eletrônico</p>
+            			</div>
+	            		<div class="row">
+	                    	<div class="col-md-6">
+				        		<div class="form-group form-group-default required">
+				                	<label>Classe</label>
+				                	<select ui-select2 id="classe" ng-model="envio.classeId" ng-change="envio.carregarPreferencias()" data-placeholder="Selecione a Classe Definitiva" style="width: 320px;">
+	                                	<option value=""></option>
+	                                	<option ng-repeat="classe in envio.classes" value="{{classe.sigla}}">{{classe.nome}} ({{classe.sigla}})</option>
+	                            	</select>
+				            	</div>
+				        	</div>
+				        	<div class="col-md-6">
+				            	<div class="form-group form-group-default">
+				                	<label>Sigilo</label>
+				                 	<select ui-select2 id="sigilo" ng-model="envio.sigilo" data-placeholder="Selecione o sigilo" style="width: 450px;">
+	                                	<option value=""></option>
+	                                	<option ng-repeat="sigilo in envio.sigilos" value="{{sigilo.codigo}}" ng-click="gerarAcronimos()">{{sigilo.nome}}</option>
+	                            	</select>
+				            	</div>
+				        	</div>
+					     </div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group form-group-default">
+							         <label>Recurso</label>
+							         <input type= "number" class="form-control" id="recuso" ng-model="envio.numeroRecursos" placeholder="Informe o recurso"></input>
+							      </div>
+							</div>
+							<div class="col-md-8">
+								<div class="form-group form-group-default">
+									<label>Preferência</label>
+									<select ui-select2 id="preferencia" ng-model="envio.preferenciasSelecionadas" data-placeholder="Selecione uma preferência" multiple="multiple" style="width: 320px;">
+										<option value=""></option>
+										<option ng-repeat="preferencia in envio.preferencias" value="{{preferencia.codigo}}">{{preferencia.descricao}}</option>
+									</select>
+							     </div>
+							</div>
+						</div>
+			        </div>
+			    </div>
+				<div class="col-md-6">
+            		<div class="card share" data-social="item" style="width: 100%; padding: 10px">
+            			<div class="row">
+            				<p>Origens Relacionados</p>
+            			</div>
+	            		<div class="row">
+	                    	<div class="col-md-12">
+				        		<div class="form-group form-group-default required">
+				                	<label>Procedência</label>
+				                	<select ui-select2 id="procedencia" ng-model="envio.procedencia" ng-change="envio.carregarOrigens()" data-placeholder="Selecione a procedência" style="width: 100%;">
+	                                	<option value=""></option>
+	                                	<option ng-repeat="procedencia in envio.procedencias" value="{{procedencia.id}}">{{procedencia.nome}} </option>
+	                            	</select>
+				            	</div>
+				        	</div>
+				        </div>
+				        <div class="row">
+				        	<div class="col-md-8">
+				            	<div class="form-group form-group-default">
+				                	<label>Tribunal ou Juízo de Origem</label>
+				                 	<select ui-select2 id="origem" ng-model="envio.tribunalJuizo" data-placeholder="Selecione a origem" ng-disabled="!envio.isProcedenciaSelecionada()" style="width: 450px;">
+	                                	<option value=""></option>
+	                                	<option ng-repeat="tribunalJuizo in envio.tribunaisJuizos" value="{{tribunalJuizo.codigo}}">{{tribunalJuizo.nome}}</option>
+	                            	</select>
+				            	</div>
+				        	</div>
+				        	<div class="col-md-4">
+								<div class="form-group form-group-default">
+							         <label>Número</label>
+							         <input type= "text" class="form-control" id="numeroOrigem" ng-model="envio.numeroOrigem" ng-keydown="$event.which === 13 && envio.adicionarOrigem()" 
+							         	onplaceholder="Informeo numero da origem" ng-click= "$event.stopPropagation()"></input>
+							      </div>
+							</div>
+					     </div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group form-group-default">
+									<label>Origens</label>
+									<div class="auto-overflow widget-11-2-table">
+										<table class="table table-condensed">
+											<thead>
+												<tr>
+		                                			<th width="80%">Título</th>
+					                                <th width="10%"></th>
+					                                <th width="10%"></th>
+		                            			</tr>
+		                        			</thead>
+	                            			<tbody>
+	                                			<tr ng-repeat="origem in envio.origens">
+				                                    <td class="font-montserrat fs-12 col-lg-12">{{origem}}</td>
+				                                    <td>
+				                                    	<input id="ckOrigemPrincipal" type="checkbox" ng-click="envio.marcarOrigemPrincipal($index)" ng-checked="envio.verificarOrigemPrincipal($index)" />
+				                                    </td>
+			                                        <td class="font-montserrat fs-12 col-lg-12">
+ 														<a title="Remover origem" id= "btnRemoveOrigem" data-placement="top" ng-click="envio.removerOrigem(origem)" class="close">
+		                                        			<span class="glyphicon glyphicon-trash"></span>
+		                                    			</a>
+													</td>
+	                                			</tr>
+	                            			</tbody>
+	                        			</table>
+	                    			</div>
+								</div>
+							</div>
+						</div>
+			        </div>
+			    </div>
+            </div>
+       		<div class="row">
+            	<div class="col-md-12">
+            		<div class="card share" data-social="item" style="width: 100%; padding: 10px">
+            			<div class="row">
+            				<label>Pesquisa de Assuntos</label>
+            			</div>
+	            		<div class="row">
+	                    	<div class="col-md-12">
+				        		<div class="form-group form-group-default">
+									<input type="text" id="txtPesquisarAssunto" class="form-control" autocomplete="off" placeholder="Código ou descrição" 
+										ng-model = "envio.assuntoInformado" ng-keydown="$event.which === 13 && envio.pesquisarAssunto()" ng-click="$event.stopPropagation()" />
+								</div>
+								<div id="assuntosEncontrados" ng-show="envio.assuntosSelecionados.length > 0">
+									<ul>
+										<li ng-repeat="assunto in envio.assuntosSelecionados track by assunto.codigo" ng-include="'assunto_tree.html'"></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-show="envio.assuntosAdicionados.length > 0">
+				<div class="col-md-12">
+					<div class="form-group form-group-default">
+						<label>Assuntos Adicionados</label>
+						<div class="auto-overflow widget-11-2-table">
+							<table class="table table-condensed table-hover">
+								<thead>
+									<tr>
+	                              		<th width="10%" style="text-align: center;">Código</th>
+			                            <th width="80%" style="text-align: left;">Nome</th>
+			                            <th width="10%" style="text-align: right;">Remover</th>
+	                          		</tr>
+	                      		</thead>
+                       			<tbody>
+                            		<tr ng-repeat="assunto in envio.assuntosAdicionados">
+                                		<td width="10%" style="text-align: center;" class="font-montserrat fs-12 col-lg-12">{{assunto.codigo}}</td>
+                                		<td width="80%" style="text-align: left;" class="font-montserrat fs-12 col-lg-12">{{assunto.descricao}}</td>
+                                   		<td width="10%" style="text-align: center;">
+											<a title="Remover origem" id= "btnRemoveOrigem" ng-click="envio.removerAssunto(assunto)" class="close" style="vertical-align: middle;">
+                                   				<span class="glyphicon glyphicon-trash"></span>
+                               				</a>
+										</td>
+                         			</tr>
+                   				</tbody>
+                			</table>
+              			</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card share" style="width:100%; padding:10px;border:0px;">
+						<div class="row">
+							<label>Partes</label>
+							<div class="form-group">
+								<div class="row">
+									<div class="btn-group">
+										<button type="button" id="btnAtivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
+										<button type="button" id="btnPassivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
+										<!-- 
+										<button type="button" class="btn btn-sm btn-small btn-success">Interessado(a/s)</button>
+										<button type="button" class="btn btn-sm btn-small btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id='btnTeseDropDown'>
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu">
+											<li ng-repeat="interessado in envio.interessados">
+												<a href="#" ng-click="" id="optTese">{{interessado.nome}}</a>
+											</li>
+										</ul>
+										 -->
+									</div>
+								</div>
+								<div class="row">
+									<input id="txtPesquisaParte" class="form-control" type="text" placeholder="Informe o CPF, CNPJ, OAB ou nome da parte" 
+										ng-keydown="$event.which === 13 && envio.adicionarParte()" ng-model="envio.parteInformada" />
+								</div>
+							</div>
+						</div>
+					
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group form-group-default">
+									<label>Polo Ativo</label>
+									<table class="table table-condensed table-striped" ng-show="envio.partesPoloAtivo.length > 0">
+										<thead>
+											<tr>
+												<th>Nome</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="parte in envio.partesPoloAtivo">
+												<td>{{parte.nome}}</td>
+												<td align="left">
+													<a title="Remover parte polo ativo" id= "btnRemovePartePoloAtivo" data-placement="top" ng-click="envio.removerPartePoloAtivo($index)" class="close">
+		                                        		<span class="glyphicon glyphicon-trash"></span>
+		                                    		</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group form-group-default">
+									<label>Polo Passivo</label>
+									<table class="table table-condensed table-striped"  ng-show="envio.partesPoloPassivo.length > 0">
+										<thead>
+											<tr>
+												<th>Nome</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="parte in envio.partesPoloPassivo">
+												<td>{{parte.nome}}</th>
+												<td align="left">
+													<a title="Remover parte polo passivo" id= "btnRemovePartePoloPassivo" data-placement="top" ng-click="envio.removerPartePoloPassivo($index)" class="close">
+		                                        		<span class="glyphicon glyphicon-trash"></span>
+		                                    		</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p>
+				<button type="button" id="btnSalvar" class="btn btn-complete btn-cons m-t-10" ng-click="envio.salvar()">Salvar</button>
+				<action-executor id="enviar-processo" resources="envio.recursos" fn-validate="envio.validar"
+					fn-result="envio.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Enviar Processo">
+				</action-executor>
+			</p>
+		</form>
+	</div>
+</div>
+

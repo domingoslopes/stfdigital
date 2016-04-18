@@ -101,14 +101,25 @@
 					controller: 'PeticionamentoAdvogadoController'
 				}
 			}
-		}).state('enviar-processo', {
+		}).state('consultar-processo-envio', {
 			parent: 'action.autuacao',
-			url: '/envio/processo',
+			url: '/processo/envio/consulta',
 			params : { resources : [] },
 			views: {
 				'content@root': {
-					templateUrl: 'application/autuacao/envio/envio-processo.tpl.html',
-					controller: 'EnvioProcessoController'
+					templateUrl: 'application/autuacao/recursal/envio/consulta-processo-envio.tpl.html',
+					controller: 'ConsultaProcessoEnvioController'
+				}
+			}
+		}).state('enviar-processo', {
+			parent: 'action.autuacao',
+			url: '/processo/envio/novo',
+			params : { resources : [], acronimos : {}, processo : {} },
+			views: {
+				'content@root': {
+					templateUrl: 'application/autuacao/recursal/envio/envio-processo.tpl.html',
+					controller: 'EnvioProcessoController',
+					controllerAs: 'envio'
 				}
 			}
 		}).state('registrar-peticao-eletronica-orgao', {

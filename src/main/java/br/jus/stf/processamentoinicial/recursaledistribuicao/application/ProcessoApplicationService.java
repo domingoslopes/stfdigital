@@ -1,6 +1,5 @@
 package br.jus.stf.processamentoinicial.recursaledistribuicao.application;
 
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.jurisprudencia.controletese.domain.model.Assunto;
 import br.jus.stf.processamentoinicial.autuacao.domain.DocumentoAdapter;
 import br.jus.stf.processamentoinicial.autuacao.domain.PessoaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TarefaAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.TeseAdapter;
+import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.WorkflowAdapter;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Distribuicao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidao;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.MotivoInaptidaoProcesso;
@@ -31,10 +30,8 @@ import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.Proces
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoFactory;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRecursal;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.domain.model.ProcessoRepository;
-import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.OrigemProcesso;
 import br.jus.stf.processamentoinicial.recursaledistribuicao.interfaces.commands.PecaProcessual;
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
-import br.jus.stf.processamentoinicial.suporte.domain.model.Classe;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Classificacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Peca;
@@ -51,6 +48,7 @@ import br.jus.stf.shared.PessoaId;
 import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
+import br.jus.stf.shared.ProcessoWorkflow;
 import br.jus.stf.shared.TeseId;
 import br.jus.stf.shared.TipoDocumentoId;
 
@@ -68,6 +66,10 @@ public class ProcessoApplicationService {
 	@Autowired
 	@Qualifier("processoTarefaRestAdapter")
 	private TarefaAdapter tarefaAdapter;
+	
+	@Autowired
+	@Qualifier("processoWorkflowRestAdapter")
+	private WorkflowAdapter processoAdapter;
 	
 	@Autowired
 	private ProcessoRepository processoRepository;
@@ -321,23 +323,6 @@ public class ProcessoApplicationService {
 	/**
 	 * Salva os dados do processo a ser enviado para o STF.
 	 * 
-	 * @param classe Dados da classe processual.
-	 * @param sigilo - Sigilo do processo.
-	 * @param numeroRecursos - Nº de recursos do processo.
-	 * @param preferencias - Lista de preferências do processo.
-	 * @param origens - Origens do processo.
-	 * @param assunto - Dados do assunto tratado no processo.
-	 * @param partesPoloAtivo - Lista de partes do polo ativo do processo.
-	 * @param partesPoloPassivo - Lista de partes do polo passivo do processo.
-	 */
-	public void salvarProcessoParaEnvio(Classe classe, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, List<OrigemProcesso> origens, 
-			Assunto assunto, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
-		
-	}
-	
-	/**
-	 * Salva os dados do processo a ser enviado para o STF.
-	 * 
 	 * @param ClasseId Id da classe processual.
 	 * @param sigilo Sigilo do processo.
 	 * @param numeroRecursos Nº de recursos do processo.
@@ -348,16 +333,15 @@ public class ProcessoApplicationService {
 	 * @param partesPoloPassivo Lista de partes do polo passivo do processo.
 	 */
 	public void enviarProcesso(ClasseId classeId, Sigilo sigilo, Long numeroRecursos, Set<PreferenciaId> preferencias, Set<Origem> origens, 
-			Set<AssuntoId> assuntos, List<String> partesPoloAtivo, List<String> partesPoloPassivo){
-		
-		ProcessoId processoId = processoRepository.nextId();
-		Long numeroProcesso = processoRepository.nextNumero(classeId);
-		PeticaoId peticaoId = new PeticaoId(1L); //Será criado um novo construtor para a classe ProcessoRecursal, pois, no caso de envio de processos, não há petição.
-		Date dataRecebimento = new Date();
-		ProcessoRecursal processo = new ProcessoRecursal(processoId, classeId, numeroProcesso, peticaoId, preferencias, dataRecebimento, MeioTramitacao.ELETRONICO, sigilo, numeroRecursos);
+			Set<AssuntoId> assuntos, List<ParteProcesso> partesPoloAtivo, List<ParteProcesso> partesPoloPassivo){
+		ProcessoRecursal processo = ProcessoFactory.criarProcessoRecursal(classeId, preferencias, MeioTramitacao.ELETRONICO, sigilo, numeroRecursos);
 		processo.atribuirOrigens(origens);
 		processo.atribuirAssuntos(assuntos);
-		
+		partesPoloAtivo.forEach(p1 -> processo.adicionarParte(p1));
+		partesPoloPassivo.forEach(p2 -> processo.adicionarParte(p2));
+
+		ProcessoWorkflow processoWorkflow = processoAdapter.iniciarWorkflow(processo);
+		processo.associarProcessoWorkflow(processoWorkflow);
 		processoRepository.save(processo);
 	}
 	

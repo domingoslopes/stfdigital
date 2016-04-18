@@ -31,9 +31,7 @@ public class ProcessoOriginario extends Processo {
 	public ProcessoOriginario(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
 			final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final Set<PreferenciaId> preferencias,
 			final Date dataRecebimento, final MeioTramitacao meioTramitacao, final Sigilo sigilo) {
-		super(id, classe, numero, peticao, partes, pecas,
-				pecas.isEmpty() ? ProcessoSituacao.PECAS_ORGANIZADAS : ProcessoSituacao.DISTRIBUIDO,
-				preferencias, dataRecebimento, meioTramitacao, sigilo);
+		super(id, classe, numero, peticao, partes, pecas, preferencias, dataRecebimento, meioTramitacao, sigilo);
 	}
 	
 	public TipoProcesso tipoProcesso() {

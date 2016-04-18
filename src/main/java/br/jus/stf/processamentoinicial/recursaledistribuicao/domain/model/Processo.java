@@ -37,6 +37,8 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.jus.stf.processamentoinicial.suporte.domain.ControladorOrdenacaoPecas;
 import br.jus.stf.processamentoinicial.suporte.domain.model.MeioTramitacao;
 import br.jus.stf.processamentoinicial.suporte.domain.model.Parte;
@@ -53,8 +55,6 @@ import br.jus.stf.shared.PeticaoId;
 import br.jus.stf.shared.PreferenciaId;
 import br.jus.stf.shared.ProcessoId;
 import br.jus.stf.shared.stereotype.Entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 /**
@@ -85,7 +85,6 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	private MinistroId relator;
 
 	@Embedded
-	@Column(nullable = false)
 	private PeticaoId peticao;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -100,10 +99,6 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Distribuicao.class)
 	@JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", nullable = false)
 	private Set<Distribuicao> distribuicoes = new HashSet<Distribuicao>(0);
-	
-	@Column(name = "TIP_SITUACAO")
-	@Enumerated(EnumType.STRING)
-	private ProcessoSituacao situacao;
 	
 	@Transient
 	private String identificacao;
@@ -152,13 +147,12 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param sigilo o valor padrão é PUBLICO
 	 */
 	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
-			final ProcessoSituacao situacao, final Set<PreferenciaId> preferencias, final Date dataRecebimento,
-			final MeioTramitacao meioTramitacao, final Sigilo sigilo) {
+			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao, final Sigilo sigilo) {
 		Validate.notNull(id, "processo.id.required");
 		Validate.notNull(classe, "processo.classe.required");
 		Validate.notNull(numero, "processo.numero.required");
-		Validate.notNull(peticao, "processo.peticao.required");
-		Validate.notNull(situacao, "processo.situacao.required");
+		Validate.isTrue((TipoProcesso.ORIGINARIO == tipoProcesso() && Optional.ofNullable(peticao).isPresent()) ||
+				TipoProcesso.RECURSAL == tipoProcesso(), "processo.peticao.required");
 		Validate.notNull(dataRecebimento, "processo.dataRecebimento.required");
 		Validate.notNull(meioTramitacao, "processo.meioTramitacao.required");
 		
@@ -166,7 +160,6 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 		this.classe = classe;
 		this.numero = numero;
 		this.peticao = peticao;
-		this.situacao = situacao;
 		this.dataRecebimento = dataRecebimento;
 		this.meioTramitacao = meioTramitacao;
 		this.sigilo = Optional.ofNullable(sigilo).orElse(Sigilo.PUBLICO);
@@ -196,10 +189,9 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	 * @param sigilo
 	 */
 	protected Processo(final ProcessoId id, final ClasseId classe, final Long numero, final PeticaoId peticao,
-			final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final ProcessoSituacao situacao,
-			final Set<PreferenciaId> preferencias, final Date dataRecebimento, final MeioTramitacao meioTramitacao,
-			final Sigilo sigilo) {
-		this(id, classe, numero, peticao, situacao, preferencias, dataRecebimento, meioTramitacao, sigilo);
+			final Set<ParteProcesso> partes, final Set<PecaProcesso> pecas, final Set<PreferenciaId> preferencias,
+			final Date dataRecebimento, final MeioTramitacao meioTramitacao, final Sigilo sigilo) {
+		this(id, classe, numero, peticao, preferencias, dataRecebimento, meioTramitacao, sigilo);
 		this.partes.addAll(partes);
 		this.identificacao = montarIdentificacao();
 		
@@ -252,10 +244,6 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	
 	public Set<Distribuicao> distribuicoes() {
 		return Collections.unmodifiableSet(this.distribuicoes);
-	}
-	
-	public ProcessoSituacao situacao() {
-		return situacao;
 	}
 	
 	/**
@@ -523,13 +511,6 @@ public abstract class Processo implements Entity<Processo, ProcessoId> {
 	@Override
 	public boolean sameIdentityAs(Processo other) {
 		return other != null && this.id.sameValueAs(other.id);
-	}
-	
-	/**
-	 * Define a situação do processo como A_AUTUAR
-	 */
-	protected void aAutuar() {
-		situacao = ProcessoSituacao.A_AUTUAR;
 	}
 	
 	/**

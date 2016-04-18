@@ -1,6 +1,7 @@
 package br.jus.stf.processamentoinicial.distribuicao.interfaces;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,8 +31,7 @@ public class ConsultaProcessosIntegrationTests extends AbstractIntegrationTests 
 			.andExpect(jsonPath("$.numero", is(200)))
 			.andExpect(jsonPath("$.relator", is(28)))
 			.andExpect(jsonPath("$.partes.*", hasSize(2)))
-			.andExpect(jsonPath("$.pecas", hasSize(1)))
-			.andExpect(jsonPath("$.situacao", is("Distribuído")));
+			.andExpect(jsonPath("$.pecas", hasSize(1)));
 	}
 	
 	@Test

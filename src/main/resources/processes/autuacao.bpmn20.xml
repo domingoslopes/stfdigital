@@ -178,7 +178,6 @@
     </sequenceFlow>
     <sequenceFlow id="sid-786F6E7A-7AF9-48E3-9A84-2D6C88E22798" sourceRef="criar-processo-recursal" targetRef="autuacao-recursal"/>
     <startEvent id="enviarProcessoRecursal" name="Enviar Processo Recursal">
-      <documentation>Envio de processo recursal por tribunal</documentation>
       <messageEventDefinition messageRef="enviarProcesso"/>
     </startEvent>
     <sequenceFlow id="sid-04D08B61-04D3-4917-B93E-06AC58F8CBBC" sourceRef="receberRemessaRecursal" targetRef="preautuar-recursal"/>

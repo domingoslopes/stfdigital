@@ -98,6 +98,7 @@
 				resources : '=', //obrigatório, recursos que sofrerão a ação
 				btnClass : '@', //opcional, classes do botão, default= 'btn btn-default'
 				iconClass : '@', //opcional, classes do ícone
+				description : '@', //opcional, descrição do botão, se não informado usará a descrição da ação
 				showDescription : '=', //opcional, indica se deve aparecer a descrição, default= true
 				showNotAllowed : '=' //opcional, indica se deve aparecer o botão mesmo não permitido,default= true
 			},
@@ -118,7 +119,7 @@
 				ActionService.get($scope.id).then(function(theAction) {
 					
 					action = theAction;
-					$scope.description = action.description;
+					$scope.description = angular.isString($scope.description) ? $scope.description : action.description;
 					
 					$q.when($scope.resources, function(resources) {
 						$scope.resources = resources;

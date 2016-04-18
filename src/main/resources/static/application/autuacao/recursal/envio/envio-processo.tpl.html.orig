@@ -6,7 +6,7 @@
         <li ng-repeat="assunto in assunto.assuntosFilhos" ng-include="'assunto_tree.html'"></li>
     </ul>
 </script>
-<div class="content" ng-controller="EnvioProcessoController as envio" ng-click="assuntosSelecionados = []" data-loading-blocker>
+<div class="content" ng-click="assuntosSelecionados = []" data-loading-blocker>
 	<div class="jumbotron" data-pages="parallax">
 		<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
 			<div class="inner">
@@ -76,7 +76,7 @@
 	                    	<div class="col-md-12">
 				        		<div class="form-group form-group-default required">
 				                	<label>Procedência</label>
-				                	<select ui-select2 id="classe" ng-model="envio.procedencia" ng-change="envio.carregarOrigens()" data-placeholder="Selecione a procedência" style="width: 100%;">
+				                	<select ui-select2 id="procedencia" ng-model="envio.procedencia" ng-change="envio.carregarOrigens()" data-placeholder="Selecione a procedência" style="width: 100%;">
 	                                	<option value=""></option>
 	                                	<option ng-repeat="procedencia in envio.procedencias" value="{{procedencia.id}}">{{procedencia.nome}} </option>
 	                            	</select>
@@ -118,7 +118,7 @@
 	                                			<tr ng-repeat="origem in envio.origens">
 				                                    <td class="font-montserrat fs-12 col-lg-12">{{origem}}</td>
 				                                    <td>
-				                                    	<input type="checkbox" ng-click="envio.marcarOrigemPrincipal($index)" />
+				                                    	<input id="ckOrigemPrincipal" type="checkbox" ng-click="envio.marcarOrigemPrincipal($index)" ng-checked="envio.verificarOrigemPrincipal($index)" />
 				                                    </td>
 			                                        <td class="font-montserrat fs-12 col-lg-12">
  														<a title="Remover origem" id= "btnRemoveOrigem" data-placement="top" ng-click="envio.removerOrigem(origem)" class="close">
@@ -194,9 +194,24 @@
 							<label>Partes</label>
 							<div class="form-group">
 								<div class="row">
-									<div class="btn-group pull-left">
+<<<<<<< HEAD
+									<div class="btn-group">
 										<button type="button" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
 										<button type="button" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
+										<button type="button" class="btn btn-sm btn-small btn-success">Interessado(a/s)</button>
+										<button type="button" class="btn btn-sm btn-small btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id='btnTeseDropDown'>
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu">
+											<li ng-repeat="interessado in envio.interessados">
+												<a href="#" ng-click="" id="optTese">{{interessado.nome}}</a>
+											</li>
+										</ul>
+=======
+									<div class="btn-group pull-left">
+										<button type="button" id="btnAtivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'AT'}" ng-click="envio.setPolo('AT')">Ativo</button>
+										<button type="button" id="btnPassivo" class="btn btn-sm btn-small" ng-class="{'btn-primary' : envio.poloSelecionado == 'PA'}" ng-click="envio.setPolo('PA')">Passivo</button>
+>>>>>>> 9bf83fc520b6747b979e3238ac63eccde01e09b9
 									</div>
 								</div>
 								<div class="row">
@@ -259,6 +274,7 @@
 				</div>
 			</div>
 			<p>
+				<button type="button" id="btnSalvar" class="btn btn-complete btn-cons m-t-10" ng-click="envio.salvar()">Salvar</button>
 				<action-executor id="enviar-processo" resources="envio.recursos" fn-validate="envio.validar"
 					fn-result="envio.completar" btn-class="btn btn-complete btn-cons m-t-10" description="Enviar Processo">
 				</action-executor>
