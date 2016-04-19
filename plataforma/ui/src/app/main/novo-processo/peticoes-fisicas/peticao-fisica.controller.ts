@@ -28,11 +28,11 @@ module app.novoProcesso.peticoesFisicas {
         }
 
         private static mockPeticao(): PeticaoFisica {
-            return { formaRecebimento: FormaRecebimento.SEDEX,
+            return { formaRecebimento: "SEDEX",
                      volumes: 1,
                      apensos: 1,
                      numeroSedex: "SR123456789BR",
-                     tipoProcesso: "originario" };
+                     tipoProcesso: "ORIGINARIO" };
         }
     }
 

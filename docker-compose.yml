@@ -16,22 +16,35 @@ services:
     image: services
     ports:
      - "8081:8081"
+     - "8281:8181"
     environment:
-     - spring.profiles.active=desenvolvimento
+     - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,suspend=n
   peticionamento:
     image: peticionamento
     ports:
      - "8090:8090"
+     - "8190:8190"
+    environment:
+     - spring.profiles.active=development
   recebimento:
     image: recebimento
     ports:
      - "8091:8091"
+     - "8191:8191"
+    environment:
+     - spring.profiles.active=development
   autuacao:
     image: autuacao
     ports:
      - "8092:8092"
+     - "8192:8192"
+    environment:
+     - spring.profiles.active=development
   distribuicao:
     image: distribuicao
     ports:
      - "8093:8093"
+     - "8193:8193"
+    environment:
+     - spring.profiles.active=development

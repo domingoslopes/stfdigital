@@ -21,12 +21,12 @@ public class ClasseId extends ValueObjectSupport<ClasseId> implements Serializab
     @Column(name = "SIG_CLASSE")
     private String id;
     
-    public ClasseId(String id) {
-        this.id = id;
-    }
-    
     public ClasseId() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
+    }
+    
+    public ClasseId(String id) {
+        this.id = id;
     }
 
      @Override
