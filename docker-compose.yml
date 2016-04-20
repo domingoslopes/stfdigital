@@ -1,0 +1,50 @@
+version: '2'
+services:
+  rabbit:
+    image: rabbitmq:management
+    ports:
+     - "15672:15672"
+  discovery:
+    image: discovery
+    ports:
+     - "8761:8761"
+  gateway:
+    image: gateway
+    ports:
+     - "8765:8765"
+  servicos:
+    image: services
+    ports:
+     - "8081:8081"
+     - "8281:8181"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,suspend=n
+  peticionamento:
+    image: peticionamento
+    ports:
+     - "8090:8090"
+     - "8190:8190"
+    environment:
+     - spring.profiles.active=development
+  recebimento:
+    image: recebimento
+    ports:
+     - "8091:8091"
+     - "8191:8191"
+    environment:
+     - spring.profiles.active=development
+  autuacao:
+    image: autuacao
+    ports:
+     - "8092:8092"
+     - "8192:8192"
+    environment:
+     - spring.profiles.active=development
+  distribuicao:
+    image: distribuicao
+    ports:
+     - "8093:8093"
+     - "8193:8193"
+    environment:
+     - spring.profiles.active=development
