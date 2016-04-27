@@ -25,6 +25,14 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,suspend=n
+  documents:
+    container_name: documents
+    image: documents
+    ports:
+     - "8094:8094"
+     - "8194:8194"
+    environment:
+     - spring.profiles.active=development
   peticionamento:
     container_name: peticionamento
     image: peticionamento

@@ -5,6 +5,7 @@ repositorios=( "plataforma/core" \
     "plataforma/gateway" \
     "plataforma/services" \
     "plataforma/ui" \
+    "plataforma/documents" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
     "autuacao/peticionamento" \

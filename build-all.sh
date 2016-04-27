@@ -11,3 +11,4 @@ cd plataforma/discovery;       gradle docker; cd -
 cd plataforma/gateway;         gradle docker; cd -
 cd plataforma/services;        gradle docker; cd -
 cd plataforma/ui;              gradle docker; cd -
+cd plataforma/documents;       gradle docker; cd -
