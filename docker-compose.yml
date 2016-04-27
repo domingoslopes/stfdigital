@@ -65,3 +65,8 @@ services:
      - "8193:8193"
     environment:
      - spring.profiles.active=development
+  ui:
+    container_name: ui
+    image: plataforma-ui
+    ports:
+     - "8080:8080"
