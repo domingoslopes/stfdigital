@@ -16,12 +16,12 @@ services:
     image: gateway
     ports:
      - "8765:8765"
-  servicos:
+  services:
     container_name: services
     image: services
     ports:
      - "8081:8081"
-     - "8281:8181"
+     - "8181:8181"
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,suspend=n
