@@ -25,6 +25,11 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,suspend=n
+  mongo:
+    container_name: mongo
+    image: mongo:3
+    ports:
+     - "27017:27017"
   documents:
     container_name: documents
     image: documents
