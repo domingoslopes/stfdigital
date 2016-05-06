@@ -16,7 +16,7 @@ services:
     image: gateway
     ports:
      - "8765:8765"
-  servicos:
+  services:
     container_name: services
     image: services
     ports:
