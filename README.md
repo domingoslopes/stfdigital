@@ -164,15 +164,83 @@ Rode no diretório plataforma/ui os comandos abaixo e pare o container de UI pel
     gulp serve
 
     
-#### Debug Remoto
+### Configure o Eclipse para começar a codificar
 
-Usamos <a target="_blank" href="https://spring.io/tools">Eclipse STS</a> como IDE. Certifique-se que você tem a última versão. Você vai precisar importar todos os componentes separadamente. Você pode importar cada projeto diretamente pelo Eclipse, como um Projeto Gradle, ou pode executar o comando abaixo, no diretório de cada projeto, para gerar os arquivos necessários antes de importá-lo como um projeto já existente. 
+Usamos <a target="_blank" href="https://spring.io/tools">Eclipse STS</a> como IDE. Certifique-se que você tem a última versão. 
+Você também precisará instalar os seguintes plugins:
 
+    > Gradle IDE Pack 3.7.x+1.0.x
+    > Typescript.java
+
+#### Instalando o plugin do Gradle para Eclipse
+
+Para baixar o plugin do Gradle siga os passos abaixo:
+
+    abra o Eclipse, 
+    clique em Help 
+    "Eclipse Market Place". Procure o plugin e clique em instalar. Next, Next, Finish.
+
+#### Instalando o reconhecimento da sintaxe do Typescript
+
+`A instalação do typescript.java não funcionou`
+
+Para instalar o reconhecimento da sintaxe do Typescript <a href="https://github.com/angelozerr/typescript.java/wiki/Installation%20Update%20Site" target="_blank">Typescript.java</a> siga os passos abaixo:
+
+    Abra o Eclipse > clique em Help > Install New Software... > ADD.
+
+    Inclua em location site o link do typescript.java "http://oss.opensagres.fr/typescript.ide/1.0.0-SNAPSHOT/". O nome pode ser Typescript.java Update site.
+
+    Marque todas as opções e clique em Next, Next, Finish.
+
+`A instalação do typescript.java não funcionou`
+
+#### Importando os projetos no Eclipse
+
+Você vai precisar importar todos os componentes separadamente. Você pode importar cada projeto diretamente pelo Eclipse, como um Projeto Gradle, ou pode executar o comando abaixo, no diretório de cada projeto, para gerar os arquivos necessários antes de importá-lo como um projeto já existente. 
+
+##### Digitando o comando (substitui o próximo passo)
+
+Abra o <b>Git Bash</b> e na raiz do STF Digital, para gerar os arquivos de importação do eclipse, digite:
+
+    $ ./import-all.sh
+
+    Ou rode manualmente o comando abaixo em cada pasta que deseja trabalhar:
+    
     $ gradle eclipse
+
+Após rodar o comando, um arquivo chamado .project e uma pasta .settings serão criados permitindo importação do projeto no eclipse. Para importar siga os passos abaixo:
+
+    > Clique com o botão direito na view Package Explorer
+    > Clique em Import
+    > Clique em General > Existing Projects into Workspace
+    > Selecione o diretório em que você rodou o comando "gradle eclipse"
+
+Repita os passos para cada um dos componentes.
+
+##### Usando apenas o Eclipse (substitui o passo anterior)
+
+    > Clique com o botão direito na view Package Explorer
+    > Clique em Import
+    > Clique em Gradle (STS) - aparecerá se o plugin Gradle estiver instalado corretamente
+    > Clique em Gradle (STS) Project
+    > Clique em Browse
+    > Selecione o diretório do projeto (ex: stfdigital/autuacao/recebimento)
+    > clique em Build Model `é normal demorar na primeira execução`
+
+
+#### Organizando os projetos nos Working Sets "Área de Negócio" e "Plataforma"
 
 Se optar por uma organização com <i>Working Sets</i>, você deverá ter uma estrutura de projetos como na imagem abaixo:
 
 <img src="assets/eclipse.png" width="150">    
+
+    > Clique com o botão direito no nome do projeto
+    > Assign Working Sets
+    > Selecione Autuação ou Plataforma, por exemplo
+    > No cabeçalho da view Package Explorer, clique na seta para baixo
+    > Top Level Elements > Working Set
+
+##### Desenvolvendo local
 
 Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Spring Devtools</i>, que permite o `hot restart` de aplicações <i>Spring Boot</i> rodando dentro de um container docker. Os serviços da plataforma já estão configurados para viabilizar tal funcionalidade. No Eclipse, basta executar a sequência abaixo:
 
