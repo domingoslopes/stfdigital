@@ -10,7 +10,7 @@ Baixe o <a target="_blank" href="https://spring.io/tools">Eclipse STS (Spring To
 Instale o <a target="_blank" href="https://www.docker.com/products/docker-toolbox">Docker ToolBox 1.11.1+</a>. 
 
 ##### Baixe o repositório
-Abra o <b>Git Bash</b> e na sua pasta de preferência, para baixar o repositório e execute os comandos abaixo:
+Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/dev) , para baixar o repositório e execute os comandos abaixo:
 
     $ git clone https://github.com/supremotribunalfederal/stfdigital.git
     $ cd stfdigital
