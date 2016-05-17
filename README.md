@@ -149,7 +149,7 @@ Você poderá rodar todas elas de uma única vez usando <i>Docker Compose</i>:
 
 #### Acompanhe os logs com Kitematic
 
-Abra o Kitematic ou acompanhe as mensagens de log pelo comando: 
+Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as mensagens de log pelo comando: 
 
     $ docker-compose logs
     
