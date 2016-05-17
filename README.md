@@ -10,7 +10,7 @@ Baixe o <a target="_blank" href="https://spring.io/tools">Eclipse STS (Spring To
 Instale o <a target="_blank" href="https://www.docker.com/products/docker-toolbox">Docker ToolBox 1.11.1+</a>. 
 
 ##### Baixe o repositório
-Abra o <b>Git Bash</b> e na sua pasta de preferência, para baixar o repositório e execute os comandos abaixo:
+Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/dev) , para baixar o repositório e execute os comandos abaixo:
 
     $ git clone https://github.com/supremotribunalfederal/stfdigital.git
     $ cd stfdigital
@@ -87,7 +87,7 @@ Execute o comando javac - version para verficar se a instalação foi realizada 
 Feche e abra o Docker Quickstart Terminal novamente.
 
 #### Instale o Node e o NPM
-Você também precisará ter o <a href="https://nodejs.org/dist/v5.9.1/" target="_blank">NodeJS 5.9.1+ (já inclui NPM)</a>.
+Você também precisará ter a versão mais recente do  <a href="https://nodejs.org/dist/v5.9.1/" target="_blank">NodeJS 5.9  (já inclui NPM)</a>. Sugerimos 5.9.1+. Não baixe versão superior a NodeJS 6+, ela ainda não foi testada.
 
 Após instalar o NodeJs, feche e abra novamente o Docker QuickStart Terminal (para recuperar as novas variáveis de ambiente).
 Para verificar se o NodeJS e o NPM estão instalados corretamente, execute os comandos: 
@@ -104,11 +104,12 @@ $ npm install -g gulp
 #### Instale o Maven (opcional)
 O Maven ainda não é necessário nesse passo, mas você pode baixá-lo em <a href="https://maven.apache.org/download.cgi" target="_blank">Maven</a>. Ele deverá ser configurado adequadamente para que o Gradle reutilize as bibliotecas já existentes em seu repositório local. Falaremos sobre esse passo mais adiante.
 
-#### Execute o Script Gralde
+#### Execute o Script Gradle
 
 Para facilitar o processo, temos um pequeno script que pode ser usado para construir todos os componentes de uma vez.  
 
-Agora podemos rodar o script de construção do ambiente. Entre no diretório que clonou o ambiente e execute o comando abaixo:
+Agora podemos rodar o script de construção do ambiente. 
+Reinicie o Docker Quickstart terminal para carregar as variaveis de ambiente e entre no diretório que clonou o ambiente e execute o comando abaixo:
 
     $ ./build-all.sh
 
@@ -148,7 +149,7 @@ Você poderá rodar todas elas de uma única vez usando <i>Docker Compose</i>:
 
 #### Acompanhe os logs com Kitematic
 
-Abra o Kitematic ou acompanhe as mensagens de log pelo comando: 
+Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as mensagens de log pelo comando: 
 
     $ docker-compose logs
     
