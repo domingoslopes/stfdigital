@@ -104,11 +104,12 @@ $ npm install -g gulp
 #### Instale o Maven (opcional)
 O Maven ainda não é necessário nesse passo, mas você pode baixá-lo em <a href="https://maven.apache.org/download.cgi" target="_blank">Maven</a>. Ele deverá ser configurado adequadamente para que o Gradle reutilize as bibliotecas já existentes em seu repositório local. Falaremos sobre esse passo mais adiante.
 
-#### Execute o Script Gralde
+#### Execute o Script Gradle
 
 Para facilitar o processo, temos um pequeno script que pode ser usado para construir todos os componentes de uma vez.  
 
-Agora podemos rodar o script de construção do ambiente. Entre no diretório que clonou o ambiente e execute o comando abaixo:
+Agora podemos rodar o script de construção do ambiente. 
+Reinicie o Docker Quickstart terminal para carregar as variaveis de ambiente e entre no diretório que clonou o ambiente e execute o comando abaixo:
 
     $ ./build-all.sh
 
