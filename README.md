@@ -87,7 +87,7 @@ Execute o comando javac - version para verficar se a instalação foi realizada 
 Feche e abra o Docker Quickstart Terminal novamente.
 
 #### Instale o Node e o NPM
-Você também precisará ter o <a href="https://nodejs.org/dist/v5.9.1/" target="_blank">NodeJS 5.9.1+ (já inclui NPM)</a>.
+Você também precisará ter a versão mais recente do  <a href="https://nodejs.org/dist/v5.9.1/" target="_blank">NodeJS 5.9  (já inclui NPM)</a>. Sugerimos 5.9.1+. Não baixe versão superior a NodeJS 6+, ela ainda não foi testada.
 
 Após instalar o NodeJs, feche e abra novamente o Docker QuickStart Terminal (para recuperar as novas variáveis de ambiente).
 Para verificar se o NodeJS e o NPM estão instalados corretamente, execute os comandos: 
