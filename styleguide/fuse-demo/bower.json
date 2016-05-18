@@ -40,7 +40,8 @@
   },
   "resolutions": {
     "angular": "~1.4.8",
-    "d3": "~3.5.9"
+    "d3": "~3.5.9",
+    "moment": "~2.13.0"
   },
   "overrides": {
     "angular-material": {
