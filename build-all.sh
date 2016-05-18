@@ -1,14 +1,34 @@
 #!/usr/bin/env bash
 
-cd plataforma/core;            gradle install; cd -
+build_all() {
+    projects_install=( "plataforma/core" )
+    
+    projects_docker=( "plataforma/discovery" \
+        "plataforma/gateway" \
+        "plataforma/services" \
+        "plataforma/ui" \
+        "plataforma/documents" \
+        "autuacao/autuacao" \
+        "autuacao/distribuicao" \
+        "autuacao/peticionamento" \
+        "autuacao/recebimento"
+    )
 
-cd autuacao/peticionamento;    gradle docker; cd -
-cd autuacao/recebimento;       gradle docker; cd -
-cd autuacao/autuacao;          gradle docker; cd -
-cd autuacao/distribuicao;      gradle docker; cd -
+    for project in "${projects_install[@]}"
+    do
+        cd $project
+        echo "Construindo "$project
+        gradle install
+        cd - > /dev/null
+    done
 
-cd plataforma/discovery;       gradle docker; cd -
-cd plataforma/gateway;         gradle docker; cd -
-cd plataforma/services;        gradle docker; cd -
-cd plataforma/ui;              gradle docker; cd -
-cd plataforma/documents;       gradle docker; cd -
+    for project in "${projects_docker[@]}"
+    do
+        cd $project
+        echo "Construindo "$project
+        gradle docker
+        cd - > /dev/null
+    done
+}
+
+build_all 2>&1 | tee build.log
