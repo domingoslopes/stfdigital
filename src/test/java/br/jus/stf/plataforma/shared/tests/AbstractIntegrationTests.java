@@ -16,7 +16,7 @@ import br.jus.stf.plataforma.shared.settings.Profiles;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ApplicationContextInitializer.class)
-@WebIntegrationTest({"server.port=0", "management.port=0"})
+@WebIntegrationTest({"server.port=57443", "management.port=0", "port=57443"})
 @ActiveProfiles({Profiles.DESENVOLVIMENTO, Profiles.DOCUMENTO_MONGO})
 public abstract class AbstractIntegrationTests {
 
