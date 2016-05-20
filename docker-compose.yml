@@ -33,7 +33,7 @@ services:
   documents:
     container_name: documents
     image: documents
-    command: --onlyoffice.documentserver.host=pacaembu --onlyoffice.documentserver.protocol=https
+    command: --onlyoffice.documentserver.host=digital.stf.jus.br --onlyoffice.documentserver.protocol=https
     ports:
      - "8094:8094"
      - "8194:8194"
