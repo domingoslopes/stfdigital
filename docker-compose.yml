@@ -33,6 +33,7 @@ services:
   documents:
     container_name: documents
     image: documents
+    command: --onlyoffice.documentserver.host=pacaembu --onlyoffice.documentserver.protocol=https
     ports:
      - "8094:8094"
      - "8194:8194"
@@ -40,7 +41,6 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47994,suspend=n
-     - host=pacaembu
   peticionamento:
     container_name: peticionamento
     image: peticionamento
