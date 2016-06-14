@@ -12,8 +12,6 @@ repositorios=( "plataforma/core" \
     "autuacao/recebimento" \
 )
 
-git pull
-
 for identificador in "${repositorios[@]}"
 do
     if [ -d $identificador"/.git" ]; then
