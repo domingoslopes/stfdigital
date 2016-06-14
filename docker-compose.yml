@@ -78,3 +78,11 @@ services:
     image: plataforma-ui
     ports:
      - "8443:8443"
+  userauthentication:
+    container_name: userauthentication
+    image: userauthentication
+    ports:
+     - "8095:8095"
+     - "8195:8195"
+    environment:
+     - spring.profiles.active=development

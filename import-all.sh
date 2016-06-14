@@ -6,6 +6,7 @@ cd plataforma/documents;       gradle eclipse; cd -
 cd plataforma/gateway;         gradle eclipse; cd -
 cd plataforma/services;        gradle eclipse; cd -
 cd plataforma/ui;              gradle eclipse; cd -
+cd plataforma/userauthentication;              gradle eclipse; cd -
 
 cd autuacao/autuacao;          gradle eclipse; cd -
 cd autuacao/distribuicao;      gradle eclipse; cd -
