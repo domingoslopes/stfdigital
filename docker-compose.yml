@@ -11,20 +11,27 @@ services:
     image: discovery
     ports:
      - "8761:8761"
+     - "47961:47961"
+    environment:
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47961,suspend=n
   gateway:
     container_name: gateway
     image: gateway
     ports:
      - "8765:8765"
+     - "47965:47965"
+    environment:
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47965,suspend=n
   services:
     container_name: services
     image: services
     ports:
      - "8081:8081"
      - "8181:8181"
+     - "47981:47981"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,suspend=n
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47981,suspend=n
   mongo:
     container_name: mongo
     image: mongo:3
@@ -47,32 +54,40 @@ services:
     ports:
      - "8090:8090"
      - "8190:8190"
+     - "47990:47990"
     environment:
      - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47990,suspend=n
   recebimento:
     container_name: recebimento
     image: recebimento
     ports:
      - "8091:8091"
      - "8191:8191"
+     - "47991:47991"
     environment:
      - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47991,suspend=n
   autuacao:
     container_name: autuacao
     image: autuacao
     ports:
      - "8092:8092"
      - "8192:8192"
+     - "47992:47992"
     environment:
      - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47992,suspend=n
   distribuicao:
     container_name: distribuicao
     image: distribuicao
     ports:
      - "8093:8093"
      - "8193:8193"
+     - "47993:47993"
     environment:
      - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47993,suspend=n
   ui:
     container_name: ui
     image: plataforma-ui
