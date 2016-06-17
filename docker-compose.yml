@@ -99,5 +99,7 @@ services:
     ports:
      - "8095:8095"
      - "8195:8195"
+     - "47995:47995"
     environment:
      - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47995,suspend=n
