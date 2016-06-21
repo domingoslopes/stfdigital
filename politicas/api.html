@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        
+        <title>STF Digital Developers | Testes</title>
+        
+        <!-- STYLESHEETS -->
+        <link rel="stylesheet" href="assets/styles/fonts.css" type="text/css" >
+        <link rel="stylesheet" href="assets/styles/fonts1.css" title="roboto" type="text/css">
+        
+        <link href="assets/styles/default.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body class="gc-documentation develop guide  dac-nav-open" itemscope="" itemtype="http://schema.org/Article">
+        <header id="header-wrapper">
+            <div class="dac-header" id="header">
+                <div class="dac-header-inner">
+                    <a class="dac-nav-toggle" data-dac-toggle-nav="" href="https://developer.android.com/guide/components/fundamentals.html" title="Open navigation"> 
+                        <span class="dac-nav-hamburger"> 
+                            <span class="dac-nav-hamburger-top"></span> 
+                            <span class="dac-nav-hamburger-mid"></span> 
+                            <span class="dac-nav-hamburger-bot"></span>
+                        </span>
+                    </a>
+                    <a class="dac-header-logo" href="https://developer.android.com/index.html">
+                        <img class="dac-header-logo-image" src="../assets/images/logo.png" srcset="../assets/images/logo.png" width="32" height="32">STF Digital
+                    </a>
+                    <ul class="dac-header-tabs">
+                        <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
+                    </ul>
+                    <a class="dac-header-console-btn" href="https://play.google.com/apps/publish/"> 
+                        <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
+                        <span class="dac-visible-desktop-inline">Repositório</span>
+                    </a>
+                </div>
+            <!--/.header-wrap.wrap-->
+            </div>
+        <!--/.header-->
+        </header>
+    
+        <a name="navigation" tabindex="0" class="nav-start-marker">navigation</a>
+
+        <nav class="dac-nav">
+            <div class="dac-nav-dimmer" data-dac-toggle-nav=""></div>
+            <div class="dac-nav-sidebar" data-swap="" data-dynamic="false" data-transition-speed="300" data-dac-nav="">
+                <div data-swap-container="">
+                    <a class="dac-nav-back-button dac-swap-section dac-up dac-active" tabindex="0" data-swap-button="" href="../index.html"> 
+                        <i class="dac-sprite dac-nav-back"></i> 
+                        <span class="dac-nav-back-title">Arquitetura</span>
+                    </a>
+    
+                    <div class="dac-nav-sub dac-swap-section dac-right dac-active">
+                        <ul id="nav">
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="arquitetura.htm">Iniciando</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="#">Demonstração</a></li>
+                                    <li><a href="#">Monte seu Ambiente</a></li>
+                                    <li><a href="#">Comece Agora</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="arquitetura.htm">Arquitetura</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="#">Nossa Visão</a></li>
+                                    <li><a href="../arquitetura/estrategia.html">Estratégia Arquitetural</a></li>
+                                    <li><a href="#">Estratégia de Implantação</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="arquitetura.htm">Padrões e Políticas</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li class="selected"><a href="#">Estratégia de Testes</a></li>
+                                    <li><a href="#">Gestão da API</a></li>
+                                    <li><a href="#">Código Limpo</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+    
+                </div>
+            </div>
+        </nav>
+
+        <a name="top" tabindex="0"></a>
+    
+        <div class="wrap clearfix" id="body-content">
+            <div class="content-header">
+                <ul class="dac-header-crumbs dac-has-content">
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Desenvolvimento</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Arquitetura</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Estratégia</a></li>
+                </ul>
+                <h1 itemprop="name">API dos Serviços</h1>
+            </div>
+            <div id="jd-content">
+                <div class="jd-descr" itemprop="articleBody">
+                    <div id="qv-wrapper">
+                        <div id="qv">
+                            <h2>Neste documento</h2>
+                            <ol>
+                                <li>
+                                    <a href="#piramide">...</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+    
+                    <p>
+                        <i>Em geral, microserviços são integrados usando REST sobre HTTP. Neste caso, conceitos do domínio são modelados como
+                        recursos, que são expostos pelos serviços para formar a sua API. Neste documento, apresentaremos o conjunto de 
+                        práticas que devem ser aplicadas sempre que desejarmos adicionar um novo recurso à API de um serviço.</i> 
+                    </p>
+                        
+                    <h2 id="piramide" style="padding-bottom: 0px;"></h2>
+                    <hr>
+    
+                    <p>
+                        ...
+                    </p>  
+    
+                </div>
+    
+            </div>
+            <!-- end jd-content -->
+        </div>
+        <!--/#body-content-->
+    </body>
+</html>
