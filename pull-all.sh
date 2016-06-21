@@ -2,10 +2,10 @@
 
 repositorios=( "plataforma/core" \
     "plataforma/discovery" \
+    "plataforma/documents" \
     "plataforma/gateway" \
     "plataforma/services" \
     "plataforma/ui" \
-    "plataforma/documents" \
 	"plataforma/userauthentication" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
