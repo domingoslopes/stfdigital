@@ -124,6 +124,6 @@ services:
      - "47995:47995"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47995,suspend=n	 
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47995,suspend=n
     depends_on:
      - discovery
