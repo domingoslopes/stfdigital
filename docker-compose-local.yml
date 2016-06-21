@@ -1,0 +1,127 @@
+version: '2'
+services:
+  rabbit:
+    container_name: rabbit
+    image: rabbitmq:management
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+  discovery:
+    container_name: discovery
+    image: discovery
+    ports:
+     - "8761:8761"
+     - "47961:47961"
+    environment:
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47961,suspend=n
+  gateway:
+    container_name: gateway
+    image: gateway
+    ports:
+     - "8765:8765"
+     - "47965:47965"
+    environment:
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47965,suspend=n
+    depends_on:
+     - discovery
+  services:
+    container_name: services
+    image: services
+    ports:
+     - "8081:8081"
+     - "8181:8181"
+     - "47981:47981"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47981,suspend=n
+    depends_on:
+     - rabbit
+     - discovery
+  mongo:
+    container_name: mongo
+    image: mongo:3
+    ports:
+     - "27017:27017"
+  documents:
+    container_name: documents
+    image: documents
+    command: --onlyoffice.documentserver.host=digital.stf.jus.br --onlyoffice.documentserver.protocol=https
+    ports:
+     - "8094:8094"
+     - "8194:8194"
+     - "47994:47994"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47994,suspend=n
+    depends_on:
+     - mongo
+     - discovery
+  peticionamento:
+    container_name: peticionamento
+    image: peticionamento
+    ports:
+     - "8090:8090"
+     - "8190:8190"
+     - "47990:47990"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47990,suspend=n
+    depends_on:
+     - rabbit
+     - discovery
+  recebimento:
+    container_name: recebimento
+    image: recebimento
+    ports:
+     - "8091:8091"
+     - "8191:8191"
+     - "47991:47991"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47991,suspend=n
+    depends_on:
+     - rabbit
+     - discovery
+  autuacao:
+    container_name: autuacao
+    image: autuacao
+    ports:
+     - "8092:8092"
+     - "8192:8192"
+     - "47992:47992"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47992,suspend=n
+    depends_on:
+     - rabbit
+     - discovery
+  distribuicao:
+    container_name: distribuicao
+    image: distribuicao
+    ports:
+     - "8093:8093"
+     - "8193:8193"
+     - "47993:47993"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug, -Xrunjdwp:server=y,transport=dt_socket,address=47993,suspend=n
+    depends_on:
+     - rabbit
+     - discovery
+  ui:
+    container_name: ui
+    image: plataforma-ui
+    ports:
+     - "8443:8443"
+    depends_on:
+     - gateway
+  userauthentication:
+    container_name: userauthentication
+    image: userauthentication
+    ports:
+     - "8095:8095"
+     - "8195:8195"
+    environment:
+     - spring.profiles.active=development
+    depends_on:
+     - discovery
