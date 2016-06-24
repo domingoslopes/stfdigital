@@ -1,4 +1,0 @@
-include "plataforma:core", "plataforma:discovery", "plataforma:documents", "plataforma:gateway",
-        "plataforma:services", "plataforma:ui", "plataforma:userauthentication", "autuacao:autuacao",
-        "autuacao:distribuicao", "autuacao:peticionamento", "autuacao:recebimento"
-rootProject.name='stfdigital'
