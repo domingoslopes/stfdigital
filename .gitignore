@@ -14,3 +14,4 @@ stfca.pem
 build.log
 
 .gradle
+.settings
