@@ -1,0 +1,26 @@
+{
+    "data": {
+        "repoType": "proxy",
+        "id": "npm-proxy",
+        "name": "npm-proxy",
+        "browseable": true,
+        "indexable": false,
+        "notFoundCacheTTL": 1440,
+        "artifactMaxAge": -1,
+        "metadataMaxAge": 1440,
+        "itemMaxAge": 1440,
+        "repoPolicy": "MIXED",
+        "provider": "npm-proxy",
+        "providerRole": "org.sonatype.nexus.proxy.repository.Repository",
+        "downloadRemoteIndexes": false,
+        "autoBlockActive": true,
+        "fileTypeValidation": true,
+        "exposed": true,
+        "checksumPolicy": "WARN",
+        "remoteStorage": {
+            "remoteStorageUrl": "https://registry.npmjs.org",
+            "authentication": null,
+            "connectionSettings": null
+        }
+    }
+}

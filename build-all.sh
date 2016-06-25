@@ -32,4 +32,4 @@ build_all() {
     done
 }
 
-build_all 2>&1 | tee build.log
+(time build_all) 2>&1 | tee build.log

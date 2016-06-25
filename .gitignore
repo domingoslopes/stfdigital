@@ -12,6 +12,7 @@ autuacao
 
 stfca.pem
 build.log
+build-parallely.log
 
 .gradle
 .settings

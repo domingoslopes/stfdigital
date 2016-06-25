@@ -1,0 +1,14 @@
+{
+    "data": {
+        "id": "npm",
+        "name": "npm",
+        "format": "npm",
+        "exposed": true,
+        "provider": "npm-group",
+        "repositories": [
+            {
+                "id": "npm-proxy"
+            }
+        ]
+    }
+}
