@@ -22,6 +22,8 @@ services:
      - "47965:47965"
     environment:
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+    depends_on:
+     - discovery
   services:
     container_name: services
     image: stfdigital-plataforma-services
@@ -32,6 +34,9 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+    depends_on:
+     - rabbit
+     - discovery
   mongo:
     container_name: mongo
     image: mongo:3
@@ -49,6 +54,9 @@ services:
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
      - onlyoffice.documentserver.host=digital.stf.jus.br
      - onlyoffice.server.address=https://docker:443
+    depends_on:
+     - mongo
+     - discovery
     links:
      - onlyoffice:docker
   peticionamento:
@@ -61,6 +69,9 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+    depends_on:
+     - rabbit
+     - discovery
   recebimento:
     container_name: recebimento
     image: stfdigital-autuacao-recebimento
@@ -71,6 +82,9 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+    depends_on:
+     - rabbit
+     - discovery
   autuacao:
     container_name: autuacao
     image: stfdigital-autuacao-autuacao
@@ -81,6 +95,9 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+    depends_on:
+     - rabbit
+     - discovery
   distribuicao:
     container_name: distribuicao
     image: stfdigital-autuacao-distribuicao
@@ -91,11 +108,16 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+    depends_on:
+     - rabbit
+     - discovery
   ui:
     container_name: ui
     image: stfdigital-plataforma-ui
     ports:
      - "8443:8443"
+    depends_on:
+     - gateway
   userauthentication:
     container_name: userauthentication
     image: stfdigital-plataforma-userauthentication
@@ -106,6 +128,8 @@ services:
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+    depends_on:
+     - discovery
   onlyoffice:
     container_name: onlyoffice
     image: svendowideit/ambassador
