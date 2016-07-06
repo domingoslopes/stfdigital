@@ -1,0 +1,115 @@
+version: '2'
+services:
+  rabbit:
+    container_name: rabbit
+    image: rabbitmq:management
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+  discovery:
+    container_name: discovery
+    image: stfdigital-plataforma-discovery
+    ports:
+     - "8761:8761"
+     - "47961:8000"
+    environment:
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  gateway:
+    container_name: gateway
+    image: stfdigital-plataforma-gateway
+    ports:
+     - "8765:8765"
+     - "47965:47965"
+    environment:
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  services:
+    container_name: services
+    image: stfdigital-plataforma-services
+    ports:
+     - "8081:8081"
+     - "8181:8181"
+     - "47981:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  mongo:
+    container_name: mongo
+    image: mongo:3
+    ports:
+     - "27017:27017"
+  documents:
+    container_name: documents
+    image: stfdigital-plataforma-documents
+    ports:
+     - "8094:8094"
+     - "8194:8194"
+     - "47994:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - onlyoffice.documentserver.host=digital.stf.jus.br
+     - onlyoffice.server.address=https://docker:443
+    links:
+     - onlyoffice:docker
+  peticionamento:
+    container_name: peticionamento
+    image: stfdigital-autuacao-peticionamento
+    ports:
+     - "8090:8090"
+     - "8190:8190"
+     - "47990:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  recebimento:
+    container_name: recebimento
+    image: stfdigital-autuacao-recebimento
+    ports:
+     - "8091:8091"
+     - "8191:8191"
+     - "47991:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  autuacao:
+    container_name: autuacao
+    image: stfdigital-autuacao-autuacao
+    ports:
+     - "8092:8092"
+     - "8192:8192"
+     - "47992:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  distribuicao:
+    container_name: distribuicao
+    image: stfdigital-autuacao-distribuicao
+    ports:
+     - "8093:8093"
+     - "8193:8193"
+     - "47993:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  ui:
+    container_name: ui
+    image: stfdigital-plataforma-ui
+    ports:
+     - "8443:8443"
+  userauthentication:
+    container_name: userauthentication
+    image: stfdigital-plataforma-userauthentication
+    ports:
+     - "8095:8095"
+     - "8195:8195"
+     - "47995:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+  onlyoffice:
+    container_name: onlyoffice
+    image: svendowideit/ambassador
+    ports:
+     - "443:443"
+    environment:
+     - ONLYOFFICE_PORT_443_TCP=tcp://10.112.20.123:443
