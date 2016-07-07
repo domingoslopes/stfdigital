@@ -32,4 +32,5 @@ build_all() {
     done
 }
 
-(time build_all) 2>&1 | tee build.log
+mkdir -p ./logs
+(time build_all) 2>&1 | tee ./logs/build.log

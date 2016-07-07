@@ -18,6 +18,6 @@ docker run --rm --link $NEXUS_CONTAINER:$NEXUS_CONTAINER aanand/wait
 
 if [ ! "$EXISTS_NEXUS_CONTAINER" ]; then
     echo 'Criando o repositório proxy do https://registry.npmjs.org'
-    curl -H "Content-Type:application/json" -d @nexus-npm-cache.json -X POST -u admin:admin123 http://docker:9981/service/local/repositories
-    curl -H "Content-Type:application/json" -d @nexus-npm-group.json -X POST -u admin:admin123 http://docker:9981/service/local/repo_groups
+    curl -H "Content-Type:application/json" -d @scripts/nexus-npm-cache.json -X POST -u admin:admin123 http://docker:9981/service/local/repositories
+    curl -H "Content-Type:application/json" -d @scripts/nexus-npm-group.json -X POST -u admin:admin123 http://docker:9981/service/local/repo_groups
 fi
