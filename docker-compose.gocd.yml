@@ -13,15 +13,17 @@ services:
      - "8761:8761"
      - "47961:8000"
     environment:
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
   gateway:
     container_name: gateway
     image: stfdigital-plataforma-gateway
     ports:
      - "8765:8765"
+     - "8161:8161"
      - "47965:8000"
     environment:
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - discovery
   services:
@@ -33,7 +35,7 @@ services:
      - "47981:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - rabbit
      - discovery
@@ -51,7 +53,7 @@ services:
      - "47994:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
      - onlyoffice.documentserver.host=digital.stf.jus.br
      - onlyoffice.server.address=https://docker:443
     depends_on:
@@ -68,7 +70,7 @@ services:
      - "47990:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - rabbit
      - discovery
@@ -81,7 +83,7 @@ services:
      - "47991:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - rabbit
      - discovery
@@ -94,7 +96,7 @@ services:
      - "47992:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - rabbit
      - discovery
@@ -107,7 +109,7 @@ services:
      - "47993:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - rabbit
      - discovery
@@ -127,7 +129,7 @@ services:
      - "47995:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - discovery
   onlyoffice:
