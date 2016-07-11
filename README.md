@@ -115,17 +115,17 @@ Execute o comando
 
 E veja o resultado abaixo:
 
-REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
-stfdigital-plataforma-ui                   latest              38625052905a        2 minutes ago       254.1 MB
-stfdigital-autuacao-distribuicao           latest              59bc4671989e        4 minutes ago       254.4 MB
-stfdigital-autuacao-autuacao               latest              087a6508857d        4 minutes ago       254.3 MB
-stfdigital-plataforma-documents            latest              415ed3e38505        About an hour ago   272.5 MB
-stfdigital-plataforma-userauthentication   latest              7a39edcc72e3        About an hour ago   254.3 MB
-stfdigital-plataforma-services             latest              960b2163c474        About an hour ago   254.5 MB
-stfdigital-plataforma-gateway              latest              187aa4d0f0ef        About an hour ago   214.5 MB
-stfdigital-plataforma-discovery            latest              1527e91ead85        About an hour ago   212.6 MB
-stfdigital-autuacao-recebimento            latest              db7b10569848        About an hour ago   254.5 MB
-stfdigital-autuacao-peticionamento         latest              26289ebe34f2        About an hour ago   254.5 MB
+    REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
+    stfdigital-plataforma-ui                   latest              38625052905a        2 minutes ago       254.1 MB
+    stfdigital-autuacao-distribuicao           latest              59bc4671989e        4 minutes ago       254.4 MB
+    stfdigital-autuacao-autuacao               latest              087a6508857d        4 minutes ago       254.3 MB
+    stfdigital-plataforma-documents            latest              415ed3e38505        About an hour ago   272.5 MB
+    stfdigital-plataforma-userauthentication   latest              7a39edcc72e3        About an hour ago   254.3 MB
+    stfdigital-plataforma-services             latest              960b2163c474        About an hour ago   254.5 MB
+    stfdigital-plataforma-gateway              latest              187aa4d0f0ef        About an hour ago   214.5 MB
+    stfdigital-plataforma-discovery            latest              1527e91ead85        About an hour ago   212.6 MB
+    stfdigital-autuacao-recebimento            latest              db7b10569848        About an hour ago   254.5 MB
+    stfdigital-autuacao-peticionamento         latest              26289ebe34f2        About an hour ago   254.5 MB
 
 #### Pronto! Execute a aplicação!
 
