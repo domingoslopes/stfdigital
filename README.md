@@ -156,7 +156,7 @@ Rode no diretório plataforma/ui os comandos abaixo e pare o container de UI pel
 Usamos <a target="_blank" href="https://spring.io/tools">Eclipse STS</a> como IDE. Certifique-se que você tem a última versão. 
 Você também precisará instalar os seguintes plugins:
 
-    > Gradle IDE Pack 3.7.x+1.0.x
+    > Buildship: Eclipse Plug-ins for Gradle
     > Typescript.java
 
 #### Instalando o plugin do Gradle para Eclipse
@@ -165,7 +165,10 @@ Para baixar o plugin do Gradle siga os passos abaixo:
 
     abra o Eclipse, 
     clique em Help 
-    "Eclipse Market Place". Procure o plugin e clique em instalar. Next, Next, Finish.
+    "Install New Software...".
+    Selecione Work with <Neon>.
+    Procure General Purpose Tools/Buildship: Eclipse Plug-ins for Gradle.
+    Next, Next, Finish.
 
 #### Instalando o reconhecimento da sintaxe do Typescript
 
@@ -208,11 +211,12 @@ Repita os passos para cada um dos componentes.
 
     > Clique com o botão direito na view Package Explorer
     > Clique em Import
-    > Clique em Gradle (STS) - aparecerá se o plugin Gradle estiver instalado corretamente
-    > Clique em Gradle (STS) Project
+    > Clique em Gradle - aparecerá se o plugin Gradle estiver instalado corretamente
+    > Clique em Gradle Project
+    > Clique em Next, Next
     > Clique em Browse
     > Selecione o diretório do projeto (ex: stfdigital/autuacao/recebimento)
-    > clique em Build Model `é normal demorar na primeira execução`
+    > clique em Next, Next, Finish `é normal demorar na primeira execução`
 
 
 #### Organizando os projetos nos Working Sets "Área de Negócio" e "Plataforma"
