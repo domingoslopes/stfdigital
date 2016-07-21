@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 build_all() {
-    projects_install=( "plataforma/core" )
+    projects_install=( "plataforma/core" \
+        "plataforma/test"
+    )
     
     projects_docker=( "plataforma/discovery" \
         "plataforma/documents" \

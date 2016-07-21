@@ -6,5 +6,6 @@ configure([project("plataforma:documents"), project("plataforma:services"), proj
     project("autuacao:distribuicao"), project("autuacao:peticionamento"), project("autuacao:recebimento")]) {
     dependencies {
         compile project(':plataforma:core')
+        testCompile project(':plataforma:test')
     }
 }
