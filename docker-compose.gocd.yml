@@ -32,7 +32,29 @@ services:
     ports:
      - "8081:8081"
      - "8181:8181"
+     - "10981:1099"
+     - "10881:10881"
      - "47981:8000"
+    environment:
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Djava.rmi.server.hostname=10.200.0.115 -Xms64M -Xmx512M
+    depends_on:
+     - rabbit
+     - discovery
+  ui:
+    container_name: ui
+    image: stfdigital-plataforma-ui
+    ports:
+     - "8443:8443"
+    depends_on:
+     - gateway
+  userauthentication:
+    container_name: userauthentication
+    image: stfdigital-plataforma-userauthentication
+    ports:
+     - "8095:8095"
+     - "8195:8195"
+     - "47995:8000"
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xms64M -Xmx512M
@@ -44,6 +66,13 @@ services:
     image: mongo:3
     ports:
      - "27017:27017"
+  onlyoffice:
+    container_name: onlyoffice
+    image: svendowideit/ambassador
+    ports:
+     - "443:443"
+    environment:
+     - ONLYOFFICE_PORT_443_TCP=tcp://10.112.20.123:443
   documents:
     container_name: documents
     image: stfdigital-plataforma-documents
@@ -58,35 +87,10 @@ services:
      - onlyoffice.server.address=https://docker:443
     depends_on:
      - mongo
+     - rabbit
      - discovery
     links:
      - onlyoffice:docker
-  peticionamento:
-    container_name: peticionamento
-    image: stfdigital-autuacao-peticionamento
-    ports:
-     - "8090:8090"
-     - "8190:8190"
-     - "47990:8000"
-    environment:
-     - spring.profiles.active=development
-     - JAVA_OPTS=-Xms64M -Xmx512M
-    depends_on:
-     - rabbit
-     - discovery
-  recebimento:
-    container_name: recebimento
-    image: stfdigital-autuacao-recebimento
-    ports:
-     - "8091:8091"
-     - "8191:8191"
-     - "47991:8000"
-    environment:
-     - spring.profiles.active=development
-     - JAVA_OPTS=-Xms64M -Xmx512M
-    depends_on:
-     - rabbit
-     - discovery
   autuacao:
     container_name: autuacao
     image: stfdigital-autuacao-autuacao
@@ -113,29 +117,29 @@ services:
     depends_on:
      - rabbit
      - discovery
-  ui:
-    container_name: ui
-    image: stfdigital-plataforma-ui
+  peticionamento:
+    container_name: peticionamento
+    image: stfdigital-autuacao-peticionamento
     ports:
-     - "8443:8443"
-    depends_on:
-     - gateway
-  userauthentication:
-    container_name: userauthentication
-    image: stfdigital-plataforma-userauthentication
-    ports:
-     - "8095:8095"
-     - "8195:8195"
-     - "47995:8000"
+     - "8090:8090"
+     - "8190:8190"
+     - "47990:8000"
     environment:
      - spring.profiles.active=development
      - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
+     - rabbit
      - discovery
-  onlyoffice:
-    container_name: onlyoffice
-    image: svendowideit/ambassador
+  recebimento:
+    container_name: recebimento
+    image: stfdigital-autuacao-recebimento
     ports:
-     - "443:443"
+     - "8091:8091"
+     - "8191:8191"
+     - "47991:8000"
     environment:
-     - ONLYOFFICE_PORT_443_TCP=tcp://10.112.20.123:443
+     - spring.profiles.active=development
+     - JAVA_OPTS=-Xms64M -Xmx512M
+    depends_on:
+     - rabbit
+     - discovery
