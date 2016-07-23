@@ -32,12 +32,10 @@ services:
     ports:
      - "8081:8081"
      - "8181:8181"
-     - "10981:1099"
-     - "10881:10881"
      - "47981:8000"
     environment:
      - spring.profiles.active=development
-     - JAVA_OPTS=-Djava.rmi.server.hostname=10.200.0.115 -Xms64M -Xmx512M
+     - JAVA_OPTS=-Xms64M -Xmx512M
     depends_on:
      - rabbit
      - discovery
