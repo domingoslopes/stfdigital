@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        
+        <title>STF Digital Developers | Arquitetura</title>
+        
+        <!-- STYLESHEETS -->
+        <link rel="stylesheet" href="assets/styles/fonts.css" type="text/css" >
+        <link rel="stylesheet" href="assets/styles/fonts1.css" title="roboto" type="text/css">
+        
+        <link href="assets/styles/default.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body class="gc-documentation develop guide  dac-nav-open" itemscope="" itemtype="http://schema.org/Article">
+        <header id="header-wrapper">
+            <div class="dac-header" id="header">
+                <div class="dac-header-inner">
+                    <a class="dac-nav-toggle" data-dac-toggle-nav="" href="https://developer.android.com/guide/components/fundamentals.html" title="Open navigation"> 
+                        <span class="dac-nav-hamburger"> 
+                            <span class="dac-nav-hamburger-top"></span> 
+                            <span class="dac-nav-hamburger-mid"></span> 
+                            <span class="dac-nav-hamburger-bot"></span>
+                        </span>
+                    </a>
+                    <a class="dac-header-logo" href="https://developer.android.com/index.html">
+                        <img class="dac-header-logo-image" src="../assets/images/logo.png" srcset="../assets/images/logo.png" width="32" height="32">STF Digital
+                    </a>
+                    <ul class="dac-header-tabs">
+                        <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
+                    </ul>
+                    <a class="dac-header-console-btn" href="https://play.google.com/apps/publish/"> 
+                        <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
+                        <span class="dac-visible-desktop-inline">Repositório</span>
+                    </a>
+                </div>
+            <!--/.header-wrap.wrap-->
+            </div>
+        <!--/.header-->
+        </header>
+    
+        <a name="navigation" tabindex="0" class="nav-start-marker">navigation</a>
+
+        <nav class="dac-nav">
+            <div class="dac-nav-dimmer" data-dac-toggle-nav=""></div>
+            <div class="dac-nav-sidebar" data-swap="" data-dynamic="false" data-transition-speed="300" data-dac-nav="">
+                <div data-swap-container="">
+                    <a class="dac-nav-back-button dac-swap-section dac-up dac-active" tabindex="0" data-swap-button="" href="../index.html"> 
+                        <i class="dac-sprite dac-nav-back"></i> 
+                        <span class="dac-nav-back-title">Arquitetura</span>
+                    </a>
+    
+                    <div class="dac-nav-sub dac-swap-section dac-right dac-active">
+                        <ul id="nav">
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Iniciando</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../iniciando/demonstracao.html">Demonstração</a></li>
+                                    <li><a href="../iniciando/montagem.html">Monte seu Ambiente</a></li>
+                                    <li><a href="../iniciando/comece-agora.html">Comece Agora</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Arquitetura</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../arquitetura/visao.html">Nossa Visão</a></li>
+                                    <li><a href="../arquitetura/estrategia.html">Estratégia Arquitetural</a></li>
+                                    <li><a href="../arquitetura/autuacao.html">Estratégia de Implantação</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Padrões e Políticas</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../politicas/testes.html">Estratégia de Testes</a></li>
+                                    <li><a href="../politicas/api.html">Gestão da API</a></li>
+                                    <li><a href="../politicas/codigo-limpo.html">Código Limpo</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+    
+                </div>
+            </div>
+        </nav>
+
+        <a name="top" tabindex="0"></a>
+    
+        <div class="wrap clearfix" id="body-content">
+            <div class="content-header">
+                <ul class="dac-header-crumbs dac-has-content">
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Desenvolvimento</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Arquitetura</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Estratégia</a></li>
+                </ul>
+                <h1 itemprop="name">Monte seu Ambiente</h1>
+            </div>
+            <div id="jd-content">
+                <div class="jd-descr" itemprop="articleBody">
+                    <div id="qv-wrapper">
+                        <div id="qv">
+                            <h2>Neste documento</h2>
+                            <ol>
+                                <li>
+                                    <a href="#representacao">Modelo Conceitual</a>
+                                </li>
+                                <li>
+                                    <a href="#componentes">Implementação</a>
+                                </li>
+                                <li>
+                                    <a href="#referencia">Implantação</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+    
+                    <p>
+                        <i>Existem diferentes formas de projetar software. Pelos últimos 20 anos, a indústria de software tem usado vários
+                        métodos para criar seus produtos, cada um com suas vantagens e desvantagens. Trabalhamos com a intenção de aplicar um método
+                        que surgiu e evoluiu ao longo das duas últimas décadas, mas que vem se consolidando mais claramente durante os últimos
+                        anos: Domain-Driven Design</i>
+                    </p>
+                    
+                    <p>
+                        <i>Acreditamos que DDD só mostra seu real valor quando aplicado em nível estratégico. Acreditamos que podemos usar DDD 
+                        para decompor nossas soluções atuais, que são todas elas monolíticas em essência, em serviços fisicamente distribuídos, e 
+                        acreditamos que usar a arquitetura baseada em microserviços seja a solução adequada para o momento.</i>
+                    </p>
+                        
+                    <p>
+                        <i>Nosso objetivo aqui não é apresentar DDD ou a arquitetura de microserviços, mas sim demonstratar como nós, aqui no STF, lidamos 
+                        com todos os novos desafios inerentes a implantação de tal abordagem para definirmos um modelo de referência que suporte a 
+                        definição, a construção, a implantação e a operação dos nossos produtos.</i>
+                    </p>
+                        
+                    <h2 id="representacao" style="padding-bottom: 0px;">Modelo Conceitual</h2>
+                    <hr>
+    
+                    <p>
+                        Um ponto chave para construção de um modelo de referência é a definição de um modelo conceitual, com diretrizes para
+                        definição da granularidade, das fronteiras e das interações entre os componentes da arquitetura. Sem esse modelo, nós provavelmente 
+                        voltaríamos a algo como a <a href="https://en.wikipedia.org/wiki/Big_ball_of_mud">Big Ball of Mud</a>, ou arquitetura 
+                        espaguete, como é popularmente conhecida.
+                    </p>  
+    
+                    <p>
+                        Achar um forma de sair de uma arquitetura monolítica para uma solução modular, distribuída, talvez seja o maior desafio aqui. 
+                        Essencialmente, o que precisamos é encontrar uma forma de aplicar o princípio da responsabilidade única ao nível arquitetural. 
+                        <a href="http://dddcommunity.org/learning-ddd/what_is_ddd">Domain-Driven Design</a>, criado por Eric Evans, introduz uma técnica 
+                        chamada <i>Strategic Design</i>, que nos ajuda a modelar grandes soluções como um conjunto de soluções menores. 
+                        O pattern central da ferramenta é o <a href="http://martinfowler.com/bliki/BoundedContext.html">Bounded Context</a>.
+                        Com DDD, cada pequeno modelo é projetado como um Bounded Context, ou seja, cada BC tem seu próprio conjunto de conceitos, 
+                        seu próprio modelo, ou, ainda, na linguagem DDD, tem sua própria 
+                        <a href="http://martinfowler.com/bliki/UbiquitousLanguage.html">Ubiquitous Language</a>. Com <i>Strategic Design</i>, o conjunto 
+                        dos vários BC's que compõem a solução deve ser mapeado em um <a href="https://www.infoq.com/articles/ddd-contextmapping">Context Map</a>, 
+                        que explicita o tipo de relacionamento entre eles. Esses relacionamentos são especialmente importantes porque em um cenário em 
+                        que múltiplas equipes estão envolvidas na solução, uma por BC, o tipo de relacionamento entre os BC's define também o tipo de 
+                        relacionamento entre as equipes.
+                    </p>
+                    
+                    <p>
+                        Usaremos um BC por serviço porque, como o próprio Evans, acreditamos que "a forma como um microserviço opera faz dele um ótimo bounded context". 
+                        Portanto, horizontalmente, o mapa com os contextos definirá as fronteiras de cada microserviço e as integrações entre eles. Verticalmente, 
+                        os serviços devem ser organizados em camadas, de acordo com o tipo de serviço, conforme ilustrado na figura abaixo.
+                    </p>
+                    
+                    <div>
+                        <img src="assets/images/visao-logica.png" width="650" style="display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                    
+                    <p>
+                        Uma importante consequência dessa divisão é que você pode usar diferentes arquiteturas em diferentes bounded contexts.
+                        Por exemplo, um BC pode ser implementado usando uma arquitetura baseada em DDD, outro pode usar uma arquitetura em três 
+                        camadas para CRUD's e outra pode usar uma arquitetura derivada do pattern <a href="http://martinfowler.com/bliki/CQRS.html">CQRS</a>. 
+                        A figura abaixo ilustra o sistema com múltiplos BC's, cada um usando um estilo arquitetural diferente. Observe também que 
+                        cada BC é full-stack, contém tudo o que é necessário para implementar uma determinada função de negócio, desde a 
+                        persistência de dados até a interface do usuário, que juntamente com a interface de outros BC's compõe a interface
+                        final do sistema, no caso, formando uma <a href="https://en.wikipedia.org/wiki/Single-page_application">Single-Page Application</a>.
+                    </p>
+                    
+                    <p>
+                        Uma vantagem dessa abordagem é que você pode definir a arquitetura mais apropriada considerando as características de cada contexto.
+                        Por exemplo, um contexto com funcionalidades acessórias, de cadastro, não demanda a aplicação de uma arquitetura como DDD, que
+                        só entrega benefícios quando aplicado a um contexto mais complexo, geralmente presentes nos principais
+                        contextos que compõem a solução, denominados <i>Core Domain</i>.
+                    </p>
+                    
+                    <div>
+                        <img src="assets/images/multi-arquitetura.png" width="600" style="display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                    
+                    <p>
+                        Até poupo tempo atrás o estilo arquitetural dominante era o famoso modelo data-centric, com a arquitetura em três camadas (apresentação, 
+                        negócio e persistência). Recentemente, passamos a observar uma mudança, da arquitetura data-centric para uma arquitetura mais model-centric. 
+                        Existem duas grandes diferenças entre essas duas arquiteturas. Primeiro, a cada de negócio é dividida em duas novas camadas: application layer 
+                        e domain layer. Segundo, a camada de persistência se transforma em uma camada de infraestrutura.
+                    </p>
+                    
+                    <p>
+                        Ao mesmo tempo, também observamos o crescimento de Event-Driven Architecture, com desenvolvedores cada vez mais experimentando os benefícios de 
+                        padrões como <a href="http://martinfowler.com/bliki/CQRS.html">Command/Query Responsibility Segregation</a> (CQRS) e <a href="http://martinfowler.com/eaaDev/EventSourcing.html">Event Sourcing</a> (ES) 
+                        CQRS não é uma abordagem abrangente como, por exemplo, é o caso com DDD. CQRS é um padrão que serve como guia para definição da arquitetura de 
+                        um BC específico, possívelmente em um sistema complexo. Executar o design estratégico com DDD e identificar cada BC de seu sistema
+                        continua sendo o primeiro passo. Depois, CQRS pode ser uma alternativa válida para Domain Model e CRUD para implementação
+                        de um BC em particular.
+                    </p>
+                    
+                    <p>
+                        A mudança que CQRS introduz é a possibilidade de dividir o modelo conceitual de um BC em modelos separados para alteração e 
+                        consulta de informações. Como qualquer outro pattern, CQRS não se aplica para todos os casos. A lógica é que em alguns
+                        casos, particularmente em domínios mais sofisticados, ter o mesmo modelo conceitual para operações de alteração e consulta 
+                        pode levar a um modelo mais complexo, desnecessariamente. CQRS é ideal para sistemas colaborativos, task-based, em que múltiplos
+                        usuários podem alterar/consultar as mesmas informações. Nesse tipo de sistema, os usuários competem pelos 
+                        mesmos recursos, o que significa que cada um deles pode estar vendo informações desatualizadas. Isso ocorre porque 
+                        a lógica de negócio é particularmente complexa e geralmente envolve diversos módulos, alguns dos quais podendo até mesmo demandar carregamento
+                        dinâmico. Com CQRS a lógica de negócio pode ser decomposta
+                        em um conjunto de comandos individuais, que podem ser gerenciados mais facilmente, reduzindo a complexidade geral do 
+                        sistema. De outra parte, a exigência de múltiplas representações da mesma informação pode ser tratada com modelos 
+                        específicos para consultas específicas, o que também ajuda a resolver potenciais problemas de performance.
+                    </p>
+                    
+                    <p>
+                        Existem algumas variações do pattern. Os modelos separados podem estar em módulos diferentes e talvez até em hardware's
+                        diferentes. Os modelos podem compartilhar a mesma base de dados, que pode usada para integração entre os dois
+                        modelos. Neste caso, embora menos comum, os modelos podem inclusive compartilhar objetos. No caso de usarem 
+                        bases separadas, deve haver um mecanimo de comunicação entre os dois modelos.
+                    </p>
+                    
+                    <p>
+                        Como vimos, CQRS é apenas um guia. Ele direciona a definição do modelo conceitual de cada bounded context. Se aplicável, 
+                        a implementação de cada modelo deve ser feita de acordo com suas características. Geralmente, podemos aplicar DDD 
+                        para construção do modelo de escrita (Command Stack), enquanto uma abordagem mais data-centric pode ser aplicada 
+                        para construção do modelo de leitura (Query Stack).
+                    </p>
+                    
+                    <div>
+                        <img src="assets/images/layers.png" width="600" style="display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                    
+                    <h4 id="componentes" style="padding-bottom: 0px;">Componentes</h4>
+                    <hr>
+    
+                    <p>
+                        Encontrar uma forma de construir soluções menores é um dos nossos grandes desafios, como vimos anteriormente, no entanto existem 
+                        vários outros. Para endereçar cada um deles, vamos precisar de novas soluções, que impactarão diretamente na arquitetura. 
+                        Abaixo, o conjunto de componentes que julgamos importantes:
+                    </p>
+                        
+                    <ul>
+                        <li>
+                            <b><i>Configuration Service</i></b> Invés de um componente de configuração local, por serviço, nós precisamos de um serviço
+                            centralizado para gerenciamento das configurações. Os demais serviços deverão acessar esse serviço via API para 
+                            carregamento das informações de configuração.
+                        </li>
+                        <li>
+                            <b><i>Service Discovery</i></b> Invés de acompanhar manualmente cada novo serviço implantado e associar um nome ao
+                            host e porta, nós precisamos de um serviço de consulta de nomes, com API para permitir que cada novo serviço se
+                            auto registre assim que for iniciado.
+                        </li>
+                        <li>
+                            <b><i>Dynamic Routing e Load Balancer</i></b> Componentes de routeamento podem usar as informações do Service Discovery 
+                            para identificar quais os locais onde um serviço está ativo e componentes de balanceamento de carga podem decidir para
+                            onde redirecionar uma requisição se houver mais de um serviço ativo.
+                        </li>
+                        <li>
+                            <b><i>Circuit Breaker</i></b> Para evitar a propagação de falhas por toda a cadeia de serviços, nós podemos aplicar o 
+                            <a href="http://martinfowler.com/bliki/CircuitBreaker.html">Circuit Breaker pattern</a>. Ele basicamente monitora falhas
+                            nas chamadas a um dado serviço. Se as falhas alcançarem um certo limite, ele "desarma" o circuito, e novas chamadas 
+                            ao serviço sempre retornarão o mesmo erro, sem que o serviço seja invocado novamente.
+                        </li>
+                        <li>
+                            <b><i>Monitoring Service</i></b> Dado que temos circuit breakers monitorando as chamadas a cada serviço, nós podemos coletar 
+                            informações estatísticas para determinar a saúde de cada serviço. Essa informação pode ser apresentada em dashboards
+                            com possibilidade de adicionar alertar automáticos para limites configuráveis. 
+                        </li>
+                        <li>
+                            <b><i>Logging Service</i></b> Para rastrear mensagem de log e diagnosticar problemas mais rápido, nós
+                            precisamos de um serviço de análise de logs centralizado, que seja capaz de coletar as mensagens de log de cada
+                            serviço. Esse serviço deve armazenar essas informações de log em um banco de dados central e fornecer
+                            funcionalidades para pesquisa e montagem de dashboards.
+                        </li>
+                        <li>
+                            <b><i>Gateway Service</i></b> Para expor a API dos serviços externamente e prevenir acessa não autorizadoa serviços
+                            internos, nós precisamos de um servidor de borda, por onde passe todo o tráfego externo. Esse servidor pode
+                            usar os componentes de roteamento e balanceamento de carga baseado no serviço de discovery descrito acima.
+                            Ele deverá atuar como um proxy reverso, que não precisa ser manualmente atualizado quando algum dos serviços
+                            internos for alterado.  
+                        </li>
+                        <li>
+                            <b><i>Security Service</i></b> Para proteger a API dos serviços, o padrão OAuth 2.0 standard é o recomendado. 
+                            Utilizaremos um componente para atuar OAuthAuthorization Server. Os serviços atuarão como OAuth Resource Server. 
+                            Os consulmidores atuarão com OAuth Clients. O Edge Server vai atuar como OAuth Token Relay, o que significa 
+                            que ele vai agir como OAuth Resource Server e vai passar sempre repassar o OAuth Access Tokens que vem nas 
+                            requisições externas para a API dos serviçoes.
+                        </li>
+                    </ul>
+    
+                    <h4 id="referencia" style="padding-bottom: 0px;">Modelo de Referência</h4>
+                    <hr>
+    
+                    <p>
+                        Se aplicarmos ao Modelo Conceitual descrito acima o conjunto de serviços de suporte necessários para viabilizar uma 
+                        arquitetura como a descrita aqui, teremos o Modelo de Referência ilustrado na figura abaixo.
+                    </p>
+    
+                    <div>
+                        <img src="assets/images/componentes.png" width="700" style="display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                    
+                    <h2 id="referencia" style="padding-bottom: 0px;">Implementação</h2>
+                    <hr>
+    
+                    <p>
+                        Até aqui definimos um modelo de referência para construção do ecosistema que suportará a arquitetura proposta. Agora,
+                        já entrando na construção desse ecosistema, precisamos definir como implementar cada componente do modelo.
+                        <a href="http://projects.spring.io/spring-cloud">Spring Cloud</a>, <a href="http://netflix.github.io">Netflix OSS</a> e 
+                        <a href="https://www.elastic.co/webinars/introduction-elk-stack">ELX Stach</a> serão usados para implementar todos 
+                        os componentes necessários.
+                    </p>
+    
+                    <p>
+                        Depois de uma breve introdução aos componentes do Spring Cloud, o Netflix OSS e da ELX, nós vamos apresentar o ecosistema
+                        que usaremos para implementar os serviços da autuação de processos.  
+                    </p>
+                    
+                    <h4 id="referencia" style="padding-bottom: 0px;">Componentes</h4>
+                    <hr>
+    
+                    <p>
+                        Spring Cloud é um projeto relativamente novo na família spring.io. Ele fornece um conjunto de componentes que podem ser usados
+                        para implementar o modelo conceitual descrito acima. Grande parte deles usam os componente da Netflix OSS, fornecendo
+                        uma forma mais simples de configuração e utilização baseada na proposta Spring Boot. Ou seja, você pode usar Spring Boot
+                        para configurar e usar qualquer dos componentes da Netflix utilizando, parar tanto, a camada de abstração fornecida pelos
+                        componentes do Spring Cloud. A tabela abaixo mapeia os componentes genéricos do nosso modelo conceitual para os 
+                        componentes que efetivamente vão ser usados nos casos de uso reais.
+                    </p>
+                    
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th colspan="2"><h3>Componentes Arquiteturais</h3></th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap">Service Discovery</td><td><a href=""><code>Netflix Eureka</code></a></td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Dynamic Routing e Load Balancer</td><td><a href=""><code>Netflix Ribbon</code></a></td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Circuit Breaker</td><td><a href=""><code>Netflix Hystrix</code></a></td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Monitoring</td><td><a href=""><code>Netflix Hystrix Dashboard e Turbine</code></a></td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Gateway</td><td><a href=""><code>Netflix Zull</code></a></td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Configuration</td><td><a href=""><code>Spring Cloud Config</code></a></td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Security</td><td><a href=""><code>Spring Cloud e Sprint Security OAuth2</code></a></td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Logging</td><td><a href=""><code>Logstash, Elasticsearch e Kibana</code></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        A figura abaixo ilustra a arquitetura com os componentes que serão utilizados para implementar os serviços do 
+                        modelo conceitual.  
+                    </p>
+                    
+                    <div>
+                        <img src="assets/images/implementacao.png" width="800" style="display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                    
+                    <h4 id="referencia" style="padding-bottom: 0px;">Integração</h4>
+                    <hr>
+    
+                    <p>
+                        Uma aplicação monolítica geralmente tem um único banco relacional. Um benefício chave de se usar um banco como esse
+                        é que sua aplicação pode usar transações <a href="https://en.wikipedia.org/wiki/ACID">ACID</a>, que a consistência
+                        dos dados. Basta abrir a transação, fazer as operações necessárias (insert, update e delete) e fazer o commit. Outro 
+                        importante benefício de usar uma base relacional é que ela é acessada via SQL, que é a liguagem padrão de consultas.
+                        Você pode facilmente escrever uma consulta que combina dados de várias tabelas. Como todos os dados estão em um único
+                        banco de dados, é sempre fácil acessar as informações.  
+                    </p>
+                    
+                    <p>
+                        Infelizmente, acessar dados externos se torna bem mais difícil quando migramos para uma arquitetura de microserviços.
+                        Isso ocorre porque os dados de um microserviço são de propriedade exclusiva daquele microserviço e só podem ser acessados via API.
+                        O encapsulamento desses dados em cada microserviço reduz o acomplamento entre eles, garantindo que cada um possa
+                        envoluir independentemente dos outros.   
+                    </p>
+                    
+                    <p>
+                        Para piorar, diferentes microserviços podem usar diferentes tipos de bases. Aplicações modernas armazenam
+                        e processam diversos tipos de dados e um banco relacional nem sempre é a melhor escolha. Para alguns casos de uso,
+                        um tipo particular de banco NoSQL pode ser mais adequado por oferecer 
+                        melhor performance e maior escalabilidade. Consequentemente, microserviços podem usar uma mistuta de
+                        bancos SQL e NoSQL, a denominada <a href="http://martinfowler.com/bliki/PolyglotPersistence.html">persistência poliglota</a>.
+                    </p>
+                    
+                    <p>
+                        Aplicar persistência poliglota pode trazer vários benefícios, incluindo a redução do acoplamento, melhor performance e 
+                        melhor escalabilidade. Entretano, ela introduz alguns desafios importantes. O principal está em como garantir que
+                        as transações mantenham a consistência entre múltiplos serviços.
+                    </p>
+                    
+                    <p>
+                        <a href="http://martinfowler.com/eaaDev/EventNarrative.html">Event-Driven Architecture</a> pode nos ajudar a resolver esses 
+                        desafios. Nessa arquitetura, um micricroserviço publica um evento quando algo relevante acontece, como quando uma entidade
+                        de negócio é atualizada. Outros microserviços podem se registrar para receber esses eventos. Quando um deles recebe um 
+                        evento, ele pode atualizar suas próprias entidades de negócio. Você pode usar eventos para implementar transações que
+                        envolvem múltiplos serviços. Um transação consiste de uma série de passos. Cada passo representa um microserviço
+                        que atualiza suas entidades de negócio e publica um evento que dispara o próximo passo. É importante observar que
+                        essas transações não são ACID. Elas oferecem garantias mais fracas como a <a href="https://en.wikipedia.org/wiki/Eventual_consistency">consistência eventual</a>.
+                        Este modelo de transação tem sido referenciado como <a href="http://queue.acm.org/detail.cfm?id=1394128">BASE Model</a>.
+                    </p>
+                    
+                    <p>
+                        Com Event-Driven Architecture existe também o problema de atomicamente atualizar a base de dados e publicar um evento.
+                        Por exemplo, o Serviço de Petição pode inserir um registro na tabela de petições e publicar o evento Petição Recebida.
+                        É fundamental que essas duas operações sejam atomicas. Se o serviço cair depois de atualizar a base mas antes de
+                        publicar o evento, o sistema ficará inconsistente. A forma mais usual de garantir atomicidade é usar uma transação
+                        distribuída envolvendo o banco de dados e o message broker. Entretanto, for razões já descritas aqui e outras como as
+                        descritas no teorema CAP, isso é exatamente o que não queremos fazer. 
+                    </p>
+                    
+                    <p>
+                        Existem algumas formas de se resolver esse problema. Pela simplicidade, optamos por um processo que envolve apenas 
+                        <a href="http://queue.acm.org/detail.cfm?id=1394128">transações locais</a>. Precisamos ter um tabela de eventos, que
+                        funciona como uma fila de mensagens, na mesma base de dados que armazena as entidades de negócio. A aplicação
+                        inicia uma transação local, atualiza o estados da entidade de negócio, insere um evento na tabela de eventos e
+                        fecha a transação. Um processo separado consulta periodicamente a tabela de eventos, publica os eventos para 
+                        o message broker e então uma transação local para marcar o evento como publicado. A figura abaixo ilustra esse
+                        design.
+                    </p>
+                    
+                    <div>
+                        <img src="assets/images/integracao.png" width="500" style="display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                    
+                    <h2 id="representacao" style="padding-bottom: 0px;">Implantação</h2>
+                    <hr>
+    
+                    <p>
+                        Implantar uma aplicação monolítica significa fazer o deploy de cópias idênticas de uma única aplicação em 
+                        vários servidores (físicos ou virtuais). A implantação de uma aplicação monolítica nem sempre é totalmente simples, 
+                        mas ela é muito mais simples do que a implantação de um aplicativo dividido em microservices.
+                    </p>
+    
+                    <p>
+                        Uma aplicação microservices consiste em dezenas ou mesmo centenas de serviços. Cada serviço pode utilizar um conjunto 
+                        diferente de frameworks. Cada um é um mini-aplicativo com o seu próprio conjunto de requisitos. Por exemplo, você 
+                        pode precisar executar um determinado número de instância de  cada serviço baseados na demanda por esse serviço. 
+                        Além disso, cada instância de serviço deve ser fornecido com o processador adequado, memória e recursos de 
+                        armazenamento. O que é ainda mais desafiador é que, apesar desta complexidade, implantar esses serviços 
+                        deve ser rápido, confiável e de baixo custo.  
+                    </p>
+    
+                    <p>
+                        Existe alguns diferentes tipos de patterns que podem ser usado para implantação de microservices. Aqui nós 
+                        vamos apresentar os patterns que julgamos mais adequados para o nosso caso.
+                    </p>  
+    
+                    <h4 id="representacao" style="padding-bottom: 0px;">Nossa Estratégia</h4>
+                    <hr>
+                    
+                    <p>
+                        No nosso caso, escolhemos adotar o pattern <a href="http://microservices.io/patterns/deployment/single-service-per-host.html">Service Instance per Host</a>.
+                        Neste pattern, você executa cada serviço em seu próprio host, isolado de qualquer outro serviço. Existem duas especializações
+                        desse pattern: Service Instance per Virtual Machine and Service Instance per Container. 
+                    </p>  
+    
+                    <p>
+                        Usaremos o Service Instance per Container pattern, em que cada serviço roda em seu próprio container. Containers são um
+                        mecanismo de virtualização no nível do sistema operacional. Um container consiste de um ou mais processos rodando em 
+                        uma "sandbox". Você pode limitar a memória e os recursos de CPU. Algumas implementações também permitem limitar a taxa
+                        de I/O. Há váris tecnologias que implemental esse conceito. Nós optamos por usar <a href="https://www.docker.com">Docker</a>.
+                        A figura abaixo ilustra o modelo descrito aqui.
+                    </p>  
+    
+                    <div>
+                        <img src="assets/images/implantacao.png" width="550" style="display: block; margin-left: auto; margin-right: auto;">
+                    </div>
+                    
+                    <p>
+                        Para usar este pattern, você deve empacotar seu serviço como uma imagem. A imagem é um arquivo contendo o serviço e todas
+                        as bibliotecas necessárias para executar o serviço. Uma vez tendo gerado a imagem, você pode executá-la em um ou mais 
+                        containers e cada container pode rodar em um ou mais hosts. Para facilitar o gerenciamento dos containers, nós poderíamos 
+                        usar um cluster manager como o <a href="http://kubernetes.io">Kubernetes</a>. Um cluster manager trata os hosts como 
+                        recursos. Ele decide, automaticamente, em que host colocar cada container baseado nos recursos necessários pelo 
+                        serviço e os recursos disponíveis em cada host.
+                    </p>
+                        
+                    <p>
+                        Escolhemos utilizar containers porque eles são muito fáceis de se construir e iniciam muito rápido. Isso facilita muito
+                        a tarefa de montagem do ambiente. Atualmente nós conseguimos montar nosso ambiente, com mais de 10 container em nossas
+                        máquinas de desenvolvimento, sem que isso prejudique o desempenho geral da máquina e sem ter que entar nos detalhes
+                        de configuração de cada serviço.
+                    </p>
+                        
+                </div>
+    
+            </div>
+            <!-- end jd-content -->
+        </div>
+        <!--/#body-content-->
+    </body>
+</html>
