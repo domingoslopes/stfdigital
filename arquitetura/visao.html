@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        
+        <title>STF Digital Developers | Arquitetura</title>
+        
+        <!-- STYLESHEETS -->
+        <link rel="stylesheet" href="assets/styles/fonts.css" type="text/css" >
+        <link rel="stylesheet" href="assets/styles/fonts1.css" title="roboto" type="text/css">
+        
+        <link href="assets/styles/default.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body class="gc-documentation develop guide  dac-nav-open" itemscope="" itemtype="http://schema.org/Article">
+        <header id="header-wrapper">
+            <div class="dac-header" id="header">
+                <div class="dac-header-inner">
+                    <a class="dac-nav-toggle" data-dac-toggle-nav="" href="https://developer.android.com/guide/components/fundamentals.html" title="Open navigation"> 
+                        <span class="dac-nav-hamburger"> 
+                            <span class="dac-nav-hamburger-top"></span> 
+                            <span class="dac-nav-hamburger-mid"></span> 
+                            <span class="dac-nav-hamburger-bot"></span>
+                        </span>
+                    </a>
+                    <a class="dac-header-logo" href="https://developer.android.com/index.html">
+                        <img class="dac-header-logo-image" src="../assets/images/logo.png" srcset="../assets/images/logo.png" width="32" height="32">STF Digital
+                    </a>
+                    <ul class="dac-header-tabs">
+                        <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
+                    </ul>
+                    <a class="dac-header-console-btn" href="https://play.google.com/apps/publish/"> 
+                        <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
+                        <span class="dac-visible-desktop-inline">Repositório</span>
+                    </a>
+                </div>
+            <!--/.header-wrap.wrap-->
+            </div>
+        <!--/.header-->
+        </header>
+    
+        <a name="navigation" tabindex="0" class="nav-start-marker">navigation</a>
+
+        <nav class="dac-nav">
+            <div class="dac-nav-dimmer" data-dac-toggle-nav=""></div>
+            <div class="dac-nav-sidebar" data-swap="" data-dynamic="false" data-transition-speed="300" data-dac-nav="">
+                <div data-swap-container="">
+                    <a class="dac-nav-back-button dac-swap-section dac-up dac-active" tabindex="0" data-swap-button="" href="../index.html"> 
+                        <i class="dac-sprite dac-nav-back"></i> 
+                        <span class="dac-nav-back-title">Arquitetura</span>
+                    </a>
+    
+                    <div class="dac-nav-sub dac-swap-section dac-right dac-active">
+                        <ul id="nav">
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Iniciando</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../iniciando/demonstracao.html">Demonstração</a></li>
+                                    <li><a href="../iniciando/montagem.html">Monte seu Ambiente</a></li>
+                                    <li><a href="../iniciando/comece-agora.html">Comece Agora</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Arquitetura</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../arquitetura/visao.html">Nossa Visão</a></li>
+                                    <li><a href="../arquitetura/estrategia.html">Estratégia Arquitetural</a></li>
+                                    <li><a href="../arquitetura/autuacao.html">Estratégia de Implantação</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Padrões e Políticas</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../politicas/testes.html">Estratégia de Testes</a></li>
+                                    <li><a href="../politicas/api.html">Gestão da API</a></li>
+                                    <li><a href="../politicas/codigo-limpo.html">Código Limpo</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+    
+                </div>
+            </div>
+        </nav>
+
+        <a name="top" tabindex="0"></a>
+    
+        <div class="wrap clearfix" id="body-content">
+            <div class="content-header">
+                <ul class="dac-header-crumbs dac-has-content">
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Desenvolvimento</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Arquitetura</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Estratégia</a></li>
+                </ul>
+                <h1 itemprop="name">Nossa Visão</h1>
+            </div>
+            <div id="jd-content">
+                <div class="jd-descr" itemprop="articleBody">
+                    <div id="qv-wrapper">
+                        <div id="qv">
+                            <h2>Neste documento</h2>
+                            <ol>
+                                <li>
+                                    <a href="#representacao">Modelo Conceitual</a>
+                                </li>
+                                <li>
+                                    <a href="#componentes">Implementação</a>
+                                </li>
+                                <li>
+                                    <a href="#referencia">Implantação</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+    
+                    <p>
+                        De fato, decompor aplicações em serviços distribuídos não é uma estratégia nova. Na verdade ela já existe há muito 
+                        tempo, porém recentemente vimos crescer uma forma mais simples de percorrer esse caminha. Conhecida como Microservices 
+                        Architecture, tal abordagem nos parece ser a forma correta de usar uma arquitetura baseada em serviços.
+                    </p>
+
+                    <p>
+                        Do nosso ponto de vista, a arquitetura baseada em "micro" serviços é a forma mais natural de se aplicar o princípio da responsabilidade única ao nível arquitetural. Isso resulta em vários benefícios sobre as abordagens monolíticas tradicionais, como implantação independente, independência de tecnologias, escalabilidade produtiva, escalabilidade operacional e aumento da flexibilidade arquitetural.
+                    </p>
+                        
+                    <p>
+                        Em seu livro sobre o assunto, Sam Newman explica como Microservices surgiram: “Domain-Driven Design. Entrega contínua. Virtualização sob demanda. 
+                        Automação de infraestrutura. Pequenas equipes autônomas. Sistemas em grande escala. Microservices surgiram a 
+                        partir deste mundo. Eles não foram inventados ou descritos antes do fato; eles emergiram como uma tendência 
+                        ou um padrão, de uso no mundo real. Mas eles só existem por causa de tudo o que se passou antes”
+                    </p>
+                    
+                    <p>
+                        Newman resume bem o caminho que queremos seguir: segundo ele “o livro Domain-Driven 
+                        Design, de Eric Evans, ajudou a entender a importância de representar o mundo real em nosso código, e mostrou as melhores 
+                        maneiras de modelar sistemas complexos, uma resposta sólida para cenários Big Ball of Mud. O conceito de entrega 
+                        contínua mostrou como pode ser mais eficaz e mais eficiente colocar nosso software em produção, disseminando a 
+                        ideia de que devemos tratar cada check-in como uma release candidate. O conceito de arquitetura hexagonal, 
+                        de Alistair Cockburn, mostrou uma excelente alternativa para arquiteturas em camadas fortemente acopladas. 
+                        Plataformas de virtualização nos permitem disponibilizar e redimensionar as nossas máquinas à vontade, com 
+                        infraestrutura de automação que nos dá uma maneira extremamente simples de lidar com essas máquinas em larga 
+                        escala. Algumas organizações bem sucedidas, como Amazon e Google, abraçaram a visão de pequenos times que 
+                        possuem o ciclo de vida completo de seus serviços, algo perfeitamente aderente à Lei de Conway. E, mais 
+                        recentemente, a Netflix deu-nos maneiras de construir sistemas altamente resistentes em uma escala que 
+                        seria difícil de imaginar apenas 10 anos atrás.”
+                    </p>
+                        
+                </div>
+    
+            </div>
+            <!-- end jd-content -->
+        </div>
+        <!--/#body-content-->
+    </body>
+</html>

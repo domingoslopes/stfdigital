@@ -56,34 +56,34 @@
                         <ul id="nav">
                             <li class="nav-section expanded">
                                 <div class="nav-section-header">
-                                    <a href="arquitetura.htm">Iniciando</a>
+                                    <a href="#">Iniciando</a>
                                 </div>
                                 <ul style="display: block;">
-                                    <li><a href="#">Demonstração</a></li>
-                                    <li><a href="#">Monte seu Ambiente</a></li>
-                                    <li><a href="#">Comece Agora</a></li>
+                                    <li><a href="../iniciando/demonstracao.html">Demonstração</a></li>
+                                    <li><a href="../iniciando/montagem.html">Monte seu Ambiente</a></li>
+                                    <li><a href="../iniciando/comece-agora.html">Comece Agora</a></li>
                                 </ul>
                             </li>
                             </br>
                             <li class="nav-section expanded">
                                 <div class="nav-section-header">
-                                    <a href="arquitetura.htm">Arquitetura</a>
+                                    <a href="#">Arquitetura</a>
                                 </div>
                                 <ul style="display: block;">
-                                    <li><a href="#">Nossa Visão</a></li>
-                                    <li class="selected"><a href="#">Estratégia Arquitetural</a></li>
-                                    <li><a href="#">Estratégia de Implantação</a></li>
+                                    <li><a href="../arquitetura/visao.html">Nossa Visão</a></li>
+                                    <li><a href="../arquitetura/estrategia.html">Estratégia Arquitetural</a></li>
+                                    <li><a href="../arquitetura/autuacao.html">Estratégia de Implantação</a></li>
                                 </ul>
                             </li>
                             </br>
                             <li class="nav-section expanded">
                                 <div class="nav-section-header">
-                                    <a href="arquitetura.htm">Padrões e Políticas</a>
+                                    <a href="#">Padrões e Políticas</a>
                                 </div>
                                 <ul style="display: block;">
                                     <li><a href="../politicas/testes.html">Estratégia de Testes</a></li>
-                                    <li><a href="#">Gestão da API</a></li>
-                                    <li><a href="#">Código Limpo</a></li>
+                                    <li><a href="../politicas/api.html">Gestão da API</a></li>
+                                    <li><a href="../politicas/codigo-limpo.html">Código Limpo</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -452,6 +452,59 @@
                         <img src="assets/images/integracao.png" width="500" style="display: block; margin-left: auto; margin-right: auto;">
                     </div>
                     
+                    <h4 id="referencia" style="padding-bottom: 0px;">Estrutura de Empacotamento</h4>
+                    <hr>
+    
+                    <p>
+                        A arquitetura proposta aqui não prevê a utilização de componentes EJB, ou seja, somente são utilizados componentes web 
+                        (Servlets). Este design simplifica a estrutura de empacotamento já que podemos colocar todo o código do sistema em um 
+                        único módulo web. Em aplicações como essas, a opção mais comum é empacotar todo a aplicação em um único arquivo “.war” 
+                        (Web Archive), no entanto, optamos por empacotar os serviços em arquivos ".jar" (Java Archive). Para tanto, 
+                        precisamos usar um servidor HTTP embarcado. Uma das vantagens dessa abordagem é que ela facilita muito o trabalho 
+                        de execução da aplicação. Você pode rodar sua aplicação da mesma forma que roda qualquer outra aplicação Java. 
+                        Debugar também é muito fácil; você não precisa de qualquer instalação adicional, nem usar IDE's ou plugins especiais. 
+                        Além disso, podemos selecionar o servidor HTTP mais apropriado, sendo que atualmente existem opções muito leves, 
+                        capazes de reduzir o tempo de statup da aplicação para apenas alguns segundos.
+                    </p>
+
+                    <p>
+                        Para viabilizar a arquitetura de implantação definida abaixo, adicionaremos o Jar do serviço em uma imagem Docker,
+                        que nesse caso servirá como recipiente para execução da aplicação Java rodando um determinado serviço. Conforme definido
+                        anteriormente, usaremos Spring Boot como principal framework para implementação dos serviço. Quando usamos a 
+                        a combinação Spring Boot e Docker geralmente obtemos imagens com arquitetura semelhante à ilustrada abaixo:
+
+                        <pre class="prettyprint" style="color: gray">IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT<br/>e465b0e4cc7e        26 hours ago        /bin/sh -c #(nop) ENTRYPOINT &{["/docker-entr   0 B<br/><span style="color: red">missing             26 hours ago        /bin/sh -c sh -c 'touch /app.jar'               86.81 MB</span><br/>missing             26 hours ago        /bin/sh -c #(nop) ADD file:c1f6175d71569467dc   1.004 kB<br/>missing             26 hours ago        /bin/sh -c #(nop) COPY file:3aacbf6f0e870cbf2   97 B<br/><span style="color: red">missing             26 hours ago        /bin/sh -c #(nop) ADD file:8fec0b0914fbe51fe1   86.81 MB</span><br/>missing             11 weeks ago        /bin/sh -c #(nop) VOLUME [/tmp]                 0 B                 <br/>missing             12 weeks ago        /bin/sh -c apk add --no-cache --virtual=build   155.6 MB<br/>missing             12 weeks ago        /bin/sh -c #(nop) ENV JAVA_VERSION=8 JAVA_UPD   0 B<br/>missing             12 weeks ago        /bin/sh -c #(nop) ENV LANG=C.UTF-8              0 B<br/>missing             12 weeks ago        /bin/sh -c ALPINE_GLIBC_BASE_URL="https://git   6.935 MB<br/>missing             3 months ago        /bin/sh -c #(nop) ADD file:033ab063740d9ff4dc   4.798 MB</pre>
+                    </p>
+
+                    <p>
+                        Observe, em vermelho, que o Jar do serviço contém todas as bibliotecas utilizadas. Como consequência, uma única alteração no 
+                        Jar da aplicação invalida toda a layer, fazendo com que 86.81 MB sejam baixados novamente sempre que a imagem for atualizada
+                        no repositório de imagens. Para evitar isso, usamos a solução descrita no artigo <a href="http://bsideup.blogspot.com.br/2015/04/spring-boots-fat-jars-vs-docker.html">Spring Boot's fat jars vs. Docker</a>.
+                        Basicamente, a lógica da solução é separar os jars mais modificados daqueles menos modificados para reduzir o 
+                        tamanho de download a cada atualização da imagem. No nosso caso, podemos dividir as libs em três categorias:
+                        bibliotecas externas, ocupam o maior espaço no Jar e são atualizadas com baixa frequência; bibliotecas compartilhadas 
+                        do stfdigital (core, por exemplo), ocupam pouco espaço do Jar, mas são atualizadas com uma frequência média; e a aplicação 
+                        em si, que também ocupam pouco espaço do Jar, mas são atualizadas com frequência. Cada uma dessas categorias serão serapadas 
+                        em layers específicas, resultando na seguinte estrutura:
+                    </p>    
+
+                    <p>
+                        <pre class="prettyprint" style="color: gray">IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT<br/>bf560d188068        7 minutes ago       /bin/sh -c #(nop) ENTRYPOINT ["/docker-entryp   0 B<br/>d3dd017e011b        7 minutes ago       /bin/sh -c sh -c 'touch /app/*'                 2.812 kB<br/>cf63c2b5d639        7 minutes ago       /bin/sh -c #(nop) ADD file:2fed27996813e97007   1.004 kB<br/>e084a265a161        7 minutes ago       /bin/sh -c #(nop) COPY file:c31d4f91ed0cb5545   137 B<br/><span style="color: green">91fccef4e386        7 minutes ago       /bin/sh -c #(nop) ADD dir:8044936efd3b30ae79a   317.6 kB</span><br/><span style="color: blue">193798cba327        7 minutes ago       /bin/sh -c #(nop) ADD dir:fa0bc6a98ce898224c1   73.42 kB</span><br/><span style="color: red">5cb25699a872        7 minutes ago       /bin/sh -c #(nop) ADD dir:13458d12684ae8b6714   86.57 MB</span><br/>7448c27b0aed        9 weeks ago         /bin/sh -c #(nop) VOLUME [/tmp]                 0 B<br/>235ff60512aa        10 weeks ago        /bin/sh -c apk add --no-cache --virtual=build   155.7 MB<br/>missing             10 weeks ago        /bin/sh -c #(nop) ENV JAVA_VERSION=8 JAVA_UPD   0 B<br/>missing             11 weeks ago        /bin/sh -c #(nop) ENV LANG=C.UTF-8              0 B<br/>missing             11 weeks ago        /bin/sh -c ALPINE_GLIBC_BASE_URL="https://git   6.935 MB<br/>missing             3 months ago        /bin/sh -c #(nop) ADD file:033ab063740d9ff4dc   4.798 MB<br/></pre>
+                    </p>
+
+                    <p>
+                        Agora a layer em vermelho não será baixada quando houver modificação das bibliotecas compartilhadas ou na aplicação em si. 
+                        Isso diminuirá consideravelmente o tempo de atualização em 90% dos casos (irá baixar apenas cerca de 400kB no 
+                        exemplo acima). Somente quando uma biblioteca externa for atualizada é que os 86MB serão baixados novamente.
+                    </p>
+
+                    <h4 id="referencia" style="padding-bottom: 0px;">Estrutura de Diretórios</h4>
+                    <hr>
+    
+                    <p>
+                        TODO: Descrever a estrutura das imagens docker  
+                    </p>
+
                     <h2 id="representacao" style="padding-bottom: 0px;">Implantação</h2>
                     <hr>
     
@@ -464,14 +517,14 @@
                     <p>
                         Uma aplicação microservices consiste em dezenas ou mesmo centenas de serviços. Cada serviço pode utilizar um conjunto 
                         diferente de frameworks. Cada um é um mini-aplicativo com o seu próprio conjunto de requisitos. Por exemplo, você 
-                        pode precisar executar um determinado número de instância de  cada serviço baseados na demanda por esse serviço. 
+                        pode precisar executar um determinado número de instância de cada serviço baseados na demanda por esse serviço. 
                         Além disso, cada instância de serviço deve ser fornecido com o processador adequado, memória e recursos de 
                         armazenamento. O que é ainda mais desafiador é que, apesar desta complexidade, implantar esses serviços 
                         deve ser rápido, confiável e de baixo custo.  
                     </p>
     
                     <p>
-                        Existe alguns diferentes tipos de patterns que podem ser usado para implantação de microservices. Aqui nós 
+                        Existe alguns diferentes tipos de patterns que podem ser usados para implantação de microservices. Aqui nós 
                         vamos apresentar os patterns que julgamos mais adequados para o nosso caso.
                     </p>  
     
@@ -479,7 +532,7 @@
                     <hr>
                     
                     <p>
-                        No nosso caso, escolhemos adotar o pattern <a href="http://microservices.io/patterns/deployment/single-service-per-host.html">Service Instance per Host</a>.
+                        Optamos por adotar o pattern <a href="http://microservices.io/patterns/deployment/single-service-per-host.html">Service Instance per Host</a>.
                         Neste pattern, você executa cada serviço em seu próprio host, isolado de qualquer outro serviço. Existem duas especializações
                         desse pattern: Service Instance per Virtual Machine and Service Instance per Container. 
                     </p>  
@@ -488,7 +541,7 @@
                         Usaremos o Service Instance per Container pattern, em que cada serviço roda em seu próprio container. Containers são um
                         mecanismo de virtualização no nível do sistema operacional. Um container consiste de um ou mais processos rodando em 
                         uma "sandbox". Você pode limitar a memória e os recursos de CPU. Algumas implementações também permitem limitar a taxa
-                        de I/O. Há váris tecnologias que implemental esse conceito. Nós optamos por usar <a href="https://www.docker.com">Docker</a>.
+                        de I/O. Há váris tecnologias que implementam esse conceito. Nós optamos por usar <a href="https://www.docker.com">Docker</a>.
                         A figura abaixo ilustra o modelo descrito aqui.
                     </p>  
     
