@@ -6,6 +6,8 @@ services:
     ports:
      - "5672:5672"
      - "15672:15672"
+    labels:
+     - "br.jus.stf.app=stfdigital"
   discovery:
     container_name: discovery
     image: stfdigital-plataforma-discovery
@@ -14,6 +16,8 @@ services:
      - "47961:8000"
     environment:
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
   gateway:
     container_name: gateway
     image: stfdigital-plataforma-gateway
@@ -24,6 +28,8 @@ services:
     environment:
      - spring.profiles.active=development,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - discovery
   services:
@@ -36,6 +42,8 @@ services:
     environment:
      - spring.profiles.active=development,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - rabbit
      - discovery
@@ -44,6 +52,8 @@ services:
     image: stfdigital-plataforma-ui
     ports:
      - "8443:8443"
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - gateway
   userauthentication:
@@ -56,6 +66,8 @@ services:
     environment:
      - spring.profiles.active=development,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - rabbit
      - discovery
@@ -64,6 +76,8 @@ services:
     image: mongo:3
     ports:
      - "27017:27017"
+    labels:
+     - "br.jus.stf.app=stfdigital"
   onlyoffice:
     container_name: onlyoffice
     image: svendowideit/ambassador
@@ -71,6 +85,8 @@ services:
      - "443:443"
     environment:
      - ONLYOFFICE_PORT_443_TCP=tcp://10.112.20.123:443
+    labels:
+     - "br.jus.stf.app=stfdigital"
   documents:
     container_name: documents
     image: stfdigital-plataforma-documents
@@ -83,6 +99,8 @@ services:
      - JAVA_OPTS=-Xms64M -Xmx512M
      - onlyoffice.documentserver.host=digital.stf.jus.br
      - onlyoffice.server.address=https://docker:443
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - mongo
      - rabbit
@@ -99,6 +117,8 @@ services:
     environment:
      - spring.profiles.active=development,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - rabbit
      - discovery
@@ -112,6 +132,8 @@ services:
     environment:
      - spring.profiles.active=development,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - rabbit
      - discovery
@@ -125,6 +147,8 @@ services:
     environment:
      - spring.profiles.active=development,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - rabbit
      - discovery
@@ -138,6 +162,8 @@ services:
     environment:
      - spring.profiles.active=development,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
     depends_on:
      - rabbit
      - discovery
