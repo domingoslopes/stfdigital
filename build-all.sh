@@ -10,6 +10,7 @@ build_all() {
         "plataforma/gateway" \
         "plataforma/services" \
         "plataforma/ui" \
+        "plataforma/logging" \
 		"plataforma/userauthentication" \
         "autuacao/autuacao" \
         "autuacao/distribuicao" \
