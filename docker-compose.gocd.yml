@@ -1,4 +1,7 @@
 version: '2'
+volumes:
+  logs:
+    driver: local
 services:
   rabbit:
     container_name: rabbit
@@ -8,9 +11,29 @@ services:
      - "15672:15672"
     labels:
      - "br.jus.stf.app=stfdigital"
+# Stack ELK para log
+  elk:
+    container_name: elk
+    image: supremotribunalfederal/stfdigital-plataforma-logging-elk
+    ports:
+     - "5601:5601"
+     - "9200:9200"
+     - "5044:5044"
+     - "5000:5000"
+    labels:
+     - "br.jus.stf.app=stfdigital"
+  filebeat:
+    container_name: filebeat
+    image: supremotribunalfederal/stfdigital-plataforma-logging-filebeat
+    volumes:
+     - logs:/logs
+    labels:
+     - "br.jus.stf.app=stfdigital"
   discovery:
     container_name: discovery
     image: stfdigital-plataforma-discovery
+    volumes:
+     - logs:/logs
     ports:
      - "8761:8761"
      - "47961:8000"
@@ -21,6 +44,8 @@ services:
   gateway:
     container_name: gateway
     image: stfdigital-plataforma-gateway
+    volumes:
+     - logs:/logs
     ports:
      - "8765:8765"
      - "8161:8161"
@@ -35,6 +60,8 @@ services:
   services:
     container_name: services
     image: stfdigital-plataforma-services
+    volumes:
+     - logs:/logs
     ports:
      - "8081:8081"
      - "8181:8181"
@@ -59,6 +86,8 @@ services:
   userauthentication:
     container_name: userauthentication
     image: stfdigital-plataforma-userauthentication
+    volumes:
+     - logs:/logs
     ports:
      - "8095:8095"
      - "8195:8195"
@@ -90,6 +119,8 @@ services:
   documents:
     container_name: documents
     image: stfdigital-plataforma-documents
+    volumes:
+     - logs:/logs
     ports:
      - "8094:8094"
      - "8194:8194"
@@ -110,6 +141,8 @@ services:
   autuacao:
     container_name: autuacao
     image: stfdigital-autuacao-autuacao
+    volumes:
+     - logs:/logs
     ports:
      - "8092:8092"
      - "8192:8192"
@@ -125,6 +158,8 @@ services:
   distribuicao:
     container_name: distribuicao
     image: stfdigital-autuacao-distribuicao
+    volumes:
+     - logs:/logs
     ports:
      - "8093:8093"
      - "8193:8193"
@@ -140,6 +175,8 @@ services:
   peticionamento:
     container_name: peticionamento
     image: stfdigital-autuacao-peticionamento
+    volumes:
+     - logs:/logs
     ports:
      - "8090:8090"
      - "8190:8190"
@@ -155,6 +192,8 @@ services:
   recebimento:
     container_name: recebimento
     image: stfdigital-autuacao-recebimento
+    volumes:
+     - logs:/logs
     ports:
      - "8091:8091"
      - "8191:8191"
