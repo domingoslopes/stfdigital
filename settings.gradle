@@ -1,5 +1,5 @@
 include "plataforma:core", "plataforma:discovery", "plataforma:documents", "plataforma:gateway",
-        "plataforma:services", "plataforma:test", "plataforma:ui", "plataforma:logging",
-         "plataforma:userauthentication",
-         "autuacao:autuacao", "autuacao:distribuicao", "autuacao:peticionamento", "autuacao:recebimento"
+        "plataforma:services", "plataforma:test", "plataforma:ui", "plataforma:userauthentication",
+        "plataforma:logging:filebeat", "plataforma:logging:elk",
+        "autuacao:autuacao", "autuacao:distribuicao", "autuacao:peticionamento", "autuacao:recebimento"
 rootProject.name='stfdigital'
