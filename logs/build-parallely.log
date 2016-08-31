@@ -1,0 +1,20 @@
+Criando e iniciando o container Nexus
+Unable to find image 'sonatype/nexus:latest' locally
+latest: Pulling from sonatype/nexus
+a3ed95caeb02: Pulling fs layer
+5989106db7fb: Pulling fs layer
+ac7d6c290ee0: Pulling fs layer
+73011fd28201: Pulling fs layer
+14bf1cb804f4: Pulling fs layer
+7138b67bf6c5: Pulling fs layer
+73011fd28201: Waiting
+14bf1cb804f4: Waiting
+7138b67bf6c5: Waiting
+a3ed95caeb02: Verifying Checksum
+a3ed95caeb02: Download complete
+a3ed95caeb02: Pull complete
+5989106db7fb: Retrying in 5 seconds
+5989106db7fb: Retrying in 4 seconds
+5989106db7fb: Retrying in 3 seconds
+5989106db7fb: Retrying in 2 seconds
+5989106db7fb: Retrying in 1 second
