@@ -14,7 +14,7 @@ services:
 # Stack ELK para log
   elk:
     container_name: elk
-    image: supremotribunalfederal/stfdigital-plataforma-logging-elk
+    image: stfdigital-plataforma-logging-elk
     ports:
      - "5601:5601"
      - "9200:9200"
@@ -24,7 +24,7 @@ services:
      - "br.jus.stf.app=stfdigital"
   filebeat:
     container_name: filebeat
-    image: supremotribunalfederal/stfdigital-plataforma-logging-filebeat
+    image: stfdigital-plataforma-logging-filebeat
     volumes:
      - logs:/logs
     labels:
