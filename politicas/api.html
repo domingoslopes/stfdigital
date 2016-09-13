@@ -111,25 +111,411 @@
                             <h2>Neste documento</h2>
                             <ol>
                                 <li>
-                                    <a href="#piramide">...</a>
+                                    <a href="#nomenclatura">Nomenclatura</a>
+                                </li>
+                                <li>
+                                    <a href="#erros">Formato dos Erros</a>
+                                </li>
+                                <li>
+                                    <a href="#versionamento">Versionamento</a>
                                 </li>
                             </ol>
                         </div>
                     </div>
     
                     <p>
-                        <i>Em geral, microserviços são integrados usando REST sobre HTTP. Neste caso, conceitos do domínio são modelados como
+                        <i>Em geral, microserviços são acessados usando REST sobre HTTP. Neste caso, conceitos do domínio são modelados como
                         recursos, que são expostos pelos serviços para formar a sua API. Neste documento, apresentaremos o conjunto de 
                         práticas que devem ser aplicadas sempre que desejarmos adicionar um novo recurso à API de um serviço.</i> 
                     </p>
                         
-                    <h2 id="piramide" style="padding-bottom: 0px;"></h2>
+                    <h2 id="nomenclatura" style="padding-bottom: 0px;">Nomenclatura</h2>
+                    <hr>
+    
+                    <p>
+                        Atribua nomes que deixem claro o que os recursos representam. Manter a legibilidade do URI é importante, 
+                        dessa forma busque denominações sugestivas que representem intuitivamente o que o recurso executa.
+                    </p>  
+    
+                    <p>
+                        <b>Utilize somente letras minúsculas</b>. Por exemplo, para listar processos:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /processos</a></td><td><code>GET /Processos</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        <b>Utilize substantivos e não verbos</b>. Por exemplo, para autuar um processo:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">PUT /processos/{id}/autuacao</a></td><td><code>PUT /processos/{id}/autuar</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        <b>Coloque os substantivos no plural</b>. Por exemplo, para listar as petições:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /peticoes</a></td><td><code>GET /peticao</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        <b>Em nomes compostos, use hífen na separação das palavras (spinal-case). Não utilize preposições, 
+                        conjunções ou artigos</b>. Por exemplo, para analisar pressupostos de um processo:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">PUT /processos/{id}/analise-pressupostos</a></td>
+                                <td><code>PUT /processos/{id}/analise-de-pressupostos</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        <b>Evite muitos níveis transversais em um URI com sub-recursos</b>, pois isso aumenta sua complexidade e diminui 
+                        sua legibilidade. Como regra geral, utilize no máximo três níveis e faça uso de query string para os 
+                        demais casos. Por exemplo, para listar as peças de processos recursais, eletrônicos e autuados 
+                        entre um período:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /processos/pecas?tipo=RE&meio=E&inicio=2016&final=2017</a></td>
+                                <td><code>GET /processos/pecas/tipos/RE/meios/E/inicio/2016/final/2017</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        <b>Use os métodos HTTP para as operações básicas de criação, leitura, alteração e remoção</b>. Abaixo uma tabela de 
+                        correspondência entre os métodos HTTP e as ações de CRUD utilizadas para manipulação dos recursos. 
+                    </p>
+
+                    <table id="lattrs" class="responsive" style="width: 350px">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Método</th>
+                                <th>Operação</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td><code>POST</code></td>
+                                <td>Create</td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td><code>GET</code></td>
+                                <td>Read</td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td><code>PUT</code></td>
+                                <td>Update</td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td><code>DELETE</code></td>
+                                <td>Delete</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Por exemplo, para criar um novo processo:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">POST /processos</a></td>
+                                <td><code>POST /processos/criar</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Para visualizar uma petição:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /peticoes/{id}</a></td>
+                                <td><code>GET /peticoes?id={id}</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Para listar uma lista de remessas:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /remessas</a></td>
+                                <td><code>GET /remessas/listar</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Para editar uma peça de um processo:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">PUT /processos/{id}/pecas/{idPeca}</a></td>
+                                <td><code>POST /processos/{ìd}/pecas/{idPeca}/editar</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Para excluir um envolvido de uma petição:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">DELETE /peticoes/{id}/envolvidos/{id}</a></td>
+                                <td><code>POST /peticoes/{id}/envolvidos/{id}/excluir</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Para <b>filtrar</b> oleções retornadas por recursos, utilize unicamente a <i>query string</i> 
+                        para todos os campos, assim você desacopla os clientes da estrutura da URI. Por exemplo, para filtrar as peças 
+                        de um tipo específico em determinado processo:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th style="width: 50%">Use</th>
+                                <th>Em vez de</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /processos/{id}/pecas?tipo={tipoPeca}</a></td>
+                                <td><code>GET /processos/{id}/pecas/tipos/{tipoPeca}</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Para <b>ordenar</b> uma coleção retornada pela execução de um recurso, utilize na <i>query string</i> um parâmetro “sort”, 
+                        atribuindo-lhe uma lista com os múltiplos campos da ordenação. Para determinar se a ordenação será ascendente ou 
+                        descendente, use os sinais de “+” ou “-“, respectivamente. Por exemplo, para ordenar a lista de partes de um 
+                        processo descendente por polo e ascendente por apresentação:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th>Use</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /processos/{id}/partes?sort=-polo,+apresentacao</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Para <b>paginar</b> uma coleção de retorno do processamento de um recurso, use “limit” e “offset” como parâmetros na 
+                        <i>query string</i>. Os valores padrão do “limit” e “offset” são 20 e 0, respectivamente. Por exemplo,
+                        para listar as cinco próximas petições, começando pela décima:
+                    </p>
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th>Use</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td width="220px" nowrap="nowrap"><a href="">GET /peticoes?offset=10&limit=5</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 id="erros" style="padding-bottom: 0px;">Formato dos Erros</h2>
+                    <hr>
+    
+                    <p>
+                        Deve-se retornar o código de status HTTP adequado para cada operação realizada sobre um recurso. A tabela seguinte 
+                        apresenta detalhes sobre o uso correto de alguns desses códigos de status HTTP.
+                    </p>  
+
+                    <table id="lattrs" class="responsive">
+                        <tbody>
+                            <tr>
+                                <th>Status</th>
+                                <th>Code</th>
+                                <th>Descrição</th>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td rowspan="3">Success</td>
+                                <td nowrap="nowrap"><code>200, Ok</code></td>
+                                <td>
+                                    Resposta padrão para requisições HTTP executadas com sucesso.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td nowrap="nowrap"><code>201, Created</code></td>
+                                <td>
+                                    A requisição foi cumprida e resultou na criação de um recurso.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td nowrap="nowrap"><code>204, No Content</code></td>
+                                <td>
+                                    O servidor processou a requisição com sucesso, mas não é necessária nenhuma resposta.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td rowspan="5">Client Error</td>
+                                <td nowrap="nowrap"><code>400, Bad Request</code></td>
+                                <td>
+                                    A requisição não pode ser entregue devido à sintaxe incorreta.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td nowrap="nowrap"><code>401, Unauthorized</code></td>
+                                <td>
+                                    A requisição requer autenticação do usuário.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td nowrap="nowrap"><code>403, Forbidden</code></td>
+                                <td>
+                                    A requisição está correta, mas o usuário autenticado não tem autorização de executá-la.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td nowrap="nowrap"><code>404, Not Found</code></td>
+                                <td>
+                                    O recurso requisitado não foi encontrado.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td nowrap="nowrap"><code>409, Conflict</code></td>
+                                <td>
+                                    Indica que a requisição não pôde ser processada por causa de conflito no pedido.
+                                </td>
+                            </tr>
+                            <tr class="api apilevel-">
+                                <td>Server Error</td>
+                                <td nowrap="nowrap"><code>500, Internal Error</code></td>
+                                <td>
+                                    Indica um erro do servidor ao processar a solicitação.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        Quando um erro ocorre, a prática REST espera o envio de um HTTP status code na resposta 
+                        que classifique a causa da falha. As boas práticas sugerem o reuso dos códigos da tabela 
+                        de status code da especificação HTTP sempre que possível. Dentro do conjunto de HTTP 
+                        status code existentes, constam abaixo os que devem ser retornados caso ocorram 
+                        problemas na execução dos serviços disponibilizados pela API do STF Digital.
+                    </p>  
+
+                    <p>
+                        Apenas o status code não é suficiente para deixar claro ao usuário a causa do problema no 
+                        processamento da sua requisição. Para tornar mais legível, e até mesmo útil, a mensagem 
+                        de erro deve trazer informações mais relevantes. O modelo adotado na API deverá ser 
+                        retornado como JSON e terá a seguinte estrutura.
+                    </p>  
+
+                    <p>
+                        <pre class="prettyprint"><span class="pln">{</span><span class="pln"><br>&nbsp; &nbsp;</span><span class="str">“httpCode”:</span><span class="pln"> 404,</span><span class="pln"><br>&nbsp; &nbsp;</span><span class="str">“internalCode”:</span><span class="pln"> 102,</span><br>&nbsp; &nbsp;</span><span class="str">“userMessage”:</span><span class="pln"> “Classe requerida”,</span><br>&nbsp; &nbsp;</span><span class="str">“moreDetails”:</span><span class="pln"> “O campo [processo.classe] não foi informado em [preautar]”</span></br><span class="pln">}</span></pre>
+                    </p>  
+                        
+                    <p>
+                        As propriedades retornadas na mensagem de erro representam:
+                    </p>  
+
+                    <ul>
+                        <li>
+                            <code>httpCode</code>: corresponde ao HTTP status code retornado na resposta da requisição.
+                        </li>
+                        <li>
+                            <code>internalCode</code>: código de erro interno específico da aplicação. Apresenta o código 
+                            de erro conforme dicionário de erros mapeados no desenvolvimento da aplicação 
+                            (refletem a camada de domínio). Para situações em que o erro não estiver 
+                            mapeado será igual ao httpCode.
+                        </li>
+                        <li>
+                            <code>userMessage</code>: mensagem com informação inteligível ao usuário final.
+                        </li>
+                        <li>
+                            <code>moreDetails</code>: campo reservado para informações de cunho técnico que auxiliarão 
+                            os desenvolvedores na resolução de problemas vinculados ao erro do processamento. 
+                            Pode ser apresentado via link para entrada no dicionário de erros.
+                        </li>
+                    </ul>
+
+                    <h2 id="versionamento" style="padding-bottom: 0px;">Versionamento</h2>
                     <hr>
     
                     <p>
                         ...
                     </p>  
-    
                 </div>
     
             </div>

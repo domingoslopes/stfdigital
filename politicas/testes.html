@@ -144,23 +144,128 @@
                     <hr>
     
                     <p>
-                        ...
+                        Internamente, cada microservices possui sua própria estrutura lógica, geralmente dividida em camadas como na figura ao lado.
+                        Qualquer estratégia de testes deveria ser capaz de cobrir os componentes de cada uma dessas camadas.
+                    </p>  
+    
+                    <p>
+                        Os microserviços se comunicam entre si por meio de mensagens. O processamento de uma requisição pode envolver
+                        outros serviços, gateways ou repositórios. Os testes automáticos deveriam cobrir cada uma dessas 
+                        comunicações na maior granularidade possível permitindo um ciclo de feedback muito preciso.
+                    </p>  
+    
+                    <p>
+                        Um recurso recebe uma requisição e, após validá-la, repassa ao domínio para que este inicie o processamento.
+                        Se vários serviços devem ser coordenados para processar a requisição, ele orquestra
+                        chamadas remotas aos demais módulos. Conexões com outros módulos merecem especial atenção porque elas
+                        elas extrapolam os limites da rede. O sistema deveria ser resiliênte para suportar interrupções dos
+                        serviços remotos. Adapter contém a lógica necessária para tratar essas situações. Geralmente,
+                        comunicações entre serviços possuem uma granularidade menor em relação às comunicações <i>in process</i>
+                        para evitar latência.
+                    </p>  
+    
+                    <p>
+                        Da mesma forma, comunicações com datastores externos merecem considerações de design diferentes. 
+                        Enquanto um serviço tenha maior acoplamento com seu datastore do que com serviços externos, 
+                        ele ainda está além dos limites locais e por isso ainda estão sujeitos a latência e 
+                        interrupções inesperadas.
+                    </p>  
+    
+                    <p>
+                        A existência de componentes fora do domínio do serviço afeta o estilo do teste que deverá ser aplicado.
+                        Testar esses componentes pode ser bem demorado e pode falhar por razões fora do controle do time.
                     </p>  
     
                     <h2 id="piramide" style="padding-bottom: 0px;">A Pirâmide de Testes</h2>
                     <hr>
     
                     <p>
-                        ...
+                        Em geral, quanto menor a granularidade, mais frágil, mais difícil de escrever e mais demorado o teste será.
+                        Isso decorre do fato de que tais testes envolvem mais partes móveis do que aqueles mais focados,
+                        aqueles mais granulares. 
+                    </p>  
+    
+                    <p>
+                        O conceito da <a href="http://martinfowler.com/bliki/TestPyramid.html">pirâmide de testes</a> descreve
+                        um forma simples de pensar sobre o quantos testes deveríamos escrever para cada granularidade.
+                        Subindo na pirâmide o escopo dos testes cresce e o número de teste deve diminuir. 
+                    </p>  
+    
+                    <p>
+                        No topo do pirâmide estão os testes exploratórios, que devem explorar o sistemas de formas que não 
+                        tenham sido consideradas como partes dos scripts de testes. Os testes exploratórios permitem 
+                        que o time aprenda sobre outros comportamentos do sistema e melhore seus testes automatizados. 
+                    </p>  
+    
+                    <p>
+                        Utilizamos as orientações de pirâmide de testes para evitar que o valor dos testes seja
+                        disolvido por uma cadeia de testes que seja onerosa tanto para executar quanto para manter. 
                     </p>  
     
                     <h2 id="unit" style="padding-bottom: 0px;">Testes Unitários</h2>
                     <hr>
     
-                    <p>
-                        ...
+                    <p class="note">
+                        <strong>Definição:</strong> Um teste unitário executa a menor parte testável do software para 
+                        determinar se ele se comporta como esperado.
                     </p>  
     
+                    <p>
+                        O tamanho da unidade em teste não pode ser definida precisamente, mas geralmente testes unitários
+                        são definidos em nível de classe. Quanto menor for a unidade em teste, mais fácil será 
+                        expressar o comportamento esperado, já que a complexidade tende a ser menor quanto menor for
+                        a unidade que se deseja validar. 
+                    </p>  
+    
+                    <p>
+                        Geralmente, a dificuldade em escrever um teste unitário pode indicar quando um módulo deveria
+                        ser quebrado em partes separadas que poderiam ser testadas mais facilmente. Assim, <strong>além
+                        de ser uma das principais técnicas de qualidade, os testes unitários também são uma 
+                        poderosa ferramenta de <i>design</i></strong>, especialmente quando combinada 
+                        com <i>test driven development</i>. 
+                    </p>  
+    
+                    <p>
+                        Com testes unitários, você pode uma importante diferença, dependendo se a unidade em teste
+                        deve ser isolada dos seus colaboradores ou não.
+                    </p>
+
+                    <ul>
+                        <li>
+                            Testes Unitários <strong>Sociais</strong> focam em testar o comportamento de módulos 
+                            observando as mudanças de estado. Nesse caso, a unidade em teste é tratada como uma
+                            caixa preta testada inteiramente por meio da sua interface. 
+                        </li>
+                        <li>
+                            Testes Unitários <strong>Solitários</strong> focam nas interações e comunicações entre
+                            um objeto e suas dependencias, que são substituidas por 
+                            <a href="http://martinfowler.com/bliki/TestDouble.html">tests doubles</a>. 
+                        </li>
+                    </ul>
+
+                    <p>
+                        Esses dois estilos não são mutuamente exclusivos. Eles são frequentemente usados no mesmo
+                        <a href="https://en.wikipedia.org/wiki/Codebase">codebase</a> para resolver diferentes 
+                        tipos de problemas.
+                    </p>
+
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="200" src="assets/images/unittesting-domain.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p class="dac-hero-description">
+                                    A lógica de <strong>domínio</strong> geralmente se manisfesta como um conjunto de processamentos 
+                                    complexos e uma coleção de transições de estado. Como esse tipo de lógica é altamente 
+                                    baseada nos estados, não há tanto valor em tentar isolar as unidades. Isso significa 
+                                    que sempre que possível os objetos reais do domínio devem ser usados para validação
+                                    da unidade em teste. 
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <h2 id="integration" style="padding-bottom: 0px;">Testes de Integração</h2>
                     <hr>
     

@@ -111,25 +111,258 @@
                             <h2>Neste documento</h2>
                             <ol>
                                 <li>
-                                    <a href="#piramide">...</a>
+                                    <a href="#excecoes">Tratamento de Exceções</a>
                                 </li>
                             </ol>
                         </div>
                     </div>
     
                     <p>
-                        <i>Em geral, microserviços são integrados usando REST sobre HTTP. Neste caso, conceitos do domínio são modelados como
-                        recursos, que são expostos pelos serviços para formar a sua API. Neste documento, apresentaremos o conjunto de 
-                        práticas que devem ser aplicadas sempre que desejarmos adicionar um novo recurso à API de um serviço.</i> 
+                        <i>Segundo Robert C. Martin, uma das principais referências na área, "código limpo não é somente 
+                        desejável - é necessário. Se o código não estiver limpo, o desenvolvimento decai com o tempo. 
+                        Eventualmente, chega a um tal ponto de incerteza, dor e frustração que parece ser mais 
+                        fácil começar de novo e reescrever tudo do início. Obviamente que se a reescrita não for 
+                        melhor que o original, o problema persiste, e em pouco tempo a equipe acaba onde 
+                        tinha começado".</i> 
                     </p>
                         
-                    <h2 id="piramide" style="padding-bottom: 0px;"></h2>
+                    <p>
+                        <i>É claro que a definição do que é código limpo depende das preferências pessoais de cada um, mas
+                        tentamos descrever aqui um conjunto de recomendações para garantir a qualidade do código e assim
+                        facilitar a mantunenção, quebrar os ciclos de reescrita e extrair do código o melhor para 
+                        os usuários e para os desenvolvedores.</i> 
+                    </p>
+                        
+                    <h2 id="excecoes" style="padding-bottom: 0px;">Tratamento de Exceções</h2>
                     <hr>
     
                     <p>
-                        ...
+                        Exceções foram introduzidas na linguagem Java para garantir resiliência e confiabilidade.
+                        O objetivo seria assegurar que os sistemas pudessem reagir apropriadamente a situações
+                        inesperadas e a contigências específicas. Embora seu propósito seja simples, a forma de utilização 
+                        sempre gerou muita confusão. Abaixo, listamos um conjunto de práticas que devem sempre 
+                        ser observadas ao lidar com exceções.
                     </p>  
     
+                    <h4 id="excecoes" style="padding-bottom: 0px;">Tipos de Exceções</h4>
+                    <hr>
+    
+                    <p>
+                        Há grande controvérsia envolvendo o uso de <i>Checked Exceptions</i>, com personalidades
+                        como Rod Johnson (criador do Spring Framework) e Gavin King (criador do Hibernate) se
+                        posicionando contra seu uso. De fato, Spring, Hibernate e vários outros frameworks
+                        estão usando apenas <i>Unchecked Exceptions</i>.
+                    </p>
+
+                    <p>
+                        <i>Checked Exceptions</i>, implementadas em Java como uma subclasse de <i>Exception</i>
+                        foram inicialmente propostas para situações em que o cliente da API pode se recuperar
+                        do problema indicado pela exceção. O problema é que essas situações são muito raras.
+                        Em geral, seu código não terá a capacidade de se recuperar de uma situação problemática.
+                        Quando usada como recomendação padrão, esse tipo de exceção pode levar a problemas
+                        de encapsulamento e problemas graves de manutenção. Suponha, por exemplo, que 
+                        uma exceção dessas é incluída na API de uma biblioteca de baixo nível. Caso não 
+                        seja uma exceção recuperável, essa modificação poderá impactar toda a cadeia
+                        de chamadas que termina na chamada dessa API, forçando a inclusão de blocos 
+                        "try-catch" ou a inclusão de instruções "throws" em toda a sequência de processamento.
+                    </p>
+    
+                    <p>
+                        <i>Unchecked Exceptions</i>, implementadas em Java como uma subclasse de <i>RuntimeException</i>,
+                        por outro lado, foram propostas para situações em que o cliente da API não pode se recuperar.
+                        Elas podem ser lançadas de qualquer ponto, em qualquer lugar, não exigem declaração e não
+                        demandam tratamento. São muito mais convenientes e, por isso, muito mais populares. 
+                    </p>
+    
+                    <p>
+                        Recomendamos usar <i>Unchecked Exceptions</i> como escolha padrão e somente naqueles raros casos em
+                        que há inquestinável possibilidade de recuperação pelo cliente da API, usar <i>Checked Exceptions</i>.  
+                        Portanto, se cliente do método pode tomar alguma ação para se recuperar de um erro esperado, então crie sua
+                        exceção como uma <i>Checked Exceptions</i>. Caso contrário, se o cliente não pode fazer nada
+                        útil no caso de um erro, então crie sua exceção como uma <i>Unchecked Exceptions</i>.
+                    </p>
+    
+                    <h4 id="hierarquia" style="padding-bottom: 0px;">Hierarquia de Exceções</h4>
+                    <hr>
+
+                    <p>
+                        Defina sua própria hierarquia de exceções. Ao fazer isso, você poderá utilizar esses tipos
+                        para implementação do mecanismo de tratamento de erros que poderá, por exemplo,
+                        registrar informações específicas das exceções. Use os tipos de exceções claramente,
+                        para definir a causa raiz do problema e eventualmente a severidade do erro (fatal,
+                        warn, info, debug).    
+                    </p>
+                        
+                    <h4 id="fluxo" style="padding-bottom: 0px;">Controle de Fluxo</h4>
+                    <hr>
+
+                    <p>
+                        Exceções não devem ser usadas para controle de fluxo. Não gerencie lógica de negócio com exceções.
+                        Use instruções condicionais para isso. Lançar e tratar exceções são operações onerosas.
+                        Se o controle pode ser feito com uma instrução condicional, não use exceções porque isso 
+                        impacta significativamente a performance geral do sistema, além de reduzir a legibilidade
+                        do código. Por exemplo, se um método retorna null, use <a href="https://dzone.com/articles/java-8-optional-replace-your-get-calls">Optionals</a> ou
+                        uma instrução <i>if-else</i> em vez de depender do tratamento de exceções para fazer 
+                        esse tipo de verificação.
+                    </p>
+
+                    <p>
+                        Exceções têm um impacto sobre o desempenho global do aplicativo, então devem ser usadas criteriosamente. 
+                        Não use exceções se você pode usar uma variável boleana para verificar se uma operação foi 
+                        bem-sucedida ou não. Tente sempre retornar uma variável para que o cliente do código 
+                        possa controlar o fluxo de execução com base nesse retorno.
+                    </p>
+
+                    <p>
+                        Identifique e corrija a causa raiz dos problemas para evitar tratamentos desnecessários. 
+                        Sempre faça as validações das variáveis que possam assumir valores null antes de executar
+                        as operações, verifique o tamanho do array em vez de confiar em ArrayIndexOutOfBoundException.
+                    </p>
+
+                    <p>
+                        Lance exceçõs para possíveis erros reportados por um método. Por exemplo, se você retorna os
+                        valores -1, -2, -3... invés de FileNotFoundException, esse método pode não ser bem
+                        entendido.
+                    </p>
+
+                    <p>
+                        Usar o tratamento de exceções dentro de um loop não é recomendado para muitos casos. 
+                        Tente colocar o loop dentro do bloco de tratamento das execeções
+                    </p>
+                        
+                    <h4 id="lancamento" style="padding-bottom: 0px;">Lançamento</h4>
+                    <hr>
+
+                    <p>
+                        É sempre melhor lançar exceções específicas em vez de lançar exceções mais genéricas, como
+                        <i>Throwable</i>, <i>Excpetion</i> or <i>RuntimeException</i>. Ao fazer isso, nós podemos fornecer
+                        mais informações sobre o que exatamente ocorreu e o código fica mais legível.
+                    </p>
+
+                    <p>                         
+                        Sempre que precisar lançar uma exceção, siga o princípio <i>Throw Early or Fail-Fast</i>. A <i>stack trace</i>
+                        de uma exceção mostra a sequência exata de chamadas de métodos até o ponto em que ocorreu a exceção,
+                        incluindo o nome da classe, o nome do arquivo e o número da linha onde a exceção foi lançada. Por isso,
+                        é muito importante lançar a exceção o quanto antes, imediatamente quando a exceção é detectada.
+                        Por exemplo, se o erro ocorre em um método mais não é lançada por ele, mas sim pelo método chamado,
+                        a <i>stack trace</i> não indicará o posição exata do erro, o que poderá comprometer o tempo de
+                        diagnóstica da causa do problema.
+                    </p>
+                        
+                    <h4 id="tratamento" style="padding-bottom: 0px;">Tratamento</h4>
+                    <hr>
+
+                    <p>
+                        <i>Throwable</i> é a superclasse de todos os erros e exceções em Java. <i>Error</i> é a superclasse
+                        de todos os erros capturáveis por qualquer aplicação. Tratar <i>Throwable</i> ou <i>Error</i> significa que
+                        erros como OutOfMemoryError, StackOverFlowError e etc. significa que sua aplicação poderia se
+                        recuperar de situações como essas, o que obviamente não é possível. Assim, <i>Throwable</i>
+                        ou <i>Error</i> não devem ser capturadas porque não há tratamento possível para elas.
+                    </p>
+
+                    <p>
+                        Sempre faça o tratamento de exceções específicas, nunca de exceções genéricas como <i>Exception</i>. 
+                        Não é possível se recuperar de erro que você não conhece, um erro genérico. Só podemos tentar um 
+                        outro caminho se conhecemos exatamente qual problema ocorreu. Além de viabilizar
+                        o tratamento de um erro específico, isso evita problemas de performance e ainda garante maior 
+                        legibilidade do código.
+                    </p>
+
+                    <p>
+                        Sempre que precisar tratar uma exceção, siga o princípio <i>Catch Late</i>. No caso de <i>checked 
+                        exceptions</i>, o compilador Java força que o cliente capture a exceção ou a declare usando a cláusula
+                        <i>throws</i>. Assim, geralmente os desenvolvedores tendem a capturar a exceção e não fazer nada
+                        além de registrar a <i>stacktrace</i> para evitar erros de compilação. Mas, ao fazer isso
+                        você estará escondendo o que realmente aconteceu. É melhor capturar a exceção somente
+                        quando ele poderá ser tratada apropriadamente. Use a cláusula <i>throws</i> para declarar
+                        a exceção e passar a responsabilidade para o método chamador. Dessa forma, caso nenhum dos 
+                        métodos acima conseguir tratar a exceção apropriadamente, ela alcançará o mecanismo de 
+                        tratamento global de exceções, cuja responsabilidade é tratar casos como esse.
+                    </p>
+
+                    <p>
+                        Novamente, não esconda a exceção! Não substitua o tratamento de exceções por um bloco vazio, o registro da 
+                        <i>stacktrace</i> ou da exceção, como nas listagens abaixo. Ignorar exceções poderá evitar erros de compilação, 
+                        mas vai criar um caos a manutenção posterior.
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">try</span><span class="pln"> {</span> <span class="pln"><br>&nbsp; &nbsp;</span><span class="pln">/* ... */</span></br><span class="str">catch</span><span class="pln"> (Exception e) {</span><span class="pln"><br></span><span class="pln"></span><span class="pln"><br></span><span class="pln">}</span></pre>
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">try</span><span class="pln"> {</span> <span class="pln"><br>&nbsp; &nbsp;</span><span class="pln">/* ... */</span></br><span class="str">catch</span><span class="pln"> (Exception e) {</span><span class="pln"><br></span><span class="pln"></span><span class="pln">&nbsp; &nbsp;LOGGER.info("Erro inesperado");</span><br><span class="pln">}</span></pre>
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">try</span><span class="pln"> {</span> <span class="pln"><br>&nbsp; &nbsp;</span><span class="pln">/* ... */</span></br><span class="str">catch</span><span class="pln"> (Exception e) {</span><span class="pln"><br></span><span class="pln"></span><span class="pln">&nbsp; &nbsp;e.printStackTrace();</span><br><span class="pln">}</span></pre>
+                    </p>
+
+                    <p>
+                        Não perca a exceção original. Quase todas as exceções fornecem um construtor com um parâmetro para a causa.
+                        Ao criar uma exceção customizada, lembre-se de incluir esse construtor.
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">public </span><span class="pln">Exception(String message, Throwable cause)</span> </pre>
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">catch</span><span class="pln"> (IllegalArgumentException exp) {</span></br><span class="pln"></span><span class="str">&nbsp; &nbsp;throw new </span><span class="pln">throw new MyCustomException("Mensagem específica" , exp);</span></br><span class="pln">}</span></pre>
+                    </p>
+
+                    <h4 id="logging" style="padding-bottom: 0px;">Logging</h4>
+                    <hr>
+
+                    <p>
+                        Não log a mesma exceção mais de uma vez, para não haver confusão em relação à localização da exceção.
+                        Nós deveríamos sempe logar a mensagem da exceção e essa mensagem dever conter informações precisas
+                        para que o chamador possa saber facilmente o que ocorreu. Sempre usa informações detalhadas, 
+                        adicionando os valores de varáiveis relevantes quando possível. Por exemplo, se nós estamos
+                        escrevendo um código em que uma regra só é aplicada para idosos, 
+                        se a idade é menor que 60, então o método dever lançar InvalidAgeException.
+                        Nesse caso, se a exceção é lançada sem especificar qual a idade do cidadão, a mensagem pode não ser
+                        tão útil quanto no caso em que você informa exatamente que idade causou a exceção.
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">catch</span><span class="pln"> (NoSuchFieldException exp) {</span><span class="pln"><br>&nbsp; &nbsp;</span><span class="pln">LOGGER.error("Exception occurred", exp);</span><span class="pln"><br>&nbsp; &nbsp;</span><span class="pln">throw exp;</span><span class="pln"><br></span><span class="pln">}</span></pre>
+
+                        Logar e lançar uma exceção dentro de um bloco catch é considerado anti-pattern e deveira ser
+                        evitado. Logar e lançar a exceção pode resultar em múltiplas mensagens de erro no arquivo de log 
+                        para um único problema, dificultando o trabalho dos responsáveis por identificar 
+                        e diagnosticar problemas no código.
+                    </p>
+
+                    <p>
+                        Por fim, lembre-se que granularidade é muito importante. Um bloco de tratamento deve tratar sempre um caso
+                        específico. Não coloque centenas de linhas de código dentro de um bloco <i>try-catch</i>. 
+                    </p>
+                        
+                    <h4 id="documentacao" style="padding-bottom: 0px;">Documentação</h4>
+                    <hr>
+
+                    <p>
+                        Atribuir um código para cada diferente mensagem de exceção é uma boa prática para documentação porque
+                        facilita muito a comunicação do tipo de erro. Também recomendamos usar Javadoc @throws para indicar 
+                        as exceções lançadas pelos métodos. Isso facilita bastante principalmente no caso de interfaces 
+                        que poderá ser usadas em outras aplicações.
+                    </p>    
+
+                    <h4 id="nomenclatura" style="padding-bottom: 0px;">Nomenclatura</h4>
+                    <hr>
+
+                    <p>
+                        O nome das exceções deve ser claro e significativo para comunicar objetivamente qual a causa da exceção.
+                        Ao criar suas próprias exceções, siga o padrão já definido pela linguagem. Inicie o nome com a causa
+                        e termine com o sufixo <i>Excpetion</i>, como <i>NoSuchMethodExcpetion</i>.
+                    </p>    
+                        
+                    <p>
+                        Lembre-se de manter exceções de mesmo tipo dentro da mesma hierarquia. Por exemplo, exceções
+                        relacionadas a problemas de IO são todas subclasses de <i>IOExcpetion</i>.
+                    </p>    
+
                 </div>
     
             </div>
