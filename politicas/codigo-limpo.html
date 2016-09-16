@@ -31,7 +31,7 @@
                     <ul class="dac-header-tabs">
                         <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
                     </ul>
-                    <a class="dac-header-console-btn" href="https://play.google.com/apps/publish/"> 
+                    <a class="dac-header-console-btn" href="https://github.com/supremotribunalfederal/stfdigital"> 
                         <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
                         <span class="dac-visible-desktop-inline">Repositório</span>
                     </a>
@@ -113,6 +113,9 @@
                                 <li>
                                     <a href="#excecoes">Tratamento de Exceções</a>
                                 </li>
+                                <li>
+                                    <a href="#padrao-codificacao">Padrão de Codificação</a>
+                                </li>
                             </ol>
                         </div>
                     </div>
@@ -129,7 +132,7 @@
                     <p>
                         <i>É claro que a definição do que é código limpo depende das preferências pessoais de cada um, mas
                         tentamos descrever aqui um conjunto de recomendações para garantir a qualidade do código e assim
-                        facilitar a mantunenção, quebrar os ciclos de reescrita e extrair do código o melhor para 
+                        facilitar a manutenção, quebrar os ciclos de reescrita e extrair do código o melhor para 
                         os usuários e para os desenvolvedores.</i> 
                     </p>
                         
@@ -363,6 +366,302 @@
                         relacionadas a problemas de IO são todas subclasses de <i>IOExcpetion</i>.
                     </p>    
 
+                    <h2 id="padrao-codificacao" style="padding-bottom: 0px;">Padrão de Codificação</h2>
+                    <hr>
+    
+                    <p>
+                        A utilização de um padrão de codificação é importante para reduzir o custo de manutenção do <i>software</i>, já que sua
+                        adoção melhora a legibilidade dele. A Sun Microsystems, em seu documento de <i>Convenções de código para a linguagem
+                        de programação Java</i>, cita algumas das razões por que convenções de codificação são importantes: 
+                        <ul>
+                            <li>80% do custo de um <i>software</i> durante seu ciclo de vida é dedicado à manutenção.</li>
+                            <li>Dificilmente um <i>software</i> é mantido pelo mesmo desenvolvedor por todo seu ciclo de vida.</li>
+                            <li>Padrões de codificação melhoram a legibilidade do código, permitindo que os desenvolvedores
+                                entendam novos códigos de forma mais rápida e completa.
+                        </ul>
+                        Quando convenções de código são projetadas para produzir código de alta qualidade e são formalmente adotadas elas se tornam
+                        um padrão de codificação. O escopo de um padrão de codificação abrange os seguintes elementos de código, dentre outros:
+                        nomes de arquivos, organização do conteúdo de arquivos, indentação, comentários, declarações de variáveis, espaços em branco,
+                        convenção de nomes, etc.
+                    </p>
+
+                    <h2 id="padrao-codificao-backend" style="padding-bottom: 0px;">Padrão de Codificação de <i>Back-end</i> (Java)</h2>
+                    <hr>
+
+                    <h3 id="arquivos-codigo-fonte" style="padding-bottom: 0px;">Arquivos de código-fonte</h3>
+                    <hr>
+                    <h4 id="nome-arquivo" style="padding-bottom: 0px;">Nome de arquivo</h4>
+                    <p>
+                        O nome de um arquivo de código-fonte consiste no nome <i>case-sensitive</i> da classe <i>top-level</i> que ele contém
+                        (haverá exatamente uma) acrescido da extensão ".java".
+                    </p>
+                    <h4 id="codificacao-arquivo" style="padding-bottom: 0px;">Codificação de arquivo</h4>
+                    <p>
+                        A codificação dos arquivos de código-fonte será a UTF-8.
+                    </p>
+                    <h3 id="estrutura-arquivos-codigo-fonte" style="padding-bottom: 0px;">Estrutura de arquivos de código-fonte</h3>
+                    <hr>
+                    <p>
+                        Um arquivo de código-fonte consiste das seguintes seções, nessa ordem:
+                        <ol>
+                            <li>Instrução <i>package</i></li>
+                            <li>Instruções <i>import</i></li>
+                            <li>Exatamente uma declaração de classe <i>top-level</i></li>
+                        </ol>
+                        Exatamente uma linha em branco separará uma seção da outra. 
+                    </p>
+                    <h4 id="instrucao-package" style="padding-bottom: 0px;">Instrução <i>package</i></h4>
+                    <p>
+                        A instrução <i>package</i> não conterá quebra de linha. O limite de tamanho de coluna não se aplica a essa instrução. 
+                    </p>
+                    <h4 id="instrucoes-import" style="padding-bottom: 0px;">Instruções <i>import</i></h4>
+                    <p>
+                         As instruções <i>import</i> não devem conter caracteres-curinga (*). Elas também não conterão quebras de linha, não se
+                         aplicando o limite de tamanho de coluna. Não deverá haver instruções <i>imports</i> de elementos não utilizados pelo
+                         código-fonte. Elas serão dispostas em grupos na seguinte ordem:
+                         <ul>
+                             <li><i>Imports</i> estáticos ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em java ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em javax ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em org ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em com ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados com prefixos diferentes dos anteriores ordenados alfabeticamente</li>
+                         </ul>
+                         Cada grupo acima é separado do outro por uma linha em branco. Essa organização acima já é a padrão realizada pelo Eclipse
+                         ao executar o comando <i>"Organize imports"</i>.
+                    </p>
+                    <h4 id="declaracao-classe" style="padding-bottom: 0px;">Declaração de classe</i></h4>
+                    <p>
+                         Cada arquivo conterá apenas uma declaração de classe <i>top-level</i>. 
+                    </p>
+                    <h5 id="ordem-membros-classe" style="padding-bottom: 0px;">Ordem dos membros da classe</h5>
+                    <p>
+                        A ordem dos membros da classe deve ser a seguinte:
+                        <ul>
+                            <li>Campos estáticos</li>
+                            <li>Campos de instância</li>
+                            <li>Construtores</li>
+                            <li>Métodos privados chamados por todos os construtores</li>
+                            <li>Métodos-fábrica estáticos</li>
+                            <li>Propriedades <i>JavaBean</i> (<i>getters</i> e <i>setters</i>)</li>
+                            <li>Implementações de métodos oriundas de <i>interfaces</i></li>
+                            <li>Métodos privados ou protegidos que são chamados por implementações de métodos oriundos de interfaces</li>
+                            <li>Outros métodos</li>
+                            <li>Métodos <i>equals</i>, <i>hashCode</i> e <i>toString</i></li>
+                        </ul>
+                        Os métodos privados devem ser colocados imediatamente abaixo do método que os referencia. 
+                    </p>
+                    <h3 id="formatacao" style="padding-bottom: 0px;">Formatação</h3>
+                    <hr>
+                    <h4 id="formatacao-indentacao" style="padding-bottom: 0px;">Indentação</h4>
+                    <p>
+                        Cada nível de indentação deve conter 4 espaços em branco. Tabs não deverão ser utilizados para esse propósito.
+                    </p>
+                    <h4 id="formatacao-instrucoes" style="padding-bottom: 0px;">Uma instrução por linha</h4>
+                    <p>
+                        Cada instrução deverá ser seguida de uma quebra de linha.
+                    </p>
+                    <h4 id="formatacao-espacos-branco" style="padding-bottom: 0px;">Espaços em branco</h4>
+                    <p>
+                        Uma linha em branco deverá aparecer:
+                        <ul>
+                            <li>
+                                Entre membros consecutivos (ou inicializadores) de uma classe: campos, construtores, métodos, classes aninhadas,
+                                inicializadores estáticos, inicializadores de instância.
+                            </li>
+                            <li>
+                                Entre instruções, conforme necessidade, para organizar o código em subseções lógicas.
+                            </li>
+                            <li>
+                                <i>Opcionalmente</i> antes do primeiro membro ou depois do último membro da classe.
+                            </li>
+                        </ul>
+                    </p>
+                    <h4 id="formatacao-chaves" style="padding-bottom: 0px;">Chaves</h4>
+                    <p>
+                        Construções similares a bloco (corpo de classe, método ou construtor) devem seguir o estilo de
+                        Kernighan & Ritchie (também conhecido como chaves egípcias):
+                        <ul>
+                            <li>Nenhuma quebra de linha antes da chave de abertura mas um único espaço antes dela</li>
+                            <li>Quebra de linha após a chave de abertura</li>
+                            <li>Quebra de linha antes da chave de fechamento</li>
+                            <li>Quebra de linha depois da chave de fechamento caso ela termine uma instrução ou o corpo
+                                de um método, construtor, inicializador estático, inicializador de instância ou classe nomeada
+                            </li>
+                            <li>Nenhuma quebra de linha depois da chave caso ela seja seguida de <i>else</i>, <i>catch</i>, <i>finally</i>
+                                ou ponto e vírgula 
+                            </li>
+                        </ul>
+                        Exemplo:
+                        <pre class="prettyprint pln">
+return new MinhaClasse() {
+    @Override
+    public void metodo() {
+        if (condicao()) {
+            fazerAlgo();
+        } else {
+            try {
+                alternative();
+            } catch (ProblemException ex) {
+                recuperar();
+            }
+        }
+    }
+};
+</pre>
+                    </p>
+                    <h4 id="formatacao-quebra-linha" style="padding-bottom: 0px;">Quebras de linha</i></h4>
+                    <p>
+                        O limite de tamanho de coluna é de 100 caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
+                        da linha ao invés de na próxima linha. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
+                        <pre class="prettyprint pln">
+if (chamadaDeMetodo1(param1, param2) && chamadaDeMetodo2() && chamadaDeMetodo3() &&
+        chamadaDeMetodo4()) {
+    // ...
+}
+</pre>
+                    </p>
+                    <h5 id="formatacao-quando-quebrar" style="padding-bottom: 0px;">Quando quebrar</h5>
+                    <p>
+                        A seguir estão algumas diretrizes de quando quebrar a linha:
+                        <ul>
+                            <li>
+                                Métodos e construtores devem ter o parênteses de abertura na mesma linha, mesmo que ultrapassem o limite de tamanho
+                                de coluna.
+                            </li>
+                            <li>
+                                Quando uma linha for quebrada em uma expressão de atribuição, a quebra deve ocorrer após o símbolo de igual.
+                            </li>
+                            <li>
+                                Em blocos <i>multi-catch</i>, o operador <code>|</code> deve aparecer antes da quebra de linha.
+                            </li>
+                        </ul>
+                    </p>
+                    <h5 id="formatacao-blocos-vazios" style="padding-bottom: 0px;">Blocos vazios</h5>
+                    <p>
+                        <i>Opcionalmente</i> um bloco vazio pode ser fechado imediatamente depois de ser aberto, sem nenhum caracter ou quebra de linha entre as chaves,
+                        a não ser que seja uma instrução de multi-bloco (uma que contém múltiplos blocos <code>if/else-if/else</code> ou
+                        <code>try/catch/finally</code>)
+                        Exemplo:
+                        <pre class="prettyprint pln">
+void metodo() {}
+</pre>
+                    </p>
+                    <h4 id="nomeacao" style="padding-bottom: 0px;">Nomeação</h4>
+                    <h5 id="nomeacao-identificadores" style="padding-bottom: 0px;">Identificadores</h5>
+                    <p>
+                        Os identificadores devem seguir as <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html">regras do Java</a>.
+                        Evite utilizar identificadores com apenas um caracter. Por exemplo, prefira <code>Method metodo</code> a <code>Method m</code> (uma 
+                        exceção a essa recomendação é a já tradicional utilização de <code>i</code>, <code>j</code>, <code>k</code>, etc como identificadores de contadores, especialmente
+                        em instruções <code>for</code>)
+                    </p>
+                    <h5 id="nomeacao-constantes" style="padding-bottom: 0px;">Constantes</h5>
+                    <p>
+                        Nomes de constantes utilizam todas suas letras em maiúsculas com as palavras separadas por <i>underscore</i> (<code>CONSTANT_CASE</code>).
+                        Toda constante é um campo com os modificadores <code>static</code> e <code>final</code>, porém nem todos os campos com esses
+                        modificadores são constantes. Um campo <code>static final</code> cujo estado observável pode mudar certamente não pode
+                        ser considerado uma constante. Por exemplo:
+                        <pre class="prettyprint pln">
+// Constantes
+private static final Object NULL_HOLDER = new NullHolder();
+public static final int DEFAULT_PORT = -1;
+
+// Não são constantes
+private static final ThreadLocal<Executor> executorHolder = new ThreadLocal<Executor>();
+private static final Set<String> internalAnnotationAttributes = new HashSet<String>();
+                        </pre>
+                    </p>
+                    <h5 id="nomeacao-pacotes" style="padding-bottom: 0px;">Pacotes</h5>
+                    <p>
+                        Nomes de pacotes devem estar com todas as letras em minúsculo, com palavras consecutivas apenas concatenadas,
+                        sem <i>underscore</i> entre elas. Por exemplo, <code>br.jus.stf.plataforma.userauthentication</code>, mas não
+                        <code>br.jus.stf.plataforma.userAuthentication</code> ou <code>br.jus.stf.plataforma.user_authentication</code>.
+                    </p>
+                    <h5 id="nomeacao-classes" style="padding-bottom: 0px;">Classes</h5>
+                    <p>
+                        Os nomes de classes devem ser escritos em <code>UpperCamelCase</code>. Nomes de classe são tipicamente substantivos ou
+                        substantivos seguidos de qualificadores. Por exemplo, <code>Anexo</code> ou <code>ClassePeticionavel</code>.
+                        Nomes de interfaces também podem ser substativos ou substantivos seguidos de qualificadores (por exemplo, <i>List</i>),
+                        além de adjetivos (por exemplo, <code>Peticionavel</code>).
+                    </p>
+                    <p>
+                        Classes de teste unitário devem iniciar com o nome da classe que estão testando seguido de <code>UnitTests</code>. Por exemplo,
+                        <code>PecaUnitTests</code>. Classes de teste de integração devem iniciar com o nome da funcionalidade seguido de <code>IntegrationTests</code>.
+                        Por exemplo, <code>ProcessoOriginarioIntegrationTests</code>.
+                    </p>
+                    <h5 id="nomeacao-metodos" style="padding-bottom: 0px;">Métodos</h5>
+                    <p>
+                        Nomes de métodos devem ser escritos em <code>lowerCamelCase</code>. Nomes de métodos são tipicamente verbos ou
+                        verbos seguidos de qualificadores. Por exemplo, <code>handle</code> ou <code>autuarRecursal</code>.
+                    </p>
+                    <h5 id="nomeacao-campos" style="padding-bottom: 0px;">Campos</h5>
+                    <p>
+                        O nome de campos não constantes (estáticos ou não) devem ser escritos em <code>lowerCamelCase</code>. Esses nomes são normalmente
+                        substantivos ou substantivos seguidos de qualificadores. Por exemplo, <code>numeroProcesso</code> ou <code>peticao</code>.
+                    </p>
+                    <h5 id="nomeacao-parametros" style="padding-bottom: 0px;">Parâmetros</h5>
+                    <p>
+                        Os nomes de parâmetros de métodos devem ser escritos em <code>lowerCamelCase</code>.
+                        Nomes de parâmetros com apenas um caracter devem ser evitados em métodos públicos.
+                    </p>
+                    <h5 id="nomeacao-variaveis-locais" style="padding-bottom: 0px;">Variáveis locais</h5>
+                    <p>
+                        Os nomes de variáveis locais devem ser escritos em <code>lowerCamelCase</code>. Mesmo quando finais e imutáveis,
+                        variáveis locais não são consideradas constantes e não devem ter seus nomes em <code>CONSTANT_CASE</code>.
+                    </p>
+                    <h5 id="nomeacao-variaveis-tipo" style="padding-bottom: 0px;">Variáveis de tipo parametrizado</h5>
+                    <p>
+                        Os nomes das variáveis de tipo parametrizado devem ser escritos com uma única letra maiúscula,
+                        opcionalmente seguida de um único numeral (por exemplo, <code>E</code>, <code>T</code>, <code>X</code>, <code>T2</code>)
+                    </p>
+                    <h3 id="praticas-programcao" style="padding-bottom: 0px;">Boas práticas de programação</h3>
+                    <hr>
+                    <h4 id="utilizacao-override" style="padding-bottom: 0px;">Utilização de <code>@Override</code></h4>
+                    <p>
+                        Um método deve ser anotado com <code>@Override</code> sempre que esse método estiver sobreescrevendo um método de uma
+                        classe pai ou implementando um método de uma interface.
+                    </p>
+                    <h4 id="metodos-setter" style="padding-bottom: 0px;">Métodos <i>setter</i></h4>
+                    <p>
+                        Crie métodos <i>setters</i> apenas se eles realmente forem necessários. A ordem dos <i>setters</i> deve refletir sua importância e
+                        não apenas a ordem histórica de inclusão. Além disso, essa ordem deverá ser consistente com a ordem dos campos. 
+                    </p>
+                    <h4 id="operador-ternario" style="padding-bottom: 0px;">Operador ternário</h4>
+                    <p>
+                        Sempre coloque o operador ternário entre parênteses. Por exemplo:
+                        <pre>
+return (foo != null ? foo : "default");
+</pre>
+                    </p>
+                    <h3 id="praticar-ddd" style="padding-bottom: 0px;">Práticas do Domain-Driven Design</h3>
+                    <hr>
+                    <h4 id="classes-dominio" style="padding-bottom: 0px;">Classes de domínio</h4>
+                    <p>
+                        A seguir estão algumas regras gerais sobre práticas recomendadas nas classes de domínio:
+                        <ul>
+                            <li>
+                                Os nomes das classes devem refletir a <a href="http://martinfowler.com/bliki/UbiquitousLanguage.html">linguagem ubíqua</a>
+                                baseada no modelo de domínio.
+                            </li>
+                            <li>
+                                Não deverão ser usados métodos <i>getters</i> iniciando com <code>get</code>. Tais métodos deverão
+                            ser nomeados com apenas o nome da propriedade de negócio que ele representa. Por exemplo:
+<pre>public PessoaId pessoa() {
+    return pessoa;
+}
+</pre></li>
+                            <li>
+                                Não deverão existir métodos <i>setters</i> para simplesmente alterar um estado de um objeto de domínio. A alteração de seu
+                                estado deverá ocorrer por meio de métodos com nomes que reflitam a linguagem ubíqua adotada. Por exemplo:
+<pre>
+public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autuador, Status status) {
+    identificar(classe, numero);
+    autuar(partes, autuador, status);
+}
+</pre>
+                            </li>
+                        </ul>
+                    </p>
                 </div>
     
             </div>
