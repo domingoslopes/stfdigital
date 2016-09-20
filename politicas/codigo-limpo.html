@@ -421,10 +421,10 @@
                          código-fonte. Elas serão dispostas em grupos na seguinte ordem:
                          <ul>
                              <li><i>Imports</i> estáticos ordenados alfabeticamente</li>
-                             <li><i>Imports</i> dos pacotes iniciados em java ordenados alfabeticamente</li>
-                             <li><i>Imports</i> dos pacotes iniciados em javax ordenados alfabeticamente</li>
-                             <li><i>Imports</i> dos pacotes iniciados em org ordenados alfabeticamente</li>
-                             <li><i>Imports</i> dos pacotes iniciados em com ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em <code>java</code> ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em <code>javax</code> ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em <code>org</code> ordenados alfabeticamente</li>
+                             <li><i>Imports</i> dos pacotes iniciados em <code>com</code> ordenados alfabeticamente</li>
                              <li><i>Imports</i> dos pacotes iniciados com prefixos diferentes dos anteriores ordenados alfabeticamente</li>
                          </ul>
                          Cada grupo acima é separado do outro por uma linha em branco. Essa organização acima já é a padrão realizada pelo Eclipse
@@ -447,7 +447,7 @@
                             <li>Implementações de métodos oriundas de <i>interfaces</i></li>
                             <li>Métodos privados ou protegidos que são chamados por implementações de métodos oriundos de interfaces</li>
                             <li>Outros métodos</li>
-                            <li>Métodos <i>equals</i>, <i>hashCode</i> e <i>toString</i></li>
+                            <li>Métodos <code>equals</code>, <code>hashCode</code> e <code>toString</code></li>
                         </ul>
                         Os métodos privados devem ser colocados imediatamente abaixo do método que os referencia. 
                     </p>
@@ -512,7 +512,7 @@ return new MinhaClasse() {
                     </p>
                     <h4 id="formatacao-quebra-linha" style="padding-bottom: 0px;">Quebras de linha</i></h4>
                     <p>
-                        O limite de tamanho de coluna é de 100 caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
+                        O limite de tamanho de coluna é de <b>100</b> caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
                         da linha ao invés de na próxima linha. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
                         <pre class="prettyprint pln">
 if (chamadaDeMetodo1(param1, param2) && chamadaDeMetodo2() && chamadaDeMetodo3() &&
@@ -545,6 +545,22 @@ if (chamadaDeMetodo1(param1, param2) && chamadaDeMetodo2() && chamadaDeMetodo3()
                         Exemplo:
                         <pre class="prettyprint pln">
 void metodo() {}
+</pre>
+                    </p>
+                    <h5 id="formatacao-lambda" style="padding-bottom: 0px;"><i>Lambdas</i></h5>
+                    <p>
+                        Ao escrever expressões <i>lambda</i>, especialmente como parâmetros para métodos da API de <i>streams</i>, deve-se optar
+                        por deixar cada chamada de método que receba uma expressão <i>lambda</i> em uma linha separada. Por exemplo:
+<pre class="prettyprint pln">
+return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+        .filter(OAuth2Authentication.class::isInstance)
+        .map(OAuth2Authentication.class::cast)
+        .map(auth -> auth.getUserAuthentication().getDetails())
+        .map(Map.class::cast)
+        .map(principal -> principal.get("componentes"))
+        .map(List.class::cast)
+        .map(componentes -> componentes.contains(componente.getId()))
+        .orElse(false);
 </pre>
                     </p>
                     <h4 id="nomeacao" style="padding-bottom: 0px;">Nomeação</h4>
@@ -612,9 +628,91 @@ private static final Set<String> internalAnnotationAttributes = new HashSet<Stri
                     <h5 id="nomeacao-variaveis-tipo" style="padding-bottom: 0px;">Variáveis de tipo parametrizado</h5>
                     <p>
                         Os nomes das variáveis de tipo parametrizado devem ser escritos com uma única letra maiúscula,
-                        opcionalmente seguida de um único numeral (por exemplo, <code>E</code>, <code>T</code>, <code>X</code>, <code>T2</code>)
+                        opcionalmente seguida de um único numeral (por exemplo, <code>E</code>, <code>T</code>, <code>X</code>, <code>T2</code>).
                     </p>
-                    <h3 id="praticas-programcao" style="padding-bottom: 0px;">Boas práticas de programação</h3>
+                    <h3 id="comentarios" style="padding-bottom: 0px;">Comentários</h3>
+                    <hr>
+                    <p>
+                        Comentários de bloco devem aparecer no mesmo nível de indentação do código no qual eles apareçam. Eles podem ser escritos
+                        no estilo <code>/* ... */</code> ou <code>// ...</code>. Para comentários de várias linhas, cada linha subsquente deve
+                        começar com <code>*</code> alinhado ao <code>*</code> da linha anterior. Por exemplo:
+<pre class="prettyprint pln">
+/*
+ * Exemplo de             // Exemplo de
+ * comentário.            // comentário.
+ */
+</pre>
+                        Se o comentário tiver apenas uma linha, deve-se utilizar preferencialmente o estilo <code>// ...</code>.
+                        Por exemplo:
+<pre class="prettyprint pln">
+// Recupera o próximo status.
+Status status = statusAdapter.nextStatus(protocolo.identity(), command.getTipoProcesso());
+</pre>
+                    </p>
+                    <p>
+                        O limite de tamanho de coluna dos comentários também é de <b>100</b> caracteres.
+                    </p>
+                    <h3 id="javadoc" style="padding-bottom: 0px;"><i>Javadoc</i></h3>
+                    <hr>
+                    <h4 id="javadoc-formatacao" style="padding-bottom: 0px;">Formatação</h4>
+                    <p>
+                        O <i>javadoc</i> deve ser escrito no estilo <code>/** ... */</code> e possui um limite de
+                        tamanho de coluna de <b>100</b> caracteres. Por exemplo:
+<pre class="prettyprint pln">
+/**
+ * Este é um exemplo de um Javadoc. O texto deve ser escrito e quebrará
+ * normalmente.
+ */
+public Integer metodo(String parametro) {
+    ...
+}
+</pre>
+                        A primeira linha do <i>javadoc</i> conterá sempre apenas os caracteres <code>/**</code>. Todos os
+                        parágrafos exceto o primeiro conterá <code>&lt;p&gt;</code> antes da primeira palavra (lembrando que essa
+                        tag não precisa ser fechada com <code>&lt;/p&gt;</code>).
+                    </p>
+                    <p>
+                        O primeiro parágrafo do <i>javadoc</i> deverá conter uma breve descrição da classe ou método. Os parágrafos
+                        subsequentes poderão detalhar o funcionamento da classe ou método.
+                    </p>
+                    <h4 id="javadoc-clausulas-at" style="padding-bottom: 0px;">Cláusulas @</h4>
+                    <p>
+                        As cláusulas <code>@author</code> e <code>@since</code> são obrigatórias para <i>javadocs</i> de classes
+                        <i>top-level</i> e devem aparecer no fim do <i>javadoc</i>, depois de seus parágrafos de descrição.
+                        Normalmente não se deve utilizar <code>@author</code> em métodos específicos de uma classe. Caso
+                        mais de um desenvolvedor tenha contribuído com a escrita de uma classe, mais de uma cláusula <code>@author</code>
+                        deverá ser colocada no <i>javadoc</i> da classe com os respectivos autores. Já o <code>@since</code> poderá
+                        ser utilizado em algum método da API pública de uma classe.
+                    </p>
+                    <p>
+                        As outras cláusulas @ que podem aparecer em uma linha isoladas devem aparecer na seguinte ordem:
+                        <code>@author, @since, @param, @return, @throws, @see, @deprecated</code>.
+                    </p>
+                    <p>
+                        A seguir estão algumas orientações específicas de algumas cláusulas:
+                        <ul>
+                            <li><code>@since</code>: Poderá ter a versão da proxima release. Enquanto não tiver nenhuma release, deverá ser 1.0.0.
+                            Também poderá aparecer uma cláusula <code>@since</code> com a data na qual a classe foi criada no formato dd.mm.aaaa (dia, mês, ano)</li>
+                            <li><code>@param</code>: Essa cláusula deverá ser seguida por espaço e o nome do parâmetro do método. Depois do nome, deverá seguir
+                            uma breve descrição do parâmetro precedida por um espaço em branco.</li>
+                            <li><code>@return</code>: Essa cláusula deverá ser seguida por uma descrição do retorno do método.</li>
+                            <li><code>@throws</code>: Essa cláusula deverá ser usada para documentar exceções checadas ou não-checadas que podem ser lançadas
+                            pelo método. Deverá seguir o padrão <code>@throws MinhaExcecao se ...</code>, que trará a situação sob a qual essa
+                            exceção será lançada.</li>
+                        </ul>
+                    </p>
+                    <h4 id="javadoc-quando-utilizar" style="padding-bottom: 0px;">Quando utilizar</h4>
+                    <p>
+                        O <i>javadoc</i> deverá estar presente no mínimo para cada classe pública e para cada método público ou protegido dela, com algumas
+                        exceções a seguir:
+                        <ul>
+                            <li>Métodos simples e óbvios como <code>getSigla</code> ou <code>setSigla</code></li>
+                            <li>Métodos que sobreescrevem métodos de classes-pai.</li>
+                        </ul>
+                        Outras classes e métodos que não os citados acima também podem opcionalmente ter <i>javadoc</i>, quando necessário
+                        para esclarecer o código.
+                    </p>
+                    <h3 id="praticas-programacao" style="padding-bottom: 0px;">Boas práticas de programação</h3>
                     <hr>
                     <h4 id="utilizacao-override" style="padding-bottom: 0px;">Utilização de <code>@Override</code></h4>
                     <p>
@@ -629,11 +727,45 @@ private static final Set<String> internalAnnotationAttributes = new HashSet<Stri
                     <h4 id="operador-ternario" style="padding-bottom: 0px;">Operador ternário</h4>
                     <p>
                         Sempre coloque o operador ternário entre parênteses. Por exemplo:
-                        <pre>
+                        <pre class="prettyprint pln">
 return (foo != null ? foo : "default");
 </pre>
                     </p>
-                    <h3 id="praticar-ddd" style="padding-bottom: 0px;">Práticas do Domain-Driven Design</h3>
+                    <h4 id="referencias-metodo-campo" style="padding-bottom: 0px;">Referências a métodos e campos</h4>
+                    <p>
+                        Um campo de uma classe deve sempre ser referenciado utilizando <code>this</code>. Por outro lado,
+                        um método de uma classe nunca deve ser referenciado usando <code>this</code>.
+                    </p>
+                    <h4 id="documentacao-apis" style="padding-bottom: 0px;">Documentação de APIs</h4>
+                    <p>
+                        As APIs Rest deverão ser documentadas com as anotações do <i>Swagger</i>. O método da classe <code>RestResource</code>
+                        responsável por tratar alguma operação deve ser anotado com <code>@ApiOperation</code> com uma descrição apropriada
+                        para a operação. Por exemplo:
+                        <pre class="prettyprint pln">
+@RequestMapping(value = "/devolucao-assinatura", method = RequestMethod.POST)
+@ApiOperation(value = "Realiza a assinatura do ofício de devolução de uma remessa")
+public void assinarOficio(@RequestBody @Valid AssinarOficioParaDevolucaoCommand command,
+        BindingResult binding) {
+    if (binding.hasErrors()) {
+        throw new IllegalArgumentException(message(binding));
+    }
+    
+    recebimentoApplicationService.handle(command);
+}
+</pre>
+                    Os <i>commands</i> recebidos pelas APIs Rest deverão ser documentados com as anotações <code>@ApiModel</code> no
+                    nível da classe e <code>@ApiModelProperty</code> nos seus campos. Por exemplo:
+                        <pre class="prettyprint pln">
+@ApiModel(
+        description = "Command que realiza a ação de assinatura do ofício de devolução de uma remessa")
+public class AssinarOficioParaDevolucaoCommand {
+
+    @NotNull
+    @ApiModelProperty("Protocolo da remessa")
+    private Long protocoloId;
+</pre>
+                    </p>
+                    <h3 id="praticas-ddd" style="padding-bottom: 0px;">Práticas do Domain-Driven Design</h3>
                     <hr>
                     <h4 id="classes-dominio" style="padding-bottom: 0px;">Classes de domínio</h4>
                     <p>
@@ -646,14 +778,14 @@ return (foo != null ? foo : "default");
                             <li>
                                 Não deverão ser usados métodos <i>getters</i> iniciando com <code>get</code>. Tais métodos deverão
                             ser nomeados com apenas o nome da propriedade de negócio que ele representa. Por exemplo:
-<pre>public PessoaId pessoa() {
+<pre class="prettyprint pln">public PessoaId pessoa() {
     return pessoa;
 }
 </pre></li>
                             <li>
                                 Não deverão existir métodos <i>setters</i> para simplesmente alterar um estado de um objeto de domínio. A alteração de seu
                                 estado deverá ocorrer por meio de métodos com nomes que reflitam a linguagem ubíqua adotada. Por exemplo:
-<pre>
+<pre class="prettyprint pln">
 public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autuador, Status status) {
     identificar(classe, numero);
     autuar(partes, autuador, status);
@@ -661,6 +793,12 @@ public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autua
 </pre>
                             </li>
                         </ul>
+                    </p>
+                    <h3 id="formatador-codigo-java" style="padding-bottom: 0px;">Formatador de código Java</h3>
+                    <hr>
+                    <p>
+                        A seguir poderá ser baixado o formatador de código Java para o Eclipse:
+                        <a href="../assets/xmls/STF Digital-Java-Formatter.xml" target="_blank">Download</a>
                     </p>
                 </div>
     
