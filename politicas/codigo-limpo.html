@@ -430,7 +430,7 @@
                          Cada grupo acima é separado do outro por uma linha em branco. Essa organização acima já é a padrão realizada pelo Eclipse
                          ao executar o comando <i>"Organize imports"</i>.
                     </p>
-                    <h4 id="declaracao-classe" style="padding-bottom: 0px;">Declaração de classe</i></h4>
+                    <h4 id="declaracao-classe" style="padding-bottom: 0px;">Declaração de classe</h4>
                     <p>
                          Cada arquivo conterá apenas uma declaração de classe <i>top-level</i>. 
                     </p>
@@ -512,7 +512,7 @@ return new MinhaClasse() {
                     </p>
                     <h4 id="formatacao-quebra-linha" style="padding-bottom: 0px;">Quebras de linha</i></h4>
                     <p>
-                        O limite de tamanho de coluna é de <b>100</b> caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
+                        O limite de tamanho de coluna é de <b>120</b> caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
                         da linha ao invés de na próxima linha. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
                         <pre class="prettyprint pln">
 if (chamadaDeMetodo1(param1, param2) && chamadaDeMetodo2() && chamadaDeMetodo3() &&
@@ -650,14 +650,14 @@ Status status = statusAdapter.nextStatus(protocolo.identity(), command.getTipoPr
 </pre>
                     </p>
                     <p>
-                        O limite de tamanho de coluna dos comentários também é de <b>100</b> caracteres.
+                        O limite de tamanho de coluna dos comentários também é de <b>120</b> caracteres.
                     </p>
                     <h3 id="javadoc" style="padding-bottom: 0px;"><i>Javadoc</i></h3>
                     <hr>
                     <h4 id="javadoc-formatacao" style="padding-bottom: 0px;">Formatação</h4>
                     <p>
                         O <i>javadoc</i> deve ser escrito no estilo <code>/** ... */</code> e possui um limite de
-                        tamanho de coluna de <b>100</b> caracteres. Por exemplo:
+                        tamanho de coluna de <b>120</b> caracteres. Por exemplo:
 <pre class="prettyprint pln">
 /**
  * Este é um exemplo de um Javadoc. O texto deve ser escrito e quebrará
@@ -799,6 +799,214 @@ public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autua
                     <p>
                         A seguir poderá ser baixado o formatador de código Java para o Eclipse:
                         <a href="../assets/xmls/STF Digital-Java-Formatter.xml" target="_blank">Download</a>
+                    </p>
+
+                    <h2 id="padrao-codificao-frontend" style="padding-bottom: 0px;">Padrão de Codificação de <i>Front-end</i> (Typescript)</h2>
+                    <hr>
+
+                    <h3 id="fe-arquivos-codigo-fonte" style="padding-bottom: 0px;">Arquivos de código-fonte</h3>
+                    <hr>
+                    <h4 id="fe-nome-arquivo" style="padding-bottom: 0px;">Nome de arquivo</h4>
+                    <p>
+                        O nome de um arquivo de código-fonte terá a extensão ".ts" e seguirá as seguintes regras de formação: 
+                        <ul>
+                            <li>
+                                Para arquivos com componentes do <i>Angular</i> como <i>modules</i>, <i>controllers</i>, <i>services</i>,
+                                <i>filters</i>, etc., o nome deverá ser formado por <code>funcionalidade.tipo.ts</code>
+                            </li>
+                            <li>
+                                Classes e interfaces auxiliares de uma funcionalidade (que foram exportadas) devem ser incluídas em um único arquivo com o nome
+                                <code>funcionalidade.model.ts</code>. Classes e interfaces específicas da implementação de um componente podem
+                                permanecer no próprio arquivo da funcionalidade (elas não deverão ser exportadas).
+                            </li>
+                            <li>
+                                Quando a funcionalidade for implementada por uma classe, o nome do arquivo que a contém deve ser o nome dela (desconsiderando o
+                                sufixo do tipo de funcionalidade) todo em minúsculo convertendo de <code>CammelCase</code> para a notação de cada palavra separada
+                                por hífen, seguido do tipo da funcionalidade e da extensão ".ts". Por exemplo, a classe <code>AutuacaoRecursalService</code>
+                                deve estar em um arquivo de nome <code>autuacao-recursal.service</code>, a classe <code>AutuacaoRecursalController</code> em um 
+                                de nome <code>autuacao-recursal.controller</code>.
+                            </li>
+                        </ul>
+                        Exemplos:
+<pre class="prettyprint pln">
+// Arquivo autuacao-recursal.service.ts
+...
+import autuacaoRecursal from "../shared/recursal.module";
+
+export class AutuacaoRecursalService {
+    ...
+}
+
+class ValidadorAutuacao implements cmd.CommandValidator {
+    ...
+}
+
+autuacaoRecursal.service('app.autuacao.recursal.AutuacaoRecursalService', AutuacaoRecursalService);
+
+export default autuacaoRecursal;
+</pre>
+<pre class="prettyprint pln">
+// Arquivo autuacao-recursal.model.ts
+...
+export class AutuarProcessoRecursalCommand implements Command {
+    ...
+}
+
+export interface ProcessoRecursal extends Processo {
+	...
+}
+</pre>
+                    </p>
+                    <h4 id="fe-codificacao-arquivo" style="padding-bottom: 0px;">Codificação de arquivo</h4>
+                    <p>
+                        A codificação dos arquivos de código-fonte será a UTF-8.
+                    </p>
+                    <h3 id="fe-estrutura-arquivos-codigo-fonte" style="padding-bottom: 0px;">Estrutura de arquivos de código-fonte</h3>
+                    <hr>
+                    <p>
+                        Um arquivo de código-fonte consiste das seguintes seções, nessa ordem:
+                        <ol>
+                            <li>Instruções <i>import</i></li>
+                            <li>Definições de tipos (classes, interfaces, enums, etc)</li>
+                        </ol>
+                        Exatamente uma linha em branco separará uma seção da outra. 
+                    </p>
+                    <h4 id="fe-instrucoes-import" style="padding-bottom: 0px;">Instruções <i>import</i></h4>
+                    <p>
+                         Deve-se utilizar a notação de import/export do ECMAScript 2015. Exemplos:
+<pre class="prettyprint pln">
+import {Parte, Processo} from "../../shared/autuacao.model";
+</pre>
+<pre class="prettyprint pln">
+import IStateService = angular.ui.IStateService;
+</pre>
+<pre class="prettyprint pln">
+...
+autuacaoRecursal.controller("app.autuacao.recursal.AutuacaoRecursalController", AutuacaoRecursalController);
+export default autuacaoRecursal;
+</pre>
+                        No <i>import</i>, não deverão ser utilizados espaços depois de <code>{</code> e antes de <code>}</code>.
+                    </p>
+                    <p>
+                        Os imports deverão ser organizados em grupos na seguinte ordem:
+                        <ul>
+                            <li><i>Imports</i> de bibliotecas externas</li>
+                            <li><i>Imports</i> de bibliotecas do STF Digital que estão fora do contexto atual</li>
+                            <li><i>Imports</i> de bibliotecas do contexto atual</li>
+                            <li><i>Imports</i> diretos de arquivos</li>
+                        </ul>
+                        Nesses grupos, primeiro deverão aparecer os <i>imports</i> de <i>alias</i> e depois os <i>imports</i>
+                        de módulos externos. No caso de imports de módulos externos, deverão aparecer primeiro os <i>imports</i>
+                        de tipos e depois os <i>imports</i> de variáveis. Cada <i>import</i> de um arquivo deve trazer todos
+                        os tipos que são importados dele entre chaves e separados por vírgula e espaço. Exemplos:
+<pre class="prettyprint pln">
+import IHttpService = angular.IHttpService;
+import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
+import IPromise = angular.IPromise;
+
+import cmd = app.support.command;
+import Properties = app.support.constants.Properties;
+
+import {AutuarProcessoRecursalCommand, Tese} from "../shared/recursal.model";
+import autuacaoRecursal from "../shared/recursal.module";
+</pre>
+                    </p>
+                    <h4 id="fe-declaracoes-tipos" style="padding-bottom: 0px;">Declarações de tipos</h4>
+                    <p>
+                         Um arquivo pode conter várias declarações de tipos. No caso de classes que são componentes <i>AngularJS</i>, é
+                         recomendável que apenas essa classe seja exportada, sendo permitida a declaração de outros tipos auxiliares mas que não devem
+                         ser exportados. Um tipo deverá ser definido antes de ser utilizado por outro tipo. Portanto, se a <code>ClasseA</code> utilizar
+                         a <code>ClasseB</code>, a definição da <code>ClasseA</code> deverá aparecer antes da definição da <code>ClasseB</code>
+                         no arquivo de código-fonte.
+                    </p>
+                    <h5 id="fe-ordem-membros-classe" style="padding-bottom: 0px;">Ordem dos membros de uma classe</h5>
+                    <p>
+                        A ordem dos membros da classe deve ser a seguinte:
+                        <ul>
+                            <li>Campos estáticos</li>
+                            <li>Campos de instância</li>
+                            <li>Construtores</li>
+                            <li>Métodos privados chamados por todos os construtores</li>
+                            <li>Métodos-fábrica estáticos</li>
+                            <li><i>Getters</i> e <i>setters</i>)</li>
+                            <li>Implementações de métodos oriundas de <i>interfaces</i></li>
+                            <li>Métodos privados ou protegidos que são chamados por implementações de métodos oriundos de interfaces</li>
+                            <li>Outros métodos</li>
+                        </ul>
+                        Os métodos privados devem ser colocados imediatamente abaixo do método que os referencia. 
+                    </p>
+                    <h3 id="fe-formatacao" style="padding-bottom: 0px;">Formatação</h3>
+                    <hr>
+                    <h4 id="fe-formatacao-indentacao" style="padding-bottom: 0px;">Indentação</h4>
+                    <p>
+                        Cada nível de indentação deve conter 4 espaços em branco. Tabs não deverão ser utilizados para esse propósito.
+                    </p>
+                    <h4 id="fe-formatacao-instrucoes" style="padding-bottom: 0px;">Uma instrução por linha</h4>
+                    <p>
+                        Cada instrução deverá ser seguida de uma quebra de linha.
+                    </p>
+                    <h4 id="fe-formatacao-espacos-branco" style="padding-bottom: 0px;">Espaços em branco</h4>
+                    <p>
+                        Uma linha em branco deverá aparecer:
+                        <ul>
+                            <li>
+                                Entre membros consecutivos de uma classe: campos, construtores, métodos.
+                            </li>
+                            <li>
+                                Entre instruções, conforme necessidade, para organizar o código em subseções lógicas.
+                            </li>
+                            <li>
+                                <i>Opcionalmente</i> antes do primeiro membro ou depois do último membro da classe.
+                            </li>
+                        </ul>
+                    </p>
+                    <h4 id="fe-formatacao-chaves" style="padding-bottom: 0px;">Chaves</h4>
+                    <p>
+                        Construções similares a bloco (corpo de classe, interface, método ou construtor) devem seguir o estilo de
+                        Kernighan & Ritchie (também conhecido como chaves egípcias):
+                        <ul>
+                            <li>Nenhuma quebra de linha antes da chave de abertura mas um único espaço antes dela</li>
+                            <li>Quebra de linha após a chave de abertura</li>
+                            <li>Quebra de linha antes da chave de fechamento</li>
+                            <li>Quebra de linha depois da chave de fechamento caso ela termine uma instrução ou o corpo
+                                de um método, construtor.
+                            </li>
+                            <li>Nenhuma quebra de linha depois da chave caso ela seja seguida de <i>else</i>, <i>catch</i>, <i>finally</i>
+                                ou ponto e vírgula 
+                            </li>
+                        </ul>
+                        Exemplo:
+                        <pre class="prettyprint pln">
+export class MinhaClasse {
+
+    private api: string;
+
+    constructor(private $http: IHttpService) {
+    	this.api = "minha-api"; 
+    }
+
+    public listarAssuntos(assunto: string): IPromise&lt;Assunto[]&gt; {
+        return this.$http.get(this.api + '/assuntos', {params: {'termo' : assunto}})
+                .then((response : ng.IHttpPromiseCallbackArg&lt;Assunto[]&gt;) => {
+                    return response.data;
+                });
+    }
+
+}
+</pre>
+                    <h4 id="fe-formatacao-quebra-linha" style="padding-bottom: 0px;">Quebras de linha</i></h4>
+                    <p>
+                        O limite de tamanho de coluna é de <b>120</b> caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
+                        da linha ao invés de na próxima linha. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
+                        <pre class="prettyprint pln">
+public isValid(command: PeticionarOrgaoCommand): boolean {
+    if (command.poloAtivo.length > 0 && command.poloPassivo.length > 0 && command.anexos.length > 0 &&
+            command.classeId && command.sigilo && command.orgaoId) {
+        return true;
+    }
+    return false;
+}
+</pre>
                     </p>
                 </div>
     
