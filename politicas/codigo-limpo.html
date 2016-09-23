@@ -461,7 +461,7 @@
                     <p>
                         Cada instrução deverá ser seguida de uma quebra de linha.
                     </p>
-                    <h4 id="formatacao-espacos-branco" style="padding-bottom: 0px;">Espaços em branco</h4>
+                    <h4 id="formatacao-espacos-branco" style="padding-bottom: 0px;">Linhas em branco</h4>
                     <p>
                         Uma linha em branco deverá aparecer:
                         <ul>
@@ -563,15 +563,16 @@ return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication(
         .orElse(false);
 </pre>
                     </p>
-                    <h4 id="nomeacao" style="padding-bottom: 0px;">Nomeação</h4>
-                    <h5 id="nomeacao-identificadores" style="padding-bottom: 0px;">Identificadores</h5>
+                    <h3 id="nomeacao" style="padding-bottom: 0px;">Nomeação</h3>
+                    <hr>
+                    <h4 id="nomeacao-identificadores" style="padding-bottom: 0px;">Identificadores</h4>
                     <p>
                         Os identificadores devem seguir as <a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html">regras do Java</a>.
                         Evite utilizar identificadores com apenas um caracter. Por exemplo, prefira <code>Method metodo</code> a <code>Method m</code> (uma 
                         exceção a essa recomendação é a já tradicional utilização de <code>i</code>, <code>j</code>, <code>k</code>, etc como identificadores de contadores, especialmente
                         em instruções <code>for</code>)
                     </p>
-                    <h5 id="nomeacao-constantes" style="padding-bottom: 0px;">Constantes</h5>
+                    <h4 id="nomeacao-constantes" style="padding-bottom: 0px;">Constantes</h4>
                     <p>
                         Nomes de constantes utilizam todas suas letras em maiúsculas com as palavras separadas por <i>underscore</i> (<code>CONSTANT_CASE</code>).
                         Toda constante é um campo com os modificadores <code>static</code> e <code>final</code>, porém nem todos os campos com esses
@@ -587,13 +588,13 @@ private static final ThreadLocal<Executor> executorHolder = new ThreadLocal<Exec
 private static final Set<String> internalAnnotationAttributes = new HashSet<String>();
                         </pre>
                     </p>
-                    <h5 id="nomeacao-pacotes" style="padding-bottom: 0px;">Pacotes</h5>
+                    <h4 id="nomeacao-pacotes" style="padding-bottom: 0px;">Pacotes</h4>
                     <p>
                         Nomes de pacotes devem estar com todas as letras em minúsculo, com palavras consecutivas apenas concatenadas,
                         sem <i>underscore</i> entre elas. Por exemplo, <code>br.jus.stf.plataforma.userauthentication</code>, mas não
                         <code>br.jus.stf.plataforma.userAuthentication</code> ou <code>br.jus.stf.plataforma.user_authentication</code>.
                     </p>
-                    <h5 id="nomeacao-classes" style="padding-bottom: 0px;">Classes</h5>
+                    <h4 id="nomeacao-classes" style="padding-bottom: 0px;">Classes</h4>
                     <p>
                         Os nomes de classes devem ser escritos em <code>UpperCamelCase</code>. Nomes de classe são tipicamente substantivos ou
                         substantivos seguidos de qualificadores. Por exemplo, <code>Anexo</code> ou <code>ClassePeticionavel</code>.
@@ -605,27 +606,27 @@ private static final Set<String> internalAnnotationAttributes = new HashSet<Stri
                         <code>PecaUnitTests</code>. Classes de teste de integração devem iniciar com o nome da funcionalidade seguido de <code>IntegrationTests</code>.
                         Por exemplo, <code>ProcessoOriginarioIntegrationTests</code>.
                     </p>
-                    <h5 id="nomeacao-metodos" style="padding-bottom: 0px;">Métodos</h5>
+                    <h4 id="nomeacao-metodos" style="padding-bottom: 0px;">Métodos</h4>
                     <p>
                         Nomes de métodos devem ser escritos em <code>lowerCamelCase</code>. Nomes de métodos são tipicamente verbos ou
                         verbos seguidos de qualificadores. Por exemplo, <code>handle</code> ou <code>autuarRecursal</code>.
                     </p>
-                    <h5 id="nomeacao-campos" style="padding-bottom: 0px;">Campos</h5>
+                    <h4 id="nomeacao-campos" style="padding-bottom: 0px;">Campos</h4>
                     <p>
                         O nome de campos não constantes (estáticos ou não) devem ser escritos em <code>lowerCamelCase</code>. Esses nomes são normalmente
                         substantivos ou substantivos seguidos de qualificadores. Por exemplo, <code>numeroProcesso</code> ou <code>peticao</code>.
                     </p>
-                    <h5 id="nomeacao-parametros" style="padding-bottom: 0px;">Parâmetros</h5>
+                    <h4 id="nomeacao-parametros" style="padding-bottom: 0px;">Parâmetros</h4>
                     <p>
                         Os nomes de parâmetros de métodos devem ser escritos em <code>lowerCamelCase</code>.
                         Nomes de parâmetros com apenas um caracter devem ser evitados em métodos públicos.
                     </p>
-                    <h5 id="nomeacao-variaveis-locais" style="padding-bottom: 0px;">Variáveis locais</h5>
+                    <h4 id="nomeacao-variaveis-locais" style="padding-bottom: 0px;">Variáveis locais</h4>
                     <p>
                         Os nomes de variáveis locais devem ser escritos em <code>lowerCamelCase</code>. Mesmo quando finais e imutáveis,
                         variáveis locais não são consideradas constantes e não devem ter seus nomes em <code>CONSTANT_CASE</code>.
                     </p>
-                    <h5 id="nomeacao-variaveis-tipo" style="padding-bottom: 0px;">Variáveis de tipo parametrizado</h5>
+                    <h4 id="nomeacao-variaveis-tipo" style="padding-bottom: 0px;">Variáveis de tipo parametrizado</h4>
                     <p>
                         Os nomes das variáveis de tipo parametrizado devem ser escritos com uma única letra maiúscula,
                         opcionalmente seguida de um único numeral (por exemplo, <code>E</code>, <code>T</code>, <code>X</code>, <code>T2</code>).
@@ -945,7 +946,7 @@ import autuacaoRecursal from "../shared/recursal.module";
                     <p>
                         Cada instrução deverá ser seguida de uma quebra de linha.
                     </p>
-                    <h4 id="fe-formatacao-espacos-branco" style="padding-bottom: 0px;">Espaços em branco</h4>
+                    <h4 id="fe-formatacao-espacos-branco" style="padding-bottom: 0px;">Linhas em branco</h4>
                     <p>
                         Uma linha em branco deverá aparecer:
                         <ul>
@@ -954,6 +955,9 @@ import autuacaoRecursal from "../shared/recursal.module";
                             </li>
                             <li>
                                 Entre instruções, conforme necessidade, para organizar o código em subseções lógicas.
+                            </li>
+                            <li>
+                                Entre cada grupo de instruções <i>import</i>.
                             </li>
                             <li>
                                 <i>Opcionalmente</i> antes do primeiro membro ou depois do último membro da classe.
@@ -1007,6 +1011,61 @@ public isValid(command: PeticionarOrgaoCommand): boolean {
     return false;
 }
 </pre>
+                    </p>
+                    <h5 id="fe-formatacao-quando-quebrar" style="padding-bottom: 0px;">Quando quebrar</h5>
+                    <p>
+                        A seguir estão algumas diretrizes de quando quebrar a linha:
+                        <ul>
+                            <li>
+                                Métodos e construtores devem ter o parênteses de abertura na mesma linha, mesmo que ultrapassem o limite de tamanho
+                                de coluna.
+                            </li>
+                            <li>
+                                Quando uma linha for quebrada em uma expressão de atribuição, a quebra deve ocorrer após o símbolo de igual.
+                            </li>
+                        </ul>
+                    </p>
+                    <h5 id="fe-formatacao-blocos-vazios" style="padding-bottom: 0px;">Blocos vazios</h5>
+                    <p>
+                        <i>Opcionalmente</i> um bloco vazio pode ser fechado imediatamente depois de ser aberto, sem nenhum caracter ou quebra de linha entre as chaves,
+                        a não ser que seja uma instrução de multi-bloco (uma que contém múltiplos blocos <code>if/else-if/else</code>)
+                        Exemplos:
+                        <pre class="prettyprint pln">
+class Foo {
+
+    public metodo(parametro: string): void {}
+
+}
+
+export class Bar {}
+</pre>
+                    </p>
+                    <h5 id="fe-formatacao-funcoes-anonimas" style="padding-bottom: 0px;">Funções anônimas</h5>
+                    <p>
+                        Funções anônimas devem ser escritas na notação <i>lambda</i> <code>() => { }</code>.
+                    </p>
+                    <p>
+                        Exemplo:
+<pre class="prettyprint pln">
+public distribuirProcesso(): void {
+    this.distribuicaoComumService.enviarProcessoParaDistribuicao(this.cmdDistribuir).then(() => {
+        this.$state.go('app.tarefas.minhas-tarefas');
+        this.messagesService.success('Processo distribuído com sucesso.');
+    }, () => {
+        this.messagesService.error('Erro ao distribuir o processo.');
+    });
+}
+</pre>
+                    </p>
+                    <h3 id="fe-nomeacao" style="padding-bottom: 0px;">Nomeação</h3>
+                    <hr>
+                    <h4 id="fe-nomeacao-identificadores" style="padding-bottom: 0px;">Identificadores</h4>
+                    <p>
+                        Todos os nomes de variáveis, funções, classes, etc devem seguir as regras de formação das variáveis do <i>Typescript</i>.
+                    </p>
+                    <h5 id="fe-nomeacao" style="padding-bottom: 0px;">Variáveis e funções</h5>
+                    <p>
+                        Nomes de variáveis e funções devem ser escritos em <code>lowerCamelCase</code>.
                     </p>
                 </div>
     
