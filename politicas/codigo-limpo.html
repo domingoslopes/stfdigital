@@ -444,7 +444,7 @@
                             <li>Métodos privados chamados por todos os construtores</li>
                             <li>Métodos-fábrica estáticos</li>
                             <li>Propriedades <i>JavaBean</i> (<i>getters</i> e <i>setters</i>)</li>
-                            <li>Implementações de métodos oriundas de <i>interfaces</i></li>
+                            <li>Implementações de métodos oriundos de <i>interfaces</i></li>
                             <li>Métodos privados ou protegidos que são chamados por implementações de métodos oriundos de interfaces</li>
                             <li>Outros métodos</li>
                             <li>Métodos <code>equals</code>, <code>hashCode</code> e <code>toString</code></li>
@@ -537,7 +537,7 @@ if (chamadaDeMetodo1(param1, param2) && chamadaDeMetodo2() && chamadaDeMetodo3()
                             </li>
                         </ul>
                     </p>
-                    <h5 id="formatacao-blocos-vazios" style="padding-bottom: 0px;">Blocos vazios</h5>
+                    <h4 id="formatacao-blocos-vazios" style="padding-bottom: 0px;">Blocos vazios</h4>
                     <p>
                         <i>Opcionalmente</i> um bloco vazio pode ser fechado imediatamente depois de ser aberto, sem nenhum caracter ou quebra de linha entre as chaves,
                         a não ser que seja uma instrução de multi-bloco (uma que contém múltiplos blocos <code>if/else-if/else</code> ou
@@ -547,7 +547,7 @@ if (chamadaDeMetodo1(param1, param2) && chamadaDeMetodo2() && chamadaDeMetodo3()
 void metodo() {}
 </pre>
                     </p>
-                    <h5 id="formatacao-lambda" style="padding-bottom: 0px;"><i>Lambdas</i></h5>
+                    <h4 id="formatacao-lambda" style="padding-bottom: 0px;"><i>Lambdas</i></h4>
                     <p>
                         Ao escrever expressões <i>lambda</i>, especialmente como parâmetros para métodos da API de <i>streams</i>, deve-se optar
                         por deixar cada chamada de método que receba uma expressão <i>lambda</i> em uma linha separada. Por exemplo:
@@ -609,7 +609,9 @@ private static final Set<String> internalAnnotationAttributes = new HashSet<Stri
                     <h4 id="nomeacao-metodos" style="padding-bottom: 0px;">Métodos</h4>
                     <p>
                         Nomes de métodos devem ser escritos em <code>lowerCamelCase</code>. Nomes de métodos são tipicamente verbos ou
-                        verbos seguidos de qualificadores. Por exemplo, <code>handle</code> ou <code>autuarRecursal</code>.
+                        verbos seguidos de qualificadores. Por exemplo, <code>handle</code> ou <code>autuarRecursal</code>. No contexto do DDD,
+                        em alguns casos, podem também existir métodos escritos como substantivos. Isso ocorre especificamente quando o método
+                        retorna alguma propriedade do domínio (normalmente em substituição aos <i>getters</i>).
                     </p>
                     <h4 id="nomeacao-campos" style="padding-bottom: 0px;">Campos</h4>
                     <p>
@@ -867,8 +869,10 @@ export interface ProcessoRecursal extends Processo {
                     <p>
                         Um arquivo de código-fonte consiste das seguintes seções, nessa ordem:
                         <ol>
+                            <li>Bloco de <i>namespace</i></li>
                             <li>Instruções <i>import</i></li>
-                            <li>Definições de tipos (classes, interfaces, enums, etc)</li>
+                            <li>Definições de tipos (classes, interfaces, enums, etc) e funções</li>
+                            <li>Instruções executáveis (serão executadas quando um módulo for importado)</li>
                         </ol>
                         Exatamente uma linha em branco separará uma seção da outra. 
                     </p>
@@ -889,7 +893,7 @@ export default autuacaoRecursal;
                         No <i>import</i>, não deverão ser utilizados espaços depois de <code>{</code> e antes de <code>}</code>.
                     </p>
                     <p>
-                        Os imports deverão ser organizados em grupos na seguinte ordem:
+                        Os imports deverão ser organizados em grupos na seguinte ordem, cada qual separado do outro por uma linha em branco:
                         <ul>
                             <li><i>Imports</i> de bibliotecas externas</li>
                             <li><i>Imports</i> de bibliotecas do STF Digital que estão fora do contexto atual</li>
@@ -899,16 +903,20 @@ export default autuacaoRecursal;
                         Nesses grupos, primeiro deverão aparecer os <i>imports</i> de <i>alias</i> e depois os <i>imports</i>
                         de módulos externos. No caso de imports de módulos externos, deverão aparecer primeiro os <i>imports</i>
                         de tipos e depois os <i>imports</i> de variáveis. Cada <i>import</i> de um arquivo deve trazer todos
-                        os tipos que são importados dele entre chaves e separados por vírgula e espaço. Exemplos:
+                        os tipos que são importados dele entre chaves e separados por vírgula e espaço. A ordem dos tipos/variáveis
+                        importadas deve ser a ordem alfabética.
+                    </p>
+                    <p>
+                        Exemplos:
 <pre class="prettyprint pln">
-import IHttpService = angular.IHttpService;
+import IHttpService = angular.IHttpService; // Alias para biblioteca externa
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import IPromise = angular.IPromise;
 
 import cmd = app.support.command;
 import Properties = app.support.constants.Properties;
 
-import {AutuarProcessoRecursalCommand, Tese} from "../shared/recursal.model";
+import {AutuarProcessoRecursalCommand, Tese} from "../shared/recursal.model"; // Ordem alfabética dentro dos parênteses
 import autuacaoRecursal from "../shared/recursal.module";
 </pre>
                     </p>
@@ -929,8 +937,8 @@ import autuacaoRecursal from "../shared/recursal.module";
                             <li>Construtores</li>
                             <li>Métodos privados chamados por todos os construtores</li>
                             <li>Métodos-fábrica estáticos</li>
-                            <li><i>Getters</i> e <i>setters</i>)</li>
-                            <li>Implementações de métodos oriundas de <i>interfaces</i></li>
+                            <li><i>Getters</i> e <i>setters</i></li>
+                            <li>Implementações de métodos oriundos de <i>interfaces</i></li>
                             <li>Métodos privados ou protegidos que são chamados por implementações de métodos oriundos de interfaces</li>
                             <li>Outros métodos</li>
                         </ul>
@@ -1061,11 +1069,61 @@ public distribuirProcesso(): void {
                     <hr>
                     <h4 id="fe-nomeacao-identificadores" style="padding-bottom: 0px;">Identificadores</h4>
                     <p>
-                        Todos os nomes de variáveis, funções, classes, etc devem seguir as regras de formação das variáveis do <i>Typescript</i>.
+                        Todos os nomes de variáveis, funções, classes, etc devem ser compostos de uma seuqência dos caracteres <code>A-Z</code>, <code>a-z</code>,
+                        permitindo iniciar com <code>$</code> ou <code>_</code> quando for o caso.
                     </p>
                     <h5 id="fe-nomeacao" style="padding-bottom: 0px;">Variáveis e funções</h5>
                     <p>
                         Nomes de variáveis e funções devem ser escritos em <code>lowerCamelCase</code>.
+                    </p>
+                    <h5 id="fe-nomeacao-namespaces" style="padding-bottom: 0px;"><i>Namespaces</i></h5>
+                    <p>
+                        Nomes de namespaces deverão ser formados por componentes separados por ponto, sendo cada componente
+                        escrito com todas as letras em minúsculo e sem hífen separando diferentes palavras. Por exemplo:
+<pre class="prettyprint pln">
+namespace app.novoprocesso { // Nome correto de namespace
+
+}
+
+namespace app.novoProcesso { // Nome incorreto de namespace. Não se deve separar palavras com cammelCase
+
+}
+</pre>
+                    </p>
+                    <h5 id="fe-nomeacao-tipos" style="padding-bottom: 0px;">Classes, Interfaces e <i>Enums</i></h5>
+                    <p>
+                        Os nomes de classes, interfaces e <i>enums</i> deverão ser escritos em UpperCamelCase.
+                    </p>
+                    <h5 id="fe-nomeacao-metodos" style="padding-bottom: 0px;">Métodos e Funções</h5>
+                    <p>
+                        Os nomes de métodos e funções devem ser escritos em <code>lowerCamelCase</code>. No caso de métodos,
+                        suas chamadas sempre deverão ter a palavra reservada <code>this</code> antes, por imposição
+                        do próprio <i>Typescript.</i> Exemplos:
+<pre class="prettyprint pln">
+export class NovoProcessoController {
+
+    public classe: string;
+
+    public criarNovoProcesso(): Processo {
+        return new Processo(this.classe, this.gerarNumeroProcesso());
+    }
+
+    public gerarNumeroProcesso(): number {
+        ...
+    }
+
+}
+</pre>
+                    </p>
+                    <h5 id="fe-nomeacao-propriedades" style="padding-bottom: 0px;">Propriedades</h5>
+                    <p>
+                        As propriedades devem ser escritos em <code>lowerCamelCase</code>. Esses nomes são normalmente substantivos ou
+                        substantivos seguidos de qualificadores. Por exemplo, <code>peticaoInicial</code> ou <code>processo</code>.
+                    </p>
+                    <h5 id="fe-nomeacao-parametros" style="padding-bottom: 0px;">Parâmetros</h5>
+                    <p>
+                        Os nomes de parâmetros de métodos, funções e construtores devem ser escritos em <code>lowerCamelCase</code>. Nomes
+                        de parâmetros com apenas um caracter devem ser evitados em métodos públicos.
                     </p>
                 </div>
     
