@@ -919,14 +919,16 @@ export default autuacaoRecursal;
                         <ul>
                             <li><i>Imports</i> de bibliotecas externas</li>
                             <li><i>Imports</i> de bibliotecas do STF Digital que estão fora do contexto atual</li>
-                            <li><i>Imports</i> de bibliotecas do contexto atual</li>
+                            <li><i>Imports</i> de bibliotecas do contexto atual (<i>imports</i> relativos)</li>
                             <li><i>Imports</i> diretos de arquivos</li>
                         </ul>
                         Nesses grupos, primeiro deverão aparecer os <i>imports</i> de <i>alias</i> e depois os <i>imports</i>
                         de módulos externos. No caso de imports de módulos externos, deverão aparecer primeiro os <i>imports</i>
-                        de tipos e depois os <i>imports</i> de variáveis. Cada <i>import</i> de um arquivo deve trazer todos
-                        os tipos que são importados dele entre chaves e separados por vírgula e espaço. A ordem dos tipos/variáveis
-                        importadas deve ser a ordem alfabética.
+                        de tipos e depois os <i>imports</i> de variáveis. Cada <i>import</i> de um módulo deve trazer todos
+                        os tipos que são importados dele entre chaves e separados por vírgula e espaço. A ordem dos tipos
+                        importados deve ser a ordem alfabética. No caso de várias instruções <i>imports</i> de diferentes
+                        módulos, essas instruções devem ser ordenadas alfabeticamente pelo nome do módulo. Se o nome do módulo
+                        for um nome relativo ao módulo atual, os módulos mais distantes do módulo atual devem aparecer primeiro.   
                     </p>
                     <p>
                         Exemplos:
@@ -939,6 +941,8 @@ import cmd = app.support.command;
 import Properties = app.support.constants.Properties;
 
 import {AutuarProcessoRecursalCommand, Tese} from "../shared/recursal.model"; // Ordem alfabética dentro dos parênteses
+// Apesar de o nome do módulo começar com "a", o módulo acima, cujo nome começa com "s", está mais distante relativamente do que o abaixo
+import {AutuacaoRecursalService} from "./autuacao-recursal.service"; 
 import autuacaoRecursal from "../shared/recursal.module";
 </pre>
                     </p>
