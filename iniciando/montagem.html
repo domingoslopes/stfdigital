@@ -30,7 +30,7 @@
                     </a>
                     <ul class="dac-header-tabs">
                         <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
-                    </ul>
+                    </ol>
                     <a class="dac-header-console-btn" href="https://github.com/supremotribunalfederal/stfdigital" target="_blank" > 
                         <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
                         <span class="dac-visible-desktop-inline">Repositório</span>
@@ -86,7 +86,7 @@
                                     <li><a href="../politicas/codigo-limpo.html">Código Limpo</a></li>
                                 </ul>
                             </li>
-                        </ul>
+                        </ol>
                     </div>
     
                 </div>
@@ -101,37 +101,23 @@
                     <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Desenvolvimento</a></li>
                     <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Arquitetura</a></li>
                     <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Estratégia</a></li>
-                </ul>
+                </ol>
                 <h1 itemprop="name">Monte seu Ambiente</h1>
             </div>
             <div id="jd-content">
                 <div class="jd-descr" itemprop="articleBody">
-                    <div id="qv-wrapper">
-                        <div id="qv">
-                            <h2>Neste documento</h2>
-                            <ol>
-                                <li>
-                                    <a href="#representacao">...</a>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-    
                     <p>
                         <i>Usamos Gradle, Docker, Eclipse e Visual Studio Code para trabalhar nos serviços do STF Digital.
                         Usamos Gradle como ferramenta de construção, Docker para montar a infra local necessária,
                         Eclipse para trabalhar no código de back-end e Visual Studio Code para trabalhar no 
-                        código de front-end. Siga os passos abaixo para deixar seu ambiente pronto para
-                        começar a trabalhar.</i>
+                        código de front-end.</i>
                     </p>
 
-                    <h2 id="comece" style="padding-bottom: 0px;">Comece a trabalhar no STF Digital</h2>
-                    <hr>
-
                     <p>    
-                        O tutorial abaixo foi criado para o Sistema Operacional Windows. Alguns passos foram documentados 
-                        também para Linux. Caso encontre alguma dificuldade, entre em contato com Rodrigo Barreiros no 
-                        e-mail rodrigo.barreiros@stf.jus.br.
+                        <i>O tutorial abaixo foi criado para o Sistema Operacional Windows. Alguns passos foram documentados 
+                        também para Linux. Siga os passos abaixo para deixar seu ambiente pronto para
+                        começar a trabalhar. Caso encontre alguma dificuldade, entre em contato com Rodrigo Barreiros no 
+                        e-mail rodrigo.barreiros@stf.jus.br.</i>
                     </p>
 
                     <h3 id="comece" style="padding-bottom: 0px;">Baixe a IDE recomendada: Spring Tool Suite</h3>
@@ -405,10 +391,10 @@
                     Você também precisará instalar os seguintes plugins:
                     </p>
 
-                    <ul>
-                        <ol>- Buildship: Eclipse Plug-ins for Gradle</ol>
-                        <ol>- Typescript.java</ol>
-                    </ul>
+                    <ol>
+                        <li> Buildship: Eclipse Plug-ins for Gradle</li>
+                        <li> Typescript.java</li>
+                    </ol>
 
                     <h4 id="" style="padding-bottom: 0px;">Instalando o plugin do Gradle para Eclipse</h4>
                     <hr>
@@ -417,14 +403,14 @@
                     Para baixar o plugin do Gradle siga os passos abaixo:
                     </p>
 
-                    <ul>
-                        <ol>- abra o Eclipse,</ol>
-                        <ol>- clique em Help</ol>
-                        <ol>- "Install New Software...".</ol>
-                        <ol>- Selecione Work with Neon.</ol>
-                        <ol>- Procure General Purpose Tools/Buildship: Eclipse Plug-ins for Gradle.</ol>
-                        <ol>- Next, Next, Finish.</ol>
-                    </ul>
+                    <ol>
+                        <li> abra o Eclipse,</li>
+                        <li> clique em Help</li>
+                        <li> "Install New Software...".</li>
+                        <li> Selecione Work with Neon.</li>
+                        <li> Procure General Purpose Tools/Buildship: Eclipse Plug-ins for Gradle.</li>
+                        <li> Next, Next, Finish.</li>
+                    </ol>
 
                     <h4 id="" style="padding-bottom: 0px;">Instalando o reconhecimento da sintaxe do Typescript</h4>
                     <hr>
@@ -437,13 +423,13 @@
                     Para instalar o reconhecimento da sintaxe do Typescript <a href="https://github.com/angelozerr/typescript.java/wiki/Installation%20Update%20Site" target="_blank">Typescript.java</a> siga os passos abaixo:
                     </p>
 
-                    <ul>
-                        <ol>- Abra o Eclipse > clique em Help > Install New Software... > ADD.</ol>
+                    <ol>
+                        <li> Abra o Eclipse > clique em Help > Install New Software... > ADD.</li>
 
-                        <ol>- Inclua em location site o link do typescript.java "http://oss.opensagres.fr/typescript.ide/1.0.0-SNAPSHOT/". O nome pode ser Typescript.java Update site.</ol>
+                        <li> Inclua em location site o link do typescript.java "http://oss.opensagres.fr/typescript.ide/1.0.0-SNAPSHOT/". O nome pode ser Typescript.java Update site.</li>
 
-                        <ol>- Marque todas as opções e clique em Next, Next, Finish.</ol>
-                    </ul>
+                        <li> Marque todas as opções e clique em Next, Next, Finish.</li>
+                    </ol>
 
                     <p>
                     A instalação do typescript.java não funcionou
@@ -479,12 +465,12 @@
                     Após rodar o comando, um arquivo chamado .project e uma pasta .settings serão criados permitindo importação do projeto no eclipse. Para importar siga os passos abaixo:
                     </p>
 
-                    <ul>
-                        <ol>- Clique com o botão direito na view Package Explorer</ol>
-                        <ol>- Clique em Import</ol>
-                        <ol>- Clique em General > Existing Projects into Workspace</ol>
-                        <ol>- Selecione o diretório em que você rodou o comando "gradle eclipse"</ol>
-                    </ul>
+                    <ol>
+                        <li> Clique com o botão direito na view Package Explorer</li>
+                        <li> Clique em Import</li>
+                        <li> Clique em General > Existing Projects into Workspace</li>
+                        <li> Selecione o diretório em que você rodou o comando "gradle eclipse"</li>
+                    </ol>
 
                     <p>
                     Repita os passos para cada um dos componentes.
@@ -493,16 +479,16 @@
                     <h4 id="" style="padding-bottom: 0px;">Usando apenas o Eclipse (substitui o passo anterior)</h4>
                     <hr>
 
-                    <ul>
-                        <ol>- Clique com o botão direito na view Package Explorer</ol>
-                        <ol>- Clique em Import</ol>
-                        <ol>- Clique em Gradle - aparecerá se o plugin Gradle estiver instalado corretamente</ol>
-                        <ol>- Clique em Gradle Project</ol>
-                        <ol>- Clique em Next, Next</ol>
-                        <ol>- Clique em Browse</ol>
-                        <ol>- Selecione o diretório do projeto (ex: stfdigital/autuacao/recebimento)</ol>
-                        <ol>- clique em Next, Next, Finish `é normal demorar na primeira execução`</ol>
-                    </ul>
+                    <ol>
+                        <li> Clique com o botão direito na view Package Explorer</li>
+                        <li> Clique em Import</li>
+                        <li> Clique em Gradle - aparecerá se o plugin Gradle estiver instalado corretamente</li>
+                        <li> Clique em Gradle Project</li>
+                        <li> Clique em Next, Next</li>
+                        <li> Clique em Browse</li>
+                        <li> Selecione o diretório do projeto (ex: stfdigital/autuacao/recebimento)</li>
+                        <li> clique em Next, Next, Finish `é normal demorar na primeira execução`</li>
+                    </ol>
 
                     <h4 id="" style="padding-bottom: 0px;">Organizando os projetos nos Working Sets "Área de Negócio" e "Plataforma"</h4>
                     <hr>
@@ -516,13 +502,13 @@
                         <img src="assets/images/eclipse.png" width="160">
                     </div>
 
-                    <ul>
-                        <ol>- Clique com o botão direito no nome do projeto</ol>
-                        <ol>- Assign Working Sets</ol>
-                        <ol>- Selecione Autuação ou Plataforma, por exemplo</ol>
-                        <ol>- No cabeçalho da view Package Explorer, clique na seta para baixo</ol>
-                        <ol>- Top Level Elements > Working Set</ol>
-                    </ul>
+                    <ol>
+                        <li> Clique com o botão direito no nome do projeto</li>
+                        <li> Assign Working Sets</li>
+                        <li> Selecione Autuação ou Plataforma, por exemplo</li>
+                        <li> No cabeçalho da view Package Explorer, clique na seta para baixo</li>
+                        <li> Top Level Elements > Working Set</li>
+                    </ol>
 
                     <h4 id="" style="padding-bottom: 0px;">Desenvolvendo local</h4>
                     <hr>
@@ -532,13 +518,13 @@
                     Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Spring Devtools</i>, que permite o `hot restart` de aplicações <i>Spring Boot</i> rodando dentro de um container docker. Os serviços da plataforma já estão configurados para viabilizar tal funcionalidade. No Eclipse, basta executar a sequência abaixo:
                     </p>
 
-                    <ul>
-                        <ol>- Com o botão direito, clique no projeto "services"</ol>
-                        <ol>- Em seguida, clique em "Run As" -> "Sprint Devtools Client"</ol>
-                        <ol>- Em "Remote Url" informe "http://docker:8081"</ol>
-                        <ol>- Em "Remote Secret" informe "stfdigital"</ol>
-                        <ol>- Click em "Run"</ol>
-                    </ul>
+                    <ol>
+                        <li> Com o botão direito, clique no projeto "services"</li>
+                        <li> Em seguida, clique em "Run As" -> "Sprint Devtools Client"</li>
+                        <li> Em "Remote Url" informe "http://docker:8081"</li>
+                        <li> Em "Remote Secret" informe "stfdigital"</li>
+                        <li> Click em "Run"</li>
+                    </ol>
 
                     <p>
                     Isso vai iniciar uma conexão remota com a imagem docker correspondente. No terminal, acesse o log do container pelo comando:
