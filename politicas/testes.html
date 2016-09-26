@@ -31,7 +31,7 @@
                     <ul class="dac-header-tabs">
                         <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
                     </ul>
-                    <a class="dac-header-console-btn" href="https://play.google.com/apps/publish/"> 
+                    <a class="dac-header-console-btn" href="https://github.com/supremotribunalfederal/stfdigital" target="_blank" > 
                         <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
                         <span class="dac-visible-desktop-inline">Repositório</span>
                     </a>
@@ -117,10 +117,13 @@
                                     <a href="#unit">Testes Unitários</a>
                                 </li>
                                 <li>
-                                    <a href="#integration">Testes de Integração</a>
+                                    <a href="#integracao">Testes de Integração</a>
                                 </li>
                                 <li>
-                                    <a href="#end-to-end">Testes End-to-end</a>
+                                    <a href="#componentes">Testes de Componentes</a>
+                                </li>
+                                <li>
+                                    <a href="#e2e">Testes End-to-end</a>
                                 </li>
                             </ol>
                         </div>
@@ -144,33 +147,102 @@
                     <hr>
     
                     <p>
-                        Internamente, cada microservices possui sua própria estrutura lógica, geralmente dividida em camadas como na figura ao lado.
-                        Qualquer estratégia de testes deveria ser capaz de cobrir os componentes de cada uma dessas camadas.
+                        A arquitetura de microserviços é uma consequência natural de se aplicar o princípio da responsabilidade única em nível
+                        arquitetural. Essa abordagem trás uma série de benefícios em relação a abordagem tradicional, a arquitetura monolítica,
+                        como independência de plataformaas, tecnologias e implantações, o que permite elevar o nível de escalabilidade e dá
+                        a arquitetura como um todo muito mais flexibilidade.
                     </p>  
     
                     <p>
-                        Os microserviços se comunicam entre si por meio de mensagens. O processamento de uma requisição pode envolver
-                        outros serviços, gateways ou repositórios. Os testes automáticos deveriam cobrir cada uma dessas 
-                        comunicações na maior granularidade possível permitindo um ciclo de feedback muito preciso.
+                        Em termos de tamanho, não existe nenhuma regra específica. Geralmente os microserviços devem ser da ordem de centenas
+                        de linhas de código, mas podem ser milhares dependendo da responsabilidade que eles estão encapsulando Como regra
+                        geral recomenda-se mantê-los <i>"as small as possible but as big as necessary"</i> para representar o conceito de domínio
+                        do qual é proprietário. Veja <a href="http://bovon.org/archives/350">"How big should a micro-service be"</a> 
+                        para mais detalhes.
                     </p>  
     
                     <p>
-                        Um recurso recebe uma requisição e, após validá-la, repassa ao domínio para que este inicie o processamento.
-                        Se vários serviços devem ser coordenados para processar a requisição, ele orquestra
-                        chamadas remotas aos demais módulos. Conexões com outros módulos merecem especial atenção porque elas
-                        elas extrapolam os limites da rede. O sistema deveria ser resiliênte para suportar interrupções dos
-                        serviços remotos. Adapter contém a lógica necessária para tratar essas situações. Geralmente,
-                        comunicações entre serviços possuem uma granularidade menor em relação às comunicações <i>in process</i>
-                        para evitar latência.
+                        Geralmente os microserviços possuem um interface com o usuário, que roda no dispositivo do cliente. A integração
+                        com o serviço rodando no servidor utiliza um mecanismo de integração síncrona que baseado em REST sobre HTTP. 
+                        Nessa abordagem, conceitos do domínio são modelados como recursos que são controlados por cada serviço. 
+                        Veja nossa <a href="api.html">Política de Gestão da API</a> para mais detalhes. Mecanismo de integração
+                        assíncrona são usados para a comunicação entre os serviços e geralmente utilizam modelos <i>publish-subscribe</i>.
                     </p>  
     
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="450" src="assets/images/arquitetura.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Internamente, cada microservices possui sua própria estrutura lógica, geralmente dividida em camadas como na figura ao lado.
+                                    Qualquer estratégia de testes deveria ser capaz de cobrir os componentes de cada uma dessas camadas.
+                                </p>  
+                
+                                <p>
+                                    <strong><i>Resources</i></strong> agem como mappers entre o protocolo exposto pelo serviço e mensagens
+                                    para objetos representando o domínio. Geralmente, eles são thin, como responsabilidade de fazer 
+                                    checagens básicas para validar a requisição e fornecer a resposta adequada dependendo
+                                    do retorno da camada de aplicação.
+                                </p>                  
+                
+                                <p>
+                                    Toda a lógica do serviço está entre a camanda de aplicação e a camada de domínio, com a primeira encapsulando
+                                    a lógica do caso de uso e a segunda encapsulando a lógica de negócio. A <strong>service</strong> de aplicação coordenada
+                                    várias chamadas ao <strong>domain</strong> enquanto este utiliza o <strong>repositories</strong> para manipular e entidades e outros
+                                    objetos persistêntes.
+                                </p>                
+                            </div>
+                        </div>
+                    </div>                    
+
                     <p>
-                        Da mesma forma, comunicações com datastores externos merecem considerações de design diferentes. 
-                        Enquanto um serviço tenha maior acoplamento com seu datastore do que com serviços externos, 
-                        ele ainda está além dos limites locais e por isso ainda estão sujeitos a latência e 
-                        interrupções inesperadas.
+                        Se um serviço tem um outro serviço como colaborador, alguma lógica é necessária para se comunicar com esse serviço
+                        externo. Um <strong>gateway</strong> encapsula a lógica de integração com o serviço remoto, convertendo objetos 
+                        de domínio nas requisições e respostas apropriadas para o protocolo de integração. 
                     </p>  
-    
+
+                    <p>
+                        Exceto para os casos triviais ou quando um serviço age como um agregador de múltiplos recursos de propriedade 
+                        de outros serviços, um microserviço sempre terá que persitir objetos do domínio. Geralmente isso é feito
+                        usando algum algum tipo de framework ORM ou <strong>data mappers</strong> mais leves, dependendo da 
+                        complexidade dos requisitos de persistência. 
+                    </p>  
+
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="450" src="assets/images/microservice.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Os microserviços se comunicam entre si por meio de mensagens. O processamento de uma requisição pode envolver
+                                    outros serviços, gateways ou repositórios. Os testes automáticos deveriam cobrir cada uma dessas 
+                                    comunicações na maior granularidade possível permitindo um ciclo de feedback muito preciso.
+                                </p>  
+                
+                                <p>
+                                    Um recurso recebe uma requisição e, após validá-la, repassa ao domínio para que este inicie o processamento.
+                                    Se vários serviços devem ser coordenados para processar a requisição, ele orquestra
+                                    chamadas remotas aos demais módulos. Conexões com outros módulos merecem especial atenção porque elas
+                                    elas extrapolam os limites da rede. O sistema deveria ser resiliênte para suportar interrupções dos
+                                    serviços remotos. Adapter contém a lógica necessária para tratar essas situações. Geralmente,
+                                    comunicações entre serviços possuem uma granularidade menor em relação às comunicações <i>in process</i>
+                                    para evitar latência.
+                                </p>
+
+                                <p>
+                                    Da mesma forma, comunicações com datastores externos merecem considerações de design diferentes. 
+                                    Enquanto um serviço tenha maior acoplamento com seu datastore do que com serviços externos, 
+                                    ele ainda está além dos limites locais e por isso ainda estão sujeitos a latência e 
+                                    interrupções inesperadas.
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>                    
+
                     <p>
                         A existência de componentes fora do domínio do serviço afeta o estilo do teste que deverá ser aplicado.
                         Testar esses componentes pode ser bem demorado e pode falhar por razões fora do controle do time.
@@ -179,18 +251,26 @@
                     <h2 id="piramide" style="padding-bottom: 0px;">A Pirâmide de Testes</h2>
                     <hr>
     
-                    <p>
-                        Em geral, quanto menor a granularidade, mais frágil, mais difícil de escrever e mais demorado o teste será.
-                        Isso decorre do fato de que tais testes envolvem mais partes móveis do que aqueles mais focados,
-                        aqueles mais granulares. 
-                    </p>  
-    
-                    <p>
-                        O conceito da <a href="http://martinfowler.com/bliki/TestPyramid.html">pirâmide de testes</a> descreve
-                        um forma simples de pensar sobre o quantos testes deveríamos escrever para cada granularidade.
-                        Subindo na pirâmide o escopo dos testes cresce e o número de teste deve diminuir. 
-                    </p>  
-    
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="300" src="assets/images/piramide.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p class="dac-hero-description">
+                                    Em geral, quanto menor a granularidade, mais frágil, mais difícil de escrever e mais demorado o teste será.
+                                    Isso decorre do fato de que tais testes envolvem mais partes móveis do que aqueles mais focados,
+                                    aqueles mais granulares. 
+                                </p>
+                                <p>
+                                    O conceito da <a href="http://martinfowler.com/bliki/TestPyramid.html">pirâmide de testes</a> descreve
+                                    um forma simples de pensar sobre o quantos testes deveríamos escrever para cada granularidade.
+                                    Subindo na pirâmide o escopo dos testes cresce e o número de teste deve diminuir. 
+                                </p>                  
+                            </div>
+                        </div>
+                    </div>
+                    
                     <p>
                         No topo do pirâmide estão os testes exploratórios, que devem explorar o sistemas de formas que não 
                         tenham sido consideradas como partes dos scripts de testes. Os testes exploratórios permitem 
@@ -252,13 +332,19 @@
                     <div class="wrap feature">
                         <div class="cols dac-hero-content">
                             <div class="col-1of2 col-push-1of2 dac-hero-figure">
-                                <img width="200" src="assets/images/unittesting-domain.png">
+                                <img width="210" src="assets/images/unittesting-domain.png">
                             </div>
                             <div class="col-1of2 col-pull-1of2">
                                 <p class="dac-hero-description">
                                     A lógica de <strong>domínio</strong> geralmente se manisfesta como um conjunto de processamentos 
-                                    complexos e uma coleção de transições de estado. Como esse tipo de lógica é altamente 
-                                    baseada nos estados, não há tanto valor em tentar isolar as unidades. Isso significa 
+                                    complexos e uma coleção de transições de estado. 
+                                </p>
+                                <p>
+                                    Como esse tipo de lógica é altamente 
+                                    baseada nos estados, não há tanto valor em tentar isolar as unidades.
+                                </p>
+                                <p>
+                                    Isso significa 
                                     que sempre que possível os objetos reais do domínio devem ser usados para validação
                                     da unidade em teste. 
                                 </p>
@@ -266,20 +352,460 @@
                         </div>
                     </div>
                     
-                    <h2 id="integration" style="padding-bottom: 0px;">Testes de Integração</h2>
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="210" src="assets/images/unittesting-externals.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Com código de baixo nível, é difícil isolar a unidade em teste dos componentes externos e validar
+                                    a alteração do estado. Nesse caso, usar test doubles é mais adequado.
+                                </p>
+                                <p>
+                                    O propósito dos testes unitários nesse nível é verificar qualquer lógica usada para produzir requisições
+                                    e mapear respostas das dependências externas invês de verificar a comunicação real. Nesse caso, usar
+                                    test doubles para os colaboradores fornece uma forma de controlar o ciclo request-response de forma
+                                    confiável e repetível.
+                                </p>
+                                <p>
+
+                                    Usar testes unitários neste nível fornece um feedback mais rápido do que os testes de integração e pode
+                                    forçar condições de erros na medida em que podemos ter os doubles respondendo como as dependências
+                                    externas responderiam em circunstâncias excepcionais.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="210" src="assets/images/unittesting-service.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    A lógica do caso de uso se preocupa mais em coordenador as chamadas aos objetos de domínio do que qualquer
+                                    outra lógica mais complexa. 
+                                </p>
+                                <p>
+                                    Usar test doubles neste caso permite que os detalhes das chamadas sejam escondidas de
+                                    modo que o teste possa validar o fluxo de comunicações entre os objetos.
+                                </p>
+                                <p>
+                                    Se uma parte da lógica de coordenação demandar muito doubles, isso pode ser um sinal que alguns dos
+                                    conceitos deveriam ser extraídos em outras unidades e testes separadamente.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>
+                        À medida que o tamanho do serviço diminui, a taxa de código de baixo nível necessário para integrar serviços
+                        e coordenador a execução do caso de uso aumenta. Da mesma forma, alguns serviços podem conter somente esse
+                        tipo de lógica, no caso de aggregate services, por exemplo. Em casos como esse, os testes unitário podem
+                        não compensar o esforço. Outro nível de teste como os testes de componente podem gerar mais valor. 
+                    </p>  
+    
+                    <h2 id="integracao" style="padding-bottom: 0px;">Testes de Integração</h2>
                     <hr>
     
                     <p>
-                        ...
+                        Até agora nós temos boa cobertura de cada módulo isolado, mas não existe cobertura quando todos eles trabalham
+                        juntos para formar o serviço completo ou das interações que eles tem com dependências remotas. Para verificar
+                        que cada módulo corretamente interage com seus colaboradores, precisamos de de testes menos granulares.
                     </p>  
     
-                    <h2 id="end-to-end" style="padding-bottom: 0px;">Testes End-to-end</h2>
+                    <p class="note">
+                        Um teste de integração verifica as interações entre os componentes para detectar defeitos nas interfaces.
+                    </p>  
+    
+                    <p>
+                        Testes de integração reunem os módulos e testam todos eles como um subsistema para verificar se eles colaboram
+                        como esperado. Eles exercitam as comunicações através do subsistema para checar se cada módulo fez
+                        qualquer suposição incorreta ao interagir com seus pares.
+                    </p>  
+    
+                    <p>
+                        Enquanto testes que integram componentes ou módulos podem ser escritos em qualquer granularidade, quando usamos
+                        microservices eles geralmente são usados para validar interações entre componentes externos. Exemplos de componentes
+                        externos em que os testes de integração podem ser úteis incluem: outros microserviços, data stores e caches. 
+                    </p>  
+    
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="450" src="assets/images/integrationtesting-adapters.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Ao escrever testes automatizados dos módulos que interagem com componentes externos, o objetivo é verificar 
+                                    que aquele módulo pode se comunicar suficientemente bem em vez de executar testes de aceitação contra
+                                    o componente externo. Dessa forma, testes desse tipo deveria cobrir caminhos básicos de sucesso e erros
+                                    através da integração. 
+                                </p>
+                                <p>
+                                    Testes de integração dos <strong>adapters</strong> permitem validar diferentes tipos de erros, como 
+                                    HTTP headers incorretos, erros de SSL, erros no corpo da requisição, na maior granularidade
+                                    possível.
+                                </p>
+                                <p>
+                                    Qualquer caso especial também deve ser testado para garantir que o protocolo empregado responde como
+                                    esperado em circunstâncias especiais.
+                                </p>
+                                <p>
+                                    Algumas vezes pode difícil tentar reproduzir comportamente anormais, como timeouts ou respostas mais lentas
+                                    de um componente externo. Neste caso, pode ser benéfico usar uma versão simulada (stub) do componente externo, 
+                                    como um equipamento de teste que pode ser configurado para falhar de formas pré-determinadas. 
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>
+                        Também pode ser difícil controlar o estado dos dados fornecidos pelo componente externo uma vez que os testes
+                        devem ser baseados em certos dados disponíveis. Um jeito de mitigar este problema é acordar um conjunto
+                        fixo representativo de dados que deverá sempre estar disponível.
+                    </p>
+
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="450" src="assets/images/integrationtesting-datastore.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Testes de integração da <strong>persistência</strong> fornecem a garantia que o esquema mapeado no código casa
+                                    corretamente com a estrutura disponbilizada pelo banco de dados.
+                                </p>
+                                <p>
+                                    Quando usamos ORM, os testes nos dão a confiança de saber que todos os mapeamentos configurados
+                                    são compatíveis com a estrutura do banco.
+                                </p>
+                                <p>
+                                    Usamos Hibernate JPA, uma das mais sofisticadas em termos de caching, o que signifca, dentre outras
+                                    particularidades, que a sincronização com a base (flush) só é feita quando necessário. É importante
+                                    projetar os testes de modo que as transações sejam fechadas entre pré-condições, ações e asserções,
+                                    para garantir que os dados foram realmente persistidos no banco de dados. 
+                                </p>
+                                <p>
+                                    Como muito o banco de dados está fora dos limites locais do serviço, ele está sujeito a situações
+                                    de timeout e outras falhas de rede. Os testes de integração também devem tentar verificar
+                                    que os serviços conseguem tratar tais falhas apropriadamente.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>
+                        Testes de integração fornecem feedbacks rápidos quando estamos refatorando ou evoluindo uma determinada integração
+                        entre dois módulos. Entretanto, eles também são mais complexos, podendo falhar por diversas razões. É necessário
+                        tomar cuidado para escrever somentes os testes necessários para validar os dois lados da integração e aumentar
+                        a convertura já fornecida pelos testes unitários.
+                    </p>
+
+                    <p>
+                        Com testes unitário e testes de integração nós temos a confiança de saber que toda a lógica contida em cada
+                        um dos módulos individuais que compõem a microservice está correta. Entretanto, sem uma suite de testes
+                        menos granular, não podemos ter certeza de que o serviço funciona em conjunto como um todo para 
+                        satisfazer os requisitos de negócios. Enquanto isso pode ser alcançado com os teste end-to-end,
+                        maior precisão e melhor velocidade de execução podem ser obtidas testando o serviço isoladamente,
+                        sem suas dependências externas.
+                    </p>
+
+                    <h2 id="componentes" style="padding-bottom: 0px;">Testes de Componente</h2>
+                    <hr>
+    
+                    <p class="note">
+                        Um teste de componente se limita a validar uma parte do sistema em teste, manipulando o sistemas por meio
+                        da interface do componente usando test doubles para isolar o código em teste dos outros componentes. 
+                    </p>  
+    
+                    <p>
+                        Um componente é qualquer parte bem encapsulada, coerente e independemente substituível de um grande sistema.
+                        São vários os benefícios de se testar componentes em isolamento. Ao limitar o escopo de teste para um único 
+                        componente, é possível testar todo o comportamento encapsulado pelo componente utilizando testes que 
+                        executam bem mais rápido do que os testes equivalentes que demanda a montagem de toda a infraestrutura
+                        para execução.    
+                    </p>  
+    
+                    <p>
+                        Isolar o componente de seus pares usando test doubles garante um ambiente de teste controlado para o 
+                        componente, permitindo reproduzir qualquer situação de erro.   
+                    </p>
+
+                    <p>
+                        Na nossa abordagem arquitetural, componentes são serviços. Escrever testes nesta granularidade permite
+                        validar a API por meio de testes realizados a partir da perspectiva do cliente. O isolamento, neste caso,
+                        é feito pela substituição de colaboradores externos por test doubles.   
+                    </p>
+
+                    <p>
+                        Há várias opções para se implementar testes como estes. Deveríamos executar os testes no mesmo processo
+                        que o serviço ou em outro processo rodando remotamente? Os test doubles deveriam estar dentro do 
+                        serviço ou fora dele? Deveríamos usar datastores reais ou usar uma alternativa in-memory? Abaixo 
+                        descrevemos como sugerimos implementar tais testes dentro do nosso contexto de atuação.   
+                    </p>
+
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="320" src="assets/images/componenttesting.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Optamos por usar test doubles in-memory, até para datastores, para reduzir o número de partes
+                                    móveis envolvidas, evitar de tratar complexidades inerentes ao acesso remotos de colaboradores 
+                                    externos e conseguir um ciclo mais rápido de feedback. Entretanto, também significa que os
+                                    artefatos em teste precisam ser alterados para permitir que possam ser iniciados em mode
+                                    'test'. Usaremos o mecanismo de injeção de dependências do Spring em combinação com seu
+                                    mecanismo de profiles para viabiliar que o serviço seja iniciado de forma diferente 
+                                    com base na configuração fornecida no momento do teste.  
+                                </p>
+                                <p>
+                                    Os testes devem ser comunicar com o serviço usando sua interface e devem ser capazes de enviar
+                                    requisições e receber respostas. Com Spring podemos fazer isso muito facilmente. Dessa forma,
+                                    podemos simular o acesso real sem incorrer em complexidades desnecessárias.
+                                </p>
+                                <p>
+                                    Para isolar o serviço de outros serviços externos, gateways podem ser configurado para usar 
+                                    test doubles em vez de clientes reais. Usar recursos internos permitem que esses test doubles
+                                    possam ser programados para retornar respostas predefinidas para determinadas requisições.
+                                    Esses test doubles podem também podem ser usados para emular situações de erros como 
+                                    quando um colaborador externo está offline, está respondendo muito lentamente ou as
+                                    responsas são recebidas mal-formatadas. Isso permite testar essas situações de forma
+                                    contralada e reproduzível.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p>
+                        Substituir um datastore externo com um implementação in-memory pode melhor bastante a performance
+                        dos testes. Embora isso exclua o datastore real do escopo do testes, qualquer teste de integração
+                        do mecanismo de persistência pode garantir cobertura suficiente. Em alguns casos, o mecanismo
+                        de persistência empregado é simples o suficiente que implementações mais leves podem ser usadas.
+                        Alternativamentes, alguns datastores, como cassandra e elasticsearch, fornecem implementações
+                        que podem ser embarcadas no serviço. Também existem ferramentas que emulam datastores
+                        in-memory, como o H2 database engine.
+                    </p>
+
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="500" src="assets/images/combination.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Combinar testes unitários, testes de integração e testes de componentes nos dá alta cobertura dos módulos que
+                                    compõem um serviço e pode garantir que o serviço implementa corretamente a lógica de negócio
+                                </p>
+                                <p>
+                                    Entretanto, exceto para casos de uso simples, o valor real para o negócio só pode ser alcançado quando todos os
+                                    serviços operam juntos para formar o processo de negócio completo. Neste cenário, não existe ainda testes
+                                    que possam garantir que a nossa coleção de microservices colaboram correctamente para fornecer processos 
+                                    de negócios end-to-end (de ponta a ponta). 
+                                </p>
+                                <p>
+                                    Para assegurar que tudo funciona corretamente, precisamos de testes de menor granularidade, que possam
+                                    testar o fluxo completo desde a interface com o usuário. Testes end-to-end podem nos ajudar a
+                                    nessa tarefa.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h2 id="e2e" style="padding-bottom: 0px;">Testes End-to-end</h2>
+                    <hr>
+    
+                    <p class="note">
+                        Um teste end-to-end verifica se o sistema atende aos requisitos externos e alcança seus objetivos, testando o systema completo, 
+                        de ponta a ponta. 
+                    </p>  
+    
+                    <p>
+                        Diferentemente de outros tipos de teste, a intenção do teste end-to-end é verificar se o sistema como um todo atende aos
+                        objetivos de negócio independentemente da arquitetura em uso.
+                    </p>  
+    
+                    <p>
+                        Para alcançar isso, o sistema é tratado como uma caixa preta e os testes exercitam o máximo possível do sistema completamente
+                        implantado, manipulando-o através de interfaces públicas, tais como GUIs e APIs do serviço.
+                    </p>  
+    
+                    <p>
+                        Como testes end-to-end são mais direcionados ao negócio, eles muitas vezes utilizam DSL's legíveis aos usuários, que expressam 
+                        os casos de teste na linguagem do domínio.
+                    </p>  
+    
+                    <p>
+                        Como nossa abordagem arquitetural envolve mais partes móveis para um mesmo comportamente, testes end-to-end geram mais
+                        valor ao adicionarem maior cobertura para os gaps entres os serviços. Isso nos dá uma confiança adicional de que
+                        as mensagens que passam entre os serviços estão corretas, além de garantir que qualquer componente de 
+                        infra-estrutura, como firewalls, proxies ou balanceadores de carga estão configurados corretamente.
+                    </p>  
+    
+                    <p>
+                        Testes end-to-end também permitem que a arquitetura envolua ao longo do tempo. Quanto mais se aprende sobre o domínio 
+                        do problema, mais os serviços estão sujeitos a divisões e fusões e os testes end-to-end dão a confiança de que as funções 
+                        de negócio fornecidas pelo sistema permanecem intactas durante as refatorações arquiteturais de grande escala.
+                    </p>  
+    
+                    <h4 id="escopo" style="padding-bottom: 0px;">Escopo</h4>
+                    <hr>
+    
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="350" src="assets/images/end-to-end.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Como o objetivo é testar o comportamento do sistema completamente integrado, os testes end-to-end interagem com 
+                                    o sistema na menor granularidade possível.
+                                </p>  
+
+                                <p>
+                                    Se o sistema requer manipulação direta do usuário, essa interação pode ser feita atravé de GUIs expostas por 
+                                    um ou mais microserviços. Usamos Angular Protractor para acessar a GUI e validar um caso de uso em particular
+                                    como se fosse o usuário final. 
+                                </p>  
+
+                                <p>
+                                    Para sistemas sem GUIs, os testes end-to-end devem manipular diretamente o microserviço através de sua
+                                    API pública usando um cliente HTTP.
+                                </p>  
+
+                                <p>
+                                    Neste caso, o comportamento do sistema deve ser verificado observando as mudanças de estado ou os
+                                    eventos lançados dentro do escopo de teste.
+                                </p>  
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wrap feature">
+                        <div class="cols dac-hero-content">
+                            <div class="col-1of2 col-push-1of2 dac-hero-figure">
+                                <img width="500" src="assets/images/e2e-escopo.png">
+                            </div>
+                            <div class="col-1of2 col-pull-1of2">
+                                <p>
+                                    Enquanto alguns sistemas são pequenos o suficiente para que uma única equipe tenha
+                                    a propriedade de todos os seus componentes, em muitos casos os sistemas crescem
+                                    de modo a demandar a utilização de um ou mais serviços de propriedade de outras
+                                    equipes.
+                                </p>  
+
+                                <p>
+                                    Usualmente, esses serviços externos devem ser incluídos como parte do escopo dos testes
+                                    end-to-end. Entretanto, em casos mais raros, você pode escolher excluí-los.
+                                </p>  
+
+                                <p>
+                                    Se um serviço externo é gerenciado por terceiros, pode não ser possível escrever testes
+                                    end-to-end de maneira controlada. Neste caso, alguns serviços podem sofrer de 
+                                    problemas de confiabilidade que podem levar os testes end-to-end a falhar
+                                    por razões fora do controle da equipe.
+                                </p>  
+
+                                <p>
+                                    Em casos como esses, podem ser benéfico usar stub versions do serviço externo, fazendo
+                                    com que os testes end-to-end percam certa confiança, mas ganhando mais estabilidade
+                                    da suite de testes.
+                                </p>  
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 id="recomendacoes" style="padding-bottom: 0px;">Recomendações</h3>
                     <hr>
     
                     <p>
-                        ...
-                    </p>  
+                        Como os testes end-to-end envolvem muito mais partes móveis do que as outras estratégias 
+                        discutidas até agora, eles acabam tendo muito mais razões para falhar. Testes end-to-end também 
+                        pode ter que considerar processamento assíncrono, seja na GUI ou devido a processos de back-end 
+                        assíncronos. Esses fatores podem resultar em dificuldade para implementar os testes, tempo de 
+                        execução de teste excessiva e custos adicionais de manutenção da suite de testes. As seguintes 
+                        diretrizes listadas a seguir podem ajudar a gerenciar a complexidade adicional dos testes 
+                        end-to-end:
+                    </p>
+
+                    <h4 style="padding-bottom: 0px;">Escreva Apenas o Necessário</h4>
+                    <hr>
     
+                    <p>
+                        Considerando que um alto nível de confiança pode ser alcançado com níveis mais baixos de testes, 
+                        o papel de testes end-to-end é garantir que tudo se une apropridamente e não há divergências 
+                        estruturais entre os microserviços. Dessa forma, testar exaustivamente os requisitos de negócio 
+                        neste nível é um desperdício, especialmente se considerarmos o custo de manutenção dos testes 
+                        end-to-end.
+                    </p>    
+                              
+                    <p>
+                        Uma estratégia que funciona bem para manter a suíte de testes end-to-end pequena é aplicar 
+                        um <b>orçamento de tempo</b>, uma quantidade de tempo que a equipe se sinta confortavél em esperar 
+                        pela execução da suíte de testes. Como a suíte cresce, se o tempo de execução começa a exceder 
+                        o orçamento de tempo, os testes menos valiosas são eliminadas para manter os testes dentro 
+                        do prazo estipulado. O orçamento tempo deve ser da ordem de minutos, não de horas.
+                    </p>    
+                              
+                    <h4 style="padding-bottom: 0px;">Foque nas Personas e User Journeys</h4>
+                    <hr>
+    
+                    <p>
+                        Para garantir que todos os testes em uma suíte de testes end-to-end são valiosos, tenta
+                        projeta-los em torno de personas representando os usuários do sistema e as as jornadas
+                        que esses usuários fazem utilizando o sistema. Isso proporciona confiança nas partes 
+                        do sistema que os usuários mais valorizam e deixa a cobertura de todas as outras
+                        para outros tipos de testes. Utilizaremo ferramentas apropriadas para nos ajudar 
+                        a expressar as jornadas via DSLs legíveis.
+                    </p>
+
+                    <h4 style="padding-bottom: 0px;">Escolha os Testes Sabiamente</h4>
+                    <hr>
+    
+                    <p>
+                        Se uma tela específica é uma das principais causas de problemas para automatizar 
+                        um determinado conjunto de testes, pode ser o caso de excluí-la da suíte de testes. 
+                        Neste caso, a cobertura total de testes end-to-end pode ser reduzida em favor da 
+                        estabilidade da suite. Isto é aceitável, desde que outras formas de testes possam
+                        verificar o componente problemático usando diferentes meios.
+                    </p>
+
+                    <h4 style="padding-bottom: 0px;">Use Infrastructure as Code</h4>
+                    <hr>
+    
+                    <p>
+                        Se a infraestrutura necessária pode ser montada automaticamente, você terá muito
+                        menos problemas para gerenciar a complexidade adicional inerente à arquitetura de 
+                        microserviços. Nesta abordagem é possível construir ambientes em tempo real de 
+                        uma maneira repetitiva, sem a necessidade de intervenção manual.
+                    </p>
+
+                    <p>
+                        Ao construir um ambiente de testes do zero para cada execução da suíte de testes, 
+                        melhoramos a confiabilidade dos testes e, ao mesmo tempo, validamos a lógica de 
+                        implantação.
+                    </p>
+
+                    <h4 style="padding-bottom: 0px;">Controle os Dados</h4>
+                    <hr>
+    
+                    <p>
+                        Uma fonte comum de dificuldade nos testes end-to-end é o gerenciamento de dados. 
+                        Confiar em dados pré-existentes introduz a possibilidade de falha causada por
+                        dados alterados no ambiente de teste. É um caso de falso negativo, em que 
+                        o fracasso não é uma indicação de uma falha no software.
+                    </p>
+
+                    <p>
+                        Gerenciar automaticamente os dados utilizados pelos testes end-to-end reduz 
+                        as chances de falsos negativos. Se os serviços suportam a construção das entidades 
+                        que possuem, via APIs, os testes end-to-end podem definir seu mundo antes da execução. 
+                        Alternativamente, os dados necessários podem ser importados no nível do banco de dados.
+                    </p>
+
                 </div>
     
             </div>

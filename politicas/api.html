@@ -31,7 +31,7 @@
                     <ul class="dac-header-tabs">
                         <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
                     </ul>
-                    <a class="dac-header-console-btn" href="https://play.google.com/apps/publish/"> 
+                    <a class="dac-header-console-btn" href="https://github.com/supremotribunalfederal/stfdigital" target="_blank" > 
                         <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
                         <span class="dac-visible-desktop-inline">Repositório</span>
                     </a>
@@ -514,8 +514,79 @@
                     <hr>
     
                     <p>
-                        ...
+                        Conforme orientações encontradas em <a href="https://github.com/WhiteHouse/api-standards#versions">White House Web API Standards</a> devemos 
+                        sempre versionar uma API antes de sua liberação. O versionamento pela URL é utilizado por APIs 
+                        populares como as do Atlassian, Facebook, LinkedIn e Twitter. Essa estratégia, apesar de 
+                        semanticamente incorreta, é a mais fácil de usar e evita problemas como, por exemplo, os 
+                        vinculados ao uso de cache pela aplicação.
                     </p>  
+
+                    <p>
+                        Embora tenhamos a intenção de abrir nossa API, dentro de uma estratégia de dados abertos, não há planos 
+                        de curto e médio prazo para exposição pública da API do STF Digital. Assim, para mantermos o alinhamento 
+                        com as boas práticas de mercado, podemos adotar o versionamento via URL, colocando nos endpoints a 
+                        versão um (v1) como padrão, conforme exemplos abaixo
+                    </p>  
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">PUT</span><span class="pln"> /api/v1/remessas/{id}/preautuacao-originario</span></br><span class="str">GET</span><span class="pln"> /api/v1/processos/{id}</span></br><span class="str">POST</span><span class="pln"> /api/v1/documentos/{id}/divisao</span></pre>
+                    </p>
+
+                    <p>
+                        A estratégia de versionamento definida aqui deverá ser aplicada a todas as URL's como pré-requisito 
+                        para exposição pública da API do STF Digital.
+                    </p>  
+
+                    <h2 id="documentacao" style="padding-bottom: 0px;">Documentação</h2>
+                    <hr>
+    
+                    <p>
+                        A documentação de uma API é essencial para facilitar o seu entendimento e a sua utilização. Dessa forma, 
+                        a documentação de uma API deve ser informativa, sucinta e de fácil leitura para que outros desenvolvedores 
+                        possam usá-la sem problemas.
+                    </p>
+
+                    <p>
+                        Uma boa documentação começa por um bom código. Boas decisões de design ajudam na hora de documentar a API, 
+                        assim obedecer aos padrões de codificação tende a tornar consistentes o comportamento da aplicação e 
+                        facilitar a sua documentação.
+                    </p>
+
+                    <p>
+                        Para documentar a API do STF Digital utilizaremos o Swagger, que pelas anotações utilizadas nos 
+                        Controllers, Commands e DTOs disponibilizará páginas Html com a documentação da API possibilitando, 
+                        inclusive, testes rápidos dos serviços disponibilizados.
+                    </p>
+
+                    <p>
+                        No Controller serão utilizadas as seguintes anotações:
+                    </p>
+
+                    <ul>
+                        <li>
+                            <code>@Api</code> – Utilizada para documentar o RestResource;
+                        </li>
+                        <li>
+                            <code>@ApiOperation</code> – Descreve uma operação ou recurso HTTP;
+                        </li>
+                        <li>
+                            <code>@ApiParam</code> – Documenta o parâmetro de entrada de uma operação ou recurso HTTP.
+                        </li>
+                    </ul>
+
+                    <p>
+                        Para o modelo (Command e DTO) as anotações usadas são:
+                    </p>
+                    
+                    <ul>
+                        <li>
+                            <code>@ApiModel</code> – Usada para descrever uma classe do modelo;
+                        </li>
+                        <li>
+                            <code>@ApiModelProperty</code> – Descreve uma propriedade dentro da classe do modelo.
+                        </li>
+                    </ul>
+
                 </div>
     
             </div>
