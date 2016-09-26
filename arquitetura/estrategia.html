@@ -31,7 +31,7 @@
                     <ul class="dac-header-tabs">
                         <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
                     </ul>
-                    <a class="dac-header-console-btn" href="https://play.google.com/apps/publish/"> 
+                    <a class="dac-header-console-btn" href="https://github.com/supremotribunalfederal/stfdigital" target="_blank" > 
                         <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
                         <span class="dac-visible-desktop-inline">Repositório</span>
                     </a>
@@ -199,9 +199,9 @@
                     </div>
                     
                     <p>
-                        Até poupo tempo atrás o estilo arquitetural dominante era o famoso modelo data-centric, com a arquitetura em três camadas (apresentação, 
+                        Até pouco tempo atrás o estilo arquitetural dominante era o famoso modelo data-centric, com a arquitetura em três camadas (apresentação, 
                         negócio e persistência). Recentemente, passamos a observar uma mudança, da arquitetura data-centric para uma arquitetura mais model-centric. 
-                        Existem duas grandes diferenças entre essas duas arquiteturas. Primeiro, a cada de negócio é dividida em duas novas camadas: application layer 
+                        Existem duas grandes diferenças entre essas duas arquiteturas. Primeiro, a camada de negócio é dividida em duas novas camadas: application layer 
                         e domain layer. Segundo, a camada de persistência se transforma em uma camada de infraestrutura.
                     </p>
                     
@@ -300,7 +300,7 @@
                             Utilizaremos um componente para atuar OAuthAuthorization Server. Os serviços atuarão como OAuth Resource Server. 
                             Os consulmidores atuarão com OAuth Clients. O Edge Server vai atuar como OAuth Token Relay, o que significa 
                             que ele vai agir como OAuth Resource Server e vai passar sempre repassar o OAuth Access Tokens que vem nas 
-                            requisições externas para a API dos serviçoes.
+                            requisições externas para a API dos serviços.
                         </li>
                     </ul>
     
@@ -390,7 +390,7 @@
     
                     <p>
                         Uma aplicação monolítica geralmente tem um único banco relacional. Um benefício chave de se usar um banco como esse
-                        é que sua aplicação pode usar transações <a href="https://en.wikipedia.org/wiki/ACID">ACID</a>, que a consistência
+                        é que sua aplicação pode usar transações <a href="https://en.wikipedia.org/wiki/ACID">ACID</a>, que garante a consistência
                         dos dados. Basta abrir a transação, fazer as operações necessárias (insert, update e delete) e fazer o commit. Outro 
                         importante benefício de usar uma base relacional é que ela é acessada via SQL, que é a liguagem padrão de consultas.
                         Você pode facilmente escrever uma consulta que combina dados de várias tabelas. Como todos os dados estão em um único
@@ -541,7 +541,7 @@
                         Usaremos o Service Instance per Container pattern, em que cada serviço roda em seu próprio container. Containers são um
                         mecanismo de virtualização no nível do sistema operacional. Um container consiste de um ou mais processos rodando em 
                         uma "sandbox". Você pode limitar a memória e os recursos de CPU. Algumas implementações também permitem limitar a taxa
-                        de I/O. Há váris tecnologias que implementam esse conceito. Nós optamos por usar <a href="https://www.docker.com">Docker</a>.
+                        de I/O. Há várias tecnologias que implementam esse conceito. Nós optamos por usar <a href="https://www.docker.com">Docker</a>.
                         A figura abaixo ilustra o modelo descrito aqui.
                     </p>  
     
