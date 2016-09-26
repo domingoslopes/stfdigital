@@ -115,6 +115,11 @@
                                 </li>
                                 <li>
                                     <a href="#padrao-codificacao">Padrão de Codificação</a>
+                                    <ol>
+                                        <li><a href="#padrao-codificao-backend">Padrão de Codificação de Back-end</a></li>
+                                        <li><a href="#padrao-codificao-frontend">Padrão de Codificação de Front-end</a></li>
+                                    </ol>
+                                    
                                 </li>
                             </ol>
                         </div>
@@ -513,12 +518,19 @@ return new MinhaClasse() {
                     <h4 id="formatacao-quebra-linha" style="padding-bottom: 0px;">Quebras de linha</i></h4>
                     <p>
                         O limite de tamanho de coluna é de <b>120</b> caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
-                        da linha ao invés de na próxima linha. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
+                        da linha ao invés de na próxima linha. Para melhorar a legibilidade em algumas situações, uma linha poderá ser quebrada antes
+                        de atingir o limite de <b>120</b> caracteres. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
                         <pre class="prettyprint pln">
 if (chamadaDeMetodo1(param1, param2) && chamadaDeMetodo2() && chamadaDeMetodo3() &&
         chamadaDeMetodo4()) {
     // ...
 }
+</pre>
+<pre class="prettyprint pln">
+// Quebrando a linha antes de atingir 120 caracteres para melhorar a legibilidade.
+return peticao.envolvidos().stream()
+        .map(envolvidoDtoAssembler::toDto)
+        .collect(Collectors.toList());
 </pre>
                     </p>
                     <h5 id="formatacao-quando-quebrar" style="padding-bottom: 0px;">Quando quebrar</h5>
@@ -806,7 +818,15 @@ public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autua
 
                     <h2 id="padrao-codificao-frontend" style="padding-bottom: 0px;">Padrão de Codificação de <i>Front-end</i> (Typescript)</h2>
                     <hr>
-
+                    <ol>
+                        <li>
+                            <a href="#fe-arquivos-codigo-fonte">Arquivos de código-fonte</a>
+                            <ol>
+                                <li><a href="#fe-nome-arquivo">Nome de arquivo</a></li>
+                                <li><a href="#fe-codificacao-arquivo">Codificação de arquivo</a></li>
+                            </ol>
+                        </li>
+                    </ol>
                     <h3 id="fe-arquivos-codigo-fonte" style="padding-bottom: 0px;">Arquivos de código-fonte</h3>
                     <hr>
                     <h4 id="fe-nome-arquivo" style="padding-bottom: 0px;">Nome de arquivo</h4>
@@ -1009,7 +1029,8 @@ export class MinhaClasse {
                     <h4 id="fe-formatacao-quebra-linha" style="padding-bottom: 0px;">Quebras de linha</i></h4>
                     <p>
                         O limite de tamanho de coluna é de <b>120</b> caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
-                        da linha ao invés de na próxima linha. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
+                        da linha ao invés de na próxima linha. Para melhorar a legibilidade em algumas situações, uma linha poderá ser quebrada antes
+                        de atingir o limite de <b>120</b> caracteres. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
                         <pre class="prettyprint pln">
 public isValid(command: PeticionarOrgaoCommand): boolean {
     if (command.poloAtivo.length > 0 && command.poloPassivo.length > 0 && command.anexos.length > 0 &&
@@ -1124,6 +1145,69 @@ export class NovoProcessoController {
                     <p>
                         Os nomes de parâmetros de métodos, funções e construtores devem ser escritos em <code>lowerCamelCase</code>. Nomes
                         de parâmetros com apenas um caracter devem ser evitados em métodos públicos.
+                    </p>
+                    <h5 id="fe-nomeacao-variaveis-locais" style="padding-bottom: 0px;">Variáveis locais</h5>
+                    <p>
+                        Os nomes de variáveis locais devem ser escritos em <code>lowerCamelCase</code>.
+                    </p>
+                    <h5 id="fe-nomeacao-tipos-parametrizados" style="padding-bottom: 0px;">Variáveis de tipos parametrizados (<i>generics</i>)</h5>
+                    <p>
+                        Os nomes das variáveis de tipo parametrizado devem ser escritos com uma única letra maiúscula, opcionalmente seguida de um
+                        único numeral (por exemplo, <code>E</code>, <code>T</code>, <code>X</code>, <code>T2</code>).
+                    </p>
+                    <h3 id="fe-comentarios" style="padding-bottom: 0px;">Comentários</h3>
+                    <hr>
+                    <p>
+                        Comentários de bloco devem aparecer no mesmo nível de indentação do código no qual eles apareçam. Eles podem ser escritos
+                        no estilo <code>/* ... */</code> ou <code>// ...</code>. Para comentários de várias linhas, cada linha subsquente deve
+                        começar com <code>*</code> alinhado ao <code>*</code> da linha anterior. Por exemplo:
+<pre class="prettyprint pln">
+/*
+ * Exemplo de             // Exemplo de
+ * comentário.            // comentário.
+ */
+</pre>
+                        Se o comentário tiver apenas uma linha, deve-se utilizar preferencialmente o estilo <code>// ...</code>.
+                        Por exemplo:
+<pre class="prettyprint pln">
+// Realiza a devolução da remessa.
+this.devolucaoService.devolver(this.cmdDevolucao);
+</pre>
+                    </p>
+                    <p>
+                        O limite de tamanho de coluna dos comentários também é de <b>120</b> caracteres.
+                    </p>
+                    <p>
+                        Não é necessário escrever comentários para trechos de código que são autoexplicativos. Por exemplo,
+                        o comentário abaixo não contribui para facilitar o entendimento do código:
+<pre class="prettyprint pln">
+// Seta o indice para zero.
+let indice = 0;
+</pre>
+                    </p>
+                    <h3 id="fe-jsdoc" style="padding-bottom: 0px;"><i>JSDoc</i></h3>
+                    <hr>
+                    Todos os tipos (classes, interfaces, enums) e métodos públicos devem ter um bloco de comentário
+                    <code>/** ... */</code> (<i>JSDoc</i>) explicando seu propósito, funcionamento, descrição de parâmetros e retornos.
+                    <h4 id="fe-jsdoc-formatacao" style="padding-bottom: 0px;">Formatação</h4>
+                    <p>
+                        O <i>JSDoc</i> deve ser escrito no estilo <code>/** ... */</code> e possui um limite de
+                        tamanho de coluna de <b>120</b> caracteres. Por exemplo:
+<pre class="prettyprint pln">
+/**
+ * Este é um exemplo de um JSDoc. O texto deve ser escrito e quebrará
+ * normalmente.
+ */
+public metodo(parametro: string): string {
+    ...
+}
+</pre>
+                        A primeira linha do <i>JSDoc</i> conterá sempre apenas os caracteres <code>/**</code>. Cada bloco
+                        de texto separado por uma linha em branco no JSDoc formará um parágrafo.
+                    </p>
+                    <p>
+                        O primeiro parágrafo do <i>JSDoc</i> deverá conter uma breve descrição da classe ou método. Os parágrafos
+                        subsequentes poderão detalhar o funcionamento da classe ou método.
                     </p>
                 </div>
     
