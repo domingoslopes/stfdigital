@@ -119,7 +119,9 @@
                                         <li><a href="#padrao-codificao-backend">Padrão de Codificação de Back-end</a></li>
                                         <li><a href="#padrao-codificao-frontend">Padrão de Codificação de Front-end</a></li>
                                     </ol>
-                                    
+                                </li>
+                                <li>
+                                    <a href="#metricas-qualidade">Métricas de qualidade</a>
                                 </li>
                             </ol>
                         </div>
@@ -1208,6 +1210,215 @@ public metodo(parametro: string): string {
                     <p>
                         O primeiro parágrafo do <i>JSDoc</i> deverá conter uma breve descrição da classe ou método. Os parágrafos
                         subsequentes poderão detalhar o funcionamento da classe ou método.
+                    </p>
+                    <h4 id="fe-jsdoc-clausulas-at" style="padding-bottom: 0px;">Cláusulas @</h4>
+                    <p>
+                        As cláusulas <code>@author</code> e <code>@since</code> são obrigatórias para <i>JSDocs</i> de classes
+                        exportadas e devem aparecer no fim do <i>JSDoc</i>, depois de seus parágrafos de descrição.
+                        Normalmente não se deve utilizar <code>@author</code> em métodos específicos de uma classe. Caso
+                        mais de um desenvolvedor tenha contribuído com a escrita de uma classe, mais de uma cláusula <code>@author</code>
+                        deverá ser colocada no <i>JSDoc</i> da classe com os respectivos autores. Já o <code>@since</code> poderá
+                        ser utilizado em algum método da API pública de uma classe.
+                    </p>
+                    <p>
+                        As outras cláusulas @ que podem aparecer em uma linha isoladas devem aparecer na seguinte ordem:
+                        <code>@author, @since, @param, @return, @throws, @see, @deprecated</code>.
+                    </p>
+                    <h4 id="fe-jsdoc-quando-utilizar" style="padding-bottom: 0px;">Quando utilizar</h4>
+                    <p>
+                        O <i>JSDoc</i> deverá estar presente no mínimo para cada classe exportada e para cada método público ou protegido dela, com algumas
+                        exceções a seguir:
+                        <ul>
+                            <li>Métodos simples e óbvios como <code>getNumero</code> ou <code>setNumero</code>.</li>
+                            <li>Métodos que sobreescrevem métodos de classes-pai.</li>
+                        </ul>
+                        Outras classes e métodos que não os citados acima também podem opcionalmente ter <i>JSDoc</i>, quando necessário
+                        para esclarecer o código.
+                    </p>
+                    <h3 id="fe-construcoes-especificas" style="padding-bottom: 0px;">Construções específicas</h3>
+                    <hr>
+                    <h4 id="fe-instrucao-simples" style="padding-bottom: 0px;">Instrução simples</h4>
+                    <p>
+                        <ul>
+                            <li>Cada linha deve contar no máximo uma instrução.</li>
+                            <li>Ponto e vírgula deverá ser sempre colocado no fim de uma instrução.</li>
+<pre class="prettyprint pln">
+// Ruim. Sem ponto e vírgula.
+let nomeSistema = "STF Digital"
+
+// Bom. Com ponto e vírgula.
+let nomeSistema = "STF Digital";
+</pre>
+                        </ul>
+                    </p>
+                    <h4 id="fe-instrucao-composta" style="padding-bottom: 0px;">Instrução composta</h4>
+                    <p>
+                        Instruções compostas são instruções contendo uma lista de instruções entre chaves (também conhecido como bloco
+                        de instruções).
+                        <ul>
+                            <li>As instruções devem iniciar cada uma em uma linha separada.</li>
+                            <li>As instruções devem ser indentadas por um nível (4 espaços).
+<pre class="prettyprint pln">
+// Ruim
+if (condicao === true) { ... }
+
+// Bom
+if (condicao === true) {
+    ...
+}
+</pre>
+                            </li>
+                            <li>As chaves devem seguir o estilo K&R, ou seja, <code>{</code> deve estar na mesma linha que inicia
+                                a instrução composta e <code>}</code> deve estar sozinha em uma linha indentada de forma a estar alinhada
+                                com <code>{</code>. Apesar de no estilo K&R original, o <code>{</code> de uma função ficar em uma
+                                linha separada, o mesmo não se aplica à variante adotada aqui.
+<pre class="prettyprint pln">
+// Ruim
+if (condicao === true)
+{
+    ...
+}
+
+// Bom
+if (condicao === true) {
+    ...
+}
+
+// Ruim
+while (condicao)
+{
+    ...
+}
+
+// Bom
+while (condicao) {
+    ...
+}
+</pre>
+                            </li>
+                            <li>
+                                Chaves <code>{}</code> devem ser utilizadas para todos os blocos de instruções compostas, mesmo que eles tenham
+                                apenas uma instrução. Isso ajuda a evitar a introdução de bugs como alguém incluir mais uma instrução sem adicionar
+                                as chaves. 
+<pre class="prettyprint pln">
+// Ruim
+if (condicao === true) fazerAlgo();
+
+// Ruim
+if (condicao === true)
+    fazerAlgo();
+
+// Bom
+if (condicao === true) {
+    fazerAlgo();
+}
+</pre>
+                                Entretanto, uma exceção a essa regra são as
+                                <a href="https://github.com/Microsoft/TypeScript/blob/master/doc/spec.md#4.11" target="_blank">funções flecha</a>
+                                com apenas uma instrução, que podem ser escritas sem chaves <code>{}</code>. Escrevê-las dessa forma
+                                permite encadear vários callbacks que transformam um objeto sequencialmente de forma concisa.
+<pre class="prettyprint pln">
+sc.chain(() => this.requestUserCertificate())
+        .chain((certificate: Certificate) => this.storeCertificate(certificate))
+        .promise();
+</pre>
+                            </li>
+                        </ul>
+                    </p>
+                    <h4 id="fe-strings" style="padding-bottom: 0px;">Strings</h4>
+                    <p>
+                        <ul>
+                            <li>
+                                Utilize aspas duplas <code>""</code> para strings, inclusive para strings em instruções <code>import</code>.
+<pre class="prettyprint pln">
+// Ruim
+let nomeSistema = 'STF Digital';
+
+// Bom
+let nomeSistema = "STF Digital";
+
+// Ruim
+import {Remessa} from '../../services/model';
+import {RemessasDashletService} from '../remessas-dashlet.service';
+
+// Bom
+import {Remessa} from "../../services/model";
+import {RemessasDashletService} from "../remessas-dashlet.service";
+</pre>
+                            </li>
+                        </ul>
+                    </p>
+                    <h4 id="fe-metodos" style="padding-bottom: 0px;">Métodos</h4>
+                    <p>
+                        <ul>
+                            <li>
+                                Métodos devem ter seus modificadores de acesso explicitamente especificados (<code>private</code>, <code>public</code> ou
+                                <code>protected</code>), devendo-se evitar deixar um método sem nenhum modificador de acesso (o que o torna <code>public</code>
+                                no <i>Typescript</i>).
+<pre class="prettyprint pln">
+// Ruim
+export class MinhaClasse {
+
+    // Ruim
+    metodoPublico1(parametro: string): void {
+        ...
+    }
+
+    // Bom
+    public metodoPublico2(parametro: string): void {
+        ...
+    }
+
+    // Bom
+    private metodoPrivado(parametro: string): number {
+        ...
+    }
+
+    protected metodoProtegido(parametro: string): number {
+        ...
+    }
+
+}
+</pre>
+                            </li>
+                            <li>
+                                Métodos devem definir explicitamente o tipo de retorno. Isso permite ao compilador <i>Typescript</i>
+                                validar se seu método realmente está retornando o tipo especificado.
+<pre class="prettyprint pln">
+// Ruim
+public metodo(parametro: string) {
+    ...
+    return 7;
+}
+
+// Bom
+public metodo(parametro: string): number {
+    ...
+    return 7;
+}
+</pre>
+                            </li>
+                        </ul>
+                    </p>
+                    <h2 id="metricas-qualidade" style="padding-bottom: 0px;">Métricas de qualidade</h2>
+                    <hr>
+                    <p>
+                        O desenvolvimento de <i>software</i> é realizado por equipes heterogêneas, com desenvolvedores em
+                        diferentes níveis de experiência e com diferentes estilos de programação. Desse modo, caso não haja um
+                        controle mínimo sobre a qualidade do <i>software</i>, ele pode crescer de forma descontrolada e se tornar
+                        de difícil manutenção ou muito propenso ao aparecimento de <i>bugs</i> e vulnerabilidades.
+                    </p>
+                    <p>
+                        As métricas de qualidade são um importante mecanismo para ajudar o acompanhamento do nível de qualidade de
+                        um <i>software</i> durante o seu desenvolvimento. Elas trazem visibilidade para os gestores e para os próprios
+                        desenvolvedores sobre vários aspectos do <i>software</i>, como: facilidade de manutenção, vulnerabilidades
+                        de segurança, propensão ao aparecimento de <i>bugs</i> em produção, quantidade de código testado, etc.
+                    </p>
+                    <p>
+                        Muitas dessas métricas são complexas e exigem uma análise detalhada do código-fonte do <i>software</i>, o que
+                        torna inviável seu cálculo manual. Por isso, torna-se essencial a utilização de uma ferramenta específica
+                        que viabilize seu cálculo automático e permita a divulgação delas de forma simples e centralizada. Uma das
+                        ferramentas mais utilizadas para esse propósito atualmente é o SonarQube.
                     </p>
                 </div>
     
