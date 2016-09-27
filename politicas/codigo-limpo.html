@@ -1407,7 +1407,7 @@ public metodo(parametro: string): number {
                     <h2 id="metricas-qualidade" style="padding-bottom: 0px;">Métricas de qualidade</h2>
                     <hr>
                     <p>
-                        O desenvolvimento de <i>software</i> é realizado por equipes heterogêneas, com desenvolvedores em
+                        O desenvolvimento de <i>software</i> é realizado por equipes heterogêneas, com desenvolvedores com
                         diferentes níveis de experiência e com diferentes estilos de programação. Desse modo, caso não haja um
                         controle mínimo sobre a qualidade do <i>software</i>, ele pode crescer de forma descontrolada e se tornar
                         de difícil manutenção ou muito propenso ao aparecimento de <i>bugs</i> e vulnerabilidades.
@@ -1421,8 +1421,53 @@ public metodo(parametro: string): number {
                     <p>
                         Muitas dessas métricas são complexas e exigem uma análise detalhada do código-fonte do <i>software</i>, o que
                         torna inviável seu cálculo manual. Por isso, torna-se essencial a utilização de uma ferramenta específica
-                        que viabilize seu cálculo automático e permita a divulgação delas de forma simples e centralizada. Uma das
-                        ferramentas mais utilizadas para esse propósito atualmente é o SonarQube.
+                        que viabilize seu cálculo automático e permita a divulgação delas de forma simples e centralizada. Atualmente
+                        há várias ferramentas que podem ser utilizdas para esse propósito, dentre elas: SonarQube, Code Climate, Codacy,
+                        e outras. Cada uma dessas ferramentas possui formas diferentes de exibir métricas que indiquem a qualidade do
+                        código.
+                    </p>
+                    <p>
+                        De modo geral, as sguintes métricas se aplicam a todas essas ferramentas:
+                        <ul>
+                            <li>Taxa de cobertura de código (Teste)</li>
+                            <li>Taxa de sucesso em testes unitários</li>
+                            <li>Taxa de documentação de APIs públicas</li>
+                            <li>Taxa de aderência ao padrão de codificação</li>
+                            <li>Complexidade do código</li>
+                        </ul>
+                    </p>
+                    <h3 id="metricas-qualidade-sonarqube" style="padding-bottom: 0px;">Sonarqube</h3>
+                    <hr>
+                    <p>
+                        No SonarQube, há algumas outras métricas facilmente disponíveis em sua interface:
+                        <ul>
+                            <li>Taxa de duplicação de código</li>
+                            <li>
+                                Violações categorizadas em diversos níveis: <i>blocker</i>, <i>critical</i>, <i>major</i>, <i>minor</i> e <i>info</i>.
+                                Tais violações agregam problemas de diversas naturezas que contribuem para as outras métricas.
+                            </li>
+                        </ul>
+                    </p>
+                    <h3 id="metricas-qualidade-code-climate" style="padding-bottom: 0px;">Code Climate</h3>
+                    <hr>
+                    <p>
+                        O Code Climate consolida pendências de qualidade em um indicar único chamado GPA, que vai de 0.0 até 4.0,
+                        compreendendo as notas de <b>A</b> a <b>F</b>. Esse indicador agrega diferentes tipos de problemas no
+                        código.
+                    </p>
+                    <h3 id="metricas-qualidade-codacy" style="padding-bottom: 0px;">Codacy</h3>
+                    <hr>
+                    <p>
+                        
+                    </p>
+                    <h3 id="metricas-qualidade-metas" style="padding-bottom: 0px;">Metas</h3>
+                    <hr>
+                    <p>
+                        As metas de nível de métricas de qualidade vão depender da ferramenta utilizada para analisar o código-fonte,
+                        pois cada ferramenta tem uma forma diferente de gerar essas métricas. De modo geral, os valores das 
+                        metas desses indicadores deverão ser calibrados de acordo com cada caso. Normalmente a própria ferramenta
+                        mostra de forma visual que uma métrica está ruim. Deve-se procurar "zerar" todas as pendências indicadas
+                        pela ferramenta ou marcar como falso positivo, caso não se aplique ao caso.  
                     </p>
                 </div>
     
