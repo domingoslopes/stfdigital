@@ -828,6 +828,79 @@ public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autua
                                 <li><a href="#fe-codificacao-arquivo">Codificação de arquivo</a></li>
                             </ol>
                         </li>
+                        <li>
+                            <a href="#fe-estrutura-arquivos-codigo-fonte">Estrutura de arquivos de código-fonte</a>
+                            <ol>
+                                <li><a href="#fe-instrucoes-import">Instruções import</a></li>
+                                <li>
+                                    <a href="#fe-declaracoes-tipos">Declarações de tipos</a>
+                                    <ol>
+                                        <li><a href="#fe-ordem-membros-classe">Ordem dos membros de uma classe</a></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#fe-formatacao">Formatação</a>
+                            <ol>
+                                <li><a href="#fe-formatacao-indentacao">Indentação</a></li>
+                                <li><a href="#fe-formatacao-instrucoes">Uma instrução por linha</a></li>
+                                <li><a href="#fe-formatacao-espacos-branco">Linhas em branco</a></li>
+                                <li><a href="#fe-formatacao-chaves">Chaves</a></li>
+                                <li>
+                                    <a href="#fe-formatacao-quebra-linha">Quebras de linha</a>
+                                    <ol>
+                                        <li><a href="#fe-formatacao-quando-quebrar">Quando quebrar</a></li>
+                                        <li><a href="#fe-formatacao-blocos-vazios">Blocos vazios</a></li>
+                                        <li><a href="#fe-formatacao-funcoes-anonimas">Funções anônimas</a></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#fe-nomeacao">Nomeação</a>
+                            <ol>
+                                <li>
+                                    <a href="#fe-nomeacao-identificadores">Identificadores</a>
+                                    <ol>
+                                        <li><a href="#fe-nomeacao-variaveis">Variáveis e funções</a></li>
+                                        <li><a href="#fe-nomeacao-namespaces">Namespaces</a></li>
+                                        <li><a href="#fe-nomeacao-tipos">Classes, Interfaces e Enums</a></li>
+                                        <li><a href="#fe-nomeacao-metodos">Métodos e Funções</a></li>
+                                        <li><a href="#fe-nomeacao-propriedades">Propriedades</a></li>
+                                        <li><a href="#fe-nomeacao-parametros">Parâmetros</a></li>
+                                        <li><a href="#fe-nomeacao-variaveis-locais">Variáveis locais</a></li>
+                                        <li><a href="#fe-nomeacao-tipos-parametrizados">Variáveis de tipos parametrizados (generics)</a></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#fe-comentarios">Comentários</a>
+                        </li>
+                        <li>
+                            <a href="#fe-jsdoc">JSDoc</a>
+                            <ol>
+                                <li><a href="#fe-jsdoc-formatacao">Formatação</a></li>
+                                <li><a href="#fe-jsdoc-clausulas-at">Cláusulas @</a></li>
+                                <li><a href="#fe-jsdoc-quando-utilizar">Quando utilizar</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#fe-construcoes-especificas">Construções específicas</a>
+                            <ol>
+                                <li><a href="#fe-instrucao-simples">Instrução simples</a></li>
+                                <li><a href="#fe-instrucao-composta">Instrução composta</a></li>
+                                <li><a href="#fe-strings">Strings</a></li>
+                                <li><a href="#fe-metodos">Métodos</a></li>
+                                <li><a href="#fe-if">If</a></li>
+                                <li><a href="#fe-for">For</a></li>
+                                <li><a href="#fe-while">While</a></li>
+                                <li><a href="#fe-do-while">Do While</a></li>
+                                <li><a href="#fe-switch">Switch</a></li>
+                                <li><a href="#fe-try">Try</a></li>
+                            </ol>
+                        </li>
                     </ol>
                     <h3 id="fe-arquivos-codigo-fonte" style="padding-bottom: 0px;">Arquivos de código-fonte</h3>
                     <hr>
@@ -1099,7 +1172,7 @@ public distribuirProcesso(): void {
                         Todos os nomes de variáveis, funções, classes, etc devem ser compostos de uma seuqência dos caracteres <code>A-Z</code>, <code>a-z</code>,
                         permitindo iniciar com <code>$</code> ou <code>_</code> quando for o caso.
                     </p>
-                    <h5 id="fe-nomeacao" style="padding-bottom: 0px;">Variáveis e funções</h5>
+                    <h5 id="fe-nomeacao-variaveis" style="padding-bottom: 0px;">Variáveis e funções</h5>
                     <p>
                         Nomes de variáveis e funções devem ser escritos em <code>lowerCamelCase</code>.
                     </p>
@@ -1403,6 +1476,101 @@ public metodo(parametro: string): number {
 </pre>
                             </li>
                         </ul>
+                    </p>
+                    <h4 id="fe-if" style="padding-bottom: 0px;">If</h4>
+                    <p>
+                        Os ifs devem seguir a formatação do estilo K&R, como nos exemplos a seguir:
+<pre class="prettyprint pln">
+if (/* condicao */) {
+    ...
+}
+
+if (/* condicao */) {
+    ...
+} else {
+    ...
+}
+
+if (/* condicao */) {
+    ...
+} else if (/* condicao */) {
+    ...
+} else {
+    ...
+}
+</pre>
+                    </p>
+                    <h4 id="fe-for" style="padding-bottom: 0px;">For</h4>
+                    <p>
+                        As instruções for devem seguir a formatação do estilo K&R, como nos exemplos a seguir:
+<pre class="prettyprint pln">
+for (/* inicialização */; /* condicao */; /* atualizacao */) {
+    ...
+}
+
+for (let variavel in objeto) {
+    ...
+}
+
+for (let variavel of objeto) {
+    ...
+}
+</pre>
+                    </p>
+                    <h4 id="fe-while" style="padding-bottom: 0px;">While</h4>
+                    <p>
+                        As instruções while devem seguir a formatação do estilo K&R, como no exemplo a seguir:
+<pre class="prettyprint pln">
+while (/* condicao */) {
+    ...
+}
+</pre>
+                    </p>
+                    <h4 id="fe-do-while" style="padding-bottom: 0px;">Do While</h4>
+                    <p>
+                        As instruções do while devem seguir a formatação do estilo K&R, terminando com <code>;</code>, como no exemplo a seguir:
+<pre class="prettyprint pln">
+do {
+    ...
+} while (/* condicao */);
+</pre>
+                    </p>
+                    <h4 id="fe-switch" style="padding-bottom: 0px;">Switch</h4>
+                    <p>
+                        As instruções switch devem seguir a formatação indicada a seguir, com cada grupo case exceto o default
+                        terminando com break, return ou throw.      
+<pre class="prettyprint pln">
+switch (/* expressao */) {
+    case /* expressao1 */:
+        ...
+        /* terminacao1 */
+    case /* expressao2 */:
+        ...
+        /* terminacao2 */
+    default:
+        ...
+}
+</pre>
+                    </p>
+                    <h4 id="fe-try" style="padding-bottom: 0px;">Try</h4>
+                    <p>
+                        Instruções try devem ser evitadas sempre que possível. Elas não são boas para controle de fluxo da aplicação.
+                        Quando utilizadas, elas devem ser formatadas como no exemplo a seguir:
+<pre class="prettyprint pln">
+try {
+    ...
+} catch (error: Error) {
+    ...
+}
+
+try {
+    ...
+} catch (error: Error) {
+    ...
+} finally {
+    ...
+}
+</pre>
                     </p>
                     <h2 id="metricas-qualidade" style="padding-bottom: 0px;">Métricas de qualidade</h2>
                     <hr>
