@@ -1432,7 +1432,6 @@ public metodo(parametro: string): number {
                             <li>Taxa de cobertura de código (Teste)</li>
                             <li>Taxa de sucesso em testes unitários</li>
                             <li>Taxa de documentação de APIs públicas</li>
-                            <li>Taxa de aderência ao padrão de codificação</li>
                             <li>Complexidade do código</li>
                         </ul>
                     </p>
@@ -1441,10 +1440,11 @@ public metodo(parametro: string): number {
                     <p>
                         No SonarQube, há algumas outras métricas facilmente disponíveis em sua interface:
                         <ul>
+                            <li>Nível de manutenibilidade</li>
                             <li>Taxa de duplicação de código</li>
                             <li>
                                 Violações categorizadas em diversos níveis: <i>blocker</i>, <i>critical</i>, <i>major</i>, <i>minor</i> e <i>info</i>.
-                                Tais violações agregam problemas de diversas naturezas que contribuem para as outras métricas.
+                                Tais violações agregam problemas de diversas naturezas que influenciam nas outras métricas.
                             </li>
                         </ul>
                     </p>
@@ -1453,12 +1453,20 @@ public metodo(parametro: string): number {
                     <p>
                         O Code Climate consolida pendências de qualidade em um indicar único chamado GPA, que vai de 0.0 até 4.0,
                         compreendendo as notas de <b>A</b> a <b>F</b>. Esse indicador agrega diferentes tipos de problemas no
-                        código.
+                        código. De modo geral, deve-se buscar manter o GPA no nível A.
                     </p>
                     <h3 id="metricas-qualidade-codacy" style="padding-bottom: 0px;">Codacy</h3>
                     <hr>
                     <p>
-                        
+                        No Codacy, além das métricas já mencionadas acima, também estão disponíveis as seguintes métricas:
+                        <ul>
+                            <li>Taxa de compatibilidade (Compatibility)</li>
+                            <li>Taxa de aderência ao padrão de codificação (Code Style)</li>
+                            <li>Taxa de tendência de aparecimento de erros (Error Prone)</li>
+                            <li>Taxa de conformidade com boas práticas de desempenho (Performance)</li>
+                            <li>Taxa de conformidade com boas práticas de segurança (Security)</li>
+                            <li>Taxa de código não utilizado (Unused Code)</li>
+                        </ul>
                     </p>
                     <h3 id="metricas-qualidade-metas" style="padding-bottom: 0px;">Metas</h3>
                     <hr>
@@ -1469,6 +1477,44 @@ public metodo(parametro: string): number {
                         mostra de forma visual que uma métrica está ruim. Deve-se procurar "zerar" todas as pendências indicadas
                         pela ferramenta ou marcar como falso positivo, caso não se aplique ao caso.  
                     </p>
+                    <p>
+                        A seguir temos tabelas de metas de métricas a serem perseguidas em cada contexto do STF Digital:
+                    </p>
+                    <table>
+                        <caption>Sonarqube</caption>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Meta</th>
+                        </tr>
+                        <tr>
+                            <td>Taxa de cobertura de código (Teste)</td>
+                            <td>>= 80%</td>
+                        </tr>
+                        <tr>
+                            <td>Taxa de sucesso em testes unitários</td>
+                            <td>=100%</td>
+                        </tr>
+                        <tr>
+                            <td>Taxa de documentação de APIs públicas</td>
+                            <td>>=80%</td>
+                        </tr>
+                        <tr>
+                            <td>Complexidade do código por função/arquivo/classe</td>
+                            <td><=5.0/<=5.0/<=5.0</td>
+                        </tr>
+                        <tr>
+                            <td>Nível de manutenibilidade</td>
+                            <td>=A</td>
+                        </tr>
+                        <tr>
+                            <td>Taxa de duplicação de código</td>
+                            <td><=10%</td>
+                        </tr>
+                        <tr>
+                            <td>Violações <i>blocker</i>/<i>critical</i>/<i>major</i>/<i>minor</i>/<i>info</i></td>
+                            <td>=0/=0/<=100/<=200/<=50</td>
+                        </tr>
+                    </table>
                 </div>
     
             </div>
