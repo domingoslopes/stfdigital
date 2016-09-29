@@ -541,7 +541,7 @@ return peticao.envolvidos().stream()
                         <ul>
                             <li>
                                 Métodos e construtores devem ter o parênteses de abertura na mesma linha, mesmo que ultrapassem o limite de tamanho
-                                de coluna.
+                                de coluna. Apesar disso, deve-se evitar nomes de métodos grandes demais, a ponto de ultrapassar esse limite. 
                             </li>
                             <li>
                                 Quando uma linha for quebrada em uma expressão de atribuição, a quebra deve ocorrer após o símbolo de igual.
@@ -865,7 +865,7 @@ public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autua
                                     <ol>
                                         <li><a href="#fe-nomeacao-variaveis">Variáveis e funções</a></li>
                                         <li><a href="#fe-nomeacao-namespaces">Namespaces</a></li>
-                                        <li><a href="#fe-nomeacao-tipos">Classes, Interfaces e Enums</a></li>
+                                        <li><a href="#fe-nomeacao-tipos">Classes, <i>Interfaces</i> e <i>Enums</i></a></li>
                                         <li><a href="#fe-nomeacao-metodos">Métodos e Funções</a></li>
                                         <li><a href="#fe-nomeacao-propriedades">Propriedades</a></li>
                                         <li><a href="#fe-nomeacao-parametros">Parâmetros</a></li>
@@ -904,54 +904,70 @@ public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autua
                     </ol>
                     <h3 id="fe-arquivos-codigo-fonte" style="padding-bottom: 0px;">Arquivos de código-fonte</h3>
                     <hr>
+                    <p>
+                        Funcionalidade é um nome utilizado para descrever um caso de uso da interface gráfica e agrupa um conjunto
+                        de componentes <i>AngularJS</i> e tipos do Typescript.
+                    </p>
                     <h4 id="fe-nome-arquivo" style="padding-bottom: 0px;">Nome de arquivo</h4>
                     <p>
                         O nome de um arquivo de código-fonte terá a extensão ".ts" e seguirá as seguintes regras de formação: 
                         <ul>
                             <li>
                                 Para arquivos com componentes do <i>Angular</i> como <i>modules</i>, <i>controllers</i>, <i>services</i>,
-                                <i>filters</i>, etc., o nome deverá ser formado por <code>funcionalidade.tipo.ts</code>
+                                <i>filters</i>, etc., o nome deverá ser formado por <code>nome-componente.tipo.ts</code>, em que <code>nome-componente</code>
+                                é a parte inicial do nome da classe convertido de <code>CammelCase</code> para <code><a href="http://c2.com/cgi/wiki?KebabCase">kebab-case</a></code>
+<pre class="prettyprint pln">
+// Arquivo <span style="color: red;">peticionamento-originario</span>.<span style="color: blue;">controller</span>.ts
+...
+export class <span style="color: red;">PeticionamentoOriginario</span><span style="color: blue;">Controller</span> {
+    ...
+}
+
+peticionamentoOriginario.controller("app.autuacao.peticionamento.originario.<span style="color: red;">PeticionamentoOriginario</span><span style="color: blue;">Controller</span>",
+        <span style="color: red;">PeticionamentoOriginario</span><span style="color: blue;">Controller</span>);
+...
+</pre>
                             </li>
                             <li>
-                                Classes e interfaces auxiliares de uma funcionalidade (que foram exportadas) devem ser incluídas em um único arquivo com o nome
-                                <code>funcionalidade.model.ts</code>. Classes e interfaces específicas da implementação de um componente podem
-                                permanecer no próprio arquivo da funcionalidade (elas não deverão ser exportadas).
+                                Tipos que são compartilhados para utilização em mais de um ponto de uma funcionalidade devem ser incluídos em um único arquivo com o nome
+                                <code>funcionalidade.model.ts</code>. Tipos que são utilizados apenas na implementação de um único componente podem
+                                permanecer no próprio arquivo do mesmo e não devem ser exportados.
                             </li>
                             <li>
-                                Quando a funcionalidade for implementada por uma classe, o nome do arquivo que a contém deve ser o nome dela (desconsiderando o
-                                sufixo do tipo de funcionalidade) todo em minúsculo convertendo de <code>CammelCase</code> para a notação de cada palavra separada
-                                por hífen, seguido do tipo da funcionalidade e da extensão ".ts". Por exemplo, a classe <code>AutuacaoRecursalService</code>
-                                deve estar em um arquivo de nome <code>autuacao-recursal.service</code>, a classe <code>AutuacaoRecursalController</code> em um 
-                                de nome <code>autuacao-recursal.controller</code>.
+                                Quando um componente <i>AngularJS</i> for implementado por uma classe, o nome do arquivo que o contém deve ser o nome dela (desconsiderando o
+                                sufixo do tipo de componente) todo em minúsculo convertendo de <code>CammelCase</code> para a notação de cada palavra separada
+                                por hífen (<code><a href="http://c2.com/cgi/wiki?KebabCase">kebab-case</a></code>), seguido de ".", do tipo do componente e da extensão ".ts".
+                                Por exemplo, a classe <code>AutuacaoRecursalService</code> deve estar em um arquivo de nome <code>autuacao-recursal.service</code>,
+                                a classe <code>AutuacaoRecursalController</code> em um de nome <code>autuacao-recursal.controller</code>.
                             </li>
                         </ul>
                         Exemplos:
 <pre class="prettyprint pln">
-// Arquivo autuacao-recursal.service.ts
+// Arquivo <span style="color: red;">autuacao-recursal</span>.<span style="color: blue;">service</span>.ts
 ...
 import autuacaoRecursal from "../shared/recursal.module";
 
-export class AutuacaoRecursalService {
-    ...
-}
-
 class ValidadorAutuacao implements cmd.CommandValidator {
-    ...
+    ... // Essa classe pode ficar no mesmo arquivo que a classe AutuacaoRecursalService, pois é utilizada apenas aqui.
 }
 
-autuacaoRecursal.service('app.autuacao.recursal.AutuacaoRecursalService', AutuacaoRecursalService);
+export class <span style="color: red;">AutuacaoRecursal</span><span style="color: blue;">Service</span> {
+    ... // Classe principal do arquivo, que vai determinar o nome dele.
+}
 
-export default autuacaoRecursal;
+autuacaoRecursal.service("app.autuacao.recursal.<span style="color: red;">AutuacaoRecursal</span><span style="color: blue;">Service</span>", <span style="color: red;">AutuacaoRecursal</span><span style="color: blue;">Service</span>);
+
+...
 </pre>
 <pre class="prettyprint pln">
-// Arquivo autuacao-recursal.model.ts
+// Arquivo autuacao-recursal.model.ts. "autuacao-recursal" é o nome da funcionalidade que utiliza esses tipos.
 ...
 export class AutuarProcessoRecursalCommand implements Command {
     ...
 }
 
 export interface ProcessoRecursal extends Processo {
-	...
+    ...
 }
 </pre>
                     </p>
@@ -962,11 +978,11 @@ export interface ProcessoRecursal extends Processo {
                     <h3 id="fe-estrutura-arquivos-codigo-fonte" style="padding-bottom: 0px;">Estrutura de arquivos de código-fonte</h3>
                     <hr>
                     <p>
-                        Um arquivo de código-fonte consiste das seguintes seções, nessa ordem:
+                        Um arquivo de código-fonte consiste das seguintes seções (quando existir), nessa ordem:
                         <ol>
                             <li>Bloco de <i>namespace</i></li>
                             <li>Instruções <i>import</i></li>
-                            <li>Definições de tipos (classes, interfaces, enums, etc) e funções</li>
+                            <li>Definições de tipos (classes, <i>interfaces</i> e <i>enums</i>, etc) e funções</li>
                             <li>Instruções executáveis (serão executadas quando um módulo for importado)</li>
                         </ol>
                         Exatamente uma linha em branco separará uma seção da outra. 
@@ -983,6 +999,7 @@ import IStateService = angular.ui.IStateService;
 <pre class="prettyprint pln">
 ...
 autuacaoRecursal.controller("app.autuacao.recursal.AutuacaoRecursalController", AutuacaoRecursalController);
+
 export default autuacaoRecursal;
 </pre>
                         No <i>import</i>, não deverão ser utilizados espaços depois de <code>{</code> e antes de <code>}</code>.
@@ -1014,7 +1031,8 @@ import cmd = app.support.command;
 import Properties = app.support.constants.Properties;
 
 import {AutuarProcessoRecursalCommand, Tese} from "../shared/recursal.model"; // Ordem alfabética dentro dos parênteses
-// Apesar de o nome do módulo começar com "a", o módulo acima, cujo nome começa com "s", está mais distante relativamente do que o abaixo
+// Apesar de o nome do módulo abaixo começar com "a", o módulo acima, cujo nome começa com "s",
+// está mais distante relativamente do que o abaixo
 import {AutuacaoRecursalService} from "./autuacao-recursal.service"; 
 import autuacaoRecursal from "../shared/recursal.module";
 </pre>
@@ -1076,14 +1094,14 @@ import autuacaoRecursal from "../shared/recursal.module";
                         Construções similares a bloco (corpo de classe, interface, método ou construtor) devem seguir o estilo de
                         Kernighan & Ritchie (também conhecido como chaves egípcias):
                         <ul>
-                            <li>Nenhuma quebra de linha antes da chave de abertura mas um único espaço antes dela</li>
-                            <li>Quebra de linha após a chave de abertura</li>
-                            <li>Quebra de linha antes da chave de fechamento</li>
+                            <li>Nenhuma quebra de linha antes da chave de abertura mas um único espaço antes dela.</li>
+                            <li>Quebra de linha após a chave de abertura.</li>
+                            <li>Quebra de linha antes da chave de fechamento.</li>
                             <li>Quebra de linha depois da chave de fechamento caso ela termine uma instrução ou o corpo
                                 de um método, construtor.
                             </li>
                             <li>Nenhuma quebra de linha depois da chave caso ela seja seguida de <i>else</i>, <i>catch</i>, <i>finally</i>
-                                ou ponto e vírgula 
+                                ou ponto e vírgula. 
                             </li>
                         </ul>
                         Exemplo:
@@ -1092,7 +1110,7 @@ export class MinhaClasse {
 
     private api: string;
 
-    constructor(private $http: IHttpService) {
+    public constructor(private $http: IHttpService) {
     	this.api = "minha-api"; 
     }
 
@@ -1109,8 +1127,8 @@ export class MinhaClasse {
                     <p>
                         O limite de tamanho de coluna é de <b>120</b> caracteres. Ao quebrar expressões grandes, coloque os símbolos separadores no fim
                         da linha ao invés de na próxima linha. Para melhorar a legibilidade em algumas situações, uma linha poderá ser quebrada antes
-                        de atingir o limite de <b>120</b> caracteres. Deverão ser adicionados 2 níveis de indentação a uma linha quebrada. Por exemplo:
-                        <pre class="prettyprint pln">
+                        de atingir o limite de <b>120</b> caracteres. Deverá ser adicionado 2 níveis de indentação a uma linha quebrada. Por exemplo:
+<pre class="prettyprint pln">
 public isValid(command: PeticionarOrgaoCommand): boolean {
     if (command.poloAtivo.length > 0 && command.poloPassivo.length > 0 && command.anexos.length > 0 &&
             command.classeId && command.sigilo && command.orgaoId) {
@@ -1126,10 +1144,28 @@ public isValid(command: PeticionarOrgaoCommand): boolean {
                         <ul>
                             <li>
                                 Métodos e construtores devem ter o parênteses de abertura na mesma linha, mesmo que ultrapassem o limite de tamanho
-                                de coluna.
+                                de coluna. Apesar disso, deve-se evitar nomes de métodos grandes demais, a ponto de ultrapassar esse limite.
                             </li>
                             <li>
                                 Quando uma linha for quebrada em uma expressão de atribuição, a quebra deve ocorrer após o símbolo de igual.
+                            </li>
+                            <li>
+                                Objetos escritos na notação JSON devem ser quebrados depois do <code>{</code> e antes do <code>}</code>, com
+                                cada propriedade escrita em uma linha. Entretanto, depois do <code>{</code>, apenas 1 nível de indentação deve ser adicionado após
+                                a quebra.
+<pre class="prettyprint pln">
+$stateProvider.state("app.tarefas.analise-repercussao-geral", {
+    url: "/autuacao/recursal/:informationId/analise-repercussao-geral",
+    views: {
+        "content@app.autenticado": {
+            templateUrl: "./analise-repercussao-geral.tpl.html",
+            controller: "app.autuacao.recursal.AnaliseRepercussaoGeralController",
+            controllerAs: "analise"
+        }
+    }
+    ...
+});
+</pre>
                             </li>
                         </ul>
                     </p>
@@ -1150,18 +1186,27 @@ export class Bar {}
                     </p>
                     <h5 id="fe-formatacao-funcoes-anonimas" style="padding-bottom: 0px;">Funções anônimas</h5>
                     <p>
-                        Funções anônimas devem ser escritas na notação <i>lambda</i> <code>() => { }</code>.
+                        Funções anônimas devem ser escritas na notação de seta <code>() => { }</code> (<i>arrow function</i>)., quebrando
+                        sempre depois de <code>{</code> e antes de <code>}</code>. Entretanto, apenas 1 nível de indentação deve ser adicionado
+                        depois da quebra.
                     </p>
+                    <p>Opcionalmente, caso a função anônima tenha apenas uma instrução com <code>return</code>, a função anônima poderá
+                    ficar em apenas uma linha.</p>
                     <p>
                         Exemplo:
 <pre class="prettyprint pln">
 public distribuirProcesso(): void {
     this.distribuicaoComumService.enviarProcessoParaDistribuicao(this.cmdDistribuir).then(() => {
-        this.$state.go('app.tarefas.minhas-tarefas');
-        this.messagesService.success('Processo distribuído com sucesso.');
+        this.$state.go("app.tarefas.minhas-tarefas");
+        this.messagesService.success("Processo distribuído com sucesso.");
     }, () => {
-        this.messagesService.error('Erro ao distribuir o processo.');
+        this.messagesService.error("Erro ao distribuir o processo.");
     });
+}
+
+public consultarAnaliseProcesso(processoId: number): IPromise<AnalisePressupostosFormais> {
+    return this.$http.get(this.api + "/" + processoId + "/analise-pressupostos-formais")
+            .then(response => response.data);
 }
 </pre>
                     </p>
@@ -1190,9 +1235,9 @@ namespace app.novoProcesso { // Nome incorreto de namespace. Não se deve separa
 }
 </pre>
                     </p>
-                    <h5 id="fe-nomeacao-tipos" style="padding-bottom: 0px;">Classes, Interfaces e <i>Enums</i></h5>
+                    <h5 id="fe-nomeacao-tipos" style="padding-bottom: 0px;">Classes, <i>Interfaces</i> e <i>Enums</i></h5>
                     <p>
-                        Os nomes de classes, interfaces e <i>enums</i> deverão ser escritos em UpperCamelCase.
+                        Os nomes de classes, <i>interfaces</i> e <i>enums</i> deverão ser escritos em <code>UpperCamelCase</code>.
                     </p>
                     <h5 id="fe-nomeacao-metodos" style="padding-bottom: 0px;">Métodos e Funções</h5>
                     <p>
@@ -1217,7 +1262,7 @@ export class NovoProcessoController {
                     </p>
                     <h5 id="fe-nomeacao-propriedades" style="padding-bottom: 0px;">Propriedades</h5>
                     <p>
-                        As propriedades devem ser escritos em <code>lowerCamelCase</code>. Esses nomes são normalmente substantivos ou
+                        As propriedades devem ser escritas em <code>lowerCamelCase</code>. Esses nomes são normalmente substantivos ou
                         substantivos seguidos de qualificadores. Por exemplo, <code>peticaoInicial</code> ou <code>processo</code>.
                     </p>
                     <h5 id="fe-nomeacao-parametros" style="padding-bottom: 0px;">Parâmetros</h5>
@@ -1234,6 +1279,13 @@ export class NovoProcessoController {
                         Os nomes das variáveis de tipo parametrizado devem ser escritos com uma única letra maiúscula, opcionalmente seguida de um
                         único numeral (por exemplo, <code>E</code>, <code>T</code>, <code>X</code>, <code>T2</code>).
                     </p>
+<pre class="prettyprint pln">
+export class StepsChain&lt;S&gt; {
+
+    ...
+
+}
+</pre>
                     <h3 id="fe-comentarios" style="padding-bottom: 0px;">Comentários</h3>
                     <hr>
                     <p>
@@ -1266,7 +1318,7 @@ let indice = 0;
                     </p>
                     <h3 id="fe-jsdoc" style="padding-bottom: 0px;"><i>JSDoc</i></h3>
                     <hr>
-                    Todos os tipos (classes, interfaces, enums) e métodos públicos devem ter um bloco de comentário
+                    Todos os tipos (classes, <i>interfaces</i>, <i>enums</i>) e métodos públicos devem ter um bloco de comentário
                     <code>/** ... */</code> (<i>JSDoc</i>) explicando seu propósito, funcionamento, descrição de parâmetros e retornos.
                     <h4 id="fe-jsdoc-formatacao" style="padding-bottom: 0px;">Formatação</h4>
                     <p>
@@ -1298,7 +1350,7 @@ public metodo(parametro: string): string {
                         ser utilizado em algum método da API pública de uma classe.
                     </p>
                     <p>
-                        As outras cláusulas @ que podem aparecer em uma linha isoladas devem aparecer na seguinte ordem:
+                        As outras cláusulas @ que podem aparecer em uma linha isolada devem aparecer na seguinte ordem:
                         <code>@author, @since, @param, @return, @throws, @see, @deprecated</code>.
                     </p>
                     <h4 id="fe-jsdoc-quando-utilizar" style="padding-bottom: 0px;">Quando utilizar</h4>
