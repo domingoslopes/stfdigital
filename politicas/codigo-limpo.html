@@ -375,7 +375,7 @@
 
                     <h2 id="padrao-codificacao" style="padding-bottom: 0px;">Padrão de Codificação</h2>
                     <hr>
-    
+
                     <p>
                         A utilização de um padrão de codificação é importante para reduzir o custo de manutenção do <i>software</i>, já que sua
                         adoção melhora a legibilidade dele. A Sun Microsystems, em seu documento de <i>Convenções de código para a linguagem
@@ -394,7 +394,89 @@
 
                     <h2 id="padrao-codificao-backend" style="padding-bottom: 0px;">Padrão de Codificação de <i>Back-end</i> (Java)</h2>
                     <hr>
-
+                    <ol>
+                        <li>
+                            <a href="#arquivos-codigo-fonte">Arquivos de código-fonte</a>
+                            <ol>
+                                <li><a href="#nome-arquivo">Nome de arquivo</a></li>
+                                <li><a href="#codificacao-arquivo">Codificação de arquivo</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#estrutura-arquivos-codigo-fonte">Estrutura de arquivos de código-fonte</a>
+                            <ol>
+                                <li><a href="#instrucao-package">Instrução package</a></li>
+                                <li><a href="#instrucoes-import">Instruções import</a></li>
+                                <li>
+                                    <a href="#declaracao-classe">Declaração de classe</a>
+                                    <ol>
+                                        <li><a href="#ordem-membros-classe">Ordem dos membros da classe</a></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#formatacao">Formatação</a>
+                            <ol>
+                                <li><a href="#formatacao-indentacao">Indentação</a></li>
+                                <li><a href="#formatacao-instrucoes">Uma instrução por linha</a></li>
+                                <li><a href="#formatacao-espacos-branco">Linhas em branco</a></li>
+                                <li><a href="#formatacao-chaves">Chaves</a></li>
+                                <li>
+                                    <a href="#formatacao-quebra-linha">Quebras de linha</a>
+                                    <ol>
+                                        <li><a href="#formatacao-quando-quebrar">Quando quebrar</a></li>
+                                        <li><a href="#formatacao-blocos-vazios">Blocos vazios</a></li>
+                                        <li><a href="#formatacao-lambda">Lambdas</a></li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#nomeacao">Nomeação</a>
+                            <ol>
+                                <li><a href="#nomeacao-identificadores">Identificadores</a></li>
+                                <li><a href="#nomeacao-constantes">Constantes</a></li>
+                                <li><a href="#nomeacao-pacotes">Pacotes</a></li>
+                                <li><a href="#nomeacao-classes">Classes</li>
+                                <li><a href="#nomeacao-metodos">Métodos</a></li>
+                                <li><a href="#nomeacao-campos">Campos</a></li>
+                                <li><a href="#nomeacao-parametros">Parâmetros</a></li>
+                                <li><a href="#nomeacao-variaveis-locais">Variáveis locais</a></li>
+                                <li><a href="#nomeacao-variaveis-tipo">Variáveis de tipo parametrizado</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#comentarios">Comentários</a>
+                        </li>
+                        <li>
+                            <a href="#javadoc">Javadoc</a>
+                            <ol>
+                                <li><a href="#javadoc-formatacao">Formatação</a></li>
+                                <li><a href="#javadoc-clausulas-at">Cláusulas @</a></li>
+                                <li><a href="#javadoc-quando-utilizar">Quando utilizar</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#praticas-programacao">Boas práticas de programação</a>
+                            <ol>
+                                <li><a href="#utilizacao-override">Utilização de @Override</a></li>
+                                <li><a href="#metodos-setter">Métodos setter</a></li>
+                                <li><a href="#operador-ternario">Operador ternário</a></li>
+                                <li><a href="#referencias-metodo-campo">Referências a métodos e campos</a></li>
+                                <li><a href="#documentacao-apis">Documentação de APIs</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#praticas-ddd">Práticas do Domain-Driven Design</a>
+                            <ol>
+                                <li><a href="#classes-dominio">Classes de domínio</a></li>
+                            </ol>
+                        </li>
+                        <li>
+                            <a href="#formatador-codigo-java">Formatador de código Java</a>
+                        </li>
+                    </ol>
                     <h3 id="arquivos-codigo-fonte" style="padding-bottom: 0px;">Arquivos de código-fonte</h3>
                     <hr>
                     <h4 id="nome-arquivo" style="padding-bottom: 0px;">Nome de arquivo</h4>
@@ -860,19 +942,15 @@ public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autua
                         <li>
                             <a href="#fe-nomeacao">Nomeação</a>
                             <ol>
-                                <li>
-                                    <a href="#fe-nomeacao-identificadores">Identificadores</a>
-                                    <ol>
-                                        <li><a href="#fe-nomeacao-variaveis">Variáveis e funções</a></li>
-                                        <li><a href="#fe-nomeacao-namespaces">Namespaces</a></li>
-                                        <li><a href="#fe-nomeacao-tipos">Classes, <i>Interfaces</i> e <i>Enums</i></a></li>
-                                        <li><a href="#fe-nomeacao-metodos">Métodos e Funções</a></li>
-                                        <li><a href="#fe-nomeacao-propriedades">Propriedades</a></li>
-                                        <li><a href="#fe-nomeacao-parametros">Parâmetros</a></li>
-                                        <li><a href="#fe-nomeacao-variaveis-locais">Variáveis locais</a></li>
-                                        <li><a href="#fe-nomeacao-tipos-parametrizados">Variáveis de tipos parametrizados (generics)</a></li>
-                                    </ol>
-                                </li>
+                                <li><a href="#fe-nomeacao-identificadores">Identificadores</a></li>
+                                <li><a href="#fe-nomeacao-variaveis">Variáveis e funções</a></li>
+                                <li><a href="#fe-nomeacao-namespaces">Namespaces</a></li>
+                                <li><a href="#fe-nomeacao-tipos">Classes, <i>Interfaces</i> e <i>Enums</i></a></li>
+                                <li><a href="#fe-nomeacao-metodos">Métodos e Funções</a></li>
+                                <li><a href="#fe-nomeacao-propriedades">Propriedades</a></li>
+                                <li><a href="#fe-nomeacao-parametros">Parâmetros</a></li>
+                                <li><a href="#fe-nomeacao-variaveis-locais">Variáveis locais</a></li>
+                                <li><a href="#fe-nomeacao-tipos-parametrizados">Variáveis de tipos parametrizados (generics)</a></li>
                             </ol>
                         </li>
                         <li>
