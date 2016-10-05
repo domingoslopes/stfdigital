@@ -5,7 +5,7 @@ repositorios=( "plataforma/core" \
     "plataforma/documents" \
     "plataforma/discovery" \
     "plataforma/gateway" \
-    "plataforma/services" \
+    "plataforma/processos" \
     "plataforma/test" \
     "plataforma/ui" \
     "plataforma/logging" \

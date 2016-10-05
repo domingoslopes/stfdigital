@@ -8,7 +8,7 @@ build_all() {
     projects_docker=( "plataforma/discovery" \
         "plataforma/documents" \
         "plataforma/gateway" \
-        "plataforma/services" \
+        "plataforma/processos" \
         "plataforma/ui" \
         "plataforma/logging" \
 		"plataforma/userauthentication" \

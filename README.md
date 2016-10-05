@@ -47,11 +47,11 @@ No Windows, abra o arquivo
 
 E adicione as linhas abaixo:
 
-    192.168.99.100 docker rabbit mongo discovery documents gateway services ui userauthentication
+    192.168.99.100 docker rabbit mongo discovery documents gateway processos ui userauthentication
 
 No Linux, isso pode ser feito adicionando uma entrada no arquivo `/etc/hosts`, como no exemplo abaixo 
 
-    192.168.99.100 docker rabbit mongo discovery documents gateway services ui userauthentication
+    192.168.99.100 docker rabbit mongo discovery documents gateway processos ui userauthentication
 
 Você poderá confirmar se esse relacionamento está funcional executando o comando `ping` contra o alias criado.
 
@@ -121,7 +121,7 @@ E veja o resultado abaixo:
     stfdigital-autuacao-autuacao               latest              087a6508857d        4 minutes ago       254.3 MB
     stfdigital-plataforma-documents            latest              415ed3e38505        About an hour ago   272.5 MB
     stfdigital-plataforma-userauthentication   latest              7a39edcc72e3        About an hour ago   254.3 MB
-    stfdigital-plataforma-services             latest              960b2163c474        About an hour ago   254.5 MB
+    stfdigital-plataforma-processos            latest              960b2163c474        About an hour ago   254.5 MB
     stfdigital-plataforma-gateway              latest              187aa4d0f0ef        About an hour ago   214.5 MB
     stfdigital-plataforma-discovery            latest              1527e91ead85        About an hour ago   212.6 MB
     stfdigital-autuacao-recebimento            latest              db7b10569848        About an hour ago   254.5 MB
@@ -235,7 +235,7 @@ Se optar por uma organização com <i>Working Sets</i>, você deverá ter uma es
 
 Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Spring Devtools</i>, que permite o `hot restart` de aplicações <i>Spring Boot</i> rodando dentro de um container docker. Os serviços da plataforma já estão configurados para viabilizar tal funcionalidade. No Eclipse, basta executar a sequência abaixo:
 
-    - Com o botão direito, clique no projeto "services"
+    - Com o botão direito, clique no projeto "processos"
     - Em seguida, clique em "Run As" -> "Sprint Devtools Client"
     - Em "Remote Url" informe "http://docker:8081"
     - Em "Remote Secret" informe "stfdigital"
@@ -243,7 +243,7 @@ Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Sp
 
 Isso vai iniciar uma conexão remota com a imagem docker correspondente. No terminal, acesse o log do container pelo comando:
  
-    $ docker-compose logs services
+    $ docker-compose logs processos
     
 Faça alguma alteração no arquivo "ProcessoRestResource" (por exemplo, altere de "Publicado" para "Distribuído"). Assim que você salvar o arquivo, as mensagens de log do restart devem começar a ser exibidas no terminal. Após concluído o restart, acesse o browser para confirmar se a label da tabela de pesquisa foi realmente alterada, de "Publicado" para "Distribuído".
 

@@ -58,8 +58,8 @@ services:
     depends_on:
      - discovery
   services:
-    container_name: services
-    image: stfdigital-plataforma-services
+    container_name: processos
+    image: stfdigital-plataforma-processos
     volumes:
      - logs:/logs
     ports:
