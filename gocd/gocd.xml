@@ -1,0 +1,182 @@
+	<pipeline name="STFdigital" isLocked="false">
+      <materials>
+        <git url="https://github.com/supremotribunalfederal/stfdigital.git" branch="stfdigital-poc-modular-master" autoUpdate="false" />
+      </materials>
+      <stage name="Build">
+        <jobs>
+          <job name="BuildApp">
+            <tasks>
+              <exec command="/usr/apache-maven-3.3.3-go/bin/mvn">
+                <arg>clean</arg>
+                <arg>package</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>deploy</resource>
+            </resources>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="Post_Build_Tests" fetchMaterials="false">
+        <jobs>
+          <job name="Teste_unitario_front_end">
+            <tasks>
+              <exec command="/usr/bin/gulp">
+                <arg>test:unit</arg>
+              </exec>
+            </tasks>
+            <resources>
+              <resource>deploy</resource>
+            </resources>
+          </job>
+          <job name="Teste_integracao_back_end">
+            <tasks>
+              <exec command="/usr/apache-maven-3.3.3-go/bin/mvn">
+                <arg>failsafe:integration-test</arg>
+                <arg>failsafe:verify</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>deploy</resource>
+            </resources>
+          </job>
+          <job name="Start_selenium_server">
+            <tasks>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker stop selenium || true</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker rm selenium || true</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="docker">
+                <arg>run</arg>
+                <arg>-d</arg>
+                <arg>--name=selenium</arg>
+                <arg>-p</arg>
+                <arg>4444:24444</arg>
+                <arg>-p</arg>
+                <arg>5920:25900</arg>
+                <arg>-v</arg>
+                <arg>/dev/shm:/dev/shm</arg>
+                <arg>-v</arg>
+                <arg>/usr/e2e/files:/e2e/uploads</arg>
+                <arg>-e</arg>
+                <arg>VNC_PASSWORD=hola</arg>
+                <arg>elgalu/selenium:2.52.0b</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>docker</resource>
+            </resources>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="Build_Image" fetchMaterials="false">
+        <jobs>
+          <job name="StartApp">
+            <tasks>
+              <exec command="/usr/apache-maven-3.3.3-go/bin/mvn">
+                <arg>docker:build</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker tag plataforma/stfdigital plataforma/stfdigital</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker stop test_image || true</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker rm test_image || true</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker run --name=test_image -d -it -p 18090:8090 -p 18443:8443 plataforma/stfdigital --host=pirai --port=18443</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>deploy</resource>
+            </resources>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="Teste_End_To_End">
+        <jobs>
+          <job name="prepara_selenium">
+            <tasks>
+              <exec command="cp">
+                <arg>-rf</arg>
+                <arg>src/main/resources/static/application/test/e2e/files/</arg>
+                <arg>/usr/e2e/</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>docker</resource>
+            </resources>
+          </job>
+          <job name="run_e2e_test">
+            <tasks>
+              <exec command="sleep">
+                <arg>180</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="gulp">
+                <arg>test:e2e</arg>
+                <arg>--e2eBaseUrl=https://pirai:18443</arg>
+                <arg>--e2eSeleniumAddress=http://pacaembu:4444/wd/hub</arg>
+                <arg>--e2eFilesDirPath=/e2e/uploads</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker stop test_image || true</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>deploy</resource>
+            </resources>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="Start">
+        <jobs>
+          <job name="StartApp">
+            <tasks>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker stop running_image || true</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker rm running_image || true</arg>
+                <runif status="passed" />
+              </exec>
+              <exec command="/bin/bash">
+                <arg>-c</arg>
+                <arg>docker run --name=running_image -d -it -p 9090:8090 -p 9443:8443 plataforma/stfdigital --host=digital.stf.jus.br --port=8443</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <resources>
+              <resource>deploy</resource>
+            </resources>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
