@@ -18,7 +18,7 @@ Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/
     
 Isso deve resultar na seguinte estrutura de diretórios:
 
-<img src="assets/estrutura.png" width="180">
+<img src="support/assets/estrutura.png" width="180">
 
 ##### Instale o Gradle
 Cada componente deverá ser construído separadamente, portanto cada um tem seu próprio arquivo de construção. Usamos Gradle como ferramenta de montagem, então você precisa instalá-lo antes de prosseguir. 
@@ -141,7 +141,7 @@ Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as me
     
 A medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://docker:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
 
-<img src="assets/discovery.png" width="800">
+<img src="support/assets/discovery.png" width="800">
 
 #### Para trabalhar com UI...
 
@@ -223,7 +223,7 @@ Repita os passos para cada um dos componentes.
 
 Se optar por uma organização com <i>Working Sets</i>, você deverá ter uma estrutura de projetos como na imagem abaixo:
 
-<img src="assets/eclipse.png" width="150">    
+<img src="support/assets/eclipse.png" width="150">    
 
     > Clique com o botão direito no nome do projeto
     > Assign Working Sets

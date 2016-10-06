@@ -35,5 +35,5 @@ build_all() {
     done
 }
 
-mkdir -p ./logs
-(time build_all) 2>&1 | tee ./logs/build.log
+mkdir -p ./support/logs
+(time build_all) 2>&1 | tee ./support/logs/build.log

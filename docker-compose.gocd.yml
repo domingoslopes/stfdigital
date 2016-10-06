@@ -53,7 +53,7 @@ services:
      - "8161:8161"
      - "47965:8000"
     environment:
-     - spring.profiles.active=development,docker
+     - spring.profiles.active=default,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
     labels:
      - "br.jus.stf.app=stfdigital"

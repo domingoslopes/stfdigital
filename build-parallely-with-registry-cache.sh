@@ -5,5 +5,5 @@ build_parallely() {
     gradle docker -PnpmRegistry="http://docker:9981/content/groups/npm/"
 }
 
-mkdir -p ./logs
-(time build_parallely) 2>&1 | tee ./logs/build-parallely.log
+mkdir -p ./support/logs
+(time build_parallely) 2>&1 | tee ./support/logs/build-parallely.log
