@@ -57,7 +57,7 @@ services:
      - "br.jus.stf.app=stfdigital"
     depends_on:
      - discovery
-  services:
+  processos:
     container_name: processos
     image: stfdigital-plataforma-processos
     volumes:
