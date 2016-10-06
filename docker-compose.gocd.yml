@@ -2,6 +2,8 @@ version: '2'
 volumes:
   logs:
     driver: local
+  cassandra_data:
+    driver: local
 services:
   rabbit:
     container_name: rabbit
@@ -67,7 +69,7 @@ services:
      - "8181:8181"
      - "47981:8000"
     environment:
-     - spring.profiles.active=development,docker
+     - spring.profiles.active=default,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
     labels:
      - "br.jus.stf.app=stfdigital"
@@ -93,18 +95,20 @@ services:
      - "8195:8195"
      - "47995:8000"
     environment:
-     - spring.profiles.active=development,docker
+     - spring.profiles.active=default,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
     labels:
      - "br.jus.stf.app=stfdigital"
     depends_on:
      - rabbit
      - discovery
-  mongo:
-    container_name: mongo
-    image: mongo:3
+  cassandra:
+    container_name: cassandra
+    image: cassandra:2.1
     ports:
-     - "27017:27017"
+     - "9042:9042"
+    volumes:
+     - cassandra_data:/var/lib/cassandra
     labels:
      - "br.jus.stf.app=stfdigital"
   onlyoffice:
@@ -126,7 +130,7 @@ services:
      - "8194:8194"
      - "47994:8000"
     environment:
-     - spring.profiles.active=development,docker
+     - spring.profiles.active=default,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
      - onlyoffice.documentserver.host=digital.stf.jus.br
      - onlyoffice.server.address=https://docker:443
@@ -199,7 +203,7 @@ services:
      - "8191:8191"
      - "47991:8000"
     environment:
-     - spring.profiles.active=development,docker
+     - spring.profiles.active=default,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
     labels:
      - "br.jus.stf.app=stfdigital"
