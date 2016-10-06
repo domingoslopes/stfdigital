@@ -2,7 +2,7 @@
 
 update_shared_all() {
     projects_shared=("plataforma/documents" \
-        "plataforma/services" \
+        "plataforma/processos" \
         "plataforma/ui" \
 		"plataforma/userauthentication" \
         "autuacao/autuacao" \
