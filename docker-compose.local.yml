@@ -1,8 +1,5 @@
 # Define a configuração para rodar com imagens locais
 version: '2'
-volumes:
-  logs:
-    driver: local
 services:
   rabbit:
     extends:
@@ -43,10 +40,10 @@ services:
     depends_on:
      - rabbit
      - discovery
-  mongo:
+  cassandra:
     extends:
       file: shared/compose/common.yml
-      service: mongo
+      service: cassandra
   onlyoffice:
     extends:
       file: shared/compose/common.yml
@@ -59,7 +56,7 @@ services:
     links:
      - onlyoffice:docker # documents precisa acessar o onlyoffice pelo host docker para não dar erro de certificado
     depends_on:
-     - mongo
+     - cassandra
      - rabbit
      - discovery
      - onlyoffice

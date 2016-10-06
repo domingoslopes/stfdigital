@@ -137,7 +137,7 @@ services:
     labels:
      - "br.jus.stf.app=stfdigital"
     depends_on:
-     - mongo
+     - cassandra
      - rabbit
      - discovery
     links:
