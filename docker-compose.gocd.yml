@@ -2,6 +2,8 @@ version: '2'
 volumes:
   logs:
     driver: local
+  cassandra_data:
+    driver: local
 services:
   rabbit:
     container_name: rabbit
@@ -100,11 +102,13 @@ services:
     depends_on:
      - rabbit
      - discovery
-  mongo:
-    container_name: mongo
-    image: mongo:3
+  cassandra:
+    container_name: cassandra
+    image: cassandra:2.1
     ports:
-     - "27017:27017"
+     - "9042:9042"
+    volumes:
+     - cassandra_data:/var/lib/cassandra
     labels:
      - "br.jus.stf.app=stfdigital"
   onlyoffice:
