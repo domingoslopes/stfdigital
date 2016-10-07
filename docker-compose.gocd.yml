@@ -117,7 +117,7 @@ services:
     ports:
      - "443:443"
     environment:
-     - ONLYOFFICE_PORT_443_TCP=tcp://10.112.20.123:443
+     - ONLYOFFICE_PORT_443_TCP=tcp://eti078082:443
     labels:
      - "br.jus.stf.app=stfdigital"
   documents:
