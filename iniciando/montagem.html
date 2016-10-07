@@ -655,46 +655,6 @@
                         <li> No cabeçalho da view Package Explorer, clique na seta para baixo</li>
                         <li> Top Level Elements > Working Set</li>
                     </ol>
-
-                    <h4 id="" style="padding-bottom: 0px;">Desenvolvendo local</h4>
-                    <hr>
-
-                    <p>
-                    Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Spring Devtools</i>, que permite o `hot restart` de aplicações <i>Spring Boot</i> rodando dentro de um container docker. Os serviços da plataforma já estão configurados para viabilizar tal funcionalidade. No Eclipse, basta executar a sequência abaixo:
-                    </p>
-
-                    <ol>
-                        <li> Com o botão direito, clique no projeto "services"</li>
-                        <li> Em seguida, clique em "Run As" -> "Sprint Devtools Client"</li>
-                        <li> Em "Remote Url" informe "http://docker:8081"</li>
-                        <li> Em "Remote Secret" informe "stfdigital"</li>
-                        <li> Click em "Run"</li>
-                    </ol>
-
-                    <p>
-                    Isso vai iniciar uma conexão remota com a imagem docker correspondente. No terminal, acesse o log do container pelo comando:
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose logs services</span></pre>                        
-                    </p>
-
-                    <p>
-                    Faça alguma alteração no arquivo "ProcessoRestResource" (por exemplo, altere de "Publicado" para "Distribuído"). Assim que você salvar o arquivo, as mensagens de log do restart devem começar a ser exibidas no terminal. Após concluído o restart, acesse o browser para confirmar se a label da tabela de pesquisa foi realmente alterada, de "Publicado" para "Distribuído".
-                    </p>
-
-                    <p>
-                    Para realizar o debug, bastar acessar a mesma configuração usada acima, mas em modo Debug. Para confirmar, coloque um break point no arquivo "ProcessoRestResource" e acesse novamente a funcionalidade de pesquisa.
-                    </p>
-
-                    <p>
-                    Para finalizar todos os serviços, basta executar o comando abaixo:
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose down</span></pre>                        
-                    </p>
-
                 </div>
     
             </div>
