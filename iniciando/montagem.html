@@ -128,35 +128,15 @@
                         Enquanto o download é realizado, continue configurando o ambiente...
                     </p>
 
-                    <h3 id="comece" style="padding-bottom: 0px;">Baixe o Repositório e o Docker para montar o ambiente</h3>
+                    <h3 id="comece" style="padding-bottom: 0px;">Monte o ambiente</h3>
                     <hr>
 
                     <h4 id="comece" style="padding-bottom: 0px;">Instale o Docker Toolbox com Git e VirtualBox</h4>
                     <hr>
 
                     <p>    
-                        Instale o <a target="_blank" href="https://www.docker.com/products/docker-toolbox">Docker ToolBox 1.11.1+</a>.
+                        Instale o <a target="_blank" href="https://www.docker.com/products/docker-toolbox">Docker ToolBox 1.12.0+</a>.
                     </p> 
-
-                    <h4 id="comece" style="padding-bottom: 0px;">Baixe o repositório</h4>
-                    <hr>
-
-                    <p>    
-                        Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/dev) , para baixar o repositório 
-                        e execute os comandos abaixo:
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">git clone https://github.com/supremotribunalfederal/stfdigital.git</span></br><span class="str">$ </span><span class="pln">cd stfdigital</span></br><span class="str">$ </span><span class="pln">./clone-all.sh</span></pre>
-                    </p>
-                        
-                    <p>
-                        Isso deve resultar na seguinte estrutura de diretórios:
-                    </p>
-
-                    <div>
-                        <img src="assets/images/estrutura.png" width="180">
-                    </div>
 
                     <h4 id="comece" style="padding-bottom: 0px;">Instale o Gradle</h4>
                     <hr>
@@ -219,7 +199,8 @@
                     </p>
                         
                     <p>
-                        <pre class="prettyprint"><span class="pln">192.168.99.100 docker rabbit mongo discovery documents gateway services ui userauthentication</span></pre>                                                
+                        <pre class="prettyprint"><span class="pln">192.168.99.100 docker discovery cassandra rabbit gateway</span>
+<span class="pln">192.168.99.100 processos userauthentication elk sonar</span></pre>
                     </p>
                         
                     <p>
@@ -227,7 +208,8 @@
                     </p>
                         
                     <p>
-                        <pre class="prettyprint"><span class="pln">192.168.99.100 docker rabbit mongo discovery documents gateway services ui userauthentication</span></pre>                                                
+                        <pre class="prettyprint"><span class="pln">192.168.99.100 docker discovery cassandra rabbit gateway</span>
+<span class="pln">192.168.99.100 processos userauthentication elk sonar</span></pre>
                     </p>
                         
                     <p>
@@ -289,100 +271,6 @@
                     O Maven ainda não é necessário nesse passo, mas você pode baixá-lo em <a href="https://maven.apache.org/download.cgi" target="_blank">Maven</a>. Ele deverá ser configurado adequadamente para que o Gradle reutilize as bibliotecas já existentes em seu repositório local. Falaremos sobre esse passo mais adiante.
                     </p>
 
-                    <h4 id="" style="padding-bottom: 0px;">Execute o Script Gradle</h4>
-                    <hr>
-                        
-                    <p>
-                    Para facilitar o processo, temos um pequeno script que pode ser usado para construir todos os componentes de uma vez.  
-                    </p>
-
-                    <p>
-                    Agora podemos rodar o script de construção do ambiente. 
-                    Reinicie o Docker Quickstart terminal para carregar as variaveis de ambiente e entre no diretório que clonou o ambiente e execute o comando abaixo:
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">./build-all.sh</span></pre>                        
-                    </p>
-
-                    <p>
-                    A execução do script Gradle termina com a geração da imagem docker de cada componente. 
-                    </p>
-
-                    <p>
-                    `Vá tomar um café! Esse passo demora mesmo!` 
-                    </p>
-
-                    <p>
-                    Isso deverá resultar em <b>sete mensagens</b> iguais a mensagem de log abaixo:
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="pln">BUILD SUCCESSFUL</span></pre>                        
-                    </p>
-
-                    <p>
-                    Neste ponto, todas as imagens docker já foram geradas.
-                    </p>
-
-                    <p>
-                    Execute o comando
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker images</span></pre>                        
-                    </p>
-
-                    <p>
-                    E veja o resultado abaixo:
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="pln">REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE</span></br><span class="pln">stfdigital-plataforma-ui                   latest              38625052905a        2 minutes ago       254.1 MB</span></br><span class="pln">stfdigital-autuacao-distribuicao           latest              59bc4671989e        4 minutes ago       254.4 MB</span></br><span class="pln">stfdigital-autuacao-autuacao               latest              087a6508857d        4 minutes ago       254.3 MB</span></br><span class="pln">stfdigital-plataforma-documents            latest              415ed3e38505        About an hour ago   272.5 MB</span></br><span class="pln">stfdigital-plataforma-userauthentication   latest              7a39edcc72e3        About an hour ago   254.3 MB</span></br><span class="pln">stfdigital-plataforma-services             latest              960b2163c474        About an hour ago   254.5 MB</span></br><span class="pln">stfdigital-plataforma-gateway              latest              187aa4d0f0ef        About an hour ago   214.5 MB</span></br><span class="pln">stfdigital-plataforma-discovery            latest              1527e91ead85        About an hour ago   212.6 MB</span></br><span class="pln">stfdigital-autuacao-recebimento            latest              db7b10569848        About an hour ago   254.5 MB</span></br><span class="pln">stfdigital-autuacao-peticionamento         latest              26289ebe34f2        About an hour ago   254.5 MB</span></pre>                        
-                    </p>
-
-                    <h4 id="" style="padding-bottom: 0px;">Pronto! Execute a aplicação!</h4>
-                    <hr>
-                    </p>
-
-                    <p>
-                    Você poderá rodar todas elas de uma única vez usando <i>Docker Compose</i>: 
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose up -d</span></pre>                        
-                    </p>
-
-                    <h4 id="" style="padding-bottom: 0px;">Acompanhe os logs com Kitematic</h4>
-                    <hr>
-
-                    <p>
-                    Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as mensagens de log pelo comando: 
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose logs</span></pre>                        
-                    </p>
-
-                    <p>
-                    A medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://docker:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
-                    </p>
-
-                    <div>
-                        <img src="assets/images/discovery.png" width="900">
-                    </div>
-
-                    <h4 id="" style="padding-bottom: 0px;">Para trabalhar com UI...</h4>
-                    <hr>
-
-                    <p>
-                    Rode no diretório plataforma/ui os comandos abaixo e pare o container de UI pelo Kitematic
-                    </p>
-
-                    <p>
-                        <pre class="prettyprint"><span class="pln">npm install</span></br><span class="pln">gulp serve</span></pre>                        
-                    </p>
-
                     <h3 id="" style="padding-bottom: 0px;">Configure o Eclipse para começar a codificar</h3>
                     <hr>
 
@@ -433,6 +321,264 @@
 
                     <p>
                     A instalação do typescript.java não funcionou
+                    </p>
+                    
+                    <h3 id="" style="padding-bottom: 0px;">Instale o Visual Studio Code e plugins</h3>
+                    <hr>
+
+                    <p>
+                    Usamos o <a target="_blank" href="https://code.visualstudio.com">Visual Studio Code</a> como IDE para front-end. Certifique-se que você tem a última versão. 
+                    Você também precisará instalar os seguintes plugins:
+                    </p>
+                    
+                    <ol>
+                        <li><a href="https://marketplace.visualstudio.com/items?itemName=eg2.tslint" target="_blank">TSLint</a>, que é utilizado para verificar se o código está de acordo
+                        com o <a href="../politicas/codigo-limpo.html#padrao-codificao-frontend">padrão de codificação de front-end</a> em tempo de codificação</li>
+                    </ol>
+                    
+                    <h3 id="desenvolvendo-contexto-especifico">Desenvolvendo para um contexto específico</h3>
+                    <hr>
+                    
+                    <p>Quando uma equipe está desenvolvendo em apenas um contexto, eles não precisam ficar construindo esses contextos localmente. Como
+                    as imagens docker dos outros contextos já são construídas na integração contínua e os desenvolvedores <i>normalmente</i>
+                    não precisam alterar nada nessas imagens, eles podem baixá-las diretamente de um
+                    registro docker. Nesta seção estão os procedimentos para utilizar essa abordagem de desenvolvimento.
+                    
+                    <h4 id="desenvolvendo-contexto-baixar" style="padding-bottom: 0px;">Baixe o repositório do contexto</h4>
+                    <hr>
+
+                    <p>    
+                        Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/dev) , para baixar o repositório 
+                        e execute os comandos abaixo:
+                    </p>
+                    
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">git clone https://github.com/supremotribunalfederal/stfdigital-autuacao-recebimento.git</span>
+<span class="str">$ </span><span class="pln">cd stfdigital-autuacao-recebimento</span></pre>
+                    </p>
+                    
+                    <h4 id="" style="padding-bottom: 0px;">Atualize as imagens dos outros contextos a partir do Docker Hub/Registro Corporativo</h4>
+                    Para desenvolver para um contexto específico, é recomendável manter sempre as imagens locais dos outros contextos sempre atualizadas.
+                    Para atualizá-las, basta executar o comando logo abaixo. Execute esse comando com frequência diária pelo menos ou quando for notificado
+                    (via Slack, por exemplo) de que uma imagem foi atualizada.
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose pull</span></pre>                        
+                    </p>
+                    
+                    <p>Depois de executar o comando acima, é preciso sempre executar o comando da próxima seção para que os serviços em execução
+                    estejam sempre atualizados.</p>
+                    
+                    <h4 id="" style="padding-bottom: 0px;">Execute os containers docker dos outros contextos</h4>
+                    <hr>
+                    
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose up -d</span></pre>                        
+                    </p>
+                    
+                    <h4 id="" style="padding-bottom: 0px;">Acompanhe os logs com Kitematic</h4>
+                    <hr>
+
+                    <p>
+                    Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as mensagens de log pelo comando: 
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose logs</span></pre>                        
+                    </p>
+
+                    <p>
+                    A medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://discovery:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
+                    </p>
+
+                    <div>
+                        <img src="assets/images/discovery.png" width="900">
+                    </div>
+                    
+                    <h4 id="eclipse-importacao" style="padding-bottom: 0px;">Importe o projeto no Eclipse</h4>
+                    <hr>
+
+                    <p>Importe os projetos no Eclipse com os seguintes passos:</p>
+                    <ol>
+                        <li> Clique com o botão direito na view Package Explorer</li>
+                        <li> Clique em Import</li>
+                        <li> Clique em Gradle - aparecerá se o plugin Gradle estiver instalado corretamente</li>
+                        <li> Clique em Gradle Project</li>
+                        <li> Clique em Next, Next</li>
+                        <li> Clique em Browse</li>
+                        <li> Selecione o diretório do projeto (ex: stfdigital/autuacao/recebimento)</li>
+                        <li> clique em Next, Next, Finish `é normal demorar na primeira execução`</li>
+                    </ol>
+                    
+                    <h4 id="eclipse-profile" style="padding-bottom: 0px;">Configure o profile da aplicação</h4>
+                    <hr>
+                    <ol>
+                        <li>Abra a view Boot Dashboard</li>
+                        <li>Clique com o botão direito no projeto do contexto (recebimento, por exemplo)</li>
+                        <li>Clique em Open Config</li>
+                        <li>Preencha o campo Profile com <code>development</code></li>
+                        <li>Clique em Apply, depois em Close</li>
+                    </ol>
+                    
+                    <h4 id="eclipse-executar" style="padding-bottom: 0px;">Execute a aplicação back-end pelo Eclipse</h4>
+                    <hr>
+                    <p>
+                        Antes de realizar esse passo, é necessário verificar que o contexto <code>discovery</code> já tenha terminado
+                        de subir. Isso é necessário pois as configurações dos contextos estão centralizadas no discovery.
+                        Para verificar isso acesse <a href="http://discovery:8761">http://discovery:8761</a>. Se essa página carregar,
+                        significa que ele já está rodando com sucesso e os passos abaixo já podem ser executados.
+                    </p>
+                    <ol>
+                        <li>Abra a view Boot Dashboard</li>
+                        <li>Clique com o botão direito no projeto do contexto (recebimento, por exemplo)</li>
+                        <li>Clique em (Re)rebug</li>
+                    </ol>
+                    
+                    <h4 id="eclipse-build-front-end" style="padding-bottom: 0px;">Execute a construção e <i>watch</i> do código do front-end</h4>
+                    <hr>
+                    <ol>
+                        <li>Abra um terminal Git Bash (ou Docker Quickstart Terminal)</li>
+                        <li>Acesse a raiz da aplicação (por exemplo, stfdigital/autuacao/recebimento)</li>
+                        <li>Execute um dos seguintes comandos:
+                        <p>
+                        Apenas monitora e constrói os recursos de frontend
+                        </p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">gulp watch</span></pre>
+                        <p>
+                        Monitora os recursos de frontend e roda um browsersync, recarregando a página toda vez que uma alteração for feita.
+                        </p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">gulp serve:dev</span></pre>
+                        </li>
+                    </ol>
+                    
+                    <h4 id="eclipse-build-front-end" style="padding-bottom: 0px;">Acesse a aplicação pelo browser</h4>
+                    <hr>
+                    
+                    <p>
+                        Acesse a aplicação no browser pelo endereço <a href="http://docker:8443" target="_blank">http://docker:8443</a> . Caso tenha iniciado a construção de front-end
+                        pelo comando <code>gulp serve:dev</code>, poderá acessar pelo endereço <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>, para ter o browsersync
+                        sincronizando os recursos de front-end.
+                    </p>
+                    
+                    <h3 id="desenvolvendo-tudo">Desenvolvendo para todos os contextos</h3>
+                    <hr>
+                    
+                    <p>
+                        As instruções a partir daqui são apenas para os desenvolvedores que desejam poder desenvolver para todos os contextos do STF Digital
+                        ao mesmo tempo. De modo geral, não é necessário seguir esses passos, pois o desenvolvedor de apenas um contexto poderá trabalhar normalmente
+                        apenas naquele contexto, desde que sempre atualize suas imagens dos outros contextos com <code>docker-compose pull</code>.
+                    </p>
+                    <h4 id="comece" style="padding-bottom: 0px;">Baixe o repositório</h4>
+                    <hr>
+
+                    <p>    
+                        Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/dev) , para baixar o repositório 
+                        e execute os comandos abaixo:
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">git clone https://github.com/supremotribunalfederal/stfdigital.git</span></br><span class="str">$ </span><span class="pln">cd stfdigital</span></br><span class="str">$ </span><span class="pln">./clone-all.sh</span></pre>
+                    </p>
+                        
+                    <p>
+                        Isso deve resultar na seguinte estrutura de diretórios:
+                    </p>
+
+                    <div>
+                        <img src="assets/images/estrutura.png" width="180">
+                    </div>                    
+                    
+                    <h4 id="" style="padding-bottom: 0px;">Execute o Script Gradle</h4>
+                    <hr>
+                        
+                    <p>
+                    Para facilitar o processo, temos um pequeno script que pode ser usado para construir todos os componentes de uma vez.  
+                    </p>
+
+                    <p>
+                    Agora podemos rodar o script de construção do ambiente. 
+                    Reinicie o Docker Quickstart terminal para carregar as variaveis de ambiente e entre no diretório que clonou o ambiente e execute o comando abaixo:
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">./build-all.sh</span></pre>                        
+                    </p>
+
+                    <p>
+                    A execução do script Gradle termina com a geração da imagem docker de cada componente. 
+                    </p>
+
+                    <p>
+                    `Vá tomar um café! Esse passo demora mesmo!` 
+                    </p>
+
+                    <p>
+                    Isso deverá resultar em <b>sete mensagens</b> iguais a mensagem de log abaixo:
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="pln">BUILD SUCCESSFUL</span></pre>                        
+                    </p>
+
+                    <p>
+                    Neste ponto, todas as imagens docker já foram geradas.
+                    </p>
+
+                    <p>
+                    Execute o comando
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker images</span></pre>                        
+                    </p>
+
+                    <p>
+                    E veja o resultado abaixo:
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="pln">REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE</span></br><span class="pln">stfdigital-plataforma-ui                   latest              38625052905a        2 minutes ago       254.1 MB</span></br><span class="pln">stfdigital-autuacao-distribuicao           latest              59bc4671989e        4 minutes ago       254.4 MB</span></br><span class="pln">stfdigital-autuacao-autuacao               latest              087a6508857d        4 minutes ago       254.3 MB</span></br><span class="pln">stfdigital-plataforma-documents            latest              415ed3e38505        About an hour ago   272.5 MB</span></br><span class="pln">stfdigital-plataforma-userauthentication   latest              7a39edcc72e3        About an hour ago   254.3 MB</span></br><span class="pln">stfdigital-plataforma-processos             latest              960b2163c474        About an hour ago   254.5 MB</span></br><span class="pln">stfdigital-plataforma-gateway              latest              187aa4d0f0ef        About an hour ago   214.5 MB</span></br><span class="pln">stfdigital-plataforma-discovery            latest              1527e91ead85        About an hour ago   212.6 MB</span></br><span class="pln">stfdigital-autuacao-recebimento            latest              db7b10569848        About an hour ago   254.5 MB</span></br><span class="pln">stfdigital-autuacao-peticionamento         latest              26289ebe34f2        About an hour ago   254.5 MB</span></pre>                        
+                    </p>
+
+                    <h4 id="" style="padding-bottom: 0px;">Pronto! Execute a aplicação!</h4>
+                    <hr>
+                    </p>
+
+                    <p>
+                    Você poderá rodar todas elas de uma única vez usando <i>Docker Compose</i>: 
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose up -d</span></pre>                        
+                    </p>
+
+                    <h4 id="" style="padding-bottom: 0px;">Acompanhe os logs com Kitematic</h4>
+                    <hr>
+
+                    <p>
+                    Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as mensagens de log pelo comando: 
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose logs</span></pre>                        
+                    </p>
+
+                    <p>
+                    A medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://discovery:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
+                    </p>
+
+                    <div>
+                        <img src="assets/images/discovery.png" width="900">
+                    </div>
+
+                    <h4 id="" style="padding-bottom: 0px;">Para trabalhar com UI...</h4>
+                    <hr>
+
+                    <p>
+                    Rode no diretório plataforma/ui os comandos abaixo e pare o container de UI pelo Kitematic
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="pln">npm install</span></br><span class="pln">gulp serve</span></pre>                        
                     </p>
 
                     <h4 id="" style="padding-bottom: 0px;">Importando os projetos no Eclipse</h4>
@@ -512,7 +658,6 @@
 
                     <h4 id="" style="padding-bottom: 0px;">Desenvolvendo local</h4>
                     <hr>
-                    </p>
 
                     <p>
                     Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Spring Devtools</i>, que permite o `hot restart` de aplicações <i>Spring Boot</i> rodando dentro de um container docker. Os serviços da plataforma já estão configurados para viabilizar tal funcionalidade. No Eclipse, basta executar a sequência abaixo:
