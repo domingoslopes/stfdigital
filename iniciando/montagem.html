@@ -320,6 +320,40 @@
                         <li> Marque todas as opções e clique em Next, Next, Finish.</li>
                     </ol>
                     
+                    <h4 id="" style="padding-bottom: 0px;">Alterando a codificação padrão do Eclipse</h4>
+                    <hr>
+
+                    <p>
+                        O Eclipse, por padrão, cria projetos com codificação ISO-8859-1 para seus arquivos. O STF Digital utiliza, por questões de
+                        padronização, a codificação UTF-8. Por isso, é necessário alterar essas codificação no Eclipse. Para isso, execute os passos a seguir:
+                    </p>
+
+                    <ol>
+                        <li> Abra o Eclipse,</li>
+                        <li> Clique em Window/Preferences</li>
+                        <li> Clique em General/Workspace</li>
+                        <li> Selecione o Text file encoding: Other</li>
+                        <li> Selecione UTF-8</li>
+                        <li> Clique em OK</li>
+                    </ol>
+
+                    <h4 id="" style="padding-bottom: 0px;">Ativando a sincronização do Eclipse com arquivos alterados externamente</h4>
+                    <hr>
+
+                    <p>
+                        Como utilizamos o Gulp para construção de front-end e o Eclipse não monitora por padrão arquivos alterados externamente,
+                        é necessário ativar essa opção no Eclipse para que o código front-end servido pelo back-end esteja sempre atualizado.
+                        Para ativar essa opção no Eclipse, execute os passos a seguir:
+                    </p>
+
+                    <ol>
+                        <li> Abra o Eclipse,</li>
+                        <li> Clique em Window/Preferences</li>
+                        <li> Clique em General/Workspace</li>
+                        <li> Selecione "Refresh using native hooks or polling</li>
+                        <li> Clique em OK</li>
+                    </ol>
+
                     <h3 id="" style="padding-bottom: 0px;">Instale o Visual Studio Code e plugins</h3>
                     <hr>
 
