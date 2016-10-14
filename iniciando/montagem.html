@@ -175,8 +175,6 @@
                         
                     <h4 id="comece" style="padding-bottom: 0px;">Configure seus hosts</h4>
                     <hr>
-
-                    </p>
                         
                     <p>
                         Para facilitar o acesso a <i>Docker Machine</i>, relacione seu IP ao alias "docker". Para identificar o IP da <i>Docker Machine</i>, execute o comando abaixo:
@@ -218,6 +216,79 @@
                         
                     <p>
                         <pre class="prettyprint"><span class="str">$ </span><span class="pln">ping docker</span></br><span class="pln">PING docker (192.168.99.100): 56 data bytes</span></br><span class="pln">64 bytes from 192.168.99.100: icmp_seq=0 ttl=64 time=0.314 ms</span></br><span class="pln">64 bytes from 192.168.99.100: icmp_seq=1 ttl=64 time=0.340 ms</span></br><span class="pln">64 bytes from 192.168.99.100: icmp_seq=2 ttl=64 time=0.386 ms</span></br></pre>
+                    </p>
+
+                    <h4 id="conectividade-externa" style="padding-bottom: 0px;">Libere as portas do gateway e ui para conectividade externa</h4>
+                    <hr>
+
+                    <p>
+                        Como os microserviços estão executando em um container que roda em uma máquina virtual, por padrão esses containers não são acessíveis
+                        de outras máquinas da rede (a máquina virtual do Docker utiliza o modo de rede NAT). Entretanto, há algumas situações em que se deseja
+                        que esses containers sejam acessíveis. Por exemplo, caso deseje mostrar o sistema em execução a partir de outra máquina da rede, isso só
+                        será possível realizando essa configuração. Um outro caso em que é essencial realizar essa configuração é para conseguir integrar
+                        o sistema com um servidor Onlyoffice que não esteja rodando como container na sua própria máquina.
+                    </p>
+                    <p>
+                        Como a imagem do Onlyoffice recomenda pelo menos 2GB de RAM para rodar seus containers, optamos por rodar um único container compartilhado para todos
+                        os desenvolvedores, de modo que ele não onere recursos da máquina do desenvolvedor. Para liberar as portas, execute os passos a seguir:
+                    </p>
+
+                    <ol>
+                        <li>Abra o Oracle VirtualBox</li>
+                        <li>Clique com  o botão direito do mouse sobre a máquina virtual do Docker (o nome padrão é default)</li>
+                        <li>Clique em Configurações</li>
+                        <li>Clique em Rede</li>
+                        <li>Clique em Avançado</li>
+                        <li>Clique em Redirecionamento de Portas</li>
+                        <li>Adicione um Redirecionamento com Porta do Hospedeiro 8765 e Porta do Convidado 8765 (não precisa preencher os IPs)</li>
+                        <li>Adicione um Redirecionamento com Porta do Hospedeiro 8443 e Porta do Convidado 8443 (não precisa preencher os IPs)</li>
+                        <li>Clique em OK</li>
+                        <li>Clique em OK</li>
+                    </ol>                    
+
+                    <p>
+                        Agora já poderá acessar o sistema a partir de outra máquina da rede nas portas 8443 (para acessar a interface gráfica) e
+                        8765 (para acessar o gateway).
+                    </p>
+
+                    <h4 id="conectividade-externa-variavel" style="padding-bottom: 0px;">Conifgurando variáveis de ambiente</h4>
+                    <hr>
+
+                    <p>
+                        Para configurar variáveis de ambiente no Windows, acesse a seguinte tela:
+                    </p>
+
+                    <ol>
+                        <li>Abra o Painel de Controle</li>
+                        <li>Acesse "Sistema e Segurança"/"Sistema"</li>
+                        <li>Acesse "Configurações avançadas do sistema"</li>
+                        <li>Acesse "Variáveis de Ambiente..."</li>
+                        <li>Poderá adicionar uma nova variável de ambiente de usuário pelo botão "Novo..." logo abaixo da primeira lista de variáveis</li>
+                    </ol>
+
+                    <p>
+                    A variável de ambiente HOST_ADDRESS é utilizada para permitir a aplicação parametrizar alguns componentes que precisam acessar
+                    a sua máquina de desenvolvimento externamente. É o caso do Onlyoffice já mencionado. Adicione ela com o valor do IP de sua máquina
+                    acessível externamente (o IP da interface que está no domínio rede.stf.gov.br).
+                    </p>
+
+                    <p>
+                        O cliente Docker precisa de algumas variáveis de ambiente para se conectar com o daemon Docker que está rodando em máquina virtual. Quando
+                        se abre um "Docker Quickstart Terminal" essas variáveis já são configuradas automaticamente.
+                        Caso deseje executar comandos Docker de um outro terminal (um Git Bash, por exemplo), pode-se configurar essas variáveis executando o comando
+                        <code>eval $(docker-machine env)</code>. Para não precisar digitar isso toda vez que abrir um novo "Git Bash" e para conseguir executar
+                        construções Gradle pelo Eclipse que utilizem Docker, pode-se configurar essas variáveis diretamente no Windows. Para saber quais são essas
+                        variáveis e seus valores, execute:
+<pre class="prettyprint">docker-machine env</pre>
+cujo resultado será algo parecido com:
+<pre class="prettyprint">export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.100:2376"
+export DOCKER_CERT_PATH="C:\Users\&lt;usuario&gt;\.docker\machine\machines\default"
+export DOCKER_MACHINE_NAME="default"</pre>
+                    </p>
+
+                    <p>
+                        Adicione essas variáveis no Windows como descrito acima.
                     </p>
 
                     <h4 id="" style="padding-bottom: 0px;">Instale o JDK 8</h4>
