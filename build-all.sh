@@ -11,7 +11,7 @@ build_all() {
         "plataforma/processos" \
         "plataforma/ui" \
         "plataforma/logging" \
-		"plataforma/userauthentication" \
+		"plataforma/identidades" \
         "autuacao/autuacao" \
         "autuacao/distribuicao" \
         "autuacao/peticionamento" \

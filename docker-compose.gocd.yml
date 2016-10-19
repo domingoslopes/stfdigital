@@ -85,9 +85,9 @@ services:
      - "br.jus.stf.app=stfdigital"
     depends_on:
      - gateway
-  userauthentication:
-    container_name: userauthentication
-    image: stfdigital-plataforma-userauthentication
+  identidades:
+    container_name: identidades
+    image: stfdigital-plataforma-identidades
     volumes:
      - logs:/logs
     ports:

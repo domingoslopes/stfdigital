@@ -4,7 +4,7 @@ update_shared_all() {
     projects_shared=("plataforma/documents" \
         "plataforma/processos" \
         "plataforma/ui" \
-		"plataforma/userauthentication" \
+		"plataforma/identidades" \
         "autuacao/autuacao" \
         "autuacao/distribuicao" \
         "autuacao/peticionamento" \
