@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        
+        <title>STF Digital Developers | Estrutura de diretórios</title>
+        
+        <!-- STYLESHEETS -->
+        <link rel="stylesheet" href="assets/styles/fonts.css" type="text/css" >
+        <link rel="stylesheet" href="assets/styles/fonts1.css" title="roboto" type="text/css">
+        
+        <link href="assets/styles/default.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body class="gc-documentation develop guide  dac-nav-open" itemscope="" itemtype="http://schema.org/Article">
+        <header id="header-wrapper">
+            <div class="dac-header" id="header">
+                <div class="dac-header-inner">
+                    <a class="dac-nav-toggle" data-dac-toggle-nav="" href="../index.html" title="Open navigation"> 
+                        <span class="dac-nav-hamburger"> 
+                            <span class="dac-nav-hamburger-top"></span> 
+                            <span class="dac-nav-hamburger-mid"></span> 
+                            <span class="dac-nav-hamburger-bot"></span>
+                        </span>
+                    </a>
+                    <a class="dac-header-logo" href="../index.html">
+                        <img class="dac-header-logo-image" src="../assets/images/logo.png" srcset="../assets/images/logo.png" width="32" height="32">STF Digital
+                    </a>
+                    <ul class="dac-header-tabs">
+                        <li><a class="dac-header-tab selected" href="#">Desenvolvimento</a></li>
+                    </ul>
+                    <a class="dac-header-console-btn" href="https://github.com/supremotribunalfederal/stfdigital" target="_blank" > 
+                        <img src="../assets/images/github-icon.png" srcset="../assets/images/github-icon.png" />
+                        <span class="dac-visible-desktop-inline">Repositório</span>
+                    </a>
+                </div>
+            <!--/.header-wrap.wrap-->
+            </div>
+        <!--/.header-->
+        </header>
+    
+        <a name="navigation" tabindex="0" class="nav-start-marker">navigation</a>
+
+        <nav class="dac-nav">
+            <div class="dac-nav-dimmer" data-dac-toggle-nav=""></div>
+            <div class="dac-nav-sidebar" data-swap="" data-dynamic="false" data-transition-speed="300" data-dac-nav="">
+                <div data-swap-container="">
+                    <a class="dac-nav-back-button dac-swap-section dac-up dac-active" tabindex="0" data-swap-button="" href="../index.html"> 
+                        <i class="dac-sprite dac-nav-back"></i> 
+                        <span class="dac-nav-back-title">Arquitetura</span>
+                    </a>
+    
+                    <div class="dac-nav-sub dac-swap-section dac-right dac-active">
+                        <ul id="nav">
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Iniciando</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../iniciando/demonstracao.html">Demonstração</a></li>
+                                    <li><a href="../iniciando/montagem.html">Monte seu Ambiente</a></li>
+                                    <li><a href="../iniciando/comece-agora.html">Comece Agora</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Arquitetura</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../arquitetura/visao.html">Nossa Visão</a></li>
+                                    <li><a href="../arquitetura/estrategia.html">Estratégia Arquitetural</a></li>
+                                    <li><a href="../arquitetura/autuacao.html">Estratégia de Implantação</a></li>
+                                </ul>
+                            </li>
+                            </br>
+                            <li class="nav-section expanded">
+                                <div class="nav-section-header">
+                                    <a href="#">Padrões e Políticas</a>
+                                </div>
+                                <ul style="display: block;">
+                                    <li><a href="../politicas/testes.html">Estratégia de Testes</a></li>
+                                    <li><a href="../politicas/api.html">Gestão da API</a></li>
+                                    <li><a href="../politicas/codigo-limpo.html">Código Limpo</a></li>
+                                    <li><a href="../politicas/diretorios.html">Estrutura de diretórios</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+    
+                </div>
+            </div>
+        </nav>
+
+        <a name="top" tabindex="0"></a>
+    
+        <div class="wrap clearfix" id="body-content">
+            <div class="content-header">
+                <ul class="dac-header-crumbs dac-has-content">
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Desenvolvimento</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Padrões e Políticas</a></li>
+                    <li class="dac-header-crumbs-item"><a class="dac-header-crumbs-link" href="#">Estratégia</a></li>
+                </ul>
+                <h1 itemprop="name">Estrutura de diretórios e arquivos</h1>
+            </div>
+            <div id="jd-content">
+                <div class="jd-descr" itemprop="articleBody">
+                    <div id="qv-wrapper">
+                        <div id="qv">
+                            <h2>Neste documento</h2>
+                            <ol>
+                                <li>
+                                    <a href="#excecoes">Tratamento de Exceções</a>
+                                </li>
+                                <li>
+                                    <a href="#padrao-codificacao">Padrão de Codificação</a>
+                                    <ol>
+                                        <li><a href="#padrao-codificao-backend">Padrão de Codificação de Back-end</a></li>
+                                        <li><a href="#padrao-codificao-frontend">Padrão de Codificação de Front-end</a></li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <a href="#metricas-qualidade">Métricas de qualidade</a>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+    
+                    <p>
+                        <i>Manter o <a href="codigo-limpo.html">código limpo</a> é fundamental para a manutenabilidade e escalabilidade de uma aplicação. Da mesma forma, manter a árvore de diretórios organizada permite aos desenvolvedores a fácil localização do código a ser trabalhado, bem como a criação de novos módulos e componentes.</i> 
+                    </p>
+                        
+                    <h2 id="front-end" style="padding-bottom: 0px;">Front-end</h2>
+                    <hr>
+                    <p><i>John Papa sugere uma pergunta simples <a href="https://johnpapa.net/angular-app-structuring-guidelines/" target="_blank">neste artigo</a> sobre organização de diretórios e nomenclatura de arquivos em projetos AngularJS:</i></p>
+                    <p class="note">Com que rapidez você consegue abrir e trabalhar em todos os arquivos de uma determinada funcionalidade?</p>  
+                    <p><i>Tentando responder a essa pergunta e tomando por base <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#naming" target="_blank">essas <i>guide lines</i></a>, aprensentamos algumas recomendações para a organização do Front-end do STF Digital.</i></p>
+                    <h3 id="aplicacao" style="padding-bottom: 0px;">Aplicação</h3>
+                    <hr>
+                    
+                    <p>
+                        A estrutura básica de pastas e arquivos da aplicação é herdada do <a href="http://withinpixels.com/themes/fuse" target="_blank">Fuse</a>.
+                    </p>
+    
+                    <h4 id="pastas" style="padding-bottom: 0px;">Pastas</h4>
+                    <hr>
+
+                    <p>
+                        Seguindo o conceito <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#style-y140" target="_blank">LIFT</a>, as pastas devem ser criadas no diretório <i>app/main</i> e nomeadas de acordo com a funcionalidade ou módulo a ser implementado.    
+                    </p>
+
+                    <p>
+                        <pre class="prettyprint"><span class="str">app/<br>&nbsp;&nbsp;main/<br>&nbsp;&nbsp;&nbsp;&nbsp;modulo/</span></pre>
+                    </p>
+                    <p>Os nomes compostos serão separados por hífen.</p>
+                    <p>
+                        <pre class="prettyprint"><span class="str">app/<br>&nbsp;&nbsp;main/<br>&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo/</span></pre>
+                    </p>
+                    <p>É possível a criação de submódulos e/ou pastas auxiliares.</p>
+                    <p>
+                        <pre class="prettyprint"><span class="str">app/<br>&nbsp;&nbsp;main/<br>&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assets/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;img/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;video/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;submodulo/</span></pre>
+                    </p>
+                    <p class="note">Se o submódulo precisar de novos submódulos e/ou pastas auxiliares, é uma boa hora de mudá-lo para a pasta <i>app/main</i>.</p>
+
+                    <p class="note">A pasta <i>assets</i> deve conter as imagens, vídeos e outros arquivos estáticos exclusivos do módulo e seus submódulos. Caso o arquivo possa ser utilizado por mais de um módulo, ele deve estar na pasta <i>app/main/assets</i></p>
+
+                    <h4 id="arquivos" style="padding-bottom: 0px;">Arquivos</h4>
+                    <hr>
+
+                    <p>
+                        Com base <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md#style-y121" target="_blank">nessas recomendações</a>, os arquivos do frontend do STF Digital deverão ser nomeados seguindo o padrão <span class="str">nome-do-modulo.tipo.ts</span>.
+                    </p>
+                    <h5 id="typescript">Typescript</h5>
+                    <p>
+                        <pre class="prettyprint"><span class="str">app/<br>&nbsp;&nbsp;main/<br>&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.module.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.controller.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.directive.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.service.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.filter.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.config.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.routs.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.interceptor.ts</span></span></pre>
+                    </p>
+                    <h5 id="html">HTML</h5>
+                    <p>Arquivos HTML não precisam da parte <span class="str">.tipo</span> em seu nome.</p>
+                    <p>
+                        <pre class="prettyprint"><span class="str">app/<br>&nbsp;&nbsp;main/<br>&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.html</span></pre> 
+                    </p>
+                    <h5 id="html">SCSS</h5>
+                    <p>Arquivos SCSS não precisam da parte <span class="str">.tipo</span> em seu nome.</p>
+                    <p>
+                        <pre class="prettyprint"><span class="str">app/<br>&nbsp;&nbsp;main/<br>&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nome-do-modulo.scss</span></pre> 
+                    </p>
+                    <h4 id="documentacao" style="padding-bottom: 0px;">Módulo de exemplo</h4>
+                    <hr>
+                    <p>
+                        <pre class="prettyprint"><span class="str">app/<br>&nbsp;&nbsp;main/<br>&nbsp;&nbsp;&nbsp;&nbsp;autenticacao/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autenticado.module.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login.html<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login.scss<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login.controller.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nao-autenticado/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nao-autenticado.html<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nao-autenticado.scss<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nao-autenticado.module.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autenticacao.module.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autenticacao.service.ts<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autenticacao.interceptor.ts</span></span></pre>
+                    </p>
+                </div>
+    
+            </div>
+            <!-- end jd-content -->
+        </div>
+        <!--/#body-content-->
+    </body>
+</html>
