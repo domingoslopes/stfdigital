@@ -50,7 +50,6 @@ services:
      - logs:/logs
     ports:
      - "8765:8765"
-     - "8161:8161"
      - "47965:8000"
     environment:
      - spring.profiles.active=development,docker
