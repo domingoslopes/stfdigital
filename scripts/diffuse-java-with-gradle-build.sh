@@ -4,9 +4,9 @@ projects_ui=("plataforma/core" \
     "plataforma/discovery" \
     "plataforma/documents" \
     "plataforma/gateway" \
-    "plataforma/services" \
+    "plataforma/processos" \
     "plataforma/test" \
-    "plataforma/userauthentication" \
+    "plataforma/identidades" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
     "autuacao/peticionamento" \

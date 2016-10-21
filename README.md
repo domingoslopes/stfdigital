@@ -18,7 +18,7 @@ Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/
     
 Isso deve resultar na seguinte estrutura de diretórios:
 
-<img src="assets/estrutura.png" width="180">
+<img src="support/assets/estrutura.png" width="180">
 
 ##### Instale o Gradle
 Cada componente deverá ser construído separadamente, portanto cada um tem seu próprio arquivo de construção. Usamos Gradle como ferramenta de montagem, então você precisa instalá-lo antes de prosseguir. 
@@ -47,11 +47,11 @@ No Windows, abra o arquivo
 
 E adicione as linhas abaixo:
 
-    192.168.99.100 docker rabbit mongo discovery documents gateway processos ui userauthentication
+    192.168.99.100 docker rabbit mongo discovery documents gateway processos ui identidades
 
 No Linux, isso pode ser feito adicionando uma entrada no arquivo `/etc/hosts`, como no exemplo abaixo 
 
-    192.168.99.100 docker rabbit mongo discovery documents gateway processos ui userauthentication
+    192.168.99.100 docker rabbit mongo discovery documents gateway processos ui identidades
 
 Você poderá confirmar se esse relacionamento está funcional executando o comando `ping` contra o alias criado.
 
@@ -120,7 +120,7 @@ E veja o resultado abaixo:
     stfdigital-autuacao-distribuicao           latest              59bc4671989e        4 minutes ago       254.4 MB
     stfdigital-autuacao-autuacao               latest              087a6508857d        4 minutes ago       254.3 MB
     stfdigital-plataforma-documents            latest              415ed3e38505        About an hour ago   272.5 MB
-    stfdigital-plataforma-userauthentication   latest              7a39edcc72e3        About an hour ago   254.3 MB
+    stfdigital-plataforma-identidades          latest              7a39edcc72e3        About an hour ago   254.3 MB
     stfdigital-plataforma-processos            latest              960b2163c474        About an hour ago   254.5 MB
     stfdigital-plataforma-gateway              latest              187aa4d0f0ef        About an hour ago   214.5 MB
     stfdigital-plataforma-discovery            latest              1527e91ead85        About an hour ago   212.6 MB
@@ -141,7 +141,7 @@ Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as me
     
 A medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://docker:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
 
-<img src="assets/discovery.png" width="800">
+<img src="support/assets/discovery.png" width="800">
 
 #### Para trabalhar com UI...
 
@@ -223,7 +223,7 @@ Repita os passos para cada um dos componentes.
 
 Se optar por uma organização com <i>Working Sets</i>, você deverá ter uma estrutura de projetos como na imagem abaixo:
 
-<img src="assets/eclipse.png" width="150">    
+<img src="support/assets/eclipse.png" width="150">    
 
     > Clique com o botão direito no nome do projeto
     > Assign Working Sets

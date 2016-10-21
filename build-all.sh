@@ -11,7 +11,7 @@ build_all() {
         "plataforma/processos" \
         "plataforma/ui" \
         "plataforma/logging" \
-		"plataforma/userauthentication" \
+		"plataforma/identidades" \
         "autuacao/autuacao" \
         "autuacao/distribuicao" \
         "autuacao/peticionamento" \
@@ -35,5 +35,5 @@ build_all() {
     done
 }
 
-mkdir -p ./logs
-(time build_all) 2>&1 | tee ./logs/build.log
+mkdir -p ./support/logs
+(time build_all) 2>&1 | tee ./support/logs/build.log

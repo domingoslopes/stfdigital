@@ -8,7 +8,7 @@ repositorios=( "plataforma/core" \
     "plataforma/test" \
     "plataforma/logging" \
     "plataforma/ui" \
-	"plataforma/userauthentication" \
+	"plataforma/identidades" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
     "autuacao/peticionamento" \

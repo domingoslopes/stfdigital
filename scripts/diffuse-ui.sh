@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 projects_ui=("plataforma/documents" \
-    "plataforma/services" \
-    "plataforma/userauthentication" \
+    "plataforma/processos" \
+    "plataforma/identidades" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
     "autuacao/peticionamento" \

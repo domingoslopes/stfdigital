@@ -1,5 +1,8 @@
 # Define a configuração para rodar com imagens do Docker Hub
 version: '2'
+volumes:
+  logs:
+    driver: local
 services:
   rabbit:
     extends:
@@ -28,10 +31,10 @@ services:
       service: ui
     depends_on:
      - gateway
-  userauthentication:
+  identidades:
     extends:
       file: shared/compose/common.yml
-      service: userauthentication
+      service: identidades
     depends_on:
      - rabbit
      - discovery
@@ -50,7 +53,7 @@ services:
     links:
      - onlyoffice:docker # documents precisa acessar o onlyoffice pelo host docker para não dar erro de certificado
     depends_on:
-     - mongo
+     - cassandra
      - rabbit
      - discovery
      - onlyoffice

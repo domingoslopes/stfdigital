@@ -52,7 +52,7 @@ services:
      - "8765:8765"
      - "47965:8000"
     environment:
-     - spring.profiles.active=development,docker
+     - spring.profiles.active=default,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
     labels:
      - "br.jus.stf.app=stfdigital"
@@ -84,9 +84,9 @@ services:
      - "br.jus.stf.app=stfdigital"
     depends_on:
      - gateway
-  userauthentication:
-    container_name: userauthentication
-    image: stfdigital-plataforma-userauthentication
+  identidades:
+    container_name: identidades
+    image: stfdigital-plataforma-identidades
     volumes:
      - logs:/logs
     ports:
@@ -116,7 +116,7 @@ services:
     ports:
      - "443:443"
     environment:
-     - ONLYOFFICE_PORT_443_TCP=tcp://10.112.20.123:443
+     - ONLYOFFICE_PORT_443_TCP=tcp://eti078082:443
     labels:
      - "br.jus.stf.app=stfdigital"
   documents:
