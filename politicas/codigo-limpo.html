@@ -232,7 +232,7 @@
 
                     <p>
                         Lance exceçõs para possíveis erros reportados por um método. Por exemplo, se você retorna os
-                        valores -1, -2, -3... invés de FileNotFoundException, esse método pode não ser bem
+                        valores -1, -2, -3... ao invés de FileNotFoundException, esse método pode não ser bem
                         entendido.
                     </p>
 
@@ -255,9 +255,9 @@
                         de uma exceção mostra a sequência exata de chamadas de métodos até o ponto em que ocorreu a exceção,
                         incluindo o nome da classe, o nome do arquivo e o número da linha onde a exceção foi lançada. Por isso,
                         é muito importante lançar a exceção o quanto antes, imediatamente quando a exceção é detectada.
-                        Por exemplo, se o erro ocorre em um método mais não é lançada por ele, mas sim pelo método chamado,
+                        Por exemplo, se o erro ocorre em um método mas não é lançada por ele, mas sim pelo método chamado,
                         a <i>stack trace</i> não indicará o posição exata do erro, o que poderá comprometer o tempo de
-                        diagnóstica da causa do problema.
+                        diagnóstico da causa do problema.
                     </p>
                         
                     <h4 id="tratamento" style="padding-bottom: 0px;">Tratamento</h4>
@@ -339,7 +339,7 @@
                     <p>
                         <pre class="prettyprint"><span class="str">catch</span><span class="pln"> (NoSuchFieldException exp) {</span><span class="pln"><br>&nbsp; &nbsp;</span><span class="pln">LOGGER.error("Exception occurred", exp);</span><span class="pln"><br>&nbsp; &nbsp;</span><span class="pln">throw exp;</span><span class="pln"><br></span><span class="pln">}</span></pre>
 
-                        Logar e lançar uma exceção dentro de um bloco catch é considerado anti-pattern e deveira ser
+                        Logar e lançar uma exceção dentro de um bloco catch é considerado anti-pattern e deveria ser
                         evitado. Logar e lançar a exceção pode resultar em múltiplas mensagens de erro no arquivo de log 
                         para um único problema, dificultando o trabalho dos responsáveis por identificar 
                         e diagnosticar problemas no código.
@@ -357,7 +357,7 @@
                         Atribuir um código para cada diferente mensagem de exceção é uma boa prática para documentação porque
                         facilita muito a comunicação do tipo de erro. Também recomendamos usar Javadoc @throws para indicar 
                         as exceções lançadas pelos métodos. Isso facilita bastante principalmente no caso de interfaces 
-                        que poderá ser usadas em outras aplicações.
+                        que poderão ser usadas em outras aplicações.
                     </p>    
 
                     <h4 id="nomenclatura" style="padding-bottom: 0px;">Nomenclatura</h4>
