@@ -22,7 +22,7 @@ build_all() {
     do
         cd $project
         echo "Construindo "$project
-        gradle install
+        ./gradlew install
         cd - > /dev/null
     done
 
@@ -30,7 +30,7 @@ build_all() {
     do
         cd $project
         echo "Construindo "$project
-        gradle docker
+        ./gradlew docker
         cd - > /dev/null
     done
 }
