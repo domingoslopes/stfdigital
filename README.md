@@ -7,7 +7,7 @@ Baixe o <a target="_blank" href="https://spring.io/tools">Eclipse STS (Spring To
 ### Baixe o Repositório e o Docker para montar o ambiente
 
 ##### Instale o Docker Toolbox com Git e VirtualBox
-Instale o <a target="_blank" href="https://www.docker.com/products/docker-toolbox">Docker ToolBox 1.11.1+</a>. 
+Instale o <a target="_blank" href="https://www.docker.com/products/docker-toolbox">Docker ToolBox 1.11.1+</a>.
 
 ##### Baixe o repositório
 Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/dev) , para baixar o repositório e execute os comandos abaixo:
@@ -15,17 +15,10 @@ Abra o <b>Docker Quickstart Terminal</b> e na sua pasta de preferência (ex: /c/
     $ git clone https://github.com/supremotribunalfederal/stfdigital.git
     $ cd stfdigital
     $ ./clone-all.sh
-    
+
 Isso deve resultar na seguinte estrutura de diretórios:
 
 <img src="support/assets/estrutura.png" width="180">
-
-##### Instale o Gradle
-Cada componente deverá ser construído separadamente, portanto cada um tem seu próprio arquivo de construção. Usamos Gradle como ferramenta de montagem, então você precisa instalá-lo antes de prosseguir. 
-
-<a target="_blank" href="http://gradle.org/gradle-download/">Baixe o binário do Gradle</a> e extraia o zip para o diretório de sua preferência. Adicione o diretório bin (SeuDiretorioGradle\gradle-2.13\bin) na variável de ambiente "Path" do seu sistema operacional.
-
-Para configurar a variável de ambiente no windows clique com o botão direito em Meu Computador > Propriedades > Configurações avançadas do sistema > Variáveis de Ambiente > Clique duas vezes em Path e inclua ";SeuDiretorioGradle\gradle-2.13\bin". Depois clique em OK.
 
 ##### Atualize o Virtual Box
 Apesar da instalação do Virtual Box com o Docker ToolBox, recomendamos sua atualização para a versão mais recente (5.0.20+) em:  <a target="_blank" href="https://www.virtualbox.org/wiki/Downloads">Baixar Virtual Box</a>.
@@ -41,15 +34,15 @@ Para facilitar o acesso a <i>Docker Machine</i>, relacione seu IP ao alias "dock
     $ docker-machine ip
     Copie o endereço de IP e
 
-No Windows, abra o arquivo 
-    
+No Windows, abra o arquivo
+
     C:\Windows\System32\drivers\etc\hosts
 
 E adicione as linhas abaixo:
 
     192.168.99.100 docker rabbit mongo discovery documents gateway processos ui identidades
 
-No Linux, isso pode ser feito adicionando uma entrada no arquivo `/etc/hosts`, como no exemplo abaixo 
+No Linux, isso pode ser feito adicionando uma entrada no arquivo `/etc/hosts`, como no exemplo abaixo
 
     192.168.99.100 docker rabbit mongo discovery documents gateway processos ui identidades
 
@@ -76,11 +69,11 @@ Feche e abra o Docker Quickstart Terminal novamente.
 Você também precisará ter a versão mais recente do  <a href="https://nodejs.org/dist/v5.9.1/" target="_blank">NodeJS 5.9  (já inclui NPM)</a>. Sugerimos 5.9.1+. Não baixe versão superior a NodeJS 6+, ela ainda não foi testada.
 
 Após instalar o NodeJs, feche e abra novamente o Docker QuickStart Terminal (para recuperar as novas variáveis de ambiente).
-Para verificar se o NodeJS e o NPM estão instalados corretamente, execute os comandos: 
+Para verificar se o NodeJS e o NPM estão instalados corretamente, execute os comandos:
 
     node -v
     npm -v
-    
+
 ### Instale o Gulp
 
 Execute o seguinte comando para instalar o gulp globalmente:
@@ -92,21 +85,21 @@ O Maven ainda não é necessário nesse passo, mas você pode baixá-lo em <a hr
 
 #### Execute o Script Gradle
 
-Para facilitar o processo, temos um pequeno script que pode ser usado para construir todos os componentes de uma vez.  
+Para facilitar o processo, temos um pequeno script que pode ser usado para construir todos os componentes de uma vez.
 
-Agora podemos rodar o script de construção do ambiente. 
+Agora podemos rodar o script de construção do ambiente.
 Reinicie o Docker Quickstart terminal para carregar as variaveis de ambiente e entre no diretório que clonou o ambiente e execute o comando abaixo:
 
     $ ./build-all.sh
 
-A execução do script Gradle termina com a geração da imagem docker de cada componente. 
+A execução do script Gradle termina com a geração da imagem docker de cada componente.
 
-`Vá tomar um café! Esse passo demora mesmo!` 
+`Vá tomar um café! Esse passo demora mesmo!`
 
 Isso deverá resultar em <b>sete mensagens</b> iguais a mensagem de log abaixo:
 
     BUILD SUCCESSFUL
-    
+
 Neste ponto, todas as imagens docker já foram geradas.
 
 Execute o comando
@@ -129,16 +122,16 @@ E veja o resultado abaixo:
 
 #### Pronto! Execute a aplicação!
 
-Você poderá rodar todas elas de uma única vez usando <i>Docker Compose</i>: 
+Você poderá rodar todas elas de uma única vez usando <i>Docker Compose</i>:
 
     $ docker-compose up -d
 
 #### Acompanhe os logs com Kitematic
 
-Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as mensagens de log pelo comando: 
+Abra o Kitematic (que já foi instalado com o Docker Toolbox) ou acompanhe as mensagens de log pelo comando:
 
     $ docker-compose logs
-    
+
 A medida que os serviços forem iniciados, eles serão registrados automaticamente no serviço de discovery. Acesse `http://docker:8761` para acompanhar o registro dos serviços. Quando todos estiverem registrados, você deverá ver a tabela como no exemplo abaixo:
 
 <img src="support/assets/discovery.png" width="800">
@@ -150,10 +143,10 @@ Rode no diretório plataforma/ui os comandos abaixo e pare o container de UI pel
     npm install
     gulp serve
 
-    
+
 ### Configure o Eclipse para começar a codificar
 
-Usamos <a target="_blank" href="https://spring.io/tools">Eclipse STS</a> como IDE. Certifique-se que você tem a última versão. 
+Usamos <a target="_blank" href="https://spring.io/tools">Eclipse STS</a> como IDE. Certifique-se que você tem a última versão.
 Você também precisará instalar os seguintes plugins:
 
     > Buildship: Eclipse Plug-ins for Gradle
@@ -163,8 +156,8 @@ Você também precisará instalar os seguintes plugins:
 
 Para baixar o plugin do Gradle siga os passos abaixo:
 
-    abra o Eclipse, 
-    clique em Help 
+    abra o Eclipse,
+    clique em Help
     "Install New Software...".
     Selecione Work with <Neon>.
     Procure General Purpose Tools/Buildship: Eclipse Plug-ins for Gradle.
@@ -186,7 +179,7 @@ Para instalar o reconhecimento da sintaxe do Typescript <a href="https://github.
 
 #### Importando os projetos no Eclipse
 
-Você vai precisar importar todos os componentes separadamente. Você pode importar cada projeto diretamente pelo Eclipse, como um Projeto Gradle, ou pode executar o comando abaixo, no diretório de cada projeto, para gerar os arquivos necessários antes de importá-lo como um projeto já existente. 
+Você vai precisar importar todos os componentes separadamente. Você pode importar cada projeto diretamente pelo Eclipse, como um Projeto Gradle, ou pode executar o comando abaixo, no diretório de cada projeto, para gerar os arquivos necessários antes de importá-lo como um projeto já existente.
 
 ##### Digitando o comando (substitui o próximo passo)
 
@@ -195,7 +188,7 @@ Abra o <b>Git Bash</b> e na raiz do STF Digital, para gerar os arquivos de impor
     $ ./import-all.sh
 
     Ou rode manualmente o comando abaixo em cada pasta que deseja trabalhar:
-    
+
     $ gradle eclipse
 
 Após rodar o comando, um arquivo chamado .project e uma pasta .settings serão criados permitindo importação do projeto no eclipse. Para importar siga os passos abaixo:
@@ -223,7 +216,7 @@ Repita os passos para cada um dos componentes.
 
 Se optar por uma organização com <i>Working Sets</i>, você deverá ter uma estrutura de projetos como na imagem abaixo:
 
-<img src="support/assets/eclipse.png" width="150">    
+<img src="support/assets/eclipse.png" width="150">
 
     > Clique com o botão direito no nome do projeto
     > Assign Working Sets
@@ -242,13 +235,13 @@ Para viabilizar o desenvolvimento local usando as imagens docker, usamos o <i>Sp
     - Click em "Run"
 
 Isso vai iniciar uma conexão remota com a imagem docker correspondente. No terminal, acesse o log do container pelo comando:
- 
+
     $ docker-compose logs processos
-    
+
 Faça alguma alteração no arquivo "ProcessoRestResource" (por exemplo, altere de "Publicado" para "Distribuído"). Assim que você salvar o arquivo, as mensagens de log do restart devem começar a ser exibidas no terminal. Após concluído o restart, acesse o browser para confirmar se a label da tabela de pesquisa foi realmente alterada, de "Publicado" para "Distribuído".
 
 Para realizar o debug, bastar acessar a mesma configuração usada acima, mas em modo Debug. Para confirmar, coloque um break point no arquivo "ProcessoRestResource" e acesse novamente a funcionalidade de pesquisa.
 
 Para finalizar todos os serviços, basta executar o comando abaixo:
- 
+
     $ docker-compose down
