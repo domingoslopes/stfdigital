@@ -2,4 +2,4 @@
 # Mac OS
 .DS_Store
 .project
-
+node_modules
