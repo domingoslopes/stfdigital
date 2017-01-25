@@ -13,7 +13,7 @@ push_images () {
 			docker push "$1:$VERSION"
 		fi
 		
-		if [[ "$2" == "dvelop" ]]; then
+		if [[ "$2" == "develop" ]]; then
 			docker tag $IMAGE_NAME "$1:$VERSION-develop"
 			docker push "$1:$VERSION-develop"
 		fi
