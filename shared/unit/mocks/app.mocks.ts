@@ -88,6 +88,88 @@ namespace app.support {
     angular
             .module("app.support", ["app.support.command", "app.support.messaging", "app.support.constants"])
             .config(config);
+    
+    class ErrorHandlerServiceProvider {
+        
+        public decorate(): void {
+            
+        }
+        
+        public $get() {
+            return {};
+        }
+        
+    }
+    
+    angular
+    .module('app.support')
+    .provider('errorHandler', ErrorHandlerServiceProvider);
+
+
+    /** @ngInject */
+    function httpPromiseTransformationDecorator($delegate, $injector) {
+        function decorate($injector, obj, func) {
+            return angular.extend(function() {
+                let httpPromiseTransformation: HttpPromiseTransformationService = $injector.get('httpPromiseTransformation');
+                return httpPromiseTransformation.call(func, obj, arguments);
+            }, func);
+        }
+
+        for (let prop in $delegate) {
+            if (angular.isFunction($delegate[prop])) {
+                $delegate[prop] = decorate($injector, $delegate, $delegate[prop]);
+            }
+        }
+        return $delegate;
+    }
+
+    export class HttpPromiseTransformationService {
+
+        /** @ngInject */
+        constructor(private $q: ng.IQService) {
+
+        }
+
+        public call(func: Function, self, args) {
+            let result = func.apply(self, args);
+            
+            if (this.isPromise(result)) {
+                return result.then((response) => {
+                    return response.data;
+                }, (response) => {
+                    return this.$q.reject(response.data);
+                });
+            }
+
+            return result;
+        }
+
+        private isPromise(possiblePromise): boolean {
+            if (possiblePromise && angular.isFunction(possiblePromise.then) && angular.isFunction(possiblePromise['catch'])) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    }
+
+    export class HttpPromiseTransformationProvider implements ng.IServiceProvider {
+
+        public decorate($provide: ng.auto.IProvideService, serviceName: string): void {
+            $provide.decorator(serviceName, httpPromiseTransformationDecorator);
+        }
+
+        /** @ngInject */
+        public $get($q: ng.IQService): HttpPromiseTransformationService {
+            return new HttpPromiseTransformationService($q);
+        }
+
+    }
+
+    angular
+        .module('app.support')
+        .provider('httpPromiseTransformation', HttpPromiseTransformationProvider);
 }
 
 angular.module("angularFileUpload", []);
