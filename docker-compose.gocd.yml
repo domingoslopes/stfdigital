@@ -141,6 +141,23 @@ services:
      - discovery
     links:
      - onlyoffice:docker
+  recebimento:
+    container_name: recebimento
+    image: stfdigital-plataforma-recebimento
+    volumes:
+     - logs:/logs
+    ports:
+     - "8091:8091"
+     - "8191:8191"
+     - "47991:8000"
+    environment:
+     - spring.profiles.active=default,docker
+     - JAVA_OPTS=-Xms64M -Xmx512M
+    labels:
+     - "br.jus.stf.app=stfdigital"
+    depends_on:
+     - rabbit
+     - discovery	 
   autuacao:
     container_name: autuacao
     image: stfdigital-autuacao-autuacao
@@ -186,23 +203,6 @@ services:
      - "47990:8000"
     environment:
      - spring.profiles.active=development,docker
-     - JAVA_OPTS=-Xms64M -Xmx512M
-    labels:
-     - "br.jus.stf.app=stfdigital"
-    depends_on:
-     - rabbit
-     - discovery
-  recebimento:
-    container_name: recebimento
-    image: stfdigital-autuacao-recebimento
-    volumes:
-     - logs:/logs
-    ports:
-     - "8091:8091"
-     - "8191:8191"
-     - "47991:8000"
-    environment:
-     - spring.profiles.active=default,docker
      - JAVA_OPTS=-Xms64M -Xmx512M
     labels:
      - "br.jus.stf.app=stfdigital"

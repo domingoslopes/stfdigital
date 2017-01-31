@@ -10,10 +10,10 @@ repositorios=( "plataforma/core" \
     "plataforma/ui" \
     "plataforma/logging" \
     "plataforma/identidades" \
+	"plataforma/recebimento" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
-    "autuacao/peticionamento" \
-    "autuacao/recebimento" \
+    "autuacao/peticionamento"
 )
 
 for identificador in "${repositorios[@]}"

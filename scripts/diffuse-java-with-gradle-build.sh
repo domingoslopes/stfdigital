@@ -7,10 +7,10 @@ projects_ui=("plataforma/core" \
     "plataforma/processos" \
     "plataforma/test" \
     "plataforma/identidades" \
+	"plataforma/recebimento" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
-    "autuacao/peticionamento" \
-    "autuacao/recebimento"
+    "autuacao/peticionamento"
 )
 
 command="diffuse "

@@ -57,6 +57,13 @@ services:
      - rabbit
      - discovery
      - onlyoffice
+  recebimento:
+    extends:
+      file: shared/compose/common.yml
+      service: recebimento
+    depends_on:
+     - rabbit
+     - discovery	 
   autuacao:
     extends:
       file: shared/compose/common.yml
@@ -75,13 +82,6 @@ services:
     extends:
       file: shared/compose/common.yml
       service: peticionamento
-    depends_on:
-     - rabbit
-     - discovery
-  recebimento:
-    extends:
-      file: shared/compose/common.yml
-      service: recebimento
     depends_on:
      - rabbit
      - discovery

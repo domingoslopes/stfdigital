@@ -12,10 +12,10 @@ build_all() {
         "plataforma/ui" \
         "plataforma/logging" \
 		"plataforma/identidades" \
+		"plataforma/recebimento" \
         "autuacao/autuacao" \
         "autuacao/distribuicao" \
-        "autuacao/peticionamento" \
-        "autuacao/recebimento"
+        "autuacao/peticionamento"
     )
 
     for project in "${projects_install[@]}"

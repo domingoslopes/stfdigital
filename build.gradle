@@ -2,8 +2,8 @@ subprojects {
     apply plugin: 'java'
 }
 
-configure([project("plataforma:documents"), project("plataforma:processos"), project("plataforma:identidades"), project("autuacao:autuacao"),
-    project("autuacao:distribuicao"), project("autuacao:peticionamento"), project("autuacao:recebimento")]) {
+configure([project("plataforma:documents"), project("plataforma:processos"), project("plataforma:identidades"), project("plataforma:recebimento"),
+	project("autuacao:autuacao"), project("autuacao:distribuicao"), project("autuacao:peticionamento")]) {
     dependencies {
         compile project(':plataforma:core')
         testCompile project(':plataforma:test')

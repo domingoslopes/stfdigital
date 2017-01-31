@@ -63,6 +63,14 @@ services:
      - rabbit
      - discovery
      - onlyoffice
+  recebimento:
+    extends:
+      file: shared/compose/common.yml
+      service: recebimento
+    image: stfdigital-plataforma-recebimento
+    depends_on:
+     - rabbit
+     - discovery	 
   autuacao:
     extends:
       file: shared/compose/common.yml
@@ -84,14 +92,6 @@ services:
       file: shared/compose/common.yml
       service: peticionamento
     image: stfdigital-autuacao-peticionamento
-    depends_on:
-     - rabbit
-     - discovery
-  recebimento:
-    extends:
-      file: shared/compose/common.yml
-      service: recebimento
-    image: stfdigital-autuacao-recebimento
     depends_on:
      - rabbit
      - discovery

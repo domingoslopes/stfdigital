@@ -3,10 +3,10 @@
 projects_ui=("plataforma/documents" \
     "plataforma/processos" \
     "plataforma/identidades" \
+	"plataforma/recebimento" \
     "autuacao/autuacao" \
     "autuacao/distribuicao" \
-    "autuacao/peticionamento" \
-    "autuacao/recebimento"
+    "autuacao/peticionamento"
 )
 
 command="diffuse "

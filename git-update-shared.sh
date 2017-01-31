@@ -5,10 +5,10 @@ update_shared_all() {
         "plataforma/processos" \
         "plataforma/ui" \
 		"plataforma/identidades" \
+		"plataforma/recebimento" \
         "autuacao/autuacao" \
         "autuacao/distribuicao" \
-        "autuacao/peticionamento" \
-        "autuacao/recebimento"
+        "autuacao/peticionamento"
     )
 
     for project in "${projects_shared[@]}"
