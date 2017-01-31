@@ -14,13 +14,13 @@ push_images () {
 		fi
 		
 		if [[ "$2" == "develop" ]]; then
-			docker tag $IMAGE_NAME "$1:$VERSION-develop"
-			docker push "$1:$VERSION-develop"
+			docker tag $IMAGE_NAME "$1:develop"
+			docker push "$1:develop"
 		fi
 		
-		if [[ $2 =~ ^[R|r][L|l]-[0-9]+\.[0-9]+\.[0-9]+-[R|r][C|c]([0-9]*)$ ]]; then
-			docker tag $IMAGE_NAME "$1:$VERSION-RC${BASH_REMATCH[1]}"
-			docker push "$1:$VERSION-RC${BASH_REMATCH[1]}"				
+		if [[ $2 =~ ^[R|r][L|l]-[0-9]+\.[0-9]+\.[0-9]+-[R|r][C|c]$ ]]; then
+			docker tag $IMAGE_NAME "$1:$VERSION-RC"
+			docker push "$1:$VERSION-RC"				
 		fi
 	fi
 }
