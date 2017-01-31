@@ -123,6 +123,19 @@ services:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
      - eureka.instance.ip-address=${DOCKER_IP_ADDRESS}
+  recebimento:
+    container_name: recebimento
+    image: supremotribunalfederal/stfdigital-plataforma-recebimento
+    volumes:
+     - logs:/logs
+    ports:
+     - "8091:8091"
+     - "8191:8191"
+     - "47991:${JAVA_DEBUG_PORT}"
+    environment:
+     - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
+     - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
+     - eureka.instance.ip-address=${DOCKER_IP_ADDRESS}	 
 # Serviços de negócio - Autuação
   autuacao:
     container_name: autuacao
@@ -159,19 +172,6 @@ services:
      - "8090:8090"
      - "8190:8190"
      - "47990:${JAVA_DEBUG_PORT}"
-    environment:
-     - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
-     - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
-     - eureka.instance.ip-address=${DOCKER_IP_ADDRESS}
-  recebimento:
-    container_name: recebimento
-    image: supremotribunalfederal/stfdigital-autuacao-recebimento
-    volumes:
-     - logs:/logs
-    ports:
-     - "8091:8091"
-     - "8191:8191"
-     - "47991:${JAVA_DEBUG_PORT}"
     environment:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
