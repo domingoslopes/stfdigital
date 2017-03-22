@@ -135,7 +135,7 @@ services:
     environment:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
-     - eureka.instance.ip-address=${DOCKER_IP_ADDRESS}	 
+     - eureka.instance.ip-address=${DOCKER_IP_ADDRESS}
 # Serviços de negócio - Autuação
   autuacao:
     container_name: autuacao
