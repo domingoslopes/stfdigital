@@ -63,7 +63,7 @@ services:
       service: recebimento
     depends_on:
      - rabbit
-     - discovery	 
+     - discovery
   autuacao:
     extends:
       file: shared/compose/common.yml
