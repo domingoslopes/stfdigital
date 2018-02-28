@@ -391,8 +391,26 @@
                         <li>Clique em Open Config</li>
                         <li>Preencha o campo Profile com <code>development</code></li>
                         <li>Clique em Apply, depois em Close</li>
+                    </ol>  
+
+                    <h4 id="eclipse-profile" style="padding-bottom: 0px;">Baixe os artefatos do repositório remoto para o repositório local utilizando Maven</h4>
+                    <hr>
+                    <ol>
+                        <li>Acesse <a href="http://build/artifactory" target="_blank">http://build/artifactory</a></li>
+                        <li>Realize login com seu usuário e senha de rede</li>
+                        <li>Clique no seu usuário no canto superior direito da tela</li>
+                        <li>Preencha o campo Current Password com a sua senha de rede e clique em Unlock</li>
+                        <li>Copie o trecho de código que irá aparecer</li>
+                        <li>Vá em C:\Users\augusto.s.castro\.m2</li>
+                        <li>Abra o arquivo settings.xml no Notepad++</li>
+                        <li>Cole o trecho de código entre a tag servers</li>
+                        <li>Substitua ${server-id} por repo-unificado na tag id</li>
+                        <li>Abra o Spring Tool Suite</li>
+                        <li>Clique com o botao direiro do mouse na raiz do projeto(autuacao-registro, por exemplo)</li>
+                        <li>Clique em Maven/Update Project</li>
+                        <li>Selecione o projeto e clique em OK</li>
                     </ol>
-                    
+
                     <h4 id="eclipse-executar" style="padding-bottom: 0px;">Execute a aplicação back-end pelo Eclipse</h4>
                     <hr>
                     <p>
