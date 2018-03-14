@@ -346,7 +346,8 @@
                     <h4 id="" style="padding-bottom: 0px;">Atualize as imagens dos outros contextos a partir do Docker Hub/Registro Corporativo</h4>
                     Para desenvolver para um contexto específico, é recomendável manter sempre as imagens locais dos outros contextos sempre atualizadas.
                     Para atualizá-las, basta executar o comando logo abaixo. Execute esse comando com frequência diária pelo menos ou quando for notificado
-                    (via Slack, por exemplo) de que uma imagem foi atualizada.
+                    (via Slack, por exemplo) de que uma imagem foi atualizada. (É necessário ter executado antes o comando npm install a partir do diretório
+                    do projeto atual para que o diretório shared, que é referenciado no docker-compose.yml seja baixado para a máquina.)
                     <p>
                         <pre class="prettyprint"><span class="str">$ </span><span class="pln">docker-compose pull</span></pre>                        
                     </p>
